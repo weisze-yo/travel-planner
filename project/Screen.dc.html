@@ -1,0 +1,1131 @@
+<!DOCTYPE html>
+<html>
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<script src="./support.js"></script>
+</head>
+<body>
+<x-dc>
+<helmet data-dc-atomics><link rel="preconnect" href="https://fonts.gstatic.com" crossorigin><link href="https://fonts.googleapis.com/css2?family=Public+Sans:ital,wght@0,300;0,400;0,500;0,600;0,700;1,400&family=Noto+Sans+SC:wght@400;500;700&display=swap" rel="stylesheet"><style>*{-webkit-font-smoothing:antialiased}::-webkit-scrollbar{width:0;height:0}input,textarea,select{font-family:inherit;font-size:13px;color:#14201C;border:1px solid #DDE2DE;border-radius:10px;padding:9px 10px;background:#fff;outline:none;box-sizing:border-box}input:focus,textarea:focus,select:focus{border-color:#1F6F5C}</style></helmet>
+<x-import component-from-global-scope="IOSDevice" from="./ios-frame.jsx" hint-size="402px,874px">
+<div style="height:100%;display:flex;flex-direction:column;background:#F2F3F1;font-family:'Public Sans','Noto Sans SC',system-ui,sans-serif;color:#14201C;position:relative;overflow:hidden">
+
+<!-- ══ MAP HOME ══ -->
+<sc-if value="{{ isMap }}" hint-placeholder-val="{{ true }}">
+<div style="position:absolute;inset:0;background:#E9EAE6">
+<svg viewBox="0 0 402 874" style="position:absolute;inset:0;width:100%;height:100%">
+<rect width="402" height="874" fill="#E9EAE6"></rect>
+<path d="M0 690 L120 640 L250 700 L402 660 L402 874 L0 874 Z" fill="#CFDCDD"></path>
+<rect x="258" y="146" width="130" height="96" rx="10" fill="#DCE5D6"></rect>
+<rect x="20" y="402" width="96" height="70" rx="8" fill="#DCE5D6"></rect>
+<g stroke="#FBFBFA" stroke-linecap="round" fill="none">
+<path d="M-10 250 L420 214" stroke-width="16"></path><path d="M-10 520 L420 560" stroke-width="16"></path>
+<path d="M150 -10 L196 890" stroke-width="16"></path><path d="M330 -10 L300 700" stroke-width="10"></path>
+<path d="M-10 380 L420 350" stroke-width="8"></path><path d="M60 -10 L86 700" stroke-width="8"></path>
+</g>
+<g fill="#DFE1DC">
+<rect x="14" y="120" width="52" height="46" rx="4"></rect><rect x="80" y="120" width="58" height="46" rx="4"></rect>
+<rect x="212" y="118" width="44" height="42" rx="4"></rect><rect x="14" y="272" width="60" height="60" rx="4"></rect>
+<rect x="96" y="276" width="44" height="52" rx="4"></rect><rect x="212" y="272" width="70" height="54" rx="4"></rect>
+<rect x="300" y="330" width="70" height="60" rx="4"></rect><rect x="282" y="250" width="56" height="48" rx="4"></rect>
+<rect x="292" y="430" width="76" height="60" rx="4"></rect></g>
+<path d="M96 196 L134 252 L214 264 L254 316 L198 382 L306 416" fill="none" stroke="#1F6F5C" stroke-width="5.5" stroke-linecap="round" stroke-linejoin="round"></path>
+<path d="M198 382 L146 340 L192 296 L244 338 Z" fill="none" stroke="#C87F0A" stroke-width="3" stroke-dasharray="2 6" stroke-linecap="round"></path>
+<g onClick="{{ goDest }}" style="cursor:pointer"><g fill="#fff" stroke="#C87F0A" stroke-width="2.5"><circle cx="146" cy="340" r="9"></circle><circle cx="192" cy="296" r="9"></circle><circle cx="244" cy="338" r="9"></circle></g></g>
+<g font-family="Public Sans" font-size="13" font-weight="700" text-anchor="middle" style="cursor:pointer">
+<g onClick="{{ goDest }}"><circle cx="96" cy="196" r="16" fill="#1F6F5C"></circle><text x="96" y="201" fill="#fff">1</text></g>
+<g onClick="{{ goDest }}"><circle cx="134" cy="252" r="16" fill="#1F6F5C"></circle><text x="134" y="257" fill="#fff">2</text></g>
+<g onClick="{{ goDest }}"><circle cx="214" cy="264" r="16" fill="#1F6F5C"></circle><text x="214" y="269" fill="#fff">3</text></g>
+<g onClick="{{ goDest }}"><circle cx="254" cy="316" r="16" fill="#1F6F5C"></circle><text x="254" y="321" fill="#fff">4</text></g>
+<g onClick="{{ goDest }}"><circle cx="198" cy="382" r="20" fill="#14201C"></circle><text x="198" y="388" fill="#fff" font-size="15">5</text></g>
+<g onClick="{{ goDest }}"><circle cx="306" cy="416" r="16" fill="#1F6F5C"></circle><text x="306" y="421" fill="#fff">6</text></g>
+</g>
+</svg>
+</div>
+<div style="position:relative;z-index:2;padding:58px 16px 0;display:flex;flex-direction:column;gap:10px">
+<div style="display:flex;gap:8px;align-items:center">
+<div onClick="{{ goTrips }}" style="flex:1;min-width:0;height:44px;display:flex;align-items:center;gap:9px;padding:0 12px;background:#fff;border-radius:14px;box-shadow:0 2px 10px rgba(20,32,28,.12);cursor:pointer">
+<div style="width:26px;height:26px;flex:none;border-radius:8px;background:#1F6F5C;color:#fff;font-size:11px;font-weight:700;display:flex;align-items:center;justify-content:center">MC</div>
+<div style="flex:1;min-width:0"><div style="font-size:13px;font-weight:600;line-height:1.15;white-space:nowrap;overflow:hidden;text-overflow:ellipsis">{{ t.tripName }}</div><div style="font-size:11px;color:#6B7A74;line-height:1.3">{{ t.dayOf }}</div></div>
+<svg width="10" height="6" viewBox="0 0 10 6" style="flex:none"><path d="M1 1l4 4 4-4" stroke="#6B7A74" stroke-width="1.6" fill="none" stroke-linecap="round"></path></svg>
+</div>
+<div onClick="{{ toggleLang }}" style="width:44px;height:44px;flex:none;border-radius:14px;background:#fff;box-shadow:0 2px 10px rgba(20,32,28,.12);display:flex;align-items:center;justify-content:center;font-size:12.5px;font-weight:800;cursor:pointer">{{ langLabel }}</div>
+</div>
+<div style="display:flex;gap:6px;overflow-x:auto;overflow-y:hidden;-webkit-overflow-scrolling:touch">
+<sc-for list="{{ dayPills }}" as="d" hint-placeholder-count="6">
+<div onClick="{{ d.onClick }}" style="height:32px;padding:0 12px;border-radius:10px;background:{{ d.bg }};color:{{ d.fg }};font-size:12.5px;font-weight:600;display:flex;align-items:center;gap:5px;box-shadow:0 1px 5px rgba(20,32,28,.1);cursor:pointer;white-space:nowrap;flex:none">{{ d.label }}<span style="font-size:11px;opacity:.75">{{ d.wx }}</span></div>
+</sc-for>
+</div>
+<div style="align-self:flex-end;display:flex;flex-direction:column;gap:5px;padding:9px 11px;background:rgba(255,255,255,.92);backdrop-filter:blur(8px);border-radius:12px;box-shadow:0 2px 10px rgba(20,32,28,.1)">
+<div style="display:flex;align-items:center;gap:7px;font-size:11px;font-weight:600;color:#14201C;white-space:nowrap"><span style="width:16px;height:3px;border-radius:2px;background:#1F6F5C;flex:none"></span>{{ t.mainRoute }}</div>
+<div style="display:flex;align-items:center;gap:7px;font-size:11px;font-weight:600;color:#6B7A74;white-space:nowrap"><span style="width:16px;height:0;border-top:2.5px dotted #C87F0A;flex:none"></span>{{ t.subRoute }}</div>
+</div>
+</div>
+<div onClick="{{ goPlanEdit }}" style="position:absolute;right:16px;bottom:392px;z-index:4;width:52px;height:52px;border-radius:17px;background:#14201C;box-shadow:0 6px 20px rgba(20,32,28,.3);display:flex;align-items:center;justify-content:center;cursor:pointer" title="{{ t.editItinerary }}">
+<svg width="19" height="19" viewBox="0 0 14 14"><path d="M9.5 1.5l3 3L5 12H2v-3z" fill="none" stroke="#fff" stroke-width="1.5" stroke-linejoin="round"></path></svg>
+</div>
+<div style="position:relative;z-index:3;margin-top:auto;background:#fff;border-radius:22px 22px 0 0;box-shadow:0 -8px 30px rgba(20,32,28,.16);padding:8px 0 92px;max-height:42%;min-height:0;box-sizing:border-box;display:flex;flex-direction:column">
+<div onClick="{{ goPlan }}" style="padding:2px 0 10px;cursor:pointer;flex:none"><div style="width:40px;height:4px;border-radius:2px;background:#D8DDD9;margin:0 auto"></div></div>
+<div onClick="{{ goPlan }}" style="padding:0 16px 12px;display:flex;align-items:flex-end;justify-content:space-between;gap:10px;cursor:pointer">
+<div style="flex:1;min-width:0"><div style="font-size:11px;font-weight:700;letter-spacing:.09em;color:#6B7A74">{{ t.day3 }} · {{ t.date3 }}</div><div style="font-size:20px;font-weight:700;letter-spacing:-.01em;margin-top:2px;line-height:1.15">{{ t.dayRoute }}</div></div>
+<div onClick="{{ goFree }}" style="flex:none;height:38px;display:flex;align-items:center;gap:7px;padding:0 12px;border-radius:12px;background:#FBF1DE;border:1px solid #EBD9B4;cursor:pointer">
+<span style="font-size:12.5px;font-weight:700;color:#8A5A08;white-space:nowrap">{{ t.exploreNearby }}</span>
+</div>
+</div>
+<div style="flex:1;min-height:0;overflow:auto;padding:0 16px">
+<sc-for list="{{ todayStops }}" as="s" hint-placeholder-count="4">
+<div onClick="{{ s.onClick }}" style="display:flex;gap:12px;align-items:center;padding:11px 0;border-top:1px solid #EDEFEC;cursor:pointer">
+<div style="width:44px;flex:none;font-size:12.5px;font-weight:700;font-variant-numeric:tabular-nums">{{ s.time }}</div>
+<div style="flex:1;min-width:0">
+<div style="font-size:14px;font-weight:600;line-height:1.25">{{ s.name }}</div>
+<div style="font-size:11.5px;color:#6B7A74;margin-top:2px">{{ s.meta }}</div>
+</div>
+<div style="flex:none;padding:2px 7px;border-radius:6px;background:{{ s.tagBg }};color:{{ s.tagFg }};font-size:9.5px;font-weight:800;letter-spacing:.04em">{{ s.tag }}</div>
+</div>
+</sc-for>
+<div style="height:8px"></div>
+</div>
+</div>
+</sc-if>
+
+<!-- ══ PLAN ══ -->
+<sc-if value="{{ isPlan }}" hint-placeholder-val="{{ false }}">
+<div style="padding:58px 16px 10px;background:#fff;border-bottom:1px solid #E7EAE7">
+<div style="display:flex;align-items:flex-end;justify-content:space-between;gap:8px">
+<div style="flex:1;min-width:0"><div style="font-size:24px;font-weight:700;letter-spacing:-.02em">{{ t.day3 }}</div><div style="font-size:12px;color:#6B7A74;margin-top:2px">{{ t.date3 }}</div></div>
+<div onClick="{{ toggleEdit }}" style="flex:none;height:36px;padding:0 13px;border-radius:11px;background:{{ editBg }};color:{{ editFg }};font-size:12.5px;font-weight:700;display:flex;align-items:center;cursor:pointer;white-space:nowrap">{{ editLabel }}</div>
+</div>
+<div style="display:flex;gap:6px;margin-top:10px;overflow-x:auto;overflow-y:hidden;-webkit-overflow-scrolling:touch">
+<sc-for list="{{ dayPills }}" as="d" hint-placeholder-count="6">
+<div onClick="{{ d.onClick }}" style="height:30px;padding:0 10px;border-radius:9px;background:{{ d.bg }};color:{{ d.fg }};font-size:12px;font-weight:600;display:flex;align-items:center;gap:4px;cursor:pointer;white-space:nowrap;flex:none">{{ d.label }}<span style="font-size:10.5px;opacity:.75">{{ d.wx }}</span></div>
+</sc-for>
+</div>
+</div>
+<div style="flex:1;overflow:auto;padding:14px 16px 96px">
+<div style="display:flex;gap:11px;padding:11px 12px;background:#E6EFEB;border-radius:12px;margin-bottom:14px">
+<div style="font-size:17px;line-height:1;flex:none">{{ wxToday.icon }}</div>
+<div style="flex:1;min-width:0;font-size:12px;color:#1F6F5C;font-weight:600;line-height:1.4">{{ wxToday.line }}<div style="font-size:10.5px;color:#5D8C7C;font-weight:500;margin-top:2px">{{ t.wxSource }}</div></div>
+</div>
+<sc-if value="{{ editing }}" hint-placeholder-val="{{ false }}">
+<div style="padding:10px 12px;background:#FBF1DE;border:1px solid #EBD9B4;border-radius:12px;margin-bottom:12px;font-size:12px;font-weight:650;color:#8A5A08;line-height:1.4">{{ t.dragHint }}</div>
+</sc-if>
+<sc-for list="{{ planItems }}" as="p" hint-placeholder-count="6">
+<div draggable="{{ p.drag }}" onDragStart="{{ p.onDragStart }}" onDragOver="{{ p.onDragOver }}" onDrop="{{ p.onDrop }}" style="display:flex;gap:9px">
+<sc-if value="{{ editing }}" hint-placeholder-val="{{ false }}">
+<div style="width:26px;flex:none;display:flex;align-items:center;justify-content:center;padding-top:6px;cursor:grab">
+<svg width="16" height="12" viewBox="0 0 16 12"><g stroke="#98A5A0" stroke-width="2" stroke-linecap="round"><path d="M2 2h12M2 6h12M2 10h12"></path></g></svg>
+</div>
+</sc-if>
+<div style="width:52px;flex:none;padding-top:12px">
+<sc-if value="{{ editing }}" hint-placeholder-val="{{ false }}">
+<input value="{{ p.timeVal }}" onChange="{{ p.onTime }}" style="width:52px;padding:5px 3px;font-size:11.5px;text-align:center;font-variant-numeric:tabular-nums"></input>
+</sc-if>
+<sc-if value="{{ p.showTime }}" hint-placeholder-val="{{ true }}">
+<div style="text-align:right;font-size:12.5px;font-weight:700;font-variant-numeric:tabular-nums">{{ p.time }}</div><div style="text-align:right;font-size:10.5px;color:#98A5A0;font-weight:600">{{ p.dur }}</div>
+</sc-if>
+</div>
+<div style="width:20px;flex:none;display:flex;flex-direction:column;align-items:center">
+<div style="width:{{ p.dotSize }};height:{{ p.dotSize }};border-radius:50%;background:{{ p.dotBg }};border:{{ p.dotBorder }};margin-top:14px;flex:none"></div>
+<div style="flex:1;width:0;border-left:{{ p.lineStyle }}"></div>
+</div>
+<div onClick="{{ p.onClick }}" style="flex:1;min-width:0;margin-bottom:8px;padding:12px 13px;background:{{ p.cardBg }};border:{{ p.cardBorder }};border-radius:14px;cursor:pointer">
+<div style="display:flex;align-items:flex-start;gap:8px">
+<div style="flex:1;min-width:0"><div style="font-size:14.5px;font-weight:650;line-height:1.25">{{ p.name }}</div><div style="font-size:11.5px;color:#6B7A74;margin-top:3px;line-height:1.35">{{ p.note }}</div></div>
+<sc-if value="{{ editing }}" hint-placeholder-val="{{ false }}">
+<div onClick="{{ p.onRemove }}" style="flex:none;width:26px;height:26px;border-radius:9px;background:#F8E9E9;color:#9B4B4B;font-size:13px;font-weight:800;display:flex;align-items:center;justify-content:center;cursor:pointer">✕</div>
+</sc-if>
+<sc-if value="{{ p.showBadge }}" hint-placeholder-val="{{ true }}">
+<div style="flex:none;padding:3px 7px;border-radius:6px;background:{{ p.badgeBg }};color:{{ p.badgeFg }};font-size:9.5px;font-weight:800;letter-spacing:.04em">{{ p.badge }}</div>
+</sc-if>
+</div>
+<sc-if value="{{ p.chips }}" hint-placeholder-val="{{ false }}">
+<div style="display:flex;gap:6px;flex-wrap:wrap;margin-top:9px">
+<sc-for list="{{ p.chips }}" as="c" hint-placeholder-count="2">
+<div style="padding:4px 8px;border-radius:8px;background:#F2F3F1;font-size:10.5px;font-weight:650;color:#3D4C46;white-space:nowrap">{{ c }}</div>
+</sc-for>
+</div>
+</sc-if>
+</div>
+</div>
+</sc-for>
+<sc-if value="{{ editing }}" hint-placeholder-val="{{ false }}">
+<sc-if value="{{ addStopOpen }}" hint-placeholder-val="{{ false }}">
+<div style="background:#fff;border:1.5px solid #14201C;border-radius:15px;padding:13px;display:flex;flex-direction:column;gap:8px;margin-top:4px">
+<div style="font-size:12.5px;font-weight:800">{{ t.addStopTitle }}</div>
+<select value="{{ asPlace }}" onChange="{{ setAsPlace }}" style="width:100%">
+<sc-for list="{{ addStopOptions }}" as="o" hint-placeholder-count="5"><option value="{{ o.v }}">{{ o.label }}</option></sc-for>
+</select>
+<div style="display:flex;gap:8px">
+<input value="{{ asTime }}" onChange="{{ setAsTime }}" placeholder="{{ t.phTime }}" style="width:96px"></input>
+<div onClick="{{ saveStop }}" style="flex:1;height:38px;border-radius:11px;background:#1F6F5C;color:#fff;font-size:12.5px;font-weight:700;display:flex;align-items:center;justify-content:center;cursor:pointer">{{ t.add }}</div>
+<div onClick="{{ toggleAddStop }}" style="width:38px;height:38px;flex:none;border-radius:11px;background:#F2F3F1;color:#6B7A74;font-size:13px;font-weight:800;display:flex;align-items:center;justify-content:center;cursor:pointer">✕</div>
+</div>
+<div style="font-size:11px;color:#98A5A0;line-height:1.45">{{ t.addStopHint }}</div>
+</div>
+</sc-if>
+<div onClick="{{ toggleAddStop }}" style="height:48px;border-radius:14px;border:1.5px dashed #C9D0CB;display:flex;align-items:center;justify-content:center;font-size:13px;font-weight:650;color:#3D4C46;cursor:pointer;margin-top:8px">{{ t.addStop }}</div>
+<sc-if value="{{ hasArchive }}" hint-placeholder-val="{{ false }}">
+<div style="margin-top:20px">
+<div style="font-size:10.5px;font-weight:800;letter-spacing:.06em;color:#98A5A0">{{ t.archived }}</div>
+<sc-for list="{{ archive }}" as="r" hint-placeholder-count="1">
+<div style="margin-top:8px;padding:12px 13px;background:#3D4C46;border-radius:14px">
+<div style="display:flex;align-items:flex-start;gap:8px">
+<div style="flex:1;min-width:0"><div style="font-size:13.5px;font-weight:650;color:#E4EBE8;line-height:1.25">{{ r.name }}</div><div style="font-size:11px;color:#9FB2AA;margin-top:2px">{{ r.was }}</div></div>
+<div onClick="{{ r.onBack }}" style="flex:none;height:28px;padding:0 10px;border-radius:9px;background:rgba(255,255,255,.14);color:#fff;font-size:11.5px;font-weight:700;display:flex;align-items:center;cursor:pointer;white-space:nowrap">{{ t.addBack }}</div>
+</div>
+<div style="display:flex;gap:6px;align-items:center;margin-top:9px">
+<div style="font-size:10.5px;font-weight:800;color:#9FB2AA;white-space:nowrap">{{ t.moveTo }}</div>
+<sc-for list="{{ r.dayChips }}" as="c" hint-placeholder-count="6">
+<div onClick="{{ c.onClick }}" style="height:26px;padding:0 8px;border-radius:8px;background:{{ c.bg }};color:{{ c.fg }};font-size:11px;font-weight:700;display:flex;align-items:center;cursor:pointer">{{ c.label }}</div>
+</sc-for>
+</div>
+<sc-if value="{{ r.movedLine }}" hint-placeholder-val="{{ false }}">
+<div style="font-size:11px;font-weight:650;color:#A8CFC0;margin-top:8px">{{ r.movedLine }}</div>
+</sc-if>
+</div>
+</sc-for>
+</div>
+</sc-if>
+</sc-if>
+</div>
+</sc-if>
+
+<!-- ══ DESTINATION ══ -->
+<sc-if value="{{ isDest }}" hint-placeholder-val="{{ false }}">
+<div style="flex:1;overflow:auto;padding-bottom:96px">
+<div style="position:relative;height:230px;background:repeating-linear-gradient(135deg,#DDE1DD 0 10px,#D5DAD5 10px 20px);display:flex;align-items:flex-end;padding:16px">
+<div onClick="{{ goMap }}" style="position:absolute;top:56px;left:14px;width:40px;height:40px;border-radius:13px;background:rgba(255,255,255,.9);display:flex;align-items:center;justify-content:center;cursor:pointer"><svg width="11" height="18" viewBox="0 0 11 18"><path d="M9 1L2 9l7 8" stroke="#14201C" stroke-width="2.2" fill="none" stroke-linecap="round" stroke-linejoin="round"></path></svg></div>
+<div style="position:absolute;top:64px;right:14px;padding:5px 9px;border-radius:8px;background:rgba(20,32,28,.6);color:#fff;font-size:10px;font-weight:600">{{ t.photoPh }}</div>
+<div style="display:flex;gap:6px;flex-wrap:wrap"><div style="padding:4px 8px;border-radius:7px;background:#1F6F5C;color:#fff;font-size:10px;font-weight:800;letter-spacing:.04em">{{ t.mainStop5 }}</div><div style="padding:4px 8px;border-radius:7px;background:rgba(255,255,255,.92);font-size:10px;font-weight:800">13:30 – 15:45</div></div>
+</div>
+<div style="padding:16px 16px 0;background:#fff">
+<div style="font-size:24px;font-weight:700;letter-spacing:-.02em;line-height:1.15">{{ t.nishi }}</div>
+<div style="font-size:12.5px;color:#6B7A74;margin-top:4px">{{ t.nishiSub }}</div>
+<div style="font-size:13.5px;line-height:1.55;color:#3D4C46;margin-top:12px;text-wrap:pretty">{{ t.nishiDesc }}</div>
+<div style="display:flex;gap:8px;margin-top:14px">
+<a href="https://maps.google.com/?q=market" target="_blank" style="flex:1;height:46px;border-radius:13px;background:#14201C;color:#fff;display:flex;align-items:center;justify-content:center;gap:7px;font-size:13px;font-weight:650;text-decoration:none">Google Maps</a>
+<a href="https://maps.apple.com/?q=market" target="_blank" style="flex:1;height:46px;border-radius:13px;background:#F2F3F1;border:1px solid #E1E5E1;color:#14201C;display:flex;align-items:center;justify-content:center;gap:7px;font-size:13px;font-weight:650;text-decoration:none">{{ t.appleMaps }}</a>
+</div>
+<div style="display:flex;gap:16px;margin-top:18px;border-bottom:1px solid #E7EAE7;overflow-x:auto;overflow-y:hidden;-webkit-overflow-scrolling:touch">
+<sc-for list="{{ destTabs }}" as="d" hint-placeholder-count="5">
+<div onClick="{{ d.onClick }}" style="padding-bottom:10px;border-bottom:2px solid {{ d.line }};color:{{ d.fg }};font-size:13px;font-weight:650;cursor:pointer;white-space:nowrap;flex:none">{{ d.label }}</div>
+</sc-for>
+</div>
+</div>
+<div style="padding:14px 16px 0">
+<div style="background:#fff;border-radius:16px;overflow:hidden">
+<sc-for list="{{ essentials }}" as="e" hint-placeholder-count="8">
+<div style="display:flex;gap:12px;padding:12px 14px;border-top:1px solid #F0F2F0">
+<div style="width:80px;flex:none;font-size:11px;font-weight:700;letter-spacing:.04em;text-transform:uppercase;color:#98A5A0;padding-top:2px">{{ e.k }}</div>
+<div style="flex:1;min-width:0"><div style="font-size:13.5px;font-weight:550;line-height:1.4">{{ e.v }}</div><div style="font-size:11.5px;color:#6B7A74;margin-top:2px;line-height:1.35">{{ e.sub }}</div></div>
+</div>
+</sc-for>
+</div>
+<div style="display:flex;gap:10px;margin-top:12px">
+<div onClick="{{ goFree }}" style="flex:1;padding:13px;background:#FBF1DE;border:1px solid #EBD9B4;border-radius:14px;cursor:pointer"><div style="font-size:11px;font-weight:800;letter-spacing:.05em;color:#8A5A08">{{ t.nearbyCaps }}</div><div style="font-size:15px;font-weight:700;margin-top:3px">{{ nearbyTotal }}</div><div style="font-size:11px;color:#8A5A08;margin-top:2px">{{ t.nearbySub }}</div></div>
+<div onClick="{{ goPhoto }}" style="flex:1;padding:13px;background:#E6EFEB;border:1px solid #CFE0D9;border-radius:14px;cursor:pointer"><div style="font-size:11px;font-weight:800;letter-spacing:.05em;color:#1F6F5C">{{ t.mustSeeCaps }}</div><div style="font-size:15px;font-weight:700;margin-top:3px">{{ t.fourShots }}</div><div style="font-size:11px;color:#1F6F5C;margin-top:2px">{{ t.mustSeeSub }}</div></div>
+</div>
+<div onClick="{{ goShop }}" style="margin-top:10px;padding:13px 14px;background:#fff;border-radius:14px;display:flex;align-items:center;gap:11px;cursor:pointer">
+<div style="width:34px;height:34px;flex:none;border-radius:11px;background:#F2F3F1;display:flex;align-items:center;justify-content:center;font-size:15px;font-weight:700">购</div>
+<div style="flex:1;min-width:0"><div style="font-size:13.5px;font-weight:650">{{ t.shopHere }}</div><div style="font-size:11.5px;color:#6B7A74;margin-top:1px">{{ t.shopHereSub }}</div></div>
+<svg width="7" height="12" viewBox="0 0 7 12"><path d="M1 1l5 5-5 5" stroke="#98A5A0" stroke-width="1.8" fill="none" stroke-linecap="round"></path></svg>
+</div>
+<div onClick="{{ goNote }}" style="margin-top:10px;padding:13px 14px;background:#fff;border-radius:14px;display:flex;align-items:center;gap:11px;cursor:pointer">
+<div style="width:34px;height:34px;flex:none;border-radius:11px;background:#F2F3F1;display:flex;align-items:center;justify-content:center"><svg width="15" height="15" viewBox="0 0 14 14"><path d="M9.5 1.5l3 3L5 12H2v-3z" fill="none" stroke="#3D4C46" stroke-width="1.5" stroke-linejoin="round"></path></svg></div>
+<div style="flex:1;min-width:0"><div style="font-size:13.5px;font-weight:650">{{ t.addNote }}</div><div style="font-size:11.5px;color:#6B7A74;margin-top:1px">{{ t.addNoteSub }}</div></div>
+<svg width="7" height="12" viewBox="0 0 7 12"><path d="M1 1l5 5-5 5" stroke="#98A5A0" stroke-width="1.8" fill="none" stroke-linecap="round"></path></svg>
+</div>
+</div>
+</div>
+</sc-if>
+
+<!-- ══ NEARBY ══ -->
+<sc-if value="{{ isFree }}" hint-placeholder-val="{{ false }}">
+<div style="padding:56px 16px 12px;background:#fff;border-bottom:1px solid #E7EAE7">
+<div style="display:flex;align-items:center;gap:8px">
+<div onClick="{{ goDest }}" style="width:32px;height:32px;flex:none;display:flex;align-items:center;justify-content:center;cursor:pointer"><svg width="11" height="18" viewBox="0 0 11 18"><path d="M9 1L2 9l7 8" stroke="#14201C" stroke-width="2.2" fill="none" stroke-linecap="round" stroke-linejoin="round"></path></svg></div>
+<div style="flex:1;min-width:0"><div style="font-size:17px;font-weight:700;letter-spacing:-.01em">{{ t.aroundStop }}</div><div style="font-size:11.5px;color:#6B7A74;margin-top:1px">{{ t.coachLeaves }}</div></div>
+</div>
+<div style="display:flex;gap:5px;margin-top:12px;overflow-x:auto;overflow-y:hidden;-webkit-overflow-scrolling:touch">
+<sc-for list="{{ catChips }}" as="c" hint-placeholder-count="7">
+<div onClick="{{ c.onClick }}" style="height:30px;padding:0 10px;border-radius:9px;background:{{ c.bg }};color:{{ c.fg }};font-size:11.5px;font-weight:650;display:flex;align-items:center;cursor:pointer;white-space:nowrap;flex:none">{{ c.label }}</div>
+</sc-for>
+</div>
+</div>
+<div style="flex:1;overflow:auto;padding:12px 16px 148px">
+<div style="display:flex;align-items:center;gap:8px;margin-bottom:9px">
+<div style="flex:1;min-width:0;font-size:11.5px;font-weight:700;color:#6B7A74">{{ nearbyHeader }}</div>
+<div onClick="{{ toggleSort }}" style="flex:none;width:32px;height:32px;border-radius:10px;background:{{ sortBtnBg }};display:flex;align-items:center;justify-content:center;cursor:pointer">
+<svg width="15" height="15" viewBox="0 0 15 15"><g stroke="{{ sortBtnFg }}" stroke-width="1.8" stroke-linecap="round"><path d="M2 4h11M2 7.5h7M2 11h4"></path></g></svg>
+</div>
+</div>
+<sc-if value="{{ sortOpen }}" hint-placeholder-val="{{ false }}">
+<div style="background:#fff;border:1px solid #E1E5E1;border-radius:14px;padding:6px;margin-bottom:10px;box-shadow:0 6px 20px rgba(20,32,28,.1)">
+<div style="font-size:10.5px;font-weight:800;letter-spacing:.06em;color:#98A5A0;padding:6px 8px 4px">{{ t.sortTitle }}</div>
+<sc-for list="{{ sortChips }}" as="s" hint-placeholder-count="2">
+<div onClick="{{ s.onClick }}" style="display:flex;align-items:center;gap:9px;padding:10px;border-radius:10px;background:{{ s.bg }};cursor:pointer">
+<div style="width:16px;height:16px;flex:none;border-radius:50%;border:1.6px solid {{ s.dotBd }};background:{{ s.dotBg }}"></div>
+<div style="flex:1;min-width:0;font-size:13px;font-weight:650;color:{{ s.fg }}">{{ s.label }}</div>
+</div>
+</sc-for>
+</div>
+</sc-if>
+<sc-for list="{{ nearby }}" as="n" hint-placeholder-count="6">
+<div style="display:flex;gap:11px;padding:11px;background:#fff;border-radius:15px;margin-bottom:9px;border:1px solid {{ n.bd }}">
+<div style="width:56px;height:56px;flex:none;border-radius:11px;background:repeating-linear-gradient(135deg,#E2E6E2 0 7px,#DADFDA 7px 14px)"></div>
+<div style="flex:1;min-width:0">
+<div style="display:flex;align-items:baseline;gap:6px"><div style="font-size:14px;font-weight:650;line-height:1.2;flex:1;min-width:0">{{ n.name }}</div><div style="font-size:11px;color:#98A5A0;font-weight:700;flex:none">{{ n.price }}</div></div>
+<div style="font-size:11px;color:#6B7A74;margin-top:2px">{{ n.catLabel }} · {{ n.note }}</div>
+<div style="display:flex;gap:5px;align-items:center;flex-wrap:wrap;margin-top:7px">
+<sc-for list="{{ n.legs }}" as="g" hint-placeholder-count="2">
+<div style="display:flex;align-items:center;gap:4px;padding:3px 7px;border-radius:7px;background:#EFF1EE;font-size:10.5px;font-weight:700;color:#3D4C46;white-space:nowrap"><span style="font-size:11px">{{ g.icon }}</span>{{ g.label }}</div>
+</sc-for>
+<div style="padding:3px 7px;border-radius:7px;background:#14201C;color:#fff;font-size:10.5px;font-weight:800;white-space:nowrap">{{ n.totalLabel }}</div>
+<div style="padding:3px 7px;border-radius:7px;background:#FBF1DE;color:#8A5A08;font-size:10.5px;font-weight:700;white-space:nowrap">{{ n.stayLabel }}</div>
+</div>
+</div>
+<div onClick="{{ n.onAdd }}" style="width:34px;height:34px;flex:none;align-self:center;border-radius:11px;background:{{ n.addBg }};color:{{ n.addFg }};display:flex;align-items:center;justify-content:center;font-size:17px;font-weight:500;cursor:pointer">{{ n.addIcon }}</div>
+</div>
+</sc-for>
+<sc-if value="{{ placeOpen }}" hint-placeholder-val="{{ false }}">
+<div style="background:#fff;border:1.5px solid #14201C;border-radius:15px;padding:13px;margin-bottom:10px;display:flex;flex-direction:column;gap:8px">
+<div style="font-size:12.5px;font-weight:800">{{ t.addPlaceTitle }}</div>
+<input value="{{ npName }}" onChange="{{ setNpName }}" placeholder="{{ t.phPlaceName }}"></input>
+<div style="display:flex;gap:8px">
+<select value="{{ npCat }}" onChange="{{ setNpCat }}" style="flex:1;min-width:0">
+<sc-for list="{{ catOptions }}" as="o" hint-placeholder-count="6"><option value="{{ o.v }}">{{ o.label }}</option></sc-for>
+</select>
+<input value="{{ npWalk }}" onChange="{{ setNpWalk }}" placeholder="{{ t.phWalkMin }}" style="width:104px"></input>
+</div>
+<div style="display:flex;gap:8px">
+<div onClick="{{ savePlace }}" style="flex:1;height:40px;border-radius:11px;background:#1F6F5C;color:#fff;font-size:12.5px;font-weight:700;display:flex;align-items:center;justify-content:center;cursor:pointer">{{ t.save }}</div>
+<div onClick="{{ togglePlace }}" style="width:88px;height:40px;border-radius:11px;background:#F2F3F1;color:#3D4C46;font-size:12.5px;font-weight:650;display:flex;align-items:center;justify-content:center;cursor:pointer">{{ t.cancel }}</div>
+</div>
+</div>
+</sc-if>
+<div onClick="{{ togglePlace }}" style="height:46px;border-radius:14px;border:1.5px dashed #C9D0CB;display:flex;align-items:center;justify-content:center;font-size:12.5px;font-weight:650;color:#3D4C46;cursor:pointer">{{ t.addPlace }}</div>
+</div>
+<div style="position:absolute;left:12px;right:12px;bottom:84px;z-index:5;padding:13px 14px;background:#14201C;border-radius:18px;box-shadow:0 10px 28px rgba(20,32,28,.3);display:flex;align-items:center;gap:12px">
+<div style="flex:1;min-width:0"><div style="font-size:10.5px;font-weight:800;letter-spacing:.06em;color:#8FB3A6">{{ subHeader }}</div><div style="font-size:13px;font-weight:650;color:#fff;margin-top:3px;line-height:1.3">{{ subSummary }}</div></div>
+<div onClick="{{ goSub }}" style="flex:none;height:38px;padding:0 14px;border-radius:12px;background:#C87F0A;color:#fff;font-size:12.5px;font-weight:700;display:flex;align-items:center;cursor:pointer;white-space:nowrap">{{ t.arrange }}</div>
+</div>
+</sc-if>
+
+<!-- ══ SUB ROUTE ══ -->
+<sc-if value="{{ isSub }}" hint-placeholder-val="{{ false }}">
+<div style="position:absolute;inset:0;background:#E9EAE6">
+<svg viewBox="0 0 402 600" style="position:absolute;top:0;left:0;width:100%;height:auto">
+<rect width="402" height="600" fill="#E9EAE6"></rect>
+<rect x="250" y="60" width="140" height="110" rx="10" fill="#DCE5D6"></rect>
+<g stroke="#FBFBFA" stroke-linecap="round" fill="none"><path d="M-10 200 L420 176" stroke-width="16"></path><path d="M-10 430 L420 460" stroke-width="16"></path><path d="M130 -10 L170 620" stroke-width="16"></path><path d="M300 -10 L282 620" stroke-width="9"></path><path d="M-10 320 L420 300" stroke-width="8"></path></g>
+<g fill="#DFE1DC"><rect x="20" y="60" width="80" height="70" rx="4"></rect><rect x="196" y="56" width="44" height="72" rx="4"></rect><rect x="20" y="230" width="90" height="70" rx="4"></rect><rect x="196" y="212" width="70" height="60" rx="4"></rect><rect x="316" y="220" width="64" height="60" rx="4"></rect></g>
+<path d="M60 420 L188 372" fill="none" stroke="#1F6F5C" stroke-width="5.5" stroke-linecap="round"></path>
+<path d="M188 372 L262 320 L216 226 L124 256 L188 372" fill="none" stroke="#C87F0A" stroke-width="3.5" stroke-dasharray="3 7" stroke-linecap="round"></path>
+<g font-family="Public Sans" font-size="12" font-weight="800" text-anchor="middle">
+<circle cx="188" cy="372" r="18" fill="#14201C"></circle><text x="188" y="377" fill="#fff" font-size="14">5</text>
+<circle cx="262" cy="320" r="14" fill="#C87F0A"></circle><text x="262" y="325" fill="#fff">1</text>
+<circle cx="216" cy="226" r="14" fill="#C87F0A"></circle><text x="216" y="231" fill="#fff">2</text>
+<circle cx="124" cy="256" r="14" fill="#C87F0A"></circle><text x="124" y="261" fill="#fff">3</text>
+</g>
+</svg>
+</div>
+<div style="position:relative;z-index:2;padding:56px 16px 0;display:flex;gap:10px">
+<div onClick="{{ goFree }}" style="width:40px;height:40px;flex:none;border-radius:13px;background:rgba(255,255,255,.92);display:flex;align-items:center;justify-content:center;cursor:pointer;box-shadow:0 2px 10px rgba(20,32,28,.12)"><svg width="11" height="18" viewBox="0 0 11 18"><path d="M9 1L2 9l7 8" stroke="#14201C" stroke-width="2.2" fill="none" stroke-linecap="round" stroke-linejoin="round"></path></svg></div>
+<div style="flex:1;min-width:0;padding:9px 12px;background:rgba(255,255,255,.92);backdrop-filter:blur(8px);border-radius:13px;box-shadow:0 2px 10px rgba(20,32,28,.12)"><div style="font-size:13.5px;font-weight:700">{{ t.subAtStop }}</div><div style="font-size:11.5px;color:#6B7A74;margin-top:1px">{{ subLine }}</div></div>
+</div>
+<div style="position:relative;z-index:3;margin-top:auto;background:#fff;border-radius:22px 22px 0 0;box-shadow:0 -8px 30px rgba(20,32,28,.16);padding:10px 0 92px;max-height:66%;min-height:0;box-sizing:border-box;display:flex;flex-direction:column">
+<div style="width:40px;height:4px;border-radius:2px;background:#D8DDD9;margin:0 auto 12px;flex:none"></div>
+<div style="padding:0 16px 10px;display:flex;gap:8px;flex:none">
+<div style="flex:1;padding:9px 11px;background:#F2F3F1;border-radius:12px"><div style="font-size:10px;font-weight:800;letter-spacing:.04em;color:#98A5A0">{{ t.walking }}</div><div style="font-size:15px;font-weight:700;margin-top:2px">{{ subWalk }}</div></div>
+<div style="flex:1;padding:9px 11px;background:#F2F3F1;border-radius:12px"><div style="font-size:10px;font-weight:800;letter-spacing:.04em;color:#98A5A0">{{ t.atStops }}</div><div style="font-size:15px;font-weight:700;margin-top:2px">{{ subStay }}</div></div>
+<div style="flex:1;padding:9px 11px;background:{{ bufBg }};border-radius:12px"><div style="font-size:10px;font-weight:800;letter-spacing:.04em;color:{{ bufFg }}">{{ t.buffer }}</div><div style="font-size:15px;font-weight:700;margin-top:2px;color:{{ bufFg }}">{{ subBuffer }}</div></div>
+</div>
+<div style="padding:0 16px 8px;font-size:11px;font-weight:700;color:#98A5A0;flex:none">{{ t.dragHint }}</div>
+<div style="flex:1;min-height:0;overflow:auto;padding:0 16px">
+<sc-for list="{{ loopStops }}" as="l" hint-placeholder-count="3">
+<div draggable="true" onDragStart="{{ l.onDragStart }}" onDragOver="{{ l.onDragOver }}" onDrop="{{ l.onDrop }}" style="display:flex;gap:10px;align-items:center;padding:10px 0;border-top:1px solid #EDEFEC;background:{{ l.rowBg }}">
+<div style="width:22px;flex:none;display:flex;align-items:center;justify-content:center;cursor:grab">
+<svg width="16" height="12" viewBox="0 0 16 12"><g stroke="#98A5A0" stroke-width="2" stroke-linecap="round"><path d="M2 2h12M2 6h12M2 10h12"></path></g></svg>
+</div>
+<div style="width:26px;height:26px;flex:none;border-radius:50%;background:#C87F0A;color:#fff;font-size:12px;font-weight:800;display:flex;align-items:center;justify-content:center">{{ l.n }}</div>
+<div style="flex:1;min-width:0"><div style="font-size:13.5px;font-weight:650">{{ l.name }}</div><div style="font-size:11px;color:#6B7A74;margin-top:1px">{{ l.meta }}</div></div>
+<div style="font-size:12px;font-weight:700;font-variant-numeric:tabular-nums;flex:none">{{ l.time }}</div>
+</div>
+</sc-for>
+<div style="padding:11px 0;border-top:1px solid #EDEFEC">
+<div style="display:flex;gap:10px;align-items:center">
+<div style="width:26px;height:26px;flex:none;border-radius:50%;background:#14201C;color:#fff;font-size:12px;font-weight:800;display:flex;align-items:center;justify-content:center;margin-left:22px">↩</div>
+<div style="flex:1;min-width:0"><div style="font-size:13.5px;font-weight:650">{{ backLabel }}</div><div style="font-size:11px;color:{{ bufFg }};font-weight:650;margin-top:1px">{{ bufferLine }}</div></div>
+<div style="font-size:12px;font-weight:700;font-variant-numeric:tabular-nums;flex:none">{{ returnTime }}</div>
+<div onClick="{{ toggleBack }}" style="width:30px;height:30px;flex:none;border-radius:10px;background:#F2F3F1;display:flex;align-items:center;justify-content:center;cursor:pointer"><svg width="13" height="13" viewBox="0 0 14 14"><path d="M9.5 1.5l3 3L5 12H2v-3z" fill="none" stroke="#3D4C46" stroke-width="1.5" stroke-linejoin="round"></path></svg></div>
+</div>
+<sc-if value="{{ backOpen }}" hint-placeholder-val="{{ false }}">
+<div style="margin-top:10px;padding:12px;background:#F7F8F6;border-radius:12px;display:flex;flex-direction:column;gap:8px">
+<div style="font-size:10.5px;font-weight:800;letter-spacing:.05em;color:#98A5A0">{{ t.backTo }}</div>
+<select value="{{ backId }}" onChange="{{ setBackId }}">
+<sc-for list="{{ backOptions }}" as="o" hint-placeholder-count="3"><option value="{{ o.v }}">{{ o.label }}</option></sc-for>
+</select>
+<div style="font-size:10.5px;font-weight:800;letter-spacing:.05em;color:#98A5A0;margin-top:2px">{{ t.timeNeeded }}</div>
+<div style="display:flex;gap:8px;align-items:center">
+<input value="{{ backMins }}" onChange="{{ setBackMins }}" style="width:88px"></input>
+<div style="font-size:12px;color:#6B7A74;font-weight:650">{{ t.minutes }}</div>
+<div onClick="{{ toggleBack }}" style="flex:1;height:38px;border-radius:11px;background:#1F6F5C;color:#fff;font-size:12.5px;font-weight:700;display:flex;align-items:center;justify-content:center;cursor:pointer">{{ t.done }}</div>
+</div>
+</div>
+</sc-if>
+</div>
+<div style="display:flex;gap:8px;margin:12px 0 4px">
+<a href="https://maps.google.com/?q=walking+route" target="_blank" style="flex:1;height:44px;border-radius:13px;background:#14201C;color:#fff;display:flex;align-items:center;justify-content:center;font-size:12.5px;font-weight:650;text-decoration:none">{{ t.sendWalk }}</a>
+</div>
+</div>
+</div>
+</sc-if>
+
+<!-- ══ SHOPPING ══ -->
+<sc-if value="{{ isShop }}" hint-placeholder-val="{{ false }}">
+<div style="padding:58px 16px 12px;background:#fff;border-bottom:1px solid #E7EAE7;display:flex;align-items:flex-end;gap:10px">
+<div style="flex:1;min-width:0"><div style="font-size:24px;font-weight:700;letter-spacing:-.02em">{{ t.shopTitle }}</div><div style="font-size:12px;color:#6B7A74;margin-top:2px">{{ shopSub }}</div></div>
+<div onClick="{{ toggleAdd }}" style="flex:none;height:38px;padding:0 13px;border-radius:12px;background:#14201C;color:#fff;font-size:12.5px;font-weight:700;display:flex;align-items:center;cursor:pointer;white-space:nowrap">{{ addLabel }}</div>
+</div>
+<div style="flex:1;overflow:auto;padding:12px 16px 168px">
+<sc-if value="{{ addOpen }}" hint-placeholder-val="{{ false }}">
+<div style="background:#fff;border:1.5px solid #14201C;border-radius:16px;padding:14px;margin-bottom:14px">
+<div style="font-size:12.5px;font-weight:800;margin-bottom:10px">{{ t.addItemTitle }}</div>
+<div style="display:flex;flex-direction:column;gap:8px">
+<input value="{{ fName }}" onChange="{{ setName }}" placeholder="{{ t.phName }}" style="width:100%"></input>
+<select value="{{ fPlace }}" onChange="{{ setPlace }}" style="width:100%">
+<sc-for list="{{ placeOptions }}" as="o" hint-placeholder-count="6"><option value="{{ o.v }}">{{ o.label }}</option></sc-for>
+</select>
+<input value="{{ fEst }}" onChange="{{ setEst }}" placeholder="{{ t.phEst }}" style="width:100%"></input>
+<div style="display:flex;gap:5px;flex-wrap:wrap">
+<sc-for list="{{ payOptions }}" as="p" hint-placeholder-count="4">
+<div onClick="{{ p.onClick }}" style="padding:6px 10px;border-radius:9px;background:{{ p.bg }};color:{{ p.fg }};border:1px solid {{ p.bd }};font-size:11.5px;font-weight:700;cursor:pointer;white-space:nowrap">{{ p.label }}</div>
+</sc-for>
+</div>
+<div style="display:flex;gap:8px;margin-top:2px">
+<div onClick="{{ saveItem }}" style="flex:1;height:42px;border-radius:12px;background:#1F6F5C;color:#fff;font-size:13px;font-weight:700;display:flex;align-items:center;justify-content:center;cursor:pointer">{{ t.save }}</div>
+<div onClick="{{ toggleAdd }}" style="width:96px;height:42px;border-radius:12px;background:#F2F3F1;color:#3D4C46;font-size:13px;font-weight:650;display:flex;align-items:center;justify-content:center;cursor:pointer">{{ t.cancel }}</div>
+</div>
+<div style="font-size:11px;color:#98A5A0;line-height:1.45">{{ t.estOptional }}</div>
+</div>
+</div>
+</sc-if>
+<sc-for list="{{ shopGroups }}" as="g" hint-placeholder-count="3">
+<div style="margin-bottom:14px;background:#fff;border-radius:16px;overflow:hidden">
+<div style="padding:12px 14px;display:flex;align-items:center;gap:10px">
+<div style="flex:1;min-width:0"><div style="font-size:14px;font-weight:700">{{ g.place }}</div><div style="font-size:11px;color:#6B7A74;margin-top:2px">{{ g.when }}</div></div>
+<sc-if value="{{ g.badge }}" hint-placeholder-val="{{ false }}">
+<div style="flex:none;padding:3px 7px;border-radius:7px;background:{{ g.badgeBg }};color:{{ g.badgeFg }};font-size:10px;font-weight:800;white-space:nowrap">{{ g.badge }}</div>
+</sc-if>
+</div>
+<sc-for list="{{ g.items }}" as="it" hint-placeholder-count="3">
+<div style="padding:11px 14px;border-top:1px solid #F0F2F0">
+<div style="display:flex;gap:11px;align-items:center">
+<div onClick="{{ it.onToggle }}" style="width:22px;height:22px;flex:none;border-radius:7px;background:{{ it.boxBg }};border:1.6px solid {{ it.boxBd }};display:flex;align-items:center;justify-content:center;cursor:pointer"><sc-if value="{{ it.done }}" hint-placeholder-val="{{ false }}"><svg width="11" height="9" viewBox="0 0 11 9"><path d="M1 4.5L4 7.5 10 1" stroke="#fff" stroke-width="2" fill="none" stroke-linecap="round" stroke-linejoin="round"></path></svg></sc-if></div>
+<div onClick="{{ it.onToggle }}" style="flex:1;min-width:0;cursor:pointer"><div style="font-size:13.5px;font-weight:600;line-height:1.25;text-decoration:{{ it.deco }};color:{{ it.fg }}">{{ it.name }}</div><div style="font-size:11px;color:#98A5A0;margin-top:2px">{{ it.sub }}</div></div>
+<div style="text-align:right;flex:none"><div style="font-size:12px;font-weight:700;font-variant-numeric:tabular-nums;color:#98A5A0">{{ it.est }}</div><div style="font-size:9.5px;color:#B4BEB9;margin-top:1px">{{ t.estCaps }}</div></div>
+</div>
+<div style="display:flex;gap:6px;align-items:center;margin-top:8px;padding-left:33px">
+<div onClick="{{ it.onPay }}" style="padding:4px 9px;border-radius:8px;background:#EFF1EE;font-size:10.5px;font-weight:700;color:#3D4C46;cursor:pointer;white-space:nowrap">{{ it.payLabel }}</div>
+<sc-if value="{{ it.done }}" hint-placeholder-val="{{ false }}">
+<div style="flex:1;display:flex;align-items:center;gap:6px">
+<div style="font-size:10.5px;font-weight:800;color:#1F6F5C;white-space:nowrap">{{ t.paidCaps }}</div>
+<input value="{{ it.paid }}" onChange="{{ it.onPaid }}" placeholder="{{ t.phPaid }}" style="flex:1;min-width:0;padding:5px 8px;font-size:12px;border-color:#CFE0D9;background:#F7FBF9"></input>
+</div>
+</sc-if>
+</div>
+<sc-if value="{{ it.done }}" hint-placeholder-val="{{ false }}">
+<div style="font-size:10.5px;color:#98A5A0;font-weight:650;margin-top:6px;padding-left:33px">{{ it.boughtLine }}</div>
+</sc-if>
+</div>
+</sc-for>
+</div>
+</sc-for>
+</div>
+<div style="position:absolute;left:12px;right:12px;bottom:84px;z-index:5;padding:12px 14px;background:#fff;border-radius:18px;box-shadow:0 8px 26px rgba(20,32,28,.18);border:1px solid #E7EAE7">
+<div style="display:flex;align-items:flex-end;justify-content:space-between;gap:10px"><div style="flex:1;min-width:0"><div style="font-size:10.5px;font-weight:800;letter-spacing:.06em;color:#98A5A0">{{ t.actualSpend }}</div><div style="font-size:20px;font-weight:700;margin-top:2px;font-variant-numeric:tabular-nums">{{ spentLabel }} <span style="font-size:11.5px;font-weight:600;color:#6B7A74">{{ plannedLabel }}</span></div></div><div style="text-align:right;flex:none"><div style="font-size:10.5px;font-weight:800;color:#98A5A0">≈ RM</div><div style="font-size:14px;font-weight:700">{{ rmLabel }}</div></div></div>
+<div style="height:7px;border-radius:4px;background:#EDEFEC;margin-top:9px;overflow:hidden"><div style="width:{{ spentPct }};height:100%;background:#1F6F5C;border-radius:4px"></div></div>
+<div style="font-size:10px;font-weight:800;letter-spacing:.06em;color:#98A5A0;margin-top:10px">{{ t.byMethod }}</div>
+<div style="display:flex;gap:5px;flex-wrap:wrap;margin-top:6px">
+<sc-for list="{{ payBreak }}" as="p" hint-placeholder-count="4">
+<div style="padding:4px 8px;border-radius:8px;background:{{ p.bg }};color:{{ p.fg }};font-size:10.5px;font-weight:700;white-space:nowrap">{{ p.label }}</div>
+</sc-for>
+</div>
+</div>
+</sc-if>
+
+<!-- ══ MUST-SEE ══ -->
+<sc-if value="{{ isPhoto }}" hint-placeholder-val="{{ false }}">
+<div style="padding:56px 16px 12px;background:#fff;border-bottom:1px solid #E7EAE7;display:flex;align-items:center;gap:8px">
+<div onClick="{{ goDest }}" style="width:32px;height:32px;flex:none;display:flex;align-items:center;justify-content:center;cursor:pointer"><svg width="11" height="18" viewBox="0 0 11 18"><path d="M9 1L2 9l7 8" stroke="#14201C" stroke-width="2.2" fill="none" stroke-linecap="round" stroke-linejoin="round"></path></svg></div>
+<div style="flex:1;min-width:0"><div style="font-size:17px;font-weight:700">{{ t.mustSee }}</div><div style="font-size:11.5px;color:#6B7A74">{{ t.mustSeeHead }}</div></div>
+</div>
+<div style="flex:1;overflow:auto;padding:14px 16px 96px">
+<sc-for list="{{ mustSee }}" as="m" hint-placeholder-count="4">
+<div style="background:#fff;border-radius:16px;overflow:hidden;margin-bottom:12px">
+<div style="position:relative;height:172px;background:repeating-linear-gradient(135deg,#E2E6E2 0 10px,#DADFDA 10px 20px);display:flex;align-items:center;justify-content:center">
+<div style="font-size:10.5px;font-weight:700;color:#8B968F">{{ m.ph }}</div>
+<div onClick="{{ m.onToggle }}" style="position:absolute;top:10px;right:10px;width:32px;height:32px;border-radius:10px;background:{{ m.boxBg }};border:1.6px solid {{ m.boxBd }};display:flex;align-items:center;justify-content:center;cursor:pointer"><svg width="13" height="10" viewBox="0 0 13 10"><path d="M1 5l4 3.5L12 1" stroke="{{ m.tick }}" stroke-width="2.2" fill="none" stroke-linecap="round" stroke-linejoin="round"></path></svg></div>
+</div>
+<div style="padding:12px 14px">
+<div style="display:flex;align-items:baseline;gap:8px"><div style="font-size:14.5px;font-weight:700;flex:1;min-width:0">{{ m.title }}</div><div style="font-size:10.5px;font-weight:800;color:#98A5A0;flex:none">{{ m.tag }}</div></div>
+<div style="font-size:12.5px;line-height:1.5;color:#3D4C46;margin-top:5px">{{ m.desc }}</div>
+<div style="display:flex;align-items:center;gap:7px;margin-top:9px;font-size:11.5px;font-weight:650;color:#6B7A74"><svg width="11" height="13" viewBox="0 0 11 13" style="flex:none"><path d="M5.5 1C3 1 1 3 1 5.5C1 9 5.5 12 5.5 12S10 9 10 5.5C10 3 8 1 5.5 1z" fill="none" stroke="#98A5A0" stroke-width="1.4"></path></svg>{{ m.where }}</div>
+</div>
+</div>
+</sc-for>
+<div style="background:#fff;border-radius:16px;padding:14px;margin-bottom:12px">
+<div style="display:flex;align-items:center;gap:9px"><div style="font-size:11px;font-weight:800;letter-spacing:.06em;color:#98A5A0;flex:1">{{ t.outfitCaps }}</div><div style="font-size:11.5px;font-weight:700;color:#1F6F5C">{{ wxToday.short }}</div></div>
+<div style="display:flex;gap:12px;margin-top:10px">
+<div style="width:78px;height:104px;flex:none;border-radius:11px;background:repeating-linear-gradient(135deg,#E2E6E2 0 7px,#DADFDA 7px 14px);display:flex;align-items:flex-end;justify-content:center;padding-bottom:6px;font-size:9px;font-weight:700;color:#6B7A74">{{ t.ref }}</div>
+<div style="flex:1;min-width:0;font-size:12.5px;line-height:1.5;color:#3D4C46">{{ t.outfitText }}</div>
+</div>
+<div style="display:flex;gap:6px;flex-wrap:wrap;margin-top:11px">
+<sc-for list="{{ outfitChips }}" as="o" hint-placeholder-count="4">
+<div style="padding:4px 9px;border-radius:8px;background:{{ o.bg }};color:{{ o.fg }};font-size:11px;font-weight:700;white-space:nowrap">{{ o.label }}</div>
+</sc-for>
+</div>
+<div style="height:1px;background:#EDEFEC;margin:14px 0"></div>
+<div style="font-size:11px;font-weight:800;letter-spacing:.06em;color:#1F6F5C">{{ t.myOutfit }}</div>
+<div style="font-size:11.5px;color:#6B7A74;line-height:1.45;margin-top:4px">{{ t.myOutfitSub }}</div>
+<div style="display:flex;gap:6px;flex-wrap:wrap;margin-top:10px">
+<sc-for list="{{ myOutfit }}" as="o" hint-placeholder-count="2">
+<div onClick="{{ o.onRemove }}" style="display:flex;align-items:center;gap:6px;padding:5px 9px;border-radius:9px;background:#E6EFEB;color:#1F6F5C;font-size:11.5px;font-weight:700;cursor:pointer;white-space:nowrap">{{ o.label }}<span style="font-size:11px;opacity:.6">✕</span></div>
+</sc-for>
+</div>
+<div style="display:flex;gap:6px;margin-top:10px">
+<input value="{{ newOutfit }}" onChange="{{ setNewOutfit }}" placeholder="{{ t.phOutfit }}" style="flex:1;min-width:0"></input>
+<div onClick="{{ addOutfit }}" style="width:58px;height:37px;flex:none;border-radius:10px;background:#1F6F5C;color:#fff;font-size:12.5px;font-weight:700;display:flex;align-items:center;justify-content:center;cursor:pointer">{{ t.add }}</div>
+</div>
+<div style="display:flex;gap:6px;flex-wrap:wrap;margin-top:9px">
+<sc-for list="{{ outfitPicks }}" as="o" hint-placeholder-count="3">
+<div onClick="{{ o.onClick }}" style="padding:5px 9px;border-radius:9px;background:#F2F3F1;color:#3D4C46;font-size:11.5px;font-weight:650;cursor:pointer;white-space:nowrap">+ {{ o.label }}</div>
+</sc-for>
+</div>
+</div>
+<div style="background:#fff;border-radius:16px;padding:14px">
+<div style="font-size:11px;font-weight:800;letter-spacing:.06em;color:#98A5A0">{{ t.standHere }}</div>
+<svg viewBox="0 0 320 104" style="width:100%;height:auto;margin-top:9px;border-radius:10px;background:#E9EAE6">
+<path d="M0 70 L120 58 L200 72 L320 56 L320 104 L0 104 Z" fill="#CFDCDD"></path>
+<g stroke="#FBFBFA" stroke-width="9" fill="none"><path d="M0 38 L320 28"></path><path d="M140 0 L156 104"></path></g>
+<path d="M104 62 L212 74" stroke="#B9C4C0" stroke-width="6"></path>
+<circle cx="150" cy="62" r="9" fill="#C87F0A" stroke="#fff" stroke-width="3"></circle>
+</svg>
+<a href="https://maps.google.com/?q=bridge" target="_blank" style="display:flex;height:42px;border-radius:12px;background:#14201C;color:#fff;align-items:center;justify-content:center;font-size:12.5px;font-weight:650;text-decoration:none;margin-top:11px">{{ t.navSpot }}</a>
+</div>
+</div>
+</sc-if>
+
+<!-- ══ PREP ══ -->
+<sc-if value="{{ isPrep }}" hint-placeholder-val="{{ false }}">
+<div style="padding:58px 16px 12px;background:#fff;border-bottom:1px solid #E7EAE7">
+<div style="font-size:24px;font-weight:700;letter-spacing:-.02em">{{ t.prepTitle }}</div>
+<div style="font-size:12px;color:#6B7A74;margin-top:2px">{{ t.prepSub }}</div>
+<div style="height:7px;border-radius:4px;background:#EDEFEC;margin-top:12px;overflow:hidden"><div style="width:{{ prepPct }};height:100%;background:#1F6F5C;border-radius:4px"></div></div>
+<div style="font-size:11px;font-weight:650;color:#6B7A74;margin-top:6px">{{ prepCount }}</div>
+</div>
+<div style="flex:1;overflow:auto;padding:12px 16px 96px">
+<div style="background:#fff;border-radius:14px;padding:12px 13px;margin-bottom:12px">
+<div style="display:flex;align-items:center;gap:8px"><div style="font-size:10.5px;font-weight:800;letter-spacing:.05em;color:#98A5A0;flex:1">{{ t.forecastCaps }}</div><div style="font-size:10.5px;color:#B4BEB9;font-weight:600">{{ t.wxSource }}</div></div>
+<div style="display:flex;gap:5px;margin-top:10px">
+<sc-for list="{{ weather }}" as="w" hint-placeholder-count="6">
+<div style="flex:1;padding:8px 4px;border-radius:10px;background:{{ w.bg }};text-align:center">
+<div style="font-size:10px;font-weight:800;color:#6B7A74">{{ w.d }}</div>
+<div style="font-size:16px;margin:3px 0">{{ w.icon }}</div>
+<div style="font-size:10.5px;font-weight:700">{{ w.hi }}°</div>
+<div style="font-size:9.5px;color:#98A5A0;font-weight:600">{{ w.rain }}</div>
+</div>
+</sc-for>
+</div>
+</div>
+<sc-for list="{{ prepGroups }}" as="g" hint-placeholder-count="4">
+<div style="margin-bottom:13px;background:#fff;border-radius:16px;overflow:hidden">
+<div style="padding:11px 14px;display:flex;align-items:center;justify-content:space-between;gap:8px"><div style="font-size:13.5px;font-weight:700">{{ g.title }}</div><div style="font-size:11px;font-weight:700;color:#98A5A0">{{ g.count }}</div></div>
+<sc-for list="{{ g.items }}" as="it" hint-placeholder-count="3">
+<div style="padding:10px 14px;border-top:1px solid #F0F2F0;display:flex;gap:11px;align-items:center">
+<div onClick="{{ it.onToggle }}" style="width:21px;height:21px;flex:none;border-radius:7px;background:{{ it.boxBg }};border:1.6px solid {{ it.boxBd }};display:flex;align-items:center;justify-content:center;cursor:pointer"><sc-if value="{{ it.done }}" hint-placeholder-val="{{ false }}"><svg width="10" height="8" viewBox="0 0 11 9"><path d="M1 4.5L4 7.5 10 1" stroke="#fff" stroke-width="2.2" fill="none" stroke-linecap="round" stroke-linejoin="round"></path></svg></sc-if></div>
+<div style="flex:1;min-width:0"><div style="font-size:13px;font-weight:600;text-decoration:{{ it.deco }};color:{{ it.fg }}">{{ it.name }}</div><div style="font-size:10.5px;color:#8A5A08;font-weight:650;margin-top:2px">{{ it.why }}</div></div>
+<div onClick="{{ it.onWhere }}" style="flex:none;padding:5px 9px;border-radius:8px;background:{{ it.whereBg }};color:{{ it.whereFg }};font-size:10.5px;font-weight:700;cursor:pointer;white-space:nowrap">{{ it.whereLabel }}</div>
+</div>
+</sc-for>
+<sc-if value="{{ g.adding }}" hint-placeholder-val="{{ false }}">
+<div style="padding:11px 14px;border-top:1px solid #F0F2F0;display:flex;gap:6px">
+<input value="{{ newItem }}" onChange="{{ setNewItem }}" placeholder="{{ t.phItem }}" style="flex:1;min-width:0"></input>
+<div onClick="{{ g.onSave }}" style="width:58px;height:37px;flex:none;border-radius:10px;background:#1F6F5C;color:#fff;font-size:12.5px;font-weight:700;display:flex;align-items:center;justify-content:center;cursor:pointer">{{ t.add }}</div>
+<div onClick="{{ cancelAddItem }}" style="width:37px;height:37px;flex:none;border-radius:10px;background:#F2F3F1;color:#6B7A74;font-size:13px;font-weight:800;display:flex;align-items:center;justify-content:center;cursor:pointer">✕</div>
+</div>
+</sc-if>
+<div onClick="{{ g.onAdd }}" style="padding:11px 14px;border-top:1px solid #F0F2F0;font-size:12.5px;font-weight:650;color:#1F6F5C;cursor:pointer">{{ g.addLabel }}</div>
+</div>
+</sc-for>
+<sc-if value="{{ catOpen }}" hint-placeholder-val="{{ false }}">
+<div style="display:flex;gap:6px;margin-bottom:10px">
+<input value="{{ newCat }}" onChange="{{ setNewCat }}" placeholder="{{ t.phCat }}" style="flex:1;min-width:0"></input>
+<div onClick="{{ saveCat }}" style="width:58px;height:37px;flex:none;border-radius:10px;background:#1F6F5C;color:#fff;font-size:12.5px;font-weight:700;display:flex;align-items:center;justify-content:center;cursor:pointer">{{ t.add }}</div>
+<div onClick="{{ toggleCat }}" style="width:37px;height:37px;flex:none;border-radius:10px;background:#fff;color:#6B7A74;font-size:13px;font-weight:800;display:flex;align-items:center;justify-content:center;cursor:pointer">✕</div>
+</div>
+</sc-if>
+<div onClick="{{ toggleCat }}" style="height:48px;border-radius:14px;border:1.5px dashed #C9D0CB;display:flex;align-items:center;justify-content:center;font-size:13px;font-weight:650;color:#3D4C46;cursor:pointer">{{ t.addCategory }}</div>
+</div>
+</sc-if>
+
+<!-- ══ LOG ══ -->
+<sc-if value="{{ isLog }}" hint-placeholder-val="{{ false }}">
+<div style="padding:58px 16px 12px;background:#fff;border-bottom:1px solid #E7EAE7">
+<div style="font-size:24px;font-weight:700;letter-spacing:-.02em">{{ t.logTitle }}</div>
+<div style="font-size:12px;color:#6B7A74;margin-top:2px">{{ t.logSub }}</div>
+</div>
+<div style="flex:1;overflow:auto;padding:12px 16px 96px">
+<sc-for list="{{ logEntries }}" as="e" hint-placeholder-count="2">
+<div onClick="{{ e.onClick }}" style="background:#fff;border-radius:16px;padding:14px;margin-bottom:12px;cursor:pointer">
+<div style="display:flex;align-items:baseline;justify-content:space-between;gap:8px"><div style="font-size:15px;font-weight:700">{{ e.day }}</div><div style="font-size:11.5px;color:{{ e.metaFg }};font-weight:650">{{ e.meta }}</div></div>
+<div style="font-size:11.5px;font-weight:650;color:#1F6F5C;margin-top:4px">{{ e.dest }}</div>
+<sc-if value="{{ e.hasPhotos }}" hint-placeholder-val="{{ false }}">
+<div style="display:flex;gap:6px;margin-top:11px">
+<div style="flex:1;aspect-ratio:1;border-radius:10px;background:repeating-linear-gradient(135deg,#E2E6E2 0 7px,#DADFDA 7px 14px)"></div>
+<div style="flex:1;aspect-ratio:1;border-radius:10px;background:repeating-linear-gradient(135deg,#E2E6E2 0 7px,#DADFDA 7px 14px)"></div>
+<div style="flex:1;aspect-ratio:1;border-radius:10px;background:repeating-linear-gradient(135deg,#E2E6E2 0 7px,#DADFDA 7px 14px)"></div>
+<div style="flex:1;aspect-ratio:1;border-radius:10px;background:#F2F3F1;display:flex;align-items:center;justify-content:center;font-size:12px;font-weight:700;color:#6B7A74">+21</div>
+</div>
+</sc-if>
+<div style="font-size:12.5px;line-height:1.55;color:#3D4C46;margin-top:11px">{{ e.text }}</div>
+<div style="display:flex;gap:6px;flex-wrap:wrap;margin-top:11px">
+<sc-for list="{{ e.chips }}" as="c" hint-placeholder-count="2">
+<div style="padding:4px 9px;border-radius:8px;background:{{ c.bg }};color:{{ c.fg }};font-size:11px;font-weight:700;white-space:nowrap">{{ c.label }}</div>
+</sc-for>
+</div>
+</div>
+</sc-for>
+<div style="background:#14201C;border-radius:16px;padding:16px;color:#fff">
+<div style="font-size:10.5px;font-weight:800;letter-spacing:.06em;color:#8FB3A6">{{ t.afterTripCaps }}</div>
+<div style="font-size:16px;font-weight:700;margin-top:5px">{{ t.recap }}</div>
+<div style="font-size:12.5px;line-height:1.5;color:#C8D6D0;margin-top:6px">{{ t.recapText }}</div>
+</div>
+</div>
+</sc-if>
+
+<!-- ══ NOTE COMPOSER ══ -->
+<sc-if value="{{ isNote }}" hint-placeholder-val="{{ false }}">
+<div style="padding:56px 16px 12px;background:#fff;border-bottom:1px solid #E7EAE7;display:flex;align-items:center;gap:8px">
+<div onClick="{{ goLog }}" style="width:32px;height:32px;flex:none;display:flex;align-items:center;justify-content:center;cursor:pointer"><svg width="16" height="16" viewBox="0 0 16 16"><path d="M2 2l12 12M14 2L2 14" stroke="#14201C" stroke-width="2" stroke-linecap="round"></path></svg></div>
+<div style="flex:1;min-width:0;font-size:18px;font-weight:700">{{ t.newNote }}</div>
+<div onClick="{{ goLog }}" style="flex:none;height:36px;padding:0 13px;border-radius:11px;background:#1F6F5C;color:#fff;font-size:12.5px;font-weight:700;display:flex;align-items:center;cursor:pointer">{{ t.save }}</div>
+</div>
+<div style="flex:1;overflow:auto;padding:14px 16px 96px">
+<div style="font-size:10.5px;font-weight:800;letter-spacing:.06em;color:#98A5A0">{{ t.whichDay }}</div>
+<div style="display:flex;gap:6px;margin-top:8px;flex-wrap:wrap">
+<sc-for list="{{ noteDays }}" as="d" hint-placeholder-count="6">
+<div onClick="{{ d.onClick }}" style="height:34px;padding:0 11px;border-radius:10px;background:{{ d.bg }};color:{{ d.fg }};border:1px solid {{ d.bd }};font-size:12px;font-weight:700;display:flex;align-items:center;cursor:pointer;white-space:nowrap">{{ d.label }}</div>
+</sc-for>
+</div>
+<div style="font-size:11.5px;color:#6B7A74;margin-top:8px">{{ noteDate }}</div>
+<div style="font-size:10.5px;font-weight:800;letter-spacing:.06em;color:#98A5A0;margin-top:18px">{{ t.whichDest }}</div>
+<div style="display:flex;flex-direction:column;gap:6px;margin-top:8px">
+<sc-for list="{{ noteDests }}" as="d" hint-placeholder-count="4">
+<div onClick="{{ d.onClick }}" style="display:flex;align-items:center;gap:10px;padding:11px 12px;background:#fff;border:1.5px solid {{ d.bd }};border-radius:12px;cursor:pointer">
+<div style="width:18px;height:18px;flex:none;border-radius:50%;border:1.6px solid {{ d.dotBd }};background:{{ d.dotBg }}"></div>
+<div style="flex:1;min-width:0;font-size:13px;font-weight:600">{{ d.label }}</div>
+<div style="font-size:11px;color:#98A5A0;font-weight:650;flex:none">{{ d.time }}</div>
+</div>
+</sc-for>
+</div>
+<div style="font-size:10.5px;font-weight:800;letter-spacing:.06em;color:#98A5A0;margin-top:18px">{{ t.whatHappened }}</div>
+<textarea value="{{ noteText }}" onChange="{{ setNoteText }}" placeholder="{{ t.phNote }}" style="width:100%;height:120px;margin-top:8px;line-height:1.5;resize:none"></textarea>
+<div style="height:52px;border-radius:13px;border:1.5px dashed #C9D0CB;display:flex;align-items:center;justify-content:center;font-size:12.5px;font-weight:650;color:#6B7A74;cursor:pointer;margin-top:10px">{{ t.addPhotos }}</div>
+<div style="font-size:11px;color:#98A5A0;line-height:1.5;margin-top:10px">{{ t.spendAuto }}</div>
+</div>
+</sc-if>
+
+<!-- ══ TRIPS ══ -->
+<sc-if value="{{ isTrips }}" hint-placeholder-val="{{ false }}">
+<div style="padding:58px 16px 12px;background:#fff;border-bottom:1px solid #E7EAE7;display:flex;align-items:center;gap:10px">
+<div onClick="{{ goMap }}" style="width:32px;height:32px;flex:none;display:flex;align-items:center;justify-content:center;cursor:pointer"><svg width="16" height="16" viewBox="0 0 16 16"><path d="M2 2l12 12M14 2L2 14" stroke="#14201C" stroke-width="2" stroke-linecap="round"></path></svg></div>
+<div style="flex:1;min-width:0;font-size:20px;font-weight:700">{{ t.myTrips }}</div>
+<div onClick="{{ toggleLang }}" style="width:44px;height:36px;flex:none;border-radius:11px;background:#F2F3F1;display:flex;align-items:center;justify-content:center;font-size:12.5px;font-weight:800;cursor:pointer">{{ langLabel }}</div>
+</div>
+<div style="flex:1;overflow:auto;padding:14px 16px 96px">
+<sc-for list="{{ trips }}" as="p" hint-placeholder-count="3">
+<div onClick="{{ p.onClick }}" style="display:flex;gap:12px;align-items:center;padding:13px;background:#fff;border:1.5px solid {{ p.bd }};border-radius:16px;margin-bottom:10px;cursor:pointer">
+<div style="width:46px;height:46px;flex:none;border-radius:13px;background:{{ p.avBg }};color:{{ p.avFg }};font-size:14px;font-weight:800;display:flex;align-items:center;justify-content:center">{{ p.code }}</div>
+<div style="flex:1;min-width:0"><div style="font-size:14px;font-weight:700;line-height:1.2">{{ p.name }}</div><div style="font-size:11.5px;color:#6B7A74;margin-top:3px">{{ p.meta }}</div></div>
+<div style="flex:none;padding:3px 8px;border-radius:7px;background:{{ p.tagBg }};color:{{ p.tagFg }};font-size:10px;font-weight:800;white-space:nowrap">{{ p.tag }}</div>
+</div>
+</sc-for>
+<div style="height:52px;border-radius:15px;border:1.5px dashed #C9D0CB;display:flex;align-items:center;justify-content:center;font-size:13px;font-weight:650;color:#3D4C46;margin-top:4px;cursor:pointer">{{ t.newTrip }}</div>
+<div style="font-size:11.5px;color:#98A5A0;line-height:1.5;margin-top:12px">{{ t.tripsFoot }}</div>
+</div>
+</sc-if>
+
+<!-- ══ TABS ══ -->
+<div style="position:absolute;bottom:0;left:0;right:0;z-index:10;padding:7px 8px 26px;background:rgba(255,255,255,.94);backdrop-filter:blur(14px);border-top:1px solid #E4E8E5;display:flex;gap:2px">
+<sc-for list="{{ tabs }}" as="b" hint-placeholder-count="5">
+<div onClick="{{ b.onClick }}" style="flex:1;min-height:46px;display:flex;flex-direction:column;align-items:center;justify-content:center;gap:3px;cursor:pointer;border-radius:12px;background:{{ b.bg }}">
+<div style="font-size:15px;font-weight:800;color:{{ b.fg }};line-height:1">{{ b.glyph }}</div>
+<div style="font-size:9.5px;font-weight:700;color:{{ b.fg }}">{{ b.label }}</div>
+</div>
+</sc-for>
+</div>
+
+</div>
+</x-import>
+</x-dc>
+<script type="text/x-dc" data-dc-script data-props="{&quot;$preview&quot;:{&quot;width&quot;:402,&quot;height&quot;:874},&quot;start&quot;:{&quot;editor&quot;:&quot;enum&quot;,&quot;options&quot;:[&quot;map&quot;,&quot;plan&quot;,&quot;dest&quot;,&quot;free&quot;,&quot;sub&quot;,&quot;shop&quot;,&quot;photo&quot;,&quot;prep&quot;,&quot;log&quot;,&quot;note&quot;,&quot;trips&quot;],&quot;default&quot;:&quot;map&quot;,&quot;tsType&quot;:&quot;string&quot;,&quot;section&quot;:&quot;Screen&quot;},&quot;lang&quot;:{&quot;editor&quot;:&quot;enum&quot;,&quot;options&quot;:[&quot;en&quot;,&quot;zh&quot;],&quot;default&quot;:&quot;en&quot;,&quot;tsType&quot;:&quot;string&quot;,&quot;section&quot;:&quot;Screen&quot;}}">
+const J='#1F6F5C', A='#C87F0A', INK='#14201C', MUT='#6B7A74';
+
+const D = {
+  tripName:['Meridian City · Group Tour','子午城 · 团体游'], dayOf:['Day 3 of 6 · Mar 14','第 3 / 6 天 · 3月14日'],
+  mainRoute:['Main route','主路线'], subRoute:['Sub route','支线'],
+  nishi:['Nishi Market','西市场'], exploreNearby:['Nearby','周边'],
+  dayRoute:['Old Quarter to Skyline','老城区 → 天际区'],
+  archived:['REMOVED FROM THIS DAY','已从当天移除'], addBack:['Add back','恢复'], moveTo:['MOVE TO','移到'],
+  addStopTitle:['Add a stop','添加一站'], phTime:['Time','时间'],
+  addStopHint:['Pick from places you have saved or added nearby, or search for a new one. It drops into the day at the time you set, and you can drag it afterwards.','可以从已收藏或自己添加的周边地点中选择，也可以搜索新地点。按设定的时间插入当天行程，之后仍可拖动调整。'],
+  movedTo:['Moved to','已移到'],
+  myOutfit:['WHAT I AM ACTUALLY BRINGING','我实际带的'],
+  myOutfitSub:['Your record, kept separate from the suggestion above. Syncs with Trip prep.','你自己的记录，与上面的建议分开保存，并与出行准备同步。'],
+  phOutfit:['Add a piece','添加一件'],
+  addNote:['Add a note','添加记录'], addNoteSub:['Log what happened at this stop','记录这一站发生的事'],
+  editItinerary:['Edit day','编辑当天行程'], edit:['Edit','编辑'], done:['Done','完成'],
+  addStop:['+ Add a stop','+ 添加一站'], dragHint:['Hold the handle to drag a stop into place','按住手柄拖动调整顺序'],
+  day3:['Day 3','第 3 天'], date3:['Mar 14 · Sat','3月14日 · 周六'],
+  wxSource:['Forecast, updated 2 h ago','天气预报 · 2 小时前更新'],
+  photoPh:['Photo placeholder','图片占位'], mainStop5:['MAIN ROUTE · STOP 5','主路线 · 第 5 站'],
+  nishiSub:['Covered market, 4 blocks · Old Quarter','有顶市场，四个街区 · 老城区'],
+  nishiDesc:['A 90-year-old covered market of about 180 stalls: produce and dried goods at the north end, kitchenware and knives in the middle aisle, street food and standing bars to the south. Busiest 12:00–14:00; many stalls start closing at 17:00.','有九十年历史的有顶市场，约 180 个摊位：北端是生鲜与干货，中间通道是厨具和刀具，南侧是小吃与站着吃的酒馆。12:00–14:00 最挤，17:00 起陆续收摊。'],
+  appleMaps:['Apple Maps','Apple 地图'],
+  info:['Info','信息'], nearby:['Nearby','周边'], photos:['Must-see','必看'], shop:['Shop','购物'], log:['Log','记录'],
+  nearbyCaps:['NEARBY','周边'], nearbySub:['Sorted by travel time','按交通时间排序'],
+  mustSeeCaps:['MUST-SEE','必看打卡'], fourShots:['4 spots','4 处'], mustSeeSub:['Known shots at this stop','这一站的经典画面'],
+  shopHere:['4 items on your list here','清单里有 4 件在这里买'],
+  shopHereSub:['Knife, dried scallop, cups, yuzu pepper','厨刀、干贝、陶杯、柚子胡椒'],
+  aroundStop:['Around Nishi Market','西市场周边'], coachLeaves:['Coach leaves 15:45 · be back 5 min early','大巴 15:45 出发 · 请提前 5 分钟回到'],
+  sortTitle:['Sort by','排序方式'], byTime:['Travel time','交通时间'], byStay:['Stay time','停留时长'],
+  all:['All','全部'], food:['Food','餐饮'], cosme:['Cosmetic & health','美妆健康'], cloth:['Clothing','服饰'],
+  shopping:['Shopping','购物'], sight:['Sights','景点'], rest:['Rest','休息'],
+  addPlace:['+ Add a place myself','+ 自己添加地点'], addPlaceTitle:['Add a place','添加地点'],
+  phPlaceName:['Place name','地点名称'], phWalkMin:['Walk min','步行分钟'],
+  arrange:['Arrange','排序'], subAtStop:['Sub route · Stop 5','支线 · 第 5 站'],
+  walking:['MOVING','在路上'], atStops:['AT STOPS','停留'], buffer:['BUFFER','余量'],
+  backTo:['BACK TO','返回至'], timeNeeded:['TIME NEEDED','所需时间'], minutes:['minutes','分钟'],
+  sendWalk:['Send walk to Maps','发送步行路线到地图'],
+  shopTitle:['Shopping list','购物清单'], addItem:['+ Add','+ 添加'], close:['Close','收起'],
+  addItemTitle:['Add an item','添加一件'], phName:['What is it?','买什么？'],
+  phEst:['Estimated price (optional)','预估价（可不填）'], phPaid:['What you paid','实付金额'],
+  estOptional:['Estimated price is optional. The real price is entered after you tick the item, and only ticked items count towards spend.','预估价可以不填。买到之后再填实付金额，只有已勾选的会计入支出。'],
+  save:['Save','保存'], cancel:['Cancel','取消'], add:['Add','添加'],
+  estCaps:['est.','预估'], paidCaps:['PAID','实付'], boughtOn:['Bought','购于'],
+  cash:['Cash','现金'], card:['Card','信用卡'], ic:['IC card','交通卡'], ewallet:['E-wallet','电子钱包'],
+  actualSpend:['ACTUAL SPEND','实际支出'], byMethod:['BY PAYMENT METHOD','按支付方式'],
+  mustSee:['Must-see','必看打卡'], mustSeeHead:['Nishi Market · 4 known shots','西市场 · 4 处经典画面'],
+  outfitCaps:['OUTFIT','穿搭建议'], ref:['reference','参考'],
+  outfitText:['16 °C and overcast on this day, so a mid-weight layer works. The market is grey stone and steel, so one solid warm tone reads best — rust, cream or mustard. Flat shoes: the aisles are wet near the fish stalls.','当天 16 °C 阴天，一件中厚外套即可。市场以灰石和铁皮为背景，穿一个暖色纯色最出片——铁锈红、米白或芥黄。鞋子选平底：鱼摊附近地面湿滑。'],
+  standHere:['WHERE TO STAND','站位'], navSpot:['Navigate to spot','导航到此处'],
+  prepTitle:['Trip prep','出行准备'], prepSub:['6 days · departs in 11 days','6 天 · 11 天后出发'],
+  forecastCaps:['WEATHER FORECAST','天气预报'],
+  addCategory:['+ New category','+ 新增类别'], phCat:['Category name','类别名称'],
+  phItem:['Item name','物品名称'], addItemTo:['+ Add item','+ 添加物品'],
+  notPacked:['Not packed','未装'], suitcase:['Suitcase','托运箱'], carryOn:['Carry-on','随身包'], backpack:['Backpack','背包'],
+  logTitle:['Log','旅行记录'], logSub:['Meridian City · 2 of 6 days recorded','子午城 · 已记录 2 / 6 天'],
+  newNote:['New note','新记录'], afterTripCaps:['AFTER THE TRIP','行程结束后'], recap:['Trip recap','行程回顾'],
+  recapText:['Route map, all photos, what you bought and what you paid, plus the places you saved but never reached — carried into your next trip.','路线图、所有照片、买了什么花了多少，以及收藏了但没去到的地方——都会带到下一次旅行。'],
+  whichDay:['WHICH DAY','哪一天'], whichDest:['WHICH PLACE','哪个地点'], whatHappened:['NOTE','记录内容'],
+  phNote:['What happened, what to remember next time…','发生了什么，下次要记住什么……'],
+  addPhotos:['+ Photos','+ 照片'],
+  spendAuto:['Spend for this day is totalled from your shopping list, so there is nothing to enter here.','当天支出会自动从购物清单汇总，这里无需填写。'],
+  myTrips:['My trips','我的行程'], newTrip:['+ New trip','+ 新建行程'],
+  tripsFoot:['Start from an agent itinerary (paste, photo or PDF), or build your own day by day. Saved places, must-see shots and shopping items carry over between trips.','可以从旅行社行程开始（粘贴、拍照或 PDF），也可以自己一天一天排。收藏的地点、必看打卡和购物清单会在行程之间沿用。'],
+  tabMap:['Map','地图'], tabPlan:['Plan','行程'], tabShop:['Shop','购物'], tabPrep:['Prep','准备'], tabLog:['Log','记录'],
+  main:['MAIN','主'], sub:['SUB','支'],
+  minWalk:['walk','步行'], minTrain:['train','电车'], minBus:['bus','巴士'], stay:['stay','停留'],
+  unplanned:['Unplanned · added on the trip','临时添加'], ifTime:['IF TIME','有空再去'], lastChance:['LAST CHANCE','最后机会'],
+  places:['places','处'], sortedBy:['sorted by','排序：']
+};
+
+const PLACES = {
+  ramen:{n:['Standing Ramen No.7','七号站食拉面'],c:'food',p:'¥',stay:20,legs:[['walk',3]],note:['Six seats, no queue after 14:00','六个座位，14:00 后不排队']},
+  kori:{n:['Kōri Dessert Bar','冰室甜品店'],c:'food',p:'¥¥',stay:25,legs:[['walk',4]],note:['Shaved ice with seasonal fruit','当季水果刨冰']},
+  canal:{n:['Canal Overlook','运河观景台'],c:'sight',p:'Free',stay:15,legs:[['walk',5]],note:['Bridge 2 north rail','2 号桥北侧栏杆']},
+  pharm:{n:['Green Cross Pharmacy','绿十字药妆'],c:'cosme',p:'¥',stay:20,legs:[['walk',2]],note:['Sunscreen, plasters, eye drops','防晒、创可贴、眼药水']},
+  cosme:{n:['Cosme Lab flagship','Cosme Lab 旗舰店'],c:'cosme',p:'¥¥',stay:35,legs:[['walk',4],['train',6]],note:['Tax-free counter on level 2','2 楼有免税柜台']},
+  paper:{n:['Paper & Ink Stationery','纸与墨文具店'],c:'shopping',p:'¥',stay:20,legs:[['walk',6]],note:['Letterpress cards, brush pens','活版印刷卡片、毛笔']},
+  garden:{n:['Stone Lantern Garden','石灯庭园'],c:'sight',p:'¥',stay:30,legs:[['walk',7]],note:['Quiet pond loop, free toilets','安静的环池小径，免费洗手间']},
+  aoi:{n:['Aoi Camera Alley','葵相机小巷'],c:'shopping',p:'¥¥¥',stay:35,legs:[['walk',8]],note:['Eleven used-gear shops in one lane','一条巷子里十一家二手店']},
+  bath:{n:['Old Quarter Bathhouse','老城澡堂'],c:'rest',p:'¥',stay:60,legs:[['walk',9]],note:['Towel rental ¥200','毛巾租借 ¥200']},
+  kimono:{n:['Indigo Kimono Rental','蓝染和服租借'],c:'cloth',p:'¥¥',stay:45,legs:[['walk',7]],note:['Two-hour rental, dressing included','两小时租借，含穿着服务']},
+  arcade:{n:['Nishi Craft Arcade','西市工艺街'],c:'shopping',p:'¥¥',stay:40,legs:[['walk',11]],note:['Ceramics and indigo cloth','陶器与蓝染布']},
+  dept:{n:['Kaede Department Store','枫百货'],c:'cloth',p:'¥¥¥',stay:60,legs:[['walk',5],['train',8],['walk',3]],note:['Six floors, basement food hall','六层，地下食品区']},
+  outlet:{n:['Riverside Outlet','河畔奥特莱斯'],c:'cloth',p:'¥¥',stay:75,legs:[['walk',3],['bus',22]],note:['Last-season stock, 40–60% off','过季款，四到六折']},
+  tower:{n:['Hillside Tower','山坡塔'],c:'sight',p:'¥¥',stay:50,legs:[['walk',6],['train',14],['bus',9]],note:['Observation deck, faces west','观景台，朝西']}
+};
+const CATS = ['all','food','cosme','cloth','shopping','sight','rest'];
+const LEG_ICON = { walk:'🚶', train:'🚆', bus:'🚌' };
+const PAYS = ['cash','card','ic','ewallet'];
+const WHERES = ['notPacked','suitcase','carryOn','backpack'];
+const PLAN_IDS = ['depart','lumen','ashgate','harbour','nishi','mysub','skyline','hotel'];
+
+const hhmm = m => String(Math.floor(m/60)).padStart(2,'0') + ':' + String(m%60).padStart(2,'0');
+const dur = (m, zh) => m >= 60 ? Math.floor(m/60) + (zh?' 小时 ':'h ') + (m%60 ? m%60 + (zh?' 分':'m') : '') : m + (zh?' 分':' min');
+
+class Component extends DCLogic {
+  state = { screen:null, lang:null, sort:'byTime', cat:'all', order:['kori','canal','paper'], sortOpen:false,
+    checked:{}, paid:{}, pay:{}, boughtAt:{}, extra:[], addOpen:false, form:{name:'',place:'',est:'',pay:0},
+    packed:{}, addTo:null, newItem:'', catOpen:false, newCat:'', customCats:[], customPlaces:[],
+    placeOpen:false, np:{name:'',cat:'food',walk:''},
+    editing:false, planOrder:PLAN_IDS.slice(), planRemoved:[], planTimes:{}, planExtra:[], planMoved:{},
+    addStopOpen:false, asForm:{place:'',time:''},
+    myOutfit:[], newOutfit:'',
+    backId:'coach', backMins:8, backOpen:false,
+    noteDay:3, noteDest:'nishi', noteText:'', shots:{} };
+
+  L() { return this.state.lang || this.props.lang || 'en'; }
+  x(k) { const e = D[k]; return e ? e[this.L()==='zh'?1:0] : k; }
+  s() { return this.state.screen || this.props.start || 'map'; }
+  go(v) { return () => this.setState({ screen:v }); }
+  on(k, d) { const c = this.state.checked; return k in c ? c[k] : !!d; }
+  chk(k, d) { const done = this.on(k,d);
+    return { done, onToggle: () => this.setState(s => ({ checked:{...s.checked,[k]:!this.on(k,d)} })),
+      boxBg:done?J:'#fff', boxBd:done?J:'#D2D8D3', deco:done?'line-through':'none', fg:done?'#9AA6A1':INK }; }
+  cycle(map, k, list) { return () => this.setState(s => { const n = {...s[map]}; n[k] = ((n[k]||0)+1) % list.length; return { [map]:n }; }); }
+  mover(listKey) {
+    return (id) => ({
+      onDragStart: e => { this['drag_'+listKey] = id; if (e.dataTransfer) e.dataTransfer.effectAllowed = 'move'; },
+      onDragOver: e => e.preventDefault(),
+      onDrop: e => { e.preventDefault(); const from = this['drag_'+listKey]; if (!from || from === id) return;
+        this.setState(s => { const l = s[listKey].slice(), i = l.indexOf(from), k = l.indexOf(id);
+          if (i < 0 || k < 0) return {}; l.splice(i,1); l.splice(k,0,from); return { [listKey]:l }; }); }
+    });
+  }
+
+  renderVals() {
+    const sc = this.s(), zh = this.L()==='zh';
+    const t = {}; Object.keys(D).forEach(k => t[k] = this.x(k));
+
+    const weather = [
+      { d:zh?'第1天':'D1', icon:'☀', hi:21, rain:'0%' }, { d:zh?'第2天':'D2', icon:'⛅', hi:19, rain:'10%' },
+      { d:zh?'第3天':'D3', icon:'☁', hi:16, rain:'20%' }, { d:zh?'第4天':'D4', icon:'🌧', hi:14, rain:'80%' },
+      { d:zh?'第5天':'D5', icon:'⛅', hi:18, rain:'10%' }, { d:zh?'第6天':'D6', icon:'☀', hi:20, rain:'0%' }
+    ].map((w,i) => ({ ...w, bg: i===2 ? '#E6EFEB' : '#F7F8F6' }));
+    const wxToday = { icon:'☁', short: zh?'16 °C 阴天':'16 °C, overcast',
+      line: zh?'第 3 天：阴天 16 °C，降雨 20%。傍晚 13 °C，观景台风大。':'Day 3: overcast, 16 °C, 20% rain. 13 °C by evening and windy on the deck.' };
+
+    const days = [1,2,3,4,5,6].map(n => { const act = n === 3;
+      return { label:(zh?'第'+n+'天':'D'+n), wx:weather[n-1].icon, bg:act?INK:'#fff', fg:act?'#fff':MUT, onClick:this.go('plan') }; });
+
+    const stops = [
+      { time:'09:15', name:zh?'流光十字路口':'Lumen Crossing', meta:zh?'45 分钟 · 拍照点，免费':'45 min · photo stop, no entry fee', tag:t.main },
+      { time:'10:30', name:zh?'灰门神社':'Ashgate Shrine', meta:zh?'1 小时 · 需遮住肩膀':'1 h · covered shoulders required', tag:t.main },
+      { time:'12:00', name:zh?'港阶 · 套餐午餐':'Harbour Steps · set lunch', meta:zh?'1 小时 · 含在团费':'1 h · included in tour', tag:t.main },
+      { time:'13:30', name:t.nishi, meta:zh?'大巴 15:45 出发':'coach leaves 15:45', tag:t.main },
+      { time:'13:45', name:zh?'我的支线 · 3 站':'My sub route · 3 stops', meta:zh?'冰室 → 运河 → 纸与墨':'Kōri → Canal → Paper & Ink', tag:t.sub, sub:true },
+      { time:'16:00', name:zh?'天际观景台':'Skyline Deck', meta:zh?'1 小时 · 门票由领队保管':'1 h · ticket held by agent', tag:t.main },
+      { time:'18:00', name:zh?'子午酒店':'Hotel Meridian', meta:zh?'晚餐自理':'Dinner not included', tag:t.main }
+    ].map(s => ({ ...s, onClick:this.go('dest'), tagBg: s.sub ? '#FBF1DE' : '#E6EFEB', tagFg: s.sub ? '#8A5A08' : J }));
+
+    const mc = { cardBg:'#fff', cardBorder:'1px solid #E7EAE7', dotSize:'11px', dotBg:J, dotBorder:'none', lineStyle:'2px solid #DCE2DE', badge:t.main, badgeBg:'#E6EFEB', badgeFg:J };
+    const planData = {
+      depart:{ time:'08:30', dur:'', name:zh?'从子午酒店出发':'Depart Hotel Meridian', note:zh?'2 号车位 · 领队任小姐':'Coach bay 2 · guide Ms. Ren', ...mc },
+      lumen:{ time:'09:15', dur:zh?'45分':'45m', name:zh?'流光十字路口':'Lumen Crossing', note:zh?'每 2 分钟一次人潮；领队讲解 10 分钟后自由活动。':'Crossing sweep every 2 min; guide talks 10 min then free on the plaza.', chips:[zh?'2 处必看':'2 must-see shots'], ...mc },
+      ashgate:{ time:'10:30', dur:zh?'1小时':'1h', name:zh?'灰门神社':'Ashgate Shrine', note:zh?'需遮住肩膀。侧门办公室有 ¥500 的朱印帐。':'Covered shoulders. Stamp book ¥500 at the side office.', ...mc },
+      harbour:{ time:'12:00', dur:zh?'1小时':'1h', name:zh?'港阶 · 套餐午餐':'Harbour Steps · set lunch', note:zh?'含在团费。素食需前一晚告知。':'Included. Vegetarian on request the night before.', ...mc },
+      nishi:{ time:'13:30', dur:zh?'2小时15':'2h15', name:t.nishi, note:zh?'领队在北门解散，15:45 回到大巴。':'Guide releases the group at the north gate; back at the coach 15:45.', chips:[zh?'4 件购物':'4 shopping items', zh?'4 处必看':'4 must-see shots'], ...mc },
+      mysub:{ time:'13:45', dur:zh?'1小时47':'1h47', name:zh?'我的支线 · 3 站':'My sub route · 3 stops', note:zh?'冰室甜品店 → 运河观景台 → 纸与墨文具店。':'Kōri Dessert Bar → Canal Overlook → Paper & Ink.', chips:[zh?'步行 1.4 公里':'1.4 km walk'], badge:t.sub, badgeBg:'#FBF1DE', badgeFg:'#8A5A08', cardBg:'#FFFDF7', cardBorder:'1.5px dashed #E3CFA3', dotSize:'11px', dotBg:'#fff', dotBorder:'2.5px solid '+A, lineStyle:'2px dashed #E3CFA3' },
+      skyline:{ time:'16:00', dur:zh?'1小时':'1h', name:zh?'天际观景台':'Skyline Deck', note:zh?'门票由领队保管。18:04 日落，观景台朝西。':'Ticket held by agent. Sunset 18:04 — deck faces west.', chips:[zh?'1 处必看':'1 must-see shot'], ...mc },
+      hotel:{ time:'18:00', dur:'', name:zh?'子午酒店':'Hotel Meridian', note:zh?'晚餐自理。300 米内有两家拉面。':'Dinner not included. Two ramen shops within 300 m.', ...mc }
+    };
+    this.state.planExtra.forEach(e => { planData[e.id] = { time:e.time, dur:'', name:e.name, note: zh?'我自己加的一站':'Added by me', ...mc, badge:t.sub, badgeBg:'#FBF1DE', badgeFg:'#8A5A08' }; });
+    const planMove = this.mover('planOrder');
+    const editing = this.state.editing;
+    const planItems = this.state.planOrder.filter(id => this.state.planRemoved.indexOf(id) < 0 && planData[id]).map(id => ({
+      ...planData[id], drag: editing ? 'true' : 'false', showBadge: !editing, showTime: !editing, ...planMove(id),
+      timeVal: id in this.state.planTimes ? this.state.planTimes[id] : planData[id].time,
+      onTime: e => { const v = e.target.value; this.setState(s => ({ planTimes:{...s.planTimes, [id]:v} })); },
+      onClick: editing ? (() => {}) : this.go('dest'),
+      onRemove: () => this.setState(s => ({ planRemoved: s.planRemoved.concat([id]) })) }));
+    const archive = this.state.planRemoved.filter(id => planData[id]).map(id => ({
+      name: planData[id].name, was: (zh ? '原定 ' : 'was ') + (planData[id].time || ''),
+      movedLine: this.state.planMoved[id] ? this.x('movedTo') + ' ' + (zh ? '第 ' + this.state.planMoved[id] + ' 天' : 'Day ' + this.state.planMoved[id]) : '',
+      onBack: () => this.setState(s => { const m = {...s.planMoved}; delete m[id]; return { planRemoved: s.planRemoved.filter(r => r !== id), planMoved:m }; }),
+      dayChips: [1,2,4,5,6].map(n => { const on = this.state.planMoved[id] === n;
+        return { label: zh ? n + '' : 'D' + n, bg: on ? '#A8CFC0' : 'rgba(255,255,255,.14)', fg: on ? '#14201C' : '#E4EBE8',
+          onClick: () => this.setState(s => ({ planMoved:{...s.planMoved, [id]:n} })) }; }) }));
+
+    const essentials = zh ? [
+      { k:'营业时间', v:'09:00 – 18:00', sub:'周三休息 · 南侧小吃区营业到 21:00' },
+      { k:'电话', v:'+00 2 4471 9820', sub:'市场办公室 · 10:00–16:00 有英语' },
+      { k:'网站', v:'nishimarket.example', sub:'摊位目录与休市公告' },
+      { k:'门票', v:'免费进入', sub:'磨刀演示 ¥800，每天 14:00' },
+      { k:'交通', v:'3 号线 → 西市站 B 出口', sub:'步行 4 分钟 · B 出口有电梯 · 东侧有出租车站' },
+      { k:'付款', v:'以现金为主', sub:'约 40 个摊位支持交通卡 · 北门有一台 ATM' },
+      { k:'设施', v:'洗手间、寄存柜、座位', sub:'北门投币柜 ¥400，只收现金' },
+      { k:'语言', v:'部分英文标识', sub:'指着买即可；价格按每 100 克' }
+    ] : [
+      { k:'Hours', v:'09:00 – 18:00', sub:'Closed Wednesdays · south food aisle open to 21:00' },
+      { k:'Phone', v:'+00 2 4471 9820', sub:'Market office, English 10:00–16:00' },
+      { k:'Website', v:'nishimarket.example', sub:'Stall directory and closure notices' },
+      { k:'Tickets', v:'Free entry', sub:'Knife-sharpening demo ¥800, 14:00 daily' },
+      { k:'Transport', v:'Line 3 → Nishi Sta., Exit B', sub:'4 min walk · lift at Exit B · taxi rank on the east side' },
+      { k:'Payment', v:'Cash preferred', sub:'IC card at ~40 stalls · one ATM at the north gate' },
+      { k:'Facilities', v:'Toilets, lockers, seating', sub:'Coin lockers ¥400 at north gate, cash only' },
+      { k:'Language', v:'Partial English signs', sub:'Point-and-pay works; prices per 100 g' }
+    ];
+
+    const all = Object.assign({}, PLACES);
+    this.state.customPlaces.forEach(p => { all[p.id] = { n:[p.name,p.name], c:p.cat, p:'—', stay:30, legs:[['walk',p.walk||5]], note:[zh?'我自己添加的':'Added by me', zh?'我自己添加的':'Added by me'] }; });
+    const keys = Object.keys(all);
+    const withMeta = keys.map(id => { const p = all[id];
+      const total = p.legs.reduce((a,l) => a + l[1], 0);
+      return { id, name:p.n[zh?1:0], cat:p.c, price:p.p, stay:p.stay, total, note:p.note[zh?1:0], catLabel:this.x(p.c),
+        legs:p.legs.map(l => ({ icon:LEG_ICON[l[0]], label: this.x('min'+l[0][0].toUpperCase()+l[0].slice(1)) + ' ' + l[1] })),
+        totalLabel: dur(total, zh), stayLabel: this.x('stay') + ' ~' + dur(p.stay, zh) }; });
+    const cat = this.state.cat, sort = this.state.sort;
+    let list = withMeta.filter(p => cat === 'all' || p.cat === cat);
+    list.sort((a,b) => sort === 'byStay' ? a.stay - b.stay : a.total - b.total);
+    const order = this.state.order;
+    const nearby = list.map(p => { const on = order.indexOf(p.id) >= 0;
+      return { ...p, bd: on ? '#EBD9B4' : '#EDEFEC', addIcon: on ? '✓' : '+', addBg: on ? A : '#F2F3F1', addFg: on ? '#fff' : '#3D4C46',
+        onAdd: () => this.setState(s => ({ order: s.order.indexOf(p.id) >= 0 ? s.order.filter(i => i !== p.id) : s.order.concat([p.id]) })) }; });
+
+    let clock = 13*60 + 45, walkSum = 0, staySum = 0;
+    const subMove = this.mover('order');
+    const loopStops = order.filter(id => all[id]).map((id, i) => {
+      const p = all[id], w = p.legs.reduce((a,l) => a + l[1], 0);
+      clock += w; walkSum += w; const arrive = clock; clock += p.stay; staySum += p.stay;
+      return { id, n:i+1, name:p.n[zh?1:0], time:hhmm(arrive), rowBg:'transparent',
+        meta: p.legs.map(l => LEG_ICON[l[0]] + l[1]).join(' + ') + ' · ' + this.x('stay') + ' ' + dur(p.stay, zh) + ' · ' + p.p,
+        ...subMove(id) }; });
+    const backMins = parseInt(this.state.backMins, 10) || 0;
+    const ret = clock + backMins; walkSum += backMins;
+    const buffer = 15*60 + 45 - ret;
+    const backOpts = [
+      { v:'coach', label: zh?'大巴 · 西市场门口':'Coach · Nishi Market gate' },
+      { v:'skyline', label: zh?'下一站 · 天际观景台':'Next stop · Skyline Deck' },
+      { v:'hotel', label: zh?'子午酒店':'Hotel Meridian' },
+      { v:'station', label: zh?'西市站 B 出口':'Nishi Sta., Exit B' }
+    ];
+    const backHit = backOpts.find(o => o.v === this.state.backId) || backOpts[0];
+
+    const payLabel = k => this.x(PAYS[this.state.pay[k] || 0]);
+    const money = n => '¥' + Math.round(n).toLocaleString('en-US');
+    const dayDate = zh ? '3月14日' : 'Mar 14';
+    const baseGroups = [
+      { place:t.nishi, when: zh?'第 3 天 · 今天 13:30 – 15:45':'Day 3 · today, 13:30 – 15:45', badge:'', items:[
+        { key:'k1', name:zh?'厨刀':'Kitchen knife 厨刀', sub:zh?'中间通道 44 号摊':'Middle aisle, stall 44', est:5000 },
+        { key:'k2', name:zh?'干贝':'Dried scallop 干贝', sub:zh?'北端 · 每 100 克计价':'North end · sold per 100 g', est:1800 },
+        { key:'k3', name:zh?'陶杯 ×4':'Ceramic cups ×4 陶杯', sub:zh?'工艺街，步行 11 分钟':'Craft arcade, 11 min walk', est:3200 },
+        { key:'k4', name:zh?'柚子胡椒':'Yuzu pepper 柚子胡椒', sub:zh?'任一干货摊':'Any dried-goods stall', est:null }
+      ]},
+      { place:zh?'葵相机小巷':'Aoi Camera Alley', when: zh?'第 3 天 · 支线，可选':'Day 3 · sub route, optional', badge:t.ifTime, badgeBg:'#EDEFEC', badgeFg:'#98A5A0', items:[
+        { key:'k5', name:zh?'35mm 定焦（二手）':'35mm prime lens, used', sub:zh?'先比三家再买':'Compare 3 shops before buying', est:20000 },
+        { key:'k6', name:zh?'相机背带':'Camera strap', sub:zh?'皮质，第二条巷':'Leather, second lane', est:null }
+      ]},
+      { place:zh?'机场，安检前':'Airport, before security', when: zh?'第 6 天 · 3 小时中转':'Day 6 · 3 h layover', badge:t.lastChance, badgeBg:'#F4E4E4', badgeFg:'#9B4B4B', items:[
+        { key:'k7', name:zh?'伴手礼礼盒 ×3':'Gift boxes ×3 伴手礼', sub:zh?'市区更便宜，这里是备选':'Cheaper in town, but safe fallback', est:4500 },
+        { key:'k8', name:zh?'抹茶粉':'Matcha tin 抹茶粉', sub:zh?'免税柜台 B':'Duty-free counter B', est:2600, bought:true, paidDflt:'2400', boughtDflt: zh?'3月11日':'Mar 11' }
+      ]}
+    ];
+    if (this.state.extra.length) baseGroups.push({ place:t.unplanned, when: zh?'旅途中添加':'Added while travelling', badge:'', items:this.state.extra });
+
+    let spent = 0, planned = 0, boughtN = 0, totalN = 0;
+    const perPay = PAYS.map(() => ({ n:0, sum:0 }));
+    const shopGroups = baseGroups.map(g => ({ ...g, items: g.items.map(it => {
+      const c = this.chk(it.key, it.bought);
+      const paidRaw = it.key in this.state.paid ? this.state.paid[it.key] : (it.paidDflt || '');
+      const paidNum = parseFloat(String(paidRaw).replace(/[^0-9.]/g,'')) || 0;
+      totalN++; planned += it.est || 0;
+      const amount = paidNum || it.est || 0;
+      if (c.done) { boughtN++; spent += amount; const pi = this.state.pay[it.key] || 0; perPay[pi].n++; perPay[pi].sum += amount; }
+      const stamp = it.key in this.state.boughtAt ? this.state.boughtAt[it.key] : (it.boughtDflt || dayDate);
+      return { ...it, ...c, est: it.est ? money(it.est) : '—', paid: paidRaw,
+        boughtLine: this.x('boughtOn') + ' ' + stamp, payLabel: payLabel(it.key),
+        onToggle: () => this.setState(s => { const now = !this.on(it.key, it.bought);
+          const b = {...s.boughtAt}; if (now) b[it.key] = it.boughtDflt || dayDate; else delete b[it.key];
+          return { checked:{...s.checked,[it.key]:now}, boughtAt:b }; }),
+        onPay: this.cycle('pay', it.key, PAYS),
+        onPaid: e => { const v = e.target.value; this.setState(s => ({ paid:{...s.paid, [it.key]:v} })); } };
+    }) }));
+
+    const prepDefs = [
+      { title:zh?'文件':'Documents 文件', items:[
+        { key:'p1', name:zh?'护照 + 2 份复印':'Passport + 2 copies', done:true },
+        { key:'p2', name:zh?'旅行社凭证（打印）':'Agent voucher, printed', done:true, why:zh?'司机只看纸本':'Coach driver checks paper only' },
+        { key:'p3', name:zh?'保险卡':'Travel insurance card' }
+      ]},
+      { title:zh?'穿搭':'Outfits 穿搭', items:[
+        { key:'p4', name:zh?'铁锈红外套':'Rust coat', why:zh?'必看打卡：运河观景台、天际观景台':'Must-see shots: Canal Overlook, Skyline Deck' },
+        { key:'p5', name:zh?'米白针织':'Cream knit' },
+        { key:'p6', name:zh?'披肩（遮肩用）':'Shawl for covered shoulders', why:zh?'第 3 天 灰门神社':'Ashgate Shrine, Day 3' },
+        { key:'p7', name:zh?'穿惯的平底鞋':'Flat shoes, broken in', done:true, why:zh?'第 2 天步行 12 公里':'12 km walking on Day 2' }
+      ]},
+      { title:zh?'随身':'Carry-on 随身', items:[
+        { key:'p8', name:zh?'折叠伞':'Folding umbrella', why:zh?'第 4 天降雨 80%':'Day 4: 80% rain' },
+        { key:'p9', name:zh?'零钱包':'Coin purse for cash stalls', why:zh?'西市场以现金为主':'Nishi Market is cash-first' },
+        { key:'p10', name:zh?'可折购物袋':'Foldable tote for shopping' },
+        { key:'p11', name:zh?'止痛药、创可贴':'Painkillers, plasters', done:true }
+      ]},
+      { title:zh?'电子':'Electronics 电子', items:[
+        { key:'p12', name:zh?'A 型转接头 ×2':'Type-A plug adapter ×2', done:true },
+        { key:'p13', name:zh?'充电宝 10,000 mAh':'Power bank 10,000 mAh', done:true, why:zh?'只能随身':'Carry-on only' },
+        { key:'p14', name:zh?'相机 + 2 块电池':'Camera + 2 batteries' },
+        { key:'p15', name:zh?'已下载离线地图':'Offline map pack downloaded' }
+      ]}
+    ].concat(this.state.customCats);
+
+    let pd = 0, pt = 0;
+    const groups = prepDefs.map(g => {
+      const items = (g.items || []).map(it => { const c = this.chk(it.key, it.done); pt++; if (c.done) pd++;
+        const wi = this.state.packed[it.key] || 0;
+        return { ...it, ...c, why: it.why || '', whereLabel:this.x(WHERES[wi]), whereBg: wi ? '#E6EFEB' : '#F2F3F1', whereFg: wi ? J : '#98A5A0', onWhere:this.cycle('packed', it.key, WHERES) }; });
+      return { title:g.title, items, adding: this.state.addTo === g.title, addLabel:t.addItemTo,
+        count: items.filter(i => i.done).length + '/' + items.length,
+        onAdd: () => this.setState({ addTo:g.title, newItem:'' }),
+        onSave: () => this.setState(s => { const nm = s.newItem.trim(); if (!nm) return { addTo:null };
+          const cc = s.customCats.slice(); const hit = cc.find(c => c.title === g.title);
+          const it = { key:'c'+Date.now(), name:nm };
+          if (hit) hit.items = hit.items.concat([it]); else cc.push({ title:g.title, items:[it] });
+          return { customCats:cc, newItem:'', addTo:null }; }) };
+    });
+    const merged = [];
+    groups.forEach(g => { const h = merged.find(m => m.title === g.title);
+      if (h) { h.items = h.items.concat(g.items); h.count = h.items.filter(i => i.done).length + '/' + h.items.length; } else merged.push(g); });
+
+    const mustSee = [
+      { key:'m1', title:zh?'北门的红灯笼长廊':'Red lantern run, north gate', tag:zh?'最经典':'ICONIC', desc:zh?'一整排旧灯笼从北门一直挂到中间通道，是这个市场最常被拍到的画面。':'A full row of old lanterns from the north gate down the middle aisle — the shot this market is known for.', where:zh?'北门内 20 米':'20 m inside the north gate' },
+      { key:'m2', title:zh?'2 号桥看运河':'Canal from Bridge 2', tag:zh?'傍晚':'EVENING', desc:zh?'水面倒映着市场的铁皮屋顶，傍晚人少。':'The market\u2019s steel roofs reflected in the water; quieter towards evening.', where:zh?'2 号桥北侧栏杆':'Bridge 2, north rail' },
+      { key:'m3', title:zh?'磨刀师傅的工作台':'The knife sharpener\u2019s bench', tag:zh?'每天 14:00':'14:00 DAILY', desc:zh?'磨刀演示时火花与水雾同时出现，站在侧面拍。':'Sparks and spray during the demo. Shoot from the side, not the front.', where:zh?'中间通道 44 号摊':'Middle aisle, stall 44' },
+      { key:'m4', title:zh?'南侧站食酒馆':'South standing bars', tag:zh?'夜晚':'NIGHT', desc:zh?'17:00 后灯亮起，热气和人挤在一起，很有市场气氛。':'Lights come on after 17:00 — steam, crowd and signage all in one frame.', where:zh?'南侧出口':'South exit' }
+    ].map(m => { const done = !!this.state.shots[m.key];
+      return { ...m, ph:zh?'示例照片':'example photo', boxBg: done?J:'rgba(255,255,255,.9)', boxBd: done?J:'#fff', tick: done?'#fff':'#B4BEB9',
+        onToggle: () => this.setState(s => ({ shots:{...s.shots, [m.key]:!s.shots[m.key]} })) }; });
+
+    const destStops = [
+      { id:'lumen', label:zh?'流光十字路口':'Lumen Crossing', time:'09:15' },
+      { id:'ashgate', label:zh?'灰门神社':'Ashgate Shrine', time:'10:30' },
+      { id:'nishi', label:t.nishi, time:'13:30' },
+      { id:'kori', label:zh?'冰室甜品店（支线）':'Kōri Dessert Bar (sub)', time:'13:49' },
+      { id:'skyline', label:zh?'天际观景台':'Skyline Deck', time:'16:00' }
+    ].map(d => { const on = this.state.noteDest === d.id;
+      return { ...d, bd: on ? J : '#E7EAE7', dotBd: on ? J : '#D2D8D3', dotBg: on ? J : '#fff', onClick: () => this.setState({ noteDest:d.id }) }; });
+
+    const tabDef = [ ['map','tabMap','◎'], ['plan','tabPlan','☰'], ['shop','tabShop','袋'], ['prep','tabPrep','▣'], ['log','tabLog','✎'] ];
+    const activeTab = { dest:'map', free:'map', sub:'map', trips:'map', photo:'plan', note:'log' }[sc] || sc;
+
+    return {
+      t, isMap:sc==='map', isPlan:sc==='plan', isDest:sc==='dest', isFree:sc==='free', isSub:sc==='sub',
+      isShop:sc==='shop', isPhoto:sc==='photo', isPrep:sc==='prep', isLog:sc==='log', isNote:sc==='note', isTrips:sc==='trips',
+      goMap:this.go('map'), goPlan:this.go('plan'), goDest:this.go('dest'), goFree:this.go('free'), goSub:this.go('sub'),
+      goShop:this.go('shop'), goPhoto:this.go('photo'), goLog:this.go('log'), goNote:this.go('note'), goTrips:this.go('trips'),
+      goPlanEdit: () => this.setState({ screen:'plan', editing:true }),
+      langLabel: zh ? 'EN' : '中', toggleLang: () => this.setState({ lang: zh ? 'en' : 'zh' }),
+      dayPills:days, todayStops:stops, planItems, essentials, weather, wxToday,
+      editing, editLabel: editing ? t.done : t.edit, editBg: editing ? J : '#F2F3F1', editFg: editing ? '#fff' : '#3D4C46',
+      toggleEdit: () => this.setState(s => ({ editing: !s.editing })),
+      archive, hasArchive: archive.length > 0,
+      addStopOpen:this.state.addStopOpen, toggleAddStop: () => this.setState(s => ({ addStopOpen: !s.addStopOpen })),
+      asPlace:this.state.asForm.place, asTime:this.state.asForm.time,
+      setAsPlace: e => { const v = e.target.value; this.setState(s => ({ asForm:{...s.asForm, place:v} })); },
+      setAsTime: e => { const v = e.target.value; this.setState(s => ({ asForm:{...s.asForm, time:v} })); },
+      addStopOptions: [{ v:'', label: zh?'从收藏或周边选择':'From saved or nearby places' }]
+        .concat(withMeta.map(p => ({ v:p.name, label:p.name }))),
+      saveStop: () => this.setState(s => { const f = s.asForm; if (!f.place) return { addStopOpen:false };
+        const id = 'n' + Date.now();
+        return { planExtra: s.planExtra.concat([{ id, name:f.place, time: f.time || '15:00' }]),
+          planOrder: s.planOrder.concat([id]), asForm:{place:'',time:''}, addStopOpen:false }; }),
+      destTabs: [['info','dest'],['nearby','free'],['photos','photo'],['shop','shop'],['log','note']].map(([k,s2]) => ({
+        label:this.x(k), line: sc===s2 ? INK : 'transparent', fg: sc===s2 ? INK : MUT, onClick:this.go(s2) })),
+      nearbyTotal: keys.length + ' ' + t.places,
+      sortOpen:this.state.sortOpen, toggleSort: () => this.setState(s => ({ sortOpen: !s.sortOpen })),
+      sortBtnBg: this.state.sortOpen ? INK : '#fff', sortBtnFg: this.state.sortOpen ? '#fff' : '#3D4C46',
+      sortChips: ['byTime','byStay'].map(k => { const on = sort===k;
+        return { label:this.x(k), bg: on?'#F2F3F1':'transparent', fg: on?INK:MUT, dotBd: on?J:'#D2D8D3', dotBg: on?J:'#fff',
+          onClick: () => this.setState({ sort:k, sortOpen:false }) }; }),
+      catChips: CATS.map(c => ({ label:this.x(c), bg: c===cat?'#E6EFEB':'#F2F3F1', fg: c===cat?J:MUT, onClick: () => this.setState({ cat:c }) })),
+      nearby, nearbyHeader: nearby.length + ' ' + t.places + ' · ' + t.sortedBy + ' ' + this.x(sort).toLowerCase(),
+      placeOpen:this.state.placeOpen, togglePlace: () => this.setState(s => ({ placeOpen: !s.placeOpen })),
+      npName:this.state.np.name, npCat:this.state.np.cat, npWalk:this.state.np.walk,
+      setNpName: e => { const v = e.target.value; this.setState(s => ({ np:{...s.np, name:v} })); },
+      setNpCat: e => { const v = e.target.value; this.setState(s => ({ np:{...s.np, cat:v} })); },
+      setNpWalk: e => { const v = e.target.value; this.setState(s => ({ np:{...s.np, walk:v} })); },
+      catOptions: CATS.filter(c => c !== 'all').map(c => ({ v:c, label:this.x(c) })),
+      savePlace: () => this.setState(s => { const n = s.np; if (!n.name.trim()) return { placeOpen:false };
+        return { customPlaces: s.customPlaces.concat([{ id:'u'+Date.now(), name:n.name, cat:n.cat, walk: parseInt(n.walk,10) || 5 }]),
+          np:{name:'',cat:'food',walk:''}, placeOpen:false }; }),
+      subHeader: (zh ? '我的支线 · ' + order.length + ' 站' : 'MY SUB ROUTE · ' + order.length + ' STOPS'),
+      subSummary: order.length ? loopStops.map(l => l.name).join(' → ') : (zh ? '点击 + 添加地点' : 'Tap + to add places'),
+      subLine: order.length + ' ' + (zh?'站 · 13:45 出发，':'stops · out 13:45, back ') + hhmm(ret),
+      subWalk: dur(walkSum, zh), subStay: dur(staySum, zh), subBuffer: dur(Math.abs(buffer), zh),
+      bufBg: buffer >= 10 ? '#E6EFEB' : '#F8E9E9', bufFg: buffer >= 10 ? J : '#9B4B4B',
+      returnTime: hhmm(ret), loopStops,
+      backLabel: backHit.label, backId:this.state.backId, backMins:this.state.backMins,
+      backOptions: backOpts, backOpen:this.state.backOpen,
+      toggleBack: () => this.setState(s => ({ backOpen: !s.backOpen })),
+      setBackId: e => { const v = e.target.value; this.setState({ backId:v }); },
+      setBackMins: e => { const v = e.target.value; this.setState({ backMins:v }); },
+      bufferLine: buffer >= 0 ? (zh ? '比出发早 ' + buffer + ' 分钟' : buffer + ' min before departure') : (zh ? '晚了 ' + (-buffer) + ' 分钟' : (-buffer) + ' min LATE'),
+      shopSub: (zh ? totalN + ' 件 · ' + baseGroups.length + ' 个地点' : totalN + ' items · ' + baseGroups.length + ' places'),
+      addOpen:this.state.addOpen, addLabel: this.state.addOpen ? t.close : t.addItem,
+      toggleAdd: () => this.setState(s => ({ addOpen: !s.addOpen })),
+      fName:this.state.form.name, fPlace:this.state.form.place, fEst:this.state.form.est,
+      placeOptions: [{ v:'', label: zh?'选择地点（主路线或支线）':'Choose a place (main or sub route)' }]
+        .concat(destStops.map(d => ({ v:d.label, label:d.label })))
+        .concat([{ v: zh?'机场':'Airport', label: zh?'机场，安检前':'Airport, before security' }]),
+      setName: e => { const v = e.target.value; this.setState(s => ({ form:{...s.form, name:v} })); },
+      setPlace: e => { const v = e.target.value; this.setState(s => ({ form:{...s.form, place:v} })); },
+      setEst: e => { const v = e.target.value; this.setState(s => ({ form:{...s.form, est:v} })); },
+      payOptions: PAYS.map((p,i) => { const on = this.state.form.pay === i;
+        return { label:this.x(p), bg: on?INK:'#fff', fg: on?'#fff':MUT, bd: on?INK:'#E1E5E1', onClick: () => this.setState(s => ({ form:{...s.form, pay:i} })) }; }),
+      saveItem: () => this.setState(s => { const f = s.form; if (!f.name.trim()) return { addOpen:false };
+        const key = 'x' + Date.now(); const est = parseFloat(String(f.est).replace(/[^0-9.]/g,''));
+        return { extra: s.extra.concat([{ key, name:f.name, sub: f.place || (zh?'地点待定':'place to be decided'), est: est || null }]),
+          pay:{...s.pay, [key]: f.pay}, form:{name:'',place:'',est:'',pay:0}, addOpen:false }; }),
+      shopGroups, spentLabel: money(spent), plannedLabel: '/ ' + money(planned) + (zh ? ' 预估' : ' est.'),
+      rmLabel: Math.round(spent / 33.7).toLocaleString('en-US'),
+      spentPct: Math.min(100, Math.round(spent / Math.max(planned,1) * 100)) + '%',
+      payBreak: PAYS.map((p,i) => ({ label: this.x(p) + ' · ' + perPay[i].n + (zh?' 件 ':' × ') + money(perPay[i].sum),
+        bg: perPay[i].n ? '#E6EFEB' : '#F2F3F1', fg: perPay[i].n ? J : '#98A5A0' })),
+      mustSee, outfitChips: [
+        { label:zh?'铁锈红外套':'rust coat', bg:'#FBF1DE', fg:'#8A5A08' },
+        { label:zh?'米白针织':'cream knit', bg:'#F2F3F1', fg:'#3D4C46' },
+        { label:zh?'平底鞋':'flat shoes', bg:'#F2F3F1', fg:'#3D4C46' },
+        { label:zh?'→ 已加入出行准备':'→ added to Trip prep', bg:'#E6EFEB', fg:J }
+      ],
+      myOutfit: this.state.myOutfit.map((o,i) => ({ label:o,
+        onRemove: () => this.setState(s => ({ myOutfit: s.myOutfit.filter((_,k) => k !== i) })) })),
+      outfitPicks: (zh ? ['铁锈红外套','米白针织','平底鞋','披肩'] : ['Rust coat','Cream knit','Flat shoes','Shawl'])
+        .filter(o => this.state.myOutfit.indexOf(o) < 0)
+        .map(o => ({ label:o, onClick: () => this.setState(s => ({ myOutfit: s.myOutfit.concat([o]) })) })),
+      newOutfit:this.state.newOutfit,
+      setNewOutfit: e => { const v = e.target.value; this.setState({ newOutfit:v }); },
+      addOutfit: () => this.setState(s => s.newOutfit.trim() ? ({ myOutfit: s.myOutfit.concat([s.newOutfit.trim()]), newOutfit:'' }) : {}),
+      prepGroups: merged, prepPct: Math.round(pd/pt*100) + '%',
+      prepCount: (zh ? pd + ' / ' + pt + ' 已装' : pd + ' of ' + pt + ' packed'),
+      newItem:this.state.newItem, setNewItem: e => { const v = e.target.value; this.setState({ newItem:v }); },
+      cancelAddItem: () => this.setState({ addTo:null, newItem:'' }),
+      catOpen:this.state.catOpen, toggleCat: () => this.setState(s => ({ catOpen: !s.catOpen, newCat:'' })),
+      newCat:this.state.newCat, setNewCat: e => { const v = e.target.value; this.setState({ newCat:v }); },
+      saveCat: () => this.setState(s => s.newCat.trim() ? ({ customCats: s.customCats.concat([{ title:s.newCat, items:[] }]), newCat:'', catOpen:false }) : ({ catOpen:false })),
+      logEntries: [
+        { day:zh?'第 2 天 · 3月13日':'Day 2 · Mar 13', meta:zh?'6 站 · 12.4 公里':'6 stops · 12.4 km', metaFg:MUT, dest:zh?'灰门神社、港阶、山坡塔':'Ashgate Shrine · Harbour Steps · Hillside Tower', hasPhotos:true,
+          text:zh?'上坡比说明里写的更陡。07:40 拍到神社门，画面里没有人。甜品店没去到——周五休息。':'Hill walk was steeper than the note said. Got the shrine gate shot at 07:40 with nobody in frame. Missed the dessert bar — closed on Fridays.',
+          chips:[{label:zh?'必看 2/3':'2 of 3 must-see ✓',bg:'#E6EFEB',fg:J},{label:zh?'花费 ¥8,150':'¥8,150 spent',bg:'#F2F3F1',fg:'#3D4C46'},{label:zh?'走了 1 条支线':'1 sub route walked',bg:'#F2F3F1',fg:'#3D4C46'}], onClick:this.go('note') },
+        { day:zh?'第 3 天 · 今天':'Day 3 · Today', meta:zh?'进行中':'in progress', metaFg:A, dest:zh?'西市场':'Nishi Market', hasPhotos:false,
+          text:zh?'已完成 3 站，还有 3 站。在地点页点「添加记录」即可写下今天。':'3 stops done, 3 to go. Add today\u2019s note from the place screen.',
+          chips:[{label:zh?'待补记录':'note pending',bg:'#FBF1DE',fg:'#8A5A08'}], onClick:this.go('note') }
+      ],
+      noteDays: [1,2,3,4,5,6].map(n => { const on = this.state.noteDay === n;
+        return { label: zh ? '第 ' + n + ' 天' : 'D' + n, bg: on?INK:'#fff', fg: on?'#fff':MUT, bd: on?INK:'#E1E5E1', onClick: () => this.setState({ noteDay:n }) }; }),
+      noteDate: (zh ? '3月' + (11 + this.state.noteDay) + '日 · 子午城' : 'Mar ' + (11 + this.state.noteDay) + ' · Meridian City'),
+      noteDests: destStops, noteText:this.state.noteText,
+      setNoteText: e => { const v = e.target.value; this.setState({ noteText:v }); },
+      trips: [
+        { code:'MC', name:t.tripName, meta: zh?'3月12–17日 · 旅行社行程 · 6 天':'Mar 12–17 · agent itinerary · 6 days', tag: zh?'进行中':'ACTIVE', tagBg:'#E6EFEB', tagFg:J, bd:J, avBg:J, avFg:'#fff', onClick:this.go('map') },
+        { code:'SV', name: zh?'银港，独自旅行':'Silverport, solo', meta: zh?'6月4–9日 · 规划中 · 收藏 11 处':'Jun 4–9 · planning · 11 places saved', tag: zh?'草稿':'DRAFT', tagBg:'#EDEFEC', tagFg:'#98A5A0', bd:'#E7EAE7', avBg:'#F2F3F1', avFg:'#3D4C46', onClick:this.go('map') },
+        { code:'NR', name: zh?'北屿，家庭游':'Northreach, family', meta: zh?'去年 11 月 · 5 天 · 已记录':'Last Nov · 5 days · logged', tag: zh?'已完成':'PAST', tagBg:'#EDEFEC', tagFg:'#98A5A0', bd:'#E7EAE7', avBg:'#F2F3F1', avFg:'#3D4C46', onClick:this.go('log') }
+      ],
+      tabs: tabDef.map(([k,lk,g]) => ({ glyph:g, label:this.x(lk), bg: activeTab===k?'#F2F3F1':'transparent', fg: activeTab===k?INK:'#9AA6A1', onClick:this.go(k) }))
+    };
+  }
+}
+</script>
+</body>
+</html>

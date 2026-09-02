@@ -1,0 +1,116 @@
+<!DOCTYPE html>
+<html>
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<script src="./support.js"></script>
+</head>
+<body>
+<x-dc>
+<helmet data-dc-atomics><meta name="design_doc_mode" content="canvas"><link href="https://fonts.googleapis.com/css2?family=Public+Sans:ital,wght@0,300;0,400;0,500;0,600;0,700;1,400&family=Noto+Sans+SC:wght@400;500;700&display=swap" rel="stylesheet"><style>body{margin:0;background:#F2F3F1;font-family:'Public Sans','Noto Sans SC',system-ui,sans-serif;color:#14201C}a{color:#1F6F5C}a:hover{color:#14201C}.dv-turn{padding:44px 48px 40px;border-bottom:1px solid rgba(20,32,28,.08)}.dv-thd{display:flex;align-items:baseline;gap:10px;margin:0 0 24px}.dv-tid{font:800 10px ui-monospace,Menlo,monospace;padding:4px 8px;background:#14201C;color:#fff;border-radius:5px;text-decoration:none}.dv-tname{font:650 13px/1.2 'Public Sans',system-ui;color:#14201C}.dv-opts{display:flex;flex-wrap:wrap;gap:34px;align-items:flex-start}.dv-opt{flex:none;display:flex;flex-direction:column;gap:10px}.dv-oid{font:800 10.5px ui-monospace,Menlo,monospace;padding:3px 7px;background:rgba(20,32,28,.08);color:#14201C;border-radius:5px;text-decoration:none}.dv-olabel{display:flex;align-items:baseline;gap:8px;font:400 11.5px/1.3 'Public Sans',system-ui;color:#6B7A74;max-width:402px}.dv-opt:target .dv-oid{background:#1F6F5C;color:#fff}.dv-next{margin:26px 0 0;font:12px/1.6 'Public Sans',system-ui;color:#6B7A74}h3{font:700 15px/1.3 'Public Sans';margin:0 0 8px;letter-spacing:-.01em}p{margin:0 0 10px}</style></helmet>
+
+<section class="dv-turn" id="t2">
+<div class="dv-thd"><a class="dv-tid" href="#t2">2</a><span class="dv-tname">Your 13 changes applied — bilingual, sortable nearby, reorderable sub route, real spend</span></div>
+
+<div style="display:flex;gap:26px;flex-wrap:wrap;align-items:flex-start;margin-bottom:36px">
+<div style="width:520px;background:#fff;border-radius:18px;padding:24px 26px;border:1px solid rgba(20,32,28,.08)">
+<div style="font-size:10.5px;font-weight:800;letter-spacing:.1em;color:#98A5A0">WHAT CHANGED — BOTH REVIEW ROUNDS</div>
+<div style="display:flex;flex-direction:column;gap:10px;margin-top:14px">
+<div style="font-size:12.5px;line-height:1.5;color:#3D4C46"><b>Route language.</b> Status tags (DONE / NOW / NEXT) gone. AGENT → <b>MAIN</b>, MINE → <b>SUB</b>, including the legend. "Up next" removed — the app can't know where you are, so the sheet header names the day's span instead ("Old Quarter to Skyline").</div>
+<div style="font-size:12.5px;line-height:1.5;color:#3D4C46"><b>Map is navigable.</b> Every numbered pin and every amber sub-route pin opens the place screen. Pulling the sheet header up goes to Plan. The pencil is now one button, bottom right, and it opens Plan in <b>edit mode</b> — drag stops by the handle, remove with ✕, add a stop. Notes are no longer on the map rows; they live on "Add a note" in the place screen.</div>
+<div style="font-size:12.5px;line-height:1.5;color:#3D4C46"><b>Nearby.</b> No time gate — all places show, and you can add your own with <b>+ Add a place myself</b>. Sort moved into an icon on the right of the count line; opening it offers Travel time and Stay time only, since categories already sit as their own filter row. Multi-leg journeys are spelled out (Hillside Tower is 🚶 6 + 🚆 14 + 🚌 9).</div>
+<div style="font-size:12.5px;line-height:1.5;color:#3D4C46"><b>Sub route.</b> ▲▼ replaced by a three-line handle you hold and drag. The return row is editable: pick where you're heading back to — coach, next stop, hotel, station — and set the minutes it needs. Times and buffer recompute.</div>
+<div style="font-size:12.5px;line-height:1.5;color:#3D4C46"><b>Shopping.</b> Estimate optional, PAID field on tick, payment method per item, manual add with the place as a <b>dropdown of your main and sub route stops</b>. Ticking stamps the purchase date; unticking clears it. TODAY badge removed. The footer now breaks the spend down <b>by payment method</b>.</div>
+<div style="font-size:12.5px;line-height:1.5;color:#3D4C46"><b>Must-see.</b> Framing, lens, best time and crowd removed. Example images of the known shots, each with where to find it and a tick when you've got it.</div>
+<div style="font-size:12.5px;line-height:1.5;color:#3D4C46"><b>Prep.</b> "From your itinerary" block removed. Six-day forecast strip stays and drives the outfit advice. Add items and categories, each with a cancel; tag every item with where it's packed.</div>
+<div style="font-size:12.5px;line-height:1.5;color:#3D4C46"><b>Log.</b> "+ Spend" gone from the composer — the day's spend totals from the shopping list. The composer is reached from the place screen or by tapping a day in Log.</div>
+<div style="font-size:12.5px;line-height:1.5;color:#3D4C46"><b>Bilingual, everywhere.</b> Tabs now read Map / Plan / Shop / Prep / Log in English and 地图 / 行程 / 购物 / 准备 / 记录 in Chinese. Titles, group headings and item names switch too — no mixed-script labels left in either language.</div>
+</div>
+<div style="width:360px;background:#14201C;color:#fff;border-radius:18px;padding:24px 26px">
+<div style="font-size:10.5px;font-weight:800;letter-spacing:.1em;color:#8FB3A6">STILL OPEN</div>
+<div style="display:flex;flex-direction:column;gap:13px;margin-top:14px">
+<div style="font-size:12.5px;line-height:1.5;color:#C8D6D0">The sub route keeps its <b style="color:#fff">buffer</b> against the coach time. You didn't ask to remove it and it's the one thing protecting you from missing the bus — say if you'd rather it went.</div>
+<div style="font-size:12.5px;line-height:1.5;color:#C8D6D0">Reordering uses ▲▼ rather than drag, since drag needs a real touch surface to feel right. Worth specifying drag for the build.</div>
+<div style="font-size:12.5px;line-height:1.5;color:#C8D6D0">Currency: prices show ¥ with an ≈ RM conversion in the footer. Tell me the base currency you want and whether the rate should be live.</div>
+<div style="font-size:12.5px;line-height:1.5;color:#C8D6D0">Example photos are placeholders — the real app would pull them from a place API or your own saved images. I can't generate photos.</div>
+<div style="font-size:12.5px;line-height:1.5;color:#C8D6D0">Language toggle is per-device here; in the build it's one app setting.</div>
+</div>
+</div>
+</div>
+
+<div class="dv-opts">
+<div class="dv-opt" id="2a"><div class="dv-olabel"><a class="dv-oid" href="#2a">2a</a>Map home. Status tags gone, weather on every day pill, EN/中 toggle top right. Tap any pin to open the place; the pencil bottom right opens Plan in edit mode. Notes come from "Add a note" on the place screen.</div><dc-import name="Screen" start="map" hint-size="402px,874px"></dc-import></div>
+<div class="dv-opt" id="2b"><div class="dv-olabel"><a class="dv-oid" href="#2b">2b</a>Plan. MAIN and SUB badges, weather line at the top. Press Edit to rearrange the day.</div><dc-import name="Screen" start="plan" hint-size="402px,874px"></dc-import></div>
+<div class="dv-opt" id="2c"><div class="dv-olabel"><a class="dv-oid" href="#2c">2c</a>Destination. Five tabs — Info · Nearby · Must-see · Shop · <b>Log</b>.</div><dc-import name="Screen" start="dest" hint-size="402px,874px"></dc-import></div>
+<div class="dv-opt" id="2d"><div class="dv-olabel"><a class="dv-oid" href="#2d">2d</a>Nearby. All places, no time gate. Change the sort and category; note the multi-leg journeys (Hillside Tower is walk + train + bus).</div><dc-import name="Screen" start="free" hint-size="402px,874px"></dc-import></div>
+<div class="dv-opt" id="2e"><div class="dv-olabel"><a class="dv-oid" href="#2e">2e</a>Sub route. Hold the three-line handle and drag to reorder — times and buffer recalculate. The return row is editable.</div><dc-import name="Screen" start="sub" hint-size="402px,874px"></dc-import></div>
+<div class="dv-opt" id="2f"><div class="dv-olabel"><a class="dv-oid" href="#2f">2f</a>购物清单. Optional estimates, PAID field on ticked items, payment chip, + Add for unplanned buys.</div><dc-import name="Screen" start="shop" hint-size="402px,874px"></dc-import></div>
+<div class="dv-opt" id="2g"><div class="dv-olabel"><a class="dv-oid" href="#2g">2g</a>Must-see. Example images of the known shots, plus outfit advice driven by that day's weather.</div><dc-import name="Screen" start="photo" hint-size="402px,874px"></dc-import></div>
+<div class="dv-opt" id="2h"><div class="dv-olabel"><a class="dv-oid" href="#2h">2h</a>出行准备. Forecast strip, packed-in tags, add items and categories.</div><dc-import name="Screen" start="prep" hint-size="402px,874px"></dc-import></div>
+<div class="dv-opt" id="2i"><div class="dv-olabel"><a class="dv-oid" href="#2i">2i</a>Log. Tap a day to open its note.</div><dc-import name="Screen" start="log" hint-size="402px,874px"></dc-import></div>
+<div class="dv-opt" id="2j"><div class="dv-olabel"><a class="dv-oid" href="#2j">2j</a>Note composer — day, date, place, description.</div><dc-import name="Screen" start="note" hint-size="402px,874px"></dc-import></div>
+<div class="dv-opt" id="2k"><div class="dv-olabel"><a class="dv-oid" href="#2k">2k</a>中文 default, same screen as <a class="dv-oid" href="#2d">2d</a> — checking the layout holds with Chinese labels.</div><dc-import name="Screen" start="free" lang="zh" hint-size="402px,874px"></dc-import></div>
+<div class="dv-opt" id="2l"><div class="dv-olabel"><a class="dv-oid" href="#2l">2l</a>中文 shopping list.</div><dc-import name="Screen" start="shop" lang="zh" hint-size="402px,874px"></dc-import></div>
+</div>
+
+<p class="dv-next">Try next: "let me add a stop from search" · "drop the buffer" · "make 中文 the default" · "shopping should also group by day" · "add flight and hotel documents" · "show me 2 options for the Nearby card layout"</p>
+</section>
+
+<section class="dv-turn" id="t1">
+<div class="dv-thd"><a class="dv-tid" href="#t1">1</a><span class="dv-tname">Waypoint — first pass: information architecture + core screens</span></div>
+
+<div style="display:flex;gap:26px;flex-wrap:wrap;align-items:flex-start;margin-bottom:38px">
+<div style="width:520px;background:#fff;border-radius:18px;padding:26px 28px;border:1px solid rgba(20,32,28,.08)">
+<div style="font-size:10.5px;font-weight:800;letter-spacing:.1em;color:#98A5A0">MY ASSUMPTIONS — CORRECT ME</div>
+<div style="font-size:22px;font-weight:700;letter-spacing:-.02em;margin:8px 0 16px">One trip, two kinds of route</div>
+<p style="font-size:13.5px;line-height:1.6;color:#3D4C46;text-wrap:pretty">Your brief has one structural idea underneath it: the agent owns the spine of the day, and you own the gaps. So the whole app is built on that split. The <b>main route</b> is fixed, numbered and solid green — you can read it but not move it. Every stop on it exposes its <b>slack</b> ("2h 15m free"), and that slack is the doorway to everything you plan yourself: nearby places, shopping stops, photo spots. Your own additions are always dashed and amber, so at a glance you know what is committed versus what is yours.</p>
+<p style="font-size:13.5px;line-height:1.6;color:#3D4C46">Design system attached to this project is empty, so I set the direction: Public Sans, a deep-jade / bone palette, jade for the agent, amber for you. Say the word and I'll swap it.</p>
+<div style="height:1px;background:#EDEFEC;margin:18px 0"></div>
+<div style="font-size:10.5px;font-weight:800;letter-spacing:.1em;color:#98A5A0">NAVIGATION</div>
+<p style="font-size:13.5px;line-height:1.6;color:#3D4C46;margin-top:8px">Five tabs: <b>Map</b> (home, per your pick — timeline rides on it as a sheet), <b>Plan</b>, <b>购物</b>, <b>准备</b>, <b>Log</b>. Destination detail, the free-time explorer and shot cards are pushed screens, not tabs — they always belong to a stop. Trips live behind the header chip, so adding a second trip later needs no new navigation.</p>
+</div>
+
+<div style="width:520px;background:#14201C;color:#fff;border-radius:18px;padding:26px 28px">
+<div style="font-size:10.5px;font-weight:800;letter-spacing:.1em;color:#8FB3A6">HOW THE PIECES FEED EACH OTHER</div>
+<div style="font-size:22px;font-weight:700;letter-spacing:-.02em;margin:8px 0 16px">The place is the atom</div>
+<p style="font-size:13.5px;line-height:1.6;color:#C8D6D0">Rather than five unrelated lists, everything hangs off one object — a <b style="color:#fff">place</b>. A place can carry practical info, shopping items, shot cards and gear requirements. That single relationship is what makes the app feel joined up:</p>
+<div style="display:flex;flex-direction:column;gap:9px;margin-top:14px">
+<div style="display:flex;gap:11px;padding:11px 13px;background:rgba(255,255,255,.07);border-radius:11px"><div style="font-size:11px;font-weight:800;color:#C87F0A;width:16px;flex:none">1</div><div style="font-size:12.5px;line-height:1.5;color:#E4EBE8">Add a nearby place to a free-time loop → its shopping items appear in 购物清单 tagged with that day and time window.</div></div>
+<div style="display:flex;gap:11px;padding:11px 13px;background:rgba(255,255,255,.07);border-radius:11px"><div style="font-size:11px;font-weight:800;color:#C87F0A;width:16px;flex:none">2</div><div style="font-size:12.5px;line-height:1.5;color:#E4EBE8">A shot card's 穿搭 note pushes the garment into 出行准备, so packing is derived from the itinerary rather than remembered.</div></div>
+<div style="display:flex;gap:11px;padding:11px 13px;background:rgba(255,255,255,.07);border-radius:11px"><div style="font-size:11px;font-weight:800;color:#C87F0A;width:16px;flex:none">3</div><div style="font-size:12.5px;line-height:1.5;color:#E4EBE8">A place's opening hours are checked against the stop's time window — a shop that shuts at 16:00 can't be suggested for a 17:00 gap.</div></div>
+<div style="display:flex;gap:11px;padding:11px 13px;background:rgba(255,255,255,.07);border-radius:11px"><div style="font-size:11px;font-weight:800;color:#C87F0A;width:16px;flex:none">4</div><div style="font-size:12.5px;line-height:1.5;color:#E4EBE8">Every loop is time-checked against the coach departure and shows the buffer, so free time never becomes a missed bus.</div></div>
+<div style="display:flex;gap:11px;padding:11px 13px;background:rgba(255,255,255,.07);border-radius:11px"><div style="font-size:11px;font-weight:800;color:#C87F0A;width:16px;flex:none">5</div><div style="font-size:12.5px;line-height:1.5;color:#E4EBE8">Marking an item bought writes the real price into the budget; marking a shot taken feeds the Log. Planning becomes the log by being used.</div></div>
+</div>
+</div>
+
+<div style="width:360px;background:#fff;border-radius:18px;padding:24px;border:1px solid rgba(20,32,28,.08)">
+<div style="font-size:10.5px;font-weight:800;letter-spacing:.1em;color:#98A5A0">THINGS I ADDED — SAY YES OR NO</div>
+<div style="display:flex;flex-direction:column;gap:13px;margin-top:14px">
+<div><h3>Return-by guard</h3><p style="font-size:12.5px;line-height:1.5;color:#6B7A74">Loops show buffer against the coach time and warn when you overrun.</p></div>
+<div><h3>Last-chance shopping</h3><p style="font-size:12.5px;line-height:1.5;color:#6B7A74">Items get a final window (airport, last free afternoon) so nothing is missed.</p></div>
+<div><h3>Prep derived from plan</h3><p style="font-size:12.5px;line-height:1.5;color:#6B7A74">Rain day, dress-code stop or hill walk each add their own packing line, with the reason shown.</p></div>
+<div><h3>Saved-but-not-reached</h3><p style="font-size:12.5px;line-height:1.5;color:#6B7A74">Places you never got to carry into the next trip instead of being lost.</p></div>
+<div><h3>Offline pack</h3><p style="font-size:12.5px;line-height:1.5;color:#6B7A74">Map tiles, hours and shot cards cached — free time usually happens without signal.</p></div>
+<div><h3>Cash-first flags</h3><p style="font-size:12.5px;line-height:1.5;color:#6B7A74">Payment method and nearest ATM on every place, since markets are cash-only.</p></div>
+</div>
+</div>
+</div>
+
+<div class="dv-opts">
+<div class="dv-opt" id="1a"><div class="dv-olabel"><a class="dv-oid" href="#1a">1a</a>Map home. Agent route solid jade and numbered; my free-time loop dashed amber. Stop 5 is dark because it has slack. Sheet peeks today's timeline.</div><dc-import name="Screen v1" start="map" hint-size="402px,874px"></dc-import></div>
+<div class="dv-opt" id="1b"><div class="dv-olabel"><a class="dv-oid" href="#1b">1b</a>Day timeline. Agent rows are white cards on a solid line; my loop is a dashed amber card inserted inline at 13:45 — one column, two authorships.</div><dc-import name="Screen v1" start="plan" hint-size="402px,874px"></dc-import></div>
+<div class="dv-opt" id="1c"><div class="dv-olabel"><a class="dv-oid" href="#1c">1c</a>Destination detail. Need-to-know as a label/value table rather than icon soup, both map handoffs above it, and three doorways: free time, 机位, shopping here.</div><dc-import name="Screen v1" start="dest" hint-size="402px,874px"></dc-import></div>
+<div class="dv-opt" id="1d"><div class="dv-olabel"><a class="dv-oid" href="#1d">1d</a>Free-time explorer — the pool model you picked. Set how long you have, and the list is filtered by walk + dwell time. Try the 30 min / 1h chips.</div><dc-import name="Screen v1" start="free" hint-size="402px,874px"></dc-import></div>
+<div class="dv-opt" id="1e"><div class="dv-olabel"><a class="dv-oid" href="#1e">1e</a>The loop, built. Sub-route drawn as a dashed excursion off Stop 5, with arrival times, a 13-minute buffer, and a single button that hands the walk to Maps.</div><dc-import name="Screen v1" start="sub" hint-size="402px,874px"></dc-import></div>
+<div class="dv-opt" id="1f"><div class="dv-olabel"><a class="dv-oid" href="#1f">1f</a>购物清单 grouped by place, each group stamped with the day and window it's reachable. Tap to mark bought; the footer keeps the running total in both currencies.</div><dc-import name="Screen v1" start="shop" hint-size="402px,874px"></dc-import></div>
+<div class="dv-opt" id="1g"><div class="dv-olabel"><a class="dv-oid" href="#1g">1g</a>机位 shot card. Framing diagram with where you stand and where the subject sits, plus time, lens, crowd, 穿搭 and a stand-here mini-map.</div><dc-import name="Screen v1" start="photo" hint-size="402px,874px"></dc-import></div>
+<div class="dv-opt" id="1h"><div class="dv-olabel"><a class="dv-oid" href="#1h">1h</a>出行准备. Every line can explain itself — "Day 4: 80% rain", "shot cards need 35mm" — so the list is auditable rather than generic.</div><dc-import name="Screen v1" start="prep" hint-size="402px,874px"></dc-import></div>
+<div class="dv-opt" id="1i"><div class="dv-olabel"><a class="dv-oid" href="#1i">1i</a>Log, its own tab. Days seed themselves from what you actually did: photos, spend, shots hit and missed, loops walked.</div><dc-import name="Screen v1" start="log" hint-size="402px,874px"></dc-import></div>
+<div class="dv-opt" id="1j"><div class="dv-olabel"><a class="dv-oid" href="#1j">1j</a>Trips, behind the header chip. Active, draft and past in one list, so a second trip is additive.</div><dc-import name="Screen v1" start="trips" hint-size="402px,874px"></dc-import></div>
+</div>
+
+<p class="dv-next">All ten phones are live — tap through them. Then: "send the screenshots, redo the map style like those" · "give me 3 options for the free-time explorer <a class="dv-oid" href="#1d">1d</a>" · "the route colours should be X" · "add a Nearby list grouped by category instead of walk time"</p>
+</section>
+</x-dc>
+</body>
+</html>
