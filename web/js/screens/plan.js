@@ -7,7 +7,7 @@ import { html, raw, icon, delegate, parseClock } from '../util.js';
 import * as store from '../store.js';
 import { state } from '../store.js';
 import { go } from '../nav.js';
-import { dayPills, weatherBanner, emptyDay, bindDragReorder } from './parts.js';
+import { dayPills, weatherBanner, emptyDay, bindDragReorder, swipeToDelete } from './parts.js';
 
 let addOpen = false;
 let form = { name: '', time: '', kind: 'main' };
@@ -31,8 +31,11 @@ export default {
               <div class="screen-title">Day ${day?.dayNumber ?? ''}</div>
               <div class="screen-sub">${day?.dateLabel || ''}</div>
             </div>
-            <button class="btn sm ${editing ? 'jade' : 'ghost'}" data-act="toggle-edit">
-              ${editing ? 'Done' : 'Edit'}
+            <button class="iconbtn filled" data-act="toggle-edit"
+                    style="${editing ? 'background:var(--jade)' : ''}"
+                    aria-label="${editing ? 'Finish editing' : 'Edit this day'}"
+                    aria-pressed="${editing ? 'true' : 'false'}">
+              ${raw(editing ? icon.tick('#fff', 15) : icon.pencil('#14201C', 17))}
             </button>
           </div>
           <div class="chiprow mt10">${dayPills({ small: true })}</div>
@@ -54,8 +57,9 @@ export default {
           ${editing ? html`
             ${addOpen ? addForm() : ''}
             <button class="btn-dashed mt8" data-act="add-open">+ Add a stop</button>
-            ${archived.length ? archive(archived) : ''}
           ` : ''}
+
+          ${archived.length ? archive(archived, editing) : ''}
         </div>
       </section>`;
   },
@@ -67,8 +71,10 @@ export default {
       store.setEditingPlan(!state.editingPlan);
     });
     delegate(root, '[data-open]', (el) => {
-      // Edit mode owns the row: drag, retime and remove, but no navigation.
-      if (state.editingPlan) return;
+      // Edit mode owns live rows — drag, retime, remove — but an archived row
+      // is only ever a link.
+      const archivedRow = el.closest('[data-plan-row]');
+      if (state.editingPlan && !archivedRow) return;
       const hit = store.planItem(el.dataset.open);
       if (!hit) return;
       if (hit.item.isSubRouteSummary) go('sub');
@@ -116,6 +122,12 @@ export default {
       const hit = store.place(event.target.value);
       const nameBox = root.querySelector('#add-name');
       if (hit && nameBox && !nameBox.value.trim()) nameBox.value = hit.name;
+    });
+
+    swipeToDelete(root, {
+      rowSelector: '[data-plan-row]',
+      label: (row) => `Delete "${row.dataset.planName}" from this trip? It will not go to the archive.`,
+      onDelete: (row) => store.deletePlanItem(state.selectedDay, row.dataset.planRow),
     });
 
     if (state.editingPlan) {
@@ -202,25 +214,36 @@ function addForm() {
     </div>`;
 }
 
-function archive(rows) {
+/**
+ * Point 11: removed stops stay visible on the day so you can still open them
+ * and read their info. Putting one back, or moving it to another day, is an
+ * edit — so those controls only appear in edit mode.
+ */
+function archive(rows, editing) {
   const dayCount = state.trip?.dayCount || 6;
   return html`
     <div class="mt18">
       <div class="eyebrow">REMOVED FROM THIS DAY</div>
       ${rows.map((item) => html`
-        <div class="archive-card">
-          <div class="row g8" style="align-items:flex-start">
-            <div class="grow">
-              <div class="archive-name">${item.name}</div>
-              <div class="archive-was">was ${item.time}</div>
+        <div class="swipe-row mt8" data-plan-row="${item.id}" data-plan-name="${item.name}">
+          <div class="swipe-bin"><button class="bin" data-swipe-delete aria-label="Delete ${item.name}">${raw(icon.bin)}</button></div>
+          <div class="swipe-face archive-card">
+            <div class="row g8" style="align-items:flex-start">
+              <button class="grow" style="text-align:left" data-open="${item.id}">
+                <div class="archive-name">${item.name}</div>
+                <div class="archive-was">was ${item.time} · tap to open</div>
+              </button>
+              ${editing
+                ? html`<button class="archive-btn" data-act="restore" data-id="${item.id}">Add back</button>`
+                : ''}
             </div>
-            <button class="archive-btn" data-act="restore" data-id="${item.id}">Add back</button>
-          </div>
-          <div class="row g6 center mt8 wrap">
-            <span class="archive-move">MOVE TO</span>
-            ${Array.from({ length: dayCount }, (_, i) => i + 1)
-              .filter((n) => n !== state.selectedDay)
-              .map((n) => html`<button class="archive-day" data-act="move-day" data-id="${item.id}" data-to="${n}">D${n}</button>`)}
+            ${editing ? html`
+              <div class="row g6 center mt8 wrap">
+                <span class="archive-move">MOVE TO</span>
+                ${Array.from({ length: dayCount }, (_, i) => i + 1)
+                  .filter((n) => n !== state.selectedDay)
+                  .map((n) => html`<button class="archive-day" data-act="move-day" data-id="${item.id}" data-to="${n}">D${n}</button>`)}
+              </div>` : ''}
           </div>
         </div>`)}
     </div>`;

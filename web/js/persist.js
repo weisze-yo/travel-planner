@@ -11,29 +11,49 @@ import { TRIP_ID } from './data.js';
 
 export const KINDS = ['days', 'places', 'subRoutes', 'shopping', 'mustSee', 'prep', 'log', 'outfits'];
 
-const LOCAL_KEY = 'travel-planner:snapshot:v1';
+const LOCAL_PREFIX = 'travel-planner:trip:';
+const LOCAL_INDEX = 'travel-planner:trips';
+const ACTIVE_KEY = 'travel-planner:active-trip';
 const cdn = (mod) => `https://www.gstatic.com/firebasejs/${FIREBASE_SDK}/firebase-${mod}.js`;
 
 export function isConfigured(config = firebaseConfig) {
   return Boolean(config && config.apiKey && config.projectId);
 }
 
+/** Which trip the app last had open, so a relaunch returns to it. */
+export function readActiveTripID() {
+  try {
+    return localStorage.getItem(ACTIVE_KEY) || null;
+  } catch {
+    return null;
+  }
+}
+
+export function writeActiveTripID(tripID) {
+  try {
+    if (tripID) localStorage.setItem(ACTIVE_KEY, tripID);
+    else localStorage.removeItem(ACTIVE_KEY);
+  } catch {
+    // Private browsing; the app still works for this session.
+  }
+}
+
 /** Picks the best backend available, never throwing. */
-export async function createBackend() {
+export async function createBackend(tripID) {
   if (isConfigured()) {
     try {
-      return await createFirebaseBackend();
+      return await createFirebaseBackend(tripID);
     } catch (error) {
       console.warn('[travel-planner] Firebase unreachable — saving to this device only.', error);
-      return createLocalBackend({ degradedFrom: error });
+      return createLocalBackend(tripID, { degradedFrom: error });
     }
   }
-  return createLocalBackend();
+  return createLocalBackend(tripID);
 }
 
 // ------------------------------------------------------------------ firebase
 
-async function createFirebaseBackend() {
+async function createFirebaseBackend(tripID) {
   const [{ initializeApp }, authMod, dbMod, storageMod] = await Promise.all([
     import(cdn('app')),
     import(cdn('auth')),
@@ -75,7 +95,8 @@ async function createFirebaseBackend() {
   const uid = restored ? restored.uid : (await authMod.signInAnonymously(auth)).user.uid;
 
   const { doc, collection, getDocs, getDoc, setDoc, deleteDoc, writeBatch, onSnapshot } = dbMod;
-  const tripRef = doc(db, 'users', uid, 'trips', TRIP_ID);
+  const tripsRef = collection(db, 'users', uid, 'trips');
+  const tripRef = doc(tripsRef, tripID);
   const kindRef = (kind) => collection(tripRef, kind);
 
   let storage = null;
@@ -87,6 +108,7 @@ async function createFirebaseBackend() {
   return {
     mode: 'firebase',
     uid,
+    tripID,
     // No bucket in the config means Storage was never enabled.
     hasBucket: Boolean(firebaseConfig.storageBucket),
 
@@ -140,8 +162,33 @@ async function createFirebaseBackend() {
       return () => stop.forEach((fn) => fn());
     },
 
+    /** Every trip this account has, for the home screen. */
+    async listTrips() {
+      const snap = await getDocs(tripsRef);
+      return snap.docs.map((d) => d.data());
+    },
+
+    async createTrip(trip) {
+      await setDoc(doc(tripsRef, trip.id), trip);
+    },
+
+    /** Removes the trip and everything under it. */
+    async deleteTrip(id) {
+      const target = doc(tripsRef, id);
+      for (const kind of KINDS) {
+        const rows = await getDocs(collection(target, kind));
+        // Batched in chunks; Firestore caps a batch at 500 writes.
+        for (let i = 0; i < rows.docs.length; i += 400) {
+          const batch = writeBatch(db);
+          rows.docs.slice(i, i + 400).forEach((d) => batch.delete(d.ref));
+          await batch.commit();
+        }
+      }
+      await deleteDoc(target);
+    },
+
     async uploadPhoto(file, path) {
-      const ref = storageMod.ref(bucket(), `users/${uid}/trips/${TRIP_ID}/${path}`);
+      const ref = storageMod.ref(bucket(), `users/${uid}/trips/${tripID}/${path}`);
       await storageMod.uploadBytes(ref, file);
       return storageMod.getDownloadURL(ref);
     },
@@ -154,31 +201,65 @@ function report(error) {
 
 // --------------------------------------------------------------------- local
 
-export function createLocalBackend({ degradedFrom = null } = {}) {
-  const read = () => {
+export function createLocalBackend(tripID, { degradedFrom = null } = {}) {
+  const key = LOCAL_PREFIX + tripID;
+
+  const readJSON = (name, fallback) => {
     try {
-      const stored = localStorage.getItem(LOCAL_KEY);
-      return stored ? JSON.parse(stored) : null;
+      const stored = localStorage.getItem(name);
+      return stored ? JSON.parse(stored) : fallback;
     } catch {
-      return null;
+      return fallback;
     }
   };
 
-  let snapshot = read();
-
-  const flush = () => {
+  const writeJSON = (name, value) => {
     try {
-      localStorage.setItem(LOCAL_KEY, JSON.stringify(snapshot));
+      localStorage.setItem(name, JSON.stringify(value));
     } catch {
       // Private browsing, or the quota is full. The session still works.
     }
   };
 
+  const read = () => readJSON(key, null);
+  let snapshot = read();
+
+  const flush = () => writeJSON(key, snapshot);
+
+  const index = () => readJSON(LOCAL_INDEX, []);
+  const noteInIndex = (trip) => {
+    const trips = index().filter((t) => t.id !== trip.id);
+    trips.push({ id: trip.id, name: trip.name });
+    writeJSON(LOCAL_INDEX, trips);
+  };
+
   return {
     mode: 'local',
     uid: 'local-device',
+    tripID,
     hasBucket: false,
     degradedFrom,
+
+    async listTrips() {
+      return index()
+        .map((entry) => readJSON(LOCAL_PREFIX + entry.id, null)?.trip)
+        .filter(Boolean);
+    },
+
+    async createTrip(trip) {
+      writeJSON(LOCAL_PREFIX + trip.id, {
+        trip, days: [], places: [], subRoutes: [], shopping: [],
+        mustSee: [], prep: [], log: [], outfits: [],
+      });
+      noteInIndex(trip);
+    },
+
+    async deleteTrip(id) {
+      try {
+        localStorage.removeItem(LOCAL_PREFIX + id);
+      } catch { /* nothing to remove */ }
+      writeJSON(LOCAL_INDEX, index().filter((t) => t.id !== id));
+    },
 
     async loadAll() {
       snapshot = read();
@@ -188,12 +269,14 @@ export function createLocalBackend({ degradedFrom = null } = {}) {
     async seed(next) {
       snapshot = JSON.parse(JSON.stringify(next));
       flush();
+      noteInIndex(snapshot.trip);
     },
 
     putTrip(trip) {
       if (!snapshot) return;
       snapshot.trip = trip;
       flush();
+      noteInIndex(trip);
     },
 
     put(kind, row) {

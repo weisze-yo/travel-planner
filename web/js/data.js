@@ -172,14 +172,14 @@ const AOI_WHEN = 'Day 3 · sub route, optional';
 const AIR_WHEN = 'Day 6 · 3 h layover';
 
 export const SHOPPING = [
-  { id: 'k1', name: 'Kitchen knife', detail: 'Middle aisle, stall 44', placeLabel: 'Nishi Market', placeWhen: NISHI_WHEN, badge: 'none', groupOrder: 0, order: 0, estimate: 5000, paidAmount: null, payment: 'cash', bought: false, boughtOn: null, isUnplanned: false },
-  { id: 'k2', name: 'Dried scallop', detail: 'North end · sold per 100 g', placeLabel: 'Nishi Market', placeWhen: NISHI_WHEN, badge: 'none', groupOrder: 0, order: 1, estimate: 1800, paidAmount: null, payment: 'cash', bought: false, boughtOn: null, isUnplanned: false },
-  { id: 'k3', name: 'Ceramic cups ×4', detail: 'Craft arcade, 11 min walk', placeLabel: 'Nishi Market', placeWhen: NISHI_WHEN, badge: 'none', groupOrder: 0, order: 2, estimate: 3200, paidAmount: null, payment: 'cash', bought: false, boughtOn: null, isUnplanned: false },
-  { id: 'k4', name: 'Yuzu pepper', detail: 'Any dried-goods stall', placeLabel: 'Nishi Market', placeWhen: NISHI_WHEN, badge: 'none', groupOrder: 0, order: 3, estimate: null, paidAmount: null, payment: 'cash', bought: false, boughtOn: null, isUnplanned: false },
-  { id: 'k5', name: '35mm prime lens, used', detail: 'Compare 3 shops before buying', placeLabel: 'Aoi Camera Alley', placeWhen: AOI_WHEN, badge: 'ifTime', groupOrder: 1, order: 0, estimate: 20000, paidAmount: null, payment: 'cash', bought: false, boughtOn: null, isUnplanned: false },
-  { id: 'k6', name: 'Camera strap', detail: 'Leather, second lane', placeLabel: 'Aoi Camera Alley', placeWhen: AOI_WHEN, badge: 'ifTime', groupOrder: 1, order: 1, estimate: null, paidAmount: null, payment: 'cash', bought: false, boughtOn: null, isUnplanned: false },
-  { id: 'k7', name: 'Gift boxes ×3', detail: 'Cheaper in town, but safe fallback', placeLabel: 'Airport, before security', placeWhen: AIR_WHEN, badge: 'lastChance', groupOrder: 2, order: 0, estimate: 4500, paidAmount: null, payment: 'cash', bought: false, boughtOn: null, isUnplanned: false },
-  { id: 'k8', name: 'Matcha tin', detail: 'Duty-free counter B', placeLabel: 'Airport, before security', placeWhen: AIR_WHEN, badge: 'lastChance', groupOrder: 2, order: 1, estimate: 2600, paidAmount: 2400, payment: 'card', bought: true, boughtOn: '2026-03-11', isUnplanned: false },
+  { id: 'k1', category: 'other', name: 'Kitchen knife', detail: 'Middle aisle, stall 44', placeLabel: 'Nishi Market', placeWhen: NISHI_WHEN, badge: 'none', groupOrder: 0, order: 0, estimate: 5000, paidAmount: null, payment: 'cash', bought: false, boughtOn: null, isUnplanned: false },
+  { id: 'k2', category: 'food', name: 'Dried scallop', detail: 'North end · sold per 100 g', placeLabel: 'Nishi Market', placeWhen: NISHI_WHEN, badge: 'none', groupOrder: 0, order: 1, estimate: 1800, paidAmount: null, payment: 'cash', bought: false, boughtOn: null, isUnplanned: false },
+  { id: 'k3', category: 'other', name: 'Ceramic cups ×4', detail: 'Craft arcade, 11 min walk', placeLabel: 'Nishi Market', placeWhen: NISHI_WHEN, badge: 'none', groupOrder: 0, order: 2, estimate: 3200, paidAmount: null, payment: 'cash', bought: false, boughtOn: null, isUnplanned: false },
+  { id: 'k4', category: 'food', name: 'Yuzu pepper', detail: 'Any dried-goods stall', placeLabel: 'Nishi Market', placeWhen: NISHI_WHEN, badge: 'none', groupOrder: 0, order: 3, estimate: null, paidAmount: null, payment: 'cash', bought: false, boughtOn: null, isUnplanned: false },
+  { id: 'k5', category: 'other', name: '35mm prime lens, used', detail: 'Compare 3 shops before buying', placeLabel: 'Aoi Camera Alley', placeWhen: AOI_WHEN, badge: 'ifTime', groupOrder: 1, order: 0, estimate: 20000, paidAmount: null, payment: 'cash', bought: false, boughtOn: null, isUnplanned: false },
+  { id: 'k6', category: 'other', name: 'Camera strap', detail: 'Leather, second lane', placeLabel: 'Aoi Camera Alley', placeWhen: AOI_WHEN, badge: 'ifTime', groupOrder: 1, order: 1, estimate: null, paidAmount: null, payment: 'cash', bought: false, boughtOn: null, isUnplanned: false },
+  { id: 'k7', category: 'souvenir', name: 'Gift boxes ×3', detail: 'Cheaper in town, but safe fallback', placeLabel: 'Airport, before security', placeWhen: AIR_WHEN, badge: 'lastChance', groupOrder: 2, order: 0, estimate: 4500, paidAmount: null, payment: 'cash', bought: false, boughtOn: null, isUnplanned: false },
+  { id: 'k8', category: 'food', name: 'Matcha tin', detail: 'Duty-free counter B', placeLabel: 'Airport, before security', placeWhen: AIR_WHEN, badge: 'lastChance', groupOrder: 2, order: 1, estimate: 2600, paidAmount: 2400, payment: 'card', bought: true, boughtOn: '2026-03-11', isUnplanned: false },
 ];
 
 export const MUST_SEE = [
@@ -256,6 +256,15 @@ export const PAYMENTS = [
   { id: 'card', label: 'Card' },
   { id: 'ic', label: 'IC card' },
   { id: 'ewallet', label: 'E-wallet' },
+];
+
+/** Shopping categories, kept to five so the spend report stays readable. */
+export const SHOP_CATEGORIES = [
+  { id: 'food', label: 'Food' },
+  { id: 'clothing', label: 'Clothing' },
+  { id: 'souvenir', label: 'Souvenir' },
+  { id: 'beauty', label: 'Health & beauty' },
+  { id: 'other', label: 'Other' },
 ];
 
 export const PACKED_LOCATIONS = [

@@ -30,6 +30,8 @@ const ASSETS = [
   './js/screens/log.js',
   './js/screens/note.js',
   './js/screens/trip.js',
+  './js/screens/trips.js',
+  './js/screens/spend.js',
   './js/net.js',
   './icons/icon.svg',
   './icons/icon-180.png',

@@ -1,11 +1,12 @@
 // Screen 2i — Log. Days seed themselves from what you actually did; tap one to
 // open its note.
 
-import { html, delegate } from '../util.js';
+import { html, raw, icon, delegate } from '../util.js';
 import * as store from '../store.js';
 import { state } from '../store.js';
 import { go } from '../nav.js';
 import { RECAP_TEXT } from '../data.js';
+import { swipeToDelete } from './parts.js';
 
 export default {
   id: 'log',
@@ -37,6 +38,12 @@ export default {
   },
 
   mount(root) {
+    swipeToDelete(root, {
+      rowSelector: '[data-log-row]',
+      label: (row) => `Delete the note for ${row.dataset.logName}?`,
+      onDelete: (row) => store.deleteLogEntry(row.dataset.logRow),
+    });
+
     delegate(root, '[data-day-note]', (el) => {
       go('note', { dayNumber: Number(el.dataset.dayNote) });
     });
@@ -50,7 +57,9 @@ function card(entry) {
   const shown = photos.slice(0, 3);
   const extra = photos.length - shown.length;
   return html`
-    <button class="log-card mb12" data-day-note="${entry.dayNumber}">
+    <div class="swipe-row mb12" data-log-row="${entry.id}" data-log-name="${entry.dayLabel}">
+      <div class="swipe-bin"><button class="bin" data-swipe-delete aria-label="Delete the note for ${entry.dayLabel}">${raw(icon.bin)}</button></div>
+      <button class="swipe-face log-card" data-day-note="${entry.dayNumber}">
       <div class="row between g8" style="align-items:baseline">
         <div class="log-day">${entry.dayLabel} · ${entry.dateLabel}</div>
         <div class="log-meta${entry.metaIsLive ? ' live' : ''}">${entry.meta}</div>
@@ -70,5 +79,6 @@ function card(entry) {
           ${entry.chips.map((chip) => html`
             <span class="chip ${chip.tone === 'jade' ? 'jade' : chip.tone === 'amber' ? 'amber' : ''}">${chip.label}</span>`)}
         </div>` : ''}
-    </button>`;
+      </button>
+    </div>`;
 }

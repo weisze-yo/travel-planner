@@ -1,7 +1,8 @@
 // Boot: bring up storage, register screens, show the first one.
 
 import { $ } from './util.js';
-import { boot, state } from './store.js';
+import { boot, closeTrip, state } from './store.js';
+import { readActiveTripID } from './persist.js';
 import { register, start } from './nav.js';
 
 import map from './screens/map.js';
@@ -15,14 +16,19 @@ import prep from './screens/prep.js';
 import log from './screens/log.js';
 import note from './screens/note.js';
 import trip from './screens/trip.js';
+import trips from './screens/trips.js';
+import spend from './screens/spend.js';
 
-for (const screen of [map, plan, dest, nearby, sub, shop, mustsee, prep, log, note, trip]) {
+for (const screen of [map, plan, dest, nearby, sub, shop, mustsee, prep, log, note, trip, trips, spend]) {
   register(screen);
 }
 
 const cover = $('#boot');
 
 async function main() {
+  // Whether a trip was open last time decides where the app lands.
+  const remembered = readActiveTripID();
+
   try {
     await boot();
   } catch (error) {
@@ -31,8 +37,14 @@ async function main() {
     return;
   }
 
-  const initial = (location.hash || '#map').slice(1);
-  start({ initial: ['map', 'plan', 'shop', 'prep', 'log'].includes(initial) ? initial : 'map' });
+  // With no remembered trip the app opens on the trips home; the demo trip is
+  // still loaded behind it so the list has something in it on a first run.
+  if (!remembered) closeTrip();
+
+  const asked = (location.hash || '').slice(1);
+  const insideTrip = ['map', 'plan', 'shop', 'prep', 'log'].includes(asked);
+  const initial = remembered ? (insideTrip ? asked : 'map') : 'trips';
+  start({ initial });
 
   cover.classList.add('gone');
   setTimeout(() => cover.remove(), 300);

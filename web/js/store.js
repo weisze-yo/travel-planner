@@ -3,9 +3,9 @@
 // backend, and notifies subscribers to re-render.
 
 import * as seed from './data.js';
-import { createBackend, isConfigured, KINDS } from './persist.js';
+import { createBackend, isConfigured, readActiveTripID, writeActiveTripID, KINDS } from './persist.js';
 import { prepare, storedLength } from './photos.js';
-import { fetchForecast, forecastCoverage, fetchRate, geocode, online } from './net.js';
+import { fetchForecast, forecastCoverage, fetchRate, geocode, online, parseMapLink, placeDetails } from './net.js';
 import { clock, duration, money, numeric, parseClock, uid, reorder, dateStamp } from './util.js';
 
 const listeners = new Set();
@@ -14,6 +14,9 @@ export const state = {
   ready: false,
   mode: 'local',
   stranded: false,
+  /** Null until a trip is chosen — the tabs stay out of reach until then. */
+  tripID: null,
+  trips: [],
   trip: null,
   days: [],
   places: [],
@@ -29,9 +32,18 @@ export const state = {
   editingPlan: false,
   nearbySort: 'travelTime',
   nearbyCategory: 'all',
+  shopDay: 'all',
+  shopPlace: 'all',
+  spendGroupBy: 'category',
 };
 
 let backend = null;
+let unsubscribe = null;
+
+function stopListening() {
+  if (unsubscribe) unsubscribe();
+  unsubscribe = null;
+}
 
 export function subscribe(fn) {
   listeners.add(fn);
@@ -44,8 +56,15 @@ function notify() {
 
 // ------------------------------------------------------------------ lifecycle
 
-export async function boot() {
-  backend = await createBackend();
+/**
+ * Opens one trip. Called on launch for whichever trip was last open, and again
+ * whenever another is chosen from the home screen.
+ */
+export async function boot(tripID = readActiveTripID() || seed.TRIP_ID) {
+  stopListening();
+  state.tripID = tripID;
+
+  backend = await createBackend(tripID);
   state.mode = backend.mode;
   // Configured but running on localStorage means writes are stranded in this
   // browser — a different situation from being merely offline, where Firestore
@@ -54,10 +73,13 @@ export async function boot() {
 
   let snapshot = await backend.loadAll();
   if (!snapshot || !snapshot.trip) {
-    snapshot = freshSnapshot();
+    // Only the very first launch gets the demo trip; a trip created by hand
+    // is seeded empty by createTrip.
+    snapshot = tripID === seed.TRIP_ID ? freshSnapshot() : emptySnapshot(tripID);
     await backend.seed(snapshot);
   }
   apply(snapshot);
+  await refreshTrips();
 
   state.selectedDay = state.trip?.currentDay || 3;
   state.ready = true;
@@ -65,7 +87,7 @@ export async function boot() {
   // A forecast is worth having but never worth blocking the app on.
   refreshWeather().catch(() => {});
 
-  backend.onRemoteChange((kind, value) => {
+  unsubscribe = backend.onRemoteChange((kind, value) => {
     if (kind === 'trip') state.trip = value;
     else state[kind] = value;
     sortAll();
@@ -88,6 +110,101 @@ function freshSnapshot() {
     log: seed.LOG,
     outfits: [],
   }));
+}
+
+function emptySnapshot(tripID) {
+  return {
+    trip: { ...JSON.parse(JSON.stringify(seed.TRIP)), id: tripID, name: 'New trip', weather: [] },
+    days: [], places: [], subRoutes: [], shopping: [],
+    mustSee: [], prep: [], log: [], outfits: [],
+  };
+}
+
+export async function refreshTrips() {
+  try {
+    state.trips = (await backend.listTrips()).sort((a, b) => (b.startDate || '').localeCompare(a.startDate || ''));
+  } catch {
+    state.trips = state.trip ? [state.trip] : [];
+  }
+  notify();
+}
+
+/** Builds a trip from the home screen's form and opens it. */
+export async function createTrip({ name, startDate, dayCount, locationName }) {
+  const label = String(name || '').trim() || 'New trip';
+  const id = uid('trip-');
+  const days = Math.max(1, Math.min(60, Number(dayCount) || 1));
+
+  const trip = {
+    ...JSON.parse(JSON.stringify(seed.TRIP)),
+    id,
+    name: label,
+    code: label.replace(/[^A-Za-z\u4e00-\u9fff]/g, '').slice(0, 2).toUpperCase() || 'TR',
+    dateRange: '',
+    dayCount: days,
+    currentDay: 1,
+    startDate: startDate || null,
+    locationName: String(locationName || '').trim(),
+    weather: [],
+    weatherUpdatedAt: null,
+    prepCategories: [],
+  };
+
+  if (trip.locationName && online()) {
+    try {
+      const hit = await geocode(trip.locationName);
+      if (hit) {
+        trip.latitude = hit.latitude;
+        trip.longitude = hit.longitude;
+      }
+    } catch { /* keep the default centre */ }
+  }
+
+  await backend.createTrip(trip);
+  await openTrip(id);
+
+  // Day rows for the dates just chosen.
+  await updateTrip({ startDate: trip.startDate, dayCount: days });
+  state.selectedDay = 1;
+  notify();
+  return id;
+}
+
+/** Opens a trip and remembers it, so a relaunch comes back here. */
+export async function openTrip(tripID) {
+  writeActiveTripID(tripID);
+  await boot(tripID);
+}
+
+export async function switchTrip(tripID) {
+  if (!tripID) return;
+  if (tripID === state.tripID) {
+    // Already loaded — just claim it as the active one.
+    writeActiveTripID(tripID);
+    notify();
+    return;
+  }
+  state.ready = false;
+  notify();
+  await openTrip(tripID);
+}
+
+export async function deleteTrip(tripID) {
+  await backend.deleteTrip(tripID);
+  if (tripID === state.tripID) {
+    writeActiveTripID(null);
+    state.tripID = null;
+    state.trip = null;
+    for (const kind of KINDS) state[kind] = [];
+  }
+  await refreshTrips();
+}
+
+/** Leaves the trip, sending the app back to the home screen. */
+export function closeTrip() {
+  writeActiveTripID(null);
+  state.tripID = null;
+  notify();
 }
 
 function apply(snapshot) {
@@ -295,6 +412,22 @@ export function allPlaces() {
   return state.places.slice().sort((a, b) => a.name.localeCompare(b.name));
 }
 
+/**
+ * Point 4: every place saved against any stop on one day, grouped by that
+ * stop and in itinerary order — what the Map's "Nearby" button should show,
+ * as against one stop's list.
+ */
+export function placesByStopForDay(dayNumber = state.selectedDay) {
+  const d = day(dayNumber);
+  const groups = [];
+  for (const item of activeItems(d)) {
+    if (item.isSubRouteSummary) continue;
+    const places = nearbyPlaces(item.id);
+    if (places.length) groups.push({ stop: item, places });
+  }
+  return groups;
+}
+
 export function nearbyPlaces(anchorPlaceID = null) {
   const list = nearbyPlacesFor(anchorPlaceID).filter(
     (p) => state.nearbyCategory === 'all' || p.category === state.nearbyCategory
@@ -308,9 +441,47 @@ export function nearbyPlaces(anchorPlaceID = null) {
 export const isInSubRoute = (placeId, n = state.selectedDay) =>
   (subRoute(n)?.placeIDs || []).includes(placeId);
 
+export function setShopFilter({ day, place }) {
+  if (day !== undefined) state.shopDay = day;
+  if (place !== undefined) state.shopPlace = place;
+  notify();
+}
+
+export function setSpendGroupBy(mode) {
+  state.spendGroupBy = mode;
+  notify();
+}
+
+/** Which day a shopping item belongs to, read off its "Day 3 · …" stamp. */
+export function itemDay(item) {
+  const hit = /Day\s+(\d+)/i.exec(item.placeWhen || '');
+  return hit ? Number(hit[1]) : null;
+}
+
+export function shopDayOptions() {
+  const days = new Set();
+  for (const item of state.shopping) {
+    const n = itemDay(item);
+    if (n) days.add(n);
+  }
+  return [...days].sort((a, b) => a - b);
+}
+
+export function shopPlaceOptions() {
+  return [...new Set(state.shopping.map((i) => i.placeLabel))];
+}
+
+export function filteredShopping() {
+  return state.shopping.filter((item) => {
+    if (state.shopPlace !== 'all' && item.placeLabel !== state.shopPlace) return false;
+    if (state.shopDay !== 'all' && itemDay(item) !== Number(state.shopDay)) return false;
+    return true;
+  });
+}
+
 export function shoppingGroups() {
   const groups = [];
-  for (const item of state.shopping) {
+  for (const item of filteredShopping()) {
     let group = groups.find((g) => g.placeLabel === item.placeLabel);
     if (!group) {
       group = { placeLabel: item.placeLabel, when: item.placeWhen, badge: item.badge, items: [] };
@@ -321,12 +492,15 @@ export function shoppingGroups() {
   return groups;
 }
 
-export function spendTotals() {
+export function spendTotals({ all = false } = {}) {
   let spent = 0, planned = 0, bought = 0;
   const byPayment = {};
+  const byCategory = {};
   for (const p of seed.PAYMENTS) byPayment[p.id] = { count: 0, sum: 0 };
+  for (const c of seed.SHOP_CATEGORIES) byCategory[c.id] = { count: 0, sum: 0 };
 
-  for (const item of state.shopping) {
+  const source = all ? state.shopping : filteredShopping();
+  for (const item of source) {
     planned += item.estimate || 0;
     if (!item.bought) continue;
     bought += 1;
@@ -336,13 +510,18 @@ export function spendTotals() {
     const bucket = byPayment[item.payment] || byPayment.cash;
     bucket.count += 1;
     bucket.sum += amount;
+
+    const catBucket = byCategory[item.category] || byCategory.other;
+    catBucket.count += 1;
+    catBucket.sum += amount;
   }
 
   const rate = state.trip?.homeCurrencyRate || 1;
   return {
     spent, planned, bought,
-    total: state.shopping.length,
+    total: source.length,
     byPayment,
+    byCategory,
     percent: planned > 0 ? Math.min(100, Math.round((spent / planned) * 100)) : 0,
     homeLabel: Math.round(spent / rate).toLocaleString('en-US'),
   };
@@ -520,6 +699,79 @@ export function addPlanItem(dayNumber, { name, time, placeID = null, kind = 'mai
  * nothing — or there is no signal — it is saved without a location and says
  * so, rather than being silently left off the map.
  */
+/**
+ * Adds a place from either a typed name or a pasted map link. A full Google or
+ * Apple Maps URL already carries the name and the coordinates, so that case
+ * needs no network at all; anything OpenStreetMap knows on top — opening
+ * hours, a phone number, a website — is fetched when there is a connection.
+ */
+export async function capturePlace({ input, category, walkMinutes, stayMinutes, anchorPlaceID }) {
+  const text = String(input || '').trim();
+  if (!text) return { saved: false, reason: 'Nothing to add' };
+
+  const link = parseMapLink(text);
+  if (link?.kind === 'short') {
+    return {
+      saved: false,
+      reason: 'Short links like maps.app.goo.gl cannot be read in a browser. '
+        + 'Open it once in Safari and copy the full address from the bar, or just type the name.',
+    };
+  }
+
+  const fromLink = link?.kind === 'link' ? link : null;
+  const name = fromLink?.name || (fromLink ? 'Saved from a link' : text);
+
+  let latitude = fromLink?.latitude ?? null;
+  let longitude = fromLink?.longitude ?? null;
+  let essentials = [];
+  let enriched = false;
+
+  if (online()) {
+    try {
+      const city = state.trip?.locationName ? `, ${state.trip.locationName}` : '';
+      const detail = await placeDetails(
+        latitude != null
+          ? { latitude, longitude }
+          : { query: name + city }
+      );
+      if (detail) {
+        if (latitude == null && detail.latitude != null) {
+          latitude = detail.latitude;
+          longitude = detail.longitude;
+        }
+        essentials = [
+          detail.openingHours && { key: 'Hours', value: detail.openingHours, detail: 'From OpenStreetMap' },
+          detail.phone && { key: 'Phone', value: detail.phone, detail: '' },
+          detail.website && { key: 'Website', value: detail.website, detail: '' },
+          detail.address && { key: 'Address', value: detail.address, detail: '' },
+        ].filter(Boolean);
+        enriched = essentials.length > 0;
+      }
+    } catch {
+      // No connection, or nothing known. The place still saves.
+    }
+  }
+
+  const record = {
+    id: uid('place-'),
+    anchorPlaceID: anchorPlaceID || subRoute()?.anchorPlanItemID || null,
+    name,
+    category: category || 'food',
+    priceTier: '—',
+    stayMinutes: Number(stayMinutes) || 30,
+    legs: [{ mode: 'walk', minutes: Number(walkMinutes) || 5 }],
+    note: fromLink ? 'Added from a map link' : 'Added by you',
+    isUserAdded: true,
+    latitude,
+    longitude,
+    essentials,
+    sourceLink: fromLink ? text : '',
+  };
+
+  put('places', record);
+  return { saved: true, located: latitude != null, enriched, name, id: record.id };
+}
+
 export async function addNearbyPlace({ name, category, walkMinutes, stayMinutes, anchorPlaceID }) {
   const label = String(name || '').trim();
   if (!label) return { saved: false };
@@ -620,7 +872,18 @@ export function setPayment(id, method) {
   put('shopping', item);
 }
 
-export function addShoppingItem({ name, placeLabel, estimate, payment }) {
+export function setShoppingCategory(id, category) {
+  const item = state.shopping.find((i) => i.id === id);
+  if (!item || !seed.SHOP_CATEGORIES.some((c) => c.id === category)) return;
+  item.category = category;
+  put('shopping', item);
+}
+
+export function deleteShoppingItem(id) {
+  remove('shopping', id);
+}
+
+export function addShoppingItem({ name, placeLabel, estimate, payment, category }) {
   if (!name) return;
   const label = placeLabel || 'Unplanned · added on the trip';
   const existing = state.shopping.filter((i) => i.placeLabel === label);
@@ -639,6 +902,7 @@ export function addShoppingItem({ name, placeLabel, estimate, payment }) {
     estimate: estimate ?? null,
     paidAmount: null,
     payment: payment || 'cash',
+    category: category || 'other',
     bought: false,
     boughtOn: null,
     isUnplanned: !placeLabel,
@@ -708,6 +972,52 @@ export function addPrepItem(category, name) {
     packed: false,
     packedIn: 'notPacked',
   });
+}
+
+export function deletePrepItem(id) {
+  remove('prep', id);
+}
+
+/** Removes a category and everything filed under it. */
+export function deletePrepCategory(title) {
+  for (const item of state.prep.filter((i) => i.category === title)) {
+    remove('prep', item.id);
+  }
+  if (state.trip) {
+    const kept = (state.trip.prepCategories || []).filter((c) => c !== title);
+    putTrip({ ...state.trip, prepCategories: kept });
+  }
+}
+
+export function deleteLogEntry(id) {
+  remove('log', id);
+}
+
+export function deleteLogPhoto(entryID, url) {
+  const entry = state.log.find((e) => e.id === entryID);
+  if (!entry) return;
+  entry.photoPaths = (entry.photoPaths || []).filter((p) => p !== url);
+  entry.photoCount = entry.photoPaths.length;
+  put('log', entry);
+}
+
+export function deletePlace(id) {
+  // Take it out of any loop before the place itself goes.
+  for (const route of state.subRoutes) {
+    if ((route.placeIDs || []).includes(id)) {
+      route.placeIDs = route.placeIDs.filter((p) => p !== id);
+      put('subRoutes', route);
+    }
+  }
+  remove('places', id);
+}
+
+/** Deletes a stop outright, as against archiving it. */
+export function deletePlanItem(dayNumber, id) {
+  const d = day(dayNumber);
+  if (!d) return;
+  d.items = d.items.filter((i) => i.id !== id);
+  put('days', d);
 }
 
 export function addPrepCategory(name) {

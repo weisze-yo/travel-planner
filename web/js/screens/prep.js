@@ -2,10 +2,10 @@
 // each line can explain itself ("Day 4: 80% rain"), and every item carries a
 // tag for where it is packed. Categories and items can both be added.
 
-import { html, delegate } from '../util.js';
+import { html, raw, icon, delegate } from '../util.js';
 import * as store from '../store.js';
 import { state } from '../store.js';
-import { checkbox } from './parts.js';
+import { checkbox, swipeToDelete, forecastURL } from './parts.js';
 import { PACKED_LOCATIONS } from '../data.js';
 
 let addingTo = null;
@@ -35,8 +35,10 @@ export default {
           <div class="card tight mb12" style="padding:12px 13px">
             <div class="row g8 center">
               <div class="eyebrow grow">WEATHER FORECAST</div>
-              <div class="f11 w650" style="color:var(--faint)">${store.weatherSourceLine()}</div>
+              <a class="f11 w700" style="color:var(--jade)" href="${forecastURL()}"
+                 target="_blank" rel="noopener">Hourly ›</a>
             </div>
+            <div class="f11 w650 mt4" style="color:var(--faint)">${store.weatherStatus().line}</div>
             <div class="wx-strip">
               ${weather.map((w) => html`
                 <div class="wx-day${w.dayNumber === state.selectedDay ? ' on' : ''}">
@@ -50,10 +52,13 @@ export default {
 
           ${groups.map((group) => html`
             <div class="card-list mb12">
-              <div class="row g8 center between" style="padding:11px 14px">
-                <div class="f13 w700">${group.title}</div>
-                <div class="f11 w700 soft">
-                  ${group.items.filter((i) => i.packed).length}/${group.items.length}
+              <div class="swipe-row swipe-flat" data-cat-row="${group.title}">
+                <div class="swipe-bin"><button class="bin" data-swipe-delete aria-label="Delete the ${group.title} category">${raw(icon.bin)}</button></div>
+                <div class="swipe-face row g8 center between" style="padding:11px 14px">
+                  <div class="f13 w700">${group.title}</div>
+                  <div class="f11 w700 soft">
+                    ${group.items.filter((i) => i.packed).length}/${group.items.length}
+                  </div>
                 </div>
               </div>
 
@@ -61,15 +66,18 @@ export default {
                 const where = PACKED_LOCATIONS.find((l) => l.id === item.packedIn) || PACKED_LOCATIONS[0];
                 const packedSomewhere = item.packedIn !== 'notPacked';
                 return html`
-                  <div class="prep-item">
+                  <div class="swipe-row swipe-flat" data-prep-row="${item.id}" data-prep-name="${item.name}">
+                    <div class="swipe-bin"><button class="bin" data-swipe-delete aria-label="Delete ${item.name}">${raw(icon.bin)}</button></div>
+                    <div class="swipe-face prep-item">
                     ${checkbox(item.packed, { act: 'tick', id: item.id, size: 21 })}
                     <button class="grow" style="text-align:left" data-act="tick" data-id="${item.id}">
                       <div class="prep-name${item.packed ? ' done' : ''}">${item.name}</div>
                       ${item.why ? html`<div class="prep-why">${item.why}</div>` : ''}
                     </button>
-                    <button class="where-chip${packedSomewhere ? ' on' : ''}" data-act="where" data-id="${item.id}">
-                      ${where.label}
-                    </button>
+                      <button class="where-chip${packedSomewhere ? ' on' : ''}" data-act="where" data-id="${item.id}">
+                        ${where.label}
+                      </button>
+                    </div>
                   </div>`;
               })}
 
@@ -96,6 +104,18 @@ export default {
   },
 
   mount(root) {
+    swipeToDelete(root, {
+      rowSelector: '[data-prep-row]',
+      label: (row) => `Delete "${row.dataset.prepName}" from the packing list?`,
+      onDelete: (row) => store.deletePrepItem(row.dataset.prepRow),
+    });
+
+    swipeToDelete(root, {
+      rowSelector: '[data-cat-row]',
+      label: (row) => `Delete the "${row.dataset.catRow}" category and every item in it?`,
+      onDelete: (row) => store.deletePrepCategory(row.dataset.catRow),
+    });
+
     delegate(root, '[data-act="tick"]', (el) => store.togglePrepItem(el.dataset.id));
     delegate(root, '[data-act="where"]', (el) => store.cyclePackedIn(el.dataset.id));
 

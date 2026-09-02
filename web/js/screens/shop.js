@@ -3,11 +3,13 @@
 // spend. Ticking stamps the date and unticking clears it. The footer breaks
 // the spend down by payment method.
 
-import { html, delegate, money, boundedNumber } from '../util.js';
+import { html, raw, icon, delegate, money, boundedNumber } from '../util.js';
 import * as store from '../store.js';
 import { state } from '../store.js';
 import { checkbox } from './parts.js';
-import { PAYMENTS, BADGES } from '../data.js';
+import { PAYMENTS, BADGES, SHOP_CATEGORIES } from '../data.js';
+import { swipeToDelete } from './parts.js';
+import { go } from '../nav.js';
 
 let addOpen = false;
 
@@ -32,13 +34,30 @@ export default {
           </div>
         </div>
 
+        <div class="head" style="padding-top:0;border-bottom:1px solid var(--line)">
+          <div class="chiprow">
+            <button class="cat${state.shopDay === 'all' ? ' on' : ''}" data-day-filter="all">All days</button>
+            ${store.shopDayOptions().map((n) => html`
+              <button class="cat${String(state.shopDay) === String(n) ? ' on' : ''}" data-day-filter="${n}">
+                Day ${n}
+              </button>`)}
+          </div>
+          <div class="chiprow mt6">
+            <button class="cat${state.shopPlace === 'all' ? ' on' : ''}" data-place-filter="all">Everywhere</button>
+            ${store.shopPlaceOptions().map((label) => html`
+              <button class="cat${state.shopPlace === label ? ' on' : ''}" data-place-filter="${label}">
+                ${label}
+              </button>`)}
+          </div>
+        </div>
+
         <div class="scroll" style="padding:12px 16px 250px">
           ${addOpen ? addForm() : ''}
           ${groups.length ? groups.map((group) => groupCard(group, symbol)) : html`
             <div class="empty">Nothing on the list yet. Press + Add for anything you want to buy.</div>`}
         </div>
 
-        <div class="footer-card">
+        <button class="footer-card" data-act="report" aria-label="Open the spend report">
           <div class="row end between g10">
             <div class="grow">
               <div class="eyebrow">ACTUAL SPEND</div>
@@ -53,17 +72,11 @@ export default {
             </div>
           </div>
           <div class="progress mt8"><i style="width:${totals.percent}%"></i></div>
-          <div class="f11 w650 soft mt6">${totals.bought} of ${totals.total} bought</div>
-          <div class="eyebrow mt10" style="font-size:10px">BY PAYMENT METHOD</div>
-          <div class="row g5 wrap mt6">
-            ${PAYMENTS.map((p) => {
-              const bucket = totals.byPayment[p.id];
-              const used = bucket.count > 0;
-              return html`
-                <span class="chip ${used ? 'jade' : 'grey'}">${p.label} · ${bucket.count} × ${money(bucket.sum, symbol)}</span>`;
-            })}
+          <div class="row g8 center mt6">
+            <div class="grow f11 w650 soft">${totals.bought} of ${totals.total} bought</div>
+            <div class="f11 w700" style="color:var(--jade)">See the report ›</div>
           </div>
-        </div>
+        </button>
       </section>`;
   },
 
@@ -79,6 +92,7 @@ export default {
         placeLabel: root.querySelector('#new-place')?.value || '',
         estimate: estimate ? boundedNumber(estimate.replace(/[^0-9.]/g, '')) : null,
         payment: root.querySelector('[name="new-pay"]:checked')?.value || 'cash',
+        category: root.querySelector('#new-cat')?.value || 'other',
       });
       addOpen = false;
     });
@@ -86,6 +100,19 @@ export default {
     delegate(root, '[data-act="tick"]', (el) => store.toggleBought(el.dataset.id));
     root.querySelectorAll('[data-pay-for]').forEach((select) => {
       select.addEventListener('change', () => store.setPayment(select.dataset.payFor, select.value));
+    });
+    root.querySelectorAll('[data-cat-for]').forEach((select) => {
+      select.addEventListener('change', () => store.setShoppingCategory(select.dataset.catFor, select.value));
+    });
+
+    delegate(root, '[data-day-filter]', (el) => store.setShopFilter({ day: el.dataset.dayFilter }));
+    delegate(root, '[data-place-filter]', (el) => store.setShopFilter({ place: el.dataset.placeFilter }));
+    delegate(root, '[data-act="report"]', () => go('spend'));
+
+    swipeToDelete(root, {
+      rowSelector: '[data-shop-row]',
+      label: (row) => `Delete "${row.dataset.shopName}" from the shopping list?`,
+      onDelete: (row) => store.deleteShoppingItem(row.dataset.shopRow),
     });
 
     // Commit on change, so a repaint cannot land mid-keystroke.
@@ -115,9 +142,10 @@ function groupCard(group, symbol) {
 }
 
 function row(item, symbol) {
-  const payment = PAYMENTS.find((p) => p.id === item.payment) || PAYMENTS[0];
   return html`
-    <div class="item">
+    <div class="swipe-row swipe-flat" data-shop-row="${item.id}" data-shop-name="${item.name}">
+      <div class="swipe-bin"><button class="bin" data-swipe-delete aria-label="Delete ${item.name}">${raw(icon.bin)}</button></div>
+      <div class="swipe-face item">
       <div class="item-top">
         ${checkbox(item.bought, { act: 'tick', id: item.id })}
         <button class="grow" style="text-align:left" data-act="tick" data-id="${item.id}">
@@ -137,6 +165,12 @@ function row(item, symbol) {
               <option value="${p.id}"${p.id === item.payment ? ' selected' : ''}>${p.label}</option>`)}
           </select>
         </label>
+        <label class="pay-chip">
+          <select data-cat-for="${item.id}" aria-label="Category for ${item.name}">
+            ${SHOP_CATEGORIES.map((c) => html`
+              <option value="${c.id}"${c.id === (item.category || 'other') ? ' selected' : ''}>${c.label}</option>`)}
+          </select>
+        </label>
         ${item.bought ? html`
           <div class="paid-wrap">
             <span class="paid-cap">PAID</span>
@@ -145,8 +179,9 @@ function row(item, symbol) {
           </div>` : ''}
       </div>
 
-      ${item.bought && item.boughtOn ? html`
-        <div class="bought-line">Bought ${formatStamp(item.boughtOn)}</div>` : ''}
+        ${item.bought && item.boughtOn ? html`
+          <div class="bought-line">Bought ${formatStamp(item.boughtOn)}</div>` : ''}
+      </div>
     </div>`;
 }
 
@@ -166,6 +201,9 @@ function addForm() {
         ${store.placeOptions().map((label) => html`<option value="${label}">${label}</option>`)}
       </select>
       <input id="new-est" placeholder="Estimated price (optional)" inputmode="decimal">
+      <select id="new-cat">
+        ${SHOP_CATEGORIES.map((c) => html`<option value="${c.id}">${c.label}</option>`)}
+      </select>
       <div class="row g5 wrap">
         ${PAYMENTS.map((p, i) => html`
           <label class="pill small" style="background:#fff;border:1px solid var(--field)">

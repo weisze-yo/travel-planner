@@ -143,3 +143,119 @@ export async function fetchRate(from, to) {
   if (!rate) throw new Error(`no published rate for ${from} to ${to}`);
   return { rate: Number(rate), date: data.date };
 }
+
+
+// ------------------------------------------------------- pasted map links
+
+/**
+ * Pulls what it can out of a map URL without any paid API.
+ *
+ * A full Google Maps URL carries the place name and the coordinates in its
+ * path, and Apple Maps puts them in the query — so both can be read here,
+ * offline, for nothing. Short links (maps.app.goo.gl, goo.gl/maps) cannot:
+ * resolving the redirect needs a server, and the browser is not allowed to
+ * read where it points. The form says so rather than failing quietly.
+ */
+export function parseMapLink(text) {
+  const raw = String(text || '').trim();
+  if (!raw) return null;
+
+  let url;
+  try {
+    url = new URL(raw);
+  } catch {
+    return null;
+  }
+
+  const host = url.hostname.replace(/^www\./, '');
+  const shortHosts = ['maps.app.goo.gl', 'goo.gl', 'maps.google.app', 'g.co'];
+  if (shortHosts.includes(host)) {
+    return { kind: 'short', name: null, latitude: null, longitude: null };
+  }
+
+  const decode = (value) => {
+    try {
+      return decodeURIComponent(value.replace(/\+/g, ' ')).trim();
+    } catch {
+      return value.replace(/\+/g, ' ').trim();
+    }
+  };
+
+  let name = null;
+  let latitude = null;
+  let longitude = null;
+
+  // .../maps/place/Tsukiji+Outer+Market/@35.6654,139.7707,17z/...
+  const place = /\/maps\/place\/([^/@]+)/.exec(url.pathname);
+  if (place) name = decode(place[1]);
+
+  const at = /@(-?\d+(?:\.\d+)?),(-?\d+(?:\.\d+)?)/.exec(url.pathname + url.hash);
+  if (at) {
+    latitude = Number(at[1]);
+    longitude = Number(at[2]);
+  }
+
+  // Both Google and Apple accept ?q= and ?ll=/?daddr= in various shapes.
+  const params = url.searchParams;
+  const pair = (value) => {
+    const hit = /^\s*(-?\d+(?:\.\d+)?)\s*,\s*(-?\d+(?:\.\d+)?)\s*$/.exec(value || '');
+    return hit ? { latitude: Number(hit[1]), longitude: Number(hit[2]) } : null;
+  };
+
+  for (const key of ['ll', 'sll', 'daddr', 'destination', 'q', 'query']) {
+    const value = params.get(key);
+    if (!value) continue;
+    const coords = pair(value);
+    if (coords && latitude == null) {
+      latitude = coords.latitude;
+      longitude = coords.longitude;
+    } else if (!coords && !name && !/^https?:/.test(value)) {
+      name = decode(value);
+    }
+  }
+
+  if (!name && !params.get('q')) {
+    const apple = params.get('name') || params.get('address');
+    if (apple) name = decode(apple);
+  }
+
+  const valid = latitude != null && Number.isFinite(latitude)
+    && longitude != null && Number.isFinite(longitude)
+    && Math.abs(latitude) <= 90 && Math.abs(longitude) <= 180;
+
+  if (!name && !valid) return { kind: 'unknown', name: null, latitude: null, longitude: null };
+
+  return {
+    kind: 'link',
+    name: name || null,
+    latitude: valid ? latitude : null,
+    longitude: valid ? longitude : null,
+  };
+}
+
+/**
+ * Whatever OpenStreetMap knows about a place beyond its position: opening
+ * hours, a phone number, a website. Coverage is patchy — this is volunteer
+ * data, not a commercial places database — so every field is optional.
+ */
+export async function placeDetails({ latitude, longitude, query }) {
+  const url = latitude != null && longitude != null
+    ? `https://nominatim.openstreetmap.org/reverse?format=jsonv2&extratags=1&lat=${latitude}&lon=${longitude}`
+    : `https://nominatim.openstreetmap.org/search?format=jsonv2&extratags=1&limit=1&q=${encodeURIComponent(query)}`;
+
+  const data = await get(url);
+  const hit = Array.isArray(data) ? data[0] : data;
+  if (!hit) return null;
+
+  const tags = hit.extratags || {};
+  return {
+    name: hit.name || hit.namedetails?.name || null,
+    latitude: hit.lat ? Number(hit.lat) : null,
+    longitude: hit.lon ? Number(hit.lon) : null,
+    address: hit.display_name || null,
+    openingHours: tags.opening_hours || null,
+    phone: tags.phone || tags['contact:phone'] || null,
+    website: tags.website || tags['contact:website'] || null,
+    category: hit.category || hit.type || null,
+  };
+}

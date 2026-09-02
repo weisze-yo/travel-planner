@@ -562,13 +562,31 @@ select {
   width: 100%;
   text-align: left;
 }
+.stop-row.focused { background: var(--jade-bg); border-radius: 10px; }
+
+.pin-focus {
+  outline: 3px solid rgba(31, 111, 92, .35);
+  outline-offset: 2px;
+  transform: scale(1.12);
+  transition: transform .18s ease;
+}
+
 .stop-time { width: 44px; flex: none; font-size: 12.5px; font-weight: 700; font-variant-numeric: tabular-nums; }
 .stop-name { font-size: 14px; font-weight: 600; line-height: 1.25; }
 .stop-meta { font-size: 11.5px; color: var(--muted); margin-top: 2px; }
 
 /* -------------------------------------------------------------------- plan */
 
-.wx-banner { display: flex; gap: 11px; padding: 11px 12px; background: var(--jade-bg); border-radius: 12px; }
+.wx-banner {
+  display: flex;
+  align-items: center;
+  gap: 11px;
+  padding: 11px 12px;
+  background: var(--jade-bg);
+  border-radius: 12px;
+  text-decoration: none;
+  color: inherit;
+}
 .wx-icon { font-size: 17px; line-height: 1; flex: none; }
 .wx-line { flex: 1; min-width: 0; font-size: 12px; color: var(--jade); font-weight: 600; line-height: 1.4; }
 .wx-src { font-size: 10.5px; color: var(--jade-fg); font-weight: 500; margin-top: 2px; }
@@ -664,6 +682,19 @@ select {
 
 .dest-tabs { display: flex; gap: 16px; margin-top: 18px; border-bottom: 1px solid var(--line); overflow-x: auto; scrollbar-width: none; }
 .dest-tab { padding-bottom: 10px; border-bottom: 2px solid transparent; color: var(--muted); font-size: 13px; font-weight: 650; white-space: nowrap; flex: none; }
+.tab-count {
+  display: inline-block;
+  min-width: 16px;
+  padding: 0 4px;
+  border-radius: 8px;
+  background: var(--bone);
+  color: var(--muted);
+  font-size: 10px;
+  font-weight: 800;
+  text-align: center;
+}
+.dest-tab.on .tab-count { background: var(--jade-bg); color: var(--jade); }
+
 .dest-tab.on { border-bottom-color: var(--ink); color: var(--ink); }
 
 .essential { display: flex; gap: 12px; padding: 12px 14px; border-top: 1px solid var(--line-3); }
@@ -685,6 +716,23 @@ select {
 .linkrow-s { font-size: 11.5px; color: var(--muted); margin-top: 1px; }
 
 /* ------------------------------------------------------------------ nearby */
+
+.stop-group { margin-bottom: 16px; }
+.stop-group-head {
+  display: flex;
+  align-items: center;
+  gap: 8px;
+  padding: 0 2px 8px;
+  font-size: 12.5px;
+  font-weight: 700;
+  color: var(--ink);
+}
+.stop-group-time {
+  font-size: 11px;
+  font-weight: 700;
+  color: var(--muted);
+  font-variant-numeric: tabular-nums;
+}
 
 .nearby-card { display: flex; gap: 11px; padding: 11px; background: #fff; border-radius: 15px; border: 1px solid var(--line-2); }
 .nearby-card.picked { border-color: var(--amber-bd); }
@@ -877,7 +925,148 @@ select {
   padding: 8px 10px;
 }
 
+.photo-thumb {
+  position: relative;
+  width: 78px;
+  height: 78px;
+  border-radius: 11px;
+  overflow: hidden;
+  background: var(--bone);
+}
+.photo-thumb img { width: 100%; height: 100%; object-fit: cover; display: block; }
+.photo-remove {
+  position: absolute;
+  top: 3px;
+  right: 3px;
+  width: 22px;
+  height: 22px;
+  border-radius: 50%;
+  background: rgba(20, 32, 28, .72);
+  color: #fff;
+  font-size: 11px;
+  font-weight: 800;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+}
+
 .photo-drop { height: 52px; border-radius: 13px; border: 1.5px dashed #C9D0CB; display: flex; align-items: center; justify-content: center; font-size: 12.5px; font-weight: 650; color: var(--muted); width: 100%; }
+
+/* --------------------------------------------------------- spend report */
+
+.hero-figure {
+  font-size: 34px;
+  font-weight: 700;
+  letter-spacing: -.02em;
+  line-height: 1;
+  font-variant-numeric: tabular-nums;
+  color: var(--ink);
+}
+
+.bars { display: flex; flex-direction: column; gap: 14px; }
+
+.bar-label {
+  display: flex;
+  align-items: baseline;
+  gap: 8px;
+  font-size: 13px;
+  font-weight: 650;
+  color: var(--ink);
+}
+/* Values wear text colour, not the mark's — the bar carries the identity. */
+.bar-value { font-weight: 700; font-variant-numeric: tabular-nums; color: var(--charcoal); }
+
+.bar-track {
+  height: 10px;
+  border-radius: 5px;
+  background: var(--line-2);
+  margin-top: 6px;
+  overflow: hidden;
+}
+.bar-fill {
+  height: 100%;
+  /* Rounded only at the data end, anchored to the baseline. */
+  border-radius: 0 4px 4px 0;
+  background: var(--jade);
+}
+.bar-foot { font-size: 11px; color: var(--soft); font-weight: 600; margin-top: 5px; }
+
+/* ----------------------------------------------------- swipe to delete */
+
+.swipe-row {
+  position: relative;
+  overflow: hidden;
+  border-radius: 15px;
+  background: var(--danger-bg);
+  /* Let vertical scrolling through; the handler claims horizontal drags. */
+  touch-action: pan-y;
+}
+.swipe-row.swipe-flat { border-radius: 0; }
+.swipe-row.swipe-flat .swipe-face { background: #fff; }
+
+.swipe-bin {
+  position: absolute;
+  inset: 0 0 0 auto;
+  width: 68px;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+}
+.bin {
+  width: 44px;
+  height: 44px;
+  border-radius: 12px;
+  background: #9B4B4B;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+}
+.swipe-face {
+  position: relative;
+  z-index: 1;
+  width: 100%;
+  text-align: left;
+  transition: transform .18s ease;
+  background: #fff;
+  /* A drag across text starts a selection, which cancels the pointer and
+     kills the swipe — so rows are not selectable or draggable. */
+  user-select: none;
+  -webkit-user-select: none;
+  -webkit-user-drag: none;
+}
+.swipe-row.open .swipe-face { transition: transform .18s ease; }
+@media (prefers-reduced-motion: reduce) {
+  .swipe-face { transition: none; }
+}
+
+/* ------------------------------------------------------------ trip cards */
+
+.trip-card {
+  display: flex;
+  align-items: center;
+  gap: 12px;
+  padding: 14px;
+  background: #fff;
+  border: 1.5px solid var(--line);
+  border-radius: 15px;
+}
+.trip-card.on { border-color: var(--jade); }
+.trip-card-mark {
+  width: 46px;
+  height: 46px;
+  flex: none;
+  border-radius: 13px;
+  background: var(--bone);
+  color: var(--charcoal);
+  font-size: 14px;
+  font-weight: 800;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+}
+.trip-card.on .trip-card-mark { background: var(--jade); color: #fff; }
+.trip-card-name { font-size: 15px; font-weight: 700; line-height: 1.2; }
+.trip-card-meta { font-size: 11.5px; color: var(--muted); margin-top: 3px; }
 
 /* --------------------------------------------------------------- utilities */
 

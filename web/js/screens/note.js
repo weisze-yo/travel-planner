@@ -61,11 +61,13 @@ export default {
                     placeholder="What happened, what to remember next time…">${draft.text}</textarea>
 
           ${draft.photos.length ? html`
-            <div class="log-photos mt10">
-              ${draft.photos.slice(0, 3).map((src) => html`<div class="log-photo"><img src="${src}" alt=""></div>`)}
-              ${draft.photos.length > 3
-                ? html`<div class="log-more">+${draft.photos.length - 3}</div>`
-                : ''}
+            <div class="row g6 wrap mt10">
+              ${draft.photos.map((src, i) => html`
+                <div class="photo-thumb">
+                  <img src="${src}" alt="Photo ${i + 1}">
+                  <button class="photo-remove" data-remove-photo="${i}"
+                          aria-label="Remove photo ${i + 1}">✕</button>
+                </div>`)}
             </div>` : ''}
 
           <label class="photo-drop mt10">
@@ -133,6 +135,20 @@ export default {
         ? 'Kept as thumbnails, because Cloud Storage is not enabled on your Firebase project. Enable Storage for full-resolution photos — everything else already syncs.'
         : 'Kept as thumbnails on this device, because Firebase is not configured yet.');
       store.selectDay(day);
+    });
+
+    delegate(root, '[data-remove-photo]', (el) => {
+      keepText(root);
+      const at = Number(el.dataset.removePhoto);
+      const url = draft.photos[at];
+      draft.photos = draft.photos.filter((_, i) => i !== at);
+      // If it was already saved to the note, take it out of storage too.
+      const existing = store.logEntry(draft.dayNumber ?? dayNumber);
+      if (existing && (existing.photoPaths || []).includes(url)) {
+        store.deleteLogPhoto(existing.id, url);
+      }
+      photoNotice = '';
+      store.selectDay(draft.dayNumber ?? dayNumber);
     });
 
     delegate(root, '[data-act="save"]', () => {

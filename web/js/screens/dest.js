@@ -2,7 +2,7 @@
 // icon soup, both map handoffs above it, and doorways into the things that
 // hang off this stop: nearby, must-see, shopping, and the day's note.
 
-import { html, raw, icon, delegate } from '../util.js';
+import { html, raw, icon, delegate, money } from '../util.js';
 import * as store from '../store.js';
 import { state } from '../store.js';
 import { go, back } from '../nav.js';
@@ -13,8 +13,11 @@ const TABS = [
   { id: 'nearby', label: 'Nearby' },
   { id: 'mustsee', label: 'Must-see' },
   { id: 'shop', label: 'Shop' },
-  { id: 'note', label: 'Log' },
+  { id: 'log', label: 'Log' },
 ];
+
+/** Which panel is showing. Point 7: the tabs stay on this screen. */
+let tab = 'info';
 
 /** Resolves whichever handle the caller had: a plan row, or a nearby place. */
 export function subject(params = {}) {
@@ -75,9 +78,19 @@ export default {
       return html`<section class="screen"><div class="empty">This stop is no longer on your plan.</div></section>`;
     }
 
-    const shopHere = state.shopping.filter((s) => s.placeLabel === it.name);
+    // Everything on this screen is scoped to this one stop.
+    const shopHere = state.shopping.filter((row) => row.placeLabel === it.name);
     const shots = store.shotsFor(it.anchorID);
-    const nearbyCount = store.nearbyPlacesFor(it.anchorID).length;
+    const places = store.nearbyPlaces(it.anchorID);
+    const note = store.logEntry(state.selectedDay);
+    const noteHere = note && note.destinationLabel === it.name ? note : null;
+    const counts = {
+      info: 0,
+      nearby: places.length,
+      mustsee: shots.length,
+      shop: shopHere.length,
+      log: noteHere ? 1 : 0,
+    };
 
     return html`
       <section class="screen">
@@ -102,63 +115,16 @@ export default {
             </div>
 
             <div class="dest-tabs">
-              ${TABS.map((tab) => html`
-                <button class="dest-tab${tab.id === 'info' ? ' on' : ''}" data-tab-to="${tab.id}">${tab.label}</button>
+              ${TABS.map((entry) => html`
+                <button class="dest-tab${entry.id === tab ? ' on' : ''}" data-panel="${entry.id}">
+                  ${entry.label}${counts[entry.id] ? html` <span class="tab-count">${counts[entry.id]}</span>` : ''}
+                </button>
               `)}
             </div>
           </div>
 
           <div style="padding:14px 16px 24px">
-            ${it.essentials.length ? html`
-              <div class="card-list">
-                ${it.essentials.map((row) => html`
-                  <div class="essential">
-                    <div class="essential-k">${row.key}</div>
-                    <div class="grow">
-                      <div class="essential-v">${row.value}</div>
-                      ${row.detail ? html`<div class="essential-d">${row.detail}</div>` : ''}
-                    </div>
-                  </div>`)}
-              </div>
-            ` : html`
-              <div class="card pad">
-                <div class="eyebrow">NEED TO KNOW</div>
-                <div class="f125 muted lh145 mt6">
-                  No opening hours or transport saved for this stop yet. Anything you add on the
-                  Nearby screen shows up here.
-                </div>
-              </div>`}
-
-            <div class="row g10 mt12">
-              <button class="doorway amber" data-tab-to="nearby">
-                <div class="doorway-h" style="color:var(--amber-fg)">NEARBY</div>
-                <div class="doorway-v">${nearbyCount} places</div>
-                <div class="doorway-s" style="color:var(--amber-fg)">Sorted by travel time</div>
-              </button>
-              <button class="doorway jade" data-tab-to="mustsee">
-                <div class="doorway-h" style="color:var(--jade)">MUST-SEE</div>
-                <div class="doorway-v">${shots.length} spots</div>
-                <div class="doorway-s" style="color:var(--jade)">Known shots at this stop</div>
-              </button>
-            </div>
-
-            <button class="linkrow mt10" data-tab-to="shop">
-              <div class="linkrow-mark" style="font-size:15px;font-weight:700">袋</div>
-              <div class="grow">
-                <div class="linkrow-t">${shopHere.length ? `${shopHere.length} items on your list here` : 'Shopping list'}</div>
-                <div class="linkrow-s">${shopHere.length ? shopHere.map((s) => s.name).join(', ') : 'Nothing listed for this stop yet'}</div>
-              </div>
-              ${raw(icon.chevron)}
-            </button>
-
-            <button class="linkrow mt10" data-tab-to="note">
-              <div class="linkrow-mark">${raw(icon.pencil('#3D4C46', 15))}</div>
-              <div class="grow">
-                <div class="linkrow-t">Add a note</div>
-                <div class="linkrow-s">Log what happened at this stop</div>
-              </div>
-              ${raw(icon.chevron)}
-            </button>
+            ${panel(tab, it, { shopHere, shots, places })}
           </div>
         </div>
       </section>`;
@@ -167,19 +133,198 @@ export default {
   mount(root, params) {
     const it = subject(params);
     delegate(root, '[data-act="back"]', () => back());
-    delegate(root, '[data-tab-to]', (el) => {
-      const target = el.dataset.tabTo;
-      if (target === 'info') return;
-      if (target === 'note') {
-        go('note', { dayNumber: state.selectedDay, placeID: it?.placeID, placeName: it?.name });
-        return;
-      }
-      go(target, {
-        placeID: it?.placeID,
-        anchorID: it?.anchorID,
-        anchorName: it?.name,
-        itemID: it?.kind === 'item' ? it.id : undefined,
-      });
+    delegate(root, '[data-panel]', (el) => {
+      tab = el.dataset.panel;
+      // Repaint through the store so the whole screen re-renders once.
+      store.selectDay(state.selectedDay);
     });
+
+    // Panels that lead somewhere still can.
+    delegate(root, '[data-act="arrange"]', () => go('sub'));
+    delegate(root, '[data-act="all-nearby"]', () => go('nearby', {
+      anchorID: it?.anchorID, anchorName: it?.name, placeID: it?.placeID,
+    }));
+    delegate(root, '[data-act="all-shop"]', () => go('shop'));
+    delegate(root, '[data-act="all-shots"]', () => go('mustsee', {
+      anchorID: it?.anchorID, anchorName: it?.name,
+    }));
+    delegate(root, '[data-act="note"]', () => go('note', {
+      dayNumber: state.selectedDay, placeID: it?.placeID, placeName: it?.name,
+    }));
+    delegate(root, '[data-act="tick-shot"]', (el) => store.toggleShot(el.dataset.id));
+    delegate(root, '[data-act="tick-item"]', (el) => store.toggleBought(el.dataset.id));
+    delegate(root, '[data-open-place]', (el) => go('dest', { placeID: el.dataset.openPlace }));
   },
 };
+
+// ------------------------------------------------------------------ panels
+
+function panel(which, it, { shopHere, shots, places }) {
+  if (which === 'nearby') return nearbyPanel(it, places);
+  if (which === 'mustsee') return shotsPanel(it, shots);
+  if (which === 'shop') return shopPanel(it, shopHere);
+  if (which === 'log') return logPanel(it);
+  return infoPanel(it);
+}
+
+function infoPanel(it) {
+  if (!it.essentials.length) {
+    return html`
+      <div class="card pad">
+        <div class="eyebrow">NEED TO KNOW</div>
+        <div class="f125 muted lh145 mt6">
+          Nothing saved for this stop yet. Paste a map link when you add a place and
+          anything OpenStreetMap knows — hours, phone, website — lands here.
+        </div>
+      </div>`;
+  }
+  return html`
+    <div class="card-list">
+      ${it.essentials.map((row) => html`
+        <div class="essential">
+          <div class="essential-k">${row.key}</div>
+          <div class="grow">
+            <div class="essential-v">${row.value}</div>
+            ${row.detail ? html`<div class="essential-d">${row.detail}</div>` : ''}
+          </div>
+        </div>`)}
+    </div>`;
+}
+
+function nearbyPanel(it, places) {
+  const schedule = store.subSchedule();
+  return html`
+    ${places.length ? html`
+      <div class="col g8">
+        ${places.map((place) => {
+          const picked = store.isInSubRoute(place.id);
+          const travel = (place.legs || []).reduce((sum, leg) => sum + leg.minutes, 0);
+          return html`
+            <div class="nearby-card${picked ? ' picked' : ''}">
+              <button class="nearby-thumb" data-open-place="${place.id}" aria-label="Open ${place.name}"></button>
+              <div class="grow">
+                <div class="row g6" style="align-items:baseline">
+                  <button class="nearby-name" style="text-align:left" data-open-place="${place.id}">${place.name}</button>
+                  <span class="nearby-price">${place.priceTier}</span>
+                </div>
+                <div class="nearby-note">
+                  ${store.categoryLabel(place.category)} · ${store.duration(travel)} away${place.latitude ? '' : ' · no location'}
+                </div>
+              </div>
+              ${picked ? html`<span class="chip amber">IN LOOP</span>` : ''}
+            </div>`;
+        })}
+      </div>
+      ${schedule.stops.length ? html`
+        <button class="linkrow mt10" data-act="arrange">
+          <div class="linkrow-mark">↩</div>
+          <div class="grow">
+            <div class="linkrow-t">Your loop from here · ${schedule.stops.length} stops</div>
+            <div class="linkrow-s">${store.subSummaryLine()}</div>
+          </div>
+          ${raw(icon.chevron)}
+        </button>` : ''}
+    ` : html`
+      <div class="empty">Nothing saved around this stop yet.</div>`}
+
+    <button class="btn-dashed mt10" data-act="all-nearby">
+      ${places.length ? 'Manage places for this stop' : '+ Add a place here'}
+    </button>`;
+}
+
+function shotsPanel(it, shots) {
+  return html`
+    ${shots.length ? html`
+      <div class="col g10">
+        ${shots.map((shot) => html`
+          <div class="card" style="overflow:hidden">
+            <div class="row g10" style="padding:12px">
+              <button class="box${shot.captured ? ' on' : ''}" data-act="tick-shot" data-id="${shot.id}"
+                      role="checkbox" aria-checked="${shot.captured ? 'true' : 'false'}"
+                      aria-label="Mark ${shot.title} as taken">
+                ${raw(icon.tick('#fff', 11))}
+              </button>
+              <div class="grow">
+                <div class="f13 w700">${shot.title}</div>
+                <div class="f115 muted lh145 mt2">${shot.summary}</div>
+                <div class="shot-where">${raw(icon.pin)}${shot.whereToFind}</div>
+              </div>
+              <span class="shot-tag">${shot.tag}</span>
+            </div>
+          </div>`)}
+      </div>
+      <button class="btn-dashed mt10" data-act="all-shots">Open the full cards</button>
+    ` : html`
+      <div class="empty">
+        No must-see spots noted for this stop.<br>
+        Adding your own is still to come.
+      </div>`}`;
+}
+
+function shopPanel(it, items) {
+  const symbol = state.trip?.currencySymbol || '¥';
+  const spent = items.filter((i) => i.bought)
+    .reduce((sum, i) => sum + (i.paidAmount ?? i.estimate ?? 0), 0);
+  return html`
+    ${items.length ? html`
+      <div class="card-list">
+        ${items.map((item) => html`
+          <div class="item">
+            <div class="item-top">
+              <button class="box${item.bought ? ' on' : ''}" data-act="tick-item" data-id="${item.id}"
+                      role="checkbox" aria-checked="${item.bought ? 'true' : 'false'}"
+                      aria-label="Mark ${item.name} as bought">
+                ${raw(icon.tick('#fff', 11))}
+              </button>
+              <div class="grow">
+                <div class="item-name${item.bought ? ' done' : ''}">${item.name}</div>
+                ${item.detail ? html`<div class="item-sub">${item.detail}</div>` : ''}
+              </div>
+              <div class="right none">
+                <div class="item-est">${money(item.paidAmount ?? item.estimate ?? 0, symbol)}</div>
+                <div class="item-est-cap">${item.paidAmount != null ? 'paid' : 'est.'}</div>
+              </div>
+            </div>
+          </div>`)}
+      </div>
+      <div class="f115 muted mt8">
+        ${items.filter((i) => i.bought).length} of ${items.length} bought · ${money(spent, symbol)} spent here
+      </div>
+    ` : html`
+      <div class="empty">Nothing on your shopping list for this stop.</div>`}
+
+    <button class="btn-dashed mt10" data-act="all-shop">Open the whole shopping list</button>`;
+}
+
+function logPanel(it) {
+  const entry = store.logEntry(state.selectedDay);
+  const here = entry && entry.destinationLabel === it.name ? entry : null;
+  return html`
+    ${here ? html`
+      <div class="card pad">
+        <div class="row between g8" style="align-items:baseline">
+          <div class="f13 w700">${here.dayLabel} · ${here.dateLabel}</div>
+          <div class="f11 w650 soft">${here.meta}</div>
+        </div>
+        <div class="log-text">${here.text}</div>
+        ${here.photoPaths?.length ? html`
+          <div class="row g6 wrap mt10">
+            ${here.photoPaths.map((src) => html`
+              <div class="photo-thumb"><img src="${src}" alt=""></div>`)}
+          </div>` : ''}
+      </div>
+    ` : html`
+      <div class="empty">
+        Nothing logged about this stop yet.
+        ${entry ? html`<br>The note for this day is filed under "${entry.destinationLabel || 'no place'}".` : ''}
+      </div>`}
+
+    <button class="btn-dashed mt10" data-act="note">
+      ${here ? 'Edit this note' : '+ Add a note about this stop'}
+    </button>
+
+    <div class="f11 soft lh145 mt10">
+      One note is kept per day at the moment, so writing about another stop today replaces this
+      one. Notes per stop are on the design list.
+    </div>`;
+}

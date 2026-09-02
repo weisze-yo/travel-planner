@@ -10,6 +10,9 @@ import { dayPills, tripChip, emptyDay } from './parts.js';
 
 let mapView = null;
 let layers = null;
+let markers = new Map();
+let focused = null;
+let sheetListeners = [];
 
 export default {
   id: 'map',
@@ -27,8 +30,11 @@ export default {
 
         <div class="map-top">
           <div class="row g8 center">
-            <button class="grow" style="text-align:left" data-act="trip" aria-label="Trip settings">
+            <button class="grow" style="text-align:left;min-width:0" data-act="trips" aria-label="Switch trip">
               ${tripChip()}
+            </button>
+            <button class="iconbtn filled" data-act="trip" aria-label="Trip settings">
+              ${raw(icon.gear)}
             </button>
           </div>
           <div class="chiprow">${dayPills()}</div>
@@ -41,10 +47,6 @@ export default {
             <div class="legend-row sub"><span class="legend-key dash"></span>Sub route</div>
           </div>
         </div>
-
-        <button class="fab" data-act="edit" title="Edit day" aria-label="Edit this day's itinerary">
-          ${raw(icon.pencil('#fff'))}
-        </button>
 
         <div class="sheet map-sheet">
           <button class="sheet-grab" data-act="plan" aria-label="Open the day plan"><i></i></button>
@@ -60,7 +62,7 @@ export default {
               const view = store.decoratedItem(item);
               const isSub = view.kind === 'sub';
               return html`
-                <button class="stop-row" data-open="${view.id}">
+                <button class="stop-row${focused === view.id ? ' focused' : ''}" data-focus="${view.id}">
                   <div class="stop-time">${view.time}</div>
                   <div class="grow">
                     <div class="stop-name">${view.name}</div>
@@ -76,18 +78,94 @@ export default {
   },
 
   mount(root) {
-    delegate(root, '[data-act="trip"]', () => go('trip'));
-    delegate(root, '[data-act="plan"]', () => go('plan'));
-    delegate(root, '[data-act="nearby"]', () => go('nearby'));
-    delegate(root, '[data-act="edit"]', () => {
-      store.setEditingPlan(true);
-      go('plan');
-    });
-    delegate(root, '[data-open]', (el) => openItem(el.dataset.open));
+    // Tear down the previous paint's window listeners before adding more.
+    sheetListeners.forEach((off) => off());
+    sheetListeners = [];
 
+    delegate(root, '[data-act="trips"]', () => go('trips'));
+    delegate(root, '[data-act="trip"]', () => go('trip'));
+    delegate(root, '[data-day]', (el) => store.selectDay(Number(el.dataset.day)));
+    delegate(root, '[data-act="plan"]', () => go('plan'));
+    delegate(root, '[data-act="nearby"]', () => go('nearby', { dayScope: true }));
+    // A row frames its stop on the map; opening the place is the pin's job.
+    delegate(root, '[data-focus]', (el) => focusStop(el.dataset.focus));
+
+    bindSheetSwipe(root.querySelector('.map-sheet'));
     drawMap(root.querySelector('#leaf'));
   },
 };
+
+/** Point 5: a list row frames its stop on the map rather than leaving it. */
+/**
+ * Point 6: pull the sheet up to open the Plan. The sheet itself does not
+ * resize — the gesture is a shortcut into the full day, which is what the
+ * design's "timeline rides on the map" idea implies.
+ */
+function bindSheetSwipe(sheet) {
+  if (!sheet) return;
+  let startY = null;
+  let startedOnScroller = false;
+
+  sheet.addEventListener('pointerdown', (event) => {
+    startY = event.clientY;
+    const scroller = event.target.closest('.scroll');
+    // Only treat it as a sheet drag when the list is already at the top,
+    // otherwise scrolling the stops would keep opening Plan.
+    startedOnScroller = Boolean(scroller && scroller.scrollTop > 2);
+  });
+
+  // An upward swipe leaves the sheet almost immediately, so the release is
+  // caught on the window. Capturing the pointer would work too, but it
+  // retargets the click and would stop the rows being tappable at all.
+  const release = (event) => {
+    if (startY === null) return;
+    const travelled = startY - event.clientY;
+    startY = null;
+    if (!startedOnScroller && travelled > 48) go('plan');
+  };
+
+  window.addEventListener('pointerup', release);
+  window.addEventListener('pointercancel', () => { startY = null; });
+
+  // The screen is replaced on every paint, so drop these with it.
+  sheetListeners.push(() => {
+    window.removeEventListener('pointerup', release);
+  });
+}
+
+function focusStop(id) {
+  const hit = store.planItem(id);
+  if (!hit) return;
+
+  focused = id;
+  const item = hit.item;
+
+  // Highlight in place rather than through a re-render: repainting would
+  // rebuild the Leaflet map and throw away the zoom we are about to set.
+  document.querySelectorAll('.stop-row.focused').forEach((row) => row.classList.remove('focused'));
+  document.querySelector(`.stop-row[data-focus="${id}"]`)?.classList.add('focused');
+
+  // The sub-route row has no single point, so it frames the whole loop.
+  if (item.isSubRouteSummary) {
+    const loop = store.subSchedule().stops
+      .filter((s) => s.place.latitude)
+      .map((s) => [s.place.latitude, s.place.longitude]);
+    if (mapView && loop.length) {
+      mapView.fitBounds(L.latLngBounds(loop).pad(0.4), sheetAwarePadding());
+    }
+  } else if (mapView && item.latitude) {
+    mapView.setView([item.latitude, item.longitude], 17, { animate: true });
+  }
+
+  const marker = markers.get(id);
+  if (marker) {
+    const el = marker.getElement?.();
+    if (el) {
+      el.classList.add('pin-focus');
+      setTimeout(() => el.classList.remove('pin-focus'), 1400);
+    }
+  }
+}
 
 function openItem(id) {
   const hit = store.planItem(id);
@@ -101,6 +179,15 @@ function openItem(id) {
  * language carries the meaning: jade solid for the agent's route, amber dashed
  * for yours, a dark oversized pin on the stop that has slack.
  */
+function sheetAwarePadding() {
+  const height = document.querySelector('.leaf')?.clientHeight || 800;
+  return {
+    paddingTopLeft: [26, 130],
+    paddingBottomRight: [26, Math.round(height * 0.42) + 30],
+    animate: false,
+  };
+}
+
 function drawMap(container) {
   if (!container || typeof L === 'undefined') return;
 
@@ -124,6 +211,7 @@ function drawMap(container) {
   }).addTo(mapView);
 
   layers = L.layerGroup().addTo(mapView);
+  markers = new Map();
 
   const mainLine = items.map((i) => [i.latitude, i.longitude]);
   if (mainLine.length > 1) {
@@ -151,8 +239,8 @@ function drawMap(container) {
 
     const n = numbers[item.id];
     const slack = item.id === store.subRoute()?.anchorPlanItemID;
-    pin(item, `<span class="map-pin${slack ? ' slack' : ''}">${n ?? ''}</span>`, slack ? 40 : 32,
-      () => openItem(item.id));
+    markers.set(item.id, pin(item, `<span class="map-pin${slack ? ' slack' : ''}">${n ?? ''}</span>`,
+      slack ? 40 : 32, () => openItem(item.id)));
   }
 
   schedule.stops.forEach((stop) => {
@@ -163,14 +251,9 @@ function drawMap(container) {
 
   const all = [...mainLine, ...loopPoints];
   if (all.length) {
-    const height = container.clientHeight || 800;
-    mapView.fitBounds(L.latLngBounds(all), {
-      // The sheet covers the lower 42% and the header the top ~120px, so the
-      // route is fitted into the band that is actually visible.
-      paddingTopLeft: [26, 130],
-      paddingBottomRight: [26, Math.round(height * 0.42) + 30],
-      animate: false,
-    });
+    // The sheet covers the lower 42% and the header the top ~120px, so the
+    // route is fitted into the band that is actually visible.
+    mapView.fitBounds(L.latLngBounds(all), sheetAwarePadding());
   }
 }
 

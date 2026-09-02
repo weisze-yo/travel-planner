@@ -49,6 +49,8 @@ export function start({ hostSelector = '#screen', tabbarSelector = '#tabbar', in
 
 export function go(id, params = {}, { replace = false } = {}) {
   if (!registry.has(id)) return;
+  // Point 9: edit mode is a mode of the Plan screen, not of the app.
+  if (id !== 'plan' && state.editingPlan) state.editingPlan = false;
   current = { id, params };
   const entry = { id, params };
   const url = `#${id}`;
@@ -110,6 +112,12 @@ function restoreScroll(values) {
 
 function paintTabs(activeTab) {
   if (!tabbar) return;
+  // The five tabs only mean something inside a trip.
+  if (!state.tripID || activeTab === null) {
+    tabbar.hidden = true;
+    tabbar.innerHTML = '';
+    return;
+  }
   tabbar.innerHTML = TABS.map((tab) => {
     const on = tab.id === activeTab;
     const colour = on ? '#14201C' : '#9AA6A1';
@@ -117,5 +125,5 @@ function paintTabs(activeTab) {
       ${tab.icon(colour)}<span class="tab-label">${tab.label}</span>
     </button>`;
   }).join('');
-  tabbar.hidden = !state.ready;
+  tabbar.hidden = false;
 }
