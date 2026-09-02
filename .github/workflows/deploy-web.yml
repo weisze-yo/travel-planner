@@ -1,7 +1,11 @@
 # Deploys the web app to Firebase Hosting on every push to main.
-# Needs two things set up once in GitHub (see WEB_APP_GUIDE.md):
-#   secret   FIREBASE_SERVICE_ACCOUNT  — the service-account JSON, pasted whole
-#   variable FIREBASE_PROJECT_ID       — e.g. travel-planner-1a2b3
+#
+# Setup is one GitHub secret (see WEB_APP_GUIDE.md step 6A):
+#   secret FIREBASE_SERVICE_ACCOUNT — the service-account JSON, pasted whole
+#
+# The project id is read out of web/js/config.js, so there is nothing else to
+# configure. Set the optional variable FIREBASE_PROJECT_ID only if you want to
+# deploy somewhere other than the project the app talks to.
 name: Deploy web app
 
 on:
@@ -19,11 +23,30 @@ jobs:
     steps:
       - uses: actions/checkout@v4
 
-      - name: Check the Firebase config was filled in
+      # Import the module rather than grepping it, so single quotes, double
+      # quotes and trailing commas all read the same.
+      - name: Read and check the Firebase config
+        id: config
         run: |
-          if ! grep -q "apiKey: '[^']" web/js/config.js; then
-            echo "web/js/config.js still has an empty apiKey."
-            echo "Paste your Firebase web config into it (WEB_APP_GUIDE.md, step 2)."
+          node --input-type=module -e "
+            const { firebaseConfig: c } = await import('./web/js/config.js');
+            const missing = ['apiKey', 'projectId'].filter((k) => !c[k]);
+            if (missing.length) {
+              console.error('web/js/config.js is missing: ' + missing.join(', '));
+              console.error('Paste your Firebase web config into it — WEB_APP_GUIDE.md step 2.');
+              process.exit(1);
+            }
+            console.log('projectId=' + c.projectId);
+          " | tee -a "$GITHUB_OUTPUT"
+
+      - name: Check the deploy credential exists
+        env:
+          KEY: ${{ secrets.FIREBASE_SERVICE_ACCOUNT }}
+        run: |
+          if [ -z "$KEY" ]; then
+            echo "The FIREBASE_SERVICE_ACCOUNT secret is not set on this repository."
+            echo "Add it under Settings → Secrets and variables → Actions."
+            echo "See WEB_APP_GUIDE.md step 6A."
             exit 1
           fi
 
@@ -32,5 +55,11 @@ jobs:
         with:
           repoToken: ${{ secrets.GITHUB_TOKEN }}
           firebaseServiceAccount: ${{ secrets.FIREBASE_SERVICE_ACCOUNT }}
-          projectId: ${{ vars.FIREBASE_PROJECT_ID }}
+          projectId: ${{ vars.FIREBASE_PROJECT_ID || steps.config.outputs.projectId }}
           channelId: live
+
+      - name: Where it landed
+        run: |
+          id="${{ vars.FIREBASE_PROJECT_ID || steps.config.outputs.projectId }}"
+          echo "Deployed. Open https://$id.web.app on your iPhone in Safari," >> "$GITHUB_STEP_SUMMARY"
+          echo "then Share → Add to Home Screen." >> "$GITHUB_STEP_SUMMARY"

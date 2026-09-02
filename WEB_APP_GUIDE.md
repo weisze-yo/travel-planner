@@ -114,12 +114,13 @@ every push to `main`. Two one-time settings:
    **Service accounts** → **Generate new private key** → a `.json` file
    downloads. Open it in a text editor and copy **everything**.
 2. In GitHub: your repo → **Settings** → **Secrets and variables** →
-   **Actions**:
-   - **New repository secret** → name `FIREBASE_SERVICE_ACCOUNT` → paste the
-     whole JSON → Add secret.
-   - **Variables** tab → **New repository variable** → name
-     `FIREBASE_PROJECT_ID` → value is your project id (e.g.
-     `travel-planner-1a2b3`) → Add.
+   **Actions** → **New repository secret** → name it exactly
+   `FIREBASE_SERVICE_ACCOUNT` → paste the whole JSON → **Add secret**.
+
+   That is the only setting required. The project id is read out of
+   `web/js/config.js`. (There is an optional repository *variable*,
+   `FIREBASE_PROJECT_ID`, if you ever want to deploy to a different project
+   than the one the app talks to.)
 3. Push any change to `main` (or **Actions** tab → *Deploy web app* → **Run
    workflow**). When it goes green, your app is live at
    `https://<project-id>.web.app`.
@@ -146,11 +147,14 @@ the repo.
    firebase deploy --only hosting
    ```
 
-   To push the rules from the repo at the same time:
+   To push the Firestore rules from the repo at the same time:
 
    ```bash
-   firebase deploy --only hosting,firestore:rules,storage
+   firebase deploy --only hosting,firestore:rules
    ```
+
+   Only add `,storage` to that list if you actually enabled Storage in step 5 —
+   otherwise the deploy fails on a bucket that does not exist.
 
 The URL is printed at the end.
 
@@ -200,4 +204,6 @@ worker fetches from the network first and only falls back to its cache offline.
 | Map is blank grey | No network for tiles, or a tile blocker/VPN |
 | Photos save as small thumbnails | Storage not enabled — expected, see step 5 |
 | "That is as many photos as fit…" | ~55 thumbnails per day is the limit without Storage |
-| GitHub Action fails on "Check the Firebase config" | `config.js` was committed still empty |
+| GitHub Action fails on "Read and check the Firebase config" | `config.js` was committed still empty (step 2) |
+| GitHub Action fails on "Check the deploy credential exists" | The `FIREBASE_SERVICE_ACCOUNT` secret is missing or misnamed |
+| Action fails inside "Deploy to Firebase Hosting" | Usually the service-account JSON is truncated — re-copy the whole file |
