@@ -1,0 +1,11 @@
+# Firebase config identifies your project — keep it out of a shared repo.
+GoogleService-Info.plist
+
+# Xcode / SwiftPM
+.DS_Store
+*.xcuserstate
+xcuserdata/
+.swiftpm/xcode/
+Package.resolved
+build/
+DerivedData/

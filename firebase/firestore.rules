@@ -1,0 +1,19 @@
+rules_version = '2';
+
+// Every trip lives under the signed-in uid, and nothing else is readable.
+// Anonymous auth still produces a real uid, so these rules hold for it too;
+// when you link Sign in with Apple later the same uid carries over.
+service cloud.firestore {
+  match /databases/{database}/documents {
+
+    match /users/{userId} {
+      allow read, write: if request.auth != null && request.auth.uid == userId;
+
+      match /{document=**} {
+        allow read, write: if request.auth != null && request.auth.uid == userId;
+      }
+    }
+
+    // Anything not matched above is denied.
+  }
+}
