@@ -12,6 +12,7 @@ import { MODE_ICONS, MODE_LABELS, CATEGORY_LABELS } from '../data.js';
 
 let sortOpen = false;
 let addOpen = false;
+let notice = '';
 
 const CATS = ['all', 'food', 'cosme', 'cloth', 'shopping', 'sight', 'rest'];
 const SORTS = [
@@ -25,7 +26,8 @@ export default {
 
   render(params = {}) {
     const anchorName = params.anchorName || store.subRoute()?.anchorName || 'this stop';
-    const places = store.nearbyPlaces(params.placeID);
+    const anchorID = params.anchorID || store.subRoute()?.anchorPlanItemID || null;
+    const places = store.nearbyPlaces(anchorID);
     const schedule = store.subSchedule();
     const deadline = store.subRoute()?.deadlineMinutes;
 
@@ -64,8 +66,15 @@ export default {
                 </button>`)}
             </div>` : ''}
 
+          ${notice ? html`<div class="amber-note f12 mb10">${notice}</div>` : ''}
+
           ${places.length ? places.map((p) => card(p)) : html`
-            <div class="empty">No places in this category yet. Add one below.</div>`}
+            <div class="empty">
+              ${state.nearbyCategory === 'all'
+                ? `Nothing saved around ${anchorName} yet.`
+                : 'Nothing in this category here.'}<br>
+              Add a place below and it shows up on the map.
+            </div>`}
 
           ${addOpen ? addForm() : ''}
           <button class="btn-dashed" style="height:46px" data-act="add-open">+ Add a place myself</button>
@@ -92,15 +101,27 @@ export default {
 
     delegate(root, '[data-act="add-open"]', () => { addOpen = true; rerender(); });
     delegate(root, '[data-act="add-cancel"]', () => { addOpen = false; rerender(); });
-    delegate(root, '[data-act="add-save"]', () => {
+    delegate(root, '[data-act="add-save"]', async (el) => {
       const name = root.querySelector('#np-name')?.value.trim();
       if (!name) return;
-      store.addNearbyPlace({
+      const anchorID = params.anchorID || store.subRoute()?.anchorPlanItemID || null;
+
+      notice = `Looking up ${name}…`;
+      addOpen = false;
+      rerender();
+
+      const result = await store.addNearbyPlace({
         name,
         category: root.querySelector('#np-cat')?.value || 'food',
         walkMinutes: root.querySelector('#np-walk')?.value,
+        anchorPlaceID: anchorID,
       });
-      addOpen = false;
+
+      notice = result.located
+        ? ''
+        : `"${name}" was saved without a location, so it will not appear on the map or in the walking route. `
+          + 'Nothing was found by that name nearby — try a fuller name, or the street.';
+      rerender();
     });
   },
 };
@@ -121,7 +142,9 @@ function card(p) {
           <button class="nearby-name" style="text-align:left" data-open-place="${p.id}">${p.name}</button>
           <span class="nearby-price">${p.priceTier}</span>
         </div>
-        <div class="nearby-note">${store.categoryLabel(p.category)} · ${p.note}</div>
+        <div class="nearby-note">
+          ${store.categoryLabel(p.category)} · ${p.note}${p.latitude ? '' : ' · no location'}
+        </div>
         <div class="row g5 center wrap mt6">
           ${(p.legs || []).map((leg) => html`
             <span class="leg"><span style="font-size:11px">${MODE_ICONS[leg.mode]}</span>${MODE_LABELS[leg.mode]} ${leg.minutes}</span>`)}

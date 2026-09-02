@@ -29,6 +29,8 @@ const ASSETS = [
   './js/screens/prep.js',
   './js/screens/log.js',
   './js/screens/note.js',
+  './js/screens/trip.js',
+  './js/net.js',
   './icons/icon.svg',
   './icons/icon-180.png',
   './vendor/leaflet/leaflet.js',

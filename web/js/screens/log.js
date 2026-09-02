@@ -44,8 +44,11 @@ export default {
 };
 
 function card(entry) {
-  const shown = (entry.photoPaths || []).slice(0, 3);
-  const extra = (entry.photoCount || 0) - shown.length;
+  // Only ever render tiles for photos that are actually there — a stored count
+  // with no images behind it looked like a failed load.
+  const photos = entry.photoPaths || [];
+  const shown = photos.slice(0, 3);
+  const extra = photos.length - shown.length;
   return html`
     <button class="log-card mb12" data-day-note="${entry.dayNumber}">
       <div class="row between g8" style="align-items:baseline">
@@ -54,10 +57,9 @@ function card(entry) {
       </div>
       ${entry.destinationLabel ? html`<div class="log-dest">${entry.destinationLabel}</div>` : ''}
 
-      ${entry.photoCount ? html`
+      ${photos.length ? html`
         <div class="log-photos">
           ${shown.map((src) => html`<div class="log-photo"><img src="${src}" alt=""></div>`)}
-          ${Array.from({ length: Math.max(0, 3 - shown.length) }, () => html`<div class="log-photo"></div>`)}
           ${extra > 0 ? html`<div class="log-more">+${extra}</div>` : ''}
         </div>` : ''}
 

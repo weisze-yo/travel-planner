@@ -84,7 +84,9 @@ export default {
     });
 
     delegate(root, '[data-act="tick"]', (el) => store.toggleBought(el.dataset.id));
-    delegate(root, '[data-act="pay"]', (el) => store.cyclePayment(el.dataset.id));
+    root.querySelectorAll('[data-pay-for]').forEach((select) => {
+      select.addEventListener('change', () => store.setPayment(select.dataset.payFor, select.value));
+    });
 
     // Commit on change, so a repaint cannot land mid-keystroke.
     root.querySelectorAll('[data-paid-for]').forEach((input) => {
@@ -129,7 +131,12 @@ function row(item, symbol) {
       </div>
 
       <div class="item-second">
-        <button class="pay-chip" data-act="pay" data-id="${item.id}">${payment.label}</button>
+        <label class="pay-chip">
+          <select data-pay-for="${item.id}" aria-label="Payment method for ${item.name}">
+            ${PAYMENTS.map((p) => html`
+              <option value="${p.id}"${p.id === item.payment ? ' selected' : ''}>${p.label}</option>`)}
+          </select>
+        </label>
         ${item.bought ? html`
           <div class="paid-wrap">
             <span class="paid-cap">PAID</span>

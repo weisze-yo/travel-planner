@@ -3,8 +3,9 @@
 // backend, and notifies subscribers to re-render.
 
 import * as seed from './data.js';
-import { createBackend, KINDS } from './persist.js';
+import { createBackend, isConfigured, KINDS } from './persist.js';
 import { prepare, storedLength } from './photos.js';
+import { fetchForecast, forecastCoverage, fetchRate, geocode, online } from './net.js';
 import { clock, duration, money, numeric, parseClock, uid, reorder, dateStamp } from './util.js';
 
 const listeners = new Set();
@@ -12,6 +13,7 @@ const listeners = new Set();
 export const state = {
   ready: false,
   mode: 'local',
+  stranded: false,
   trip: null,
   days: [],
   places: [],
@@ -45,6 +47,10 @@ function notify() {
 export async function boot() {
   backend = await createBackend();
   state.mode = backend.mode;
+  // Configured but running on localStorage means writes are stranded in this
+  // browser — a different situation from being merely offline, where Firestore
+  // queues them and syncs later.
+  state.stranded = backend.mode === 'local' && isConfigured();
 
   let snapshot = await backend.loadAll();
   if (!snapshot || !snapshot.trip) {
@@ -55,6 +61,9 @@ export async function boot() {
 
   state.selectedDay = state.trip?.currentDay || 3;
   state.ready = true;
+
+  // A forecast is worth having but never worth blocking the app on.
+  refreshWeather().catch(() => {});
 
   backend.onRemoteChange((kind, value) => {
     if (kind === 'trip') state.trip = value;
@@ -178,6 +187,44 @@ export const subRoute = (n = state.selectedDay) => state.subRoutes.find((r) => r
  * Walks the loop: each leg adds travel time, each stop adds its stay, and the
  * journey back is checked against the coach departure.
  */
+/**
+ * When the loop has to be over. Read off the itinerary — the end of the anchor
+ * stop's window, or failing that the next stop's time — so that moving the
+ * coach departure moves the buffer with it. The stored value is only a
+ * fallback for a trip whose stops carry no window.
+ */
+export function subRouteDeadline(n = state.selectedDay) {
+  const route = subRoute(n);
+  if (!route) return null;
+
+  const day = state.days.find((d) => d.dayNumber === n);
+  const items = (day?.items || []).filter((i) => !i.archived && !i.isSubRouteSummary);
+  const anchor = items.find((i) => i.id === route.anchorPlanItemID);
+
+  // "13:30 – 15:45" → 15:45
+  const windowEnd = parseClock(String(anchor?.windowLabel || '').split(/[–-]/)[1]);
+  if (windowEnd != null) return windowEnd;
+
+  const anchorAt = parseClock(anchor?.time);
+  if (anchorAt != null) {
+    const next = items
+      .map((i) => parseClock(i.time))
+      .filter((t) => t != null && t > anchorAt)
+      .sort((a, b) => a - b)[0];
+    if (next != null) return next;
+  }
+
+  return route.deadlineMinutes;
+}
+
+/** Where the loop starts: the sub-route row's own time, else the anchor's. */
+function subRouteStart(n, route) {
+  const day = state.days.find((d) => d.dayNumber === n);
+  const summary = (day?.items || []).find((i) => i.isSubRouteSummary && !i.archived);
+  const anchor = (day?.items || []).find((i) => i.id === route.anchorPlanItemID);
+  return parseClock(summary?.time) ?? parseClock(anchor?.time) ?? route.startMinutes;
+}
+
 export function subSchedule(n = state.selectedDay) {
   const route = subRoute(n);
   const result = {
@@ -186,8 +233,9 @@ export function subSchedule(n = state.selectedDay) {
   };
   if (!route) return result;
 
-  let running = route.startMinutes;
-  result.startMinutes = route.startMinutes;
+  const start = subRouteStart(n, route);
+  let running = start;
+  result.startMinutes = start;
 
   (route.placeIDs || []).forEach((id, index) => {
     const p = place(id);
@@ -204,7 +252,7 @@ export function subSchedule(n = state.selectedDay) {
   const back = Number(route.returnMinutes) || 0;
   result.movingMinutes += back;
   result.returnClock = running + back;
-  result.bufferMinutes = route.deadlineMinutes - result.returnClock;
+  result.bufferMinutes = (subRouteDeadline(n) ?? route.deadlineMinutes) - result.returnClock;
   return result;
 }
 
@@ -230,12 +278,21 @@ export function decoratedItem(item, n = state.selectedDay) {
 
 export const categoryLabel = (category) => seed.CATEGORY_LABELS[category] || category;
 
-/** Every candidate hanging off one main-route stop. */
+/**
+ * Every candidate hanging off one stop. Only that stop's places: showing the
+ * whole trip's pool made a market half an hour away look like a 4-minute walk
+ * from wherever you were standing.
+ */
 export function nearbyPlacesFor(anchorPlaceID) {
-  if (!anchorPlaceID) return state.places;
-  const anchored = state.places.filter((p) => p.anchorPlaceID === anchorPlaceID);
-  // A trip imported without anchors should still show its pool.
-  return anchored.length ? anchored : state.places;
+  // No anchor means no answer. Returning every place here was the bug: a stop
+  // with nothing saved around it borrowed another stop's list.
+  if (!anchorPlaceID) return [];
+  return state.places.filter((p) => p.anchorPlaceID === anchorPlaceID);
+}
+
+/** Every saved place in the trip, for pickers that are not stop-specific. */
+export function allPlaces() {
+  return state.places.slice().sort((a, b) => a.name.localeCompare(b.name));
 }
 
 export function nearbyPlaces(anchorPlaceID = null) {
@@ -422,7 +479,7 @@ export function movePlanItemToDay(fromDay, id, toDay) {
 
 const byClock = (a, b) => (parseClock(a.time) ?? 9999) - (parseClock(b.time) ?? 9999);
 
-export function addPlanItem(dayNumber, { name, time, placeID = null }) {
+export function addPlanItem(dayNumber, { name, time, placeID = null, kind = 'main' }) {
   const d = day(dayNumber);
   if (!d || !name) return;
   const source = placeID ? place(placeID) : null;
@@ -432,11 +489,11 @@ export function addPlanItem(dayNumber, { name, time, placeID = null }) {
     durationLabel: '',
     name,
     subtitle: '',
-    note: 'Added by you',
+    note: source?.note || '',
     summary: source?.note || '',
     windowLabel: '',
     chips: [],
-    kind: 'sub',
+    kind: kind === 'sub' ? 'sub' : 'main',
     isSubRouteSummary: false,
     placeID,
     essentials: [],
@@ -449,21 +506,51 @@ export function addPlanItem(dayNumber, { name, time, placeID = null }) {
   writeDay(d);
 }
 
-export function addNearbyPlace({ name, category, walkMinutes }) {
-  if (!name) return;
-  put('places', {
+/**
+ * Adds a place to one stop's pool. The name is looked up on OpenStreetMap so
+ * the place lands on the map and in the walking route; if the lookup finds
+ * nothing — or there is no signal — it is saved without a location and says
+ * so, rather than being silently left off the map.
+ */
+export async function addNearbyPlace({ name, category, walkMinutes, stayMinutes, anchorPlaceID }) {
+  const label = String(name || '').trim();
+  if (!label) return { saved: false };
+
+  const anchor = anchorPlaceID || subRoute()?.anchorPlanItemID || null;
+  const record = {
     id: uid('place-'),
-    anchorPlaceID: subRoute()?.anchorPlanItemID || 'nishi',
-    name,
+    anchorPlaceID: anchor,
+    name: label,
     category: category || 'food',
     priceTier: '—',
-    stayMinutes: 30,
+    stayMinutes: Number(stayMinutes) || 30,
     legs: [{ mode: 'walk', minutes: Number(walkMinutes) || 5 }],
     note: 'Added by you',
     isUserAdded: true,
     latitude: null,
     longitude: null,
-  });
+  };
+
+  let located = false;
+  if (online()) {
+    try {
+      const city = state.trip?.locationName ? `, ${state.trip.locationName}` : '';
+      const hit = await geocode(label + city, {
+        latitude: state.trip?.latitude,
+        longitude: state.trip?.longitude,
+      });
+      if (hit) {
+        record.latitude = hit.latitude;
+        record.longitude = hit.longitude;
+        located = true;
+      }
+    } catch {
+      // Offline or the lookup service is unreachable; saved without a pin.
+    }
+  }
+
+  put('places', record);
+  return { saved: true, located, id: record.id };
 }
 
 export function toggleSubRoutePlace(placeId, n = state.selectedDay) {
@@ -518,11 +605,10 @@ export function setPaid(id, text) {
   put('shopping', item);
 }
 
-export function cyclePayment(id) {
+export function setPayment(id, method) {
   const item = state.shopping.find((i) => i.id === id);
-  if (!item) return;
-  const ids = seed.PAYMENTS.map((p) => p.id);
-  item.payment = ids[(ids.indexOf(item.payment) + 1) % ids.length];
+  if (!item || !seed.PAYMENTS.some((p) => p.id === method)) return;
+  item.payment = method;
   put('shopping', item);
 }
 
@@ -650,6 +736,154 @@ export function saveNote({ dayNumber, destinationLabel, destinationPlaceID, text
     photoPaths: photoPaths || existing?.photoPaths || [],
     chips: chips.length ? chips : (existing?.chips || []),
   });
+}
+
+// ------------------------------------------------------- trip and weather
+
+const DAY_NAMES = ['Sun', 'Mon', 'Tue', 'Wed', 'Thu', 'Fri', 'Sat'];
+const MONTHS = ['Jan', 'Feb', 'Mar', 'Apr', 'May', 'Jun', 'Jul', 'Aug', 'Sep', 'Oct', 'Nov', 'Dec'];
+
+function dayLabels(startDate, dayNumber) {
+  const start = startDate ? new Date(startDate) : null;
+  if (!start || Number.isNaN(start.getTime())) {
+    return { dateLabel: `Day ${dayNumber}`, shortDate: `Day ${dayNumber}` };
+  }
+  const date = new Date(start);
+  date.setDate(date.getDate() + dayNumber - 1);
+  const short = `${MONTHS[date.getMonth()]} ${date.getDate()}`;
+  return { dateLabel: `${short} · ${DAY_NAMES[date.getDay()]}`, shortDate: short };
+}
+
+/** How the forecast strip should describe itself right now. */
+export function weatherStatus() {
+  const trip = state.trip;
+  const coverage = forecastCoverage(trip?.startDate, trip?.dayCount || 0);
+  if (coverage.covered) {
+    return { live: true, line: weatherSourceLine() };
+  }
+  return {
+    live: false,
+    line: trip?.weatherUpdatedAt
+      ? `Last forecast ${weatherSourceLine().replace('Forecast, updated ', '')} · ${coverage.reason}`
+      : `No live forecast — ${coverage.reason}`,
+  };
+}
+
+/**
+ * Replaces the stored forecast with a real one when the trip is close enough
+ * for a forecast to exist. Offline, or for a trip months away, the stored
+ * figures stay and `weatherStatus` explains why.
+ */
+export async function refreshWeather({ force = false } = {}) {
+  const trip = state.trip;
+  if (!trip || !online()) return false;
+  if (!forecastCoverage(trip.startDate, trip.dayCount).covered) return false;
+
+  const age = trip.weatherUpdatedAt ? Date.now() - new Date(trip.weatherUpdatedAt).getTime() : Infinity;
+  if (!force && age < 3 * 3600 * 1000) return false;
+
+  try {
+    const forecast = await fetchForecast({
+      latitude: trip.latitude,
+      longitude: trip.longitude,
+      startDate: trip.startDate,
+      dayCount: trip.dayCount,
+    });
+    if (!forecast.length) return false;
+    putTrip({ ...state.trip, weather: forecast, weatherUpdatedAt: new Date().toISOString() });
+    return true;
+  } catch {
+    return false;
+  }
+}
+
+/** Pulls today's ECB rate for the trip's currency pair. */
+export async function refreshRate() {
+  const trip = state.trip;
+  if (!trip || !online()) return { ok: false, reason: 'No connection' };
+  try {
+    const hit = await fetchRate(trip.currencyCode, trip.homeCurrencyCode);
+    if (!hit) return { ok: false, reason: 'Set both currencies first' };
+    putTrip({
+      ...state.trip,
+      homeCurrencyRate: hit.rate,
+      rateUpdatedAt: new Date().toISOString(),
+      rateSource: `ECB ${hit.date}`,
+    });
+    return { ok: true, rate: hit.rate };
+  } catch (error) {
+    return { ok: false, reason: error.message || 'That rate could not be fetched' };
+  }
+}
+
+export function rateLine() {
+  const trip = state.trip;
+  if (!trip) return '';
+  const pair = `1 ${trip.homeCurrencyCode} = ${trip.homeCurrencyRate} ${trip.currencyCode}`;
+  return trip.rateSource ? `${pair} · ${trip.rateSource}` : `${pair} · rate you entered`;
+}
+
+/**
+ * Trip settings. Changing the dates or the length rebuilds the day rows,
+ * keeping whatever is already planned on the days that still exist.
+ */
+export async function updateTrip(patch) {
+  if (!state.trip) return;
+  const next = { ...state.trip, ...patch };
+  const datesChanged = patch.startDate !== undefined || patch.dayCount !== undefined;
+
+  if (patch.locationName && patch.locationName !== state.trip.locationName && online()) {
+    try {
+      const hit = await geocode(patch.locationName);
+      if (hit) {
+        next.latitude = hit.latitude;
+        next.longitude = hit.longitude;
+      }
+    } catch {
+      // Keep the old coordinates; the map still works.
+    }
+  }
+
+  if (datesChanged) {
+    next.dayCount = Math.max(1, Math.min(60, Number(next.dayCount) || 1));
+    // Dates moved, so the stored forecast no longer describes these days.
+    next.weather = [];
+    next.weatherUpdatedAt = null;
+    syncDays(next);
+    if (state.selectedDay > next.dayCount) state.selectedDay = next.dayCount;
+  }
+
+  putTrip(next);
+  if (datesChanged) refreshWeather({ force: true }).catch(() => {});
+}
+
+/** Adds, removes and re-labels day rows to match the trip's dates. */
+function syncDays(trip) {
+  for (let n = 1; n <= trip.dayCount; n++) {
+    const labels = dayLabels(trip.startDate, n);
+    const existing = state.days.find((d) => d.dayNumber === n);
+    put('days', existing
+      ? { ...existing, ...labels }
+      : { id: `day-${n}`, dayNumber: n, ...labels, areaSpan: '', items: [] });
+  }
+  for (const day of state.days.filter((d) => d.dayNumber > trip.dayCount)) {
+    remove('days', day.id);
+  }
+}
+
+/**
+ * Empties the trip of content but keeps its settings — the way to turn the
+ * demo trip that ships with the app into your own. Everything it deletes is
+ * listed on the button, because none of it comes back.
+ */
+export function clearTripContent() {
+  for (const kind of ['places', 'subRoutes', 'shopping', 'mustSee', 'prep', 'log', 'outfits']) {
+    for (const row of [...state[kind]]) remove(kind, row.id);
+  }
+  for (const day of [...state.days]) {
+    put('days', { ...day, areaSpan: '', items: [] });
+  }
+  if (state.trip) putTrip({ ...state.trip, prepCategories: [] });
 }
 
 // Re-exported so screens can format without importing two modules.

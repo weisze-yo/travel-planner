@@ -10,7 +10,7 @@ import { go } from '../nav.js';
 import { dayPills, weatherBanner, emptyDay, bindDragReorder } from './parts.js';
 
 let addOpen = false;
-let form = { place: '', time: '' };
+let form = { name: '', time: '', kind: 'main' };
 
 export default {
   id: 'plan',
@@ -96,18 +96,26 @@ export default {
     delegate(root, '[data-act="add-open"]', () => { addOpen = true; store.setEditingPlan(true); });
     delegate(root, '[data-act="add-cancel"]', () => { addOpen = false; store.setEditingPlan(true); });
     delegate(root, '[data-act="add-save"]', () => {
-      const select = root.querySelector('#add-place');
-      const time = root.querySelector('#add-time');
-      const placeID = select?.value || '';
-      if (!placeID) return;
-      const source = store.place(placeID);
+      const placeID = root.querySelector('#add-place')?.value || '';
+      const source = placeID ? store.place(placeID) : null;
+      const typed = root.querySelector('#add-name')?.value.trim();
+      const name = typed || source?.name;
+      if (!name) return;
+
       store.addPlanItem(state.selectedDay, {
-        name: source?.name || placeID,
-        time: time?.value.trim() || '15:00',
+        name,
+        time: root.querySelector('#add-time')?.value.trim() || '09:00',
         placeID: source ? placeID : null,
+        kind: root.querySelector('[name="add-kind"]:checked')?.value || 'main',
       });
       addOpen = false;
-      form = { place: '', time: '' };
+      form = { name: '', time: '', kind: 'main' };
+    });
+
+    root.querySelector('#add-place')?.addEventListener('change', (event) => {
+      const hit = store.place(event.target.value);
+      const nameBox = root.querySelector('#add-name');
+      if (hit && nameBox && !nameBox.value.trim()) nameBox.value = hit.name;
     });
 
     if (state.editingPlan) {
@@ -158,20 +166,39 @@ function row(item, { editing, number, last }) {
 }
 
 function addForm() {
-  const options = store.nearbyPlaces();
+  const saved = store.allPlaces();
   return html`
     <div class="form mt8">
       <div class="form-title">Add a stop</div>
-      <select id="add-place">
-        <option value="">From saved or nearby places</option>
-        ${options.map((p) => html`<option value="${p.id}">${p.name}</option>`)}
-      </select>
+
+      <input id="add-name" placeholder="Where are you going?" value="${form.name}">
+
+      ${saved.length ? html`
+        <select id="add-place">
+          <option value="">…or pick somewhere you have saved</option>
+          ${saved.map((p) => html`<option value="${p.id}">${p.name}</option>`)}
+        </select>` : ''}
+
+      <div class="row g6 wrap">
+        ${[['main', "The agent's route"], ['sub', 'My own plan']].map(([value, label]) => html`
+          <label class="pill small" style="background:#fff;border:1px solid var(--field)">
+            <input type="radio" name="add-kind" value="${value}"${value === form.kind ? ' checked' : ''}
+                   style="width:14px;height:14px;padding:0;margin:0;accent-color:#14201C">
+            ${label}
+          </label>`)}
+      </div>
+
       <div class="row g8">
         <input id="add-time" placeholder="Time" value="${form.time}" style="width:96px" inputmode="numeric">
         <button class="btn jade grow" data-act="add-save">Add</button>
         <button class="btn ghost none" data-act="add-cancel" style="width:38px" aria-label="Cancel">✕</button>
       </div>
-      <div class="form-hint">Pick from places you have saved or added nearby. It drops into the day at the time you set, and you can drag it afterwards.</div>
+
+      <div class="form-hint">
+        Type a name, or pick a place you saved earlier. It drops into the day at the time you
+        set and can be dragged afterwards. Stops on the agent's route show jade; your own
+        show amber and dashed.
+      </div>
     </div>`;
 }
 

@@ -30,6 +30,9 @@ export function subject(params = {}) {
         window: hit.item.windowLabel,
         essentials: hit.item.essentials || [],
         placeID: hit.item.placeID,
+        // Places hang off the itinerary row, which every stop has — unlike
+        // placeID, which only a stop matched to a place record carries.
+        anchorID: hit.item.id,
         number: store.mainStopNumbers(store.day(hit.dayNumber))[hit.item.id],
         coord: hit.item.latitude ? { lat: hit.item.latitude, lng: hit.item.longitude } : null,
       };
@@ -47,6 +50,8 @@ export function subject(params = {}) {
         window: '',
         essentials: [],
         placeID: p.id,
+        // Opening Nearby from a place shows the others around the same stop.
+        anchorID: p.anchorPlaceID,
         number: null,
         coord: p.latitude ? { lat: p.latitude, lng: p.longitude } : null,
       };
@@ -72,7 +77,7 @@ export default {
 
     const shopHere = state.shopping.filter((s) => s.placeLabel === it.name);
     const shots = state.mustSee.filter((s) => !it.placeID || s.placeID === it.placeID);
-    const nearbyCount = store.nearbyPlacesFor(it.placeID).length;
+    const nearbyCount = store.nearbyPlacesFor(it.anchorID).length;
 
     return html`
       <section class="screen">
@@ -169,7 +174,12 @@ export default {
         go('note', { dayNumber: state.selectedDay, placeID: it?.placeID, placeName: it?.name });
         return;
       }
-      go(target, { placeID: it?.placeID, anchorName: it?.name, itemID: it?.kind === 'item' ? it.id : undefined });
+      go(target, {
+        placeID: it?.placeID,
+        anchorID: it?.anchorID,
+        anchorName: it?.name,
+        itemID: it?.kind === 'item' ? it.id : undefined,
+      });
     });
   },
 };

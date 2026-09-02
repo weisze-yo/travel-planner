@@ -27,9 +27,15 @@ export default {
 
         <div class="map-top">
           <div class="row g8 center">
-            ${tripChip()}
+            <button class="grow" style="text-align:left" data-act="trip" aria-label="Trip settings">
+              ${tripChip()}
+            </button>
           </div>
           <div class="chiprow">${dayPills()}</div>
+          ${state.stranded ? html`
+            <div class="stranded">
+              Saved on this device only — Firebase could not be reached, so nothing is syncing.
+            </div>` : ''}
           <div class="legend">
             <div class="legend-row"><span class="legend-key"></span>Main route</div>
             <div class="legend-row sub"><span class="legend-key dash"></span>Sub route</div>
@@ -70,6 +76,7 @@ export default {
   },
 
   mount(root) {
+    delegate(root, '[data-act="trip"]', () => go('trip'));
     delegate(root, '[data-act="plan"]', () => go('plan'));
     delegate(root, '[data-act="nearby"]', () => go('nearby'));
     delegate(root, '[data-act="edit"]', () => {

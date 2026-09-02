@@ -24,7 +24,7 @@ export async function createBackend() {
     try {
       return await createFirebaseBackend();
     } catch (error) {
-      console.warn('[travel-planner] Firebase unavailable — this device only.', error);
+      console.warn('[travel-planner] Firebase unreachable — saving to this device only.', error);
       return createLocalBackend({ degradedFrom: error });
     }
   }
@@ -43,14 +43,36 @@ async function createFirebaseBackend() {
 
   const app = initializeApp(firebaseConfig);
   const auth = authMod.getAuth(app);
-  const db = dbMod.getFirestore(app);
+
+  // Persistent cache, so the trip is readable AND editable with no signal —
+  // free time in a foreign market is exactly when there is none. Writes made
+  // offline queue up and replay when the connection returns. This has to run
+  // before anything else touches Firestore.
+  let db;
+  try {
+    db = dbMod.initializeFirestore(app, {
+      localCache: dbMod.persistentLocalCache({
+        tabManager: dbMod.persistentMultipleTabManager(),
+      }),
+    });
+  } catch (error) {
+    // Private browsing, or a browser without IndexedDB. Still usable online.
+    console.warn('[travel-planner] offline cache unavailable', error);
+    db = dbMod.getFirestore(app);
+  }
 
   // Anonymous auth gives this browser a real uid, so the rules apply and the
-  // data survives a refresh without a login screen.
-  const credential = auth.currentUser
-    ? { user: auth.currentUser }
-    : await authMod.signInAnonymously(auth);
-  const uid = credential.user.uid;
+  // data survives a refresh without a login screen. The SDK restores the uid
+  // from local storage, but that restore is asynchronous — waiting for the
+  // first auth state means an offline launch works instead of hanging on a
+  // sign-in that cannot reach the network.
+  const restored = await new Promise((resolve) => {
+    const stop = authMod.onAuthStateChanged(auth, (user) => {
+      stop();
+      resolve(user);
+    });
+  });
+  const uid = restored ? restored.uid : (await authMod.signInAnonymously(auth)).user.uid;
 
   const { doc, collection, getDocs, getDoc, setDoc, deleteDoc, writeBatch, onSnapshot } = dbMod;
   const tripRef = doc(db, 'users', uid, 'trips', TRIP_ID);
@@ -69,6 +91,8 @@ async function createFirebaseBackend() {
     hasBucket: Boolean(firebaseConfig.storageBucket),
 
     async loadAll() {
+      // getDoc falls back to the cache on its own when offline; a hard failure
+      // means neither the network nor the cache had it.
       const tripSnap = await getDoc(tripRef);
       if (!tripSnap.exists()) return null;
       const snapshot = { trip: tripSnap.data() };

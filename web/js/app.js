@@ -14,8 +14,9 @@ import mustsee from './screens/mustsee.js';
 import prep from './screens/prep.js';
 import log from './screens/log.js';
 import note from './screens/note.js';
+import trip from './screens/trip.js';
 
-for (const screen of [map, plan, dest, nearby, sub, shop, mustsee, prep, log, note]) {
+for (const screen of [map, plan, dest, nearby, sub, shop, mustsee, prep, log, note, trip]) {
   register(screen);
 }
 
@@ -36,7 +37,9 @@ async function main() {
   cover.classList.add('gone');
   setTimeout(() => cover.remove(), 300);
 
-  if (state.mode === 'local') {
+  if (state.stranded) {
+    console.warn('[travel-planner] Firebase is configured but could not be reached, so changes are being saved to this browser only and will not sync.');
+  } else if (state.mode === 'local') {
     console.info('[travel-planner] No Firebase config — saving to this browser only. See web/js/config.js.');
   }
 
