@@ -17,6 +17,7 @@ const ASSETS = [
   './js/config.js',
   './js/data.js',
   './js/util.js',
+  './js/photos.js',
   './js/screens/parts.js',
   './js/screens/map.js',
   './js/screens/plan.js',

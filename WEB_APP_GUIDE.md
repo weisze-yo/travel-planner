@@ -81,12 +81,23 @@ This is how each device gets a user id without you building a login screen.
 Without step 4, production mode blocks everything and the app will fall back to
 saving in the browser only.
 
-## Step 5 — Storage, if you want photos on notes
+## Step 5 — Storage — **optional, skip it if it asks for a card**
+
+Newer Firebase projects require the paid **Blaze** plan to switch Cloud Storage
+on. If yours does: **skip this step entirely.** Photos still work.
+
+Without Storage, a photo you attach to a note is shrunk in the browser to a
+small thumbnail (320 px, a few kB) and saved inside the note itself, and the
+composer tells you it did that. Around 55 photos per day fit that way. Nothing
+else on any screen is affected.
+
+If Storage *is* available on the free plan for you, or you turn Blaze on later:
 
 1. **Build → Storage → Get started** → same region → Next.
 2. **Rules** tab → paste **`firebase/storage.rules`** → Publish.
 
-If it demands the Blaze plan, skip this whole step.
+Then photos upload at full size (1600 px) automatically — no code change, and
+the thumbnails already saved stay where they are.
 
 ---
 
@@ -170,6 +181,9 @@ writes under `users/{your-uid}`, so nobody else's browser can reach your trip.
 design, so every screen has something in it. Editing, removing and adding all
 work on it; there is no "start an empty trip" button yet.
 
+**Photos** are downscaled in the browser before they go anywhere, so uploads are
+quick on hotel wifi and nothing depends on the paid plan.
+
 **The map** uses OpenStreetMap tiles (free, no key). The demo trip's coordinates
 are real central-Tokyo ones, so streets line up under the route. The
 Google Maps / Apple Maps buttons hand off to the real apps on your phone.
@@ -184,5 +198,6 @@ worker fetches from the network first and only falls back to its cache offline.
 | Everything works but nothing syncs; console says "No Firebase config" | `web/js/config.js` is still empty (step 2) |
 | Data disappears on refresh | Rules not published (step 4), or the browser is in private mode |
 | Map is blank grey | No network for tiles, or a tile blocker/VPN |
-| Photos will not attach | Storage not enabled (step 5) |
+| Photos save as small thumbnails | Storage not enabled — expected, see step 5 |
+| "That is as many photos as fit…" | ~55 thumbnails per day is the limit without Storage |
 | GitHub Action fails on "Check the Firebase config" | `config.js` was committed still empty |

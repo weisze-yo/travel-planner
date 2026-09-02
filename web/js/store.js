@@ -4,6 +4,7 @@
 
 import * as seed from './data.js';
 import { createBackend, KINDS } from './persist.js';
+import { prepare, storedLength } from './photos.js';
 import { clock, duration, money, numeric, parseClock, uid, reorder, dateStamp } from './util.js';
 
 const listeners = new Set();
@@ -117,8 +118,31 @@ function putTrip(trip) {
   notify();
 }
 
-export function uploadPhoto(file, path) {
-  return backend ? backend.uploadPhoto(file, path) : Promise.reject(new Error('no backend'));
+/** Firestore allows 1 MiB per document; leave room for the note itself. */
+const PHOTO_BUDGET_BYTES = 600_000;
+
+/**
+ * Attaches a photo to a note. Cloud Storage needs a billing account, so when
+ * it is unavailable the photo is kept as a small thumbnail inside the note
+ * document instead — lower quality, but it works on the free plan. Enabling
+ * Storage later needs no code change; the next photo goes to the bucket.
+ */
+export async function attachPhoto(file, path, existing = []) {
+  if (!backend) throw new Error('Storage is not ready yet');
+
+  const { upload, thumbnail } = await prepare(file);
+
+  try {
+    if (!backend.hasBucket) throw new Error('No bucket configured');
+    const url = await backend.uploadPhoto(upload || file, path);
+    return { url, stored: 'bucket' };
+  } catch (error) {
+    const used = existing.reduce((sum, url) => sum + storedLength(url), 0);
+    if (used + storedLength(thumbnail) > PHOTO_BUDGET_BYTES) {
+      throw new Error('That is as many photos as fit without Cloud Storage enabled');
+    }
+    return { url: thumbnail, stored: 'inline' };
+  }
 }
 
 // ------------------------------------------------------------------- reading

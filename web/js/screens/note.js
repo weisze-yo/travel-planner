@@ -6,9 +6,10 @@ import { html, raw, icon, delegate, money } from '../util.js';
 import * as store from '../store.js';
 import { state } from '../store.js';
 import { go, back } from '../nav.js';
-import { uploadPhoto } from '../store.js';
+import { attachPhoto } from '../store.js';
 
 let draft = { dayNumber: null, placeLabel: null, placeID: null, text: '', photos: [], loadedFor: null };
+let photoNotice = '';
 
 export default {
   id: 'note',
@@ -61,13 +62,18 @@ export default {
 
           ${draft.photos.length ? html`
             <div class="log-photos mt10">
-              ${draft.photos.slice(0, 4).map((src) => html`<div class="log-photo"><img src="${src}" alt=""></div>`)}
+              ${draft.photos.slice(0, 3).map((src) => html`<div class="log-photo"><img src="${src}" alt=""></div>`)}
+              ${draft.photos.length > 3
+                ? html`<div class="log-more">+${draft.photos.length - 3}</div>`
+                : ''}
             </div>` : ''}
 
           <label class="photo-drop mt10">
             + Photos
             <input type="file" id="note-photos" accept="image/*" multiple hidden>
           </label>
+
+          ${photoNotice ? html`<div class="f11 amber-note mt8">${photoNotice}</div>` : ''}
 
           <div class="f11 soft lh145 mt10">
             Spend for this day is totalled from your shopping list
@@ -106,15 +112,27 @@ export default {
     const picker = root.querySelector('#note-photos');
     picker?.addEventListener('change', async () => {
       keepText(root);
+      const day = draft.dayNumber ?? dayNumber;
+      let inlined = false;
+      photoNotice = 'Adding photos…';
+      store.selectDay(day);
+
       for (const file of Array.from(picker.files || [])) {
         try {
-          const url = await uploadPhoto(file, `log/${draft.dayNumber ?? dayNumber}/${Date.now()}-${file.name}`);
-          draft.photos = [...draft.photos, url];
+          const result = await attachPhoto(file, `log/${day}/${Date.now()}-${file.name}`, draft.photos);
+          draft.photos = [...draft.photos, result.url];
+          if (result.stored === 'inline') inlined = true;
         } catch (error) {
-          console.warn('[travel-planner] photo upload failed', error);
+          photoNotice = error.message || 'That photo could not be added';
+          store.selectDay(day);
+          return;
         }
       }
-      store.selectDay(draft.dayNumber ?? dayNumber);
+
+      photoNotice = !inlined ? '' : (state.mode === 'firebase'
+        ? 'Kept as thumbnails, because Cloud Storage is not enabled on your Firebase project. Enable Storage for full-resolution photos — everything else already syncs.'
+        : 'Kept as thumbnails on this device, because Firebase is not configured yet.');
+      store.selectDay(day);
     });
 
     delegate(root, '[data-act="save"]', () => {
@@ -153,6 +171,7 @@ function keepText(root) {
 
 function reset() {
   draft = { dayNumber: null, placeLabel: null, placeID: null, text: '', photos: [], loadedFor: null };
+  photoNotice = '';
 }
 
 /** Main-route stops plus this day's sub-route picks. */

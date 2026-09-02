@@ -65,6 +65,8 @@ async function createFirebaseBackend() {
   return {
     mode: 'firebase',
     uid,
+    // No bucket in the config means Storage was never enabled.
+    hasBucket: Boolean(firebaseConfig.storageBucket),
 
     async loadAll() {
       const tripSnap = await getDoc(tripRef);
@@ -151,6 +153,7 @@ export function createLocalBackend({ degradedFrom = null } = {}) {
   return {
     mode: 'local',
     uid: 'local-device',
+    hasBucket: false,
     degradedFrom,
 
     async loadAll() {
@@ -187,14 +190,9 @@ export function createLocalBackend({ degradedFrom = null } = {}) {
       return () => {};
     },
 
-    /** No bucket, so the photo is inlined for this browser only. */
-    async uploadPhoto(file) {
-      return new Promise((resolve, reject) => {
-        const reader = new FileReader();
-        reader.onload = () => resolve(String(reader.result));
-        reader.onerror = () => reject(reader.error);
-        reader.readAsDataURL(file);
-      });
+    /** There is no bucket here; the caller keeps a thumbnail instead. */
+    async uploadPhoto() {
+      throw new Error('No Cloud Storage bucket on this device');
     },
   };
 }
