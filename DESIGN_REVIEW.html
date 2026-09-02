@@ -1,0 +1,850 @@
+<title>Travel Planner Design Review</title>
+<link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=Newsreader:ital,opsz,wght@0,6..72,400;0,6..72,600;1,6..72,400&family=Public+Sans:ital,wght@0,400;0,500;0,600;0,700;0,800;1,400&display=swap">
+<style>
+  :root {
+    --paper: #FBFBF9;
+    --surface: #FFFFFF;
+    --bone: #F2F3F1;
+    --ink: #14201C;
+    --body: #33413B;
+    --muted: #6B7A74;
+    --soft: #98A5A0;
+    --rule: #E2E6E2;
+    --jade: #1F6F5C;
+    --jade-bg: #E6EFEB;
+    --amber: #9A6207;
+    --amber-bg: #FBF1DE;
+    --rust: #9B4B4B;
+    --rust-bg: #F6E7E7;
+    --shadow: 0 1px 2px rgba(20, 32, 28, .05);
+  }
+
+  @media (prefers-color-scheme: dark) {
+    :root:not([data-theme="light"]) {
+      --paper: #101614;
+      --surface: #18211E;
+      --bone: #1E2825;
+      --ink: #EAF0ED;
+      --body: #C3CFC9;
+      --muted: #94A39C;
+      --soft: #74837C;
+      --rule: #2C3733;
+      --jade: #6FBBA2;
+      --jade-bg: #1B2E28;
+      --amber: #DCA548;
+      --amber-bg: #2E2618;
+      --rust: #DC9A9A;
+      --rust-bg: #2F1F1F;
+      --shadow: 0 1px 2px rgba(0, 0, 0, .3);
+    }
+  }
+
+  :root[data-theme="dark"] {
+    --paper: #101614;
+    --surface: #18211E;
+    --bone: #1E2825;
+    --ink: #EAF0ED;
+    --body: #C3CFC9;
+    --muted: #94A39C;
+    --soft: #74837C;
+    --rule: #2C3733;
+    --jade: #6FBBA2;
+    --jade-bg: #1B2E28;
+    --amber: #DCA548;
+    --amber-bg: #2E2618;
+    --rust: #DC9A9A;
+    --rust-bg: #2F1F1F;
+    --shadow: 0 1px 2px rgba(0, 0, 0, .3);
+  }
+
+  * { box-sizing: border-box; }
+
+  body {
+    margin: 0;
+    background: var(--paper);
+    color: var(--body);
+    font-family: 'Public Sans', system-ui, -apple-system, sans-serif;
+    font-size: 15px;
+    line-height: 1.6;
+    -webkit-font-smoothing: antialiased;
+  }
+
+  .wrap {
+    max-width: 940px;
+    margin: 0 auto;
+    padding: 44px 24px 96px;
+  }
+
+  /* ---------------------------------------------------------- masthead */
+
+  .masthead { border-bottom: 2px solid var(--ink); padding-bottom: 22px; }
+
+  .kicker {
+    font-size: 11px;
+    font-weight: 800;
+    letter-spacing: .14em;
+    text-transform: uppercase;
+    color: var(--jade);
+  }
+
+  h1 {
+    font-family: 'Newsreader', Georgia, serif;
+    font-weight: 600;
+    font-size: clamp(34px, 5.4vw, 52px);
+    line-height: 1.05;
+    letter-spacing: -.015em;
+    color: var(--ink);
+    margin: 10px 0 0;
+    text-wrap: balance;
+  }
+
+  .standfirst {
+    font-family: 'Newsreader', Georgia, serif;
+    font-size: clamp(17px, 2.2vw, 20px);
+    line-height: 1.5;
+    color: var(--muted);
+    margin: 14px 0 0;
+    max-width: 62ch;
+  }
+
+  .facts {
+    display: flex;
+    flex-wrap: wrap;
+    gap: 6px 28px;
+    margin-top: 22px;
+    font-size: 12.5px;
+    color: var(--muted);
+  }
+  .facts b { color: var(--ink); font-weight: 600; }
+  .facts a { color: var(--jade); text-decoration-thickness: 1px; text-underline-offset: 2px; }
+
+  /* ------------------------------------------------------- the split */
+
+  .split {
+    display: grid;
+    grid-template-columns: repeat(auto-fit, minmax(260px, 1fr));
+    gap: 1px;
+    background: var(--rule);
+    border: 1px solid var(--rule);
+    border-radius: 3px;
+    margin: 34px 0 8px;
+    overflow: hidden;
+  }
+  .lane { background: var(--surface); padding: 18px 20px 20px; }
+  .lane-count {
+    font-family: 'Newsreader', Georgia, serif;
+    font-size: 40px;
+    line-height: 1;
+    color: var(--ink);
+    font-variant-numeric: tabular-nums;
+  }
+  .lane-title {
+    font-size: 13px;
+    font-weight: 700;
+    color: var(--ink);
+    margin-top: 8px;
+  }
+  .lane-note { font-size: 12.5px; color: var(--muted); margin-top: 4px; }
+  .lane-tally {
+    margin-top: 12px;
+    padding-top: 10px;
+    border-top: 1px solid var(--rule);
+    font-size: 12px;
+    color: var(--muted);
+    display: flex;
+    gap: 10px;
+    flex-wrap: wrap;
+  }
+
+  /* ------------------------------------------------------- sections */
+
+  h2 {
+    font-family: 'Newsreader', Georgia, serif;
+    font-weight: 600;
+    font-size: 27px;
+    line-height: 1.2;
+    color: var(--ink);
+    margin: 52px 0 4px;
+    letter-spacing: -.01em;
+  }
+  .section-note {
+    font-size: 13.5px;
+    color: var(--muted);
+    margin: 0 0 4px;
+    max-width: 66ch;
+  }
+
+  /* ---------------------------------------------------------- items */
+
+  .item {
+    display: grid;
+    grid-template-columns: 84px 1fr;
+    gap: 0 22px;
+    padding: 22px 0;
+    border-top: 1px solid var(--rule);
+  }
+  .item:first-of-type { border-top: 1px solid var(--ink); }
+
+  .rail { padding-top: 3px; }
+  .num {
+    font-size: 12px;
+    font-weight: 800;
+    color: var(--soft);
+    font-variant-numeric: tabular-nums;
+    letter-spacing: .04em;
+  }
+  .sev {
+    display: inline-block;
+    margin-top: 7px;
+    padding: 2px 7px;
+    border-radius: 3px;
+    font-size: 10px;
+    font-weight: 800;
+    letter-spacing: .07em;
+    text-transform: uppercase;
+    white-space: nowrap;
+  }
+  .sev.blocker { background: var(--rust-bg); color: var(--rust); }
+  .sev.serious { background: var(--amber-bg); color: var(--amber); }
+  .sev.polish { background: var(--jade-bg); color: var(--jade); }
+
+  h3 {
+    font-size: 17px;
+    font-weight: 700;
+    color: var(--ink);
+    margin: 0 0 7px;
+    line-height: 1.3;
+    text-wrap: balance;
+  }
+  .item p { margin: 0 0 9px; max-width: 68ch; }
+  .item p:last-child { margin-bottom: 0; }
+
+  .ask {
+    margin-top: 11px;
+    padding: 11px 13px;
+    background: var(--bone);
+    border-left: 2px solid var(--jade);
+    border-radius: 0 3px 3px 0;
+    font-size: 13.5px;
+    max-width: 68ch;
+  }
+  .ask b {
+    display: block;
+    font-size: 10.5px;
+    font-weight: 800;
+    letter-spacing: .08em;
+    text-transform: uppercase;
+    color: var(--jade);
+    margin-bottom: 3px;
+  }
+
+  code {
+    font-family: ui-monospace, SFMono-Regular, Menlo, monospace;
+    font-size: .88em;
+    background: var(--bone);
+    padding: 1px 5px;
+    border-radius: 3px;
+    color: var(--ink);
+  }
+
+  /* -------------------------------------------------------- closing */
+
+  .questions { border-top: 1px solid var(--ink); margin-top: 8px; }
+  .q {
+    display: grid;
+    grid-template-columns: 84px 1fr;
+    gap: 0 22px;
+    padding: 18px 0;
+    border-bottom: 1px solid var(--rule);
+  }
+  .q-label {
+    font-size: 10.5px;
+    font-weight: 800;
+    letter-spacing: .08em;
+    text-transform: uppercase;
+    color: var(--soft);
+    padding-top: 3px;
+  }
+  .q h3 { font-size: 15.5px; margin-bottom: 5px; }
+  .q p { margin: 0; max-width: 68ch; font-size: 14px; }
+
+  ol.order {
+    counter-reset: step;
+    list-style: none;
+    padding: 0;
+    margin: 14px 0 0;
+    max-width: 68ch;
+  }
+  ol.order li {
+    counter-increment: step;
+    position: relative;
+    padding: 0 0 12px 34px;
+    font-size: 14.5px;
+  }
+  ol.order li::before {
+    content: counter(step);
+    position: absolute;
+    left: 0;
+    top: 1px;
+    width: 22px;
+    height: 22px;
+    border-radius: 50%;
+    background: var(--ink);
+    color: var(--paper);
+    font-size: 11px;
+    font-weight: 800;
+    display: grid;
+    place-items: center;
+    font-variant-numeric: tabular-nums;
+  }
+  ol.order b { color: var(--ink); }
+
+  .footnote {
+    margin-top: 46px;
+    padding-top: 18px;
+    border-top: 1px solid var(--rule);
+    font-size: 12.5px;
+    color: var(--muted);
+    max-width: 74ch;
+  }
+  .footnote b { color: var(--ink); }
+
+  @media (max-width: 620px) {
+    .item, .q { grid-template-columns: 1fr; gap: 0; }
+    .rail { display: flex; align-items: center; gap: 10px; padding: 0 0 8px; }
+    .sev { margin-top: 0; }
+    .q-label { padding-bottom: 6px; }
+  }
+</style>
+
+<div class="wrap">
+
+  <header class="masthead">
+    <div class="kicker">Design review · before the next build round</div>
+    <h1>What the Travel Planner still needs</h1>
+    <p class="standfirst">
+      The app is deployed and every screen from the turn-2 design is built. What follows is
+      the honest list of where it falls short of a trip you could actually take, split by
+      whether it needs a design decision or just code.
+    </p>
+    <div class="facts">
+      <span>Reviewed <b>web app, all 10 screens</b></span>
+      <span>Live at <b>travel-planner-3e0d3.web.app</b></span>
+      <span><b>24</b> findings</span>
+      <span><b>3</b> blockers</span>
+    </div>
+  </header>
+
+  <div class="split">
+    <div class="lane">
+      <div class="lane-count">16</div>
+      <div class="lane-title">Take these to Claude Design</div>
+      <div class="lane-note">
+        They need a screen, a layout or a model decision that shouldn't be invented in code.
+      </div>
+      <div class="lane-tally">
+        <span>3 blockers</span><span>9 serious</span><span>4 polish</span>
+      </div>
+    </div>
+    <div class="lane">
+      <div class="lane-count">8</div>
+      <div class="lane-title">I can fix these without you</div>
+      <div class="lane-note">
+        Bugs and unfinished wiring. No design needed — say go and I'll start while you're
+        in the design session.
+      </div>
+      <div class="lane-tally">
+        <span>4 bugs</span><span>4 gaps</span>
+      </div>
+    </div>
+  </div>
+
+  <h2>Part 1 — Needs a design decision</h2>
+  <p class="section-note">
+    Numbered so you can refer to them in the design session. Each one ends with the specific
+    thing I need decided or drawn.
+  </p>
+
+  <section>
+
+    <div class="item">
+      <div class="rail"><div class="num">01</div><span class="sev blocker">Blocker</span></div>
+      <div>
+        <h3>There is no way to start a trip</h3>
+        <p>
+          The app can only ever show the one demo trip that seeds itself on first launch —
+          Meridian City, day 3. There is no "new trip", no trip list, and no way to edit the
+          trip's name, dates, hotel or currency. Turn 1 of the design had a Trips screen
+          (artboard 1j); turn 2 dropped it and nothing replaced it.
+        </p>
+        <p>
+          More importantly, your real trips don't start empty — they start as an agent
+          itinerary in a PDF, a WhatsApp message or a photo. Typing six days of stops by hand
+          on a phone is the difference between using this app and not.
+        </p>
+        <div class="ask">
+          <b>To design</b>
+          The Trips list, and a "new trip" flow whose first choice is <em>import</em>: paste
+          text, upload a PDF, or photograph the itinerary. Show what the app does when the
+          import is only half-understood — which fields it asks you to confirm.
+        </div>
+      </div>
+    </div>
+
+    <div class="item">
+      <div class="rail"><div class="num">02</div><span class="sev blocker">Blocker</span></div>
+      <div>
+        <h3>Every screen was designed full; none was designed empty</h3>
+        <p>
+          Days 1, 2, 4, 5 and 6 have no stops, so the Map and Plan screens are genuinely blank
+          today. The same is true of a trip with no shopping items, no must-see spots and no
+          notes. I improvised placeholder text, but improvised empty states are how an app
+          starts feeling unfinished.
+        </p>
+        <div class="ask">
+          <b>To design</b>
+          The resting state of each of the ten screens with nothing in it — what it says, and
+          the one action it offers. The empty Plan day is the important one.
+        </div>
+      </div>
+    </div>
+
+    <div class="item">
+      <div class="rail"><div class="num">03</div><span class="sev blocker">Blocker</span></div>
+      <div>
+        <h3>Nothing can be deleted</h3>
+        <p>
+          Only itinerary stops can be removed, and they go to the archive rather than away.
+          Shopping items, packing items, packing categories, places you added, notes, photos
+          and sub-route picks are all permanent once created. One mistyped item stays on the
+          list for the whole trip.
+        </p>
+        <div class="ask">
+          <b>To design</b>
+          A delete affordance that suits a phone (swipe, or long-press, or an edit mode) and a
+          decision per list: archive like the itinerary does, or delete outright. If delete,
+          then an undo — a confirm dialog for every tap gets old fast.
+        </div>
+      </div>
+    </div>
+
+    <div class="item">
+      <div class="rail"><div class="num">04</div><span class="sev serious">Serious</span></div>
+      <div>
+        <h3>A day can only hold one note, and place notes overwrite it</h3>
+        <p>
+          Notes are stored one per day. Tapping "Add a note" on Nishi Market opens the same
+          composer as tapping Day 3 in the Log, so writing about the market overwrites whatever
+          you wrote about the shrine that morning. The design implies per-stop notes and the
+          storage implies per-day; they contradict each other.
+        </p>
+        <div class="ask">
+          <b>To design</b>
+          Which it is. My recommendation: notes belong to a stop, and the Log day card shows
+          the day's notes stacked with the stop name on each — that matches "log what happened
+          at this stop" and still reads as a diary.
+        </div>
+      </div>
+    </div>
+
+    <div class="item">
+      <div class="rail"><div class="num">05</div><span class="sev serious">Serious</span></div>
+      <div>
+        <h3>Free time happens more than once a day</h3>
+        <p>
+          The model allows exactly one sub route per day, hanging off one stop. Your own brief
+          describes free time at Shinjuku crossing <em>and</em> elsewhere; a real coach day
+          often has an hour at a shrine in the morning and two hours at a market after lunch.
+          Today the second one has nowhere to live.
+        </p>
+        <div class="ask">
+          <b>To design</b>
+          How the Plan shows two or three separate loops in one day, and how the Sub route
+          screen makes clear which stop you are looping from.
+        </div>
+      </div>
+    </div>
+
+    <div class="item">
+      <div class="rail"><div class="num">06</div><span class="sev serious">Serious</span></div>
+      <div>
+        <h3>Times are text, and nothing recalculates</h3>
+        <p>
+          In edit mode each time is a free-text box. Nothing derives from it: the "2h15"
+          duration labels are fixed strings, and the coach deadline the buffer counts against
+          is a stored number, so changing Nishi Market's window from 15:45 to 15:00 leaves the
+          buffer claiming you have 37 minutes spare when you don't. Dragging a stop can also
+          put 09:15 after 18:00 and the app says nothing.
+        </p>
+        <div class="ask">
+          <b>To design</b>
+          Whether times are pickers rather than text; how a stop shows its duration as
+          something derived; and what an overlap or an out-of-order day looks like — a warning
+          on the row, or a refusal.
+        </div>
+      </div>
+    </div>
+
+    <div class="item">
+      <div class="rail"><div class="num">07</div><span class="sev serious">Serious</span></div>
+      <div>
+        <h3>Nobody has decided where place information comes from</h3>
+        <p>
+          The destination screen shows a confident table — opening hours, phone, website,
+          tickets, transport, payment, facilities, language. For the demo stop that content is
+          typed into the seed data. For a real market in a real city, someone or something has
+          to supply it. A places API can, but Google Places needs a billing account and
+          charges per lookup; the free alternatives are thinner.
+        </p>
+        <div class="ask">
+          <b>To design</b>
+          Which fields are worth typing yourself and which must come from a lookup, and what a
+          half-filled table looks like — because most places will be half-filled. This also
+          decides how "+ Add a place myself" behaves.
+        </div>
+      </div>
+    </div>
+
+    <div class="item">
+      <div class="rail"><div class="num">08</div><span class="sev serious">Serious</span></div>
+      <div>
+        <h3>Must-see spots can be ticked, but not added or photographed</h3>
+        <p>
+          You can mark one of the four seeded shots as taken, and that is all. You cannot add a
+          spot you read about, attach the reference image that made you want it, or attach the
+          photo you actually got. The screen's whole promise — "so I know what must-see when I
+          reach the destination" — depends on content that has no way in.
+        </p>
+        <div class="ask">
+          <b>To design</b>
+          Adding a spot (name, where to stand, best time), attaching a reference image, and
+          what the card looks like once your own photo sits next to the reference.
+        </div>
+      </div>
+    </div>
+
+    <div class="item">
+      <div class="rail"><div class="num">09</div><span class="sev serious">Serious</span></div>
+      <div>
+        <h3>The app knows you'll miss the coach and never tells you</h3>
+        <p>
+          The buffer exists precisely because missing the bus is the real risk, and it sits
+          silently on a screen you have to open. Nothing notifies you. The same goes for the
+          14:00 knife-sharpening demo, stalls that shut at 17:00, and the "last chance"
+          airport items on day 6.
+        </p>
+        <div class="ask">
+          <b>To design</b>
+          Where a reminder is switched on (per stop? per shopping item? one setting?) and what
+          it looks like when it fires. Worth knowing: a web app installed to the home screen
+          can send notifications on iOS 16.4+, so this is buildable.
+        </div>
+      </div>
+    </div>
+
+    <div class="item">
+      <div class="rail"><div class="num">10</div><span class="sev serious">Serious</span></div>
+      <div>
+        <h3>The shopping list can't be corrected or reorganised</h3>
+        <p>
+          Once an item exists you cannot rename it, change its estimate, move it to a different
+          shop, set a quantity, or reorder it. You also asked in your original thirteen changes
+          for grouping by day, and the answer at the time was that the list already sorted that
+          way — it doesn't. It groups by place only.
+        </p>
+        <div class="ask">
+          <b>To design</b>
+          The edit state of an item, and whether "by place" and "by day" are two views of one
+          list or a single grouping with day headers inside each place.
+        </div>
+      </div>
+    </div>
+
+    <div class="item">
+      <div class="rail"><div class="num">11</div><span class="sev serious">Serious</span></div>
+      <div>
+        <h3>You cannot travel with anyone</h3>
+        <p>
+          Sign-in is anonymous, which means the trip belongs to one browser. Your phone and
+          your laptop hold two unrelated trips, clearing Safari's data starts a third, and
+          there is no way for a partner to tick off the packing list or add to the shopping
+          list. For a family trip that is a real limit, not a technicality.
+        </p>
+        <div class="ask">
+          <b>To design</b>
+          Sign-in (Apple and Google are the natural two), and sharing a trip: who can edit,
+          what an invite looks like, and whether a shared list shows who ticked what.
+        </div>
+      </div>
+    </div>
+
+    <div class="item">
+      <div class="rail"><div class="num">12</div><span class="sev serious">Serious</span></div>
+      <div>
+        <h3>Bilingual was deferred, and every new screen widens the gap</h3>
+        <p>
+          You chose English-only for this build, which was the right call for speed. But the
+          turn-2 design carried 中文 throughout, and every screen designed from here without
+          Chinese strings is a screen that has to be revisited twice.
+        </p>
+        <div class="ask">
+          <b>To design</b>
+          Keep both languages in the artboards for anything new, and settle the awkward cases
+          now: place names that stay in the local language, and how a long Chinese label
+          behaves in a chip sized for English.
+        </div>
+      </div>
+    </div>
+
+    <div class="item">
+      <div class="rail"><div class="num">13</div><span class="sev polish">Polish</span></div>
+      <div>
+        <h3>No dark mode</h3>
+        <p>
+          The palette is light only. Half the time you'll open this app is on a coach at night
+          or in bed planning tomorrow, and a full-white screen at 22:00 is unkind. The jade and
+          amber route colours also need checking on a dark ground — amber on near-black loses
+          the "this is mine" contrast it has on bone.
+        </p>
+        <div class="ask">
+          <b>To design</b>
+          A dark palette for the existing tokens, with the route colours re-checked rather
+          than inverted.
+        </div>
+      </div>
+    </div>
+
+    <div class="item">
+      <div class="rail"><div class="num">14</div><span class="sev polish">Polish</span></div>
+      <div>
+        <h3>Nothing is searchable</h3>
+        <p>
+          Fourteen nearby places and eight shopping items browse fine. A six-day trip with a
+          hundred saved places, four days of notes and a long packing list does not. There is
+          no search on any screen.
+        </p>
+        <div class="ask">
+          <b>To design</b>
+          Whether search is per-screen or one trip-wide search, and what it returns — places,
+          items, notes and shots in one list, or scoped tabs.
+        </div>
+      </div>
+    </div>
+
+    <div class="item">
+      <div class="rail"><div class="num">15</div><span class="sev polish">Polish</span></div>
+      <div>
+        <h3>The trip recap is promised but doesn't exist</h3>
+        <p>
+          The Log ends with a black card describing a recap — route map, all photos, what you
+          bought, the places you saved but never reached, carried into the next trip. It is the
+          most appealing idea in the whole design and it is a paragraph, not a screen.
+        </p>
+        <div class="ask">
+          <b>To design</b>
+          The recap itself, and specifically the "saved but never reached" list, since that is
+          what makes the next trip start warm.
+        </div>
+      </div>
+    </div>
+
+    <div class="item">
+      <div class="rail"><div class="num">16</div><span class="sev polish">Polish</span></div>
+      <div>
+        <h3>The design hasn't had an accessibility pass</h3>
+        <p>
+          Some real specifics: the amber-on-cream chips sit near the edge of readable contrast,
+          several labels are set at 9.5–10px, and a few tap targets — the payment chip, the
+          packed-in chip, the sort button — are under the 44px Apple asks for. None of it is
+          fatal; all of it matters on a bright street with cold hands.
+        </p>
+        <div class="ask">
+          <b>To design</b>
+          A pass at minimum sizes and contrast, and a check that the screens survive iOS's
+          larger text settings.
+        </div>
+      </div>
+    </div>
+
+  </section>
+
+  <h2>Part 2 — I can fix these in code</h2>
+  <p class="section-note">
+    No design input needed. These are things I built incompletely or wired to placeholder
+    data, and I'd rather name them than let you find them.
+  </p>
+
+  <section>
+
+    <div class="item">
+      <div class="rail"><div class="num">17</div><span class="sev serious">Bug</span></div>
+      <div>
+        <h3>Nearby shows the same fourteen places at every stop</h3>
+        <p>
+          Places are anchored to a stop, but when a stop has no places of its own the code
+          falls back to showing all of them. So opening Nearby from Lumen Crossing lists the
+          places around Nishi Market, half an hour away, with their walking times presented as
+          if they were from where you stand.
+        </p>
+      </div>
+    </div>
+
+    <div class="item">
+      <div class="rail"><div class="num">18</div><span class="sev serious">Gap</span></div>
+      <div>
+        <h3>The weather is fake</h3>
+        <p>
+          Live forecast was your change request number ten, and the six-day strip, the day
+          pills and the outfit advice all read from seeded numbers that never change. The
+          native app has a working Open-Meteo service; the web app never got it. It needs no
+          key and no billing.
+        </p>
+      </div>
+    </div>
+
+    <div class="item">
+      <div class="rail"><div class="num">19</div><span class="sev serious">Bug</span></div>
+      <div>
+        <h3>Places you add yourself have no location</h3>
+        <p>
+          "+ Add a place myself" saves a name, category and walking time but no coordinates, so
+          the place never appears on the map and is silently dropped from the "send walk to
+          Maps" route. It should geocode the name, or let you drop a pin.
+        </p>
+      </div>
+    </div>
+
+    <div class="item">
+      <div class="rail"><div class="num">20</div><span class="sev serious">Gap</span></div>
+      <div>
+        <h3>Offline editing doesn't work, which is the wrong way round</h3>
+        <p>
+          The screens are cached so the app opens without signal, but Firestore's offline cache
+          was never switched on, so reads and writes fail until you're back on data. Free time
+          in a foreign market is exactly when you have no signal — this is a one-line fix and
+          the native app already does it.
+        </p>
+      </div>
+    </div>
+
+    <div class="item">
+      <div class="rail"><div class="num">21</div><span class="sev polish">Bug</span></div>
+      <div>
+        <h3>The sub-route deadline is a hardcoded number</h3>
+        <p>
+          The buffer counts against 15:45 because that value sits in the seed data, not because
+          it read the coach time off your itinerary. Change the stop, and the buffer keeps
+          quoting the old departure. It should derive from the anchor stop's window.
+        </p>
+      </div>
+    </div>
+
+    <div class="item">
+      <div class="rail"><div class="num">22</div><span class="sev polish">Bug</span></div>
+      <div>
+        <h3>Day 2's log claims 24 photos it doesn't have</h3>
+        <p>
+          The seeded entry carries a photo count with no photos behind it, so the card renders
+          three empty grey tiles and a "+21". It looks like the images failed to load.
+        </p>
+      </div>
+    </div>
+
+    <div class="item">
+      <div class="rail"><div class="num">23</div><span class="sev polish">Gap</span></div>
+      <div>
+        <h3>Payment method changes by tapping the chip repeatedly</h3>
+        <p>
+          To set an item to e-wallet you tap the chip three times and watch the label cycle
+          Cash → Card → IC card → E-wallet. It works, it was in the prototype, and nobody would
+          guess it. A small picker would cost nothing.
+        </p>
+      </div>
+    </div>
+
+    <div class="item">
+      <div class="rail"><div class="num">24</div><span class="sev polish">Gap</span></div>
+      <div>
+        <h3>Currency is fixed at yen, converted at a stored rate</h3>
+        <p>
+          Prices are ¥ and the ≈ RM figure divides by 33.7, written into the trip record. A trip
+          anywhere else needs a base currency you choose, and the rate should either be fetched
+          or clearly labelled as the rate you typed and when.
+        </p>
+      </div>
+    </div>
+
+  </section>
+
+  <h2>Part 3 — Four things only you can answer</h2>
+  <p class="section-note">
+    These change what gets designed, so they're worth settling before the session rather than
+    during it.
+  </p>
+
+  <div class="questions">
+    <div class="q">
+      <div class="q-label">Scope</div>
+      <div>
+        <h3>Is this for one real trip, or a product?</h3>
+        <p>
+          If you have a specific trip coming up, import (item 1) and reminders (item 9) matter
+          far more than trips lists and recaps. If it's a product you'll keep, the order flips.
+        </p>
+      </div>
+    </div>
+    <div class="q">
+      <div class="q-label">People</div>
+      <div>
+        <h3>Who else will use it?</h3>
+        <p>
+          Just you, or family and Jelene too? Sharing (item 11) is a large piece of work and
+          only worth it if someone else really is on the trip.
+        </p>
+      </div>
+    </div>
+    <div class="q">
+      <div class="q-label">Budget</div>
+      <div>
+        <h3>Will you pay for any APIs?</h3>
+        <p>
+          Place details, geocoding and live exchange rates all have free tiers with real limits
+          and paid tiers that need a card. Your answer decides items 7, 19 and 24 — and whether
+          Storage for full-size photos ever gets switched on.
+        </p>
+      </div>
+    </div>
+    <div class="q">
+      <div class="q-label">Platforms</div>
+      <div>
+        <h3>Does the native iOS app stay in step?</h3>
+        <p>
+          There are two implementations now. Keeping the SwiftUI one current roughly doubles
+          every change and it still has never been compiled. My suggestion: let it sit, build
+          on the web app, and revisit only if you get a Mac and want it in the App Store.
+        </p>
+      </div>
+    </div>
+  </div>
+
+  <h2>What I'd do in what order</h2>
+  <ol class="order">
+    <li><b>Items 17–24, now.</b> No design needed and it removes the four things that read as broken. Give me the word and these are done before your design session ends.</li>
+    <li><b>Item 1, import a trip.</b> Nothing else matters if the app only holds a demo. Design this first and design it properly.</li>
+    <li><b>Items 2 and 3, empty states and deletion.</b> Together they're the difference between a prototype and something you'd trust with a real itinerary.</li>
+    <li><b>Items 4, 5 and 6 — notes, multiple loops, and time.</b> Three model decisions that get more expensive the longer they wait.</li>
+    <li><b>Item 9, reminders.</b> The highest ratio of usefulness to work in the whole list.</li>
+    <li><b>Everything else</b>, once you've used the app on a real day and know which of it you actually miss.</li>
+  </ol>
+
+  <div class="footnote">
+    <b>How this was checked.</b> Every finding in Part 2 was verified against the running code,
+    not recalled: the anchor fallback, the missing weather service, the null coordinates, the
+    absent Firestore cache, the hardcoded deadline and the one-note-per-day storage were each
+    read out of the source. Part 1 comes from reading the turn-2 artboards against your original
+    brief and Jelene's comments, and from driving all ten screens in a browser.
+    <b>Not covered:</b> the native SwiftUI app, which has never been compiled, and anything
+    that only shows up on a real trip with real signal.
+  </div>
+
+</div>
