@@ -1,4 +1,14 @@
-# Travel Planner — iOS app
+# Travel Planner — iOS app (SwiftUI)
+
+> **Two implementations live in this repo.** Both follow the same design and use the
+> same Firestore layout:
+>
+> | | Where | Needs | Status |
+> |---|---|---|---|
+> | **Web app** | `web/` | Nothing — deploys to Firebase Hosting, installs to the iPhone home screen from Safari | Built and **verified in a browser**. Start here: **[WEB_APP_GUIDE.md](WEB_APP_GUIDE.md)** |
+> | **Native iOS** | `TravelPlanner.swiftpm/` | A Mac with Xcode | Written but **never compiled** — see *Verification status* below |
+>
+> This file documents the native version.
 
 Native SwiftUI implementation of the Claude Design handoff in `project/Travel Planner.dc.html`
 (turn 2 — the iteration that includes all 13 change requests and Jelene's review comments).

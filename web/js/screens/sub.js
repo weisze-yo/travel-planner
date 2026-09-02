@@ -1,0 +1,207 @@
+// Screen 2e — Sub route. Hold the three-line handle and drag to reorder; the
+// arrival times and the buffer against the coach recalculate. The return row
+// is editable, because you might be heading to the next stop rather than back
+// to the coach.
+
+import { html, raw, icon, delegate, clock } from '../util.js';
+import * as store from '../store.js';
+import { state } from '../store.js';
+import { back, go } from '../nav.js';
+import { bindDragReorder, mapsLinks } from './parts.js';
+import { RETURN_TARGETS } from '../data.js';
+
+let backOpen = false;
+let mapView = null;
+
+export default {
+  id: 'sub',
+  tab: 'map',
+
+  render() {
+    const schedule = store.subSchedule();
+    const route = store.subRoute();
+    const anchorName = route?.anchorName || 'this stop';
+    const target = RETURN_TARGETS.find((t) => t.id === route?.returnTarget) || RETURN_TARGETS[0];
+    const tight = schedule.bufferMinutes < 10;
+
+    return html`
+      <section class="screen sub-screen">
+        <div class="leaf" id="leaf-sub"></div>
+
+        <div class="sub-top">
+          <button class="iconbtn filled" data-act="back" aria-label="Back">${raw(icon.back)}</button>
+          <div class="sub-card">
+            <div class="sub-title">Sub route · ${anchorName}</div>
+            <div class="sub-line">
+              ${schedule.stops.length} stops · out ${clock(schedule.startMinutes)}, back ${clock(schedule.returnClock)}
+            </div>
+          </div>
+        </div>
+
+        <div class="sheet sub-sheet">
+          <div class="sheet-grab"><i></i></div>
+
+          <div class="row g8 pad16" style="padding-bottom:10px;flex:none">
+            <div class="stat"><div class="stat-k">MOVING</div><div class="stat-v">${store.duration(schedule.movingMinutes)}</div></div>
+            <div class="stat"><div class="stat-k">AT STOPS</div><div class="stat-v">${store.duration(schedule.stayMinutes)}</div></div>
+            <div class="stat ${tight ? 'tight' : 'ok'}">
+              <div class="stat-k">BUFFER</div>
+              <div class="stat-v">${store.duration(Math.abs(schedule.bufferMinutes))}</div>
+            </div>
+          </div>
+
+          <div class="pad16 f11 w700 soft" style="padding-bottom:8px;flex:none">
+            ${schedule.stops.length > 1 ? 'Hold the handle to drag a stop into place' : 'Add places from Nearby to build the loop'}
+          </div>
+
+          <div class="scroll pad16" id="loop-rows">
+            ${schedule.stops.map((stop) => html`
+              <div class="loop-row" data-row-id="${stop.place.id}">
+                <div class="handle-grip" style="width:22px" data-grip>${raw(icon.grip)}</div>
+                <div class="loop-n">${stop.index}</div>
+                <div class="grow">
+                  <div class="loop-name">${stop.place.name}</div>
+                  <div class="loop-meta">${legLine(stop.place)}</div>
+                </div>
+                <div class="loop-time">${clock(stop.arrival)}</div>
+              </div>`)}
+
+            ${schedule.stops.length ? '' : html`
+              <div class="empty">
+                Nothing in the loop yet.<br>
+                <button class="f125 w700" style="color:var(--jade)" data-act="nearby">Open Nearby to pick places</button>
+              </div>`}
+
+            <div style="padding:11px 0;border-top:1px solid var(--line-2)">
+              <div class="row g10 center">
+                <div class="loop-n back">↩</div>
+                <div class="grow">
+                  <div class="loop-name">${target.label}</div>
+                  <div class="f11 w650 mt2" style="color:${tight ? 'var(--danger-fg)' : 'var(--jade)'}">
+                    ${schedule.bufferMinutes >= 0
+                      ? `${schedule.bufferMinutes} min before departure`
+                      : `${-schedule.bufferMinutes} min LATE`}
+                  </div>
+                </div>
+                <div class="loop-time">${clock(schedule.returnClock)}</div>
+                <button class="loop-edit" data-act="back-toggle" aria-label="Edit the return">
+                  ${raw(icon.pencil('#3D4C46', 13))}
+                </button>
+              </div>
+
+              ${backOpen ? html`
+                <div class="back-form">
+                  <div class="eyebrow">BACK TO</div>
+                  <select id="back-target">
+                    ${RETURN_TARGETS.map((t) => html`
+                      <option value="${t.id}"${t.id === route?.returnTarget ? ' selected' : ''}>${t.label}</option>`)}
+                  </select>
+                  <div class="eyebrow mt2">TIME NEEDED</div>
+                  <div class="row g8 center">
+                    <input id="back-mins" value="${route?.returnMinutes ?? 8}" style="width:88px" inputmode="numeric">
+                    <span class="f12 w650 muted">minutes</span>
+                    <button class="btn jade grow" style="height:38px" data-act="back-done">Done</button>
+                  </div>
+                </div>` : ''}
+            </div>
+
+            <div class="row g8" style="margin:12px 0 4px">
+              <a class="btn ink grow" style="height:44px" href="${walkURL(schedule)}" target="_blank" rel="noopener">
+                Send walk to Maps
+              </a>
+            </div>
+          </div>
+        </div>
+      </section>`;
+  },
+
+  mount(root) {
+    delegate(root, '[data-act="back"]', () => back());
+    delegate(root, '[data-act="nearby"]', () => go('nearby'));
+    delegate(root, '[data-act="back-toggle"]', () => { backOpen = !backOpen; nudge(); });
+    delegate(root, '[data-act="back-done"]', () => {
+      store.setReturn({
+        target: root.querySelector('#back-target')?.value,
+        minutes: root.querySelector('#back-mins')?.value,
+      });
+      backOpen = false;
+    });
+
+    bindDragReorder(root, {
+      rowSelector: '[data-row-id]',
+      handleSelector: '[data-grip]',
+      onDrop: (movedId, beforeId) => store.reorderSubRoute(movedId, beforeId),
+    });
+
+    drawMap(root.querySelector('#leaf-sub'));
+  },
+};
+
+function nudge() {
+  store.selectDay(state.selectedDay);
+}
+
+function legLine(place) {
+  const legs = (place.legs || []).map((l) => `${l.mode === 'walk' ? '🚶' : l.mode === 'train' ? '🚆' : '🚌'}${l.minutes}`);
+  return `${legs.join(' + ')} · stay ${store.duration(place.stayMinutes)} · ${place.priceTier}`;
+}
+
+function walkURL(schedule) {
+  const anchor = store.activeItems(store.day()).find((i) => i.id === store.subRoute()?.anchorPlanItemID);
+  const points = [];
+  if (anchor?.latitude) points.push({ lat: anchor.latitude, lng: anchor.longitude });
+  for (const stop of schedule.stops) {
+    if (stop.place.latitude) points.push({ lat: stop.place.latitude, lng: stop.place.longitude });
+  }
+  if (anchor?.latitude) points.push({ lat: anchor.latitude, lng: anchor.longitude });
+  return mapsLinks.walk(points);
+}
+
+function drawMap(container) {
+  if (!container || typeof L === 'undefined') return;
+
+  const schedule = store.subSchedule();
+  const anchor = store.activeItems(store.day()).find((i) => i.id === store.subRoute()?.anchorPlanItemID);
+  const centre = anchor?.latitude
+    ? [anchor.latitude, anchor.longitude]
+    : [state.trip?.latitude || 35.68, state.trip?.longitude || 139.70];
+
+  mapView = L.map(container, { zoomControl: false, attributionControl: false, center: centre, zoom: 16 });
+  L.tileLayer('https://{s}.tile.openstreetmap.org/{z}/{x}/{y}.png', { maxZoom: 19, detectRetina: true }).addTo(mapView);
+
+  const points = schedule.stops
+    .filter((s) => s.place.latitude)
+    .map((s) => [s.place.latitude, s.place.longitude]);
+
+  if (anchor?.latitude && points.length) {
+    const start = [anchor.latitude, anchor.longitude];
+    L.polyline([start, ...points, start], {
+      color: '#C87F0A', weight: 3.5, dashArray: '3 7', lineCap: 'round',
+    }).addTo(mapView);
+    marker(mapView, start, '<span class="map-pin slack" style="width:36px;height:36px">↩</span>', 36);
+  }
+
+  schedule.stops.forEach((stop) => {
+    if (!stop.place.latitude) return;
+    marker(mapView, [stop.place.latitude, stop.place.longitude],
+      `<span class="map-pin sub-num">${stop.index}</span>`, 28);
+  });
+
+  const all = anchor?.latitude ? [[anchor.latitude, anchor.longitude], ...points] : points;
+  if (all.length > 1) {
+    const height = container.clientHeight || 800;
+    // This sheet is taller (68%), so the visible band is a narrow strip.
+    mapView.fitBounds(L.latLngBounds(all), {
+      paddingTopLeft: [30, 120],
+      paddingBottomRight: [30, Math.round(height * 0.68) + 20],
+      animate: false,
+    });
+  }
+}
+
+function marker(view, latlng, markup, size) {
+  L.marker(latlng, {
+    icon: L.divIcon({ html: markup, className: 'pin-wrap', iconSize: [size, size], iconAnchor: [size / 2, size / 2] }),
+    keyboard: false,
+  }).addTo(view);
+}

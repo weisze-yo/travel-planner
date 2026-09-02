@@ -1,0 +1,36 @@
+<!doctype html>
+<html lang="en">
+<head>
+<meta charset="utf-8">
+<!-- viewport-fit=cover so the map can sit under the notch, like the design -->
+<meta name="viewport" content="width=device-width, initial-scale=1, viewport-fit=cover, maximum-scale=1">
+<title>Travel Planner</title>
+<meta name="theme-color" content="#F2F3F1">
+<meta name="description" content="Trip planner and log: main route, your own sub routes, shopping list, must-see shots and packing prep.">
+
+<!-- Add to Home Screen on iOS -->
+<link rel="manifest" href="manifest.webmanifest">
+<meta name="apple-mobile-web-app-capable" content="yes">
+<meta name="apple-mobile-web-app-status-bar-style" content="default">
+<meta name="apple-mobile-web-app-title" content="Travel Planner">
+<link rel="apple-touch-icon" href="icons/icon-180.png">
+<link rel="icon" href="icons/icon.svg" type="image/svg+xml">
+
+<link rel="stylesheet" href="vendor/leaflet/leaflet.css">
+<link rel="stylesheet" href="css/app.css">
+</head>
+<body>
+<div id="app">
+  <div id="screen" class="screen-host"></div>
+  <nav id="tabbar" class="tabbar"></nav>
+</div>
+
+<div id="boot" class="boot">
+  <div class="boot-mark">MC</div>
+  <div class="boot-text">Loading your trip…</div>
+</div>
+
+<script src="vendor/leaflet/leaflet.js"></script>
+<script type="module" src="js/app.js"></script>
+</body>
+</html>

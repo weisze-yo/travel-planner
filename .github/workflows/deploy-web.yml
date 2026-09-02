@@ -1,0 +1,36 @@
+# Deploys the web app to Firebase Hosting on every push to main.
+# Needs two things set up once in GitHub (see WEB_APP_GUIDE.md):
+#   secret   FIREBASE_SERVICE_ACCOUNT  — the service-account JSON, pasted whole
+#   variable FIREBASE_PROJECT_ID       — e.g. travel-planner-1a2b3
+name: Deploy web app
+
+on:
+  push:
+    branches: [main]
+    paths:
+      - 'web/**'
+      - 'firebase.json'
+      - '.github/workflows/deploy-web.yml'
+  workflow_dispatch:
+
+jobs:
+  deploy:
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/checkout@v4
+
+      - name: Check the Firebase config was filled in
+        run: |
+          if ! grep -q "apiKey: '[^']" web/js/config.js; then
+            echo "web/js/config.js still has an empty apiKey."
+            echo "Paste your Firebase web config into it (WEB_APP_GUIDE.md, step 2)."
+            exit 1
+          fi
+
+      - name: Deploy to Firebase Hosting
+        uses: FirebaseExtended/action-hosting-deploy@v0
+        with:
+          repoToken: ${{ secrets.GITHUB_TOKEN }}
+          firebaseServiceAccount: ${{ secrets.FIREBASE_SERVICE_ACCOUNT }}
+          projectId: ${{ vars.FIREBASE_PROJECT_ID }}
+          channelId: live
