@@ -15,8 +15,8 @@ export default {
   tab: 'plan',
 
   render(params = {}) {
-    const placeID = params.placeID || store.subRoute()?.anchorPlanItemID;
-    const shots = state.mustSee.filter((s) => !placeID || s.placeID === placeID);
+    const anchorID = params.anchorID || store.subRoute()?.anchorPlanItemID;
+    const shots = store.shotsFor(anchorID);
     const anchorName = params.anchorName || store.subRoute()?.anchorName || 'this stop';
     const wx = store.weather();
     const mine = store.outfitFor()?.pieces || [];
@@ -51,7 +51,10 @@ export default {
             </div>`)}
 
           ${shots.length ? '' : html`
-            <div class="empty">No shots saved for this stop yet.</div>`}
+            <div class="empty">
+              Nothing noted for ${anchorName} yet.<br>
+              Adding your own must-see spots is still to come.
+            </div>`}
 
           <div class="card pad mb12">
             <div class="row g8 center">

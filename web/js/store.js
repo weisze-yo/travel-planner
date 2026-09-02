@@ -390,6 +390,14 @@ export function prepProgress() {
   return { packed, total, percent: total ? Math.round((packed / total) * 100) : 0 };
 }
 
+/** Shots belong to one itinerary row, matched the way places are. */
+export function shotsFor(anchorID) {
+  if (!anchorID) return [];
+  return state.mustSee
+    .filter((shot) => shot.placeID === anchorID)
+    .sort((a, b) => a.order - b.order);
+}
+
 export const outfitFor = (n = state.selectedDay) =>
   state.outfits.find((o) => o.dayNumber === n) || null;
 

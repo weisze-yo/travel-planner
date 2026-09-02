@@ -76,7 +76,7 @@ export default {
     }
 
     const shopHere = state.shopping.filter((s) => s.placeLabel === it.name);
-    const shots = state.mustSee.filter((s) => !it.placeID || s.placeID === it.placeID);
+    const shots = store.shotsFor(it.anchorID);
     const nearbyCount = store.nearbyPlacesFor(it.anchorID).length;
 
     return html`
