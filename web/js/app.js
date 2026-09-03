@@ -18,8 +18,9 @@ import note from './screens/note.js';
 import trip from './screens/trip.js';
 import trips from './screens/trips.js';
 import spend from './screens/spend.js';
+import paste from './screens/paste.js';
 
-for (const screen of [map, plan, dest, nearby, sub, shop, mustsee, prep, log, note, trip, trips, spend]) {
+for (const screen of [map, plan, dest, nearby, sub, shop, mustsee, prep, log, note, trip, trips, spend, paste]) {
   register(screen);
 }
 

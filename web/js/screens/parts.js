@@ -35,7 +35,7 @@ export function emptyDay(weather) {
   return html`
     <div class="empty">
       Nothing planned for this day yet.${weather ? ` Forecast: ${weather.icon} ${weather.high} °C.` : ''}<br>
-      Open Plan and press Edit to add a stop.
+      Press the pencil to add a stop, or to paste the itinerary in.
     </div>`;
 }
 

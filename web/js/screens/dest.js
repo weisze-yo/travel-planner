@@ -86,14 +86,14 @@ export default {
     ));
     const shots = store.shotsFor(it.anchorID);
     const places = store.nearbyPlaces(it.anchorID);
-    const note = store.logEntry(state.selectedDay);
-    const noteHere = note && note.destinationLabel === it.name ? note : null;
+    // Item 04: every note about this place, whichever day it was written on.
+    const notes = store.notesForPlace(it.placeID, { name: it.name });
     const counts = {
       info: 0,
       nearby: places.length,
       mustsee: shots.length,
       shop: shopHere.length,
-      log: noteHere ? 1 : 0,
+      log: notes.length,
     };
 
     return html`
@@ -128,7 +128,7 @@ export default {
           </div>
 
           <div style="padding:14px 16px 24px">
-            ${panel(tab, it, { shopHere, shots, places })}
+            ${panel(tab, it, { shopHere, shots, places, notes })}
           </div>
         </div>
       </section>`;
@@ -144,7 +144,7 @@ export default {
     });
 
     // Panels that lead somewhere still can.
-    delegate(root, '[data-act="arrange"]', () => go('sub'));
+    delegate(root, '[data-act="arrange"]', () => go('sub', { loopID: store.activeLoop()?.id }));
     delegate(root, '[data-act="all-nearby"]', () => go('nearby', {
       anchorID: it?.anchorID, anchorName: it?.name, placeID: it?.placeID,
     }));
@@ -155,21 +155,24 @@ export default {
     delegate(root, '[data-act="note"]', () => go('note', {
       dayNumber: state.selectedDay, placeID: it?.placeID, placeName: it?.name,
     }));
+    delegate(root, '[data-edit-note]', (el) => go('note', {
+      noteID: el.dataset.editNote, dayNumber: Number(el.dataset.noteDay),
+    }));
     delegate(root, '[data-act="tick-shot"]', (el) => store.toggleShot(el.dataset.id));
     delegate(root, '[data-act="tick-item"]', (el) => store.toggleBought(el.dataset.id));
     // Point: the "+" works from inside a stop too, not only on the Nearby screen.
-    delegate(root, '[data-pick]', (el) => store.toggleSubRoutePlace(el.dataset.pick));
+    delegate(root, '[data-pick]', (el) => store.toggleSubRoutePlace(el.dataset.pick, store.activeLoop()));
     delegate(root, '[data-open-place]', (el) => go('dest', { placeID: el.dataset.openPlace }));
   },
 };
 
 // ------------------------------------------------------------------ panels
 
-function panel(which, it, { shopHere, shots, places }) {
+function panel(which, it, { shopHere, shots, places, notes }) {
   if (which === 'nearby') return nearbyPanel(it, places);
   if (which === 'mustsee') return shotsPanel(it, shots);
   if (which === 'shop') return shopPanel(it, shopHere);
-  if (which === 'log') return logPanel(it);
+  if (which === 'log') return logPanel(it, notes);
   return infoPanel(it);
 }
 
@@ -198,12 +201,13 @@ function infoPanel(it) {
 }
 
 function nearbyPanel(it, places) {
-  const schedule = store.subSchedule();
+  const loop = store.activeLoop();
+  const schedule = store.loopSchedule(loop);
   return html`
     ${places.length ? html`
       <div class="col g8">
         ${places.map((place) => {
-          const picked = store.isInSubRoute(place.id);
+          const picked = store.isInSubRoute(place.id, store.activeLoop());
           const travel = (place.legs || []).reduce((sum, leg) => sum + leg.minutes, 0);
           return html`
             <div class="nearby-card${picked ? ' picked' : ''}">
@@ -218,7 +222,9 @@ function nearbyPanel(it, places) {
                 </div>
               </div>
               <button class="nearby-add${picked ? ' on' : ''}" data-pick="${place.id}"
-                      aria-label="${picked ? `Take ${place.name} out of the loop` : `Add ${place.name} to the loop`}">
+                      aria-label="${picked
+                        ? `Take ${place.name} out of ${loop?.name || 'the loop'}`
+                        : `Add ${place.name} to ${loop?.name || 'a new stretch of free time'}`}">
                 ${picked ? '✓' : '+'}
               </button>
             </div>`;
@@ -228,8 +234,8 @@ function nearbyPanel(it, places) {
         <button class="linkrow mt10" data-act="arrange">
           <div class="linkrow-mark">↩</div>
           <div class="grow">
-            <div class="linkrow-t">Your loop from here · ${schedule.stops.length} stops</div>
-            <div class="linkrow-s">${store.subSummaryLine()}</div>
+            <div class="linkrow-t">${loop.name} · ${schedule.stops.length} stops</div>
+            <div class="linkrow-s">${store.subSummaryLine(loop)}</div>
           </div>
           ${raw(icon.chevron)}
         </button>` : ''}
@@ -305,35 +311,38 @@ function shopPanel(it, items) {
     <button class="btn-dashed mt10" data-act="all-shop">Open the whole shopping list</button>`;
 }
 
-function logPanel(it) {
-  const entry = store.logEntry(state.selectedDay);
-  const here = entry && entry.destinationLabel === it.name ? entry : null;
+/**
+ * Item 04, from this side. A place's Log tab used to be able to show only the
+ * day's single note, and only if that note happened to be filed here — which
+ * was honest and useless. It now shows every note about this place, with the
+ * day each one belongs to, and adding another does not overwrite the last.
+ */
+function logPanel(it, notes) {
   return html`
-    ${here ? html`
-      <div class="card pad">
-        <div class="row between g8" style="align-items:baseline">
-          <div class="f13 w700">${here.dayLabel} · ${here.dateLabel}</div>
-          <div class="f11 w650 soft">${here.meta}</div>
-        </div>
-        <div class="log-text">${here.text}</div>
-        ${here.photoPaths?.length ? html`
-          <div class="row g6 wrap mt10">
-            ${here.photoPaths.map((src) => html`
-              <div class="photo-thumb"><img src="${src}" alt=""></div>`)}
-          </div>` : ''}
+    ${notes.length ? html`
+      <div class="col g8">
+        ${notes.map((note) => html`
+          <div class="card pad">
+            <div class="row between g8" style="align-items:baseline">
+              <div class="f13 w700">Day ${note.dayNumber} · ${store.day(note.dayNumber)?.shortDate || ''}</div>
+              <button class="f11 w650" style="color:var(--jade)" data-edit-note="${note.id}"
+                      data-note-day="${note.dayNumber}">Edit</button>
+            </div>
+            <div class="log-text">${note.text || 'Nothing written yet.'}</div>
+            ${note.photoPaths?.length ? html`
+              <div class="row g6 wrap mt10">
+                ${note.photoPaths.map((src) => html`
+                  <div class="photo-thumb"><img src="${src}" alt=""></div>`)}
+              </div>` : ''}
+          </div>`)}
       </div>
     ` : html`
-      <div class="empty">
-        Nothing logged about this stop yet.
-        ${entry ? html`<br>The note for this day is filed under "${entry.destinationLabel || 'no place'}".` : ''}
-      </div>`}
+      <div class="empty">Nothing logged about this place yet.</div>`}
 
-    <button class="btn-dashed mt10" data-act="note">
-      ${here ? 'Edit this note' : '+ Add a note about this stop'}
-    </button>
+    <button class="btn-dashed mt10" data-act="note">+ Add a note about this place</button>
 
     <div class="f11 soft lh145 mt10">
-      One note is kept per day at the moment, so writing about another stop today replaces this
-      one. Notes per stop are on the design list.
+      A note belongs to this place on one day, so a week of visits keeps a week of notes.
+      Day ${state.selectedDay} is the one it will be filed under; the composer can change that.
     </div>`;
 }

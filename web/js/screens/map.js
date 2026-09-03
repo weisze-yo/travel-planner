@@ -145,9 +145,10 @@ function focusStop(id) {
   document.querySelectorAll('.stop-row.focused').forEach((row) => row.classList.remove('focused'));
   document.querySelector(`.stop-row[data-focus="${id}"]`)?.classList.add('focused');
 
-  // The sub-route row has no single point, so it frames the whole loop.
+  // A loop's row has no single point, so it frames the whole loop — its own,
+  // now that a day can hold several.
   if (item.isSubRouteSummary) {
-    const loop = store.subSchedule().stops
+    const loop = store.loopSchedule(store.subRouteByID(item.subRouteID)).stops
       .filter((s) => s.place.latitude)
       .map((s) => [s.place.latitude, s.place.longitude]);
     if (mapView && loop.length) {
@@ -170,8 +171,12 @@ function focusStop(id) {
 function openItem(id) {
   const hit = store.planItem(id);
   if (!hit) return;
-  if (hit.item.isSubRouteSummary) go('sub');
-  else go('dest', { itemID: id });
+  if (hit.item.isSubRouteSummary) {
+    store.selectLoop(hit.item.subRouteID);
+    go('sub', { loopID: hit.item.subRouteID });
+  } else {
+    go('dest', { itemID: id });
+  }
 }
 
 /**
@@ -194,8 +199,9 @@ function drawMap(container) {
   const day = store.day();
   const items = store.activeItems(day).filter((i) => i.latitude && i.longitude && !i.isSubRouteSummary);
   const numbers = store.mainStopNumbers(day);
-  const schedule = store.subSchedule();
-  const anchor = store.activeItems(day).find((i) => i.id === store.subRoute()?.anchorPlanItemID);
+  // Every stretch of free time on the day draws, not just the first.
+  const schedules = store.dayLoops();
+  const anchorIDs = new Set(store.subRoutesFor().map((r) => r.anchorPlanItemID).filter(Boolean));
 
   mapView = L.map(container, {
     zoomControl: false,
@@ -218,13 +224,19 @@ function drawMap(container) {
     L.polyline(mainLine, { color: '#1F6F5C', weight: 5.5, lineCap: 'round', lineJoin: 'round' }).addTo(layers);
   }
 
-  // The loop leaves the anchor stop, visits each pick and comes back.
-  const loopPoints = schedule.stops
-    .filter((s) => s.place.latitude && s.place.longitude)
-    .map((s) => [s.place.latitude, s.place.longitude]);
-  if (anchor && loopPoints.length) {
-    const start = [anchor.latitude, anchor.longitude];
-    L.polyline([start, ...loopPoints, start], {
+  // Each loop leaves its anchor stop, visits its picks and comes back.
+  const loopPoints = [];
+  for (const schedule of schedules) {
+    const points = schedule.stops
+      .filter((s) => s.place.latitude && s.place.longitude)
+      .map((s) => [s.place.latitude, s.place.longitude]);
+    if (!points.length) continue;
+    loopPoints.push(...points);
+
+    const anchorID = schedule.loop?.anchorPlanItemID;
+    const anchor = store.activeItems(day).find((i) => i.id === anchorID && i.latitude);
+    const ring = anchor ? [[anchor.latitude, anchor.longitude], ...points, [anchor.latitude, anchor.longitude]] : points;
+    L.polyline(ring, {
       color: '#C87F0A', weight: 3, dashArray: '2 7', lineCap: 'round',
     }).addTo(layers);
   }
@@ -238,16 +250,18 @@ function drawMap(container) {
     seen.add(key);
 
     const n = numbers[item.id];
-    const slack = item.id === store.subRoute()?.anchorPlanItemID;
+    const slack = anchorIDs.has(item.id);
     markers.set(item.id, pin(item, `<span class="map-pin${slack ? ' slack' : ''}">${n ?? ''}</span>`,
       slack ? 40 : 32, () => openItem(item.id)));
   }
 
-  schedule.stops.forEach((stop) => {
-    if (!stop.place.latitude) return;
-    pin(stop.place, `<span class="map-pin sub-num">${stop.index}</span>`, 28,
-      () => go('dest', { placeID: stop.place.id }));
-  });
+  for (const schedule of schedules) {
+    schedule.stops.forEach((stop) => {
+      if (!stop.place.latitude) return;
+      pin(stop.place, `<span class="map-pin sub-num">${stop.index}</span>`, 28,
+        () => go('dest', { placeID: stop.place.id }));
+    });
+  }
 
   const all = [...mainLine, ...loopPoints];
   if (all.length) {

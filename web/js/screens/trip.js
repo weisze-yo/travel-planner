@@ -6,7 +6,7 @@
 import { html, raw, icon, delegate } from '../util.js';
 import * as store from '../store.js';
 import { state } from '../store.js';
-import { back } from '../nav.js';
+import { back, go } from '../nav.js';
 
 let notice = '';
 let confirming = false;
@@ -95,6 +95,15 @@ export default {
             </div>
           </div>
 
+          <div class="card pad mb12">
+            <div class="eyebrow">THE ITINERARY</div>
+            <div class="f125 muted lh145 mt6">
+              The itinerary can arrive all at once. Paste the agent's PDF text or the WhatsApp
+              message and confirm the stops it reads — nothing lands until you do.
+            </div>
+            <button class="btn ghost mt10" data-act="paste">Paste an itinerary…</button>
+          </div>
+
           <div class="card pad">
             <div class="eyebrow" style="color:var(--danger-fg)">START THIS TRIP FRESH</div>
             <div class="f125 muted lh145 mt6">
@@ -130,6 +139,7 @@ export default {
 
   mount(root) {
     delegate(root, '[data-act="back"]', () => { notice = ''; confirming = false; back(); });
+    delegate(root, '[data-act="paste"]', () => go('paste'));
 
     delegate(root, '[data-act="save-trip"]', async () => {
       const name = root.querySelector('#trip-name')?.value.trim();

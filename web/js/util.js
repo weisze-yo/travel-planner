@@ -77,6 +77,26 @@ export function duration(minutes) {
   return rest ? `${h}h ${rest}m` : `${h}h`;
 }
 
+/**
+ * Minutes from the durations people actually type: "45", "45m", "1h",
+ * "2h15", "2h 15m", "1.5h", "90 min", "1 小时". Returns null when there is
+ * nothing to read, so "no duration set" stays different from "zero minutes".
+ */
+export function parseDuration(text) {
+  const input = String(text ?? '').trim().toLowerCase();
+  if (!input) return null;
+
+  // "2h15" / "1h 30m" / "2 hrs" — hours with optional minutes.
+  const hm = /^(\d+(?:\.\d+)?)\s*(?:h|hr|hrs|hour|hours|小时|時間)\s*(\d{1,2})?\s*(?:m|min|mins|minute|minutes|分)?$/.exec(input);
+  if (hm) return Math.round(Number(hm[1]) * 60) + (hm[2] ? Number(hm[2]) : 0);
+
+  // "45m" / "45 min" / "45 分钟" / a bare "45".
+  const m = /^(\d+(?:\.\d+)?)\s*(?:m|min|mins|minute|minutes|分钟|分鐘|分)?$/.exec(input);
+  if (m) return Math.round(Number(m[1]));
+
+  return null;
+}
+
 /** Keeps a typed number inside a range that formatting can handle. */
 export function boundedNumber(value, max = 1e9) {
   const n = Number(value);

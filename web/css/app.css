@@ -338,7 +338,11 @@ select {
   font-weight: 700;
   text-decoration: none;
   white-space: nowrap;
+  /* A button that sizes to its label needs room for it; the fixed-width ones
+     opt out through .none, which is what they already carry. */
+  padding: 0 16px;
 }
+.btn.none { padding: 0; }
 .btn.ink { background: var(--ink); color: #fff; }
 .btn.jade { background: var(--jade); color: #fff; }
 .btn.ghost { background: var(--bone); color: var(--ink); border: 1px solid var(--field); font-weight: 650; }
@@ -1091,3 +1095,255 @@ select {
 .f11 { font-size: 11px; } .f115 { font-size: 11.5px; } .f12 { font-size: 12px; } .f125 { font-size: 12.5px; } .f13 { font-size: 13px; }
 .w650 { font-weight: 650; } .w700 { font-weight: 700; } .w800 { font-weight: 800; }
 .lh145 { line-height: 1.45; }
+
+/* ==========================================================================
+   Round five — the day, its times, its loops, and pasting an itinerary in.
+   Same tokens, same language: jade for the agent's route, amber for anything
+   you planned yourself, rust for anything that needs a second look.
+   ========================================================================== */
+
+/* ------------------------------------------- a stop's start, end and length */
+
+.plan-end {
+  font-size: 10.5px;
+  font-weight: 650;
+  color: var(--soft);
+  font-variant-numeric: tabular-nums;
+  margin-top: 1px;
+}
+.plan-clock.bad { color: var(--danger-fg); }
+
+.dur-row {
+  display: flex;
+  align-items: center;
+  gap: 6px;
+  margin-top: 9px;
+  padding-top: 9px;
+  border-top: 1px solid var(--line-2);
+}
+.dur-k { font-size: 9.5px; font-weight: 800; letter-spacing: .06em; color: var(--soft); flex: none; }
+.dur-input {
+  width: 56px;
+  flex: none;
+  padding: 6px 7px;
+  font-size: 12px;
+  text-align: center;
+  font-variant-numeric: tabular-nums;
+}
+.dur-out { font-size: 11px; font-weight: 650; color: var(--jade); flex: 1; min-width: 0; }
+
+/* A warning on the row, never a refused drag. */
+.plan-warn {
+  margin-top: 7px;
+  padding: 6px 8px;
+  border-radius: 8px;
+  background: var(--amber-bg);
+  color: var(--amber-fg);
+  font-size: 11px;
+  font-weight: 650;
+  line-height: 1.35;
+}
+.plan-warn.danger { background: var(--danger-bg); color: var(--danger-fg); }
+
+.day-alert {
+  padding: 11px 13px;
+  border-radius: 12px;
+  background: var(--danger-bg);
+  color: var(--danger-fg);
+  font-size: 11.5px;
+  font-weight: 650;
+  line-height: 1.45;
+}
+.hint-jade {
+  padding: 11px 13px;
+  border-radius: 12px;
+  background: var(--jade-bg);
+  color: var(--jade);
+  font-size: 11.5px;
+  font-weight: 650;
+  line-height: 1.45;
+}
+
+/* ------------------------------------------------ more than one loop a day */
+
+/* A loop's row on the Plan swipes left to the same red bin as everything
+   else. The face is the dashed amber card, so it keeps its own ground. */
+.plan-swipe {
+  border-radius: 14px;
+  background: var(--danger-bg);
+  /* The card's own bottom margin moves out here, or the red ground behind it
+     shows as a sliver under every loop row. */
+  margin-bottom: 8px;
+}
+.plan-swipe > .swipe-face.plan-card,
+.plan-swipe > .swipe-face.plan-card.sub {
+  background: #FFFDF7;
+  margin: 0;
+  display: block;
+}
+
+.loop-switch {
+  position: relative;
+  z-index: 2;
+  flex: none;
+  display: flex;
+  gap: 6px;
+  overflow-x: auto;
+  scrollbar-width: none;
+  padding: 8px 16px 0;
+}
+.loop-chip {
+  flex: none;
+  display: flex;
+  align-items: center;
+  gap: 6px;
+  height: 32px;
+  padding: 0 11px;
+  border-radius: 11px;
+  background: rgba(255,255,255,.92);
+  backdrop-filter: blur(8px);
+  box-shadow: 0 2px 10px rgba(20,32,28,.1);
+  font-size: 12px;
+  font-weight: 650;
+  color: var(--charcoal);
+  white-space: nowrap;
+}
+.loop-chip.on { background: var(--amber); color: #fff; box-shadow: none; }
+.loop-chip-t { font-size: 10.5px; font-weight: 800; opacity: .7; font-variant-numeric: tabular-nums; }
+
+/* A dock that carries the loop chips stacks them above its row. */
+.dock:has(.dock-loops) { flex-direction: column; align-items: stretch; gap: 0; }
+.dock:has(.dock-loops) > .row { width: 100%; }
+
+.dock-loops {
+  display: flex;
+  gap: 6px;
+  overflow-x: auto;
+  scrollbar-width: none;
+  margin-bottom: 9px;
+}
+.dock-loop {
+  flex: none;
+  height: 28px;
+  padding: 0 10px;
+  border-radius: 9px;
+  background: rgba(255,255,255,.14);
+  color: #D8E3DE;
+  font-size: 11px;
+  font-weight: 700;
+  white-space: nowrap;
+  display: flex;
+  align-items: center;
+}
+.dock-loop.on { background: var(--amber); color: #fff; }
+
+.leg-in {
+  padding: 3px 7px;
+  border-radius: 7px;
+  background: var(--amber-bg);
+  color: var(--amber-fg);
+  font-size: 10px;
+  font-weight: 800;
+  white-space: nowrap;
+}
+
+/* ------------------------------------------------------- notes per place */
+
+.day-card {
+  background: #fff;
+  border-radius: 16px;
+  overflow: hidden;
+}
+.day-card-head {
+  display: flex;
+  align-items: center;
+  gap: 10px;
+  padding: 13px 14px 11px;
+}
+.day-card-add {
+  width: 30px;
+  height: 30px;
+  flex: none;
+  border-radius: 10px;
+  background: var(--bone);
+  color: var(--charcoal);
+  font-size: 17px;
+  font-weight: 600;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+}
+
+.note-slot { border-top: 1px solid var(--line-3); }
+.note-card { padding: 12px 14px; width: 100%; text-align: left; }
+.note-place { font-size: 13px; font-weight: 700; color: var(--jade); flex: 1; min-width: 0; }
+.note-place.loose { color: var(--soft); font-weight: 650; }
+.note-pcount { font-size: 10.5px; font-weight: 700; color: var(--soft); flex: none; }
+.note-card .log-text { margin-top: 7px; }
+.note-card .log-photos { margin-top: 9px; }
+
+/* -------------------------------------------------- pasting an itinerary */
+
+.paste-area {
+  width: 100%;
+  height: 210px;
+  line-height: 1.5;
+  resize: none;
+  font-size: 12.5px;
+  font-variant-numeric: tabular-nums;
+}
+
+.cand {
+  padding: 11px 12px;
+  margin-bottom: 8px;
+  background: #fff;
+  border: 1.5px solid var(--line);
+  border-radius: 14px;
+}
+.cand.off { opacity: .5; background: var(--bone); }
+.cand.flag.amber { border-color: var(--amber-bd); }
+.cand.flag.danger { border-color: #E4C4C4; }
+
+.cand-name { font-size: 13.5px; font-weight: 650; padding: 7px 9px; }
+.cand-tick {
+  flex: none;
+  padding: 3px 8px;
+  border-radius: 7px;
+  background: var(--bone);
+  color: var(--soft);
+  font-size: 10px;
+  font-weight: 800;
+  letter-spacing: .06em;
+  text-transform: uppercase;
+}
+.cand-tick.on { background: var(--jade-bg); color: var(--jade); }
+
+.cand-day { flex: none; width: 88px; padding: 6px 8px; font-size: 12px; }
+.cand-time {
+  flex: none;
+  width: 68px;
+  padding: 6px 7px;
+  font-size: 12px;
+  text-align: center;
+  font-variant-numeric: tabular-nums;
+}
+.cand-dur {
+  flex: none;
+  width: 52px;
+  padding: 6px 7px;
+  font-size: 12px;
+  text-align: center;
+  font-variant-numeric: tabular-nums;
+}
+.cand-note {
+  margin-top: 8px;
+  font-size: 11.5px;
+  line-height: 1.45;
+  color: var(--muted);
+  padding-left: 32px;
+}
+
+/* The confirm screen's dock carries three controls rather than two, and the
+   quiet one must not out-shout the action that actually lands the stops. */
+.dock .btn[disabled] { opacity: .4; }
+.dock-btn.quiet { background: rgba(255,255,255,.14); color: #D8E3DE; }

@@ -1,16 +1,21 @@
 // Screen 2b — Plan. The day as one column with two authorships: white cards
-// on a solid jade spine for the agent's stops, a dashed amber card for your
-// own. Edit mode adds a grip handle, editable times, ✕ to archive, and an
-// add-a-stop form; removed stops fall into a dark archive at the bottom.
+// on a solid jade spine for the agent's stops, a dashed amber card for each
+// stretch of free time you gave yourself.
+//
+// Three of this round's items live here. A stop now carries a start and a
+// length, so its end is worked out and shown rather than typed (item 06), and
+// a day that reads back out of order says so on the row rather than refusing
+// the drag. A day can hold as many loops as it has gaps (item 05). And the
+// whole itinerary can arrive at once by being pasted in (item 01).
 
-import { html, raw, icon, delegate, parseClock } from '../util.js';
+import { html, raw, icon, delegate, parseClock, parseDuration } from '../util.js';
 import * as store from '../store.js';
 import { state } from '../store.js';
 import { go } from '../nav.js';
 import { dayPills, weatherBanner, emptyDay, bindDragReorder, swipeToDelete } from './parts.js';
 
 let addOpen = false;
-let form = { name: '', time: '', kind: 'main' };
+let form = { name: '', time: '', duration: '', kind: 'main' };
 let notice = '';
 
 export default {
@@ -23,6 +28,8 @@ export default {
     const archived = store.archivedItems(day);
     const editing = state.editingPlan;
     const numbers = store.mainStopNumbers(day);
+    const issues = store.dayIssues();
+    const loops = store.subRoutesFor();
 
     return html`
       <section class="screen">
@@ -45,13 +52,26 @@ export default {
         <div class="scroll" style="padding:14px 16px 24px">
           ${weatherBanner()}
 
+          ${issues.size && !editing ? html`
+            <div class="day-alert mt14">
+              ${issues.size} stop${issues.size === 1 ? '' : 's'} on this day need a look —
+              the times below say why. Press the pencil to fix them.
+            </div>` : ''}
+
           ${editing ? html`
-            <div class="hint-amber mt14">Hold the handle to drag a stop into place. Times are editable, ✕ removes a stop into the archive below.</div>
+            <div class="hint-amber mt14">
+              Hold the handle to drag a stop into place. Set the time it starts and how long you
+              have; the end is worked out. ✕ removes a stop into the archive below, and a swipe
+              left on a stretch of free time deletes it.
+            </div>
           ` : ''}
 
           <div class="mt14" id="plan-rows">
             ${items.length ? items.map((item, index) => row(item, {
-              editing, number: numbers[item.id], last: index === items.length - 1,
+              editing,
+              number: numbers[item.id],
+              last: index === items.length - 1,
+              issues: issues.get(item.id) || [],
             })) : emptyDay(store.weather())}
           </div>
 
@@ -59,6 +79,16 @@ export default {
             ${notice ? html`<div class="amber-note f12 mt8">${notice}</div>` : ''}
             ${addOpen ? addForm() : ''}
             <button class="btn-dashed mt8" data-act="add-open">+ Add a stop</button>
+            <div class="row g8 mt8">
+              <button class="btn ghost grow" data-act="add-loop">+ Free time</button>
+              <button class="btn ghost grow" data-act="paste">Paste an itinerary</button>
+            </div>
+            <div class="f11 soft lh145 mt8">
+              ${loops.length
+                ? `${loops.length} stretch${loops.length === 1 ? '' : 'es'} of free time on this day.
+                   Another one goes into the largest gap left.`
+                : 'Free time is a stretch you own inside the day — it goes into the largest gap you have.'}
+            </div>
           ` : ''}
 
           ${archived.length ? archive(archived, editing) : ''}
@@ -77,10 +107,13 @@ export default {
       // is only ever a link.
       const archivedRow = el.closest('[data-plan-row]');
       if (state.editingPlan && !archivedRow) return;
-      const hit = store.planItem(el.dataset.open);
-      if (!hit) return;
-      if (hit.item.isSubRouteSummary) go('sub');
-      else go('dest', { itemID: el.dataset.open });
+      openRow(el.dataset.open);
+    });
+    // A loop's row is a link in both modes: retiming a loop happens on its
+    // own screen, where the budget it changes is visible.
+    delegate(root, '[data-open-loop]', (el) => {
+      store.selectLoop(el.dataset.openLoop);
+      go('sub', { loopID: el.dataset.openLoop });
     });
     delegate(root, '[data-act="remove"]', (el) => store.archivePlanItem(state.selectedDay, el.dataset.id));
     delegate(root, '[data-act="restore"]', (el) => store.restorePlanItem(state.selectedDay, el.dataset.id));
@@ -88,8 +121,8 @@ export default {
       store.movePlanItemToDay(state.selectedDay, el.dataset.id, Number(el.dataset.to));
     });
 
-    // Times commit on change (i.e. as focus leaves) so a re-render cannot
-    // interrupt typing.
+    // Times and lengths commit on change (i.e. as focus leaves) so a
+    // re-render cannot interrupt typing.
     root.querySelectorAll('[data-time-for]').forEach((input) => {
       input.addEventListener('change', () => {
         const text = input.value.trim();
@@ -97,8 +130,28 @@ export default {
           input.value = store.planItem(input.dataset.timeFor)?.item.time || '';
           return;
         }
-        store.setPlanItemTime(state.selectedDay, input.dataset.timeFor, text);
+        store.setPlanItemWindow(state.selectedDay, input.dataset.timeFor, { time: text });
       });
+    });
+
+    root.querySelectorAll('[data-dur-for]').forEach((input) => {
+      input.addEventListener('change', () => {
+        const text = input.value.trim();
+        // Blank means "no end set", which is a real answer and not an error.
+        const minutes = text === '' ? null : parseDuration(text);
+        if (text !== '' && minutes == null) {
+          const current = store.planItem(input.dataset.durFor)?.item.durationMinutes;
+          input.value = current || '';
+          return;
+        }
+        store.setPlanItemWindow(state.selectedDay, input.dataset.durFor, { durationMinutes: minutes });
+      });
+    });
+
+    delegate(root, '[data-act="paste"]', () => go('paste'));
+    delegate(root, '[data-act="add-loop"]', () => {
+      const loop = store.addSubRoute(state.selectedDay);
+      if (loop) go('sub', { loopID: loop.id });
     });
 
     delegate(root, '[data-act="add-open"]', () => { addOpen = true; store.setEditingPlan(true); });
@@ -109,6 +162,7 @@ export default {
       if (!typed && !placeID) return;
 
       const time = root.querySelector('#add-time')?.value.trim() || '09:00';
+      const durationMinutes = parseDuration(root.querySelector('#add-dur')?.value.trim());
       const kind = root.querySelector('[name="add-kind"]:checked')?.value || 'main';
 
       addOpen = false;
@@ -117,13 +171,13 @@ export default {
 
       // The same capture the Nearby screen uses — a stop is a visit to a place.
       const result = await store.captureStop(state.selectedDay, {
-        input: typed, time, kind, placeID: placeID || null,
+        input: typed, time, kind, placeID: placeID || null, durationMinutes,
       });
 
       notice = result.saved
         ? (result.located ? '' : `"${result.name}" was added without a location, so it will not show on the map.`)
         : result.reason;
-      form = { name: '', time: '', kind: 'main' };
+      form = { name: '', time: '', duration: '', kind: 'main' };
       store.setEditingPlan(true);
     });
 
@@ -133,10 +187,17 @@ export default {
       if (hit && nameBox && !nameBox.value.trim()) nameBox.value = hit.name;
     });
 
+    // Two swipe targets on this screen, both landing on the same red bin with
+    // the same confirmation: an archived stop, and a stretch of free time.
     swipeToDelete(root, {
       rowSelector: '[data-plan-row]',
-      label: (row) => `Delete "${row.dataset.planName}" from this trip? It will not go to the archive.`,
-      onDelete: (row) => store.deletePlanItem(state.selectedDay, row.dataset.planRow),
+      label: (el) => `Delete "${el.dataset.planName}" from this trip? It will not go to the archive.`,
+      onDelete: (el) => store.deletePlanItem(state.selectedDay, el.dataset.planRow),
+    });
+    swipeToDelete(root, {
+      rowSelector: '[data-loop-row]',
+      label: (el) => `Delete "${el.dataset.loopName}"? The places you picked stay saved; only the loop goes.`,
+      onDelete: (el) => store.deleteSubRoute(el.dataset.loopRow),
     });
 
     if (state.editingPlan) {
@@ -149,18 +210,63 @@ export default {
   },
 };
 
-function row(item, { editing, number, last }) {
+function openRow(id) {
+  const hit = store.planItem(id);
+  if (!hit) return;
+  if (hit.item.isSubRouteSummary) {
+    store.selectLoop(hit.item.subRouteID);
+    go('sub', { loopID: hit.item.subRouteID });
+  } else {
+    go('dest', { itemID: id });
+  }
+}
+
+function row(item, { editing, number, last, issues }) {
   const view = store.decoratedItem(item);
   const isSub = view.kind === 'sub';
+  const window = store.itemWindow(view);
+  const worst = issues.some((i) => i.tone === 'danger') ? 'danger' : (issues[0]?.tone || '');
+
+  const card = html`
+    <div class="row g8" style="align-items:flex-start">
+      <div class="grow">
+        <div class="plan-name">${view.name}</div>
+        <div class="plan-note">${view.note}</div>
+      </div>
+      ${editing && !isSub
+        ? html`<button class="plan-remove" data-act="remove" data-id="${view.id}" aria-label="Remove ${view.name}">✕</button>`
+        : html`<span class="badge ${isSub ? 'sub' : 'main'}">${isSub ? 'FREE' : `MAIN${number ? ` ${number}` : ''}`}</span>`}
+    </div>
+
+    ${issues.map((issue) => html`
+      <div class="plan-warn${issue.tone === 'danger' ? ' danger' : ''}">${issue.text}</div>`)}
+
+    ${editing && !isSub ? html`
+      <div class="dur-row">
+        <span class="dur-k">FOR</span>
+        <input class="dur-input" value="${window.minutes || ''}" placeholder="—"
+               data-dur-for="${view.id}" inputmode="numeric" aria-label="How long, in minutes">
+        <span class="dur-k">MIN</span>
+        <span class="dur-out">${window.end != null ? `ends ${window.endLabel}` : 'no end set'}</span>
+      </div>` : ''}
+
+    ${!editing && (view.chips?.length || window.durationLabel) ? html`
+      <div class="row g6 wrap mt8">
+        ${window.durationLabel ? html`<span class="chip">${window.durationLabel} here</span>` : ''}
+        ${(view.chips || []).map((c) => html`<span class="chip">${c}</span>`)}
+      </div>` : ''}`;
+
   return html`
     <div class="plan-row" data-row-id="${view.id}">
       ${editing ? html`<div class="handle-grip" data-grip>${raw(icon.grip)}</div>` : ''}
 
       <div class="plan-time">
-        ${editing
-          ? html`<input value="${view.time}" data-time-for="${view.id}" inputmode="numeric" aria-label="Time">`
-          : html`<div class="plan-clock">${view.time}</div>
-                 <div class="plan-dur">${view.durationLabel}</div>`}
+        ${editing && !isSub
+          ? html`<input value="${window.startLabel}" data-time-for="${view.id}" inputmode="numeric" aria-label="Start time">`
+          : html`<div class="plan-clock${worst === 'danger' ? ' bad' : ''}">${window.startLabel}</div>`}
+        ${window.end != null && !(editing && !isSub)
+          ? html`<div class="plan-end">–${window.endLabel}</div>`
+          : ''}
       </div>
 
       <div class="plan-spine">
@@ -168,21 +274,20 @@ function row(item, { editing, number, last }) {
         ${last ? '' : html`<div class="plan-line${isSub ? ' sub' : ''}"></div>`}
       </div>
 
-      <div class="plan-card${isSub ? ' sub' : ''}" data-open="${view.id}"
-           role="button" tabindex="0" aria-label="${view.name}">
-        <div class="row g8" style="align-items:flex-start">
-          <div class="grow">
-            <div class="plan-name">${view.name}</div>
-            <div class="plan-note">${view.note}</div>
+      ${isSub ? html`
+        <div class="swipe-row plan-swipe grow" data-loop-row="${view.subRouteID}" data-loop-name="${view.name}">
+          <div class="swipe-bin">
+            <button class="bin" data-swipe-delete aria-label="Delete ${view.name}">${raw(icon.bin)}</button>
           </div>
-          ${editing
-            ? html`<button class="plan-remove" data-act="remove" data-id="${view.id}" aria-label="Remove ${view.name}">✕</button>`
-            : html`<span class="badge ${isSub ? 'sub' : 'main'}">${isSub ? 'SUB' : `MAIN${number ? ` ${number}` : ''}`}</span>`}
-        </div>
-        ${view.chips?.length ? html`
-          <div class="row g6 wrap mt8">${view.chips.map((c) => html`<span class="chip">${c}</span>`)}</div>
-        ` : ''}
-      </div>
+          <button class="swipe-face plan-card sub" data-open-loop="${view.subRouteID}" aria-label="${view.name}">
+            ${card}
+          </button>
+        </div>`
+        : html`
+        <div class="plan-card" data-open="${view.id}"
+             role="button" tabindex="0" aria-label="${view.name}">
+          ${card}
+        </div>`}
     </div>`;
 }
 
@@ -210,16 +315,23 @@ function addForm() {
       </div>
 
       <div class="row g8">
-        <input id="add-time" placeholder="Time" value="${form.time}" style="width:96px" inputmode="numeric">
-        <button class="btn jade grow" data-act="add-save">Add</button>
-        <button class="btn ghost none" data-act="add-cancel" style="width:38px" aria-label="Cancel">✕</button>
+        <label class="none">
+          <span class="f11 soft">Starts</span>
+          <input id="add-time" placeholder="09:00" value="${form.time}" style="width:82px" inputmode="numeric">
+        </label>
+        <label class="none">
+          <span class="f11 soft">For</span>
+          <input id="add-dur" placeholder="min" value="${form.duration}" style="width:70px" inputmode="numeric">
+        </label>
+        <button class="btn jade grow" style="align-self:flex-end" data-act="add-save">Add</button>
+        <button class="btn ghost none" data-act="add-cancel" style="width:38px;align-self:flex-end" aria-label="Cancel">✕</button>
       </div>
 
       <div class="form-hint">
         The same way you add a place anywhere else: type a name, paste a map link, or pick
         something you saved earlier. A link brings the position with it, and opening hours
-        where OpenStreetMap has them. It drops into the day at the time you set and can be
-        dragged afterwards — jade for the agent's route, amber and dashed for your own.
+        where OpenStreetMap has them. "For" is how long you have there — leave it blank if
+        you do not know yet.
       </div>
     </div>`;
 }

@@ -1,7 +1,11 @@
-// Screen 2e — Sub route. Hold the three-line handle and drag to reorder; the
-// arrival times and the buffer against the coach recalculate. The return row
-// is editable, because you might be heading to the next stop rather than back
-// to the coach.
+// Screen 2e — one stretch of free time. Hold the three-line handle and drag
+// to reorder; the arrival times and what is left to spend recalculate. The
+// return row is editable, because you might be heading to the next stop
+// rather than back to the coach.
+//
+// Item 05: a day can hold several of these now, so the card at the top says
+// which one you are in and which part of the day it covers, and the chips
+// beside it switch between the day's loops without going back to the Plan.
 
 import { html, raw, icon, delegate, clock } from '../util.js';
 import * as store from '../store.js';
@@ -17,10 +21,35 @@ export default {
   id: 'sub',
   tab: 'map',
 
-  render() {
-    const schedule = store.subSchedule();
-    const route = store.subRoute();
-    const endpoints = store.loopEndpointOptions();
+  render(params = {}) {
+    // Whichever loop was opened, else whichever the day has in hand.
+    if (params.loopID && store.subRouteByID(params.loopID)) state.loopID = params.loopID;
+    const route = store.activeLoop();
+    const siblings = store.subRoutesFor();
+
+    if (!route) {
+      return html`
+        <section class="screen">
+          <div class="head">
+            <div class="head-row center">
+              <button class="iconbtn" data-act="back" aria-label="Back">${raw(icon.back)}</button>
+              <div class="grow">
+                <div class="push-title">Free time</div>
+                <div class="push-sub">Day ${state.selectedDay}</div>
+              </div>
+            </div>
+          </div>
+          <div class="scroll" style="padding:16px">
+            <div class="empty">
+              No free time set aside on this day yet.<br>
+              <button class="f125 w700" style="color:var(--jade)" data-act="new-loop">Set some aside</button>
+            </div>
+          </div>
+        </section>`;
+    }
+
+    const schedule = store.loopSchedule(route);
+    const endpoints = store.loopEndpointOptions(route);
     const tight = schedule.spendableMinutes < 0;
 
     return html`
@@ -36,11 +65,18 @@ export default {
               : html`<button class="sub-title" data-act="rename" style="text-align:left">
                        ${route?.name || 'My sub route'} ✎
                      </button>`}
-            <div class="sub-line">
-              ${schedule.stops.length} stops · ${clock(schedule.departMinutes)} – ${clock(schedule.returnByMinutes)}
-            </div>
+            <div class="sub-line">${store.loopWhen(route)} · ${schedule.stops.length} stops</div>
           </div>
         </div>
+
+        ${siblings.length > 1 ? html`
+          <div class="loop-switch">
+            ${siblings.map((other) => html`
+              <button class="loop-chip${other.id === route.id ? ' on' : ''}" data-loop="${other.id}">
+                ${other.name}
+                <span class="loop-chip-t">${clock(store.loopStart(other) ?? 0)}</span>
+              </button>`)}
+          </div>` : ''}
 
         <div class="sheet sub-sheet">
           <div class="sheet-grab"><i></i></div>
@@ -164,17 +200,23 @@ export default {
   mount(root) {
     delegate(root, '[data-act="back"]', () => back());
     delegate(root, '[data-act="nearby"]', () => go('nearby'));
+    delegate(root, '[data-loop]', (el) => store.selectLoop(el.dataset.loop));
+    delegate(root, '[data-act="new-loop"]', () => {
+      const loop = store.addSubRoute(state.selectedDay);
+      if (loop) store.selectLoop(loop.id);
+    });
     delegate(root, '[data-act="back-toggle"]', () => { backOpen = !backOpen; nudge(); });
     delegate(root, '[data-act="back-done"]', () => {
+      const loop = store.activeLoop();
       store.setSubRouteEndpoints({
         startPlaceID: root.querySelector('#loop-start')?.value,
         endPlaceID: root.querySelector('#loop-end')?.value,
-      });
+      }, loop);
       store.setSubRouteTimes({
         depart: root.querySelector('#loop-depart')?.value,
         returnBy: root.querySelector('#loop-return')?.value,
-      });
-      store.setReturn({ minutes: root.querySelector('#back-mins')?.value });
+      }, loop);
+      store.setReturn({ minutes: root.querySelector('#back-mins')?.value }, loop);
       backOpen = false;
     });
 
@@ -186,7 +228,7 @@ export default {
       nameBox.focus();
       const commit = () => {
         editingName = false;
-        store.renameSubRoute(nameBox.value);
+        store.renameSubRoute(nameBox.value, store.activeLoop());
       };
       nameBox.addEventListener('change', commit);
       nameBox.addEventListener('keydown', (event) => { if (event.key === 'Enter') commit(); });
@@ -195,7 +237,7 @@ export default {
     bindDragReorder(root, {
       rowSelector: '[data-row-id]',
       handleSelector: '[data-grip]',
-      onDrop: (movedId, beforeId) => store.reorderSubRoute(movedId, beforeId),
+      onDrop: (movedId, beforeId) => store.reorderSubRoute(movedId, beforeId, store.activeLoop()),
     });
 
     drawMap(root.querySelector('#leaf-sub'));
@@ -212,7 +254,7 @@ function legLine(place) {
 }
 
 function walkURL(schedule) {
-  const anchor = store.activeItems(store.day()).find((i) => i.id === store.subRoute()?.anchorPlanItemID);
+  const anchor = loopAnchor(schedule.loop);
   const points = [];
   if (anchor?.latitude) points.push({ lat: anchor.latitude, lng: anchor.longitude });
   for (const stop of schedule.stops) {
@@ -222,11 +264,22 @@ function walkURL(schedule) {
   return mapsLinks.walk(points);
 }
 
+/** Where a loop starts from on the map: its start place, else its anchor stop. */
+function loopAnchor(loop) {
+  if (!loop) return null;
+  const items = store.activeItems(store.day(loop.dayNumber));
+  return items.find((i) => i.placeID && i.placeID === (loop.startPlaceID || loop.anchorPlaceID))
+    || items.find((i) => i.id === loop.anchorPlanItemID)
+    || null;
+}
+
 function drawMap(container) {
   if (!container || typeof L === 'undefined') return;
 
-  const schedule = store.subSchedule();
-  const anchor = store.activeItems(store.day()).find((i) => i.id === store.subRoute()?.anchorPlanItemID);
+  const route = store.activeLoop();
+  if (!route) return;
+  const schedule = store.loopSchedule(route);
+  const anchor = loopAnchor(route);
   const centre = anchor?.latitude
     ? [anchor.latitude, anchor.longitude]
     : [state.trip?.latitude || 35.68, state.trip?.longitude || 139.70];

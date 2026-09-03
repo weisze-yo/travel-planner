@@ -139,7 +139,8 @@ function addForm() {
         <button class="btn ghost" style="width:96px" data-act="add-cancel">Cancel</button>
       </div>
       <div class="form-hint">
-        It starts empty. Add the itinerary from Plan → the pencil, one stop at a time.
+        It starts empty. Add the itinerary from Plan → the pencil — one stop at a time, or by
+        pasting the whole thing in from the agent's PDF or a WhatsApp message.
       </div>
     </div>`;
 }

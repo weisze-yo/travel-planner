@@ -2,7 +2,7 @@
 // is cached and served cache-first; map tiles and Firebase always go to the
 // network, and Firestore keeps its own offline copy of your data.
 
-const VERSION = 'v1';
+const VERSION = 'v2';
 const SHELL = `travel-planner-shell-${VERSION}`;
 
 const ASSETS = [
@@ -17,6 +17,7 @@ const ASSETS = [
   './js/config.js',
   './js/data.js',
   './js/util.js',
+  './js/itinerary.js',
   './js/photos.js',
   './js/screens/parts.js',
   './js/screens/map.js',
@@ -32,6 +33,7 @@ const ASSETS = [
   './js/screens/trip.js',
   './js/screens/trips.js',
   './js/screens/spend.js',
+  './js/screens/paste.js',
   './js/net.js',
   './icons/icon.svg',
   './icons/icon-180.png',
