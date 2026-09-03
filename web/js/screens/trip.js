@@ -121,6 +121,11 @@ export default {
               message and confirm the stops it reads — nothing lands until you do.
             </div>
             <button class="btn ghost mt10" data-act="paste">Paste an itinerary…</button>
+            <button class="btn ghost mt8" data-act="share">
+              ${store.shareState()?.on
+    ? `Sharing · ${store.sharePeople().length} ${store.sharePeople().length === 1 ? 'person' : 'people'}`
+    : 'Share this trip…'}
+            </button>
           </div>
 
           <div class="card pad">
@@ -159,6 +164,7 @@ export default {
   mount(root) {
     delegate(root, '[data-act="back"]', () => { notice = ''; confirming = false; back(); });
     delegate(root, '[data-act="paste"]', () => go('paste'));
+    delegate(root, '[data-act="share"]', () => go('share'));
     delegate(root, '[data-act="areas"]', () => go('areas'));
     delegate(root, '[data-act="stuck"]', () => go('stuck'));
 

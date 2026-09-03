@@ -69,10 +69,15 @@ export function linkState(link, { now = new Date(), joined = false } = {}) {
   return 'live';
 }
 
+/** "Ana's" but "your", because "You's" is how a screen loses your trust. */
+const possessive = (who) => (who === 'You' ? 'Your' : `${who}'s`);
+
 export const LINK_DEAD_LINES = {
-  expired: (who, on) => `${who}'s invite stopped working on ${on}. Nothing is wrong with your `
-    + 'phone and the trip is still there — the link just ran out.',
-  off: (who) => `${who} switched this link off.`,
+  expired: (who, on) => `${possessive(who)} invite stopped working${on ? ` on ${on}` : ''}. `
+    + 'Nothing is wrong with your phone and the trip is still there — the link just ran out.',
+  off: (who) => (who === 'You'
+    ? 'This link is switched off.'
+    : `${who} switched this link off.`),
   missing: () => 'This link does not point at a trip any more.',
 };
 

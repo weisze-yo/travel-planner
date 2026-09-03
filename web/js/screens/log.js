@@ -8,6 +8,7 @@
 
 import { html, raw, icon, delegate } from '../util.js';
 import * as store from '../store.js';
+import { otherNames, nameList } from '../share.js';
 import { state } from '../store.js';
 import { go } from '../nav.js';
 import { RECAP_TEXT } from '../data.js';
@@ -40,6 +41,7 @@ export default {
         </div>
 
         <div class="scroll" style="padding:12px 16px 24px">
+          ${privacyLine()}
           ${days.map((entry) => dayCard(entry))}
 
           <div class="recap">
@@ -73,6 +75,22 @@ export default {
     }));
   },
 };
+
+/**
+ * On a shared trip the Log is the one thing that is never in the share, and
+ * the screen has to say so where it is read rather than in a settings page.
+ * It names the other travellers rather than counting them, because "not sent
+ * to 3 people" is a statistic and "not sent to Ana" is a promise.
+ */
+function privacyLine() {
+  const others = otherNames(store.sharePeople(), store.me().id);
+  if (!others.length) return '';
+  return html`
+    <div class="f11 soft lh145 mb12">
+      Only you can read this, even on a shared trip. Nothing here is sent to
+      ${nameList(others)}.
+    </div>`;
+}
 
 function dayCard(entry) {
   return html`

@@ -49,6 +49,8 @@ export default {
           ${busy ? html`<div class="amber-note f12 mb12">${busy}</div>` : ''}
           ${addOpen ? addForm() : ''}
 
+          ${removedCard()}
+
           ${groups.running.length ? html`
             <div class="eyebrow">ON NOW</div>
             ${groups.running.map((trip) => runningCard(trip))}` : ''}
@@ -75,6 +77,21 @@ export default {
 
   mount(root) {
     if (covering) return mountCover(root);
+
+    delegate(root, '[data-act="keep-side"]', () => {
+      store.keepMySide();
+      store.refreshTrips();
+    });
+    delegate(root, '[data-act="message-owner"]', async (el) => {
+      const text = `About ${el.dataset.trip || 'the trip'} — could we talk about it?`;
+      try {
+        await navigator.clipboard.writeText(text);
+        busy = 'Message copied.';
+      } catch {
+        busy = text;
+      }
+      store.refreshTrips();
+    });
 
     delegate(root, '[data-act="add-toggle"]', () => { addOpen = !addOpen; store.refreshTrips(); });
     delegate(root, '[data-act="add-cancel"]', () => { addOpen = false; store.refreshTrips(); });
@@ -177,6 +194,45 @@ function runningCard(trip) {
 }
 
 /** Coming up and finished share a shape; what they say differs. */
+/**
+ * Opening a trip you have been removed from. Under the shared-plan model the
+ * loss is much smaller than it looks, and the screen says so: the schedule
+ * goes, but the shopping list, the Log and the packing list were always
+ * theirs and stay. Left unsaid, they assume the worst.
+ */
+function removedCard() {
+  const gone = store.removal();
+  if (!gone) return '';
+  return html`
+    <div class="eyebrow rust mb8">No longer shared with you</div>
+    <div class="gone-card">
+      <div class="gone-t">${state.trip?.name || 'That trip'}</div>
+      <div class="gone-s">
+        ${gone.by} removed you on ${store.stamp(gone.on || gone.at)}. The schedule and the
+        places have gone from this phone — you’ll no longer see changes to them.
+      </div>
+    </div>
+
+    <div class="eyebrow mb8">Still yours, untouched</div>
+    <div class="card mb14" style="padding:12px 13px">
+      ${store.keptAfterRemoval().map((kept) => html`
+        <div class="kept-line">
+          <span class="dot" style="margin-top:6px"></span>
+          <span class="grow">${kept.line}</span>
+        </div>`)}
+    </div>
+
+    <div class="row g8 mb8">
+      <button class="btn jade grow" data-act="keep-side">Keep my side as its own trip</button>
+      <button class="btn ghost none" style="width:104px" data-act="message-owner"
+              data-trip="${state.trip?.name || ''}">Message ${String(gone.by).split(' ')[0]}</button>
+    </div>
+    <div class="f11 soft lh145 mb18">
+      Keeping it makes a trip only you can see, with the dates, your lists and your Log.
+      The stops don’t come with it.
+    </div>`;
+}
+
 function plainCard(trip, kind) {
   const gap = store.tripDayGap(trip);
   const ready = kind === 'upcoming' ? store.tripReadiness(trip) : null;

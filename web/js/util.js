@@ -118,7 +118,11 @@ export function numeric(text) {
 }
 
 export function dateStamp(date = new Date()) {
-  return date.toLocaleDateString('en-GB', { day: 'numeric', month: 'short' });
+  // Most of what the app stores is an ISO string, so take either rather than
+  // making every caller remember which.
+  const at = date instanceof Date ? date : new Date(date);
+  if (Number.isNaN(at.getTime())) return '';
+  return at.toLocaleDateString('en-GB', { day: 'numeric', month: 'short' });
 }
 
 export const uid = (prefix = 'x') => `${prefix}${Date.now().toString(36)}${Math.random().toString(36).slice(2, 6)}`;

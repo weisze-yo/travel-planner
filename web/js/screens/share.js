@@ -88,11 +88,11 @@ export default {
   mount(root) {
     delegate(root, '[data-act="back"]', () => { notice = ''; changing = null; back(); });
 
-    delegate(root, '[data-role]', (event, el) => {
+    delegate(root, '[data-role]', (el) => {
       role = el.dataset.role;
       repaint();
     });
-    delegate(root, '[data-expiry]', (event, el) => {
+    delegate(root, '[data-expiry]', (el) => {
       expiry = el.dataset.expiry;
       if (state.trip?.link) store.setLinkExpiry(expiry);
       else repaint();
@@ -109,9 +109,10 @@ export default {
 
     delegate(root, '[data-act="create"]', () => {
       const made = store.createLink({ role, expiry, withShopping });
+      const lasts = EXPIRIES.find((e) => e.id === expiry);
       notice = made
-        ? `Link made. It joins as ${ROLES[role].label.toLowerCase()} and stops working ${
-          EXPIRIES.find((e) => e.id === expiry).label.toLowerCase()}.`
+        ? `Link made. Whoever opens it joins as ${ROLES[role].label.toLowerCase()}, and it stops `
+          + `working ${lasts.hours ? `after ${lasts.label.toLowerCase()}` : 'when the trip ends'}.`
         : '';
       repaint();
     });
@@ -119,7 +120,7 @@ export default {
     delegate(root, '[data-act="link-off"]', () => { store.setLinkLive(false); });
     delegate(root, '[data-act="link-on"]', () => { store.setLinkLive(true); });
 
-    delegate(root, '[data-act="copy"]', async (event, el) => {
+    delegate(root, '[data-act="copy"]', async (el) => {
       const url = el.dataset.url;
       try {
         await navigator.clipboard.writeText(url);
@@ -130,7 +131,7 @@ export default {
       repaint();
     });
 
-    delegate(root, '[data-act="send"]', async (event, el) => {
+    delegate(root, '[data-act="send"]', async (el) => {
       const url = el.dataset.url;
       const text = `${store.ownerName()} is sharing a trip with you: ${state.trip?.name || 'a trip'} — ${url}`;
       if (navigator.share) {
@@ -156,11 +157,11 @@ export default {
       repaint();
     });
 
-    delegate(root, '[data-person]', (event, el) => {
+    delegate(root, '[data-person]', (el) => {
       changing = changing === el.dataset.person ? null : el.dataset.person;
       repaint();
     });
-    delegate(root, '[data-set-role]', (event, el) => {
+    delegate(root, '[data-set-role]', (el) => {
       store.setPersonRole(el.dataset.person2, el.dataset.setRole);
       changing = null;
     });
@@ -293,7 +294,7 @@ function offer() {
 function line(title, sub, tone) {
   return html`
     <div class="row g10 mb11" style="align-items:flex-start">
-      <span class="plan-dot ${tone}" style="margin-top:5px"></span>
+      <span class="dot ${tone}" style="margin-top:6px"></span>
       <span class="grow">
         <span class="f12 w650 block" style="color:var(--ink)">${title}</span>
         <span class="f11 soft block lh145">${sub}</span>

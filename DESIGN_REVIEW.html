@@ -294,31 +294,77 @@
 <div class="wrap">
 
   <header class="masthead">
-    <div class="kicker">Design review · round five · design session one of three, built</div>
+    <div class="kicker">Design review · round six · all three design sessions, built</div>
     <h1>What the Travel Planner still needs</h1>
     <p class="standfirst">
-      The four that had to be settled first are built. The day now owns its times, holds as
-      many stretches of free time as it has gaps, keeps a note per place rather than one per
-      day, and can be filled by pasting the agent's itinerary in. Fifteen things are still
-      open — the eighteen that were, less the four now built, plus one this round's work
-      created — and they divide cleanly between the two design sessions left.
+      All three design sessions are built and deployed. The day owns its times and its loops
+      and can be filled by pasting an itinerary in; the trips home, the spend report and the
+      swipe are drawn rather than improvised; the app now says when to leave, keeps a patch of
+      map on the phone and admits when a change has not reached the cloud; and a trip can be
+      shared on the rule that the plan is ours and what I've done about it is mine. Thirteen
+      things are still open — the fifteen that were, less the five now built, plus three the
+      sharing work created. Those three are the honest edges of what sharing can promise two
+      people without a server, and the first of them is a decision rather than a drawing.
     </p>
     <div class="facts">
-      <span><b>37</b> fixed across five rounds</span>
-      <span><b>15</b> open, all needing design</span>
+      <span><b>47</b> fixed across six rounds</span>
+      <span><b>13</b> open, all needing design</span>
       <span><b>0</b> blockers</span>
       <span><b>0</b> unanswered questions</span>
-      <span><b>1</b> new, from this round's work</span>
+      <span><b>3</b> new, from this round's work</span>
     </div>
   </header>
 
   <div class="done">
     <div class="done-head">
       <b>Fixed and deployed</b>
-      <span>This round's four and the two bugs they turned up, round four's seven, all sixteen
-      of your points, and the eight from round one.</span>
+      <span>This round's six and the five bugs they turned up, round five's four and its two,
+      round four's seven, all sixteen of your points, and the eight from round one.</span>
     </div>
     <ul class="done-list">
+      <li><i>29</i> <b>The trips home is a status board.</b> A running trip gets a cover, the day
+        it is on and the next thing on it; an upcoming one says how ready it is and how many
+        days away; a finished one carries its recap. The cover can be a photo from the Log, one
+        of four tints, or a picture from the phone.</li>
+      <li><i>29</i> <b>The spend report is drawn, not improvised.</b> A dark hero, a per-day
+        chart that doubles as the filter, where it went, guessed against paid, cash against
+        card, and every purchase grouped by day with the gaps named.</li>
+      <li><i>29</i> <b>The swipe has five positions,</b> not one: closed, following, latched at
+        88px with the word, decisive past 60% of the row, and the in-row confirmation. Every
+        deletion leaves an undo bar for six seconds, from one slot shared by the whole app.</li>
+      <li><i>09</i> <b>The app says when to leave.</b> One strip above the tab bar, empty nearly
+        all day: amber under fifteen minutes of slack, red when the walk back equals the time
+        left, and silent before departure and once the deadline has passed. Said once per
+        deadline, and back only if the walk gets ten minutes longer.</li>
+      <li><i>27</i> <b>A patch of map is kept on the phone.</b> Draw a box, choose streets or
+        doorways, see the size before you commit. Two requests at a time, over the box you drew,
+        and refused outright above 1,500 tiles — OpenStreetMap's servers are a volunteer's, so
+        bulk is refused rather than throttled. The tile cache is deliberately un-versioned, so
+        a deploy never wipes a download.</li>
+      <li><i>28</i> <b>You can tell whether your changes are saved.</b> A ledger in localStorage
+        holds what is outstanding, so "stuck for three days" is true across launches. Five
+        states, one of them loud: saving, saved, queued, stuck, and local-only. The stuck screen
+        says why, what would be lost, how many times it tried, and offers a copy that is not on
+        this phone.</li>
+      <li><i>11</i> <b>A trip can be shared, on one rule:</b> the plan is ours, what I've done
+        about it is mine. The schedule syncs and last edit wins; the shopping list is copied
+        once and then separate, with the owner able only ever to add; bought, packed, the Log
+        and the photos never leave the phone, and packing is not in the share at all. A link
+        per trip with an expiry, two levels plus owner, sign-in at the last possible moment,
+        and a day that names what moved and who moved it rather than asking you to resolve it.</li>
+      <li><i>bug</i> <b>Nothing was listening to the sync ledger,</b> so the trip chip's dot and
+        the strip could not hear it move. A write could be stuck for three days and the strip
+        would say nothing until something else happened to repaint the screen.</li>
+      <li><i>bug</i> <b>The draw-an-area screen said stops were "outside every area you have
+        kept" when nothing was kept at all</b> — a warning about a state that did not exist.</li>
+      <li><i>bug</i> <b><code>dateStamp</code> took a Date and was handed ISO strings,</b> which
+        threw inside a render and left the share sheet stuck showing "Create the link" after
+        the link had already been made.</li>
+      <li><i>bug</i> <b>A trip you had been removed from was listed twice</b> — once as the card
+        explaining what went, and once below as if nothing had happened.</li>
+      <li><i>bug</i> <b>An unnamed owner read as "You keeps this trip"</b> on a reader's Plan,
+        and "You's invite stopped working" on a dead link. A link can be made without ever
+        signing in, so an owner with no name is now "the owner" and the possessive is fixed.</li>
       <li><i>06</i> <b>A stop owns its start and its length,</b> and its end is worked out from
         those rather than stored beside them — one time plus a duration, because on a phone you
         know when you arrive and roughly how long you have and rarely know both clock times.
@@ -468,112 +514,88 @@ day
 
   <h2>Settle these first</h2>
   <p class="section-note">
-    Session one took the four that everything else was drawn around. What is left divides
-    cleanly: session two is the trips home, the spend report, the swipe pattern and the three
-    things that make the app trustworthy on the road; session three is sharing a trip. These
-    four are the ones those sessions turn on.
+    The three sessions took everything they were drawn for. What is left is three new items
+    the sharing work created — each one an edge of what "no paid APIs and it must work
+    offline" can actually promise two people — plus the six that were always going to wait.
+    These three are the ones to answer before anyone uses the share on a real trip.
   </p>
 
   <section>
 
     <div class="item head-here">
-      <div class="rail"><div class="num">29</div><span class="sev serious">Session 2</span></div>
+      <div class="rail"><div class="num">31</div><span class="sev serious">New</span></div>
       <div>
-        <h3>Three things I built plain, which now need a designer<span class="changed">unchanged</span></h3>
+        <h3>Sharing needs a server the free plan does not give it<span class="changed">new</span></h3>
         <p>
-          Still the first thing you see. The trip card shows a two-letter mark, name, dates and
-          length — no cover image, no sense of past versus upcoming, nothing about how ready the
-          trip is. The spend report is a hero figure, one bar per bucket and a list. The swipe
-          reveals a single red dustbin at a fixed 68px.
+          The whole of session three is built and works against one trip document: the people,
+          the roles, the link, the change feed, the copied-once shopping list, and the promise
+          that the Log never leaves the phone. Two phones reading and writing the same document
+          behave exactly as designed — I verified that by running both sides against one store.
         </p>
         <p>
-          One thing did change under it: the trip card could now say something true about
-          readiness, because the app finally knows. A trip with pasted stops and no positions is
-          a different state from a trip with a full itinerary, and both are different from the
-          demo.
+          What is missing sits underneath. Firestore's free tier will hold the document, but
+          opening exactly one trip to exactly the people invited to it needs security rules
+          keyed on a real signed-in identity, and Apple and Google sign-in both need a client
+          id and a redirect this app cannot own from a static host. So today the sign-in screen
+          collects the name it needs and says so plainly, rather than pretending to be OAuth.
         </p>
         <div class="ask">
-          <b>To design</b>
-          These three, on top of what exists — the trip card first. It is worth deciding what
-          the card says about a trip that has been pasted in but not yet filled out, since that
-          is now the normal first state.
+          <b>To decide, not design</b>
+          Whether to stand up the Firebase project properly (free, but it needs your Google
+          account and a domain for the redirect), or to keep sharing as one-device-per-trip and
+          exchange a trip as a file — which the stuck screen's "Save a copy" already does.
+          Everything drawn in session three works either way; only who can reach the document
+          changes.
         </div>
       </div>
     </div>
 
     <div class="item head-here">
-      <div class="rail"><div class="num">30</div><span class="sev serious">New</span></div>
+      <div class="rail"><div class="num">32</div><span class="sev serious">New</span></div>
       <div>
-        <h3>A pasted itinerary has no positions, so the map is empty<span class="changed">new</span></h3>
+        <h3>Two phones with no signal both win<span class="changed">new</span></h3>
         <p>
-          The consequence of item 01 landing. Pasting six days in takes about a minute and gives
-          you every stop, every time and every length — and not one coordinate, because reading
-          a map link is per-place and needs the network. So on a real trip the Plan is complete
-          and the Map is blank, which is the opposite way round from the demo.
+          Last edit wins is the right rule and it is what is built. The case it does not cover
+          is the one this trip is most likely to hit: both phones offline in a market, both
+          editing Day 3, both writing when signal returns. The later write lands second and
+          wins — not the later <em>edit</em>. So the person who reconnects last wins, which is
+          not the same thing and is not what the banner promises.
         </p>
         <p>
-          The screen says so, and the route to fixing one stop exists: open it, paste its map
-          link. What is missing is any sense of how many are still unlocated, or a way through
-          them that is not eighteen separate visits to eighteen screens.
+          The banner does still tell the truth about what moved, and the fix is the one the
+          design already names: change it back and they see the same banner tomorrow. But a
+          six-hour-old edit overwriting a fresh one is worth knowing about before it happens.
         </p>
         <div class="ask">
           <b>To design</b>
-          How an unlocated stop reads on the Plan and on the Map, where the count lives, and
-          whether there is a way to work through them in one pass. Worth deciding whether
-          locating a stop is even worth doing for all of them, or only for the ones you will
-          walk from — which is the question item 27 asks from the other side.
+          Whether a write that is older than the value it replaces should say so — a mark on
+          the row, or a line in the banner — and whether that is worth a timestamp per field
+          rather than per document.
         </div>
       </div>
     </div>
 
     <div class="item head-here">
-      <div class="rail"><div class="num">28</div><span class="sev serious">Session 2</span></div>
+      <div class="rail"><div class="num">33</div><span class="sev serious">New</span></div>
       <div>
-        <h3>You still can't tell whether your changes are saved<span class="changed">unchanged</span></h3>
+        <h3>Nobody can see that Ana bought the tenugui<span class="changed">new</span></h3>
         <p>
-          Three states, one of them shown. Online and syncing: silent. Offline with the cache:
-          edits queue and replay, also silent, and indistinguishable from the first. Configured
-          but unable to reach Firebase: changes are stranded in that browser, and I show a red
-          banner because silence there is dangerous.
+          Your call, and the design says it out loud rather than implying a coordination it does
+          not have: the shopping list is copied once, and after that nobody sees anyone else's
+          additions or purchases. The guest's list carries one line saying where it came from,
+          and the owner's sheet says how many items the other side does not have.
         </p>
         <p>
-          This round makes it matter more, not less. Pasting an itinerary in is the largest
-          single write the app ever makes — eighteen stops and a dozen places at once — and it
-          is exactly the sort of thing you would do on hotel wifi the night before.
+          Now that it is built, the shape of the gap is clearer than it was on paper. It is not
+          symmetrical: the owner can send new items and knows they arrived, while a guest who
+          adds something has no way to tell anyone. So the person who made the trip keeps a
+          channel and everyone else does not.
         </p>
         <div class="ask">
-          <b>To design</b>
-          Syncing, queued-offline and stranded: ignorable when all is well, unmissable when it
-          is not. And what the paste screen says if the write cannot leave the device.
-        </div>
-      </div>
-    </div>
-
-    <div class="item head-here">
-      <div class="rail"><div class="num">11</div><span class="sev serious">Session 3</span></div>
-      <div>
-        <h3>Sharing one trip with the people on it<span class="changed">unchanged</span></h3>
-        <p>
-          The largest remaining piece, and the whole of session three. Your answer stands:
-          family and friends, aligned on the schedule, one selected trip rather than everything
-          you have.
-        </p>
-        <p>
-          The plumbing is mine and I will build it: real sign-in, linking the anonymous account
-          you already have so nothing is lost, and rules that open exactly one trip to exactly
-          the people invited to it. What I cannot invent is how it looks or how much anyone else
-          may touch.
-        </p>
-        <div class="ask">
-          <b>To design</b>
-          Four things. The <b>invite</b> — a link, a code, or an email, and what the person sees
-          before they accept. The <b>share sheet</b> on a trip, listing who has it and letting
-          you take it back. <b>What a guest can do</b> — my recommendation is still two levels
-          only, can-edit and can-read, because three is a settings screen nobody reads. And
-          <b>attribution</b>: whether a ticked shopping item, a packed bag or a note shows who
-          did it. Design the shopping list with two people on it, because that is where it gets
-          confusing first — and now the Log too, since a day holds several notes and two people
-          will write them.
+          <b>To design, if it bites</b>
+          The smallest fix is still one shared line per item rather than syncing the list — and
+          the second smallest is letting a guest send items back the same way the owner sends
+          them out. Worth leaving alone until a real trip proves it needs one.
         </div>
       </div>
     </div>
@@ -585,22 +607,28 @@ day
   <section>
 
     <div class="item">
-      <div class="rail"><div class="num">09</div><span class="sev serious">Serious</span></div>
+      <div class="rail"><div class="num">30</div><span class="sev serious">Serious</span></div>
       <div>
-        <h3>The app knows you'll miss the coach and never tells you</h3>
+        <h3>A pasted itinerary has no positions, so the map is empty<span class="changed">sharper</span></h3>
         <p>
-          Unchanged, and still the best ratio of usefulness to work in the list. The buffer sits
-          on a screen you have to remember to open. Same for the 14:00 demo, stalls shutting at
-          17:00, and the last-chance airport items.
+          Pasting six days in takes about a minute and gives you every stop, every time and
+          every length — and not one coordinate, because reading a map link is per-place and
+          needs the network. So on a real trip the Plan is complete and the Map is blank, which
+          is the opposite way round from the demo.
         </p>
         <p>
-          Buildable within your constraints: an installed home-screen web app can send
-          notifications on iOS 16.4 and later, with no server.
+          Sharper now that keeping a map area is built, because that feature has to draw its
+          box around something. Today it falls back to the trip's own position and says how
+          many stops are inside; on a freshly pasted trip that number is zero, and the box is a
+          guess. The same hole shows up in the leave-now strip, which needs a walking distance
+          it cannot compute without positions.
         </p>
         <div class="ask">
           <b>To design</b>
-          Where a reminder is set — per stop, per shopping item, or one trip setting — and what
-          it says when it fires.
+          How an unlocated stop reads on the Plan and on the Map, where the count lives, and
+          whether there is a way to work through them in one pass. Worth deciding whether
+          locating a stop is even worth doing for all of them, or only for the ones you will
+          walk from.
         </div>
       </div>
     </div>
@@ -637,31 +665,6 @@ day
           <b>To design</b>
           The edit state of an item. Quantity is worth deciding on at the same time, since it
           changes how a price reads.
-        </div>
-      </div>
-    </div>
-
-    <div class="item">
-      <div class="rail"><div class="num">27</div><span class="sev serious">Serious</span></div>
-      <div>
-        <h3>Offline means the map still goes blank<span class="changed">sharper</span></h3>
-        <p>
-          Trip data works offline now; map tiles are images fetched per view. Tiles you have
-          already looked at are cached, so areas you browsed at the hotel still draw — pan
-          somewhere new with no signal and you get grey. Which is the situation the loops exist
-          for.
-        </p>
-        <p>
-          Sharper because of item 30. "The day's stops plus a margin" was the obvious way to
-          choose an area, and a pasted itinerary has no stops with positions — so on a real trip
-          there is nothing to draw the box around until the stops are located. The two items
-          have to be answered together.
-        </p>
-        <div class="ask">
-          <b>To design</b>
-          A "download this area" action: where it lives, how the area is chosen when some or all
-          of the day's stops have no position, what it says about size, and what an undownloaded
-          area shows.
         </div>
       </div>
     </div>
@@ -842,39 +845,46 @@ day
 
   <h2>What I'd design in what order</h2>
   <p class="section-note">
-    Session one took items 4, 5, 6 and 1 — the day's model. What is left maps onto the two
-    sessions you have named, in this order.
+    The three sessions are done. What is left has no session shape to it, so this is simply
+    the order I would take it in.
   </p>
   <ol class="order">
-    <li><b>Session two, first half — item 29</b>, the three screens I improvised. The trip card first, since it is the first thing you see when the app opens, and it can now say something true about whether a trip is ready.</li>
-    <li><b>Session two, second half — items 9, 27, 28 and 30.</b> Reminders, offline map areas, showing whether changes saved, and what an unlocated stop looks like. The four that decide whether the app is trustworthy on the road, and they interlock: a pasted itinerary has no positions, which is what 30 is about and what 27 has to work around.</li>
-    <li><b>Session three — item 11, sharing one trip.</b> The largest single piece: invite, share sheet, two permission levels, and what attribution shows. Design the shopping list and the Log with two people on them, because that is where it gets confusing first.</li>
-    <li><b>Items 7, 8, 10 and 12</b> alongside whichever session touches their screens — the place table, adding a shot, correcting a shopping item, and the second language.</li>
+    <li><b>Item 31 first, and it is a decision rather than a drawing.</b> Whether sharing gets a real backend or stays a file you hand someone. Everything drawn in session three works either way, but items 32 and 33 only matter if the answer is a backend.</li>
+    <li><b>Item 30</b>, the pasted itinerary with no positions. It is now the thing most other features trip over: the map area has nothing to draw a box around, and the leave-now strip has no walk to measure.</li>
+    <li><b>Items 8 and 10</b> — adding a must-see spot, and correcting a shopping item you got wrong in the shop. Both are small holes in screens that otherwise work.</li>
+    <li><b>Items 7 and 12</b> — what place information is worth typing, and the second language. Twelve gets wider with every screen and this round added six of them.</li>
     <li><b>The rest</b> — dark mode, empty states, the accessibility pass, search, the recap — once you have used it for a day and know what you actually reached for.</li>
   </ol>
 
   <div class="footnote">
-    <b>How this was checked.</b> Round five was driven in a browser at 390×844 like the four
-    before it: 56 checks, all passing, plus a pass over every screen and every destination
-    panel with no console errors.
-    The three migrations were run against the existing trip and their results counted —
-    <em>13:30 – 15:45</em> became 135 minutes and the old strings were cleared, the day's loop
-    adopted the row that had stood for it implicitly, both notes gained a place and a
-    written-at time — then run again to confirm they add nothing the second time.
-    A stop was retimed and its length changed, and the end moved with it; a stop was dragged
-    to sit after one four hours later, and the row said so rather than refusing; a stop was
-    stretched until it swallowed two others, and both said so. A second loop was started on
-    day 3, landed in a real gap rather than on top of the first, was renamed, took a place
-    that the first did not, and was deleted with its row and without its places. Two notes
-    were written about two places on one day and both survived; a third on another day showed
-    up under the same place's Log tab. Eleven lines of mixed English and Chinese itinerary
-    were pasted, read as seven stops across two days with one flagged, corrected in place, and
-    landed on days 5 and 6 with their ranges turned into lengths.
-    <b>What that turned up:</b> two bugs, both listed above and both fixed — a migrated note
-    pointing at a replaced id, and day-scoped Nearby asking by the wrong id.
+    <b>How this was checked.</b> Round six was driven in a browser at 390×844 like the five
+    before it: <b>145 checks across three harnesses</b> — 56 for the trips home, the spend
+    report and the swipe, 56 for the strip, the offline map and the sync ledger, 89 for
+    sharing — all passing, with no console errors on any screen.
+    The reminder rules were run against a real schedule at four different clock times and
+    silenced and re-raised as designed. The tile maths was checked against the trip's own
+    box: 300 tiles for streets, 4,018 for doorways, and the second refused as bulk. A real
+    download of twelve tiles was run end to end and the tiles were found afterwards in the
+    cache the service worker serves from. A ledger three days old was planted and the strip,
+    the stuck screen and the discard were driven through to an empty queue.
+    Sharing was checked with both sides running against one trip document, which is the shape
+    a backend would give them: a link was made as can-read expiring in 24 hours, opened on a
+    second identity, joined, signed in — and the anonymous identity carried through rather
+    than being replaced. The owner then moved a stop, and the reader's Day 3 named the change,
+    who made it and what it used to say, cleared it on Got it, and offered the whole record.
+    The share snapshot was inspected directly and carries no Log, no packing list and nothing
+    marked bought. A removal was run and the kept-side trip came out with the lists and the
+    Log and none of the stops.
+    <b>What that turned up:</b> five bugs, all listed above and all fixed — nothing listening
+    to the sync ledger, a warning about an area state that could not exist, a date formatter
+    that threw inside a render, a removed trip listed twice, and an unnamed owner reading as
+    "You keeps this trip".
     <b>What that did not cover:</b> the three free services — weather, geocoding, exchange
     rates — are blocked from this sandbox, so their parsers were verified against recorded
-    payloads rather than live calls. They are still the first thing to try on your phone.
+    payloads rather than live calls. Tiles were served locally rather than from
+    OpenStreetMap, so the cap and the two-lane pacing are verified but the real servers'
+    behaviour is not. And sharing has no backend yet, which is item 31: two phones were
+    simulated against one document rather than actually being two phones.
     <b>Still not covered:</b> anything that only shows up on a real trip with real signal —
     and, for the parser, any itinerary shaped differently from the ones I could invent. It
     will misread lines; the confirm screen is the answer to that, not the parser.

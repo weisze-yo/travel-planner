@@ -26,6 +26,8 @@ const repaint = () => store.selectDay(state.selectedDay);
 export default {
   id: 'join',
   tab: null,
+  /** No tab bar: whoever opened this link is not in the app yet. */
+  chrome: false,
 
   render(params = {}) {
     const trip = state.trip;
@@ -55,15 +57,14 @@ export default {
             </div>
             <div class="join-name">${String(trip?.name || 'A trip').split('·')[0].trim()}</div>
             <div class="join-sub">${String(trip?.name || '').split('·').slice(1).join('·').trim()}</div>
-            <div class="join-meta">
-              ${trip?.dateRange || ''} · ${trip?.dayCount || 0} days ·
-              ${state.days.reduce((n, d) => n + store.activeItems(d).length, 0)} stops
-            </div>
+            <div class="join-meta">${tripLine(trip)}</div>
           </div>
 
           <div class="join-look">
             <div class="row center mb10">
-              <div class="eyebrow grow">Day ${first?.dayNumber || 1} · ${first?.label || ''}</div>
+              <div class="eyebrow grow">
+                Day ${first?.dayNumber || 1}${first?.dateLabel ? ` · ${first.dateLabel}` : ''}
+              </div>
               <div class="f11 soft">a look at it</div>
             </div>
             ${stops.map((item) => html`
@@ -116,7 +117,7 @@ export default {
       else repaint();
     });
 
-    delegate(root, '[data-provider]', (event, el) => {
+    delegate(root, '[data-provider]', (el) => {
       const provider = el.dataset.provider;
       if (provider === 'email') {
         const value = root.querySelector('[data-field="email"]')?.value?.trim() || '';
@@ -158,10 +159,24 @@ export default {
   },
 };
 
+/**
+ * The trip in one line. The date range on a real trip already says how many
+ * days it is, so counting them again reads as a bug rather than as detail.
+ */
+function tripLine(trip) {
+  const range = String(trip?.dateRange || '').trim();
+  const days = trip?.dayCount || 0;
+  const stops = state.days.reduce((n, d) => n + store.activeItems(d).length, 0);
+  const parts = [range];
+  if (days && !/\bdays?\b/.test(range)) parts.push(`${days} day${days === 1 ? '' : 's'}`);
+  if (stops) parts.push(`${stops} stop${stops === 1 ? '' : 's'}`);
+  return parts.filter(Boolean).join(' · ');
+}
+
 function promise(text) {
   return html`
-    <div class="row g8 mb9" style="align-items:flex-start">
-      <span class="tick on" style="margin-top:2px">${raw(icon.check || '')}</span>
+    <div class="row g10 mb10" style="align-items:flex-start">
+      <span class="dot" style="margin-top:7px"></span>
       <span class="f12 lh145 grow" style="color:var(--charcoal)">${text}</span>
     </div>`;
 }
@@ -213,7 +228,7 @@ function signIn(trip, warn) {
     <section class="screen">
       <div class="scroll" style="padding:22px 18px 28px">
         <div class="join-name" style="font-size:20px">${String(trip?.name || '').split('·')[0].trim()}</div>
-        <div class="join-meta mb18">${trip?.dateRange || ''} · ${trip?.dayCount || 0} days</div>
+        <div class="join-meta mb18">${tripLine(trip)}</div>
 
         <div class="f16 w800 mb6" style="color:var(--ink);font-size:17px">Who are you?</div>
         <div class="f12 soft lh145 mb14">

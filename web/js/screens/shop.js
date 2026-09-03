@@ -52,9 +52,11 @@ export default {
         </div>
 
         <div class="scroll" style="padding:12px 16px 250px">
+          ${arrival()}
           ${addOpen ? addForm() : ''}
           ${groups.length ? groups.map((group) => groupCard(group, symbol)) : html`
             <div class="empty">Nothing on the list yet. Press + Add for anything you want to buy.</div>`}
+          ${origin()}
         </div>
 
         <button class="footer-card" data-act="report" aria-label="Open the spend report">
@@ -82,6 +84,7 @@ export default {
 
   mount(root) {
     delegate(root, '[data-act="add-toggle"]', () => { addOpen = !addOpen; nudge(); });
+    delegate(root, '[data-act="hide-arrived"]', () => store.hideShoppingArrived());
     delegate(root, '[data-act="add-cancel"]', () => { addOpen = false; nudge(); });
     delegate(root, '[data-act="add-save"]', () => {
       const name = root.querySelector('#new-name')?.value.trim();
@@ -127,6 +130,42 @@ function nudge() {
   store.selectDay(state.selectedDay);
 }
 
+/**
+ * The only trace of sharing on this list. The owner can send items again,
+ * and this says what happened in the one sentence that matters: it was
+ * added, and nothing of yours was touched.
+ */
+function arrival() {
+  const news = store.shoppingArrived();
+  if (!news) return '';
+  return html`
+    <div class="arrived">
+      <div class="grow">
+        <div class="arrived-t">${news.from} sent ${news.count} more item${news.count === 1 ? '' : 's'}</div>
+        <div class="arrived-s">
+          Added to your list. Nothing you’d already bought or removed was touched.
+        </div>
+      </div>
+      <button class="btn ghost sm none" style="width:62px" data-act="hide-arrived">Hide</button>
+    </div>`;
+}
+
+/**
+ * Where the list came from, said once at the bottom. A list that looks
+ * identical on two phones and quietly stops matching is worse than one that
+ * never matched, so this is not a footnote to be trimmed.
+ */
+function origin() {
+  const from = store.shoppingOrigin();
+  if (!from) return '';
+  return html`
+    <div class="f11 soft lh145 mt14">
+      Started from ${from.name}’s list on ${store.stamp(from.at)}. Since then it’s yours
+      alone — ${from.name} can’t see what you’ve bought, and neither can anyone else on
+      the trip.
+    </div>`;
+}
+
 function groupCard(group, symbol) {
   const badge = BADGES[group.badge];
   return html`
@@ -143,6 +182,7 @@ function groupCard(group, symbol) {
 }
 
 function row(item, symbol) {
+  const fresh = (store.shoppingArrived()?.ids || []).includes(item.id);
   return html`
     <div class="swipe-row swipe-flat" data-shop-row="${item.id}" data-shop-name="${item.name}">
       <div class="swipe-bin"><button class="bin" data-swipe-delete aria-label="Delete ${item.name}">${raw(icon.bin)}</button></div>
@@ -150,7 +190,9 @@ function row(item, symbol) {
       <div class="item-top">
         ${checkbox(item.bought, { act: 'tick', id: item.id })}
         <button class="grow" style="text-align:left" data-act="tick" data-id="${item.id}">
-          <div class="item-name${item.bought ? ' done' : ''}">${item.name}</div>
+          <div class="item-name${item.bought ? ' done' : ''}">
+            ${item.name}${fresh ? raw(' <span class="badge jade">NEW</span>') : ''}
+          </div>
           ${item.detail ? html`<div class="item-sub">${item.detail}</div>` : ''}
         </button>
         <div class="right none">

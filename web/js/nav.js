@@ -102,7 +102,10 @@ function paint() {
   screen.mount?.(host, current.params);
   restoreScroll(scrollers);
   painted = current.id;
-  paintTabs(screen.tab || current.id);
+  // The invite and the sign-in are a web page an outsider opened, not the
+  // app: they get no tab bar at all. Every other screen keeps it, including
+  // the ones that highlight no tab.
+  paintTabs(screen.chrome === false ? null : (screen.tab || current.id));
   paintUndo();
 }
 

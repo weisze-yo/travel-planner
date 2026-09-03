@@ -23,8 +23,11 @@ import paste from './screens/paste.js';
 import area from './screens/area.js';
 import areas from './screens/areas.js';
 import stuck from './screens/stuck.js';
+import share from './screens/share.js';
+import join from './screens/join.js';
+import changes from './screens/changes.js';
 
-for (const screen of [map, plan, dest, nearby, sub, shop, mustsee, prep, log, note, trip, trips, spend, paste, area, areas, stuck]) {
+for (const screen of [map, plan, dest, nearby, sub, shop, mustsee, prep, log, note, trip, trips, spend, paste, area, areas, stuck, share, join, changes]) {
   register(screen);
 }
 
@@ -48,7 +51,10 @@ async function main() {
 
   const asked = (location.hash || '').slice(1);
   const insideTrip = ['map', 'plan', 'shop', 'prep', 'log'].includes(asked);
-  const initial = remembered ? (insideTrip ? asked : 'map') : 'trips';
+  // An invite link is a path, not a hash: /j/8QK2-M7VD. It lands on the trip
+  // rather than on the app, because whoever opened it has never seen this.
+  const invited = /\/j\/[A-Z0-9-]+/i.test(location.pathname) || asked === 'join';
+  const initial = invited ? 'join' : (remembered ? (insideTrip ? asked : 'map') : 'trips');
   start({ initial });
   strip.start();
 

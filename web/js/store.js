@@ -403,7 +403,13 @@ export function tripCurrentDay(trip) {
  */
 export function tripGroups() {
   const groups = { running: [], upcoming: [], finished: [] };
-  for (const trip of state.trips) groups[tripState(trip)].push(trip);
+  for (const trip of state.trips) {
+    // A trip you have been removed from has its own card at the top of the
+    // list, saying what went and what stayed. Listing it twice would make
+    // that card look like an error rather than an explanation.
+    if (trip.removed || (trip.id === state.tripID && state.trip?.removed)) continue;
+    groups[tripState(trip)].push(trip);
+  }
   groups.upcoming.sort((a, b) => (a.startDate || '').localeCompare(b.startDate || ''));
   groups.finished.sort((a, b) => (b.startDate || '').localeCompare(a.startDate || ''));
   return groups;
@@ -1791,6 +1797,8 @@ export function movePlanItem(dayNumber, movedId, beforeId) {
   const next = reorder(ids, movedId, beforeId);
   d.items = next.map((id) => d.items.find((i) => i.id === id));
   writeDay(d);
+  const moved = d.items.find((i) => i.id === movedId);
+  if (moved) recordChange({ verb: 'reordered', what: moved.name, dayNumber, itemID: movedId });
 }
 
 /**
@@ -1802,6 +1810,7 @@ export function setPlanItemWindow(dayNumber, id, { start, end } = {}) {
   const d = day(dayNumber);
   const item = d?.items.find((i) => i.id === id);
   if (!item) return;
+  const was = itemWindow(item).label;
 
   if (start !== undefined) {
     const at = parseClock(start);
@@ -1820,6 +1829,17 @@ export function setPlanItemWindow(dayNumber, id, { start, end } = {}) {
   // The old fixed string is not a second source of truth any more.
   item.windowLabel = '';
   writeDay(d);
+
+  const now = itemWindow(item).label;
+  if (now !== was) {
+    recordChange({
+      verb: 'moved',
+      what: `${item.name} to ${item.time}${item.endTime ? `, back by ${item.endTime}` : ''}`,
+      dayNumber,
+      itemID: id,
+      was,
+    });
+  }
 }
 
 export function setPlanItemTime(dayNumber, id, text) {
@@ -1853,6 +1873,7 @@ export function archivePlanItem(dayNumber, id) {
   item.archived = true;
   item.movedToDay = null;
   writeDay(d);
+  recordChange({ verb: 'removed', what: item.name, dayNumber, itemID: id });
 }
 
 export function restorePlanItem(dayNumber, id) {
@@ -2040,6 +2061,12 @@ export async function captureStop(dayNumber, { input, time, endTime = '', kind =
     placeID: record.id,
     kind,
     endTime,
+  });
+  recordChange({
+    verb: 'added',
+    what: `${record.name}${time ? ` at ${time}` : ''}`,
+    dayNumber,
+    itemID: day(dayNumber)?.items.find((i) => i.placeID === record.id)?.id || null,
   });
   return { saved: true, located: record.latitude != null, name: record.name, id: record.id };
 }
@@ -2451,6 +2478,7 @@ export function deletePlanItem(dayNumber, id) {
   const copy = JSON.parse(JSON.stringify(d.items[at]));
   d.items = d.items.filter((i) => i.id !== id);
   put('days', d);
+  recordChange({ verb: 'removed', what: copy.name, dayNumber, itemID: id });
   rememberUndo(`${copy.name} deleted`, () => {
     const back = day(dayNumber);
     if (!back) return;
@@ -2718,8 +2746,17 @@ export function myRole() {
 export const isOwner = () => myRole() === 'owner';
 export const canEdit = () => myRole() !== 'read';
 
-/** Whose trip it is, in words, for a reader's header. */
-export const ownerName = () => sharePeople().find((p) => p.role === 'owner')?.name || 'You';
+/**
+ * Whose trip it is, in words. The owner may never have signed in — a link
+ * can be made without one — so an unnamed owner is "the owner" rather than
+ * the placeholder every phone calls itself.
+ */
+export function ownerName() {
+  const found = sharePeople().find((p) => p.role === 'owner');
+  if (!found) return 'You';
+  if (found.id === me().id) return 'You';
+  return found.name && found.name !== 'You' ? found.name : 'the owner';
+}
 
 /**
  * Turns sharing on. The link is created before anyone has it, with the role

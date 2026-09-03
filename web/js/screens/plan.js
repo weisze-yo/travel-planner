@@ -15,6 +15,13 @@
 //
 // And the drag always lands. A row that is now wrong wears a strip naming
 // what is wrong and the one tap that fixes it.
+//
+// On a shared trip two more things live here, and both are subtractions
+// rather than screens of their own. A reader has no pencil and no add row,
+// and one line in the header says whose trip it is. And because there is no
+// resolver and no locking, catching up is the whole mechanism: the day you
+// open names what moved and who moved it, and each row it names keeps a mark
+// until you have scrolled past it once.
 
 import { html, raw, icon, delegate, parseClock, clock } from '../util.js';
 import * as store from '../store.js';
@@ -40,6 +47,8 @@ export default {
     const numbers = store.mainStopNumbers(day);
     const issues = store.dayIssues();
     const stops = rows.filter((r) => r.kind === 'stop');
+    const reading = !store.canEdit();
+    const moved = store.dayChanges();
 
     if (laneSheet) return laneForm(day, issues);
 
@@ -54,18 +63,26 @@ export default {
                 ${issues.size ? raw(`· <b class="look-at">${issues.size} thing${issues.size === 1 ? '' : 's'} to look at</b>`) : ''}
               </div>
             </div>
-            <button class="iconbtn filled" data-act="toggle-edit"
-                    style="${editing ? 'background:var(--jade)' : ''}"
-                    aria-label="${editing ? 'Finish editing' : 'Edit this day'}"
-                    aria-pressed="${editing ? 'true' : 'false'}">
-              ${raw(editing ? icon.tick('#fff', 15) : icon.pencil('#14201C', 17))}
-            </button>
+            ${reading ? html`<span class="reading">READING ONLY</span>` : html`
+              <button class="iconbtn filled" data-act="toggle-edit"
+                      style="${editing ? 'background:var(--jade)' : ''}"
+                      aria-label="${editing ? 'Finish editing' : 'Edit this day'}"
+                      aria-pressed="${editing ? 'true' : 'false'}">
+                ${raw(editing ? icon.tick('#fff', 15) : icon.pencil('#14201C', 17))}
+              </button>`}
           </div>
           <div class="chiprow mt10">${dayPills({ small: true })}</div>
+          ${reading ? html`
+            <div class="f11 soft mt8">
+              ${store.ownerName() === 'the owner' ? 'Someone else' : store.ownerName()}
+              keeps this trip. You can read it and write notes.
+            </div>` : ''}
         </div>
 
         <div class="scroll" style="padding:14px 16px 24px">
           ${weatherBanner()}
+
+          ${moved.length ? movedBanner(moved, day) : ''}
 
           ${editing ? html`
             <div class="hint-amber mt14">
@@ -80,11 +97,12 @@ export default {
                     number: numbers[row.item.id],
                     last: index === rows.length - 1,
                     issues: issues.get(row.item.id) || [],
+                    moved: store.rowChange(row.item.id),
                   })
                 : laneRow(row, { editing, last: index === rows.length - 1 })))}
             </div>` : emptyDay()}
 
-          ${editing ? html`
+          ${editing && !reading ? html`
             ${notice ? html`<div class="amber-note f12 mt8">${notice}</div>` : ''}
             ${addOpen ? addForm() : ''}
             <button class="btn-dashed mt8" data-act="add-open">+ Add a stop</button>
@@ -151,6 +169,30 @@ export default {
       store.applyIssueFix(state.selectedDay, el.dataset.fixFor, issue?.fixes[Number(el.dataset.fix)]);
     });
 
+    delegate(root, '[data-act="caught-up"]', () => store.catchUp());
+    delegate(root, '[data-act="all-changes"]', () => go('changes'));
+
+    // "Scrolled past" is the honest version of "seen": a row that has been on
+    // screen for a moment has been read, and the day is caught up once every
+    // marked row has. Without an observer this degrades to the Got it button,
+    // which is why that button is not optional.
+    const marked = [...root.querySelectorAll('[data-moved]')];
+    if (marked.length && typeof IntersectionObserver !== 'undefined') {
+      const left = new Set(marked.map((el) => el.dataset.moved));
+      const watcher = new IntersectionObserver((entries) => {
+        for (const entry of entries) {
+          if (!entry.isIntersecting) continue;
+          left.delete(entry.target.dataset.moved);
+          watcher.unobserve(entry.target);
+        }
+        if (!left.size) {
+          watcher.disconnect();
+          setTimeout(() => store.catchUp(), 900);
+        }
+      }, { root: root.querySelector('.scroll'), threshold: 0.6 });
+      for (const el of marked) watcher.observe(el);
+    }
+
     delegate(root, '[data-act="paste"]', () => go('paste'));
     delegate(root, '[data-new-loop]', (el) => {
       laneSheet = { from: Number(el.dataset.from), to: Number(el.dataset.to), label: el.dataset.label };
@@ -214,13 +256,13 @@ export default {
 
 // ------------------------------------------------------------------- a stop
 
-function stopRow(row, { editing, number, last, issues }) {
+function stopRow(row, { editing, number, last, issues, moved = null }) {
   const { item } = row;
   const w = row.window;
   const worst = issues.find((i) => i.kind === 'order' || i.kind === 'overlap' || i.kind === 'reversed');
 
   return html`
-    <div class="plan-row" data-row-id="${item.id}">
+    <div class="plan-row" data-row-id="${item.id}"${moved ? ` data-moved="${moved.id}"` : ''}>
       ${editing ? html`<div class="handle-grip" data-grip>${raw(icon.grip)}</div>` : ''}
 
       <div class="plan-gutter${editing ? ' editing' : ''}">
@@ -266,9 +308,55 @@ function stopRow(row, { editing, number, last, issues }) {
               </div>` : ''}
           </div>`)}
 
+        ${moved ? html`
+          <span class="mark">
+            ${moved.byName || 'Someone'} ${moved.verb === 'added' ? 'added' : 'moved'} this,
+            ${when(moved.at)}${moved.was ? html` <span class="mark-was">· was ${moved.was}</span>` : ''}
+          </span>` : ''}
+
         ${!editing ? stopChips(item) : ''}
       </div>
     </div>`;
+}
+
+/**
+ * "3 changes since you last opened Day 3." Whoever edited last wins, so the
+ * banner is not a decision to make — it is the catching up that replaces one.
+ */
+function movedBanner(moved, day) {
+  return html`
+    <div class="moved mt14" id="moved-banner">
+      <div class="moved-h">
+        ${moved.length} change${moved.length === 1 ? '' : 's'} since you last opened Day ${day?.dayNumber ?? ''}
+        · ${when(moved[0].at)}
+      </div>
+      ${moved.slice(0, 4).map((c) => html`
+        <div class="moved-l">
+          <span class="moved-w">${c.byName || 'Someone'}</span>
+          <span class="grow">${c.verb} ${c.what}</span>
+        </div>`)}
+      ${moved.length > 4 ? html`<div class="f11 soft">and ${moved.length - 4} more</div>` : ''}
+      <div class="moved-acts">
+        <button class="btn ink grow" style="height:38px" data-act="caught-up">Got it</button>
+        <button class="btn ghost grow" style="height:38px;font-size:12px"
+                data-act="all-changes">Everything that’s changed</button>
+      </div>
+      <div class="f11 lh145 mt9" style="color:var(--amber-fg)">
+        Marks clear once you’ve scrolled past them. Whoever edited last wins — if a time is
+        wrong, change it back and they’ll see the same banner tomorrow.
+      </div>
+    </div>`;
+}
+
+/** "Tue 14:10" for this week, a date once it is older than that. */
+function when(iso) {
+  const at = new Date(iso);
+  if (Number.isNaN(at.getTime())) return '';
+  const days = Math.floor((Date.now() - at.getTime()) / 86_400_000);
+  const time = `${String(at.getHours()).padStart(2, '0')}:${String(at.getMinutes()).padStart(2, '0')}`;
+  if (days < 1) return time;
+  if (days < 7) return `${at.toLocaleDateString('en-GB', { weekday: 'short' })} ${time}`;
+  return store.stamp(iso);
 }
 
 /** What else hangs off this stop, worth seeing without opening it. */

@@ -195,6 +195,31 @@ Google Maps / Apple Maps buttons hand off to the real apps on your phone.
 **After you deploy an update**, the app picks it up on next launch; the service
 worker fetches from the network first and only falls back to its cache offline.
 
+**A patch of map can be kept on the phone.** Trip settings → *Map kept on this
+phone* → *Keep an area*. Draw a box, pick streets or doorways, and it downloads
+once, two tiles at a time. Above 1,500 tiles it refuses rather than throttling —
+OpenStreetMap's servers are run by volunteers and bulk downloading is not what
+they are for. That cache is deliberately un-versioned, so deploying an update
+never wipes a download you made in a hotel.
+
+**Unsent changes are visible.** The chip beside the trip name carries a dot:
+solid when everything has reached the cloud, hollow while a write is in flight,
+amber when something is queued. A change older than a day, or one refused for a
+reason that will not fix itself, gets a strip above the tab bar and its own
+screen (Trip settings → *Changes on this phone*) that says why, what would be
+lost, and offers to save a copy off the phone.
+
+**Sharing a trip is built, but it needs a real sign-in to be useful.** Trip
+settings → *Share this trip* makes a link with a role (can edit / can read) and
+an expiry. The rule the whole thing hangs on: the schedule syncs and last edit
+wins; the shopping list is copied once and then both lists are separate; and
+what you have bought, what you have packed and your whole Log never leave your
+phone. Today anonymous sign-in gives each browser its own id, so two phones
+cannot yet reach the same trip document — the link, the roles and the change
+feed all work, but the trip has to be on the same device. Wiring up Apple or
+Google sign-in and the matching Firestore rules is the remaining piece; ask and
+it can be done.
+
 ## If something looks wrong
 
 | Symptom | Cause |
