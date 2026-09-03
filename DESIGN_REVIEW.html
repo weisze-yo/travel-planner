@@ -182,6 +182,37 @@
     font-variant-numeric: tabular-nums; letter-spacing: .04em;
   }
   .num.fresh { color: var(--jade); }
+  /* ------------------------------------------------------------- model */
+
+  .model {
+    margin: 26px 0 0;
+    border: 1px solid var(--rule);
+    border-radius: 3px;
+    background: var(--surface);
+    overflow: hidden;
+  }
+  .model-head {
+    display: flex; align-items: baseline; gap: 12px; flex-wrap: wrap;
+    padding: 15px 20px;
+    border-bottom: 1px solid var(--rule);
+    background: var(--bone);
+  }
+  .model-head b { color: var(--ink); font-size: 13px; font-weight: 800; letter-spacing: .04em; text-transform: uppercase; }
+  .model-head span { font-size: 13px; color: var(--muted); }
+  .model-body { padding: 16px 20px 18px; }
+  .model-body p { margin: 0 0 10px; max-width: 68ch; font-size: 13.5px; }
+  .model-body p:last-child { margin-bottom: 0; }
+  .tree {
+    margin: 0 0 12px;
+    padding: 14px 16px;
+    background: var(--bone);
+    border-radius: 3px;
+    font-family: ui-monospace, SFMono-Regular, Menlo, monospace;
+    font-size: 12px; line-height: 1.75; color: var(--body);
+    white-space: pre; overflow-x: auto;
+  }
+  .tree b { color: var(--ink); font-weight: 700; }
+
   .sev {
     display: inline-block; margin-top: 7px; padding: 2px 7px; border-radius: 3px;
     font-size: 10px; font-weight: 800; letter-spacing: .07em;
@@ -263,27 +294,34 @@
 <div class="wrap">
 
   <header class="masthead">
-    <div class="kicker">Design review · round three · ready for handoff</div>
+    <div class="kicker">Design review · round four · ready for handoff</div>
     <h1>What the Travel Planner still needs</h1>
     <p class="standfirst">
-      Your sixteen points from using the deployed app are all built. Deletion — the one
-      blocker — is gone, because you specified the gesture yourself. Nineteen things are still
-      open, and five of them are worth settling before the rest are drawn.
+      The model is settled: everything is a place, and a stop is a visit to one. That was the
+      largest open question and it is now built rather than drawn, so the diagram below is a
+      record of what exists, not a proposal. Eighteen things are still open, and four of them
+      are worth settling before the rest are drawn.
     </p>
     <div class="facts">
-      <span><b>24</b> fixed across three rounds</span>
-      <span><b>19</b> open, all needing design</span>
+      <span><b>31</b> fixed across four rounds</span>
+      <span><b>18</b> open, all needing design</span>
       <span><b>0</b> blockers</span>
-      <span><b>1</b> new finding</span>
+      <span><b>0</b> unanswered questions</span>
     </div>
   </header>
 
   <div class="done">
     <div class="done-head">
       <b>Fixed and deployed</b>
-      <span>All sixteen of your points, plus the eight from round one.</span>
+      <span>Round four's seven, all sixteen of your points, and the eight from round one.</span>
     </div>
     <ul class="done-list">
+      <li><i>25</i> <b>Everything is a place.</b> A stop is a visit to a place, not a separate kind of record. Existing trips migrate on open: every stop gained its place, and the nearby places, shopping items and shots that hung off it followed.</li>
+      <li><i>25</i> <b>One way to create either.</b> Plan's <em>+ Add a stop</em> and Nearby's <em>+ Add a place</em> take the same input — paste a map link or type a name. The only difference is where it lands.</li>
+      <li><i>25</i> <b>A place opens like a stop.</b> Anything in a Nearby list opens the full screen — Info, Nearby, Must-see, Shop, Log — with its own tab counts, not its parent's.</li>
+      <li><i>26</i> <b>The loop can be renamed,</b> and both ends chosen by name — start anywhere, finish anywhere.</li>
+      <li><i>26</i> <b>The loop is a budget, not a schedule.</b> You set when you leave and when you must be back; it answers <em>you have 2h · travelling 23 min · 1h 37m to spend</em>, and says <em>short by</em> when the stops no longer fit.</li>
+      <li><i>26</i> <b>Loop stops open too,</b> and a place found in one stop's Nearby tab can be added straight into the loop.</li>
       <li><i>1,2</i> <b>Trips are first class.</b> The app opens on a list of them, the tabs appear only once one is chosen, the title switches trips and a gear opens settings.</li>
       <li><i>3</i> <b>The day pills work.</b> They had no handler at all on the map.</li>
       <li><i>4</i> <b>Nearby from the map</b> covers the whole day, grouped by stop in itinerary order.</li>
@@ -301,6 +339,39 @@
       <li><i>17–24</i> <b>Round one's eight</b> — per-stop places, real weather, geocoded places, offline editing, the itinerary-driven buffer, honest photo counts, a payment picker and editable currency.</li>
       <li><i>+</i> <b>Two more found while working:</b> must-see had the same anchoring bug as places, and an emptied trip could not be filled because stops could only be picked from saved places — they can now be typed.</li>
     </ul>
+  </div>
+
+  <div class="model">
+    <div class="model-head">
+      <b>The model, as built</b>
+      <span>Item 25, settled — draw against this rather than around it.</span>
+    </div>
+    <div class="model-body">
+      <p>
+        There is one kind of record. A <b>place</b> is a name, a position, a category and
+        whatever OpenStreetMap knows about it. A <b>visit</b> is that place on a day, at a time,
+        on a route — which is what the itinerary shows and what everyone calls a stop. A place
+        that hangs off another place is what the Nearby list shows. Same record, same screen,
+        same creation form.
+      </p>
+      <div class="tree">place        name · position · category · hours, phone, website · source link
+  │
+  ├── <b>anchored to</b>   another place, or nothing if it stands alone
+  ├── <b>nearby</b>        every place anchored to this one
+  ├── <b>must-see</b>      shots to get here
+  ├── <b>shopping</b>      what to buy here
+  └── <b>notes</b>         still one per day — item 04
+
+day
+  └── <b>visits</b>        ordered: place + time + main or sub route
+        └── <b>sub route</b>  start place · end place · places in between
+                          depart · return by  → time to spend</div>
+      <p>
+        Two consequences worth designing to. A place saved from a Nearby list is already a
+        candidate stop — it needs no retyping, only a day and a time. And shopping, shots and
+        the loop all point at the place by identity, so renaming it no longer orphans anything.
+      </p>
+    </div>
   </div>
 
   <div class="constraints">
@@ -328,6 +399,22 @@
       </div>
     </div>
     <div class="con">
+      <div class="con-label">Your answer</div>
+      <div class="con-value">Share one trip</div>
+      <div class="con-note">
+        Family and friends, so everyone holds the same schedule — but the trip you choose, not
+        the whole app. That scopes item 11 and it is the one large piece left.
+      </div>
+    </div>
+    <div class="con">
+      <div class="con-label">Your answer</div>
+      <div class="con-value">Web only, for now</div>
+      <div class="con-note">
+        The native iOS app is parked and no longer counted here. Revisit if you get a Mac; the
+        Firestore layout is shared, so it would resume rather than restart.
+      </div>
+    </div>
+    <div class="con">
       <div class="con-label">You decided</div>
       <div class="con-value">Swipe, bin, confirm</div>
       <div class="con-note">
@@ -337,40 +424,13 @@
     </div>
   </div>
 
-  <h2>Settle these five first</h2>
+  <h2>Settle these four first</h2>
   <p class="section-note">
     Not because they are the biggest screens, but because everything else is drawn
     differently depending on how they land.
   </p>
 
   <section>
-
-    <div class="item head-here">
-      <div class="rail"><div class="num">25</div><span class="sev serious">Model</span></div>
-      <div>
-        <h3>"Stop" and "place" are still two different things</h3>
-        <p>
-          Carried over, and this round made it more visible rather than less. Pasting a map
-          link now creates a <em>place</em> hanging off a stop; typing a stop into the Plan
-          creates an <em>itinerary row</em>. They never join up, so a place you saved cannot
-          become a stop without being retyped, and a stop you typed can never hold the opening
-          hours a place carries.
-        </p>
-        <p>
-          Shopping items still key off a place <em>name as text</em>, so renaming a stop
-          orphans its items — and the destination Shop tab, which matches on that name, then
-          shows nothing.
-        </p>
-        <div class="ask">
-          <b>To design</b>
-          One model, as a diagram before any screen. My recommendation is unchanged:
-          everything is a <em>place</em>, and the itinerary is an ordered list of visits to
-          places, each with a time and a route colour. Then a sub route is just visits you
-          added, and shopping, shots and notes all hang off the place — which is what turn 1
-          promised with "the place is the atom".
-        </div>
-      </div>
-    </div>
 
     <div class="item head-here">
       <div class="rail"><div class="num">04</div><span class="sev serious">Model</span></div>
@@ -384,8 +444,9 @@
         </p>
         <div class="ask">
           <b>To design</b>
-          Notes belonging to a stop, with the Log day card stacking that day's notes under the
-          stop name. Falls out of item 25 if that is settled first.
+          Notes belonging to a place, with the Log day card stacking that day's notes under the
+          place name. The model already allows it — this is the only branch of the tree above
+          still tied to the day rather than the place.
         </div>
       </div>
     </div>
@@ -395,14 +456,14 @@
       <div>
         <h3>Free time can still only happen once a day</h3>
         <p>
-          Unchanged. One sub route per day, hanging off one stop. Places are correctly per-stop
-          now, so every stop can have candidates around it — but only one of them can have a
-          loop built from them.
+          Sharper this round, not softer. The loop can now be renamed, given both ends and
+          treated as a time budget — all of which makes it feel like a thing you would want two
+          of. There is still only one per day.
         </p>
         <div class="ask">
           <b>To design</b>
-          How the Plan shows two or three loops in one day, and how the Sub route screen names
-          which stop it belongs to.
+          How the Plan shows two or three loops in one day, how you start a second one, and how
+          the loop screen says which afternoon it belongs to now that it carries a name.
         </div>
       </div>
     </div>
@@ -412,10 +473,10 @@
       <div>
         <h3>Times are text, and a stop's window still can't be edited</h3>
         <p>
-          The buffer now reads the coach time off the anchor stop's window, which makes that
-          window load-bearing — and there is still no way to edit it. Edit mode exposes only a
-          stop's start time. Durations remain fixed strings, and dragging can still put 09:15
-          after 18:00 without comment.
+          Half-answered. Inside a loop you now set both times yourself, which is the pattern to
+          copy. Everywhere else a stop still has only an editable start; its end is a fixed
+          string that the loop reads as a deadline, and dragging can still put 09:15 after 18:00
+          without comment.
         </p>
         <div class="ask">
           <b>To design</b>
@@ -600,17 +661,27 @@
     <div class="item">
       <div class="rail"><div class="num">11</div><span class="sev serious">Serious</span></div>
       <div>
-        <h3>You cannot travel with anyone</h3>
+        <h3>Sharing one trip with the people on it<span class="changed">answered</span></h3>
         <p>
-          Unchanged and still unanswered — you told me the trip is yours but not who else is on
-          it. Sign-in is anonymous, so a trip belongs to one browser: your phone and your laptop
-          hold unrelated trips, and clearing Safari's data starts another.
+          You answered this: family and friends, aligned on the schedule, and <em>one selected
+          trip</em> rather than everything you have. That is the largest piece of design left,
+          and it is now specific enough to draw.
+        </p>
+        <p>
+          The plumbing is mine and I will build it: real sign-in, linking the anonymous account
+          you already have so nothing is lost, and rules that open exactly one trip to exactly
+          the people invited to it. What I cannot invent is how it looks or how much anyone else
+          may touch.
         </p>
         <div class="ask">
           <b>To design</b>
-          Only if someone else is coming: sign-in plus sharing — who can edit, what an invite
-          looks like, whether a shared list shows who ticked what. If it is just you, sign-in
-          alone still matters, so a cleared browser cannot lose the trip.
+          Four things. The <em>invite</em> — a link, a code, or an email, and what the person
+          sees before they accept. The <em>share sheet</em> on a trip, listing who has it and
+          letting you take it back. <em>What a guest can do</em> — my recommendation is two
+          levels only, can-edit and can-read, because three is a settings screen nobody reads.
+          And <em>attribution</em>: whether a ticked shopping item, a packed bag or a note shows
+          who did it. Design the shopping list with two people on it, because that is where it
+          gets confusing first.
         </div>
       </div>
     </div>
@@ -712,28 +783,28 @@
 
   </section>
 
-  <h2>Two things still unanswered</h2>
+  <h2>Both questions, answered</h2>
 
   <div class="questions">
     <div class="q">
       <div class="q-label">People</div>
       <div>
-        <h3>Who else is on this trip?</h3>
+        <h3>Family and friends, one trip at a time</h3>
         <p>
-          It decides item 11 entirely — whether sharing is a large piece of design work, or just
-          sign-in so a cleared browser cannot lose your itinerary.
+          So item 11 is real design work rather than sign-in housekeeping, and it is the biggest
+          thing left on the list. It is written out above with the four pieces I need drawn.
         </p>
       </div>
     </div>
     <div class="q">
       <div class="q-label">Platforms</div>
       <div>
-        <h3>Is the native iOS app parked?</h3>
+        <h3>The web app, and only the web app</h3>
         <p>
-          It has never been compiled and now trails the web app by three rounds of work — the
-          trips home, the destination panels, the spend report, swipe-to-delete and the whole
-          offline layer exist only on the web. My suggestion stands: leave it, build on the web
-          app, revisit if you get a Mac. Say so and I will stop mentioning it.
+          Parked, and this is the last time it appears in one of these. Every screen you draw is
+          a web screen on an iPhone: Safari's chrome, the home-screen install, no native
+          navigation bar to lean on. Nothing is lost if a Mac turns up later — the data layer is
+          the same either way.
         </p>
       </div>
     </div>
@@ -741,8 +812,8 @@
 
   <h2>What I'd design in what order</h2>
   <ol class="order">
-    <li><b>Item 25, the model</b> — one diagram of places, visits and what hangs off which. Items 4, 5, 7 and 8 all resolve more cleanly afterwards, and screens drawn before it get drawn twice.</li>
-    <li><b>Items 4, 5 and 6</b> — notes per stop, more than one loop a day, and how a stop's start and end are entered. Three decisions that fall out of the model.</li>
+    <li><b>Items 4, 5 and 6</b> — notes per place, more than one loop a day, and how a stop's start and end are entered. All three now sit on a settled model, so they are decisions rather than architecture.</li>
+    <li><b>Item 11, sharing one trip</b> — the largest remaining piece, and the one your answer just unlocked. Invite, share sheet, two permission levels, and what attribution shows.</li>
     <li><b>Item 1, pasting an itinerary in</b> — the difference between the app being pleasant on this trip and merely possible.</li>
     <li><b>Item 29, the three screens I improvised</b> — the trip card first, since it is now the first thing you see when the app opens.</li>
     <li><b>Items 9, 27 and 28</b> — reminders, offline map areas, and showing whether changes saved. The three that make it trustworthy on the road.</li>
@@ -750,20 +821,18 @@
   </ol>
 
   <div class="footnote">
-    <b>How this was checked.</b> Every one of your sixteen points was driven in a browser
-    before being called done: the trips home and tab gating, the day pills, the day-scoped
-    Nearby, row-focus against pin-open, the sheet swipe, all five destination panels, the
-    pencil and edit-mode exit, the archive outside edit mode, pasting both a full and a short
-    map link, the shop filters and category pickers, the report in both groupings, and
-    swipe-to-delete on all four lists plus a plain tap still working afterwards. The earlier
-    28-step regression passes.
+    <b>How this was checked.</b> Round four was driven in a browser like the three before it.
+    The migration was run against the existing trip and its result counted — seven stops became
+    places, twenty-one places in total, six of eight shopping items bound by identity — then run
+    again to confirm it adds nothing the second time. A pasted Google Maps link typed into
+    Plan's add-stop produced a stop that opens with all five tabs and carries its own
+    coordinates. A stop shows its own counts while a place beneath it shows its own, empty,
+    ones. The loop was renamed, given both ends, given a depart and a return time, and checked
+    at both a comfortable budget and an overrun. The 28-step regression passes.
     <b>What that did not cover:</b> the three free services — weather, geocoding, exchange
     rates — are blocked from this sandbox, so their parsers were verified against recorded
-    payloads rather than live calls. They are the first thing to try on your phone.
-    <b>New this round:</b> item 29, which exists because I built three things plain rather than
-    leave you blocked on them.
-    <b>Still not covered:</b> the native SwiftUI app, and anything that only shows up on a real
-    trip with real signal.
+    payloads rather than live calls. They are still the first thing to try on your phone.
+    <b>Still not covered:</b> anything that only shows up on a real trip with real signal.
   </div>
 
 </div>
