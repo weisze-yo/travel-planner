@@ -79,6 +79,7 @@ export async function boot(tripID = readActiveTripID() || seed.TRIP_ID) {
     await backend.seed(snapshot);
   }
   apply(snapshot);
+  await unifyPlaces();
   await refreshTrips();
 
   state.selectedDay = state.trip?.currentDay || 3;
@@ -110,6 +111,109 @@ function freshSnapshot() {
     log: seed.LOG,
     outfits: [],
   }));
+}
+
+/**
+ * "Everything is a place." A stop on the itinerary is a *visit* to a place,
+ * and a nearby candidate is a place you have not scheduled — the same record
+ * either way, so the same screen, the same tabs and the same creation form
+ * work for both.
+ *
+ * This brings older trips up to that shape once: every stop gets a place
+ * record, places anchored to a stop id are re-anchored to that stop's place,
+ * and shopping items keyed by a typed name are matched to the place they name.
+ * It is idempotent, so it costs nothing on a trip that is already converted.
+ */
+async function unifyPlaces() {
+  const byName = new Map(state.places.map((p) => [p.name.toLowerCase(), p]));
+  const itemToPlace = new Map();
+  let changed = false;
+
+  for (const d of state.days) {
+    let dayTouched = false;
+    for (const item of d.items || []) {
+      if (item.isSubRouteSummary) continue;
+
+      if (item.placeID && state.places.some((p) => p.id === item.placeID)) {
+        itemToPlace.set(item.id, item.placeID);
+        continue;
+      }
+
+      // Reuse a place of the same name before making another.
+      const existing = byName.get(item.name.toLowerCase());
+      const record = existing || {
+        id: uid('place-'),
+        anchorPlaceID: null,
+        name: item.name,
+        category: 'sight',
+        priceTier: '—',
+        stayMinutes: 45,
+        legs: [],
+        note: item.subtitle || '',
+        isUserAdded: false,
+        latitude: item.latitude ?? null,
+        longitude: item.longitude ?? null,
+        essentials: item.essentials || [],
+        isStop: true,
+      };
+
+      if (!existing) {
+        byName.set(record.name.toLowerCase(), record);
+        put('places', record);
+      }
+      item.placeID = record.id;
+      itemToPlace.set(item.id, record.id);
+      dayTouched = true;
+    }
+    if (dayTouched) {
+      writeDay(d);
+      changed = true;
+    }
+  }
+
+  // Places that hung off a stop id now hang off that stop's place.
+  for (const place of state.places) {
+    const moved = itemToPlace.get(place.anchorPlaceID);
+    if (moved && moved !== place.anchorPlaceID) {
+      place.anchorPlaceID = moved;
+      put('places', place);
+      changed = true;
+    }
+  }
+
+  // Sub routes anchor the same way.
+  for (const route of state.subRoutes) {
+    const moved = itemToPlace.get(route.anchorPlanItemID);
+    if (moved && route.anchorPlaceID !== moved) {
+      route.anchorPlaceID = moved;
+      put('subRoutes', route);
+      changed = true;
+    }
+  }
+
+  // Shopping items carry the place they belong to, not just its name — so
+  // renaming a stop no longer orphans them.
+  for (const item of state.shopping) {
+    if (item.placeID) continue;
+    const hit = byName.get((item.placeLabel || '').toLowerCase());
+    if (hit) {
+      item.placeID = hit.id;
+      put('shopping', item);
+      changed = true;
+    }
+  }
+
+  // Shots too.
+  for (const shot of state.mustSee) {
+    const moved = itemToPlace.get(shot.placeID);
+    if (moved && moved !== shot.placeID) {
+      shot.placeID = moved;
+      put('mustSee', shot);
+      changed = true;
+    }
+  }
+
+  if (changed) sortAll();
 }
 
 function emptySnapshot(tripID) {
@@ -305,20 +409,19 @@ export const subRoute = (n = state.selectedDay) => state.subRoutes.find((r) => r
  * journey back is checked against the coach departure.
  */
 /**
- * When the loop has to be over. Read off the itinerary — the end of the anchor
- * stop's window, or failing that the next stop's time — so that moving the
- * coach departure moves the buffer with it. The stored value is only a
- * fallback for a trip whose stops carry no window.
+ * When the loop has to be over. The traveller's own figure wins; otherwise it
+ * is read off the itinerary — the end of the anchor stop's window, or the next
+ * stop's time — so moving the coach moves the deadline with it.
  */
 export function subRouteDeadline(n = state.selectedDay) {
   const route = subRoute(n);
   if (!route) return null;
+  if (route.returnByMinutes != null) return route.returnByMinutes;
 
   const day = state.days.find((d) => d.dayNumber === n);
   const items = (day?.items || []).filter((i) => !i.archived && !i.isSubRouteSummary);
-  const anchor = items.find((i) => i.id === route.anchorPlanItemID);
+  const anchor = items.find((i) => i.placeID === route.anchorPlaceID || i.id === route.anchorPlanItemID);
 
-  // "13:30 – 15:45" → 15:45
   const windowEnd = parseClock(String(anchor?.windowLabel || '').split(/[–-]/)[1]);
   if (windowEnd != null) return windowEnd;
 
@@ -330,47 +433,101 @@ export function subRouteDeadline(n = state.selectedDay) {
       .sort((a, b) => a - b)[0];
     if (next != null) return next;
   }
-
   return route.deadlineMinutes;
 }
 
-/** Where the loop starts: the sub-route row's own time, else the anchor's. */
-function subRouteStart(n, route) {
+/** When the loop starts: the traveller's figure, else the itinerary's. */
+export function subRouteStart(n = state.selectedDay) {
+  const route = subRoute(n);
+  if (!route) return null;
+  if (route.departMinutes != null) return route.departMinutes;
+
   const day = state.days.find((d) => d.dayNumber === n);
   const summary = (day?.items || []).find((i) => i.isSubRouteSummary && !i.archived);
-  const anchor = (day?.items || []).find((i) => i.id === route.anchorPlanItemID);
+  const anchor = (day?.items || []).find((i) => i.placeID === route.anchorPlaceID || i.id === route.anchorPlanItemID);
   return parseClock(summary?.time) ?? parseClock(anchor?.time) ?? route.startMinutes;
 }
 
+/**
+ * The loop as a time budget rather than a timetable.
+ *
+ * Travel between stops is the part the app can estimate; how long you linger
+ * is not, and pretending otherwise produced arrival times nobody could keep.
+ * So: you set when you leave and when you must be back, the app subtracts the
+ * travelling, and what remains is yours to spread across the stops however you
+ * like. Arrival times are still shown, from the stay estimates, but they are
+ * advisory — the figure that matters is how much is left to spend.
+ */
 export function subSchedule(n = state.selectedDay) {
   const route = subRoute(n);
   const result = {
-    stops: [], movingMinutes: 0, stayMinutes: 0,
-    returnClock: 0, bufferMinutes: 0, startMinutes: 0, exists: Boolean(route),
+    stops: [], travelMinutes: 0, stayEstimate: 0,
+    departMinutes: 0, returnByMinutes: 0,
+    availableMinutes: 0, spendableMinutes: 0,
+    exists: Boolean(route),
+    startPlace: null, endPlace: null,
   };
   if (!route) return result;
 
-  const start = subRouteStart(n, route);
-  let running = start;
-  result.startMinutes = start;
+  const depart = subRouteStart(n) ?? 0;
+  const returnBy = subRouteDeadline(n) ?? depart;
+  result.departMinutes = depart;
+  result.returnByMinutes = returnBy;
+  result.availableMinutes = Math.max(0, returnBy - depart);
 
+  result.startPlace = place(route.startPlaceID) || place(route.anchorPlaceID) || null;
+  result.endPlace = place(route.endPlaceID) || result.startPlace;
+
+  let running = depart;
   (route.placeIDs || []).forEach((id, index) => {
     const p = place(id);
     if (!p) return;
     const travel = (p.legs || []).reduce((sum, l) => sum + l.minutes, 0);
     running += travel;
-    result.movingMinutes += travel;
+    result.travelMinutes += travel;
     const arrival = running;
     running += p.stayMinutes;
-    result.stayMinutes += p.stayMinutes;
-    result.stops.push({ index: index + 1, place: p, arrival });
+    result.stayEstimate += p.stayMinutes;
+    result.stops.push({ index: index + 1, place: p, arrival, travel });
   });
 
+  // Getting back to wherever the loop ends.
   const back = Number(route.returnMinutes) || 0;
-  result.movingMinutes += back;
-  result.returnClock = running + back;
-  result.bufferMinutes = (subRouteDeadline(n) ?? route.deadlineMinutes) - result.returnClock;
+  result.travelMinutes += back;
+  result.returnMinutes = back;
+  result.spendableMinutes = result.availableMinutes - result.travelMinutes;
   return result;
+}
+
+/** Everywhere the loop could start or end: the day's stops, in order. */
+export function loopEndpointOptions(n = state.selectedDay) {
+  return activeItems(day(n))
+    .filter((item) => !item.isSubRouteSummary && item.placeID)
+    .map((item) => ({ id: item.placeID, label: item.name, time: item.time }));
+}
+
+export function renameSubRoute(name, n = state.selectedDay) {
+  const route = subRoute(n);
+  if (!route) return;
+  route.name = String(name || '').trim() || 'My sub route';
+  put('subRoutes', route);
+}
+
+export function setSubRouteEndpoints({ startPlaceID, endPlaceID }, n = state.selectedDay) {
+  const route = subRoute(n);
+  if (!route) return;
+  if (startPlaceID !== undefined) route.startPlaceID = startPlaceID || null;
+  if (endPlaceID !== undefined) route.endPlaceID = endPlaceID || null;
+  put('subRoutes', route);
+}
+
+/** The two times the traveller owns: when they leave and when they must be back. */
+export function setSubRouteTimes({ depart, returnBy }, n = state.selectedDay) {
+  const route = subRoute(n);
+  if (!route) return;
+  if (depart !== undefined) route.departMinutes = parseClock(depart);
+  if (returnBy !== undefined) route.returnByMinutes = parseClock(returnBy);
+  put('subRoutes', route);
 }
 
 export function subSummaryLine(n = state.selectedDay) {
@@ -383,12 +540,12 @@ export function decoratedItem(item, n = state.selectedDay) {
   if (!item.isSubRouteSummary) return item;
   const schedule = subSchedule(n);
   const count = schedule.stops.length;
-  const km = ((schedule.movingMinutes * 80) / 1000).toFixed(1);
+  const km = ((schedule.travelMinutes * 80) / 1000).toFixed(1);
   return {
     ...item,
-    name: count ? `My sub route · ${count} stop${count === 1 ? '' : 's'}` : 'My sub route',
+    name: (subRoute(n)?.name || 'My sub route') + (count ? ` · ${count} stop${count === 1 ? '' : 's'}` : ''),
     note: count ? `${subSummaryLine(n)}.` : 'No stops picked yet — open Nearby to add some.',
-    durationLabel: count ? duration(schedule.movingMinutes + schedule.stayMinutes) : '',
+    durationLabel: count ? duration(schedule.availableMinutes) : '',
     chips: count ? [`${km} km walk`] : [],
   };
 }
@@ -680,10 +837,10 @@ export function addPlanItem(dayNumber, { name, time, placeID = null, kind = 'mai
     summary: source?.note || '',
     windowLabel: '',
     chips: [],
+    essentials: source?.essentials || [],
     kind: kind === 'sub' ? 'sub' : 'main',
     isSubRouteSummary: false,
     placeID,
-    essentials: [],
     latitude: source?.latitude ?? null,
     longitude: source?.longitude ?? null,
     archived: false,
@@ -705,14 +862,19 @@ export function addPlanItem(dayNumber, { name, time, placeID = null, kind = 'mai
  * needs no network at all; anything OpenStreetMap knows on top — opening
  * hours, a phone number, a website — is fetched when there is a connection.
  */
-export async function capturePlace({ input, category, walkMinutes, stayMinutes, anchorPlaceID }) {
+/**
+ * Works out what a typed name or a pasted map link refers to. Shared by both
+ * ways of creating something, so a stop and a nearby place are captured
+ * identically — the only difference is what they are saved as.
+ */
+export async function resolvePlaceInput(input) {
   const text = String(input || '').trim();
-  if (!text) return { saved: false, reason: 'Nothing to add' };
+  if (!text) return { ok: false, reason: 'Nothing to add' };
 
   const link = parseMapLink(text);
   if (link?.kind === 'short') {
     return {
-      saved: false,
+      ok: false,
       reason: 'Short links like maps.app.goo.gl cannot be read in a browser. '
         + 'Open it once in Safari and copy the full address from the bar, or just type the name.',
     };
@@ -724,15 +886,12 @@ export async function capturePlace({ input, category, walkMinutes, stayMinutes, 
   let latitude = fromLink?.latitude ?? null;
   let longitude = fromLink?.longitude ?? null;
   let essentials = [];
-  let enriched = false;
 
   if (online()) {
     try {
       const city = state.trip?.locationName ? `, ${state.trip.locationName}` : '';
       const detail = await placeDetails(
-        latitude != null
-          ? { latitude, longitude }
-          : { query: name + city }
+        latitude != null ? { latitude, longitude } : { query: name + city }
       );
       if (detail) {
         if (latitude == null && detail.latitude != null) {
@@ -745,31 +904,82 @@ export async function capturePlace({ input, category, walkMinutes, stayMinutes, 
           detail.website && { key: 'Website', value: detail.website, detail: '' },
           detail.address && { key: 'Address', value: detail.address, detail: '' },
         ].filter(Boolean);
-        enriched = essentials.length > 0;
       }
     } catch {
-      // No connection, or nothing known. The place still saves.
+      // Offline, or nothing known. It still saves.
     }
   }
 
-  const record = {
-    id: uid('place-'),
-    anchorPlaceID: anchorPlaceID || subRoute()?.anchorPlanItemID || null,
+  return {
+    ok: true,
     name,
-    category: category || 'food',
-    priceTier: '—',
-    stayMinutes: Number(stayMinutes) || 30,
-    legs: [{ mode: 'walk', minutes: Number(walkMinutes) || 5 }],
-    note: fromLink ? 'Added from a map link' : 'Added by you',
-    isUserAdded: true,
     latitude,
     longitude,
     essentials,
+    fromLink: Boolean(fromLink),
     sourceLink: fromLink ? text : '',
   };
+}
 
+/** Saves a resolved input as a place record. */
+function savePlaceRecord(resolved, { category, walkMinutes, stayMinutes, anchorPlaceID, isStop }) {
+  const record = {
+    id: uid('place-'),
+    anchorPlaceID: anchorPlaceID || null,
+    name: resolved.name,
+    category: category || (isStop ? 'sight' : 'food'),
+    priceTier: '—',
+    stayMinutes: Number(stayMinutes) || (isStop ? 45 : 30),
+    legs: isStop ? [] : [{ mode: 'walk', minutes: Number(walkMinutes) || 5 }],
+    note: resolved.fromLink ? 'Added from a map link' : 'Added by you',
+    isUserAdded: true,
+    latitude: resolved.latitude,
+    longitude: resolved.longitude,
+    essentials: resolved.essentials,
+    sourceLink: resolved.sourceLink,
+    isStop: Boolean(isStop),
+  };
   put('places', record);
-  return { saved: true, located: latitude != null, enriched, name, id: record.id };
+  return record;
+}
+
+/** Adds a place to one stop's nearby list. */
+export async function capturePlace({ input, category, walkMinutes, stayMinutes, anchorPlaceID }) {
+  const resolved = await resolvePlaceInput(input);
+  if (!resolved.ok) return { saved: false, reason: resolved.reason };
+
+  const record = savePlaceRecord(resolved, { category, walkMinutes, stayMinutes, anchorPlaceID });
+  return {
+    saved: true,
+    located: record.latitude != null,
+    enriched: record.essentials.length > 0,
+    name: record.name,
+    id: record.id,
+  };
+}
+
+/**
+ * Adds a place to the itinerary as a stop. Same input, same lookup — the only
+ * difference from capturePlace is that this one also creates the visit.
+ */
+export async function captureStop(dayNumber, { input, time, kind = 'main', placeID = null }) {
+  // Picking something already saved skips the lookup entirely.
+  const existing = placeID ? place(placeID) : null;
+  const record = existing || await (async () => {
+    const resolved = await resolvePlaceInput(input);
+    if (!resolved.ok) return { error: resolved.reason };
+    return savePlaceRecord(resolved, { isStop: true });
+  })();
+
+  if (record.error) return { saved: false, reason: record.error };
+
+  addPlanItem(dayNumber, {
+    name: record.name,
+    time,
+    placeID: record.id,
+    kind,
+  });
+  return { saved: true, located: record.latitude != null, name: record.name, id: record.id };
 }
 
 export async function addNearbyPlace({ name, category, walkMinutes, stayMinutes, anchorPlaceID }) {
@@ -827,6 +1037,11 @@ export function toggleSubRoutePlace(placeId, n = state.selectedDay) {
       placeIDs: [],
       returnTarget: 'coach',
       returnMinutes: 8,
+      name: 'My sub route',
+      startPlaceID: anchor?.placeID || null,
+      endPlaceID: anchor?.placeID || null,
+      departMinutes: null,
+      returnByMinutes: null,
     };
   }
   const ids = route.placeIDs || [];
@@ -883,9 +1098,13 @@ export function deleteShoppingItem(id) {
   remove('shopping', id);
 }
 
-export function addShoppingItem({ name, placeLabel, estimate, payment, category }) {
+export function addShoppingItem({ name, placeLabel, estimate, payment, category, placeID }) {
   if (!name) return;
   const label = placeLabel || 'Unplanned · added on the trip';
+  // Bind to the place when we can name one, so renaming it keeps the item.
+  const bound = placeID
+    || state.places.find((p) => p.name === label)?.id
+    || null;
   const existing = state.shopping.filter((i) => i.placeLabel === label);
   const groupOrder = existing.length
     ? existing[0].groupOrder
@@ -897,6 +1116,7 @@ export function addShoppingItem({ name, placeLabel, estimate, payment, category 
     placeLabel: label,
     placeWhen: placeLabel ? '' : 'Added while travelling',
     badge: 'none',
+    placeID: bound,
     groupOrder,
     order: existing.length,
     estimate: estimate ?? null,

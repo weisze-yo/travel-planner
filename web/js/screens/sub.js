@@ -8,9 +8,9 @@ import * as store from '../store.js';
 import { state } from '../store.js';
 import { back, go } from '../nav.js';
 import { bindDragReorder, mapsLinks } from './parts.js';
-import { RETURN_TARGETS } from '../data.js';
 
 let backOpen = false;
+let editingName = false;
 let mapView = null;
 
 export default {
@@ -20,9 +20,8 @@ export default {
   render() {
     const schedule = store.subSchedule();
     const route = store.subRoute();
-    const anchorName = route?.anchorName || 'this stop';
-    const target = RETURN_TARGETS.find((t) => t.id === route?.returnTarget) || RETURN_TARGETS[0];
-    const tight = schedule.bufferMinutes < 10;
+    const endpoints = store.loopEndpointOptions();
+    const tight = schedule.spendableMinutes < 0;
 
     return html`
       <section class="screen sub-screen">
@@ -31,9 +30,14 @@ export default {
         <div class="sub-top">
           <button class="iconbtn filled" data-act="back" aria-label="Back">${raw(icon.back)}</button>
           <div class="sub-card">
-            <div class="sub-title">Sub route · ${anchorName}</div>
+            ${editingName
+              ? html`<input id="loop-name" value="${route?.name || 'My sub route'}"
+                            style="width:100%" aria-label="Name this loop">`
+              : html`<button class="sub-title" data-act="rename" style="text-align:left">
+                       ${route?.name || 'My sub route'} ✎
+                     </button>`}
             <div class="sub-line">
-              ${schedule.stops.length} stops · out ${clock(schedule.startMinutes)}, back ${clock(schedule.returnClock)}
+              ${schedule.stops.length} stops · ${clock(schedule.departMinutes)} – ${clock(schedule.returnByMinutes)}
             </div>
           </div>
         </div>
@@ -42,12 +46,29 @@ export default {
           <div class="sheet-grab"><i></i></div>
 
           <div class="row g8 pad16" style="padding-bottom:10px;flex:none">
-            <div class="stat"><div class="stat-k">MOVING</div><div class="stat-v">${store.duration(schedule.movingMinutes)}</div></div>
-            <div class="stat"><div class="stat-k">AT STOPS</div><div class="stat-v">${store.duration(schedule.stayMinutes)}</div></div>
+            <div class="stat"><div class="stat-k">YOU HAVE</div><div class="stat-v">${store.duration(schedule.availableMinutes)}</div></div>
+            <div class="stat"><div class="stat-k">TRAVELLING</div><div class="stat-v">${store.duration(schedule.travelMinutes)}</div></div>
             <div class="stat ${tight ? 'tight' : 'ok'}">
-              <div class="stat-k">BUFFER</div>
-              <div class="stat-v">${store.duration(Math.abs(schedule.bufferMinutes))}</div>
+              <div class="stat-k">${tight ? 'SHORT BY' : 'TO SPEND'}</div>
+              <div class="stat-v">${store.duration(Math.abs(schedule.spendableMinutes))}</div>
             </div>
+          </div>
+
+          <div class="pad16" style="padding-bottom:10px;flex:none">
+            <div class="f115 lh145" style="color:${tight ? 'var(--danger-fg)' : 'var(--muted)'}">
+              ${tight
+                ? `Getting round takes ${store.duration(schedule.travelMinutes)}, which is longer than the
+                   ${store.duration(schedule.availableMinutes)} between leaving and being back. Drop a stop,
+                   or give yourself more time.`
+                : `${store.duration(schedule.travelMinutes)} of that is getting between places, so
+                   ${store.duration(schedule.spendableMinutes)} is yours to spread across
+                   ${schedule.stops.length} stop${schedule.stops.length === 1 ? '' : 's'} however you like.`}
+            </div>
+            ${schedule.stayEstimate ? html`
+              <div class="f11 soft mt6">
+                The times below assume roughly ${store.duration(schedule.stayEstimate)} of lingering in
+                total — an estimate, not a plan.
+              </div>` : ''}
           </div>
 
           <div class="pad16 f11 w700 soft" style="padding-bottom:8px;flex:none">
@@ -59,11 +80,14 @@ export default {
               <div class="loop-row" data-row-id="${stop.place.id}">
                 <div class="handle-grip" style="width:22px" data-grip>${raw(icon.grip)}</div>
                 <div class="loop-n">${stop.index}</div>
-                <div class="grow">
+                <button class="grow" style="text-align:left" data-open-place="${stop.place.id}">
                   <div class="loop-name">${stop.place.name}</div>
                   <div class="loop-meta">${legLine(stop.place)}</div>
+                </button>
+                <div class="right none">
+                  <div class="loop-time">~${clock(stop.arrival)}</div>
+                  <div class="f11 soft">${store.duration(stop.travel)} away</div>
                 </div>
-                <div class="loop-time">${clock(stop.arrival)}</div>
               </div>`)}
 
             ${schedule.stops.length ? '' : html`
@@ -76,31 +100,53 @@ export default {
               <div class="row g10 center">
                 <div class="loop-n back">↩</div>
                 <div class="grow">
-                  <div class="loop-name">${target.label}</div>
+                  <div class="loop-name">Back to ${schedule.endPlace?.name || 'where you started'}</div>
                   <div class="f11 w650 mt2" style="color:${tight ? 'var(--danger-fg)' : 'var(--jade)'}">
-                    ${schedule.bufferMinutes >= 0
-                      ? `${schedule.bufferMinutes} min before departure`
-                      : `${-schedule.bufferMinutes} min LATE`}
+                    ${store.duration(schedule.returnMinutes)} to get there · be there by ${clock(schedule.returnByMinutes)}
                   </div>
                 </div>
-                <div class="loop-time">${clock(schedule.returnClock)}</div>
-                <button class="loop-edit" data-act="back-toggle" aria-label="Edit the return">
+                <button class="loop-edit" data-act="back-toggle" aria-label="Edit the loop's start, end and times">
                   ${raw(icon.pencil('#3D4C46', 13))}
                 </button>
               </div>
 
               ${backOpen ? html`
                 <div class="back-form">
-                  <div class="eyebrow">BACK TO</div>
-                  <select id="back-target">
-                    ${RETURN_TARGETS.map((t) => html`
-                      <option value="${t.id}"${t.id === route?.returnTarget ? ' selected' : ''}>${t.label}</option>`)}
+                  <div class="eyebrow">START AND END</div>
+                  <select id="loop-start" aria-label="Start of the loop">
+                    ${endpoints.map((e) => html`
+                      <option value="${e.id}"${e.id === (route?.startPlaceID || route?.anchorPlaceID) ? ' selected' : ''}>
+                        Start: ${e.time} ${e.label}
+                      </option>`)}
                   </select>
-                  <div class="eyebrow mt2">TIME NEEDED</div>
+                  <select id="loop-end" aria-label="End of the loop">
+                    ${endpoints.map((e) => html`
+                      <option value="${e.id}"${e.id === (route?.endPlaceID || route?.startPlaceID || route?.anchorPlaceID) ? ' selected' : ''}>
+                        End: ${e.time} ${e.label}
+                      </option>`)}
+                  </select>
+
+                  <div class="eyebrow mt2">YOUR TIMES</div>
+                  <div class="row g8 center">
+                    <label class="grow">
+                      <span class="f11 soft">Leave</span>
+                      <input id="loop-depart" value="${clock(schedule.departMinutes)}" inputmode="numeric" style="width:100%">
+                    </label>
+                    <label class="grow">
+                      <span class="f11 soft">Be back by</span>
+                      <input id="loop-return" value="${clock(schedule.returnByMinutes)}" inputmode="numeric" style="width:100%">
+                    </label>
+                  </div>
+
+                  <div class="eyebrow mt2">GETTING BACK TAKES</div>
                   <div class="row g8 center">
                     <input id="back-mins" value="${route?.returnMinutes ?? 8}" style="width:88px" inputmode="numeric">
                     <span class="f12 w650 muted">minutes</span>
                     <button class="btn jade grow" style="height:38px" data-act="back-done">Done</button>
+                  </div>
+                  <div class="form-hint">
+                    Leaving and returning are yours to set. Everything else is an estimate the app
+                    works out from the places you picked.
                   </div>
                 </div>` : ''}
             </div>
@@ -120,12 +166,31 @@ export default {
     delegate(root, '[data-act="nearby"]', () => go('nearby'));
     delegate(root, '[data-act="back-toggle"]', () => { backOpen = !backOpen; nudge(); });
     delegate(root, '[data-act="back-done"]', () => {
-      store.setReturn({
-        target: root.querySelector('#back-target')?.value,
-        minutes: root.querySelector('#back-mins')?.value,
+      store.setSubRouteEndpoints({
+        startPlaceID: root.querySelector('#loop-start')?.value,
+        endPlaceID: root.querySelector('#loop-end')?.value,
       });
+      store.setSubRouteTimes({
+        depart: root.querySelector('#loop-depart')?.value,
+        returnBy: root.querySelector('#loop-return')?.value,
+      });
+      store.setReturn({ minutes: root.querySelector('#back-mins')?.value });
       backOpen = false;
     });
+
+    delegate(root, '[data-open-place]', (el) => go('dest', { placeID: el.dataset.openPlace }));
+
+    delegate(root, '[data-act="rename"]', () => { editingName = true; nudge(); });
+    const nameBox = root.querySelector('#loop-name');
+    if (nameBox) {
+      nameBox.focus();
+      const commit = () => {
+        editingName = false;
+        store.renameSubRoute(nameBox.value);
+      };
+      nameBox.addEventListener('change', commit);
+      nameBox.addEventListener('keydown', (event) => { if (event.key === 'Enter') commit(); });
+    }
 
     bindDragReorder(root, {
       rowSelector: '[data-row-id]',

@@ -11,6 +11,7 @@ import { dayPills, weatherBanner, emptyDay, bindDragReorder, swipeToDelete } fro
 
 let addOpen = false;
 let form = { name: '', time: '', kind: 'main' };
+let notice = '';
 
 export default {
   id: 'plan',
@@ -55,6 +56,7 @@ export default {
           </div>
 
           ${editing ? html`
+            ${notice ? html`<div class="amber-note f12 mt8">${notice}</div>` : ''}
             ${addOpen ? addForm() : ''}
             <button class="btn-dashed mt8" data-act="add-open">+ Add a stop</button>
           ` : ''}
@@ -101,21 +103,28 @@ export default {
 
     delegate(root, '[data-act="add-open"]', () => { addOpen = true; store.setEditingPlan(true); });
     delegate(root, '[data-act="add-cancel"]', () => { addOpen = false; store.setEditingPlan(true); });
-    delegate(root, '[data-act="add-save"]', () => {
+    delegate(root, '[data-act="add-save"]', async () => {
       const placeID = root.querySelector('#add-place')?.value || '';
-      const source = placeID ? store.place(placeID) : null;
       const typed = root.querySelector('#add-name')?.value.trim();
-      const name = typed || source?.name;
-      if (!name) return;
+      if (!typed && !placeID) return;
 
-      store.addPlanItem(state.selectedDay, {
-        name,
-        time: root.querySelector('#add-time')?.value.trim() || '09:00',
-        placeID: source ? placeID : null,
-        kind: root.querySelector('[name="add-kind"]:checked')?.value || 'main',
-      });
+      const time = root.querySelector('#add-time')?.value.trim() || '09:00';
+      const kind = root.querySelector('[name="add-kind"]:checked')?.value || 'main';
+
       addOpen = false;
+      notice = /^https?:/i.test(typed) ? 'Reading that link…' : 'Adding…';
+      store.setEditingPlan(true);
+
+      // The same capture the Nearby screen uses — a stop is a visit to a place.
+      const result = await store.captureStop(state.selectedDay, {
+        input: typed, time, kind, placeID: placeID || null,
+      });
+
+      notice = result.saved
+        ? (result.located ? '' : `"${result.name}" was added without a location, so it will not show on the map.`)
+        : result.reason;
       form = { name: '', time: '', kind: 'main' };
+      store.setEditingPlan(true);
     });
 
     root.querySelector('#add-place')?.addEventListener('change', (event) => {
@@ -183,7 +192,7 @@ function addForm() {
     <div class="form mt8">
       <div class="form-title">Add a stop</div>
 
-      <input id="add-name" placeholder="Where are you going?" value="${form.name}">
+      <input id="add-name" placeholder="Name, or paste a Google / Apple Maps link" value="${form.name}">
 
       ${saved.length ? html`
         <select id="add-place">
@@ -207,9 +216,10 @@ function addForm() {
       </div>
 
       <div class="form-hint">
-        Type a name, or pick a place you saved earlier. It drops into the day at the time you
-        set and can be dragged afterwards. Stops on the agent's route show jade; your own
-        show amber and dashed.
+        The same way you add a place anywhere else: type a name, paste a map link, or pick
+        something you saved earlier. A link brings the position with it, and opening hours
+        where OpenStreetMap has them. It drops into the day at the time you set and can be
+        dragged afterwards — jade for the agent's route, amber and dashed for your own.
       </div>
     </div>`;
 }

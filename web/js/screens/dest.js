@@ -31,11 +31,12 @@ export function subject(params = {}) {
         subtitle: hit.item.subtitle,
         summary: hit.item.summary || hit.item.note,
         window: hit.item.windowLabel,
-        essentials: hit.item.essentials || [],
+        essentials: hit.item.essentials?.length
+          ? hit.item.essentials
+          : (store.place(hit.item.placeID)?.essentials || []),
         placeID: hit.item.placeID,
-        // Places hang off the itinerary row, which every stop has — unlike
-        // placeID, which only a stop matched to a place record carries.
-        anchorID: hit.item.id,
+        // A stop is a visit to a place, so everything hangs off the place.
+        anchorID: hit.item.placeID,
         number: store.mainStopNumbers(store.day(hit.dayNumber))[hit.item.id],
         coord: hit.item.latitude ? { lat: hit.item.latitude, lng: hit.item.longitude } : null,
       };
@@ -51,10 +52,11 @@ export function subject(params = {}) {
         subtitle: `${store.categoryLabel(p.category)} · ${p.priceTier}`,
         summary: p.note,
         window: '',
-        essentials: [],
+        essentials: p.essentials || [],
         placeID: p.id,
-        // Opening Nearby from a place shows the others around the same stop.
-        anchorID: p.anchorPlaceID,
+        // Every place is its own thing: its Nearby list, its shots, its
+        // shopping — exactly what a stop shows, because a stop is one of these.
+        anchorID: p.id,
         number: null,
         coord: p.latitude ? { lat: p.latitude, lng: p.longitude } : null,
       };
@@ -79,7 +81,9 @@ export default {
     }
 
     // Everything on this screen is scoped to this one stop.
-    const shopHere = state.shopping.filter((row) => row.placeLabel === it.name);
+    const shopHere = state.shopping.filter((row) => (
+      row.placeID ? row.placeID === it.placeID : row.placeLabel === it.name
+    ));
     const shots = store.shotsFor(it.anchorID);
     const places = store.nearbyPlaces(it.anchorID);
     const note = store.logEntry(state.selectedDay);
@@ -153,6 +157,8 @@ export default {
     }));
     delegate(root, '[data-act="tick-shot"]', (el) => store.toggleShot(el.dataset.id));
     delegate(root, '[data-act="tick-item"]', (el) => store.toggleBought(el.dataset.id));
+    // Point: the "+" works from inside a stop too, not only on the Nearby screen.
+    delegate(root, '[data-pick]', (el) => store.toggleSubRoutePlace(el.dataset.pick));
     delegate(root, '[data-open-place]', (el) => go('dest', { placeID: el.dataset.openPlace }));
   },
 };
@@ -211,7 +217,10 @@ function nearbyPanel(it, places) {
                   ${store.categoryLabel(place.category)} · ${store.duration(travel)} away${place.latitude ? '' : ' · no location'}
                 </div>
               </div>
-              ${picked ? html`<span class="chip amber">IN LOOP</span>` : ''}
+              <button class="nearby-add${picked ? ' on' : ''}" data-pick="${place.id}"
+                      aria-label="${picked ? `Take ${place.name} out of the loop` : `Add ${place.name} to the loop`}">
+                ${picked ? '✓' : '+'}
+              </button>
             </div>`;
         })}
       </div>
