@@ -1,6 +1,6 @@
 // Fragments shared by more than one screen.
 
-import { html, raw, icon, delegate } from '../util.js';
+import { html, raw, icon, delegate, esc } from '../util.js';
 import * as store from '../store.js';
 import { state } from '../store.js';
 
@@ -169,9 +169,23 @@ export function bindDragReorder(root, { rowSelector, handleSelector, onDrop }) {
 
 
 /**
- * Swipe a row left to reveal a dustbin; tapping it asks before deleting.
- * One implementation for every list in the app, so the gesture means the same
- * thing everywhere. Works with touch and with a mouse drag.
+ * Swipe a row left to delete it. One implementation for every list in the
+ * app, so the gesture means the same thing everywhere.
+ *
+ * Five positions, from the artboards:
+ *
+ *   at rest      nothing showing
+ *   dragging     red fills the track behind the finger; the dustbin sits
+ *                20px in from the row's right edge and stays there, so it
+ *                never floats in the middle of a widening gap
+ *   latched      at 88px — a 44px target with room either side — and the
+ *                word DELETE appears. Let go before that and it springs back
+ *   confirming   in the row itself, not a dialogue on top of the list.
+ *                Reached by tapping the dustbin, or by a decisive swipe past
+ *                60% of the row's width, which never lands on delete itself
+ *   gone         six seconds to change your mind, above the tab bar
+ *
+ * Markup:
  *
  *   <div class="swipe-row" data-my-row="id">
  *     <div class="swipe-bin"><button class="bin" data-swipe-delete>…</button></div>
@@ -182,14 +196,14 @@ export function bindDragReorder(root, { rowSelector, handleSelector, onDrop }) {
  * away whenever its screen re-renders, and its listeners go with it, so
  * nothing can accumulate or leak between screens.
  */
-export function swipeToDelete(root, { rowSelector, label, onDelete }) {
-  const OPEN_AT = 68;   // how far the face slides to expose the bin
-  const TRIGGER = 34;   // drag past this and it stays open
+export function swipeToDelete(root, { rowSelector, label, onDelete, name }) {
+  const LATCH = 88;      // where the bin holds, and the word appears
+  const DECISIVE = 0.6;  // fraction of the row that skips straight to confirm
 
   const closeAll = (except) => {
-    root.querySelectorAll('.swipe-row.open').forEach((open) => {
+    root.querySelectorAll('.swipe-row.open, .swipe-row.confirming').forEach((open) => {
       if (open === except) return;
-      open.classList.remove('open');
+      open.classList.remove('open', 'confirming');
       const face = open.querySelector(':scope > .swipe-face');
       if (face) face.style.transform = '';
     });
@@ -211,6 +225,38 @@ export function swipeToDelete(root, { rowSelector, label, onDelete }) {
     // a tap on the row, or it would close what the swipe just opened.
     let swallowClick = false;
 
+    /** Turns the row itself into the confirmation. */
+    const askInRow = () => {
+      closeAll(row);
+      row.classList.add('confirming');
+      face.style.transform = '';
+      if (row.querySelector(':scope > .swipe-ask')) return;
+
+      const what = name ? name(row) : (row.dataset.swipeName || 'this');
+      const ask = document.createElement('div');
+      ask.className = 'swipe-ask';
+      ask.innerHTML = `
+        <div class="grow">
+          <div class="swipe-ask-t">Delete ${esc(what)}?</div>
+          <div class="swipe-ask-s">${esc(label(row))}</div>
+        </div>
+        <button class="swipe-ask-no">Cancel</button>
+        <button class="swipe-ask-yes">Delete</button>`;
+      row.appendChild(ask);
+
+      ask.querySelector('.swipe-ask-no').addEventListener('click', (event) => {
+        event.stopPropagation();
+        row.classList.remove('confirming');
+        ask.remove();
+      });
+      ask.querySelector('.swipe-ask-yes').addEventListener('click', async (event) => {
+        event.stopPropagation();
+        ask.remove();
+        row.classList.remove('confirming');
+        await onDelete(row);
+      });
+    };
+
     const move = (event) => {
       if (!dragging) return;
       const dx = event.clientX - startX;
@@ -226,9 +272,14 @@ export function swipeToDelete(root, { rowSelector, label, onDelete }) {
           return;
         }
         closeAll(row);
+        row.classList.add('dragging-open');
       }
 
-      face.style.transform = `translateX(${Math.max(-OPEN_AT, Math.min(0, dx))}px)`;
+      const width = row.getBoundingClientRect().width || 320;
+      const pulled = Math.max(-width, Math.min(0, dx));
+      face.style.transform = `translateX(${pulled}px)`;
+      // The word only appears once the bin has room for it.
+      row.classList.toggle('latched', -pulled >= LATCH);
       if (event.cancelable) event.preventDefault();
     };
 
@@ -243,10 +294,22 @@ export function swipeToDelete(root, { rowSelector, label, onDelete }) {
       if (!dragging) return;
       dragging = false;
       swallowClick = decided;
+      row.classList.remove('dragging-open');
 
-      const open = (event.clientX - startX) < -TRIGGER;
-      face.style.transform = open ? `translateX(${-OPEN_AT}px)` : '';
+      const width = row.getBoundingClientRect().width || 320;
+      const pulled = startX - event.clientX;
+
+      if (pulled > width * DECISIVE) {
+        // A decisive swipe skips the tap and lands on the question, never on
+        // the delete itself.
+        row.classList.remove('open', 'latched');
+        askInRow();
+        return;
+      }
+      const open = pulled >= LATCH;
+      face.style.transform = open ? `translateX(${-LATCH}px)` : '';
       row.classList.toggle('open', open);
+      row.classList.toggle('latched', open);
     };
 
     /** A cancelled pointer is an abandoned gesture, not a short one. */
@@ -254,20 +317,20 @@ export function swipeToDelete(root, { rowSelector, label, onDelete }) {
       stopWatching();
       dragging = false;
       face.style.transform = '';
-      row.classList.remove('open');
+      row.classList.remove('open', 'latched', 'dragging-open');
     };
 
     row.addEventListener('pointerdown', (event) => {
       // A swipe can start anywhere on the row, including on the buttons that
-      // cover most of it — if the gesture turns into a drag the trailing click
-      // is swallowed, so the button is not also activated. Only the bin and
-      // the form controls opt out, since dragging those means something else.
-      if (event.target.closest('[data-swipe-delete], select, input, textarea')) return;
+      // cover most of it — if the gesture turns into a drag the trailing
+      // click is swallowed, so the button is not also activated. Only the
+      // bin, the confirmation and the form controls opt out.
+      if (event.target.closest('[data-swipe-delete], .swipe-ask, select, input, textarea')) return;
+      if (row.classList.contains('confirming')) return;
       startX = event.clientX;
       startY = event.clientY;
       dragging = true;
       decided = false;
-      // On the window, so a gesture that leaves the row still completes.
       window.addEventListener('pointermove', move);
       window.addEventListener('pointerup', end);
       window.addEventListener('pointercancel', cancel);
@@ -288,15 +351,29 @@ export function swipeToDelete(root, { rowSelector, label, onDelete }) {
       closeAll(null);
     }, true);
 
-    bin?.addEventListener('click', async (event) => {
+    // The dustbin asks in the row rather than deleting.
+    bin?.addEventListener('click', (event) => {
       event.stopPropagation();
-      // eslint-disable-next-line no-alert -- deliberate: deletion is permanent.
-      if (!window.confirm(label(row))) {
-        closeAll(null);
-        return;
-      }
-      await onDelete(row);
-      closeAll(null);
+      askInRow();
     });
   }
+}
+
+/**
+ * The line that appears above the tab bar for the six seconds a deletion can
+ * be taken back. One at a time, and it does not block the list.
+ */
+export function undoBar() {
+  const hit = state.undo;
+  if (!hit) return '';
+  return html`
+    <div class="undo-bar">
+      <div class="grow f13 w650">${hit.label}</div>
+      <button class="undo-go" data-act="undo">Undo</button>
+    </div>`;
+}
+
+/** Binds the Undo button wherever the bar is rendered. */
+export function bindUndo(root) {
+  delegate(root, '[data-act="undo"]', () => store.undoLast());
 }

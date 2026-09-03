@@ -133,7 +133,8 @@ export default {
   mount(root, params = {}) {
     swipeToDelete(root, {
       rowSelector: '[data-place-row]',
-      label: (row) => `Delete "${row.dataset.placeName}" from your saved places?`,
+      name: (row) => row.dataset.placeName,
+      label: () => 'Off your saved places, and out of any sub route',
       onDelete: (row) => store.deletePlace(row.dataset.placeRow),
     });
 

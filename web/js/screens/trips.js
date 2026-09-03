@@ -1,23 +1,34 @@
-// The home screen: every trip as a card, and a form to start a new one. The
-// five tabs are out of reach until a trip is chosen, because none of them mean
-// anything without one. Styling here is deliberately plain — the designed
-// version of this screen is still to come.
+// The trips home — a status board, not a list.
+//
+// A trip is either running, coming up or finished, and each of those wants a
+// different card: the running one shows what is next, the upcoming one shows
+// how ready you are, the finished one shows what it came to.
+//
+// The cover comes from a photo already in the trip's log, or from the phone.
+// The app cannot invent one, so the fallback is a plain tinted field with the
+// trip's mark — never a stock photo of somewhere you have not been.
 
-import { html, raw, icon, delegate } from '../util.js';
+import { html, raw, icon, delegate, money } from '../util.js';
 import * as store from '../store.js';
 import { state } from '../store.js';
 import { go } from '../nav.js';
 import { swipeToDelete } from './parts.js';
+import { prepare } from '../photos.js';
 
 let addOpen = false;
 let busy = '';
+/** The trip whose cover is being chosen, if any. */
+let covering = null;
 
 export default {
   id: 'trips',
   tab: null,
 
   render() {
-    const trips = state.trips;
+    if (covering) return coverSheet();
+
+    const groups = store.tripGroups();
+    const total = state.trips.length;
 
     return html`
       <section class="screen">
@@ -26,7 +37,8 @@ export default {
             <div class="grow">
               <div class="screen-title">My trips</div>
               <div class="screen-sub">
-                ${trips.length ? `${trips.length} trip${trips.length === 1 ? '' : 's'}` : 'Nothing planned yet'}
+                ${total ? `${total} trip${total === 1 ? '' : 's'}` : 'Nothing planned yet'}
+                ${groups.running.length ? ` · ${groups.running.length} on now` : ''}
               </div>
             </div>
             <button class="btn sm ink" data-act="add-toggle">${addOpen ? 'Close' : '+ New trip'}</button>
@@ -37,21 +49,33 @@ export default {
           ${busy ? html`<div class="amber-note f12 mb12">${busy}</div>` : ''}
           ${addOpen ? addForm() : ''}
 
-          ${trips.length ? trips.map((trip) => card(trip)) : html`
+          ${groups.running.length ? html`
+            <div class="eyebrow">ON NOW</div>
+            ${groups.running.map((trip) => runningCard(trip))}` : ''}
+
+          ${groups.upcoming.length ? html`
+            <div class="eyebrow${groups.running.length ? ' mt14' : ''}">COMING UP</div>
+            ${groups.upcoming.map((trip) => plainCard(trip, 'upcoming'))}` : ''}
+
+          ${groups.finished.length ? html`
+            <div class="eyebrow mt14">FINISHED</div>
+            ${groups.finished.map((trip) => plainCard(trip, 'finished'))}` : ''}
+
+          ${total ? html`
+            <div class="f11 soft lh145 mt14">
+              Swipe a trip left to delete it. A finished trip stays until you do.
+            </div>` : html`
             <div class="empty">
               No trips yet.<br>
               Press <b>+ New trip</b> and give it a name and dates.
             </div>`}
-
-          <div class="f11 soft lh145 mt14">
-            Swipe a trip left to delete it. Deleting a trip removes its itinerary, places,
-            shopping list, packing list and notes.
-          </div>
         </div>
       </section>`;
   },
 
   mount(root) {
+    if (covering) return mountCover(root);
+
     delegate(root, '[data-act="add-toggle"]', () => { addOpen = !addOpen; store.refreshTrips(); });
     delegate(root, '[data-act="add-cancel"]', () => { addOpen = false; store.refreshTrips(); });
 
@@ -69,7 +93,7 @@ export default {
         locationName: root.querySelector('#new-trip-place')?.value.trim(),
       });
       busy = '';
-      go('plan');
+      go('paste');
     });
 
     delegate(root, '[data-open-trip]', async (el) => {
@@ -79,10 +103,19 @@ export default {
       busy = '';
       go('map');
     });
+    delegate(root, '[data-recap]', async (el) => {
+      await store.switchTrip(el.dataset.recap);
+      go('log');
+    });
+    delegate(root, '[data-cover]', (el) => {
+      covering = el.dataset.cover;
+      store.refreshTrips();
+    });
 
     swipeToDelete(root, {
       rowSelector: '[data-trip-row]',
-      label: (row) => `Delete "${row.dataset.tripName}" and everything in it?`,
+      name: (row) => row.dataset.tripName,
+      label: () => 'Its itinerary, places, lists and notes go with it',
       onDelete: async (row) => {
         busy = 'Deleting…';
         store.refreshTrips();
@@ -93,22 +126,231 @@ export default {
   },
 };
 
-function card(trip) {
-  const active = trip.id === state.tripID;
-  const span = tripDates(trip);
+// -------------------------------------------------------------- the cards
+
+/** The running trip gets the width of a cover and the next thing on the day. */
+function runningCard(trip) {
+  const card = store.runningCard(trip);
+  const n = card?.dayNumber ?? store.tripCurrentDay(trip);
+  const symbol = trip.currencySymbol || '¥';
+
   return html`
-    <div class="swipe-row mb10" data-trip-row="${trip.id}" data-trip-name="${trip.name}">
+    <div class="swipe-row mt8" data-trip-row="${trip.id}" data-trip-name="${trip.name}">
       <div class="swipe-bin"><button class="bin" data-swipe-delete aria-label="Delete trip">${raw(icon.bin)}</button></div>
-      <button class="swipe-face trip-card${active ? ' on' : ''}" data-open-trip="${trip.id}">
-        <div class="trip-card-mark">${trip.code || '··'}</div>
-        <div class="grow">
-          <div class="trip-card-name">${trip.name}</div>
-          <div class="trip-card-meta">${span}</div>
+      <div class="swipe-face trip-running">
+        <div class="trip-cover" style="${coverStyle(trip)}">
+          <button class="trip-cover-hit" data-open-trip="${trip.id}" aria-label="Open ${trip.name}"></button>
+          <div class="trip-cover-wash"></div>
+          ${!trip.coverPhoto ? html`
+            <span class="trip-cover-mark" style="color:${store.coverTint(trip).fg}">${trip.code || '··'}</span>` : ''}
+          <span class="trip-cover-day">DAY ${n} OF ${trip.dayCount}</span>
+          <button class="trip-cover-edit" data-cover="${trip.id}"
+                  aria-label="Choose a cover for ${trip.name}">Cover</button>
+          <div class="trip-cover-text">
+            <div class="trip-cover-name">${trip.name}</div>
+            <div class="trip-cover-meta">
+              ${tripDates(trip)}${card ? ` · ${card.stops} stop${card.stops === 1 ? '' : 's'} today` : ''}
+            </div>
+          </div>
         </div>
-        ${active ? html`<span class="chip jade">OPEN</span>` : raw(icon.chevron)}
-      </button>
+
+        ${card?.next ? html`
+          <button class="trip-next" data-open-trip="${trip.id}">
+            <div class="none f125 w700 tnum" style="width:38px">${card.next.time}</div>
+            <div class="grow">
+              <div class="f135 w650" style="line-height:1.25">${card.next.name}</div>
+              <div class="f11 muted mt2">Next stop · ${card.next.after}</div>
+            </div>
+            ${card.next.away ? html`<span class="chip jade none">${card.next.away}</span>` : ''}
+          </button>` : ''}
+
+        <button class="trip-foot" data-open-trip="${trip.id}">
+          <div class="grow f115 w650 muted">
+            ${card
+              ? `${card.buying} to buy today · ${money(card.spent, symbol)} spent so far`
+              : 'Open it to see today'}
+          </div>
+          <div class="f12 w700" style="color:var(--jade)">Open ›</div>
+        </button>
+      </div>
     </div>`;
 }
+
+/** Coming up and finished share a shape; what they say differs. */
+function plainCard(trip, kind) {
+  const gap = store.tripDayGap(trip);
+  const ready = kind === 'upcoming' ? store.tripReadiness(trip) : null;
+  const recap = kind === 'finished' ? store.tripRecap(trip) : null;
+  const tint = store.coverTint(trip);
+  const symbol = trip.currencySymbol || '¥';
+
+  return html`
+    <div class="swipe-row mt8" data-trip-row="${trip.id}" data-trip-name="${trip.name}">
+      <div class="swipe-bin"><button class="bin" data-swipe-delete aria-label="Delete trip">${raw(icon.bin)}</button></div>
+      <div class="swipe-face trip-plain${kind === 'finished' ? ' done' : ''}">
+        <div class="row g12" style="align-items:flex-start">
+          <button class="trip-mark-lg" data-cover="${trip.id}"
+                  aria-label="Choose a cover for ${trip.name}"
+                  style="${trip.coverPhoto
+                    ? `background-image:url(${trip.coverPhoto});background-size:cover;background-position:center`
+                    : `background:${tint.bg};color:${tint.fg}`}">
+            ${trip.coverPhoto ? '' : (trip.code || '··')}
+          </button>
+          <button class="grow" style="text-align:left" data-open-trip="${trip.id}">
+            <div class="trip-card-name">${trip.name}</div>
+            <div class="trip-card-meta">${tripDates(trip)}</div>
+          </button>
+          ${kind === 'upcoming'
+            ? html`<span class="chip ${gap != null && gap <= 14 ? 'amber' : ''} none">
+                     ${gap == null ? 'NO DATES' : (gap === 0 ? 'TOMORROW' : `IN ${gap} DAYS`)}
+                   </span>`
+            : html`<button class="f12 w700 none" style="color:var(--jade);padding-top:2px"
+                           data-recap="${trip.id}">Recap ›</button>`}
+        </div>
+
+        ${ready ? html`
+          <div class="row g6 wrap mt11">
+            <span class="chip ${ready.emptyDays ? 'amber' : 'jade'}">
+              ${ready.emptyDays ? `${ready.emptyDays} empty day${ready.emptyDays === 1 ? '' : 's'}` : 'every day planned'}
+            </span>
+            <span class="chip ${ready.prep && ready.packed === ready.prep ? 'jade' : ''}">
+              ${ready.prep ? `${ready.packed} of ${ready.prep} packed` : 'nothing on the packing list'}
+            </span>
+            ${ready.planned ? html`<span class="chip">${money(ready.planned, symbol)} planned</span>` : ''}
+          </div>` : ''}
+
+        ${recap ? html`
+          <div class="row g6 wrap mt11">
+            <span class="chip">${recap.stops} stops</span>
+            <span class="chip">${money(recap.spent, symbol)} spent</span>
+            <span class="chip">${recap.notes} note${recap.notes === 1 ? '' : 's'}</span>
+          </div>` : ''}
+
+        ${!ready && !recap ? html`
+          <div class="f11 soft mt8">Open it to see how ready it is.</div>` : ''}
+      </div>
+    </div>`;
+}
+
+function coverStyle(trip) {
+  if (trip.coverPhoto) {
+    return `background-image:url(${trip.coverPhoto});background-size:cover;background-position:center`;
+  }
+  return `background:${store.coverTint(trip).bg}`;
+}
+
+// -------------------------------------------------------- choosing a cover
+
+/**
+ * Where a cover comes from: a photo already attached to a note, or one off
+ * the phone, or a plain tinted field. No image service is involved and
+ * nothing is uploaded to pick it — the photos offered are the ones already
+ * in this trip.
+ */
+function coverSheet() {
+  const trip = state.trips.find((t) => t.id === covering);
+  const isOpen = covering === state.tripID;
+  const photos = isOpen ? store.coverCandidates() : [];
+
+  return html`
+    <section class="screen">
+      <div class="head">
+        <div class="head-row center">
+          <button class="iconbtn" data-act="cover-close" aria-label="Back">${raw(icon.close)}</button>
+          <div class="grow">
+            <div class="push-title">Cover for ${trip?.name || 'this trip'}</div>
+            <div class="push-sub">Kept on this phone at thumbnail size, so it still shows with no signal.</div>
+          </div>
+        </div>
+      </div>
+
+      <div class="scroll" style="padding:14px 16px 24px">
+        ${busy ? html`<div class="amber-note f12 mb12">${busy}</div>` : ''}
+
+        <div class="eyebrow">FROM THIS TRIP'S LOG</div>
+        ${photos.length ? html`
+          <div class="row g8 mt8">
+            ${photos.slice(0, 4).map((p) => html`
+              <button class="cover-pick${trip?.coverPhoto === p.src ? ' on' : ''}"
+                      data-pick-photo="${p.src}" aria-label="Use this photo">
+                <img src="${p.src}" alt="">
+                ${trip?.coverPhoto === p.src ? html`<span class="cover-tick">✓</span>` : ''}
+              </button>`)}
+          </div>
+          <div class="f11 soft lh145 mt7">
+            Only photos already attached to a note. Nothing is uploaded to pick this.
+          </div>
+        ` : html`
+          <div class="empty" style="padding:14px">
+            ${isOpen
+              ? 'No photos in this trip\'s log yet. Attach one to a note and it can be the cover.'
+              : 'Open this trip to pick from its photos.'}
+          </div>`}
+
+        <div class="eyebrow mt18">OR A PLAIN FIELD</div>
+        <div class="row g8 mt8">
+          ${store.COVER_TINTS.map((t) => html`
+            <button class="cover-tint${(trip?.coverTint || 'jade') === t.id && !trip?.coverPhoto ? ' on' : ''}"
+                    data-pick-tint="${t.id}" style="background:${t.bg};color:${t.fg}"
+                    aria-label="Plain ${t.id}">${trip?.code || '··'}</button>`)}
+        </div>
+
+        <label class="btn ghost mt18" style="width:100%">
+          Choose from phone
+          <input type="file" id="cover-file" accept="image/*" hidden>
+        </label>
+        ${trip?.coverPhoto ? html`
+          <button class="btn none mt8" style="width:100%;color:var(--danger-fg);height:38px"
+                  data-act="cover-clear">Remove the photo</button>` : ''}
+      </div>
+    </section>`;
+}
+
+function mountCover(root) {
+  const done = () => { covering = null; busy = ''; store.refreshTrips(); };
+  delegate(root, '[data-act="cover-close"]', done);
+  delegate(root, '[data-pick-tint]', async (el) => {
+    if (covering !== state.tripID) {
+      busy = 'Open this trip first to change its cover.';
+      store.refreshTrips();
+      return;
+    }
+    await store.setTripCover({ tint: el.dataset.pickTint, photo: '' });
+    done();
+  });
+  delegate(root, '[data-pick-photo]', async (el) => {
+    await store.setTripCover({ photo: el.dataset.pickPhoto });
+    done();
+  });
+  delegate(root, '[data-act="cover-clear"]', async () => {
+    await store.setTripCover({ photo: '' });
+    done();
+  });
+
+  root.querySelector('#cover-file')?.addEventListener('change', async (event) => {
+    const file = event.target.files?.[0];
+    if (!file) return;
+    if (covering !== state.tripID) {
+      busy = 'Open this trip first to change its cover.';
+      store.refreshTrips();
+      return;
+    }
+    busy = 'Shrinking it…';
+    store.refreshTrips();
+    try {
+      // A cover is kept at thumbnail size inside the trip, so it draws with
+      // no signal and costs almost nothing to sync.
+      const { thumbnail } = await prepare(file);
+      await store.setTripCover({ photo: thumbnail });
+      done();
+    } catch (error) {
+      busy = error.message || 'That photo could not be used';
+      store.refreshTrips();
+    }
+  });
+}
+
+// ---------------------------------------------------------------- the rest
 
 /** "14–18 Sep 2026 · 5 days", or just the length when there are no dates. */
 function tripDates(trip) {
@@ -139,8 +381,8 @@ function addForm() {
         <button class="btn ghost" style="width:96px" data-act="add-cancel">Cancel</button>
       </div>
       <div class="form-hint">
-        It starts empty. Add the itinerary from Plan → the pencil — one stop at a time, or by
-        pasting the whole thing in from the agent's PDF or a WhatsApp message.
+        It goes straight to pasting the itinerary in, which is the fastest way from an empty
+        trip to a usable one. You can skip that and add stops one at a time instead.
       </div>
     </div>`;
 }

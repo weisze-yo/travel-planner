@@ -37,6 +37,10 @@ export const state = {
   shopDay: 'all',
   shopPlace: 'all',
   spendGroupBy: 'category',
+  /** The day the spend report is filtered to, or null for the whole trip. */
+  spendDay: null,
+  /** The last deletion, for the six seconds it can be taken back. */
+  undo: null,
 };
 
 let backend = null;
@@ -341,6 +345,146 @@ function emptySnapshot(tripID) {
   };
 }
 
+/**
+ * A trip is running, coming up or finished, and each wants a different card.
+ * Worked out from the dates rather than stored, so it is never stale.
+ */
+export function tripState(trip) {
+  if (!trip?.startDate) return 'upcoming';
+  const start = new Date(trip.startDate);
+  if (Number.isNaN(start.getTime())) return 'upcoming';
+  const today = new Date();
+  const midnight = new Date(today.getFullYear(), today.getMonth(), today.getDate());
+  const from = new Date(start.getFullYear(), start.getMonth(), start.getDate());
+  const days = Math.round((midnight - from) / 86400000);
+  if (days < 0) return 'upcoming';
+  if (days < Math.max(1, trip.dayCount || 1)) return 'running';
+  return 'finished';
+}
+
+/** Whole days until a trip starts, or since it ended. */
+export function tripDayGap(trip) {
+  if (!trip?.startDate) return null;
+  const start = new Date(trip.startDate);
+  if (Number.isNaN(start.getTime())) return null;
+  const today = new Date();
+  const midnight = new Date(today.getFullYear(), today.getMonth(), today.getDate());
+  const from = new Date(start.getFullYear(), start.getMonth(), start.getDate());
+  return Math.round((from - midnight) / 86400000);
+}
+
+/** Which day of a running trip today is. */
+export function tripCurrentDay(trip) {
+  const gap = tripDayGap(trip);
+  if (gap == null) return trip?.currentDay || 1;
+  return Math.min(Math.max(1, 1 - gap), trip.dayCount || 1);
+}
+
+/**
+ * The trips home, as a status board rather than a list: on now, coming up,
+ * finished, in that order.
+ */
+export function tripGroups() {
+  const groups = { running: [], upcoming: [], finished: [] };
+  for (const trip of state.trips) groups[tripState(trip)].push(trip);
+  groups.upcoming.sort((a, b) => (a.startDate || '').localeCompare(b.startDate || ''));
+  groups.finished.sort((a, b) => (b.startDate || '').localeCompare(a.startDate || ''));
+  return groups;
+}
+
+/**
+ * What the running trip's card says: where you are in the day, and the next
+ * thing on it. Only available for the trip that is actually open, because
+ * the other trips' days are not in memory.
+ */
+export function runningCard(trip) {
+  if (trip.id !== state.tripID) return null;
+  const n = tripCurrentDay(trip);
+  const d = day(n);
+  const items = activeItems(d);
+  const now = new Date().getHours() * 60 + new Date().getMinutes();
+
+  const next = items.find((item) => (parseClock(item.time) ?? 0) >= now) || items[items.length - 1] || null;
+  const window = next ? itemWindow(next) : null;
+  const minutesAway = window?.start != null ? window.start - now : null;
+
+  const buying = state.shopping.filter((i) => !i.bought && itemDay(i) === n).length;
+  const spent = state.shopping
+    .filter((i) => i.bought)
+    .reduce((sum, i) => sum + (i.paidAmount ?? i.estimate ?? 0), 0);
+
+  return {
+    dayNumber: n,
+    dayLabel: d?.dateLabel || `Day ${n}`,
+    stops: items.length,
+    next: next ? {
+      time: window.startLabel,
+      name: next.name,
+      // What the row underneath says: where the day goes after this.
+      after: window.end != null ? `back at the coach ${window.endLabel}` : 'no end set',
+      away: minutesAway != null && minutesAway > 0 && minutesAway < 240
+        ? `IN ${duration(minutesAway).toUpperCase()}`
+        : (minutesAway != null && minutesAway <= 0 ? 'NOW' : ''),
+    } : null,
+    buying,
+    spent,
+  };
+}
+
+/**
+ * How ready an upcoming trip is: three counts you can act on rather than one
+ * score, because a score tells you nothing about what to do next.
+ */
+export function tripReadiness(trip) {
+  if (trip.id !== state.tripID) return null;
+  const emptyDays = state.days.filter((d) => !activeItems(d).length).length;
+  const packed = state.prep.filter((i) => i.packed).length;
+  const planned = state.shopping.reduce((sum, i) => sum + (i.estimate || 0), 0);
+  return {
+    emptyDays,
+    packed,
+    prep: state.prep.length,
+    planned,
+  };
+}
+
+/** What a finished trip came to. */
+export function tripRecap(trip) {
+  if (trip.id !== state.tripID) return null;
+  const stops = state.days.reduce((n, d) => n + activeItems(d).length, 0);
+  const spent = state.shopping
+    .filter((i) => i.bought)
+    .reduce((sum, i) => sum + (i.paidAmount ?? i.estimate ?? 0), 0);
+  return { stops, spent, notes: state.log.length };
+}
+
+/** The four tints a coverless trip can wear. */
+export const COVER_TINTS = [
+  { id: 'jade', bg: '#E6EFEB', fg: '#1F6F5C' },
+  { id: 'amber', bg: '#EDE4D2', fg: '#8A5A08' },
+  { id: 'stone', bg: '#DCE3DE', fg: '#3D4C46' },
+  { id: 'ink', bg: '#14201C', fg: '#ffffff' },
+];
+
+export const coverTint = (trip) => COVER_TINTS.find((t) => t.id === trip?.coverTint) || COVER_TINTS[0];
+
+/** Photos already attached to a note, which is the only source of a cover. */
+export function coverCandidates() {
+  const out = [];
+  for (const note of state.log) {
+    for (const src of note.photoPaths || []) out.push({ src, note: note.id });
+  }
+  return out;
+}
+
+export async function setTripCover({ photo, tint }) {
+  if (!state.trip) return;
+  const next = { ...state.trip };
+  if (photo !== undefined) next.coverPhoto = photo || '';
+  if (tint !== undefined) next.coverTint = tint || '';
+  putTrip(next);
+}
+
 export async function refreshTrips() {
   try {
     state.trips = (await backend.listTrips()).sort((a, b) => (b.startDate || '').localeCompare(a.startDate || ''));
@@ -461,6 +605,51 @@ function remove(kind, id) {
   state[kind] = state[kind].filter((r) => r.id !== id);
   backend?.del(kind, id);
   notify();
+}
+
+// -------------------------------------------------------------------- undo
+
+let undoTimer = null;
+
+/**
+ * Deleting is permanent, but not instantly. The row goes, a line appears
+ * above the tab bar, and for six seconds it can come back — which is what
+ * makes a swipe a safe gesture rather than a scary one. Offline this is
+ * unchanged: the deletion is queued like any other edit and the undo just
+ * queues the opposite.
+ */
+export function rememberUndo(label, restore) {
+  if (undoTimer) clearTimeout(undoTimer);
+  state.undo = { label, restore, at: Date.now() };
+  notify();
+  undoTimer = setTimeout(() => {
+    state.undo = null;
+    notify();
+  }, 6000);
+}
+
+export function undoLast() {
+  const hit = state.undo;
+  if (!hit) return;
+  if (undoTimer) clearTimeout(undoTimer);
+  state.undo = null;
+  hit.restore();
+  notify();
+}
+
+export function clearUndo() {
+  if (undoTimer) clearTimeout(undoTimer);
+  state.undo = null;
+  notify();
+}
+
+/** Removes one row and keeps it long enough to put back. */
+export function removeWithUndo(kind, id, label) {
+  const row = state[kind].find((r) => r.id === id);
+  if (!row) return;
+  const copy = JSON.parse(JSON.stringify(row));
+  remove(kind, id);
+  rememberUndo(label, () => put(kind, copy));
 }
 
 function putTrip(trip) {
@@ -1082,6 +1271,92 @@ export function shoppingGroups() {
     group.items.push(item);
   }
   return groups;
+}
+
+/**
+ * The shape of the trip's money, which a total and a category bar cannot
+ * say: how it moved across the days, and how close the estimates were.
+ * Those are the two questions you actually ask when you get home.
+ */
+export function spendByDay() {
+  const count = state.trip?.dayCount || 1;
+  const rows = Array.from({ length: count }, (_, i) => ({ dayNumber: i + 1, sum: 0, count: 0 }));
+  for (const item of state.shopping) {
+    if (!item.bought) continue;
+    const n = item.boughtDay || itemDay(item);
+    const row = rows.find((r) => r.dayNumber === n);
+    if (!row) continue;
+    row.sum += item.paidAmount ?? item.estimate ?? 0;
+    row.count += 1;
+  }
+  const peak = Math.max(1, ...rows.map((r) => r.sum));
+  const biggest = rows.reduce((best, r) => (r.sum > (best?.sum || 0) ? r : best), null);
+  return { rows, peak, biggest: biggest?.sum ? biggest : null };
+}
+
+/**
+ * Guessed against paid. Items with no estimate only count on the paid side,
+ * which the screen has to say out loud or the two bars look wrong.
+ */
+export function spendAccuracy() {
+  const bought = state.shopping.filter((i) => i.bought);
+  let estimated = 0;
+  let paid = 0;
+  let noEstimate = 0;
+  let over = null;
+  let under = null;
+
+  for (const item of bought) {
+    const actual = item.paidAmount ?? item.estimate ?? 0;
+    paid += actual;
+    if (item.estimate == null) {
+      noEstimate += 1;
+      continue;
+    }
+    estimated += item.estimate;
+    const gap = actual - item.estimate;
+    if (gap > 0 && (!over || gap > over.gap)) over = { name: item.name, gap };
+    if (gap < 0 && (!under || gap < under.gap)) under = { name: item.name, gap: -gap };
+  }
+
+  return {
+    estimated,
+    paid,
+    noEstimate,
+    total: bought.length,
+    difference: estimated - paid,
+    over,
+    under,
+    // The paid bar is drawn against the larger of the two, so neither
+    // overflows its track.
+    peak: Math.max(1, estimated, paid),
+  };
+}
+
+/** Every purchase, newest day first, grouped by the day it happened on. */
+export function purchasesByDay() {
+  const groups = [];
+  for (const item of state.shopping) {
+    if (!item.bought) continue;
+    const n = item.boughtDay || itemDay(item) || 0;
+    let group = groups.find((g) => g.dayNumber === n);
+    if (!group) {
+      group = { dayNumber: n, dateLabel: day(n)?.shortDate || '', sum: 0, items: [] };
+      groups.push(group);
+    }
+    group.sum += item.paidAmount ?? item.estimate ?? 0;
+    group.items.push(item);
+  }
+  for (const group of groups) {
+    group.items.sort((a, b) => String(b.boughtAt || '').localeCompare(String(a.boughtAt || '')));
+  }
+  return groups.sort((a, b) => b.dayNumber - a.dayNumber);
+}
+
+/** Which day the report is filtered to, if any. */
+export function setSpendDay(n) {
+  state.spendDay = state.spendDay === n ? null : n;
+  notify();
 }
 
 export function spendTotals({ all = false } = {}) {
@@ -1782,7 +2057,7 @@ export function deleteSubRoute(id) {
   const route = subRouteByID(id);
   if (!route) return;
   if (state.loopID === id) state.loopID = null;
-  remove('subRoutes', id);
+  removeWithUndo('subRoutes', id, `${route.name} deleted`);
 }
 
 export function toggleSubRoutePlace(placeId, handle) {
@@ -1811,6 +2086,16 @@ export function toggleBought(id) {
   const item = state.shopping.find((i) => i.id === id);
   if (!item) return;
   item.bought = !item.bought;
+  // When and on which day, so the report can say "Aoi Camera Alley · 14:40"
+  // and group the purchase under the day it actually happened on.
+  if (item.bought) {
+    const now = new Date();
+    item.boughtAt = clock(now.getHours() * 60 + now.getMinutes());
+    item.boughtDay = state.selectedDay;
+  } else {
+    item.boughtAt = null;
+    item.boughtDay = null;
+  }
   // Ticking stamps the purchase date; unticking clears it.
   item.boughtOn = item.bought ? new Date().toISOString().slice(0, 10) : null;
   put('shopping', item);
@@ -1838,7 +2123,8 @@ export function setShoppingCategory(id, category) {
 }
 
 export function deleteShoppingItem(id) {
-  remove('shopping', id);
+  const item = state.shopping.find((i) => i.id === id);
+  removeWithUndo('shopping', id, item ? `${item.name} deleted` : 'Item deleted');
 }
 
 export function addShoppingItem({ name, placeLabel, estimate, payment, category, placeID }) {
@@ -1938,7 +2224,8 @@ export function addPrepItem(category, name) {
 }
 
 export function deletePrepItem(id) {
-  remove('prep', id);
+  const item = state.prep.find((i) => i.id === id);
+  removeWithUndo('prep', id, item ? `${item.name} deleted` : 'Item deleted');
 }
 
 /** Removes a category and everything filed under it. */
@@ -1953,7 +2240,8 @@ export function deletePrepCategory(title) {
 }
 
 export function deleteLogEntry(id) {
-  remove('log', id);
+  const note = noteByID(id);
+  removeWithUndo('log', id, note?.placeLabel ? `Note about ${note.placeLabel} deleted` : 'Note deleted');
 }
 
 export function deleteLogPhoto(entryID, url) {
@@ -1965,22 +2253,46 @@ export function deleteLogPhoto(entryID, url) {
 }
 
 export function deletePlace(id) {
-  // Take it out of any loop before the place itself goes.
+  const record = state.places.find((p) => p.id === id);
+  // Take it out of any loop before the place itself goes — and remember
+  // which loops held it, so undo puts it back where it was.
+  const heldBy = [];
   for (const route of state.subRoutes) {
     if ((route.placeIDs || []).includes(id)) {
+      heldBy.push(route.id);
       route.placeIDs = route.placeIDs.filter((p) => p !== id);
       put('subRoutes', route);
     }
   }
+  const copy = record ? JSON.parse(JSON.stringify(record)) : null;
   remove('places', id);
+  rememberUndo(record ? `${record.name} deleted` : 'Place deleted', () => {
+    if (copy) put('places', copy);
+    for (const routeID of heldBy) {
+      const route = subRouteByID(routeID);
+      if (route && !route.placeIDs.includes(id)) {
+        route.placeIDs = [...route.placeIDs, id];
+        put('subRoutes', route);
+      }
+    }
+  });
 }
 
 /** Deletes a stop outright, as against archiving it. */
 export function deletePlanItem(dayNumber, id) {
   const d = day(dayNumber);
   if (!d) return;
+  const at = d.items.findIndex((i) => i.id === id);
+  if (at < 0) return;
+  const copy = JSON.parse(JSON.stringify(d.items[at]));
   d.items = d.items.filter((i) => i.id !== id);
   put('days', d);
+  rememberUndo(`${copy.name} deleted`, () => {
+    const back = day(dayNumber);
+    if (!back) return;
+    back.items = [...back.items.slice(0, at), copy, ...back.items.slice(at)];
+    put('days', back);
+  });
 }
 
 export function addPrepCategory(name) {

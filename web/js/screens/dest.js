@@ -160,7 +160,8 @@ export default {
     }));
     swipeToDelete(root, {
       rowSelector: '[data-pnote-row]',
-      label: () => `Delete this note about ${it?.name || 'this place'}?`,
+      name: () => 'this note',
+      label: () => `Gone from ${it?.name || 'this place'} and the Log for good`,
       onDelete: (el) => store.deleteLogEntry(el.dataset.pnoteRow),
     });
     delegate(root, '[data-act="tick-shot"]', (el) => store.toggleShot(el.dataset.id));

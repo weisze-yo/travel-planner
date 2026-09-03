@@ -111,7 +111,8 @@ export default {
 
     swipeToDelete(root, {
       rowSelector: '[data-shop-row]',
-      label: (row) => `Delete "${row.dataset.shopName}" from the shopping list?`,
+      name: (row) => row.dataset.shopName,
+      label: () => 'Off the list for good',
       onDelete: (row) => store.deleteShoppingItem(row.dataset.shopRow),
     });
 

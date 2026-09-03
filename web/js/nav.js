@@ -4,11 +4,12 @@
 // (fired as focus leaves) rather than on every keystroke.
 
 import { $, icon } from './util.js';
-import { state, subscribe } from './store.js';
+import { state, subscribe, undoLast } from './store.js';
 
 const registry = new Map();
 let host = null;
 let tabbar = null;
+let undoSlot = null;
 let current = { id: 'map', params: {} };
 let pending = false;
 let painted = null;
@@ -28,6 +29,13 @@ export function register(screen) {
 export function start({ hostSelector = '#screen', tabbarSelector = '#tabbar', initial = 'map' } = {}) {
   host = $(hostSelector);
   tabbar = $(tabbarSelector);
+  undoSlot = $('#undo');
+
+  // One undo line for the whole app, so a deletion on any screen can be
+  // taken back from the same place.
+  undoSlot?.addEventListener('click', (e) => {
+    if (e.target.closest('[data-act="undo"]')) undoLast();
+  });
 
   tabbar.addEventListener('click', (e) => {
     const tab = e.target.closest('[data-tab]');
@@ -95,6 +103,7 @@ function paint() {
   restoreScroll(scrollers);
   painted = current.id;
   paintTabs(screen.tab || current.id);
+  paintUndo();
 }
 
 /** Keeps list position across a re-render, so ticking row 12 does not jump. */
@@ -108,6 +117,22 @@ function restoreScroll(values) {
   values.forEach((top, i) => {
     if (scrollers[i] && top) scrollers[i].scrollTop = top;
   });
+}
+
+/** The six seconds a deletion can be taken back. */
+function paintUndo() {
+  if (!undoSlot) return;
+  const hit = state.undo;
+  if (!hit) {
+    undoSlot.hidden = true;
+    undoSlot.innerHTML = '';
+    return;
+  }
+  undoSlot.innerHTML = `<div class="undo-bar">
+    <div class="grow">${hit.label}</div>
+    <button class="undo-go" data-act="undo">Undo</button>
+  </div>`;
+  undoSlot.hidden = false;
 }
 
 function paintTabs(activeTab) {

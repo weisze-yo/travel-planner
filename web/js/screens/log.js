@@ -54,7 +54,10 @@ export default {
   mount(root) {
     swipeToDelete(root, {
       rowSelector: '[data-note-row]',
-      label: (el) => `Delete this note${el.dataset.noteName ? ` about ${el.dataset.noteName}` : ''}?`,
+      name: () => 'this note',
+      label: (el) => (el.dataset.noteName
+        ? `Gone from ${el.dataset.noteName} for good`
+        : 'Gone from the Log for good'),
       onDelete: (el) => store.deleteLogEntry(el.dataset.noteRow),
     });
 

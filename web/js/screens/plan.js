@@ -191,12 +191,14 @@ export default {
 
     swipeToDelete(root, {
       rowSelector: '[data-plan-row]',
-      label: (el) => `Delete "${el.dataset.planName}" from this trip? It will not go to the archive.`,
+      name: (el) => el.dataset.planName,
+      label: () => 'Off the trip for good — not into the archive',
       onDelete: (el) => store.deletePlanItem(state.selectedDay, el.dataset.planRow),
     });
     swipeToDelete(root, {
       rowSelector: '[data-loop-row]',
-      label: (el) => `Delete "${el.dataset.loopName}"? The places you picked stay saved; only the sub route goes.`,
+      name: (el) => el.dataset.loopName,
+      label: () => 'The places you picked stay saved',
       onDelete: (el) => store.deleteSubRoute(el.dataset.loopRow),
     });
 

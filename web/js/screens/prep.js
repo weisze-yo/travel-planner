@@ -106,13 +106,15 @@ export default {
   mount(root) {
     swipeToDelete(root, {
       rowSelector: '[data-prep-row]',
-      label: (row) => `Delete "${row.dataset.prepName}" from the packing list?`,
+      name: (row) => row.dataset.prepName,
+      label: () => 'Off the packing list for good',
       onDelete: (row) => store.deletePrepItem(row.dataset.prepRow),
     });
 
     swipeToDelete(root, {
       rowSelector: '[data-cat-row]',
-      label: (row) => `Delete the "${row.dataset.catRow}" category and every item in it?`,
+      name: (row) => `the "${row.dataset.catRow}" group`,
+      label: () => 'And every item filed under it',
       onDelete: (row) => store.deletePrepCategory(row.dataset.catRow),
     });
 
