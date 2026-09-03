@@ -4,17 +4,36 @@ import { html, raw, icon, delegate, esc } from '../util.js';
 import * as store from '../store.js';
 import { state } from '../store.js';
 
+/**
+ * The trip bar, with the sync dot in it. A hollow ring while a write is in
+ * flight, a solid green dot when everything is sent, an amber dot when
+ * changes are waiting for signal — and words only in that last case, because
+ * the other two need no explaining.
+ */
 export function tripChip() {
   const trip = state.trip;
+  const sync = store.syncState();
+  const words = sync.kind === 'queued' || sync.kind === 'stuck' ? sync.line : '';
+
   return html`
     <div class="trip-chip">
       <div class="trip-mark">${trip?.code || '··'}</div>
       <div class="grow">
         <div class="trip-name">${trip?.name || 'Your trip'}</div>
-        <div class="trip-meta">Day ${state.selectedDay} of ${trip?.dayCount || 1} · ${store.day()?.shortDate || ''}</div>
+        <div class="trip-meta${words ? ' warn' : ''}">
+          ${words || `Day ${state.selectedDay} of ${trip?.dayCount || 1} · ${store.day()?.shortDate || ''}`}
+        </div>
       </div>
-      ${raw(icon.caret)}
+      ${syncDot(sync)}
     </div>`;
+}
+
+export function syncDot(sync = store.syncState()) {
+  if (sync.kind === 'saving') return html`<span class="sync-ring" aria-label="Saving"></span>`;
+  if (sync.kind === 'queued') return html`<span class="sync-dot amber" aria-label="Waiting for signal"></span>`;
+  if (sync.kind === 'stuck') return html`<span class="sync-dot red" aria-label="Changes are stuck"></span>`;
+  if (sync.kind === 'local') return html`<span class="sync-dot grey" aria-label="Saved on this device only"></span>`;
+  return html`<span class="sync-dot jade" aria-label="Saved"></span>`;
 }
 
 /** Day selector with that day's forecast icon, as on the map and plan. */

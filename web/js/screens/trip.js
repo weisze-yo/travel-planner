@@ -96,6 +96,25 @@ export default {
           </div>
 
           <div class="card pad mb12">
+            <div class="eyebrow">ON THE ROAD</div>
+            <div class="f125 muted lh145 mt6">
+              Everything but the map works with no signal. The map's tiles are the one part that
+              needs the network, so an area can be kept on the phone for the days you will be
+              walking around it.
+            </div>
+            <div class="row g8 mt10">
+              <button class="btn ghost grow" data-act="areas">
+                Map kept on this phone${store.mapAreas().length ? ` · ${store.mapAreas().length}` : ''}
+              </button>
+            </div>
+            <div class="row g8 mt8">
+              <button class="btn ghost grow" data-act="stuck">
+                Changes on this phone${store.syncState().count ? ` · ${store.syncState().count} waiting` : ''}
+              </button>
+            </div>
+          </div>
+
+          <div class="card pad mb12">
             <div class="eyebrow">THE ITINERARY</div>
             <div class="f125 muted lh145 mt6">
               The itinerary can arrive all at once. Paste the agent's PDF text or the WhatsApp
@@ -140,6 +159,8 @@ export default {
   mount(root) {
     delegate(root, '[data-act="back"]', () => { notice = ''; confirming = false; back(); });
     delegate(root, '[data-act="paste"]', () => go('paste'));
+    delegate(root, '[data-act="areas"]', () => go('areas'));
+    delegate(root, '[data-act="stuck"]', () => go('stuck'));
 
     delegate(root, '[data-act="save-trip"]', async () => {
       const name = root.querySelector('#trip-name')?.value.trim();

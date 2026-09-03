@@ -7,6 +7,9 @@ import { createBackend, isConfigured, readActiveTripID, writeActiveTripID, KINDS
 import { prepare, storedLength } from './photos.js';
 import { fetchForecast, forecastCoverage, fetchRate, geocode, online, parseMapLink, placeDetails } from './net.js';
 import { clock, duration, money, numeric, parseClock, parseDuration, uid, reorder, dateStamp } from './util.js';
+import * as sync from './sync.js';
+import * as tiles from './tiles.js';
+import * as share from './share.js';
 
 const listeners = new Set();
 
@@ -41,6 +44,15 @@ export const state = {
   spendDay: null,
   /** The last deletion, for the six seconds it can be taken back. */
   undo: null,
+
+  /**
+   * Who this phone is. Sharing needs a name only so that "Ana moved this"
+   * can be written; it is asked for at the last possible moment, and until
+   * then this is an anonymous local identity that a sign-in migrates.
+   */
+  me: null,
+  /** Which day the changes banner has been caught up on, per day. */
+  seenDays: {},
 };
 
 let backend = null;
@@ -59,6 +71,11 @@ export function subscribe(fn) {
 function notify() {
   for (const fn of listeners) fn();
 }
+
+// Whether a change has reached the cloud is state like any other, and the
+// screens that show it — the trip chip's dot, the strip above the tab bar —
+// have no other way to hear that it moved.
+sync.subscribe(notify);
 
 // ------------------------------------------------------------------ lifecycle
 
@@ -596,14 +613,21 @@ function put(kind, row) {
   const list = state[kind];
   const at = list.findIndex((r) => r.id === row.id);
   if (at >= 0) list[at] = row; else list.push(row);
-  backend?.put(kind, row);
+  if (backend) {
+    sync.track({ kind, id: row.id, label: row.name || row.text || row.id, run: () => backend.put(kind, row) })
+      .then(notify);
+  }
   sortAll();
   notify();
 }
 
 function remove(kind, id) {
+  const row = state[kind].find((r) => r.id === id);
   state[kind] = state[kind].filter((r) => r.id !== id);
-  backend?.del(kind, id);
+  if (backend) {
+    sync.track({ kind, id, label: row?.name || row?.text || id, run: () => backend.del(kind, id) })
+      .then(notify);
+  }
   notify();
 }
 
@@ -654,7 +678,10 @@ export function removeWithUndo(kind, id, label) {
 
 function putTrip(trip) {
   state.trip = trip;
-  backend?.putTrip(trip);
+  if (backend) {
+    sync.track({ kind: 'trip', id: trip.id, label: trip.name, run: () => backend.putTrip(trip) })
+      .then(notify);
+  }
   notify();
 }
 
@@ -1587,6 +1614,143 @@ export function noteTimesAt(placeID, n = state.selectedDay) {
     .sort();
 }
 
+/**
+ * Whether your changes are saved. The dot lives in the trip bar at the top
+ * of every screen; only the stuck case gets more than a dot.
+ */
+export function syncState() {
+  return sync.syncState({ stranded: state.stranded, configured: state.mode === 'firebase' || state.stranded });
+}
+
+export const pendingSummary = sync.pendingSummary;
+export const pendingTries = sync.pendingTries;
+export const pendingOldest = sync.pendingOldest;
+export const syncKindName = sync.kindName;
+export const discardPending = () => { sync.discardPending(); notify(); };
+
+/**
+ * Everything about the trip as one file, so a copy can live somewhere that
+ * is not this phone even when the cloud is refusing it.
+ */
+export function tripSnapshot() {
+  return JSON.stringify({
+    savedAt: new Date().toISOString(),
+    app: 'travel-planner',
+    version: 1,
+    trip: state.trip,
+    days: state.days,
+    places: state.places,
+    subRoutes: state.subRoutes,
+    shopping: state.shopping,
+    mustSee: state.mustSee,
+    prep: state.prep,
+    log: state.log,
+    outfits: state.outfits,
+  }, null, 2);
+}
+
+// -------------------------------------------------------- map kept offline
+
+/**
+ * Areas of map kept on the phone. They live on the trip rather than in their
+ * own collection because an area is four numbers and a name — small enough
+ * that giving it a collection would cost more than it saves — and because
+ * they should go when the trip goes.
+ */
+export const mapAreas = () => state.trip?.mapAreas || [];
+
+export async function saveMapArea({ name, bbox, zoomTo, bytes, tiles }) {
+  if (!state.trip) return null;
+  const area = {
+    id: uid('area-'),
+    name: String(name || '').trim() || 'Kept area',
+    bbox,
+    zoomTo,
+    bytes: bytes || 0,
+    tiles: tiles || 0,
+    savedAt: new Date().toISOString(),
+  };
+  putTrip({ ...state.trip, mapAreas: [...mapAreas(), area] });
+  return area;
+}
+
+export function updateMapArea(id, patch) {
+  if (!state.trip) return;
+  putTrip({
+    ...state.trip,
+    mapAreas: mapAreas().map((a) => (a.id === id ? { ...a, ...patch } : a)),
+  });
+}
+
+export function deleteMapArea(id) {
+  if (!state.trip) return;
+  const area = mapAreas().find((a) => a.id === id);
+  const before = mapAreas();
+  putTrip({ ...state.trip, mapAreas: before.filter((a) => a.id !== id) });
+  rememberUndo(area ? `${area.name} removed` : 'Area removed', () => {
+    if (state.trip) putTrip({ ...state.trip, mapAreas: before });
+  });
+}
+
+/**
+ * Which of the trip's stops no kept area covers. The honest version of
+ * "3 stops are outside every kept area": it names them, because "some" is
+ * not something you can act on.
+ */
+export function stopsOutsideAreas() {
+  const areas = mapAreas();
+  const out = [];
+  const days = new Set();
+  let located = 0;
+  for (const d of state.days) {
+    for (const item of activeItems(d)) {
+      if (item.latitude == null) continue;
+      located += 1;
+      if (areas.some((a) => tiles.inside(a.bbox, item.latitude, item.longitude))) continue;
+      out.push({ name: item.name, dayNumber: d.dayNumber });
+      days.add(d.dayNumber);
+    }
+  }
+  return {
+    stops: out,
+    days: [...days].sort((a, b) => a - b),
+    located,
+    covered: located - out.length,
+    // Nothing kept yet is not the same as "outside what you kept", so the
+    // screens that phrase it that way can tell the two apart.
+    areas: areas.length,
+  };
+}
+
+/** Whether the map you are looking at is inside something you kept. */
+export function areaFor(lat, lng) {
+  return mapAreas().find((a) => tiles.inside(a.bbox, lat, lng)) || null;
+}
+
+/** A sensible first box: everything the trip has a position for, plus a margin. */
+export function suggestedArea() {
+  const points = [];
+  for (const d of state.days) {
+    for (const item of activeItems(d)) {
+      if (item.latitude != null) points.push([item.latitude, item.longitude]);
+    }
+  }
+  for (const p of state.places) {
+    if (p.latitude != null) points.push([p.latitude, p.longitude]);
+  }
+  if (!points.length) return null;
+
+  const lats = points.map((p) => p[0]);
+  const lngs = points.map((p) => p[1]);
+  const pad = 0.012;
+  return [
+    Math.min(...lngs) - pad,
+    Math.min(...lats) - pad,
+    Math.max(...lngs) + pad,
+    Math.max(...lats) + pad,
+  ];
+}
+
 export function weatherSourceLine() {
   const stamp = state.trip?.weatherUpdatedAt;
   if (!stamp) return 'Forecast';
@@ -2476,6 +2640,402 @@ export function clearTripContent() {
     put('days', { ...day, areaSpan: '', items: [] });
   }
   if (state.trip) putTrip({ ...state.trip, prepCategories: [] });
+}
+
+// ---------------------------------------------------------------- sharing
+//
+// The plan is ours; what I've done about it is mine. Three behaviours, and
+// the store is where the line between them is actually drawn:
+//
+//   - the trip document carries the people, the link and the change feed,
+//     so they sync with everything else and last-edit-wins applies;
+//   - the shopping list is copied once and then never again touched by the
+//     other side, except by the owner explicitly sending new items;
+//   - `log`, `prep` and every `bought` flag are never written into the
+//     share at all. `shareSnapshot()` is the proof: it is what a guest
+//     would receive, and those kinds are not in it.
+
+const ME_KEY = 'travel-planner:me';
+const SEEN_KEY = 'travel-planner:seen-days';
+
+/** This phone's identity, made on first use and kept until a sign-in. */
+export function me() {
+  if (state.me) return state.me;
+  let found = null;
+  try {
+    found = JSON.parse(localStorage.getItem(ME_KEY) || 'null');
+  } catch {
+    found = null;
+  }
+  if (!found || !found.id) {
+    found = { id: `me-${uid()}`, name: 'You', account: null, signedInAt: null };
+    writeMe(found);
+  }
+  state.me = found;
+  return found;
+}
+
+function writeMe(who) {
+  state.me = who;
+  try {
+    localStorage.setItem(ME_KEY, JSON.stringify(who));
+  } catch {
+    // Private browsing. The name then lasts for this session only.
+  }
+}
+
+/**
+ * Signing in, at the last possible moment. Everything already on the phone
+ * comes with it: the anonymous identity keeps its id, so every note, every
+ * change and every role that already pointed at it still does.
+ */
+export function signIn({ provider, name, email = '' }) {
+  const who = { ...me(), name: name || me().name, account: { provider, email }, signedInAt: new Date().toISOString() };
+  writeMe(who);
+  // The name shows on what you change, so the people list has to learn it.
+  if (state.trip) {
+    const people = sharePeople().map((p) => (p.id === who.id ? { ...p, name: who.name } : p));
+    if (people.length) putTrip({ ...state.trip, people });
+  }
+  notify();
+  return who;
+}
+
+export const signedIn = () => Boolean(me().account);
+
+export const sharePeople = () => state.trip?.people || [];
+
+/** The share as it stands: off until a link has been created. */
+export const shareState = () => state.trip?.share || null;
+
+export function myRole() {
+  const mine = sharePeople().find((p) => p.id === me().id);
+  if (mine) return mine.role;
+  // A trip nobody has shared is a trip you own.
+  return sharePeople().length ? 'read' : 'owner';
+}
+
+export const isOwner = () => myRole() === 'owner';
+export const canEdit = () => myRole() !== 'read';
+
+/** Whose trip it is, in words, for a reader's header. */
+export const ownerName = () => sharePeople().find((p) => p.role === 'owner')?.name || 'You';
+
+/**
+ * Turns sharing on. The link is created before anyone has it, with the role
+ * and the expiry already chosen, so it is never a thing to go back and fix.
+ *
+ * `withShopping` is the one irreversible part: it takes the copy. That is
+ * why the sheet says so next to the switch rather than in a footnote.
+ */
+export function createLink({ role = 'edit', expiry = '7d', withShopping = true }) {
+  if (!state.trip) return null;
+  const who = me();
+  const people = sharePeople().length ? sharePeople() : [{
+    id: who.id,
+    name: who.name,
+    role: 'owner',
+    joinedAt: new Date().toISOString(),
+    lastOpenedAt: new Date().toISOString(),
+  }];
+
+  const link = {
+    code: share.linkCode(),
+    role,
+    expiry,
+    expiresAt: share.expiryAt(expiry, new Date(), tripEndsAt()),
+    live: true,
+    opens: 0,
+    createdAt: new Date().toISOString(),
+  };
+
+  putTrip({
+    ...state.trip,
+    people,
+    link,
+    share: {
+      on: true,
+      shopping: withShopping,
+      // Copied once, at this moment, and never again on its own.
+      shoppingCopiedAt: withShopping ? new Date().toISOString() : null,
+      shoppingSentIDs: withShopping ? state.shopping.map((r) => r.id) : [],
+    },
+  });
+  return link;
+}
+
+function tripEndsAt() {
+  const start = state.trip?.startDate;
+  const days = state.trip?.dayCount || 0;
+  if (!start || !days) return null;
+  const end = new Date(`${start}T23:59:00`);
+  end.setDate(end.getDate() + days - 1);
+  return end.toISOString();
+}
+
+/** Turning the link off stops new people joining; the ones who have it keep it. */
+export function setLinkLive(live) {
+  if (!state.trip?.link) return;
+  putTrip({ ...state.trip, link: { ...state.trip.link, live: Boolean(live) } });
+}
+
+export function setLinkRole(role) {
+  if (!state.trip?.link) return;
+  putTrip({ ...state.trip, link: { ...state.trip.link, role } });
+}
+
+export function setLinkExpiry(expiry) {
+  if (!state.trip?.link) return;
+  putTrip({
+    ...state.trip,
+    link: { ...state.trip.link, expiry, expiresAt: share.expiryAt(expiry, new Date(), tripEndsAt()) },
+  });
+}
+
+export const linkState = () => share.linkState(state.trip?.link);
+
+/** One person's role, changed by the owner and nobody else. */
+export function setPersonRole(id, role) {
+  if (!isOwner()) return;
+  putTrip({ ...state.trip, people: sharePeople().map((p) => (p.id === id ? { ...p, role } : p)) });
+}
+
+/**
+ * Removing someone. They lose the schedule; their own shopping list, their
+ * packing and their whole Log were never in the share and stay theirs. The
+ * removal is the same swipe as everywhere else, so it is also undoable.
+ */
+export function removePerson(id) {
+  const person = sharePeople().find((p) => p.id === id);
+  if (!person || person.role === 'owner') return;
+  const before = sharePeople();
+  putTrip({ ...state.trip, people: before.filter((p) => p.id !== id) });
+  rememberUndo(`${person.name} removed`, () => {
+    if (state.trip) putTrip({ ...state.trip, people: before });
+  });
+}
+
+/** Someone joining by link, on their phone. */
+export function joinTrip({ role } = {}) {
+  if (!state.trip) return null;
+  const who = me();
+  if (sharePeople().some((p) => p.id === who.id)) return myRole();
+  const link = state.trip.link;
+  const given = role || link?.role || 'read';
+  putTrip({
+    ...state.trip,
+    link: link ? { ...link, opens: (link.opens || 0) + 1 } : link,
+    people: [...sharePeople(), {
+      id: who.id,
+      name: who.name,
+      role: given,
+      joinedAt: new Date().toISOString(),
+      lastOpenedAt: new Date().toISOString(),
+    }],
+    // The guest's list starts as a copy of the owner's and is then their own.
+    shoppingFrom: { name: ownerName(), at: state.trip.share?.shoppingCopiedAt || new Date().toISOString() },
+  });
+  return given;
+}
+
+// -------------------------------------------- the shopping list, copied once
+
+/** Where a guest's list came from, for the one line that says so. */
+export const shoppingOrigin = () => state.trip?.shoppingFrom || null;
+
+/** What the owner has added since the copy, and has not sent. */
+export function unsentShopping() {
+  const s = shareState();
+  if (!s?.on || !s.shopping) return [];
+  return share.unsentItems(state.shopping, s.shoppingSentIDs || []);
+}
+
+/**
+ * Sends the new items. Only ever adds — nothing the other side has crossed
+ * off or removed is touched, which is why this records ids rather than
+ * replacing a list.
+ */
+export function sendNewShopping() {
+  const s = shareState();
+  if (!s?.on) return 0;
+  const rows = unsentShopping();
+  if (!rows.length) return 0;
+  putTrip({
+    ...state.trip,
+    share: {
+      ...s,
+      shoppingSentIDs: [...(s.shoppingSentIDs || []), ...rows.map((r) => r.id)],
+      shoppingSentAt: new Date().toISOString(),
+    },
+    // On the receiving phone this is what draws the arrival strip.
+    shoppingArrived: { from: ownerName(), count: rows.length, at: new Date().toISOString(), ids: rows.map((r) => r.id) },
+  });
+  return rows.length;
+}
+
+/** The arrival strip, and the one tap that puts it away. */
+export const shoppingArrived = () => state.trip?.shoppingArrived || null;
+
+export function hideShoppingArrived() {
+  if (!state.trip?.shoppingArrived) return;
+  putTrip({ ...state.trip, shoppingArrived: null });
+}
+
+export function setShareShopping(on) {
+  const s = shareState();
+  if (!s) return;
+  putTrip({
+    ...state.trip,
+    share: {
+      ...s,
+      shopping: Boolean(on),
+      shoppingCopiedAt: on ? (s.shoppingCopiedAt || new Date().toISOString()) : s.shoppingCopiedAt,
+      shoppingSentIDs: on && !s.shoppingCopiedAt ? state.shopping.map((r) => r.id) : (s.shoppingSentIDs || []),
+    },
+  });
+}
+
+// ------------------------------------------------ what moved, and who moved it
+
+/** The feed, newest last, capped so a long trip cannot grow without bound. */
+export const shareChanges = () => state.trip?.changes || [];
+
+/**
+ * Records one schedule change. Called from the mutations that alter what
+ * everybody sees; never from anything private. It is a no-op on a trip
+ * nobody has shared, so an unshared trip carries no feed at all.
+ */
+export function recordChange({ verb, what, dayNumber, itemID = null, was = '' }) {
+  if (!shareState()?.on || sharePeople().length < 2) return;
+  const entry = share.change({ who: me().id, verb, what, dayNumber, itemID, was });
+  entry.byName = me().name;
+  putTrip({ ...state.trip, changes: [...shareChanges(), entry].slice(-200) });
+}
+
+function readSeen() {
+  if (Object.keys(state.seenDays).length) return state.seenDays;
+  try {
+    state.seenDays = JSON.parse(localStorage.getItem(SEEN_KEY) || '{}') || {};
+  } catch {
+    state.seenDays = {};
+  }
+  return state.seenDays;
+}
+
+/** What this day has to tell you: other people's changes since you looked. */
+export function dayChanges(n = state.selectedDay) {
+  const seen = readSeen();
+  return share.unseenChanges(shareChanges(), {
+    dayNumber: n,
+    since: seen[`d${n}`] || seen[n] || null,
+    meID: me().id,
+  });
+}
+
+/** What a single row has to say about itself, until it has been seen. */
+export function rowChange(itemID, n = state.selectedDay) {
+  return dayChanges(n).find((c) => c.itemID === itemID) || null;
+}
+
+/**
+ * "Got it", and the same thing a row does once you have scrolled past it.
+ * Catching up is per day, because that is the unit you actually read.
+ */
+export function catchUp(n = state.selectedDay) {
+  const seen = { ...readSeen(), [`d${n}`]: new Date().toISOString() };
+  state.seenDays = seen;
+  try {
+    localStorage.setItem(SEEN_KEY, JSON.stringify(seen));
+  } catch {
+    // Then it is caught up for this session, which is the common case anyway.
+  }
+  notify();
+}
+
+/**
+ * What a guest actually receives — and, just as importantly, what they do
+ * not. If this ever grows a `log`, a `prep` or a `bought`, the promise on
+ * the share sheet has become false.
+ */
+export function shareSnapshot() {
+  return {
+    trip: state.trip ? {
+      ...state.trip,
+      // The owner's arrival strip and their own copy bookkeeping are not
+      // the guest's business.
+      shoppingArrived: null,
+      mapAreas: [],
+    } : null,
+    days: state.days,
+    places: state.places,
+    subRoutes: state.subRoutes,
+    mustSee: state.mustSee,
+    // Copied once, and only if the switch was on.
+    shopping: shareState()?.shopping
+      ? state.shopping.map((r) => ({ ...r, bought: false, boughtOn: null, paidAmount: null }))
+      : [],
+  };
+}
+
+/**
+ * Being removed from a trip, on their phone. The schedule goes; the three
+ * things that were always theirs stay, and the screen says so, because
+ * otherwise they will assume the worst.
+ */
+export function removedFromTrip({ by, on }) {
+  if (!state.trip) return;
+  putTrip({
+    ...state.trip,
+    removed: { by, on, at: new Date().toISOString() },
+    people: [],
+    link: null,
+  });
+}
+
+export const removal = () => state.trip?.removed || null;
+
+/** What survives a removal, counted, because a number is the reassurance. */
+export function keptAfterRemoval() {
+  const bought = state.shopping.filter((r) => r.bought).length;
+  const photos = state.log.reduce((n, note) => n + (note.photos?.length || (note.photoPath ? 1 : 0)), 0);
+  return [
+    {
+      key: 'shopping',
+      line: `Your shopping list, all ${state.shopping.length} item${state.shopping.length === 1 ? '' : 's'} and what you bought`,
+      count: state.shopping.length,
+      bought,
+    },
+    {
+      key: 'log',
+      line: `Your Log — ${state.log.length} note${state.log.length === 1 ? '' : 's'}`
+        + (photos ? ` and ${photos} photo${photos === 1 ? '' : 's'}` : ''),
+      count: state.log.length,
+    },
+    { key: 'prep', line: 'Your packing list, which was never shared', count: state.prep.length },
+  ];
+}
+
+/**
+ * "Keep my side as its own trip." The dates, the lists and the Log come; the
+ * stops do not, because they were never yours.
+ */
+export function keepMySide() {
+  if (!state.trip) return;
+  for (const day of [...state.days]) put('days', { ...day, items: [], areaSpan: '' });
+  for (const kind of ['places', 'subRoutes', 'mustSee']) {
+    for (const row of [...state[kind]]) remove(kind, row.id);
+  }
+  putTrip({
+    ...state.trip,
+    name: `${String(state.trip.name || 'Trip').split('·')[0].trim()}, my side`,
+    people: [],
+    link: null,
+    share: null,
+    changes: [],
+    removed: null,
+    shoppingFrom: null,
+    shoppingArrived: null,
+  });
 }
 
 // Re-exported so screens can format without importing two modules.

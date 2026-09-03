@@ -2,8 +2,11 @@
 // is cached and served cache-first; map tiles and Firebase always go to the
 // network, and Firestore keeps its own offline copy of your data.
 
-const VERSION = 'v3';
+const VERSION = 'v4';
 const SHELL = `travel-planner-shell-${VERSION}`;
+// Map areas the traveller chose to keep. Deliberately not versioned: a
+// deploy must never throw away a download they waited on hotel wifi for.
+const TILES = 'travel-planner-tiles';
 
 const ASSETS = [
   './',
@@ -18,6 +21,10 @@ const ASSETS = [
   './js/data.js',
   './js/util.js',
   './js/itinerary.js',
+  './js/sync.js',
+  './js/tiles.js',
+  './js/remind.js',
+  './js/strip.js',
   './js/photos.js',
   './js/screens/parts.js',
   './js/screens/map.js',
@@ -34,6 +41,9 @@ const ASSETS = [
   './js/screens/trips.js',
   './js/screens/spend.js',
   './js/screens/paste.js',
+  './js/screens/area.js',
+  './js/screens/areas.js',
+  './js/screens/stuck.js',
   './js/net.js',
   './icons/icon.svg',
   './icons/icon-180.png',
@@ -57,7 +67,9 @@ self.addEventListener('install', (event) => {
 self.addEventListener('activate', (event) => {
   event.waitUntil(
     caches.keys()
-      .then((keys) => Promise.all(keys.filter((k) => k !== SHELL).map((k) => caches.delete(k))))
+      .then((keys) => Promise.all(
+        keys.filter((k) => k !== SHELL && k !== TILES).map((k) => caches.delete(k))
+      ))
       .then(() => self.clients.claim())
   );
 });
@@ -69,7 +81,27 @@ self.addEventListener('fetch', (event) => {
   const url = new URL(request.url);
   const sameOrigin = url.origin === self.location.origin;
 
-  // Anything live — tiles, fonts, Firebase — is network-first with a cached
+  // A map tile inside a kept area is served from that cache first: the
+  // traveller downloaded it precisely so it would not need the network.
+  if (url.hostname.endsWith('tile.openstreetmap.org')) {
+    event.respondWith(
+      caches.open(TILES)
+        .then((cache) => cache.match(request))
+        .then((hit) => hit || fetch(request).then((response) => {
+          // Only what was deliberately kept goes in the tiles cache; casual
+          // browsing is cached in the shell as before.
+          if (response.ok) {
+            const copy = response.clone();
+            caches.open(SHELL).then((cache) => cache.put(request, copy)).catch(() => {});
+          }
+          return response;
+        }))
+        .catch(() => caches.match(request))
+    );
+    return;
+  }
+
+  // Anything live — fonts, Firebase — is network-first with a cached
   // fallback, so going offline degrades rather than breaks.
   if (!sameOrigin) {
     event.respondWith(

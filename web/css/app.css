@@ -1744,3 +1744,351 @@ input.guessed { border: 1.5px solid var(--amber); background: #FFFDF7; color: va
   color: #fff;
 }
 .undo-go { flex: none; font-size: 12.5px; font-weight: 800; color: #8FB3A6; }
+
+/* ==========================================================================
+   On the road — one strip above the tab bar, a patch of map kept on the
+   phone, and whether your changes are saved.
+   ========================================================================== */
+
+/* ------------------------------------------------------------- the strip */
+
+.strip-slot { position: relative; z-index: 9; flex: none; padding: 0 12px 8px; background: var(--bone); }
+.strip {
+  border-radius: 18px;
+  padding: 13px 14px;
+  box-shadow: 0 8px 26px rgba(20,32,28,.18);
+}
+.strip.amber { background: var(--amber-bg); border: 1.5px solid var(--amber-bd); color: var(--amber-fg); }
+.strip.red { background: #9B4B4B; color: #fff; }
+
+.strip-top { display: flex; gap: 11px; align-items: flex-start; }
+.strip-mark {
+  width: 30px;
+  height: 30px;
+  flex: none;
+  border-radius: 10px;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  font-size: 16px;
+  font-weight: 800;
+}
+.strip.amber .strip-mark { background: var(--amber-bd); color: var(--amber-fg); }
+.strip.red .strip-mark { background: rgba(255,255,255,.18); color: #fff; }
+
+.strip-title { font-size: 14px; font-weight: 800; line-height: 1.3; }
+.strip-body { font-size: 12px; font-weight: 600; line-height: 1.4; margin-top: 3px; }
+.strip.red .strip-body { color: #F0D6D6; }
+
+.strip-acts { display: flex; gap: 8px; margin-top: 11px; }
+.strip-go {
+  flex: 1;
+  height: 40px;
+  border-radius: 12px;
+  background: var(--ink);
+  color: #fff;
+  font-size: 12.5px;
+  font-weight: 700;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+}
+.strip-go.light { background: #fff; color: #9B4B4B; font-weight: 800; }
+.strip-quiet {
+  flex: none;
+  height: 40px;
+  padding: 0 14px;
+  border-radius: 12px;
+  font-size: 12.5px;
+  font-weight: 700;
+  display: flex;
+  align-items: center;
+}
+.strip.amber .strip-quiet { background: rgba(255,255,255,.7); color: var(--amber-fg); }
+.strip.red .strip-quiet { background: rgba(255,255,255,.16); color: #fff; }
+
+.strip-fine { font-size: 10.5px; font-weight: 650; line-height: 1.4; margin-top: 9px; opacity: .8; }
+
+/* ------------------------------------------------------ the sync dot */
+
+.sync-dot { width: 8px; height: 8px; border-radius: 50%; flex: none; }
+.sync-dot.jade { background: var(--jade); }
+.sync-dot.amber { background: var(--amber); }
+.sync-dot.red { background: #9B4B4B; }
+.sync-dot.grey { background: var(--faint); }
+.sync-ring {
+  width: 10px;
+  height: 10px;
+  border-radius: 50%;
+  border: 2px solid #C9D0CB;
+  border-top-color: var(--jade);
+  flex: none;
+  animation: sync-spin 1s linear infinite;
+}
+@keyframes sync-spin { to { transform: rotate(360deg); } }
+@media (prefers-reduced-motion: reduce) { .sync-ring { animation: none; } }
+.trip-meta.warn { color: var(--amber-fg); font-weight: 650; }
+
+/* ------------------------------------------------- keeping a map area */
+
+.area-shade { position: absolute; left: 0; right: 0; z-index: 1; background: rgba(20,32,28,.28); pointer-events: none; }
+.area-shade.top { top: 0; height: 118px; }
+.area-shade.bottom { top: 430px; bottom: 0; }
+.area-box {
+  position: absolute;
+  z-index: 2;
+  left: 24px;
+  right: 24px;
+  top: 118px;
+  bottom: 414px;
+  border: 2.5px solid #fff;
+  border-radius: 6px;
+  pointer-events: none;
+}
+.area-grip {
+  position: absolute;
+  width: 26px;
+  height: 26px;
+  border-radius: 50%;
+  background: #fff;
+  box-shadow: 0 2px 6px rgba(20,32,28,.4);
+  pointer-events: auto;
+  touch-action: none;
+}
+.area-grip.nw { left: -13px; top: -13px; cursor: nwse-resize; }
+.area-grip.ne { right: -13px; top: -13px; cursor: nesw-resize; }
+.area-grip.sw { left: -13px; bottom: -13px; cursor: nesw-resize; }
+.area-grip.se { right: -13px; bottom: -13px; cursor: nwse-resize; }
+.area-note {
+  position: absolute;
+  left: 0;
+  right: 0;
+  top: 50%;
+  transform: translateY(-50%);
+  text-align: center;
+  font-size: 11px;
+  font-weight: 700;
+  color: #fff;
+}
+.area-note::before {
+  content: '';
+}
+.area-title {
+  flex: 1;
+  min-width: 0;
+  padding: 8px 12px;
+  background: #fff;
+  border-radius: 13px;
+  box-shadow: 0 2px 10px rgba(20,32,28,.12);
+  pointer-events: auto;
+}
+.area-sheet {
+  position: absolute;
+  left: 0;
+  right: 0;
+  bottom: 0;
+  z-index: 3;
+  background: #fff;
+  border-radius: 22px 22px 0 0;
+  box-shadow: 0 -8px 30px rgba(20,32,28,.18);
+  padding: 16px 16px calc(20px + var(--safe-bottom));
+  max-height: none;
+}
+.detail {
+  flex: 1;
+  padding: 9px 11px;
+  border-radius: 12px;
+  background: var(--bone);
+  border: 1px solid var(--field);
+  text-align: left;
+}
+.detail.on { border: 1.5px solid var(--ink); }
+.detail.too-big { opacity: .55; }
+.toggle {
+  width: 34px;
+  height: 20px;
+  flex: none;
+  border-radius: 10px;
+  background: var(--field);
+  display: flex;
+  align-items: center;
+  padding: 0 2px;
+}
+.toggle > i { display: block; width: 16px; height: 16px; border-radius: 50%; background: #fff; }
+.toggle.on { background: var(--jade); justify-content: flex-end; }
+
+.area-thumb {
+  width: 72px;
+  height: 56px;
+  flex: none;
+  border-radius: 10px;
+  background: #E9EAE6;
+  position: relative;
+}
+.area-thumb > span {
+  position: absolute;
+  inset: 8px;
+  border: 2px solid var(--jade);
+  border-radius: 3px;
+  display: block;
+}
+
+/* ------------------------------------------------------- stuck changes */
+
+.stuck-why {
+  background: var(--danger-bg);
+  border: 1px solid #E7CDCD;
+  border-radius: 16px;
+  padding: 13px 14px;
+  color: var(--danger-fg);
+}
+.f18 { font-size: 18px; }
+.f20 { font-size: 20px; }
+.lh15 { line-height: 1.5; }
+
+/* ------------------------------------------------------------ sharing */
+
+.mb2 { margin-bottom: 2px; } .mb9 { margin-bottom: 9px; }
+.mb11 { margin-bottom: 11px; } .mb18 { margin-bottom: 18px; }
+.mt7 { margin-top: 7px; } .mt8 { margin-top: 8px; }
+.mt9 { margin-top: 9px; } .mt13 { margin-top: 13px; }
+.block { display: block; }
+.left { text-align: left; }
+
+.badge.jade { background: var(--jade-bg); color: var(--jade); }
+.badge.rust { background: var(--danger-bg); color: var(--danger-fg); }
+
+/* A person is one grey chip with an initial, so eight travellers and 中文
+   names both fit. */
+.who-mark {
+  flex: none;
+  width: 30px;
+  height: 30px;
+  border-radius: 9px;
+  background: var(--bone);
+  border: 1px solid var(--line);
+  display: grid;
+  place-items: center;
+  font-size: 12px;
+  font-weight: 800;
+  color: var(--charcoal);
+}
+
+/* The banner that says what moved since you last opened this day. */
+.moved {
+  border: 1px solid var(--amber-bd);
+  background: var(--amber-bg);
+  border-radius: 12px;
+  padding: 11px 12px;
+  margin: 0 0 12px;
+}
+.moved-h {
+  font-size: 10.5px;
+  font-weight: 800;
+  letter-spacing: .05em;
+  color: var(--amber-fg);
+  margin-bottom: 8px;
+}
+.moved-l { display: flex; gap: 7px; font-size: 11.5px; line-height: 1.45; color: var(--charcoal); margin-bottom: 6px; }
+.moved-w { flex: none; font-weight: 800; color: var(--ink); }
+.moved-acts { display: flex; gap: 8px; margin-top: 10px; }
+
+/* One row that was changed under you, until you have seen it. */
+.mark {
+  display: block;
+  font-size: 10.5px;
+  line-height: 1.4;
+  color: var(--amber-fg);
+  margin-top: 3px;
+}
+.mark-was { color: var(--soft); }
+
+/* Read-only is a subtraction, not a different screen. */
+.reading {
+  font-size: 9.5px;
+  font-weight: 800;
+  letter-spacing: .05em;
+  color: var(--muted);
+  background: var(--bone);
+  border: 1px solid var(--line);
+  border-radius: 6px;
+  padding: 3px 7px;
+}
+
+/* The join screen, opened in a browser by someone who has never seen this. */
+.join { padding: 0 0 28px; }
+.join-bar {
+  display: flex;
+  align-items: center;
+  gap: 7px;
+  padding: 9px 14px;
+  background: var(--bone);
+  border-bottom: 1px solid var(--line);
+  font-size: 11px;
+  color: var(--muted);
+  font-variant-numeric: tabular-nums;
+}
+.join-head { padding: 18px 18px 14px; }
+.join-from { display: flex; align-items: center; gap: 9px; margin-bottom: 14px; }
+.join-name { font-size: 24px; font-weight: 800; letter-spacing: -.02em; color: var(--ink); line-height: 1.15; }
+.join-sub { font-size: 13px; color: var(--muted); margin-top: 3px; }
+.join-meta { font-size: 11.5px; color: var(--soft); margin-top: 7px; font-variant-numeric: tabular-nums; }
+.join-look {
+  margin: 0 16px;
+  border: 1px solid var(--line);
+  border-radius: 13px;
+  padding: 12px 13px;
+  background: #fff;
+}
+.join-more { font-size: 11px; color: var(--soft); padding-top: 9px; }
+.join-foot {
+  position: sticky;
+  bottom: 0;
+  background: linear-gradient(to top, #fff 62%, rgba(255, 255, 255, 0));
+  padding: 14px 16px calc(14px + var(--safe-bottom));
+}
+.join-fine { font-size: 10.5px; color: var(--soft); line-height: 1.45; text-align: center; margin-top: 9px; }
+
+/* Signing in, at the last possible moment. */
+.sign-btn {
+  width: 100%;
+  height: 48px;
+  border-radius: 12px;
+  border: 1px solid var(--field-bd);
+  background: #fff;
+  font-size: 13.5px;
+  font-weight: 700;
+  color: var(--ink);
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  gap: 8px;
+  margin-bottom: 9px;
+}
+.sign-btn.dark { background: var(--ink); border-color: var(--ink); color: #fff; }
+
+/* Arrival strip: the only trace of sharing on the guest's shopping list. */
+.arrived {
+  display: flex;
+  align-items: flex-start;
+  gap: 10px;
+  border: 1px solid var(--jade-bd);
+  background: var(--jade-bg);
+  border-radius: 12px;
+  padding: 10px 12px;
+  margin-bottom: 12px;
+}
+.arrived-t { font-size: 12px; font-weight: 800; color: var(--jade); }
+.arrived-s { font-size: 11px; color: var(--jade-fg); line-height: 1.45; margin-top: 2px; }
+
+/* No longer shared with you. */
+.gone-card {
+  border: 1px solid var(--danger-bg);
+  background: var(--danger-bg);
+  border-radius: 14px;
+  padding: 13px 14px;
+  margin-bottom: 14px;
+}
+.gone-t { font-size: 14px; font-weight: 800; color: var(--ink); }
+.gone-s { font-size: 11.5px; color: var(--danger-fg); line-height: 1.5; margin-top: 5px; }
+.kept-line { display: flex; gap: 8px; font-size: 12px; color: var(--charcoal); line-height: 1.45; margin-bottom: 7px; }

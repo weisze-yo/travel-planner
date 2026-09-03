@@ -4,6 +4,7 @@ import { $ } from './util.js';
 import { boot, closeTrip, state } from './store.js';
 import { readActiveTripID } from './persist.js';
 import { register, start } from './nav.js';
+import * as strip from './strip.js';
 
 import map from './screens/map.js';
 import plan from './screens/plan.js';
@@ -19,8 +20,11 @@ import trip from './screens/trip.js';
 import trips from './screens/trips.js';
 import spend from './screens/spend.js';
 import paste from './screens/paste.js';
+import area from './screens/area.js';
+import areas from './screens/areas.js';
+import stuck from './screens/stuck.js';
 
-for (const screen of [map, plan, dest, nearby, sub, shop, mustsee, prep, log, note, trip, trips, spend, paste]) {
+for (const screen of [map, plan, dest, nearby, sub, shop, mustsee, prep, log, note, trip, trips, spend, paste, area, areas, stuck]) {
   register(screen);
 }
 
@@ -46,6 +50,7 @@ async function main() {
   const insideTrip = ['map', 'plan', 'shop', 'prep', 'log'].includes(asked);
   const initial = remembered ? (insideTrip ? asked : 'map') : 'trips';
   start({ initial });
+  strip.start();
 
   cover.classList.add('gone');
   setTimeout(() => cover.remove(), 300);
