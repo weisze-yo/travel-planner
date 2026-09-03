@@ -294,28 +294,61 @@
 <div class="wrap">
 
   <header class="masthead">
-    <div class="kicker">Design review · round four · ready for handoff</div>
+    <div class="kicker">Design review · round five · design session one of three, built</div>
     <h1>What the Travel Planner still needs</h1>
     <p class="standfirst">
-      The model is settled: everything is a place, and a stop is a visit to one. That was the
-      largest open question and it is now built rather than drawn, so the diagram below is a
-      record of what exists, not a proposal. Eighteen things are still open, and four of them
-      are worth settling before the rest are drawn.
+      The four that had to be settled first are built. The day now owns its times, holds as
+      many stretches of free time as it has gaps, keeps a note per place rather than one per
+      day, and can be filled by pasting the agent's itinerary in. Fifteen things are still
+      open — the eighteen that were, less the four now built, plus one this round's work
+      created — and they divide cleanly between the two design sessions left.
     </p>
     <div class="facts">
-      <span><b>31</b> fixed across four rounds</span>
-      <span><b>18</b> open, all needing design</span>
+      <span><b>37</b> fixed across five rounds</span>
+      <span><b>15</b> open, all needing design</span>
       <span><b>0</b> blockers</span>
       <span><b>0</b> unanswered questions</span>
+      <span><b>1</b> new, from this round's work</span>
     </div>
   </header>
 
   <div class="done">
     <div class="done-head">
       <b>Fixed and deployed</b>
-      <span>Round four's seven, all sixteen of your points, and the eight from round one.</span>
+      <span>This round's four and the two bugs they turned up, round four's seven, all sixteen
+      of your points, and the eight from round one.</span>
     </div>
     <ul class="done-list">
+      <li><i>06</i> <b>A stop owns its start and its length,</b> and its end is worked out from
+        those rather than stored beside them — one time plus a duration, because on a phone you
+        know when you arrive and roughly how long you have and rarely know both clock times.
+        The old fixed "13:30 – 15:45" string is read once and cleared.</li>
+      <li><i>06</i> <b>An out-of-order day says so on the row.</b> Dragging 09:15 to sit after
+        18:00 is still allowed; the row then reads <em>listed after Nishi Market, which starts
+        at 13:30</em>, and an overlap reads <em>overlaps Ashgate Shrine, which runs to
+        14:30</em>. A warning, never a refused drag — and the overlap is judged on the clock, so
+        a day that is out of order is still told about the collision.</li>
+      <li><i>05</i> <b>A day holds as many loops as it has gaps.</b> Each is its own record with
+        its own name, ends and times; each gets its own dashed row on the Plan, placed by when
+        it departs and swipeable left to the red bin. A new one goes into the largest free
+        stretch the day has — inside a long stop, or between two.</li>
+      <li><i>05</i> <b>The loop screen says which afternoon it is</b> — <em>Day 3 afternoon ·
+        13:45 – 15:45</em> — and carries chips to move between the day's loops. Nearby names the
+        loop a place is joining, and marks a place already in another one.</li>
+      <li><i>04</i> <b>A note belongs to a place.</b> Writing about a second place on the same
+        day no longer overwrites the first. The Log is a card per day with that day's notes
+        stacked under their place names, and a place's Log tab shows every note about it across
+        the trip instead of apologising for showing none.</li>
+      <li><i>01</i> <b>Paste the itinerary in.</b> Text in, candidate stops out, every field
+        correctable, nothing landing until you press the button. It reads day headings
+        (<em>Day 3</em>, <em>第三天</em>, <em>Mar 14</em>, <em>14/3</em>), time ranges, bracketed
+        durations, and continuation lines — which become notes on the stop above. Built around
+        the half-understood row: one missing its day or its time is kept, flagged and editable
+        in place, never dropped. Nothing touches the network, and the screen says so.</li>
+      <li><i>+</i> <b>Two bugs found while driving it:</b> a note migrated from the old shape
+        kept pointing at the stop id its place had replaced, so it vanished from that place's
+        Log tab; and day-scoped Nearby asked for places by the itinerary row's id rather than
+        its place's, so that screen had been silently empty since the model changed.</li>
       <li><i>25</i> <b>Everything is a place.</b> A stop is a visit to a place, not a separate kind of record. Existing trips migrate on open: every stop gained its place, and the nearby places, shopping items and shots that hung off it followed.</li>
       <li><i>25</i> <b>One way to create either.</b> Plan's <em>+ Add a stop</em> and Nearby's <em>+ Add a place</em> take the same input — paste a map link or type a name. The only difference is where it lands.</li>
       <li><i>25</i> <b>A place opens like a stop.</b> Anything in a Nearby list opens the full screen — Info, Nearby, Must-see, Shop, Log — with its own tab counts, not its parent's.</li>
@@ -344,7 +377,7 @@
   <div class="model">
     <div class="model-head">
       <b>The model, as built</b>
-      <span>Item 25, settled — draw against this rather than around it.</span>
+      <span>Items 25, 04, 05 and 06, all settled — draw against this rather than around it.</span>
     </div>
     <div class="model-body">
       <p>
@@ -360,16 +393,25 @@
   ├── <b>nearby</b>        every place anchored to this one
   ├── <b>must-see</b>      shots to get here
   ├── <b>shopping</b>      what to buy here
-  └── <b>notes</b>         still one per day — item 04
+  └── <b>notes</b>         one per place per day — item 04, now built
 
 day
-  └── <b>visits</b>        ordered: place + time + main or sub route
-        └── <b>sub route</b>  start place · end place · places in between
-                          depart · return by  → time to spend</div>
+  ├── <b>visits</b>        ordered: place + start + length  → end is derived
+  └── <b>loops</b>         as many as the day has gaps — item 05, now built
+        start place · end place · places in between
+        depart · return by  → time to spend</div>
       <p>
         Two consequences worth designing to. A place saved from a Nearby list is already a
-        candidate stop — it needs no retyping, only a day and a time. And shopping, shots and
-        the loop all point at the place by identity, so renaming it no longer orphans anything.
+        candidate stop — it needs no retyping, only a day and a time. And shopping, shots, notes
+        and the loops all point at the place by identity, so renaming it no longer orphans
+        anything.
+      </p>
+      <p>
+        Two more, added this round. A visit stores its start and its length and never its end,
+        so a window cannot disagree with itself — which is why every screen that shows
+        <em>13:30 – 15:45</em> is computing it. And a loop is a sibling of the visits rather
+        than a child of one: it hangs off the day, names the stop it happens inside, and there
+        can be several.
       </p>
     </div>
   </div>
@@ -424,88 +466,114 @@ day
     </div>
   </div>
 
-  <h2>Settle these four first</h2>
+  <h2>Settle these first</h2>
   <p class="section-note">
-    Not because they are the biggest screens, but because everything else is drawn
-    differently depending on how they land.
+    Session one took the four that everything else was drawn around. What is left divides
+    cleanly: session two is the trips home, the spend report, the swipe pattern and the three
+    things that make the app trustworthy on the road; session three is sharing a trip. These
+    four are the ones those sessions turn on.
   </p>
 
   <section>
 
     <div class="item head-here">
-      <div class="rail"><div class="num">04</div><span class="sev serious">Model</span></div>
+      <div class="rail"><div class="num">29</div><span class="sev serious">Session 2</span></div>
       <div>
-        <h3>A day still holds only one note</h3>
+        <h3>Three things I built plain, which now need a designer<span class="changed">unchanged</span></h3>
         <p>
-          The destination screen now has a Log tab, which makes the problem plain rather than
-          hidden: it can only show the day's single note, and only when that note happens to be
-          filed under this stop. The tab says so in as many words, which is honest and
-          unsatisfying.
+          Still the first thing you see. The trip card shows a two-letter mark, name, dates and
+          length — no cover image, no sense of past versus upcoming, nothing about how ready the
+          trip is. The spend report is a hero figure, one bar per bucket and a list. The swipe
+          reveals a single red dustbin at a fixed 68px.
+        </p>
+        <p>
+          One thing did change under it: the trip card could now say something true about
+          readiness, because the app finally knows. A trip with pasted stops and no positions is
+          a different state from a trip with a full itinerary, and both are different from the
+          demo.
         </p>
         <div class="ask">
           <b>To design</b>
-          Notes belonging to a place, with the Log day card stacking that day's notes under the
-          place name. The model already allows it — this is the only branch of the tree above
-          still tied to the day rather than the place.
+          These three, on top of what exists — the trip card first. It is worth deciding what
+          the card says about a trip that has been pasted in but not yet filled out, since that
+          is now the normal first state.
         </div>
       </div>
     </div>
 
     <div class="item head-here">
-      <div class="rail"><div class="num">05</div><span class="sev serious">Model</span></div>
+      <div class="rail"><div class="num">30</div><span class="sev serious">New</span></div>
       <div>
-        <h3>Free time can still only happen once a day</h3>
+        <h3>A pasted itinerary has no positions, so the map is empty<span class="changed">new</span></h3>
         <p>
-          Sharper this round, not softer. The loop can now be renamed, given both ends and
-          treated as a time budget — all of which makes it feel like a thing you would want two
-          of. There is still only one per day.
+          The consequence of item 01 landing. Pasting six days in takes about a minute and gives
+          you every stop, every time and every length — and not one coordinate, because reading
+          a map link is per-place and needs the network. So on a real trip the Plan is complete
+          and the Map is blank, which is the opposite way round from the demo.
+        </p>
+        <p>
+          The screen says so, and the route to fixing one stop exists: open it, paste its map
+          link. What is missing is any sense of how many are still unlocated, or a way through
+          them that is not eighteen separate visits to eighteen screens.
         </p>
         <div class="ask">
           <b>To design</b>
-          How the Plan shows two or three loops in one day, how you start a second one, and how
-          the loop screen says which afternoon it belongs to now that it carries a name.
+          How an unlocated stop reads on the Plan and on the Map, where the count lives, and
+          whether there is a way to work through them in one pass. Worth deciding whether
+          locating a stop is even worth doing for all of them, or only for the ones you will
+          walk from — which is the question item 27 asks from the other side.
         </div>
       </div>
     </div>
 
     <div class="item head-here">
-      <div class="rail"><div class="num">06</div><span class="sev serious">Serious</span></div>
+      <div class="rail"><div class="num">28</div><span class="sev serious">Session 2</span></div>
       <div>
-        <h3>Times are text, and a stop's window still can't be edited</h3>
+        <h3>You still can't tell whether your changes are saved<span class="changed">unchanged</span></h3>
         <p>
-          Half-answered. Inside a loop you now set both times yourself, which is the pattern to
-          copy. Everywhere else a stop still has only an editable start; its end is a fixed
-          string that the loop reads as a deadline, and dragging can still put 09:15 after 18:00
-          without comment.
+          Three states, one of them shown. Online and syncing: silent. Offline with the cache:
+          edits queue and replay, also silent, and indistinguishable from the first. Configured
+          but unable to reach Firebase: changes are stranded in that browser, and I show a red
+          banner because silence there is dangerous.
+        </p>
+        <p>
+          This round makes it matter more, not less. Pasting an itinerary in is the largest
+          single write the app ever makes — eighteen stops and a dozen places at once — and it
+          is exactly the sort of thing you would do on hotel wifi the night before.
         </p>
         <div class="ask">
           <b>To design</b>
-          How a stop's start and end are entered — one time plus a duration, or two times — and
-          what an out-of-order or overlapping day looks like. A warning on the row rather than a
-          refused drag.
+          Syncing, queued-offline and stranded: ignorable when all is well, unmissable when it
+          is not. And what the paste screen says if the write cannot leave the device.
         </div>
       </div>
     </div>
 
     <div class="item head-here">
-      <div class="rail"><div class="num">01</div><span class="sev serious">Serious</span></div>
+      <div class="rail"><div class="num">11</div><span class="sev serious">Session 3</span></div>
       <div>
-        <h3>Getting a real itinerary in<span class="changed">progressed</span></h3>
+        <h3>Sharing one trip with the people on it<span class="changed">unchanged</span></h3>
         <p>
-          There is now a trips home, a new-trip form, editable dates and length, and stops you
-          can type. So the app is usable for your trip. What is missing is still the part that
-          makes it bearable: typing six days of stops on a phone when the itinerary already
-          exists as a PDF or a WhatsApp message.
+          The largest remaining piece, and the whole of session three. Your answer stands:
+          family and friends, aligned on the schedule, one selected trip rather than everything
+          you have.
         </p>
         <p>
-          Worth designing to the constraint: with no paid API and no server, parsing happens on
-          the device or by hand. So the realistic screen is paste-and-confirm, not magic.
+          The plumbing is mine and I will build it: real sign-in, linking the anonymous account
+          you already have so nothing is lost, and rules that open exactly one trip to exactly
+          the people invited to it. What I cannot invent is how it looks or how much anyone else
+          may touch.
         </p>
         <div class="ask">
           <b>To design</b>
-          A paste-the-itinerary screen: text in, candidate stops with times out, each row
-          confirmed or corrected before it lands. Design the half-understood case, because that
-          is the normal one.
+          Four things. The <b>invite</b> — a link, a code, or an email, and what the person sees
+          before they accept. The <b>share sheet</b> on a trip, listing who has it and letting
+          you take it back. <b>What a guest can do</b> — my recommendation is still two levels
+          only, can-edit and can-read, because three is a settings screen nobody reads. And
+          <b>attribution</b>: whether a ticked shopping item, a packed bag or a note shows who
+          did it. Design the shopping list with two people on it, because that is where it gets
+          confusing first — and now the Log too, since a day holds several notes and two people
+          will write them.
         </div>
       </div>
     </div>
@@ -515,30 +583,6 @@ day
   <h2>Then these</h2>
 
   <section>
-
-    <div class="item">
-      <div class="rail"><div class="num">29</div><span class="sev serious">New</span></div>
-      <div>
-        <h3>Three things I built plain, which now need a designer<span class="changed">new</span></h3>
-        <p>
-          To unblock you I built the <b>trips home</b>, the <b>spend report</b> and the
-          <b>swipe-to-delete</b> pattern in the app's existing language rather than waiting for
-          artboards. They work and they are consistent, but nobody designed them.
-        </p>
-        <p>
-          Specifically: the trip card shows a two-letter mark, name, dates and length — no cover
-          image, no sense of past versus upcoming, nothing about how ready the trip is. The
-          report is a hero figure, one bar per bucket and a list. The swipe reveals a single red
-          dustbin at a fixed 68px.
-        </p>
-        <div class="ask">
-          <b>To design</b>
-          These three, on top of what exists — I would rather rebuild them to a design than have
-          them stay as my improvisation. The trip card is the one that matters most, since it is
-          now the first thing you see.
-        </div>
-      </div>
-    </div>
 
     <div class="item">
       <div class="rail"><div class="num">09</div><span class="sev serious">Serious</span></div>
@@ -600,39 +644,24 @@ day
     <div class="item">
       <div class="rail"><div class="num">27</div><span class="sev serious">Serious</span></div>
       <div>
-        <h3>Offline means the map still goes blank</h3>
+        <h3>Offline means the map still goes blank<span class="changed">sharper</span></h3>
         <p>
-          Unchanged. Trip data works offline now; map tiles are images fetched per view. Tiles
-          you have already looked at are cached, so areas you browsed at the hotel still draw —
-          pan somewhere new with no signal and you get grey. Which is the situation the sub route
-          exists for.
+          Trip data works offline now; map tiles are images fetched per view. Tiles you have
+          already looked at are cached, so areas you browsed at the hotel still draw — pan
+          somewhere new with no signal and you get grey. Which is the situation the loops exist
+          for.
+        </p>
+        <p>
+          Sharper because of item 30. "The day's stops plus a margin" was the obvious way to
+          choose an area, and a pasted itinerary has no stops with positions — so on a real trip
+          there is nothing to draw the box around until the stops are located. The two items
+          have to be answered together.
         </p>
         <div class="ask">
           <b>To design</b>
-          A "download this area" action: where it lives, how the area is chosen (the day's stops
-          plus a margin), what it says about size, and what an undownloaded area shows.
-        </div>
-      </div>
-    </div>
-
-    <div class="item">
-      <div class="rail"><div class="num">28</div><span class="sev serious">Serious</span></div>
-      <div>
-        <h3>You still can't tell whether your changes are saved</h3>
-        <p>
-          Three states, one of them shown. Online and syncing: silent. Offline with the cache:
-          edits queue and replay, also silent, and indistinguishable from the first. Configured
-          but unable to reach Firebase: changes are stranded in that browser, and I show a red
-          banner because silence there is dangerous.
-        </p>
-        <p>
-          That banner is still my improvisation. For an app used in a market with bad signal,
-          knowing whether the ticked-off list actually saved is not a detail.
-        </p>
-        <div class="ask">
-          <b>To design</b>
-          Syncing, queued-offline and stranded: ignorable when all is well, unmissable when it
-          is not.
+          A "download this area" action: where it lives, how the area is chosen when some or all
+          of the day's stops have no position, what it says about size, and what an undownloaded
+          area shows.
         </div>
       </div>
     </div>
@@ -650,38 +679,17 @@ day
           So the eight-row table stands mostly empty for anywhere you added yourself, and there
           is no way to fill a row by hand.
         </p>
+        <p>
+          Sharper this round: a pasted stop arrives with a name, a time, a length and an entirely
+          empty table. That is now the commonest state a stop is in, so how a mostly-empty table
+          reads is no longer an edge case.
+        </p>
         <div class="ask">
           <b>To design</b>
           Which rows earn their keep, how a mostly-empty table reads, and whether a single
-          free-text "what I need to know" beats eight labelled rows for your own places.
-        </div>
-      </div>
-    </div>
-
-    <div class="item">
-      <div class="rail"><div class="num">11</div><span class="sev serious">Serious</span></div>
-      <div>
-        <h3>Sharing one trip with the people on it<span class="changed">answered</span></h3>
-        <p>
-          You answered this: family and friends, aligned on the schedule, and <em>one selected
-          trip</em> rather than everything you have. That is the largest piece of design left,
-          and it is now specific enough to draw.
-        </p>
-        <p>
-          The plumbing is mine and I will build it: real sign-in, linking the anonymous account
-          you already have so nothing is lost, and rules that open exactly one trip to exactly
-          the people invited to it. What I cannot invent is how it looks or how much anyone else
-          may touch.
-        </p>
-        <div class="ask">
-          <b>To design</b>
-          Four things. The <em>invite</em> — a link, a code, or an email, and what the person
-          sees before they accept. The <em>share sheet</em> on a trip, listing who has it and
-          letting you take it back. <em>What a guest can do</em> — my recommendation is two
-          levels only, can-edit and can-read, because three is a settings screen nobody reads.
-          And <em>attribution</em>: whether a ticked shopping item, a packed bag or a note shows
-          who did it. Design the shopping list with two people on it, because that is where it
-          gets confusing first.
+          free-text "what I need to know" beats eight labelled rows for your own places. A
+          pasted itinerary's continuation lines already land in the stop's note, which may be
+          most of what that free-text field would hold.
         </div>
       </div>
     </div>
@@ -689,15 +697,22 @@ day
     <div class="item">
       <div class="rail"><div class="num">12</div><span class="sev serious">Serious</span></div>
       <div>
-        <h3>Bilingual, and the gap widens with every screen</h3>
+        <h3>Bilingual, and the gap widens with every screen<span class="changed">wider</span></h3>
         <p>
-          Unchanged, and this round added five screens' worth of English-only strings — the trips
-          home, the spend report, the destination panels, the trip settings and every delete
-          confirmation.
+          Wider again. On top of round four's five screens, this round added the paste screen,
+          the confirm screen and its per-row flags, the two out-of-order warnings, the loop
+          switcher and every string on the rebuilt Log. The warnings are the awkward ones: they
+          are generated sentences with a place name and a time in them, not labels.
+        </p>
+        <p>
+          Worth knowing that the parser reads Chinese day headings and times already
+          (<em>第三天</em>, <em>下午3:00</em>), so the input half is bilingual and the output half
+          is not.
         </p>
         <div class="ask">
           <b>To design</b>
-          Both languages in any new artboard, and the awkward cases settled: place names that
+          Both languages in any new artboard, and how a generated warning sentence reads in
+          Chinese. And the awkward cases settled: place names that
           stay local, and a long Chinese label in a chip sized for English.
         </div>
       </div>
@@ -730,10 +745,16 @@ day
           home in place, a first run could simply offer "start a trip" beside "look around the
           demo".
         </p>
+        <p>
+          And a third option exists now that did not before: <em>paste an itinerary</em>. It is
+          the fastest route from an empty trip to a usable one, and it is currently buried behind
+          Plan's pencil and a line in trip settings.
+        </p>
         <div class="ask">
           <b>To design</b>
-          The first-run choice, and a starter packing list — Prep is completely blank after
-          emptying a trip, which is the least helpful screen in the app right now.
+          The first-run choice — start empty, look around the demo, or paste one in — and a
+          starter packing list, since Prep is completely blank after emptying a trip and is the
+          least helpful screen in the app right now.
         </div>
       </div>
     </div>
@@ -746,12 +767,19 @@ day
           The payment control is a real target now and the category picker beside it matches. The
           rest stands: amber-on-cream chips near the edge of readable contrast, labels at
           9.5–10px, the sort and packed-in controls still under 44px. The new swipe gesture also
-          needs a keyboard and screen-reader equivalent — right now deleting is gesture-only.
+          needs a keyboard and screen-reader equivalent — right now deleting is gesture-only, and
+          that now includes deleting a stretch of free time.
+        </p>
+        <p>
+          This round added more of the same problem. The FOR/MIN length field on a plan row is
+          56px wide, and the confirm screen packs a day picker, a start time and a length onto
+          one line with 9.5px labels between them. Both are the densest controls in the app.
         </p>
         <div class="ask">
           <b>To design</b>
-          Minimum sizes and contrast, a check against iOS larger-text settings, and a
-          non-gesture route to delete.
+          Minimum sizes and contrast, a check against iOS larger-text settings, a non-gesture
+          route to delete, and a look at whether a time and a length can be entered together at
+          a comfortable size on a phone.
         </div>
       </div>
     </div>
@@ -761,8 +789,9 @@ day
       <div>
         <h3>Nothing is searchable</h3>
         <p>
-          Unchanged. Fine at fourteen places; not at a hundred, four days of notes and a long
-          packing list. The new day and place filters on Shop help there and nowhere else.
+          Unchanged as work, larger as a problem. Fine at fourteen places; not at a hundred —
+          and a day now holds as many notes as you wrote rather than one, so the Log grows
+          faster than it did. The day and place filters on Shop help there and nowhere else.
         </p>
         <div class="ask"><b>To design</b> Per-screen or one trip-wide search, and what it returns.</div>
       </div>
@@ -773,9 +802,10 @@ day
       <div>
         <h3>The trip recap is promised but doesn't exist</h3>
         <p>
-          Unchanged. The Log's black card still describes route map, all photos, what you bought,
-          and the places you saved but never reached. The spend report now covers part of the
-          money half of that promise.
+          Unchanged as work. The Log's black card still describes route map, all photos, what
+          you bought, and the places you saved but never reached. The spend report now covers
+          part of the money half of that promise, and the Log's day cards part of the notes
+          half.
         </p>
         <div class="ask"><b>To design</b> The recap, especially the saved-but-never-reached list.</div>
       </div>
@@ -811,28 +841,43 @@ day
   </div>
 
   <h2>What I'd design in what order</h2>
+  <p class="section-note">
+    Session one took items 4, 5, 6 and 1 — the day's model. What is left maps onto the two
+    sessions you have named, in this order.
+  </p>
   <ol class="order">
-    <li><b>Items 4, 5 and 6</b> — notes per place, more than one loop a day, and how a stop's start and end are entered. All three now sit on a settled model, so they are decisions rather than architecture.</li>
-    <li><b>Item 11, sharing one trip</b> — the largest remaining piece, and the one your answer just unlocked. Invite, share sheet, two permission levels, and what attribution shows.</li>
-    <li><b>Item 1, pasting an itinerary in</b> — the difference between the app being pleasant on this trip and merely possible.</li>
-    <li><b>Item 29, the three screens I improvised</b> — the trip card first, since it is now the first thing you see when the app opens.</li>
-    <li><b>Items 9, 27 and 28</b> — reminders, offline map areas, and showing whether changes saved. The three that make it trustworthy on the road.</li>
-    <li><b>The rest</b> once you have used it for a day and know what you actually reached for.</li>
+    <li><b>Session two, first half — item 29</b>, the three screens I improvised. The trip card first, since it is the first thing you see when the app opens, and it can now say something true about whether a trip is ready.</li>
+    <li><b>Session two, second half — items 9, 27, 28 and 30.</b> Reminders, offline map areas, showing whether changes saved, and what an unlocated stop looks like. The four that decide whether the app is trustworthy on the road, and they interlock: a pasted itinerary has no positions, which is what 30 is about and what 27 has to work around.</li>
+    <li><b>Session three — item 11, sharing one trip.</b> The largest single piece: invite, share sheet, two permission levels, and what attribution shows. Design the shopping list and the Log with two people on them, because that is where it gets confusing first.</li>
+    <li><b>Items 7, 8, 10 and 12</b> alongside whichever session touches their screens — the place table, adding a shot, correcting a shopping item, and the second language.</li>
+    <li><b>The rest</b> — dark mode, empty states, the accessibility pass, search, the recap — once you have used it for a day and know what you actually reached for.</li>
   </ol>
 
   <div class="footnote">
-    <b>How this was checked.</b> Round four was driven in a browser like the three before it.
-    The migration was run against the existing trip and its result counted — seven stops became
-    places, twenty-one places in total, six of eight shopping items bound by identity — then run
-    again to confirm it adds nothing the second time. A pasted Google Maps link typed into
-    Plan's add-stop produced a stop that opens with all five tabs and carries its own
-    coordinates. A stop shows its own counts while a place beneath it shows its own, empty,
-    ones. The loop was renamed, given both ends, given a depart and a return time, and checked
-    at both a comfortable budget and an overrun. The 28-step regression passes.
+    <b>How this was checked.</b> Round five was driven in a browser at 390×844 like the four
+    before it: 56 checks, all passing, plus a pass over every screen and every destination
+    panel with no console errors.
+    The three migrations were run against the existing trip and their results counted —
+    <em>13:30 – 15:45</em> became 135 minutes and the old strings were cleared, the day's loop
+    adopted the row that had stood for it implicitly, both notes gained a place and a
+    written-at time — then run again to confirm they add nothing the second time.
+    A stop was retimed and its length changed, and the end moved with it; a stop was dragged
+    to sit after one four hours later, and the row said so rather than refusing; a stop was
+    stretched until it swallowed two others, and both said so. A second loop was started on
+    day 3, landed in a real gap rather than on top of the first, was renamed, took a place
+    that the first did not, and was deleted with its row and without its places. Two notes
+    were written about two places on one day and both survived; a third on another day showed
+    up under the same place's Log tab. Eleven lines of mixed English and Chinese itinerary
+    were pasted, read as seven stops across two days with one flagged, corrected in place, and
+    landed on days 5 and 6 with their ranges turned into lengths.
+    <b>What that turned up:</b> two bugs, both listed above and both fixed — a migrated note
+    pointing at a replaced id, and day-scoped Nearby asking by the wrong id.
     <b>What that did not cover:</b> the three free services — weather, geocoding, exchange
     rates — are blocked from this sandbox, so their parsers were verified against recorded
     payloads rather than live calls. They are still the first thing to try on your phone.
-    <b>Still not covered:</b> anything that only shows up on a real trip with real signal.
+    <b>Still not covered:</b> anything that only shows up on a real trip with real signal —
+    and, for the parser, any itinerary shaped differently from the ones I could invent. It
+    will misread lines; the confirm screen is the answer to that, not the parser.
   </div>
 
 </div>
