@@ -1,19 +1,26 @@
-// Screen 2j — Note composer. One note: the day, the place it is about, the
-// text and the photos. Reached from a stop, from a note in the Log, or from
-// the Log's + button.
+// Screen 2j — one note.
 //
-// Item 04: this used to edit "the day's note", which meant writing about a
-// second place overwrote the first. It now edits one note — a new one unless
-// it was opened on an existing one — so a day can carry as many as you wrote.
+// Opened from a place, so the place and the day are already answered and
+// shown as a line you can change rather than a list you must re-pick. The
+// time defaults to now, because a note is written where you are standing.
 
-import { html, raw, icon, delegate, money } from '../util.js';
+import { html, raw, icon, delegate, clock, parseClock } from '../util.js';
 import * as store from '../store.js';
 import { state } from '../store.js';
 import { go, back } from '../nav.js';
 import { attachPhoto } from '../store.js';
 
-let draft = { noteID: null, dayNumber: null, placeLabel: null, placeID: null, text: '', photos: [], loadedFor: null };
+let draft = {
+  noteID: null, dayNumber: null, time: '', placeLabel: null, placeID: null,
+  text: '', photos: [], loadedFor: null,
+};
 let photoNotice = '';
+let picking = false;
+
+const nowClock = () => {
+  const d = new Date();
+  return clock(d.getHours() * 60 + d.getMinutes());
+};
 
 export default {
   id: 'note',
@@ -24,10 +31,8 @@ export default {
 
     const dayNumber = draft.dayNumber ?? state.selectedDay;
     const day = store.day(dayNumber);
-    const stops = pickableStops(dayNumber);
-    const spend = store.spendTotals();
-    const symbol = state.trip?.currencySymbol || '¥';
-    const others = store.notesForDay(dayNumber).filter((n) => n.id !== draft.noteID);
+    const already = store.noteTimesAt(draft.placeID, dayNumber).filter((t) => t !== draft.time);
+    const stop = whereLine(dayNumber);
 
     return html`
       <section class="screen">
@@ -42,37 +47,30 @@ export default {
         </div>
 
         <div class="scroll" style="padding:14px 16px 24px">
-          <div class="eyebrow">WHICH DAY</div>
-          <div class="row g6 wrap mt8">
-            ${Array.from({ length: state.trip?.dayCount || 6 }, (_, i) => i + 1).map((n) => html`
-              <button class="note-day${n === dayNumber ? ' on' : ''}" data-pick-day="${n}">D${n}</button>`)}
-          </div>
-          <div class="f115 muted mt8">${day?.dateLabel || ''} · ${state.trip?.name?.split(' · ')[0] || ''}</div>
-
-          <div class="eyebrow mt18">WHICH PLACE</div>
-          <div class="col g6 mt8">
-            ${stops.length ? stops.map((stop) => html`
-              <button class="note-dest${stop.placeID && stop.placeID === draft.placeID ? ' on' : ''}"
-                      data-pick-place="${stop.label}" data-place-id="${stop.placeID || ''}">
-                <span class="radio${stop.placeID && stop.placeID === draft.placeID ? ' on' : ''}"></span>
-                <span class="note-dest-name">${stop.label}</span>
-                <span class="note-dest-time">${stop.time}</span>
-              </button>`) : html`
-              <div class="empty" style="padding:14px">No stops on this day yet.</div>`}
-
-            <button class="note-dest${draft.placeID ? '' : ' on'}" data-pick-place="" data-place-id="">
-              <span class="radio${draft.placeID ? '' : ' on'}"></span>
-              <span class="note-dest-name">The day as a whole</span>
-              <span class="note-dest-time">no place</span>
-            </button>
+          <div class="note-where">
+            <div class="note-where-mark">${raw(icon.pin)}</div>
+            <div class="grow">
+              <div class="f135 w650">${draft.placeLabel || 'Not about a place'}</div>
+              <div class="f115 muted mt2">${day?.dateLabel || `Day ${dayNumber}`}${stop ? ` · ${stop}` : ''}</div>
+            </div>
+            <button class="btn sm ghost" data-act="pick">${picking ? 'Done' : 'Change'}</button>
           </div>
 
-          ${others.length ? html`
-            <div class="f11 soft lh145 mt8">
-              ${others.length} other note${others.length === 1 ? '' : 's'} on this day already:
-              ${others.map((n) => n.placeLabel || 'the day as a whole').join(', ')}. Saving this one
-              adds to them.
-            </div>` : ''}
+          ${picking ? picker(dayNumber) : ''}
+
+          <div class="row g8 mt12">
+            <label class="none" style="width:120px">
+              <div class="eyebrow">TIME</div>
+              <input id="note-time" class="mt4" style="width:100%" value="${draft.time}" inputmode="numeric">
+            </label>
+            ${already.length ? html`
+              <div class="grow">
+                <div class="eyebrow">ALREADY HERE TODAY</div>
+                <div class="row g6 wrap mt8">
+                  ${already.map((t) => html`<span class="pick-chip">${t}</span>`)}
+                </div>
+              </div>` : ''}
+          </div>
 
           <div class="eyebrow mt18">NOTE</div>
           <textarea id="note-text" class="note-area mt8"
@@ -95,43 +93,57 @@ export default {
 
           ${photoNotice ? html`<div class="f11 amber-note mt8">${photoNotice}</div>` : ''}
 
-          <div class="f11 soft lh145 mt10">
-            Spend for this day is totalled from your shopping list
-            (${money(spend.spent, symbol)} so far), so there is nothing to enter here.
+          <div class="f11 soft lh145 mt12">
+            Saved against the place, not the day — so this one sits with the others
+            ${draft.placeLabel ? `at ${draft.placeLabel}` : 'on this day'}, and the day just
+            counts them.
           </div>
         </div>
       </section>`;
   },
 
-  mount(root, params = {}) {
+  mount(root) {
     delegate(root, '[data-act="close"]', () => { reset(); back(); });
+    delegate(root, '[data-act="pick"]', () => {
+      keep(root);
+      picking = !picking;
+      store.selectDay(draft.dayNumber ?? state.selectedDay);
+    });
+
     delegate(root, '[data-pick-day]', (el) => {
       const next = Number(el.dataset.pickDay);
       if (next === draft.dayNumber) return;
-      keepText(root);
+      keep(root);
       draft.dayNumber = next;
-      // A different day means a different set of places, so a place picked on
-      // the old one no longer applies.
+      // A different day means a different set of places.
       draft.placeID = null;
       draft.placeLabel = null;
       store.selectDay(next);
     });
     delegate(root, '[data-pick-place]', (el) => {
-      keepText(root);
-      draft.placeLabel = el.dataset.pickPlace || null;
-      draft.placeID = el.dataset.placeId || null;
+      keep(root);
+      draft.placeID = el.dataset.pickPlace || null;
+      draft.placeLabel = el.dataset.placeName || null;
+      picking = false;
       store.selectDay(draft.dayNumber ?? state.selectedDay);
     });
 
-    // Track every keystroke: a repaint (a sync from another device, say) would
-    // otherwise re-render the textarea from a stale draft and lose the typing.
+    const timeBox = root.querySelector('#note-time');
+    timeBox?.addEventListener('change', () => {
+      const at = parseClock(timeBox.value.trim());
+      if (at == null) timeBox.value = draft.time;
+      else draft.time = clock(at);
+    });
+
+    // Track every keystroke: a repaint (a sync from another device, say)
+    // would otherwise re-render the textarea from a stale draft.
     const textarea = root.querySelector('#note-text');
     textarea?.addEventListener('input', () => { draft.text = textarea.value; });
     textarea?.addEventListener('change', () => { draft.text = textarea.value; });
 
     const picker = root.querySelector('#note-photos');
     picker?.addEventListener('change', async () => {
-      keepText(root);
+      keep(root);
       const day = draft.dayNumber ?? state.selectedDay;
       let inlined = false;
       photoNotice = 'Adding photos…';
@@ -156,11 +168,10 @@ export default {
     });
 
     delegate(root, '[data-remove-photo]', (el) => {
-      keepText(root);
+      keep(root);
       const at = Number(el.dataset.removePhoto);
       const url = draft.photos[at];
       draft.photos = draft.photos.filter((_, i) => i !== at);
-      // If it was already saved to the note, take it out of storage too.
       const existing = draft.noteID ? store.noteByID(draft.noteID) : null;
       if (existing && (existing.photoPaths || []).includes(url)) {
         store.deleteLogPhoto(existing.id, url);
@@ -170,10 +181,11 @@ export default {
     });
 
     delegate(root, '[data-act="save"]', () => {
-      keepText(root);
+      keep(root);
       store.saveNote({
         id: draft.noteID,
         dayNumber: draft.dayNumber ?? state.selectedDay,
+        time: draft.time,
         placeID: draft.placeID,
         placeLabel: draft.placeLabel || '',
         text: draft.text,
@@ -185,50 +197,100 @@ export default {
   },
 };
 
-/**
- * Seeds the form once per opening. A note id edits that note; a place opens a
- * new note about that place; neither opens a blank one on the chosen day.
- */
+/** The day and the place, as a list — only while you are changing them. */
+function picker(dayNumber) {
+  const stops = pickableStops(dayNumber);
+  return html`
+    <div class="form mt10">
+      <div class="eyebrow">WHICH DAY</div>
+      <div class="row g6 wrap">
+        ${Array.from({ length: state.trip?.dayCount || 6 }, (_, i) => i + 1).map((n) => html`
+          <button class="note-day${n === dayNumber ? ' on' : ''}" data-pick-day="${n}">D${n}</button>`)}
+      </div>
+
+      <div class="eyebrow mt8">WHICH PLACE</div>
+      <div class="col g6">
+        ${stops.map((stop) => html`
+          <button class="note-dest${stop.placeID === draft.placeID ? ' on' : ''}"
+                  data-pick-place="${stop.placeID}" data-place-name="${stop.label}">
+            <span class="radio${stop.placeID === draft.placeID ? ' on' : ''}"></span>
+            <span class="note-dest-name">${stop.label}</span>
+            <span class="note-dest-time">${stop.time}</span>
+          </button>`)}
+        <button class="note-dest${draft.placeID ? '' : ' on'}" data-pick-place="" data-place-name="">
+          <span class="radio${draft.placeID ? '' : ' on'}"></span>
+          <span class="note-dest-name">Not about a place</span>
+          <span class="note-dest-time">the day itself</span>
+        </button>
+      </div>
+    </div>`;
+}
+
+/** "main route stop 5", or which sub route this place belongs to. */
+function whereLine(dayNumber) {
+  if (!draft.placeID) return '';
+  const day = store.day(dayNumber);
+  const numbers = store.mainStopNumbers(day);
+  const hit = store.activeItems(day).find((i) => i.placeID === draft.placeID);
+  if (hit) return `main route stop ${numbers[hit.id] ?? '—'}`;
+  for (const route of store.subRoutesFor(dayNumber)) {
+    if ((route.placeIDs || []).includes(draft.placeID)) return route.name;
+  }
+  return 'a place you saved';
+}
+
+/** Seeds the form once per opening. */
 function load(params) {
   const key = params.noteID || `new:${params.dayNumber ?? state.selectedDay}:${params.placeID || ''}`;
   if (draft.loadedFor === key) return;
 
   const existing = params.noteID ? store.noteByID(params.noteID) : null;
+  const placeID = existing?.placeID ?? params.placeID ?? null;
   draft = {
     noteID: existing?.id || null,
     dayNumber: existing?.dayNumber ?? params.dayNumber ?? state.selectedDay,
-    placeLabel: existing?.placeLabel ?? params.placeName ?? null,
-    placeID: existing?.placeID ?? params.placeID ?? null,
+    time: existing?.time || nowClock(),
+    placeLabel: existing?.placeLabel ?? params.placeName ?? (placeID ? store.place(placeID)?.name : null) ?? null,
+    placeID,
     text: existing?.text || '',
     photos: existing?.photoPaths || [],
     loadedFor: key,
   };
+  picking = false;
 }
 
-function keepText(root) {
+function keep(root) {
   const textarea = root.querySelector('#note-text');
   if (textarea) draft.text = textarea.value;
+  const timeBox = root.querySelector('#note-time');
+  if (timeBox && parseClock(timeBox.value) != null) draft.time = clock(parseClock(timeBox.value));
 }
 
 function reset() {
-  draft = { noteID: null, dayNumber: null, placeLabel: null, placeID: null, text: '', photos: [], loadedFor: null };
+  draft = {
+    noteID: null, dayNumber: null, time: '', placeLabel: null, placeID: null,
+    text: '', photos: [], loadedFor: null,
+  };
   photoNotice = '';
+  picking = false;
 }
 
-/** The day's stops plus every place picked into any of its loops. */
+/** The day's stops plus every place picked into any of its sub routes. */
 function pickableStops(dayNumber) {
   const day = store.day(dayNumber);
   const stops = store.activeItems(day)
-    .filter((item) => !item.isSubRouteSummary && item.placeID)
+    .filter((item) => item.placeID)
     .map((item) => ({ label: item.name, time: item.time, placeID: item.placeID }));
 
-  for (const stop of store.dayLoopStops(dayNumber)) {
-    if (stops.some((s) => s.placeID === stop.place.id)) continue;
-    stops.push({
-      label: stop.place.name,
-      time: `${stop.loop?.name || 'free time'} · ~${store.clock(stop.arrival)}`,
-      placeID: stop.place.id,
-    });
+  for (const route of store.subRoutesFor(dayNumber)) {
+    for (const stop of store.loopSchedule(route).stops) {
+      if (stops.some((s) => s.placeID === stop.place.id)) continue;
+      stops.push({
+        label: stop.place.name,
+        time: `${route.name} · ~${store.clock(stop.arrival)}`,
+        placeID: stop.place.id,
+      });
+    }
   }
   return stops;
 }

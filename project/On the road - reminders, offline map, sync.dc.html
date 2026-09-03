@@ -1,0 +1,304 @@
+<!DOCTYPE html>
+<html>
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<script src="./support.js"></script>
+</head>
+<body>
+<x-dc>
+<helmet data-dc-atomics><meta name="design_doc_mode" content="canvas"><link href="https://fonts.googleapis.com/css2?family=Public+Sans:ital,wght@0,400;0,500;0,600;0,700;0,800;1,400&display=swap" rel="stylesheet"><style>body{margin:0;background:#E4E6E2;font-family:'Public Sans',system-ui,sans-serif;color:#14201C;-webkit-font-smoothing:antialiased}*{box-sizing:border-box}a{color:#1F6F5C}a:hover{color:#14201C}::-webkit-scrollbar{width:0;height:0}</style></helmet>
+
+<section style="padding:44px 48px 40px">
+<div style="display:flex;align-items:baseline;gap:10px;margin:0 0 8px"><a href="#2a" style="font:800 10px ui-monospace,Menlo,monospace;padding:4px 8px;background:#14201C;color:#fff;border-radius:5px;text-decoration:none">2</a><div style="font-size:15px;font-weight:700">Three things that decide whether the app is trusted on the road</div></div>
+
+<div style="display:flex;gap:18px;margin:0 0 28px;flex-wrap:wrap">
+<div style="width:520px;background:#fff;border-radius:18px;padding:24px 26px;border:1px solid rgba(20,32,28,.08)">
+<div style="font-size:10.5px;font-weight:800;letter-spacing:.1em;color:#98A5A0">ONE PLACE FOR ANYTHING URGENT</div>
+<div style="font-size:22px;font-weight:700;letter-spacing:-.02em;margin:8px 0 14px">A single strip above the tab bar, and it is empty nearly all day</div>
+<p style="font-size:13.5px;line-height:1.6;color:#3D4C46;margin:0 0 10px;text-wrap:pretty">Reminders, the offline-map warning and the unsent-changes warning all speak in the same slot, one at a time, ranked: leave now beats outside your saved area beats changes stuck on this phone. Nothing appears there that you cannot act on in one tap. When the strip is empty the screen looks exactly as it does today.</p>
+<p style="font-size:13.5px;line-height:1.6;color:#3D4C46;margin:0 0 10px"><b>Not nagging</b> comes from three rules: one warning per deadline, no repeat unless the number gets materially worse, and it stops on its own once you are moving towards the place. Dismissing it silences that deadline, not the feature.</p>
+<p style="font-size:13.5px;line-height:1.6;color:#3D4C46;margin:0">The map's tiles are the only part of the app that needs the network. Everything drawn on top — your route, pins, sub route — is data you already have, so <b>outside a saved area the map degrades to that, rather than to nothing</b>.</p>
+</div>
+<div style="width:340px;background:#14201C;border-radius:18px;padding:24px 26px;color:#fff">
+<div style="font-size:10.5px;font-weight:800;letter-spacing:.1em;color:#8FB3A6">THE STRIP'S THREE VOICES</div>
+<div style="display:flex;flex-direction:column;gap:11px;margin-top:14px">
+<div style="border-radius:12px;background:#FBF1DE;border:1px solid #EBD9B4;padding:10px 12px"><div style="font-size:12.5px;font-weight:800;color:#8A5A08">Amber · pay attention soon</div><div style="font-size:11.5px;color:#8A5A08;line-height:1.4;margin-top:2px">Leave in 8 min · outside saved area · 3 changes waiting</div></div>
+<div style="border-radius:12px;background:#9B4B4B;padding:10px 12px"><div style="font-size:12.5px;font-weight:800;color:#fff">Red · act now or miss it</div><div style="font-size:11.5px;color:#F0D6D6;line-height:1.4;margin-top:2px">Leave now · changes that may never send</div></div>
+<div style="border-radius:12px;background:rgba(255,255,255,.1);padding:10px 12px"><div style="font-size:12.5px;font-weight:800;color:#fff">Nothing · the usual state</div><div style="font-size:11.5px;color:#C8D6D0;line-height:1.4;margin-top:2px">Timing lives quietly inside the day, sync as one dot in the header</div></div>
+</div>
+</div>
+</div>
+
+<div style="display:grid;grid-template-columns:repeat(3,402px);gap:34px;align-items:start;justify-content:start">
+
+<div id="2a" style="flex:none;display:flex;flex-direction:column;gap:10px">
+<div style="display:flex;align-items:baseline;gap:8px;max-width:402px;font:400 11.5px/1.3 'Public Sans',system-ui;color:#6B7A74"><a href="#2a" style="font:800 10.5px ui-monospace,Menlo,monospace;padding:3px 6px;background:#14201C;color:#fff;border-radius:5px;text-decoration:none">2a</a><span>Quiet — timing shown, nothing shouted</span></div>
+<div style="width:402px;height:874px;background:#E9EAE6;border-radius:12px;overflow:hidden;box-shadow:0 1px 0 rgba(20,32,28,.08),0 10px 40px rgba(20,32,28,.09);display:flex;flex-direction:column;position:relative">
+<svg viewBox="0 0 402 874" style="position:absolute;inset:0;width:100%;height:100%"><rect width="402" height="874" fill="#E9EAE6"></rect><g stroke="#DDE0DA" stroke-width="9" fill="none"><path d="M-20 150H420M-20 305H420M-20 470H420M70 -20V900M180 -20V900M296 -20V900"></path></g><g stroke="#E3E5E0" stroke-width="4" fill="none"><path d="M-20 220H420M-20 390H420M124 -20V900M240 -20V900"></path></g><path d="M82 104L170 158L254 222L198 286L100 242L44 176" fill="none" stroke="#1F6F5C" stroke-width="5.5" stroke-linecap="round" stroke-linejoin="round"></path></svg>
+<div style="position:relative;z-index:2;flex:none;padding:12px 16px 0;display:flex;gap:8px;align-items:center">
+<div style="flex:1;min-width:0;height:44px;display:flex;align-items:center;gap:9px;padding:0 12px;background:#fff;border-radius:14px;box-shadow:0 2px 10px rgba(20,32,28,.12)"><div style="width:26px;height:26px;flex:none;border-radius:8px;background:#1F6F5C;color:#fff;font-size:11px;font-weight:700;display:flex;align-items:center;justify-content:center">MC</div><div style="flex:1;min-width:0"><div style="font-size:13px;font-weight:600;line-height:1.15">Meridian City · Group Tour</div><div style="font-size:11px;color:#6B7A74;line-height:1.3">Day 3 of 6 · Mar 14</div></div><span style="width:8px;height:8px;border-radius:50%;background:#1F6F5C;flex:none"></span></div>
+</div>
+<div style="position:relative;z-index:3;margin-top:auto;background:#fff;border-radius:22px 22px 0 0;box-shadow:0 -8px 30px rgba(20,32,28,.16);height:44%;display:flex;flex-direction:column;padding-bottom:8px">
+<div style="padding:8px 0 10px;flex:none"><i style="display:block;width:40px;height:4px;border-radius:2px;background:#D8DDD9;margin:0 auto"></i></div>
+<div style="padding:0 16px 12px;display:flex;align-items:flex-end;justify-content:space-between;gap:10px">
+<div style="flex:1;min-width:0"><div style="font-size:11px;font-weight:700;letter-spacing:.09em;color:#6B7A74">DAY 3 · SAT</div><div style="font-size:20px;font-weight:700;letter-spacing:-.01em;margin-top:2px;line-height:1.15">08:30 – 18:00</div></div>
+<div style="flex:none;height:38px;display:flex;align-items:center;padding:0 12px;border-radius:12px;background:#FBF1DE;border:1px solid #EBD9B4;font-size:12.5px;font-weight:700;color:#8A5A08">Nearby</div>
+</div>
+<div style="flex:1;min-height:0;overflow:hidden;padding:0 16px">
+<div style="display:flex;gap:12px;align-items:center;padding:11px 0;border-top:1px solid #EDEFEC"><div style="width:44px;flex:none;font-size:12.5px;font-weight:700;font-variant-numeric:tabular-nums">13:30</div><div style="flex:1;min-width:0"><div style="font-size:14px;font-weight:600">Nishi Market</div><div style="font-size:11.5px;color:#6B7A74;margin-top:2px">Free until the coach at 15:45</div></div><span style="flex:none;padding:3px 7px;border-radius:6px;font-size:9.5px;font-weight:800;background:#E6EFEB;color:#1F6F5C">NOW</span></div>
+<div style="display:flex;gap:11px;align-items:center;padding:10px 12px;margin:2px 0 0;border-radius:12px;background:#F7F8F6"><svg width="15" height="15" viewBox="0 0 16 16" fill="none"><circle cx="8" cy="8" r="6.4" stroke="#6B7A74" stroke-width="1.5"></circle><path d="M8 4.4V8l2.4 1.6" stroke="#6B7A74" stroke-width="1.5" stroke-linecap="round"></path></svg><div style="flex:1;min-width:0;font-size:12px;font-weight:650;color:#3D4C46;line-height:1.35">Leave by <b>15:22</b> to be at the coach<div style="font-size:11px;color:#98A5A0;font-weight:600;margin-top:1px">23 min back on foot · 1h 12m of free time left</div></div></div>
+<div style="display:flex;gap:12px;align-items:center;padding:11px 0;border-top:1px solid #EDEFEC;margin-top:6px"><div style="width:44px;flex:none;font-size:12.5px;font-weight:700;font-variant-numeric:tabular-nums;color:#6B7A74">16:00</div><div style="flex:1;min-width:0"><div style="font-size:14px;font-weight:600">Skyline Deck</div><div style="font-size:11.5px;color:#6B7A74;margin-top:2px">Ticket held by the agent</div></div></div>
+</div>
+</div>
+<div style="position:relative;z-index:4;flex:none;display:flex;gap:2px;padding:7px 8px 10px;background:rgba(255,255,255,.94);border-top:1px solid #E4E8E5">
+<div style="flex:1;min-height:46px;display:flex;flex-direction:column;align-items:center;justify-content:center;gap:3px;border-radius:12px;background:#14201C;color:#fff"><svg width="20" height="20" viewBox="0 0 20 20" fill="none"><path d="M10 18s6-5.2 6-10A6 6 0 0 0 4 8c0 4.8 6 10 6 10z" stroke="#fff" stroke-width="1.7" stroke-linejoin="round"></path><circle cx="10" cy="8" r="2.2" stroke="#fff" stroke-width="1.7"></circle></svg><span style="font-size:9.5px;font-weight:700">Map</span></div>
+<div style="flex:1;min-height:46px;display:flex;flex-direction:column;align-items:center;justify-content:center;gap:3px;color:#6B7A74"><svg width="20" height="20" viewBox="0 0 20 20" fill="none"><g stroke="#6B7A74" stroke-width="1.7" stroke-linecap="round"><path d="M3 5.5h14M3 10h14M3 14.5h9"></path></g></svg><span style="font-size:9.5px;font-weight:700">Plan</span></div>
+<div style="flex:1;min-height:46px;display:flex;flex-direction:column;align-items:center;justify-content:center;gap:3px;color:#6B7A74"><svg width="20" height="20" viewBox="0 0 20 20" fill="none"><path d="M4.5 6.5h11l-1 10h-9l-1-10z" stroke="#6B7A74" stroke-width="1.7" stroke-linejoin="round"></path><path d="M7.5 6.5V5a2.5 2.5 0 0 1 5 0v1.5" stroke="#6B7A74" stroke-width="1.7" stroke-linecap="round"></path></svg><span style="font-size:9.5px;font-weight:700">Shop</span></div>
+<div style="flex:1;min-height:46px;display:flex;flex-direction:column;align-items:center;justify-content:center;gap:3px;color:#6B7A74"><svg width="20" height="20" viewBox="0 0 20 20" fill="none"><rect x="3.5" y="6" width="13" height="10.5" rx="2" stroke="#6B7A74" stroke-width="1.7"></rect><path d="M7.5 6V4.5a1.5 1.5 0 0 1 1.5-1.5h2a1.5 1.5 0 0 1 1.5 1.5V6" stroke="#6B7A74" stroke-width="1.7" stroke-linecap="round"></path></svg><span style="font-size:9.5px;font-weight:700">Prep</span></div>
+<div style="flex:1;min-height:46px;display:flex;flex-direction:column;align-items:center;justify-content:center;gap:3px;color:#6B7A74"><svg width="20" height="20" viewBox="0 0 20 20" fill="none"><path d="M13 3.5l3.5 3.5L7 16.5H3.5V13z" stroke="#6B7A74" stroke-width="1.7" stroke-linejoin="round"></path></svg><span style="font-size:9.5px;font-weight:700">Log</span></div>
+</div>
+</div>
+</div>
+
+<div id="2b" style="flex:none;display:flex;flex-direction:column;gap:10px">
+<div style="display:flex;align-items:baseline;gap:8px;max-width:402px;font:400 11.5px/1.3 'Public Sans',system-ui;color:#6B7A74"><a href="#2b" style="font:800 10.5px ui-monospace,Menlo,monospace;padding:3px 6px;background:#14201C;color:#fff;border-radius:5px;text-decoration:none">2b</a><span>Amber — one warning, once, with a way out</span></div>
+<div style="width:402px;height:874px;background:#E9EAE6;border-radius:12px;overflow:hidden;box-shadow:0 1px 0 rgba(20,32,28,.08),0 10px 40px rgba(20,32,28,.09);display:flex;flex-direction:column;position:relative">
+<svg viewBox="0 0 402 874" style="position:absolute;inset:0;width:100%;height:100%"><rect width="402" height="874" fill="#E9EAE6"></rect><g stroke="#DDE0DA" stroke-width="9" fill="none"><path d="M-20 150H420M-20 305H420M-20 470H420M70 -20V900M180 -20V900M296 -20V900"></path></g><path d="M100 242L150 300L210 340" fill="none" stroke="#C87F0A" stroke-width="3.5" stroke-dasharray="3 7" stroke-linecap="round"></path><path d="M82 104L170 158L254 222L198 286L100 242" fill="none" stroke="#1F6F5C" stroke-width="5.5" stroke-linecap="round" stroke-linejoin="round"></path></svg>
+<div style="position:absolute;left:196px;top:328px;width:28px;height:28px;border-radius:50%;background:#14201C;border:3px solid #fff;box-shadow:0 2px 8px rgba(20,32,28,.35)"></div>
+<div style="position:absolute;left:88px;top:230px;width:30px;height:30px;border-radius:50%;background:#1F6F5C;color:#fff;font-size:12px;font-weight:700;display:flex;align-items:center;justify-content:center;box-shadow:0 2px 8px rgba(20,32,28,.35)">5</div>
+<div style="position:relative;z-index:2;flex:none;padding:12px 16px 0"><div style="height:44px;display:flex;align-items:center;gap:9px;padding:0 12px;background:#fff;border-radius:14px;box-shadow:0 2px 10px rgba(20,32,28,.12)"><div style="width:26px;height:26px;flex:none;border-radius:8px;background:#1F6F5C;color:#fff;font-size:11px;font-weight:700;display:flex;align-items:center;justify-content:center">MC</div><div style="flex:1;min-width:0"><div style="font-size:13px;font-weight:600;line-height:1.15">Meridian City · Group Tour</div><div style="font-size:11px;color:#6B7A74;line-height:1.3">Day 3 of 6 · 15:14</div></div></div></div>
+<div style="position:relative;z-index:3;margin-top:auto;display:flex;flex-direction:column">
+<div style="margin:0 12px 10px;padding:13px 14px;background:#FBF1DE;border:1.5px solid #EBD9B4;border-radius:18px;box-shadow:0 8px 26px rgba(20,32,28,.18)">
+<div style="display:flex;gap:11px;align-items:flex-start">
+<div style="width:30px;height:30px;flex:none;border-radius:10px;background:#EBD9B4;display:flex;align-items:center;justify-content:center"><svg width="15" height="15" viewBox="0 0 16 16" fill="none"><circle cx="8" cy="8" r="6.4" stroke="#8A5A08" stroke-width="1.7"></circle><path d="M8 4.4V8l2.4 1.6" stroke="#8A5A08" stroke-width="1.7" stroke-linecap="round"></path></svg></div>
+<div style="flex:1;min-width:0"><div style="font-size:14px;font-weight:800;color:#8A5A08;line-height:1.3">Leave in 8 minutes for the coach</div><div style="font-size:12px;color:#8A5A08;font-weight:600;line-height:1.4;margin-top:3px">23 min back to Harbour Steps on foot. The coach goes at 15:45 and you are two stops into your own loop.</div></div>
+</div>
+<div style="display:flex;gap:8px;margin-top:11px">
+<div style="flex:1;height:40px;border-radius:12px;background:#14201C;color:#fff;font-size:12.5px;font-weight:700;display:flex;align-items:center;justify-content:center">Walk back in Maps</div>
+<div style="flex:none;height:40px;padding:0 14px;border-radius:12px;background:rgba(255,255,255,.7);color:#8A5A08;font-size:12.5px;font-weight:700;display:flex;align-items:center">Got it</div>
+</div>
+<div style="font-size:10.5px;color:#A67C2B;font-weight:650;margin-top:9px;line-height:1.4">Said once. It comes back only if the walk gets 10 minutes longer, and stops by itself when you start heading back.</div>
+</div>
+<div style="flex:none;display:flex;gap:2px;padding:7px 8px 10px;background:rgba(255,255,255,.94);border-top:1px solid #E4E8E5">
+<div style="flex:1;min-height:46px;display:flex;flex-direction:column;align-items:center;justify-content:center;gap:3px;border-radius:12px;background:#14201C;color:#fff"><svg width="20" height="20" viewBox="0 0 20 20" fill="none"><path d="M10 18s6-5.2 6-10A6 6 0 0 0 4 8c0 4.8 6 10 6 10z" stroke="#fff" stroke-width="1.7" stroke-linejoin="round"></path><circle cx="10" cy="8" r="2.2" stroke="#fff" stroke-width="1.7"></circle></svg><span style="font-size:9.5px;font-weight:700">Map</span></div>
+<div style="flex:1;min-height:46px;display:flex;flex-direction:column;align-items:center;justify-content:center;gap:3px;color:#6B7A74"><svg width="20" height="20" viewBox="0 0 20 20" fill="none"><g stroke="#6B7A74" stroke-width="1.7" stroke-linecap="round"><path d="M3 5.5h14M3 10h14M3 14.5h9"></path></g></svg><span style="font-size:9.5px;font-weight:700">Plan</span></div>
+<div style="flex:1;min-height:46px;display:flex;flex-direction:column;align-items:center;justify-content:center;gap:3px;color:#6B7A74"><svg width="20" height="20" viewBox="0 0 20 20" fill="none"><path d="M4.5 6.5h11l-1 10h-9l-1-10z" stroke="#6B7A74" stroke-width="1.7" stroke-linejoin="round"></path><path d="M7.5 6.5V5a2.5 2.5 0 0 1 5 0v1.5" stroke="#6B7A74" stroke-width="1.7" stroke-linecap="round"></path></svg><span style="font-size:9.5px;font-weight:700">Shop</span></div>
+<div style="flex:1;min-height:46px;display:flex;flex-direction:column;align-items:center;justify-content:center;gap:3px;color:#6B7A74"><svg width="20" height="20" viewBox="0 0 20 20" fill="none"><rect x="3.5" y="6" width="13" height="10.5" rx="2" stroke="#6B7A74" stroke-width="1.7"></rect><path d="M7.5 6V4.5a1.5 1.5 0 0 1 1.5-1.5h2a1.5 1.5 0 0 1 1.5 1.5V6" stroke="#6B7A74" stroke-width="1.7" stroke-linecap="round"></path></svg><span style="font-size:9.5px;font-weight:700">Prep</span></div>
+<div style="flex:1;min-height:46px;display:flex;flex-direction:column;align-items:center;justify-content:center;gap:3px;color:#6B7A74"><svg width="20" height="20" viewBox="0 0 20 20" fill="none"><path d="M13 3.5l3.5 3.5L7 16.5H3.5V13z" stroke="#6B7A74" stroke-width="1.7" stroke-linejoin="round"></path></svg><span style="font-size:9.5px;font-weight:700">Log</span></div>
+</div>
+</div>
+</div>
+</div>
+
+<div id="2c" style="flex:none;display:flex;flex-direction:column;gap:10px">
+<div style="display:flex;align-items:baseline;gap:8px;max-width:402px;font:400 11.5px/1.3 'Public Sans',system-ui;color:#6B7A74"><a href="#2c" style="font:800 10.5px ui-monospace,Menlo,monospace;padding:3px 6px;background:#14201C;color:#fff;border-radius:5px;text-decoration:none">2c</a><span>Red, and the rules that keep it rare</span></div>
+<div style="width:402px;background:#F2F3F1;border-radius:12px;box-shadow:0 1px 0 rgba(20,32,28,.08),0 10px 40px rgba(20,32,28,.09);padding:18px 16px 22px;display:flex;flex-direction:column;gap:16px">
+<div>
+<div style="font-size:12px;font-weight:700;margin-bottom:8px">Past the point of comfort</div>
+<div style="padding:13px 14px;background:#9B4B4B;border-radius:18px;box-shadow:0 8px 26px rgba(20,32,28,.2)">
+<div style="display:flex;gap:11px;align-items:flex-start">
+<div style="width:30px;height:30px;flex:none;border-radius:10px;background:rgba(255,255,255,.18);display:flex;align-items:center;justify-content:center;color:#fff;font-size:16px;font-weight:800">!</div>
+<div style="flex:1;min-width:0"><div style="font-size:14px;font-weight:800;color:#fff;line-height:1.3">Leave now — the coach goes in 23 minutes</div><div style="font-size:12px;color:#F0D6D6;font-weight:600;line-height:1.4;margin-top:3px">That is exactly the walk back. Paper &amp; Ink will have to wait for another day.</div></div>
+</div>
+<div style="display:flex;gap:8px;margin-top:11px">
+<div style="flex:1;height:40px;border-radius:12px;background:#fff;color:#9B4B4B;font-size:12.5px;font-weight:800;display:flex;align-items:center;justify-content:center">Walk back in Maps</div>
+<div style="flex:none;height:40px;padding:0 14px;border-radius:12px;background:rgba(255,255,255,.16);color:#fff;font-size:12.5px;font-weight:700;display:flex;align-items:center">Not going back</div>
+</div>
+</div>
+<div style="font-size:11px;color:#6B7A74;line-height:1.45;margin-top:7px">"Not going back" is an honest option — you may have decided to make your own way. It clears the warning for that deadline and leaves a line in the day.</div>
+</div>
+
+<div style="background:#fff;border-radius:16px;padding:14px">
+<div style="font-size:10.5px;font-weight:800;letter-spacing:.06em;color:#98A5A0">WHEN IT SPEAKS</div>
+<div style="display:flex;flex-direction:column;gap:10px;margin-top:10px">
+<div style="display:flex;gap:10px"><span style="width:10px;height:10px;border-radius:3px;background:#C87F0A;flex:none;margin-top:4px"></span><div style="flex:1;font-size:12.5px;line-height:1.45;color:#3D4C46"><b>Amber</b> when free time left drops under 15 minutes, or when a place you are heading to closes within your travel time.</div></div>
+<div style="display:flex;gap:10px"><span style="width:10px;height:10px;border-radius:3px;background:#9B4B4B;flex:none;margin-top:4px"></span><div style="flex:1;font-size:12.5px;line-height:1.45;color:#3D4C46"><b>Red</b> when the time to get back equals the time you have. Once, plus one repeat if you are still not moving five minutes later.</div></div>
+<div style="display:flex;gap:10px"><span style="width:10px;height:10px;border-radius:3px;background:#B9C6C0;flex:none;margin-top:4px"></span><div style="flex:1;font-size:12.5px;line-height:1.45;color:#3D4C46"><b>Never</b> for anything that is not a deadline you set: no "you have not opened the app", no packing nags, nothing about tomorrow.</div></div>
+</div>
+</div>
+
+<div style="background:#fff;border-radius:16px;padding:14px">
+<div style="font-size:10.5px;font-weight:800;letter-spacing:.06em;color:#98A5A0">WHAT IT COUNTS WITH</div>
+<div style="font-size:12.5px;color:#3D4C46;line-height:1.5;margin-top:6px">Return-by time and the walking minutes come from the sub route you already set, so the whole thing works with no signal and no paid routing. If the walk was never estimated, the app says <i>about 20 min back</i> and marks it as its own guess rather than pretending to know.</div>
+<div style="display:flex;gap:6px;flex-wrap:wrap;margin-top:11px"><span style="padding:4px 8px;border-radius:8px;background:#F2F3F1;color:#3D4C46;font-size:10.5px;font-weight:650">Return-by 15:45</span><span style="padding:4px 8px;border-radius:8px;background:#F2F3F1;color:#3D4C46;font-size:10.5px;font-weight:650">Walk back 23 min</span><span style="padding:4px 8px;border-radius:8px;background:#FBF1DE;color:#8A5A08;font-size:10.5px;font-weight:650">Estimated, not measured</span></div>
+</div>
+
+<div style="background:#fff;border-radius:16px;padding:14px">
+<div style="font-size:10.5px;font-weight:800;letter-spacing:.06em;color:#98A5A0">OUTSIDE THE APP</div>
+<div style="font-size:12.5px;color:#3D4C46;line-height:1.5;margin-top:6px">Installed to the home screen, a web app can ask for notification permission — but it cannot be relied on when the phone is asleep in a pocket. So the design assumes the warning is only ever seen when you open the app, and a notification, if it arrives, is a bonus. That is why the strip is loud on the screen rather than trusting a buzz.</div>
+</div>
+</div>
+</div>
+
+<div id="2d" style="flex:none;display:flex;flex-direction:column;gap:10px">
+<div style="display:flex;align-items:baseline;gap:8px;max-width:402px;font:400 11.5px/1.3 'Public Sans',system-ui;color:#6B7A74"><a href="#2d" style="font:800 10.5px ui-monospace,Menlo,monospace;padding:3px 6px;background:#14201C;color:#fff;border-radius:5px;text-decoration:none">2d</a><span>Keeping an area — drawn on the map you are looking at</span></div>
+<div style="width:402px;height:874px;background:#E9EAE6;border-radius:12px;overflow:hidden;box-shadow:0 1px 0 rgba(20,32,28,.08),0 10px 40px rgba(20,32,28,.09);display:flex;flex-direction:column;position:relative">
+<svg viewBox="0 0 402 874" style="position:absolute;inset:0;width:100%;height:100%"><rect width="402" height="874" fill="#E9EAE6"></rect><g stroke="#DDE0DA" stroke-width="9" fill="none"><path d="M-20 150H420M-20 305H420M-20 470H420M70 -20V900M180 -20V900M296 -20V900"></path></g><g stroke="#E3E5E0" stroke-width="4" fill="none"><path d="M-20 220H420M-20 390H420M124 -20V900M240 -20V900"></path></g><path d="M82 174L170 228L254 292L198 356L100 312L44 246" fill="none" stroke="#1F6F5C" stroke-width="5.5" stroke-linecap="round" stroke-linejoin="round"></path></svg>
+<div style="position:absolute;left:0;right:0;top:0;height:118px;background:rgba(20,32,28,.28)"></div>
+<div style="position:absolute;left:0;right:0;top:430px;bottom:0;background:rgba(20,32,28,.28)"></div>
+<div style="position:absolute;left:24px;right:24px;top:118px;height:312px;border:2.5px solid #fff;border-radius:6px;box-shadow:0 0 0 9999px rgba(0,0,0,0)"></div>
+<div style="position:absolute;left:16px;top:110px;width:16px;height:16px;border-radius:50%;background:#fff;box-shadow:0 2px 6px rgba(20,32,28,.4)"></div>
+<div style="position:absolute;right:16px;top:110px;width:16px;height:16px;border-radius:50%;background:#fff;box-shadow:0 2px 6px rgba(20,32,28,.4)"></div>
+<div style="position:absolute;left:16px;top:422px;width:16px;height:16px;border-radius:50%;background:#fff;box-shadow:0 2px 6px rgba(20,32,28,.4)"></div>
+<div style="position:absolute;right:16px;top:422px;width:16px;height:16px;border-radius:50%;background:#fff;box-shadow:0 2px 6px rgba(20,32,28,.4)"></div>
+<div style="position:absolute;left:0;right:0;top:250px;display:flex;justify-content:center"><span style="padding:5px 10px;border-radius:9px;background:rgba(20,32,28,.72);color:#fff;font-size:11px;font-weight:700">Every stop on days 1–4 is inside</span></div>
+<div style="position:relative;z-index:2;flex:none;padding:12px 16px 0;display:flex;gap:8px;align-items:center">
+<div style="width:40px;height:40px;flex:none;border-radius:13px;background:#fff;box-shadow:0 2px 10px rgba(20,32,28,.12);display:flex;align-items:center;justify-content:center"><svg width="11" height="18" viewBox="0 0 11 18"><path d="M9 1L2 9l7 8" stroke="#14201C" stroke-width="2.2" fill="none" stroke-linecap="round" stroke-linejoin="round"></path></svg></div>
+<div style="flex:1;min-width:0;padding:8px 12px;background:#fff;border-radius:13px;box-shadow:0 2px 10px rgba(20,32,28,.12)"><div style="font-size:13.5px;font-weight:700">Keep this area on the phone</div><div style="font-size:11.5px;color:#6B7A74;margin-top:1px">Drag the corners, or pinch the map</div></div>
+</div>
+<div style="position:relative;z-index:3;margin-top:auto;background:#fff;border-radius:22px 22px 0 0;box-shadow:0 -8px 30px rgba(20,32,28,.18);padding:14px 16px 20px">
+<div style="display:flex;gap:10px;align-items:flex-end">
+<div style="flex:1;min-width:0"><div style="font-size:10.5px;font-weight:800;letter-spacing:.06em;color:#98A5A0">OLD QUARTER &amp; HARBOURSIDE</div><div style="font-size:20px;font-weight:700;letter-spacing:-.01em;margin-top:3px">7.4 × 5.1 km</div></div>
+<div style="text-align:right;flex:none"><div style="font-size:10.5px;font-weight:800;letter-spacing:.06em;color:#98A5A0">SIZE</div><div style="font-size:20px;font-weight:700;font-variant-numeric:tabular-nums">62 MB</div></div>
+</div>
+<div style="display:flex;gap:8px;margin-top:12px">
+<div style="flex:1;padding:9px 11px;border-radius:12px;background:#F2F3F1;border:1.5px solid #14201C"><div style="font-size:12px;font-weight:700">Streets</div><div style="font-size:10.5px;color:#6B7A74;font-weight:600;margin-top:1px">to zoom 16 · 62 MB</div></div>
+<div style="flex:1;padding:9px 11px;border-radius:12px;background:#F2F3F1;border:1px solid #E1E5E1"><div style="font-size:12px;font-weight:700;color:#6B7A74">Doorways</div><div style="font-size:10.5px;color:#98A5A0;font-weight:600;margin-top:1px">to zoom 18 · 240 MB</div></div>
+</div>
+<div style="font-size:11.5px;color:#6B7A74;line-height:1.45;margin-top:11px">Tiles come from OpenStreetMap, so this is a fair-use download: it happens once, on wi-fi by default, and covers the area you drew rather than a whole city.</div>
+<div style="display:flex;gap:8px;margin-top:12px">
+<div style="flex:1;height:46px;border-radius:12px;background:#1F6F5C;color:#fff;font-size:13px;font-weight:700;display:flex;align-items:center;justify-content:center">Keep this area</div>
+<div style="flex:none;width:96px;height:46px;border-radius:12px;background:#F2F3F1;border:1px solid #E1E5E1;font-size:13px;font-weight:650;display:flex;align-items:center;justify-content:center">Cancel</div>
+</div>
+<div style="display:flex;align-items:center;gap:8px;margin-top:11px"><span style="width:34px;height:20px;border-radius:10px;background:#1F6F5C;display:flex;align-items:center;padding:0 2px;justify-content:flex-end"><span style="width:16px;height:16px;border-radius:50%;background:#fff"></span></span><span style="font-size:12px;font-weight:650;color:#3D4C46">Wait for wi-fi</span></div>
+</div>
+</div>
+</div>
+
+<div id="2e" style="flex:none;display:flex;flex-direction:column;gap:10px">
+<div style="display:flex;align-items:baseline;gap:8px;max-width:402px;font:400 11.5px/1.3 'Public Sans',system-ui;color:#6B7A74"><a href="#2e" style="font:800 10.5px ui-monospace,Menlo,monospace;padding:3px 6px;background:#14201C;color:#fff;border-radius:5px;text-decoration:none">2e</a><span>What is kept — in Trip settings, one download in progress</span></div>
+<div style="width:402px;height:874px;background:#F2F3F1;border-radius:12px;overflow:hidden;box-shadow:0 1px 0 rgba(20,32,28,.08),0 10px 40px rgba(20,32,28,.09);display:flex;flex-direction:column">
+<div style="flex:none;padding:14px 16px 12px;background:#fff;border-bottom:1px solid #E7EAE7;display:flex;align-items:center;gap:10px">
+<div style="width:32px;height:32px;flex:none;display:flex;align-items:center;justify-content:center"><svg width="11" height="18" viewBox="0 0 11 18"><path d="M9 1L2 9l7 8" stroke="#14201C" stroke-width="2.2" fill="none" stroke-linecap="round" stroke-linejoin="round"></path></svg></div>
+<div style="flex:1;min-width:0"><div style="font-size:17px;font-weight:700;letter-spacing:-.01em">Map kept on this phone</div><div style="font-size:11.5px;color:#6B7A74;margin-top:1px">Meridian City · Group Tour</div></div>
+</div>
+<div style="flex:1;min-height:0;overflow:hidden;padding:14px 16px 24px">
+<div style="background:#fff;border-radius:16px;padding:14px">
+<div style="display:flex;gap:10px;align-items:flex-start">
+<div style="width:72px;height:56px;flex:none;border-radius:10px;background:#E9EAE6;position:relative;overflow:hidden"><span style="position:absolute;left:8px;top:8px;right:8px;bottom:8px;border:2px solid #1F6F5C;border-radius:3px"></span></div>
+<div style="flex:1;min-width:0"><div style="font-size:14px;font-weight:700">Old Quarter &amp; Harbourside</div><div style="font-size:11.5px;color:#6B7A74;margin-top:2px">62 MB · to zoom 16 · kept 9 Mar</div><div style="font-size:11.5px;color:#1F6F5C;font-weight:700;margin-top:4px">Covers 14 of 17 stops</div></div>
+</div>
+<div style="display:flex;gap:8px;margin-top:12px"><div style="flex:1;height:38px;border-radius:11px;background:#F2F3F1;border:1px solid #E1E5E1;font-size:12.5px;font-weight:650;display:flex;align-items:center;justify-content:center">Refresh</div><div style="flex:1;height:38px;border-radius:11px;background:#F2F3F1;border:1px solid #E1E5E1;font-size:12.5px;font-weight:650;display:flex;align-items:center;justify-content:center">Resize on map</div></div>
+</div>
+
+<div style="background:#fff;border-radius:16px;padding:14px;margin-top:10px">
+<div style="display:flex;gap:10px;align-items:flex-start">
+<div style="width:72px;height:56px;flex:none;border-radius:10px;background:#E9EAE6;position:relative;overflow:hidden"><span style="position:absolute;left:8px;top:8px;right:8px;bottom:8px;border:2px dashed #C87F0A;border-radius:3px"></span></div>
+<div style="flex:1;min-width:0"><div style="font-size:14px;font-weight:700">Hillside &amp; the tower</div><div style="font-size:11.5px;color:#6B7A74;margin-top:2px">18 MB · downloading on wi-fi</div>
+<div style="height:6px;border-radius:3px;background:#EDEFEC;overflow:hidden;margin-top:8px"><i style="display:block;height:100%;width:46%;background:#C87F0A;border-radius:3px"></i></div>
+<div style="font-size:10.5px;font-weight:700;color:#8A5A08;margin-top:5px">8.3 of 18 MB · about a minute left</div></div>
+</div>
+</div>
+
+<div style="background:#FBF1DE;border:1px solid #EBD9B4;border-radius:16px;padding:13px 14px;margin-top:10px">
+<div style="font-size:12.5px;font-weight:800;color:#8A5A08">3 stops are outside every kept area</div>
+<div style="font-size:11.5px;color:#8A5A08;font-weight:600;line-height:1.45;margin-top:4px">Riverside Outlet, Hillside Tower and the airport. Day 6 is mostly outside.</div>
+<div style="height:38px;border-radius:11px;background:#14201C;color:#fff;font-size:12.5px;font-weight:700;display:flex;align-items:center;justify-content:center;margin-top:11px">Draw an area around them</div>
+</div>
+
+<div style="background:#fff;border-radius:16px;padding:14px;margin-top:10px">
+<div style="font-size:10.5px;font-weight:800;letter-spacing:.06em;color:#98A5A0">STORAGE</div>
+<div style="display:flex;align-items:baseline;gap:8px;margin-top:6px"><div style="font-size:18px;font-weight:700;font-variant-numeric:tabular-nums">80 MB</div><div style="font-size:11.5px;color:#6B7A74;font-weight:600">of map · 4 MB of everything else</div></div>
+<div style="font-size:11.5px;color:#6B7A74;line-height:1.45;margin-top:8px">Kept areas are deleted with the trip. Swipe an area left to remove it on its own.</div>
+</div>
+</div>
+</div>
+</div>
+
+<div id="2f" style="flex:none;display:flex;flex-direction:column;gap:10px">
+<div style="display:flex;align-items:baseline;gap:8px;max-width:402px;font:400 11.5px/1.3 'Public Sans',system-ui;color:#6B7A74"><a href="#2f" style="font:800 10.5px ui-monospace,Menlo,monospace;padding:3px 6px;background:#14201C;color:#fff;border-radius:5px;text-decoration:none">2f</a><span>Outside the saved area — the route survives, the tiles do not</span></div>
+<div style="width:402px;height:874px;background:#DFE2DD;border-radius:12px;overflow:hidden;box-shadow:0 1px 0 rgba(20,32,28,.08),0 10px 40px rgba(20,32,28,.09);display:flex;flex-direction:column;position:relative">
+<svg viewBox="0 0 402 874" style="position:absolute;inset:0;width:100%;height:100%"><rect width="402" height="874" fill="#DFE2DD"></rect><g stroke="#D5D9D3" stroke-width="1" fill="none"><path d="M0 40H402M0 80H402M0 120H402M0 160H402M0 200H402M0 240H402M0 280H402M0 320H402M0 360H402M0 400H402M0 440H402M0 480H402M0 520H402M40 0V874M80 0V874M120 0V874M160 0V874M200 0V874M240 0V874M280 0V874M320 0V874M360 0V874"></path></g><path d="M300 470L246 392L188 330" fill="none" stroke="#C87F0A" stroke-width="3.5" stroke-dasharray="3 7" stroke-linecap="round"></path><path d="M60 210L120 250L188 330" fill="none" stroke="#1F6F5C" stroke-width="5.5" stroke-linecap="round" stroke-linejoin="round" opacity=".55"></path><rect x="16" y="150" width="200" height="230" fill="none" stroke="#1F6F5C" stroke-width="2" stroke-dasharray="7 6" rx="4"></rect></svg>
+<div style="position:absolute;left:24px;top:158px;padding:4px 8px;border-radius:7px;background:rgba(31,111,92,.14);color:#1F6F5C;font-size:10px;font-weight:800;letter-spacing:.04em">SAVED AREA ENDS HERE</div>
+<div style="position:absolute;left:288px;top:458px;width:30px;height:30px;border-radius:50%;background:#C87F0A;color:#fff;font-size:12px;font-weight:700;display:flex;align-items:center;justify-content:center;box-shadow:0 2px 8px rgba(20,32,28,.35)">3</div>
+<div style="position:absolute;left:234px;top:380px;width:30px;height:30px;border-radius:50%;background:#C87F0A;color:#fff;font-size:12px;font-weight:700;display:flex;align-items:center;justify-content:center;box-shadow:0 2px 8px rgba(20,32,28,.35)">2</div>
+<div style="position:absolute;left:176px;top:318px;width:30px;height:30px;border-radius:50%;background:#14201C;color:#fff;font-size:12px;font-weight:700;display:flex;align-items:center;justify-content:center;box-shadow:0 2px 8px rgba(20,32,28,.35)">1</div>
+<div style="position:relative;z-index:2;flex:none;padding:12px 16px 0;display:flex;flex-direction:column;gap:10px">
+<div style="height:44px;display:flex;align-items:center;gap:9px;padding:0 12px;background:#fff;border-radius:14px;box-shadow:0 2px 10px rgba(20,32,28,.12)"><div style="width:26px;height:26px;flex:none;border-radius:8px;background:#1F6F5C;color:#fff;font-size:11px;font-weight:700;display:flex;align-items:center;justify-content:center">MC</div><div style="flex:1;min-width:0"><div style="font-size:13px;font-weight:600;line-height:1.15">Meridian City · Group Tour</div><div style="font-size:11px;color:#6B7A74;line-height:1.3">Day 5 · Riverside</div></div><span style="width:8px;height:8px;border-radius:50%;background:#C87F0A;flex:none"></span></div>
+<div style="padding:11px 12px;background:rgba(255,255,255,.95);border-radius:14px;box-shadow:0 2px 10px rgba(20,32,28,.12)">
+<div style="font-size:12.5px;font-weight:800;color:#14201C">No map here, but the plan still works</div>
+<div style="font-size:11.5px;color:#6B7A74;line-height:1.45;margin-top:3px">You are outside the area you kept. Distances, order and walking times are all worked out on the phone; only the picture of the streets is missing.</div>
+<div style="display:flex;gap:8px;margin-top:10px"><div style="flex:1;height:36px;border-radius:11px;background:#14201C;color:#fff;font-size:12px;font-weight:700;display:flex;align-items:center;justify-content:center">Keep this area too</div><div style="flex:none;height:36px;padding:0 12px;border-radius:11px;background:#F2F3F1;border:1px solid #E1E5E1;font-size:12px;font-weight:650;display:flex;align-items:center">Not now</div></div>
+</div>
+</div>
+<div style="position:relative;z-index:3;margin-top:auto;background:#fff;border-radius:22px 22px 0 0;box-shadow:0 -8px 30px rgba(20,32,28,.16);height:38%;display:flex;flex-direction:column;padding-bottom:8px">
+<div style="padding:8px 0 10px;flex:none"><i style="display:block;width:40px;height:4px;border-radius:2px;background:#D8DDD9;margin:0 auto"></i></div>
+<div style="padding:0 16px 10px"><div style="font-size:11px;font-weight:700;letter-spacing:.09em;color:#6B7A74">DAY 5 · MON</div><div style="font-size:20px;font-weight:700;letter-spacing:-.01em;margin-top:2px">Riverside loop · 3 stops</div></div>
+<div style="padding:0 16px">
+<div style="display:flex;gap:12px;align-items:center;padding:11px 0;border-top:1px solid #EDEFEC"><div style="width:26px;height:26px;flex:none;border-radius:50%;background:#14201C;color:#fff;font-size:12px;font-weight:800;display:flex;align-items:center;justify-content:center">1</div><div style="flex:1;min-width:0"><div style="font-size:14px;font-weight:600">Riverside Outlet</div><div style="font-size:11.5px;color:#6B7A74;margin-top:2px">22 min by bus · 1h 15m here</div></div></div>
+<div style="display:flex;gap:12px;align-items:center;padding:11px 0;border-top:1px solid #EDEFEC"><div style="width:26px;height:26px;flex:none;border-radius:50%;background:#C87F0A;color:#fff;font-size:12px;font-weight:800;display:flex;align-items:center;justify-content:center">2</div><div style="flex:1;min-width:0"><div style="font-size:14px;font-weight:600">Hillside Tower</div><div style="font-size:11.5px;color:#6B7A74;margin-top:2px">14 min by train · deck faces west</div></div></div>
+<div style="display:flex;gap:11px;align-items:center;padding:10px 12px;margin-top:8px;border-radius:12px;background:#F7F8F6"><div style="flex:1;font-size:11.5px;color:#6B7A74;line-height:1.4">Opening hours for both were saved on 9 Mar and have not been checked since.</div></div>
+</div>
+</div>
+</div>
+</div>
+
+<div id="2g" style="flex:none;display:flex;flex-direction:column;gap:10px">
+<div style="display:flex;align-items:baseline;gap:8px;max-width:402px;font:400 11.5px/1.3 'Public Sans',system-ui;color:#6B7A74"><a href="#2g" style="font:800 10.5px ui-monospace,Menlo,monospace;padding:3px 6px;background:#14201C;color:#fff;border-radius:5px;text-decoration:none">2g</a><span>Saved or not — two quiet states, one loud one</span></div>
+<div style="width:402px;background:#F2F3F1;border-radius:12px;box-shadow:0 1px 0 rgba(20,32,28,.08),0 10px 40px rgba(20,32,28,.09);padding:18px 16px 22px;display:flex;flex-direction:column;gap:14px">
+<div style="font-size:12px;font-weight:700">The dot lives in the trip bar at the top of every screen</div>
+<div style="background:#fff;border-radius:14px;padding:12px 14px;display:flex;align-items:center;gap:11px"><div style="width:26px;height:26px;flex:none;border-radius:8px;background:#1F6F5C;color:#fff;font-size:11px;font-weight:700;display:flex;align-items:center;justify-content:center">MC</div><div style="flex:1;min-width:0"><div style="font-size:13px;font-weight:600">Meridian City · Group Tour</div><div style="font-size:11px;color:#6B7A74">Saving…</div></div><span style="width:10px;height:10px;border-radius:50%;border:2px solid #C9D0CB;border-top-color:#1F6F5C;flex:none"></span></div>
+<div style="font-size:11px;color:#6B7A74;line-height:1.45;margin-top:-6px">A hollow ring while it goes. It settles to a solid green dot and no words. This is most of the time and needs no explaining.</div>
+
+<div style="background:#fff;border-radius:14px;padding:12px 14px;display:flex;align-items:center;gap:11px"><div style="width:26px;height:26px;flex:none;border-radius:8px;background:#1F6F5C;color:#fff;font-size:11px;font-weight:700;display:flex;align-items:center;justify-content:center">MC</div><div style="flex:1;min-width:0"><div style="font-size:13px;font-weight:600">Meridian City · Group Tour</div><div style="font-size:11px;color:#8A5A08;font-weight:650">3 changes waiting for signal</div></div><span style="width:10px;height:10px;border-radius:50%;background:#C87F0A;flex:none"></span></div>
+<div style="font-size:11px;color:#6B7A74;line-height:1.45;margin-top:-6px">Amber dot, one line, no banner. Everything you type is already on the phone; this is only about the copy in the cloud. It clears itself the moment signal returns.</div>
+
+<div style="height:1px;background:#E1E5E1;margin:4px 0"></div>
+<div style="font-size:12px;font-weight:700">And the one that deserves the strip</div>
+<div style="padding:13px 14px;background:#9B4B4B;border-radius:18px;box-shadow:0 8px 26px rgba(20,32,28,.2)">
+<div style="display:flex;gap:11px;align-items:flex-start">
+<div style="width:30px;height:30px;flex:none;border-radius:10px;background:rgba(255,255,255,.18);display:flex;align-items:center;justify-content:center"><svg width="16" height="16" viewBox="0 0 18 18" fill="none"><path d="M5 12.5A3.5 3.5 0 0 1 5.4 5.6 4.6 4.6 0 0 1 14 6.6a3 3 0 0 1 .6 5.9" stroke="#fff" stroke-width="1.6" stroke-linecap="round"></path><path d="M3 3l12 12" stroke="#fff" stroke-width="1.6" stroke-linecap="round"></path></svg></div>
+<div style="flex:1;min-width:0"><div style="font-size:14px;font-weight:800;color:#fff;line-height:1.3">11 changes have been stuck for 3 days</div><div style="font-size:12px;color:#F0D6D6;font-weight:600;line-height:1.4;margin-top:3px">They are safe on this phone, but they have never reached the cloud. If you lose the phone, you lose them.</div></div>
+</div>
+<div style="display:flex;gap:8px;margin-top:11px"><div style="flex:1;height:40px;border-radius:12px;background:#fff;color:#9B4B4B;font-size:12.5px;font-weight:800;display:flex;align-items:center;justify-content:center">See what is stuck</div></div>
+</div>
+<div style="font-size:11px;color:#6B7A74;line-height:1.45">Shown when a change is older than a day, or when the last attempt failed for a reason that will not fix itself — signed out, the trip removed from you, storage full. Not for ordinary no-signal, which is 2 above.</div>
+</div>
+</div>
+
+<div id="2h" style="flex:none;display:flex;flex-direction:column;gap:10px">
+<div style="display:flex;align-items:baseline;gap:8px;max-width:402px;font:400 11.5px/1.3 'Public Sans',system-ui;color:#6B7A74"><a href="#2h" style="font:800 10.5px ui-monospace,Menlo,monospace;padding:3px 6px;background:#14201C;color:#fff;border-radius:5px;text-decoration:none">2h</a><span>What is stuck, why, and the way out</span></div>
+<div style="width:402px;height:874px;background:#F2F3F1;border-radius:12px;overflow:hidden;box-shadow:0 1px 0 rgba(20,32,28,.08),0 10px 40px rgba(20,32,28,.09);display:flex;flex-direction:column">
+<div style="flex:none;padding:14px 16px 12px;background:#fff;border-bottom:1px solid #E7EAE7;display:flex;align-items:center;gap:10px">
+<div style="width:32px;height:32px;flex:none;display:flex;align-items:center;justify-content:center"><svg width="11" height="18" viewBox="0 0 11 18"><path d="M9 1L2 9l7 8" stroke="#14201C" stroke-width="2.2" fill="none" stroke-linecap="round" stroke-linejoin="round"></path></svg></div>
+<div style="flex:1;min-width:0"><div style="font-size:17px;font-weight:700;letter-spacing:-.01em">Changes on this phone</div><div style="font-size:11.5px;color:#6B7A74;margin-top:1px">11 waiting · oldest 11 Mar, 09:14</div></div>
+</div>
+<div style="flex:1;min-height:0;overflow:hidden;padding:14px 16px 24px">
+<div style="background:#F8E9E9;border:1px solid #E7CDCD;border-radius:16px;padding:13px 14px">
+<div style="font-size:12.5px;font-weight:800;color:#9B4B4B">Why they are stuck</div>
+<div style="font-size:12px;color:#9B4B4B;font-weight:600;line-height:1.5;margin-top:4px">Your sign-in expired on 11 Mar. The app kept working and kept everything, but it cannot prove who you are, so the cloud is refusing it.</div>
+<div style="display:flex;gap:8px;margin-top:11px"><div style="flex:1;height:42px;border-radius:12px;background:#9B4B4B;color:#fff;font-size:13px;font-weight:700;display:flex;align-items:center;justify-content:center">Sign in and send</div></div>
+</div>
+
+<div style="background:#fff;border-radius:16px;overflow:hidden;margin-top:12px">
+<div style="padding:12px 14px;font-size:10.5px;font-weight:800;letter-spacing:.06em;color:#98A5A0">WHAT WOULD BE LOST</div>
+<div style="display:flex;gap:12px;padding:12px 14px;border-top:1px solid #F0F2F0"><div style="flex:1;min-width:0"><div style="font-size:13px;font-weight:650">4 notes</div><div style="font-size:11px;color:#98A5A0;margin-top:2px">Day 3 and Day 4 · 620 words, 6 photos</div></div><div style="font-size:11px;font-weight:700;color:#9B4B4B;flex:none">11–13 Mar</div></div>
+<div style="display:flex;gap:12px;padding:12px 14px;border-top:1px solid #F0F2F0"><div style="flex:1;min-width:0"><div style="font-size:13px;font-weight:650">5 purchases</div><div style="font-size:11px;color:#98A5A0;margin-top:2px">¥31,600 of ticked items and real prices</div></div><div style="font-size:11px;font-weight:700;color:#9B4B4B;flex:none">12–13 Mar</div></div>
+<div style="display:flex;gap:12px;padding:12px 14px;border-top:1px solid #F0F2F0"><div style="flex:1;min-width:0"><div style="font-size:13px;font-weight:650">1 sub route</div><div style="font-size:11px;color:#98A5A0;margin-top:2px">Day 4 · Riverside, 3 places and times</div></div><div style="font-size:11px;font-weight:700;color:#9B4B4B;flex:none">13 Mar</div></div>
+<div style="display:flex;gap:12px;padding:12px 14px;border-top:1px solid #F0F2F0"><div style="flex:1;min-width:0"><div style="font-size:13px;font-weight:650">1 place deleted</div><div style="font-size:11px;color:#98A5A0;margin-top:2px">Kaede Department Store, removed from Day 5</div></div><div style="font-size:11px;font-weight:700;color:#9B4B4B;flex:none">13 Mar</div></div>
+</div>
+
+<div style="background:#fff;border-radius:16px;padding:14px;margin-top:12px">
+<div style="font-size:10.5px;font-weight:800;letter-spacing:.06em;color:#98A5A0">IF SIGNING IN IS NOT POSSIBLE NOW</div>
+<div style="font-size:12.5px;color:#3D4C46;line-height:1.5;margin-top:6px">Put a copy somewhere that is not this phone. The file holds the whole trip as it stands, and can be read back into the app later.</div>
+<div style="display:flex;gap:8px;margin-top:11px"><div style="flex:1;height:42px;border-radius:12px;background:#14201C;color:#fff;font-size:13px;font-weight:700;display:flex;align-items:center;justify-content:center">Save a copy to Files</div><div style="flex:none;height:42px;padding:0 14px;border-radius:12px;background:#F2F3F1;border:1px solid #E1E5E1;font-size:13px;font-weight:650;display:flex;align-items:center">Share</div></div>
+<div style="font-size:11px;color:#98A5A0;line-height:1.45;margin-top:9px">Last copy saved: never.</div>
+</div>
+
+<div style="background:#fff;border-radius:16px;padding:14px;margin-top:12px">
+<div style="font-size:10.5px;font-weight:800;letter-spacing:.06em;color:#98A5A0">TRIED TO SEND</div>
+<div style="font-size:12.5px;color:#3D4C46;line-height:1.5;margin-top:6px">Every 15 minutes while the app is open, and once whenever signal comes back. 214 attempts since 11 Mar, all refused with the same reason.</div>
+<div style="font-size:12px;font-weight:700;color:#9B4B4B;margin-top:10px">Discard these changes…</div>
+</div>
+</div>
+</div>
+</div>
+
+</div>
+</section>
+
+</x-dc>
+<script type="text/x-dc" data-dc-script data-props="{&quot;$preview&quot;:{&quot;width&quot;:1420,&quot;height&quot;:1100}}"></script>
+</body>
+</html>

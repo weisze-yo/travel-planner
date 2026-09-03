@@ -59,18 +59,29 @@ export default {
           </div>
           <div class="scroll pad16">
             ${items.length ? items.map((item) => {
-              const view = store.decoratedItem(item);
-              const isSub = view.kind === 'sub';
+              const w = store.itemWindow(item);
               return html`
-                <button class="stop-row${focused === view.id ? ' focused' : ''}" data-focus="${view.id}">
-                  <div class="stop-time">${view.time}</div>
+                <button class="stop-row${focused === item.id ? ' focused' : ''}" data-focus="${item.id}">
+                  <div class="stop-time">${w.startLabel}</div>
                   <div class="grow">
-                    <div class="stop-name">${view.name}</div>
-                    <div class="stop-meta">${view.durationLabel ? `${view.durationLabel} · ` : ''}${view.note}</div>
+                    <div class="stop-name">${item.name}</div>
+                    <div class="stop-meta">${w.minutes ? `${w.durationLabel} · ` : ''}${item.note}</div>
                   </div>
-                  <span class="badge ${isSub ? 'sub' : 'main'}">${isSub ? 'SUB' : 'MAIN'}</span>
+                  <span class="badge main">MAIN</span>
                 </button>`;
             }) : emptyDay(weather)}
+            ${store.subRoutesFor().map((loop) => {
+              const card = store.loopCard(loop);
+              return html`
+                <button class="stop-row" data-focus-loop="${card.id}">
+                  <div class="stop-time amber">${card.window.split(' – ')[0]}</div>
+                  <div class="grow">
+                    <div class="stop-name">${card.name}</div>
+                    <div class="stop-meta">${card.line}</div>
+                  </div>
+                  <span class="badge sub">SUB</span>
+                </button>`;
+            })}
             <div style="height:8px"></div>
           </div>
         </div>
@@ -89,6 +100,7 @@ export default {
     delegate(root, '[data-act="nearby"]', () => go('nearby', { dayScope: true }));
     // A row frames its stop on the map; opening the place is the pin's job.
     delegate(root, '[data-focus]', (el) => focusStop(el.dataset.focus));
+    delegate(root, '[data-focus-loop]', (el) => focusLoop(el.dataset.focusLoop));
 
     bindSheetSwipe(root.querySelector('.map-sheet'));
     drawMap(root.querySelector('#leaf'));
@@ -145,16 +157,7 @@ function focusStop(id) {
   document.querySelectorAll('.stop-row.focused').forEach((row) => row.classList.remove('focused'));
   document.querySelector(`.stop-row[data-focus="${id}"]`)?.classList.add('focused');
 
-  // A loop's row has no single point, so it frames the whole loop — its own,
-  // now that a day can hold several.
-  if (item.isSubRouteSummary) {
-    const loop = store.loopSchedule(store.subRouteByID(item.subRouteID)).stops
-      .filter((s) => s.place.latitude)
-      .map((s) => [s.place.latitude, s.place.longitude]);
-    if (mapView && loop.length) {
-      mapView.fitBounds(L.latLngBounds(loop).pad(0.4), sheetAwarePadding());
-    }
-  } else if (mapView && item.latitude) {
+  if (mapView && item.latitude) {
     mapView.setView([item.latitude, item.longitude], 17, { animate: true });
   }
 
@@ -169,13 +172,18 @@ function focusStop(id) {
 }
 
 function openItem(id) {
-  const hit = store.planItem(id);
-  if (!hit) return;
-  if (hit.item.isSubRouteSummary) {
-    store.selectLoop(hit.item.subRouteID);
-    go('sub', { loopID: hit.item.subRouteID });
-  } else {
-    go('dest', { itemID: id });
+  if (store.planItem(id)) go('dest', { itemID: id });
+}
+
+/** A sub route has no single point, so its row frames the whole loop. */
+function focusLoop(id) {
+  document.querySelectorAll('.stop-row.focused').forEach((row) => row.classList.remove('focused'));
+  document.querySelector(`.stop-row[data-focus-loop="${id}"]`)?.classList.add('focused');
+  const points = store.loopSchedule(store.subRouteByID(id)).stops
+    .filter((s) => s.place.latitude)
+    .map((s) => [s.place.latitude, s.place.longitude]);
+  if (mapView && points.length) {
+    mapView.fitBounds(L.latLngBounds(points).pad(0.4), sheetAwarePadding());
   }
 }
 
@@ -197,7 +205,7 @@ function drawMap(container) {
   if (!container || typeof L === 'undefined') return;
 
   const day = store.day();
-  const items = store.activeItems(day).filter((i) => i.latitude && i.longitude && !i.isSubRouteSummary);
+  const items = store.activeItems(day).filter((i) => i.latitude && i.longitude);
   const numbers = store.mainStopNumbers(day);
   // Every stretch of free time on the day draws, not just the first.
   const schedules = store.dayLoops();

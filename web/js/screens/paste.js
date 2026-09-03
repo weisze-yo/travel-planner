@@ -1,38 +1,46 @@
-// Paste an itinerary, item 01.
+// Paste an itinerary.
 //
-// The screen exists because the itinerary already exists — as a PDF from the
-// agent, or as a WhatsApp message — and typing six days of it into a phone is
-// the thing that makes the app not worth opening. With no paid API and no
-// server, parsing happens on the device, so this is paste-and-confirm and
-// never magic: text in, candidate stops out, every field correctable, and
-// nothing lands on the trip until you press the button at the bottom.
+// The itinerary already exists — as a PDF from the agent, or as a WhatsApp
+// message — and typing six days of it into a phone is the thing that makes
+// the app not worth opening. With no server, parsing happens on the device,
+// so this is paste-and-confirm and never magic.
 //
-// The screen is designed around the half-understood row, because that is the
-// normal one. A row the parser was unsure about is kept, flagged, sorted
-// nowhere special, and editable in place — it is never quietly dropped, and
-// it never quietly lands wrong.
+// Five states, and only the last one writes anything:
+//
+//   paste    the whole message in one field, and a plain statement of what
+//            it will look for, so a bad read is not a mystery
+//   review   every row graded — read, worked out, could not read — with day
+//            headings from the text. No bulk accept: each row is ticked,
+//            fixed or dropped, because this is the one place a wrong row is
+//            cheap to remove
+//   row      one row open over the list, with the line as pasted at the top
+//   summary  what will be created, per day, and the two honest caveats
+//   done     landed on the Plan with a receipt
 
-import { html, raw, icon, delegate, parseClock, parseDuration, clock, duration } from '../util.js';
+import { html, raw, icon, delegate, parseClock, clock } from '../util.js';
 import * as store from '../store.js';
 import { state } from '../store.js';
 import { go, back } from '../nav.js';
-import { backHeader, checkbox } from './parts.js';
+import { backHeader } from './parts.js';
 import { parseItinerary } from '../itinerary.js';
 
-const EXAMPLE = `DAY 3 — Old Quarter
-08:30 Depart Hotel Meridian
-coach bay 2, guide Ms. Ren
-09:15-10:00 Lumen Crossing
-10:30 Ashgate Shrine (1h)
-12:00 Harbour Steps · set lunch
-13:30 – 15:45 Nishi Market
-16:00 Skyline Deck (1 hour)`;
+const EXAMPLE = `DAY 3 – Sat 14 Mar
+08:30 depart Hotel Meridian (coach bay 2)
+09:15 Lumen Crossing – 45 mins photo stop
+10:30 Ashgate Shrine (1 hr, shoulders covered)
+12:00 set lunch, Harbour Steps
+13:30-15:45 Nishi Market — free time, back at coach 15:45
+16:00 Skyline Deck, sunset 18:04
+evening free, dinner not included
 
-/** 'paste' → 'confirm' → 'done'. */
+DAY 4 – Sun 15 Mar
+pickup 08:00 lobby
+Kaede Dept Store & Riverside Outlet (whole day)`;
+
 let phase = 'paste';
 let text = '';
 let read = null;
-let onlyFlagged = false;
+let openRow = null;
 let result = null;
 let busy = '';
 
@@ -42,173 +50,142 @@ export default {
 
   render() {
     if (phase === 'done') return doneView();
-    if (phase === 'confirm') return confirmView();
+    if (phase === 'summary') return summaryView();
+    if (phase === 'review') return openRow ? rowView() : reviewView();
     return pasteView();
   },
 
   mount(root) {
-    delegate(root, '[data-act="back"]', () => {
-      if (phase === 'confirm') { phase = 'paste'; repaint(); return; }
-      reset();
-      back();
-    });
-    delegate(root, '[data-act="plan"]', () => { reset(); go('plan', {}, { replace: true }); });
-
-    const box = root.querySelector('#paste-text');
-    box?.addEventListener('input', () => { text = box.value; });
-    box?.addEventListener('change', () => { text = box.value; });
-
-    delegate(root, '[data-act="example"]', () => {
-      text = EXAMPLE;
-      repaint();
-    });
-
-    delegate(root, '[data-act="read"]', () => {
-      // Read the field itself rather than the last state we saw: the button
-      // must work on the first tap after a paste, with no repaint in between.
-      if (box) text = box.value;
-      if (!text.trim()) {
-        busy = 'Nothing pasted yet — put the itinerary in the box above.';
-        repaint();
-        return;
-      }
-      busy = '';
-      read = parseItinerary(text, {
-        startDate: state.trip?.startDate,
-        dayCount: state.trip?.dayCount,
-      });
-      phase = 'confirm';
-      onlyFlagged = false;
-      repaint();
-    });
-
-    delegate(root, '[data-act="again"]', () => { phase = 'paste'; read = null; repaint(); });
-    delegate(root, '[data-act="only-flagged"]', () => { onlyFlagged = !onlyFlagged; repaint(); });
-    delegate(root, '[data-act="all-on"]', () => {
-      for (const row of read.rows) row.include = true;
-      repaint();
-    });
-    delegate(root, '[data-act="all-off"]', () => {
-      for (const row of read.rows) row.include = false;
-      repaint();
-    });
-
-    delegate(root, '[data-act="toggle-row"]', (el) => {
-      const row = rowByID(el.dataset.id);
-      if (row) row.include = !row.include;
-      repaint();
-    });
-
-    // Every field on a candidate is editable, and the flags recompute as soon
-    // as one is corrected.
-    root.querySelectorAll('[data-field]').forEach((input) => {
-      input.addEventListener('change', () => {
-        const row = rowByID(input.dataset.for);
-        if (!row) return;
-        const value = input.value.trim();
-
-        if (input.dataset.field === 'name') row.name = value;
-        if (input.dataset.field === 'day') row.dayNumber = Number(value) || 1;
-        if (input.dataset.field === 'time') {
-          const at = parseClock(value);
-          row.time = at == null ? '' : clock(at);
-        }
-        if (input.dataset.field === 'duration') {
-          row.durationMinutes = value === '' ? null : (parseDuration(value) || null);
-        }
-        recheck(row);
-        repaint();
-      });
-    });
-
-    delegate(root, '[data-act="import"]', async () => {
-      busy = 'Adding them to the trip…';
-      repaint();
-      result = await store.importItinerary(read.rows);
-      busy = '';
-      phase = 'done';
-      repaint();
-    });
+    if (phase === 'review' && openRow) return mountRow(root);
+    if (phase === 'review') return mountReview(root);
+    if (phase === 'summary') return mountSummary(root);
+    if (phase === 'done') {
+      delegate(root, '[data-act="plan"]', () => { reset(); go('plan', {}, { replace: true }); });
+      delegate(root, '[data-act="back"]', () => { reset(); go('plan', {}, { replace: true }); });
+      return;
+    }
+    return mountPaste(root);
   },
 };
 
-// --------------------------------------------------------------------- views
+// -------------------------------------------------------------------- paste
 
 function pasteView() {
+  const words = text.trim().split(/\s+/).filter(Boolean).length;
   return html`
     <section class="screen">
       ${backHeader({
-        title: 'Paste an itinerary',
-        sub: 'Text in, stops out — you confirm every one',
+        title: 'Paste your itinerary',
+        sub: state.trip?.name || 'This trip',
       })}
 
       <div class="scroll" style="padding:14px 16px 24px">
-        <textarea id="paste-text" class="paste-area"
-                  placeholder="Paste the agent's itinerary, or the WhatsApp message…">${text}</textarea>
-
-        <div class="row g8 mt10">
-          <button class="btn jade grow" data-act="read">Read it</button>
-          <button class="btn ghost none" style="width:104px" data-act="example">Example</button>
-        </div>
-        ${busy ? html`<div class="amber-note f12 mt8">${busy}</div>` : ''}
-
-        <div class="card pad mt14">
-          <div class="eyebrow">WHAT IT CAN AND CANNOT DO</div>
-          <div class="f125 lh145 mt8" style="color:var(--charcoal)">
-            It reads day headings — <b>Day 3</b>, <b>第三天</b>, <b>Mar 14</b>, <b>14/3</b> — and then
-            takes a time, a length and a name off each line beneath them. A line with no time of
-            its own that reads like a sentence is kept as a note on the stop above it.
-          </div>
-          <div class="f115 lh145 mt10 muted">
-            It does not look anything up. Nothing here touches the network, so the stops arrive
-            with no position, no opening hours and no phone number — open one later and paste its
-            map link to fill those in. And it will misread lines: that is what the next screen
-            is for.
-          </div>
+        <div class="f125 lh155" style="color:var(--charcoal)">
+          Paste the whole thing — the agent's PDF, a WhatsApp message, an email. It is read on
+          this phone; nothing is sent anywhere.
         </div>
 
-        <div class="f11 soft lh145 mt10">
-          Pasting from a PDF usually works; the text has to be selectable in the PDF for your
-          phone to copy it. A photograph of a printed itinerary cannot be read here.
+        <textarea id="paste-text" class="paste-area mt12"
+                  placeholder="DAY 1 — Thu 12 Mar&#10;09:00 Airport pickup…">${text}</textarea>
+
+        <div class="row g6 wrap mt10">
+          <button class="pick-chip" data-act="example">Example</button>
+          <button class="pick-chip" data-act="clear">Clear</button>
+          ${state.trip?.importedText ? html`
+            <button class="pick-chip" data-act="reuse">Last import</button>` : ''}
+          <span class="pick-chip soft">${words} word${words === 1 ? '' : 's'}</span>
+        </div>
+
+        <div class="card pad mt12">
+          <div class="eyebrow">WHAT IT LOOKS FOR</div>
+          <div class="f12 lh16 mt6" style="color:var(--charcoal)">
+            Day headers — <b>Day 3</b>, <b>14 Mar</b>, <b>Sat 14/3</b>, <b>第三天</b> · no header,
+            no new day<br>
+            Times — <b>09:15</b>, <b>9.15am</b>, <b>13:30-15:45</b>, <b>下午3:00</b><br>
+            One stop per line, name after the time
+          </div>
+          <div class="f11 soft lh145 mt8">
+            A PDF has to be copied out as text first — the app cannot open the file itself.
+          </div>
+        </div>
+
+        ${busy ? html`<div class="amber-note f12 mt10">${busy}</div>` : ''}
+
+        <button class="btn jade mt12" style="width:100%" data-act="read">Read it</button>
+        <div class="f11 soft lh145 mt8" style="text-align:center">
+          Nothing is added to the trip yet. You confirm every row first.
         </div>
       </div>
     </section>`;
 }
 
-function confirmView() {
-  const rows = read.rows;
-  const flagged = rows.filter((r) => r.issues.length);
-  const chosen = rows.filter((r) => r.include);
-  const shown = onlyFlagged ? flagged : rows;
-  const days = [...new Set(chosen.map((r) => r.dayNumber))].sort((a, b) => a - b);
-  const dayCount = Math.max(state.trip?.dayCount || 1, ...rows.map((r) => r.dayNumber), 1);
+function mountPaste(root) {
+  delegate(root, '[data-act="back"]', () => { reset(); back(); });
+  const box = root.querySelector('#paste-text');
+  box?.addEventListener('input', () => { text = box.value; });
+  box?.addEventListener('change', () => { text = box.value; });
+
+  delegate(root, '[data-act="example"]', () => { text = EXAMPLE; busy = ''; repaint(); });
+  delegate(root, '[data-act="clear"]', () => { text = ''; busy = ''; repaint(); });
+  delegate(root, '[data-act="reuse"]', () => { text = state.trip?.importedText || ''; busy = ''; repaint(); });
+
+  delegate(root, '[data-act="read"]', () => {
+    if (box) text = box.value;
+    if (!text.trim()) {
+      busy = 'Nothing pasted yet — put the itinerary in the box above.';
+      repaint();
+      return;
+    }
+    read = parseItinerary(text, {
+      startDate: state.trip?.startDate,
+      dayCount: state.trip?.dayCount,
+    });
+    busy = '';
+    phase = 'review';
+    repaint();
+  });
+}
+
+// ------------------------------------------------------------------- review
+
+const outstanding = () => read.rows.filter((r) => !r.checked && !r.skipped);
+const wanted = () => read.rows.filter((r) => r.checked && !r.skipped);
+
+function reviewView() {
+  const left = outstanding().length;
+  const done = read.rows.length - left;
+  const percent = read.rows.length ? Math.round((done / read.rows.length) * 100) : 0;
+  const days = [...new Set(read.rows.map((r) => r.dayNumber))].sort((a, b) => a - b);
 
   return html`
     <section class="screen">
-      ${backHeader({
-        title: `${rows.length} stop${rows.length === 1 ? '' : 's'} read`,
-        sub: days.length ? `Landing on day${days.length === 1 ? '' : 's'} ${days.join(', ')}` : 'Nothing ticked yet',
-      })}
-
-      <div class="scroll" style="padding:12px 16px 150px">
-        ${flagged.length ? html`
-          <button class="day-alert row g8 center" data-act="only-flagged" style="width:100%;text-align:left">
-            <span class="grow">
-              ${flagged.length} of ${rows.length} need${flagged.length === 1 ? 's' : ''} a look — a
-              missing time, a guessed day, or a line that may be two stops.
-            </span>
-            <span class="chip ${onlyFlagged ? 'jade' : ''}">${onlyFlagged ? 'showing these' : 'show only these'}</span>
-          </button>` : html`
-          <div class="hint-jade">Every line read cleanly. Check the names and press the button below.</div>`}
-
-        <div class="row g8 center mt10 mb8">
-          <div class="grow f115 w700 muted">${chosen.length} of ${rows.length} ticked</div>
-          <button class="chip" data-act="all-on">Tick all</button>
-          <button class="chip" data-act="all-off">Untick all</button>
+      <div class="head">
+        <div class="head-row center">
+          <button class="iconbtn" data-act="back" aria-label="Back">${raw(icon.back)}</button>
+          <div class="grow">
+            <div class="push-title">Check what it read</div>
+            <div class="push-sub">
+              ${read.rows.length} rows · ${days.length} day group${days.length === 1 ? '' : 's'} so far ·
+              ${left} left to check
+            </div>
+          </div>
         </div>
+        <div class="progress mt12"><i style="width:${percent}%"></i></div>
+        <div class="f11 w650 muted mt8">
+          ${done} of ${read.rows.length} checked${left ? ` · tick, fix or drop the other ${left}` : ' · nothing outstanding'}
+        </div>
+      </div>
 
-        ${shown.length ? shown.map((row) => candidate(row, dayCount)) : html`
-          <div class="empty">Nothing flagged. Press "show only these" again to see them all.</div>`}
+      <div class="scroll" style="padding:12px 16px 96px">
+        ${days.map((n) => html`
+          <div class="row g8 center cand-day-head">
+            <div class="grow f125 w700">
+              Day ${n}${read.titles.get(n) ? ` · ${read.titles.get(n)}` : ''}
+            </div>
+            <span class="badge main">${read.titles.get(n) || read.sawAnyHeader ? 'FROM THE TEXT' : 'GUESSED'}</span>
+          </div>
+          ${read.rows.filter((r) => r.dayNumber === n).map((row) => candidate(row))}
+        `)}
 
         ${read.skipped ? html`
           <div class="f11 soft lh145 mt10">
@@ -217,81 +194,479 @@ function confirmView() {
           </div>` : ''}
       </div>
 
-      <div class="dock">
-        <div class="grow">
-          <div class="dock-h">${busy ? 'WORKING' : 'READY'}</div>
-          <div class="dock-s">
-            ${busy || (chosen.length
-              ? `Add ${chosen.length} stop${chosen.length === 1 ? '' : 's'}`
-              : 'Tick at least one stop')}
-          </div>
+      <div class="review-foot">
+        <div class="grow f115 w650 muted">
+          ${left ? `${left} row${left === 1 ? '' : 's'} left to check` : `${wanted().length} stops ready`}
         </div>
-        <button class="dock-btn quiet" data-act="again">Start again</button>
-        <button class="btn jade none" style="height:38px;padding:0 14px"
-                data-act="import"${chosen.length && !busy ? '' : ' disabled'}>Add them</button>
+        <button class="btn jade none" style="height:42px;padding:0 16px"
+                data-act="summary"${left ? ' disabled' : ''}>Review and save</button>
       </div>
     </section>`;
 }
 
-function candidate(row, dayCount) {
-  const worst = row.issues.some((i) => /past the end|two stops/.test(i)) ? 'danger' : 'amber';
+/** One candidate, in whichever of the three grades it came back as. */
+function candidate(row) {
+  if (row.grade === 'unread' && !row.checked) return unreadRow(row);
+
+  const worked = row.grade === 'worked' && !row.checked;
+  const endGuess = row.inferred.find((i) => i.field === 'end');
+  const noTime = row.inferred.find((i) => i.field === 'time');
+
   return html`
-    <div class="cand${row.include ? '' : ' off'}${row.issues.length ? ` flag ${worst}` : ''}">
-      <div class="row g10 center">
-        ${checkbox(row.include, { act: 'toggle-row', id: row.id, size: 22 })}
-        <input class="cand-name grow" value="${row.name}" data-field="name" data-for="${row.id}"
-               aria-label="Name of this stop">
-        <span class="cand-tick${row.include ? ' on' : ''}">${row.include ? 'in' : 'out'}</span>
+    <div class="cand ${row.checked ? 'done' : (worked ? 'worked' : 'plain')}${row.skipped ? ' off' : ''}">
+      <div class="row g11 center">
+        <button class="tick${row.checked ? ' on' : ''}" data-tick="${row.id}"
+                role="checkbox" aria-checked="${row.checked ? 'true' : 'false'}"
+                aria-label="Tick ${row.name}">${raw(icon.tick('#fff', 11))}</button>
+        <div class="cand-when${worked ? ' worked' : ''}">
+          <div>${row.time || '--:--'}</div>
+          ${row.endTime ? html`<div class="cand-when-end">${row.endTime}</div>` : ''}
+        </div>
+        <button class="grow" style="text-align:left" data-open-row="${row.id}">
+          <div class="f135 w650" style="line-height:1.25">${row.name}</div>
+          ${row.note ? html`<div class="f11 soft mt2">${row.note}</div>` : ''}
+          ${worked && (endGuess || noTime) ? html`
+            <div class="f11 w650 mt2" style="color:var(--amber-fg)">${(noTime || endGuess).text}</div>` : ''}
+        </button>
+        ${row.skipped
+          ? html`<span class="cand-tick">skipped</span>`
+          : raw(icon.chevron)}
       </div>
 
-      <div class="row g6 center mt8 wrap">
-        <select class="cand-day" data-field="day" data-for="${row.id}" aria-label="Which day">
-          ${Array.from({ length: dayCount }, (_, i) => i + 1).map((n) => html`
-            <option value="${n}"${n === row.dayNumber ? ' selected' : ''}>Day ${n}</option>`)}
-        </select>
-        <input class="cand-time" value="${row.time}" placeholder="--:--" inputmode="numeric"
-               data-field="time" data-for="${row.id}" aria-label="Start time">
-        <span class="dur-k">FOR</span>
-        <input class="cand-dur" value="${row.durationMinutes || ''}" placeholder="—" inputmode="numeric"
-               data-field="duration" data-for="${row.id}" aria-label="How long, in minutes">
-        <span class="dur-k">MIN</span>
-        <span class="dur-out">
-          ${row.time && row.durationMinutes
-            ? `ends ${clock(parseClock(row.time) + row.durationMinutes)}`
-            : (row.durationMinutes ? duration(row.durationMinutes) : 'no end set')}
-        </span>
-      </div>
+      ${worked && endGuess && !noTime ? html`
+        <div class="row g6 wrap cand-acts">
+          <button class="warn-fix first" data-keep-end="${row.id}">Keep ${store.duration(minutesOf(row))}</button>
+          <button class="warn-fix" data-open-row="${row.id}">Set the end time</button>
+          <button class="warn-fix" data-clear-end="${row.id}">No end time</button>
+        </div>` : ''}
 
-      ${row.note ? html`<div class="cand-note">${row.note}</div>` : ''}
-      ${row.issues.map((issue) => html`<div class="plan-warn">${issue}</div>`)}
+      ${worked && noTime ? html`
+        <div class="row g6 wrap cand-acts">
+          <button class="warn-fix first" data-open-row="${row.id}">Give it a time</button>
+          <button class="warn-fix" data-skip="${row.id}">Skip it</button>
+        </div>` : ''}
+
+      ${row.splittable && !row.checked ? html`
+        <div class="row g6 wrap cand-acts">
+          <span class="pick-chip soft">Two names in one line?</span>
+          <button class="warn-fix first" data-split="${row.id}">Split into two stops</button>
+          <button class="warn-fix" data-tick="${row.id}">Leave as one</button>
+        </div>` : ''}
+
+      ${movable(row) ? html`
+        <div class="row g6 wrap cand-acts">
+          <span class="pick-chip soft">MOVE TO</span>
+          ${dayChips(row)}
+        </div>` : ''}
     </div>`;
 }
+
+/**
+ * Where a day boundary could plausibly be wrong: the first row of a group,
+ * and any row whose day the parser had to guess. Offering it on every row
+ * buries the rows that actually need a decision.
+ */
+function movable(row) {
+  if (row.checked || row.skipped) return false;
+  if (row.dayGuessed) return true;
+  return read.rows.find((r) => r.dayNumber === row.dayNumber)?.id === row.id;
+}
+
+function dayChips(row) {
+  const count = Math.max(state.trip?.dayCount || 1, ...read.rows.map((r) => r.dayNumber));
+  return html`
+    ${Array.from({ length: count }, (_, i) => i + 1).map((n) => html`
+      <button class="archive-day${n === row.dayNumber ? ' on' : ''}" data-move="${row.id}" data-to="${n}">D${n}</button>`)}
+    <button class="warn-fix" data-move-rest="${row.id}">and the rest below it</button>`;
+}
+
+/** The line it could not read, kept verbatim, with the three ways out. */
+function unreadRow(row) {
+  return html`
+    <div class="cand unread">
+      <div class="eyebrow">COULD NOT READ THIS LINE</div>
+      <div class="cand-raw">${row.raw}</div>
+      <div class="row g6 wrap cand-acts">
+        <button class="warn-fix first" data-make-stop="${row.id}">Make it a stop</button>
+        <button class="warn-fix" data-append="${row.id}">Add to the row above</button>
+        <button class="warn-fix" data-skip="${row.id}">Skip it</button>
+      </div>
+    </div>`;
+}
+
+function mountReview(root) {
+  delegate(root, '[data-act="back"]', () => { phase = 'paste'; repaint(); });
+  delegate(root, '[data-act="summary"]', () => { phase = 'summary'; repaint(); });
+
+  delegate(root, '[data-tick]', (el) => {
+    const row = rowByID(el.dataset.tick);
+    if (!row) return;
+    row.checked = !row.checked;
+    row.skipped = false;
+    repaint();
+  });
+  delegate(root, '[data-skip]', (el) => {
+    const row = rowByID(el.dataset.skip);
+    if (!row) return;
+    row.skipped = true;
+    row.checked = false;
+    repaint();
+  });
+  delegate(root, '[data-open-row]', (el) => { openRow = el.dataset.openRow; repaint(); });
+
+  delegate(root, '[data-keep-end]', (el) => {
+    const row = rowByID(el.dataset.keepEnd);
+    if (!row) return;
+    row.inferred = row.inferred.filter((i) => i.field !== 'end');
+    row.checked = true;
+    regrade(row);
+    repaint();
+  });
+  delegate(root, '[data-clear-end]', (el) => {
+    const row = rowByID(el.dataset.clearEnd);
+    if (!row) return;
+    row.endTime = '';
+    row.inferred = row.inferred.filter((i) => i.field !== 'end');
+    row.checked = true;
+    regrade(row);
+    repaint();
+  });
+
+  delegate(root, '[data-move]', (el) => {
+    const row = rowByID(el.dataset.move);
+    if (!row) return;
+    row.dayNumber = Number(el.dataset.to);
+    row.dayGuessed = false;
+    row.inferred = row.inferred.filter((i) => i.field !== 'day');
+    regrade(row);
+    repaint();
+  });
+  delegate(root, '[data-move-rest]', (el) => {
+    // A wrong day boundary is usually wrong for everything under it too.
+    const at = read.rows.findIndex((r) => r.id === el.dataset.moveRest);
+    if (at < 0) return;
+    const from = read.rows[at].dayNumber;
+    const to = from + 1;
+    for (const row of read.rows.slice(at)) {
+      if (row.dayNumber !== from) continue;
+      row.dayNumber = to;
+      row.dayGuessed = false;
+      row.inferred = row.inferred.filter((i) => i.field !== 'day');
+      regrade(row);
+    }
+    repaint();
+  });
+
+  delegate(root, '[data-split]', (el) => {
+    const at = read.rows.findIndex((r) => r.id === el.dataset.split);
+    const row = read.rows[at];
+    if (!row) return;
+    const parts = row.name.split(/\s+(?:&|and)\s+/i).map((t) => t.trim()).filter(Boolean);
+    if (parts.length < 2) return;
+    row.name = parts[0];
+    row.splittable = false;
+    const extras = parts.slice(1).map((name, i) => ({
+      ...row,
+      id: `${row.id}-s${i}`,
+      name,
+      splittable: false,
+      checked: false,
+      note: '',
+    }));
+    read.rows.splice(at + 1, 0, ...extras);
+    repaint();
+  });
+
+  delegate(root, '[data-make-stop]', (el) => {
+    const row = rowByID(el.dataset.makeStop);
+    if (!row) return;
+    row.kind = 'stop';
+    row.inferred = [{ field: 'time', text: 'No time on the line — set one, or leave it' }];
+    regrade(row);
+    openRow = row.id;
+    repaint();
+  });
+  delegate(root, '[data-append]', (el) => {
+    const at = read.rows.findIndex((r) => r.id === el.dataset.append);
+    const above = read.rows.slice(0, at).reverse().find((r) => r.kind === 'stop');
+    if (!above) return;
+    above.note = above.note ? `${above.note} ${read.rows[at].name}` : read.rows[at].name;
+    read.rows.splice(at, 1);
+    repaint();
+  });
+}
+
+// ---------------------------------------------------------------- one row
+
+function rowView() {
+  const row = rowByID(openRow);
+  if (!row) return reviewView();
+  const at = read.rows.findIndex((r) => r.id === row.id);
+  const dayCount = Math.max(state.trip?.dayCount || 1, ...read.rows.map((r) => r.dayNumber));
+  const endGuess = row.inferred.find((i) => i.field === 'end');
+
+  return html`
+    <section class="screen">
+      <div class="head">
+        <div class="head-row center">
+          <button class="iconbtn" data-act="row-close" aria-label="Back to the rows">${raw(icon.back)}</button>
+          <div class="grow">
+            <div class="push-title">Row ${at + 1} of ${read.rows.length}</div>
+            <div class="push-sub">Day ${row.dayNumber}${read.titles.get(row.dayNumber) ? ` · ${read.titles.get(row.dayNumber)}` : ''}</div>
+          </div>
+        </div>
+      </div>
+
+      <div class="scroll" style="padding:14px 16px 24px">
+        <div class="cand-raw">${row.raw || row.name}</div>
+        <div class="f11 soft lh145 mt6">Your line, kept as pasted.</div>
+
+        <div class="col g10 mt14">
+          <label>
+            <div class="eyebrow">NAME</div>
+            <input id="row-name" class="mt4" style="width:100%" value="${row.name}">
+          </label>
+
+          <div class="row g8">
+            <label class="grow">
+              <div class="eyebrow">STARTS</div>
+              <input id="row-start" class="mt4" style="width:100%" value="${row.time}"
+                     placeholder="--:--" inputmode="numeric">
+            </label>
+            <label class="grow">
+              <div class="eyebrow"${endGuess ? ' style="color:var(--amber-fg)"' : ''}>ENDS</div>
+              <input id="row-end" class="mt4${endGuess ? ' guessed' : ''}" style="width:100%"
+                     value="${row.endTime}" placeholder="—" inputmode="numeric">
+              ${endGuess ? html`<div class="f11 w650 mt2" style="color:var(--amber-fg)">${endGuess.text}</div>` : ''}
+            </label>
+          </div>
+
+          <label>
+            <div class="eyebrow">NOTE</div>
+            <input id="row-note" class="mt4" style="width:100%" value="${row.note}"
+                   placeholder="Anything else the line said">
+          </label>
+
+          <div>
+            <div class="eyebrow">WHICH DAY</div>
+            <div class="row g6 wrap mt6">
+              ${Array.from({ length: dayCount }, (_, i) => i + 1).map((n) => html`
+                <button class="note-day${n === row.dayNumber ? ' on' : ''}" data-row-day="${n}">D${n}</button>`)}
+            </div>
+          </div>
+
+          <div>
+            <div class="row g8 center">
+              <div class="grow eyebrow">MAP LINK</div>
+              <div class="f11 w650 soft">optional</div>
+            </div>
+            <input id="row-link" class="mt4" style="width:100%" value="${row.link || ''}"
+                   placeholder="Paste a Google or Apple Maps link">
+            <div class="f11 soft lh145 mt4">
+              The link is what gives the stop a position. Leave it and the stop still saves — it
+              just has no pin until you add one from the stop itself.
+            </div>
+          </div>
+        </div>
+
+        <div class="row g8 mt16">
+          <button class="btn jade grow" data-act="row-save">Confirm and next</button>
+          <button class="btn none" style="width:96px;background:var(--danger-bg);color:var(--danger-fg)"
+                  data-act="row-skip">Skip row</button>
+        </div>
+        <div class="f11 soft lh145 mt10">
+          Skipped rows stay in the list, greyed, so you can change your mind before the summary.
+        </div>
+      </div>
+    </section>`;
+}
+
+function mountRow(root) {
+  const row = rowByID(openRow);
+  const close = () => { openRow = null; repaint(); };
+
+  delegate(root, '[data-act="row-close"]', close);
+  delegate(root, '[data-row-day]', (el) => {
+    if (!row) return;
+    row.dayNumber = Number(el.dataset.rowDay);
+    row.dayGuessed = false;
+    row.inferred = row.inferred.filter((i) => i.field !== 'day');
+    regrade(row);
+    repaint();
+  });
+
+  const commit = () => {
+    if (!row) return;
+    row.name = root.querySelector('#row-name')?.value.trim() || row.name;
+    row.note = root.querySelector('#row-note')?.value.trim() || '';
+    row.link = root.querySelector('#row-link')?.value.trim() || '';
+
+    const start = root.querySelector('#row-start')?.value.trim() || '';
+    const end = root.querySelector('#row-end')?.value.trim() || '';
+    const startAt = parseClock(start);
+    const endAt = parseClock(end);
+    row.time = startAt != null ? clock(startAt) : '';
+    row.endTime = endAt != null ? clock(endAt) : '';
+    // Anything typed by hand is no longer inferred.
+    row.inferred = row.inferred.filter((i) => i.field !== 'end' && i.field !== 'time');
+    if (!row.time) row.inferred.push({ field: 'time', text: 'No time on the line — set one, or leave it' });
+    regrade(row);
+  };
+
+  delegate(root, '[data-act="row-save"]', () => {
+    commit();
+    if (row) {
+      row.checked = true;
+      row.skipped = false;
+      row.splittable = false;
+    }
+    // Straight on to the next thing still outstanding.
+    const next = outstanding()[0];
+    openRow = next ? next.id : null;
+    repaint();
+  });
+
+  delegate(root, '[data-act="row-skip"]', () => {
+    if (row) {
+      row.skipped = true;
+      row.checked = false;
+    }
+    close();
+  });
+}
+
+// ------------------------------------------------------------------ summary
+
+function summaryView() {
+  const rows = wanted();
+  const skipped = read.rows.filter((r) => r.skipped).length;
+  const fixed = read.rows.filter((r) => r.grade === 'read' && r.raw && r.checked).length;
+  const days = [...new Set(rows.map((r) => r.dayNumber))].sort((a, b) => a - b);
+  const unlocated = rows.filter((r) => !r.link).length;
+
+  return html`
+    <section class="screen">
+      ${backHeader({
+        title: 'Ready to save',
+        sub: `All ${read.rows.length} rows checked · nothing written yet`,
+      })}
+
+      <div class="scroll" style="padding:14px 16px 24px">
+        <div class="card pad mb12">
+          <div class="eyebrow">WHAT WILL BE CREATED</div>
+          <div class="row g10 mt4" style="align-items:flex-end">
+            <div class="grow" style="font-size:34px;font-weight:700;letter-spacing:-.02em;line-height:1">${rows.length}</div>
+            <div class="right none">
+              <div class="f11 w800 soft">ACROSS</div>
+              <div class="f13 w700">${days.length} day${days.length === 1 ? '' : 's'}</div>
+            </div>
+          </div>
+          <div class="f12 muted mt8">
+            ${rows.length} stop${rows.length === 1 ? '' : 's'} confirmed ·
+            ${skipped} row${skipped === 1 ? '' : 's'} skipped ·
+            ${fixed} fixed by hand
+          </div>
+        </div>
+
+        <div class="card-list mb12">
+          <div class="pad16 eyebrow" style="padding-top:11px;padding-bottom:11px">DAY BY DAY</div>
+          ${days.map((n) => {
+            const mine = rows.filter((r) => r.dayNumber === n);
+            const times = mine.map((r) => parseClock(r.time)).filter((t) => t != null).sort((a, b) => a - b);
+            const ends = mine.map((r) => parseClock(r.endTime)).filter((t) => t != null).sort((a, b) => a - b);
+            const span = times.length
+              ? `${clock(times[0])} – ${clock(ends.length ? Math.max(ends[ends.length - 1], times[times.length - 1]) : times[times.length - 1])}`
+              : 'no times';
+            return html`
+              <div class="row g10 row-divider" style="padding:10px 14px;align-items:baseline">
+                <div class="none f125 w700" style="width:52px">Day ${n}</div>
+                <div class="grow f12" style="color:var(--charcoal)">
+                  ${mine.length} stop${mine.length === 1 ? '' : 's'} · ${span}
+                </div>
+                <div class="f11 w650 soft">${store.day(n)?.shortDate || ''}</div>
+              </div>`;
+          })}
+        </div>
+
+        <div class="caveat mb12">
+          <div class="eyebrow amber">TWO THINGS IT DID NOT DO</div>
+          <div class="f12 lh15 w650 mt6">
+            ${unlocated} of the ${rows.length} stops have no position yet, so they will not appear
+            on the map until you paste a link into them.
+          </div>
+          <div class="f12 lh15 w650 mt6">
+            No sub routes were created. Free time is yours to declare, in the gaps this leaves.
+          </div>
+        </div>
+
+        ${busy ? html`<div class="amber-note f12 mb12">${busy}</div>` : ''}
+
+        <button class="btn jade" style="width:100%;height:48px" data-act="save"${busy ? ' disabled' : ''}>
+          Save ${rows.length} stop${rows.length === 1 ? '' : 's'} to the trip
+        </button>
+        <button class="btn ghost mt8" style="width:100%" data-act="back-to-rows">Back to the rows</button>
+        ${existingNote(days)}
+      </div>
+    </section>`;
+}
+
+/** Importing into a day that already has stops adds to it, and says so. */
+function existingNote(days) {
+  const busiest = days
+    .map((n) => ({ n, count: store.activeItems(store.day(n)).length }))
+    .filter((d) => d.count)
+    .sort((a, b) => b.count - a.count)[0];
+  if (!busiest) return '';
+  return html`
+    <div class="f11 soft lh145 mt10" style="text-align:center">
+      Day ${busiest.n} already has ${busiest.count} stop${busiest.count === 1 ? '' : 's'} from earlier.
+      Its new ones are added alongside, not over them.
+    </div>`;
+}
+
+function mountSummary(root) {
+  delegate(root, '[data-act="back"]', () => { phase = 'review'; repaint(); });
+  delegate(root, '[data-act="back-to-rows"]', () => { phase = 'review'; repaint(); });
+  delegate(root, '[data-act="save"]', async () => {
+    busy = 'Adding them to the trip…';
+    repaint();
+    result = await store.importItinerary(
+      wanted().map((row) => ({ ...row, include: true })),
+      { sourceText: read.text },
+    );
+    busy = '';
+    phase = 'done';
+    repaint();
+  });
+}
+
+// --------------------------------------------------------------------- done
 
 function doneView() {
   const added = result?.added || 0;
   return html`
     <section class="screen">
-      ${backHeader({ title: 'Added', sub: `${added} stop${added === 1 ? '' : 's'} on your itinerary` })}
+      ${backHeader({ title: 'Saved', sub: `${added} stop${added === 1 ? '' : 's'} on your itinerary` })}
       <div class="scroll" style="padding:14px 16px 24px">
         <div class="card pad">
           <div class="eyebrow jade">DONE</div>
-          <div class="f125 lh145 mt8" style="color:var(--charcoal)">
-            ${added} stop${added === 1 ? '' : 's'} added.
+          <div class="f125 lh155 mt8" style="color:var(--charcoal)">
+            ${added} stop${added === 1 ? '' : 's'} saved from your itinerary.
             ${result?.placesMade ? `${result.placesMade} new place${result.placesMade === 1 ? '' : 's'} were created for them` : ''}${result?.reused ? `, and ${result.reused} matched somewhere you had already saved` : ''}.
             ${result?.lengthened ? `The trip was lengthened by ${result.lengthened} day${result.lengthened === 1 ? '' : 's'} to fit.` : ''}
           </div>
           <div class="f115 lh145 mt10 muted">
-            None of them has a position yet, so they will not appear on the map until you open one
-            and paste its map link. Everything else — times, notes, shopping, must-see shots —
-            works on them straight away.
+            ${result?.unlocated || 0} still need a position, so they will not appear on the map
+            until you open one and paste its map link. Everything else — times, notes, shopping,
+            must-see shots — works on them straight away.
           </div>
           <button class="btn jade mt14" data-act="plan">Open the Plan</button>
         </div>
 
         <div class="f11 soft lh145 mt12">
-          Pasting again adds to what is there rather than replacing it, so a second half of the
-          itinerary can arrive separately. A stop that landed on the wrong day can be dragged, or
-          removed from the day in Plan's edit mode.
+          There is no undo, but the text you pasted is kept with the trip: paste again and it is
+          waiting under <b>Last import</b>. Anything wrong is edited stop by stop, and a stop on
+          the wrong day can be dragged or moved in Plan's edit mode.
         </div>
       </div>
     </section>`;
@@ -301,17 +676,17 @@ function doneView() {
 
 const rowByID = (id) => read?.rows.find((r) => r.id === id) || null;
 
-/** Recomputes one row's flags after it has been corrected by hand. */
-function recheck(row) {
-  const issues = [];
-  if (!row.time) issues.push('No time — set one, or leave it and fix it on the day');
-  if (!String(row.name || '').trim()) issues.push('No name, so this one cannot be added');
-  if (row.name.length > 70) issues.push('That is a long name — it may be two stops on one line');
-  if (state.trip?.dayCount && row.dayNumber > state.trip.dayCount) {
-    issues.push(`Day ${row.dayNumber} is past the end of this trip — the trip will be lengthened`);
-  }
-  row.issues = issues;
-  row.dayGuessed = false;
+function minutesOf(row) {
+  const from = parseClock(row.time);
+  const to = parseClock(row.endTime);
+  if (from == null || to == null) return 0;
+  return to >= from ? to - from : (to + 1440) - from;
+}
+
+/** A row that has been corrected by hand is no longer "worked out". */
+function regrade(row) {
+  if (row.kind === 'unread') return;
+  row.grade = row.inferred.length ? 'worked' : 'read';
 }
 
 function repaint() {
@@ -323,7 +698,7 @@ function reset() {
   phase = 'paste';
   text = '';
   read = null;
+  openRow = null;
   result = null;
-  onlyFlagged = false;
   busy = '';
 }

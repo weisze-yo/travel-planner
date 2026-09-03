@@ -6,14 +6,14 @@ import { html, raw, icon, delegate, money } from '../util.js';
 import * as store from '../store.js';
 import { state } from '../store.js';
 import { go, back } from '../nav.js';
-import { mapsLinks } from './parts.js';
+import { mapsLinks, swipeToDelete } from './parts.js';
 
 const TABS = [
   { id: 'info', label: 'Info' },
   { id: 'nearby', label: 'Nearby' },
   { id: 'mustsee', label: 'Must-see' },
   { id: 'shop', label: 'Shop' },
-  { id: 'log', label: 'Log' },
+  { id: 'log', label: 'Notes' },
 ];
 
 /** Which panel is showing. Point 7: the tabs stay on this screen. */
@@ -30,7 +30,7 @@ export function subject(params = {}) {
         name: hit.item.name,
         subtitle: hit.item.subtitle,
         summary: hit.item.summary || hit.item.note,
-        window: hit.item.windowLabel,
+        window: store.itemWindow(hit.item).label,
         essentials: hit.item.essentials?.length
           ? hit.item.essentials
           : (store.place(hit.item.placeID)?.essentials || []),
@@ -158,6 +158,11 @@ export default {
     delegate(root, '[data-edit-note]', (el) => go('note', {
       noteID: el.dataset.editNote, dayNumber: Number(el.dataset.noteDay),
     }));
+    swipeToDelete(root, {
+      rowSelector: '[data-pnote-row]',
+      label: () => `Delete this note about ${it?.name || 'this place'}?`,
+      onDelete: (el) => store.deleteLogEntry(el.dataset.pnoteRow),
+    });
     delegate(root, '[data-act="tick-shot"]', (el) => store.toggleShot(el.dataset.id));
     delegate(root, '[data-act="tick-item"]', (el) => store.toggleBought(el.dataset.id));
     // Point: the "+" works from inside a stop too, not only on the Nearby screen.
@@ -312,37 +317,49 @@ function shopPanel(it, items) {
 }
 
 /**
- * Item 04, from this side. A place's Log tab used to be able to show only the
- * day's single note, and only if that note happened to be filed here — which
- * was honest and useless. It now shows every note about this place, with the
- * day each one belongs to, and adding another does not overwrite the last.
+ * A place's notes. Newest first, each with the time it was written, and the
+ * tab count is notes rather than days — three notes at one market on one
+ * afternoon are three rows here, not one.
  */
 function logPanel(it, notes) {
+  const today = notes.filter((n) => n.dayNumber === state.selectedDay).length;
   return html`
+    <div class="row g8 center mb10">
+      <div class="grow f115 w700 muted">
+        ${notes.length
+          ? `${notes.length} note${notes.length === 1 ? '' : 's'} here${today ? ` · ${today} on day ${state.selectedDay}` : ''}`
+          : 'No notes here yet'}
+      </div>
+      <button class="btn sm ink" data-act="note">+ Note</button>
+    </div>
+
     ${notes.length ? html`
-      <div class="col g8">
+      <div class="col g10" id="place-notes">
         ${notes.map((note) => html`
-          <div class="card pad">
-            <div class="row between g8" style="align-items:baseline">
-              <div class="f13 w700">Day ${note.dayNumber} · ${store.day(note.dayNumber)?.shortDate || ''}</div>
-              <button class="f11 w650" style="color:var(--jade)" data-edit-note="${note.id}"
-                      data-note-day="${note.dayNumber}">Edit</button>
+          <div class="swipe-row" data-pnote-row="${note.id}">
+            <div class="swipe-bin">
+              <button class="bin" data-swipe-delete aria-label="Delete this note">${raw(icon.bin)}</button>
             </div>
-            <div class="log-text">${note.text || 'Nothing written yet.'}</div>
-            ${note.photoPaths?.length ? html`
-              <div class="row g6 wrap mt10">
-                ${note.photoPaths.map((src) => html`
-                  <div class="photo-thumb"><img src="${src}" alt=""></div>`)}
-              </div>` : ''}
+            <button class="swipe-face card pad" style="border-radius:16px"
+                    data-edit-note="${note.id}" data-note-day="${note.dayNumber}">
+              <div class="row between g8" style="align-items:baseline">
+                <div class="f12 w800 tnum">${note.time}</div>
+                <div class="f11 w650 soft">Day ${note.dayNumber} · ${store.day(note.dayNumber)?.shortDate || ''}</div>
+              </div>
+              <div class="log-text">${note.text || 'Nothing written yet.'}</div>
+              ${note.photoPaths?.length ? html`
+                <div class="row g6 wrap mt10">
+                  ${note.photoPaths.map((src) => html`
+                    <div class="photo-thumb"><img src="${src}" alt=""></div>`)}
+                </div>` : ''}
+            </button>
           </div>`)}
       </div>
     ` : html`
       <div class="empty">Nothing logged about this place yet.</div>`}
 
-    <button class="btn-dashed mt10" data-act="note">+ Add a note about this place</button>
-
-    <div class="f11 soft lh145 mt10">
-      A note belongs to this place on one day, so a week of visits keeps a week of notes.
-      Day ${state.selectedDay} is the one it will be filed under; the composer can change that.
+    <div class="f11 soft lh145 mt12">
+      Notes belong to this place, so they stay here across days. The Log shows the same ones
+      under ${it.name} on the day each was written.
     </div>`;
 }

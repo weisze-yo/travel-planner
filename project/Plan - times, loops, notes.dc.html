@@ -1,0 +1,1083 @@
+<!DOCTYPE html>
+<html>
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<script src="./support.js"></script>
+</head>
+<body>
+<x-dc>
+<helmet data-dc-atomics><meta name="design_doc_mode" content="canvas"><link href="https://fonts.googleapis.com/css2?family=Public+Sans:ital,wght@0,400;0,500;0,600;0,700;0,800;1,400&display=swap" rel="stylesheet"><style>body{margin:0;background:#F2F3F1;font-family:'Public Sans',system-ui,sans-serif;color:#14201C;-webkit-font-smoothing:antialiased}*{box-sizing:border-box}a{color:#1F6F5C}a:hover{color:#14201C}</style></helmet>
+
+<section style="padding:44px 48px 40px;border-bottom:1px solid rgba(20,32,28,.08)">
+<div style="display:flex;align-items:baseline;gap:10px;margin:0 0 8px"><a href="#t2" style="font:800 10px ui-monospace,Menlo,monospace;padding:4px 8px;background:#14201C;color:#fff;border-radius:5px;text-decoration:none">2</a><span style="font:650 13px/1.2 'Public Sans',system-ui">Paste an itinerary · confirm it row by row</span></div>
+
+<div style="display:flex;gap:26px;flex-wrap:wrap;align-items:flex-start;margin-bottom:36px">
+<div style="width:520px;background:#fff;border-radius:18px;padding:24px 26px;border:1px solid rgba(20,32,28,.08)">
+<div style="font-size:10.5px;font-weight:800;letter-spacing:.1em;color:#98A5A0">WHAT THE PHONE CAN ACTUALLY DO</div>
+<div style="font-size:22px;font-weight:700;letter-spacing:-.02em;margin:8px 0 14px">It reads shapes, not meaning</div>
+<p style="font-size:13.5px;line-height:1.6;color:#3D4C46;margin:0 0 10px;text-wrap:pretty">With no server there is no language model in the loop — just pattern matching on the phone. It can find the shapes that itineraries are written in: a day header (<b>Day 3</b>, <b>14 Mar</b>, <b>Sat 14/3</b>), a clock (<b>09:15</b>, <b>9.15am</b>, <b>09:15–10:00</b>), a bullet, an arrow. Everything after the clock it treats as a name and does not pretend to recognise.</p>
+<p style="font-size:13.5px;line-height:1.6;color:#3D4C46;margin:0 0 10px">So the review list has three grades, and the design is mostly about the second and third: <b>found it</b> — a jade tick and the time as written; <b>worked it out</b> — amber, and it says which part it inferred; <b>could not read it</b> — the raw line kept verbatim with three ways out. Nothing is written to the trip until the last screen.</p>
+<div style="height:1px;background:#EDEFEC;margin:16px 0"></div>
+<div style="font-size:10.5px;font-weight:800;letter-spacing:.1em;color:#98A5A0">EVERY ROW GETS A TAP</div>
+<p style="font-size:13.5px;line-height:1.6;color:#3D4C46;margin:8px 0 0">No bulk accept: this list is the one place where a wrong row is cheap to remove, so each one is ticked or dropped here. <b>Review and save</b> stays dead until none are outstanding — it opens the last look, <a href="#2e">2e</a>, which holds the only button that writes anything. The header says how many are left so you can stop and come back. After saving the trip is real — still editable, but editable one stop at a time.</p>
+</div>
+<div style="width:360px;background:#14201C;color:#fff;border-radius:18px;padding:24px 26px">
+<div style="font-size:10.5px;font-weight:800;letter-spacing:.1em;color:#8FB3A6">WHAT IT NEVER GUESSES</div>
+<div style="display:flex;flex-direction:column;gap:13px;margin-top:14px">
+<div style="font-size:12.5px;line-height:1.5;color:#C8D6D0"><b style="color:#fff">Positions.</b> A name in a PDF is not a place on a map. Imported stops arrive without coordinates and say so; you paste a map link later, per stop, when you care.</div>
+<div style="font-size:12.5px;line-height:1.5;color:#C8D6D0"><b style="color:#fff">Sub routes.</b> Free time is yours to declare. The import only ever creates main-route stops.</div>
+<div style="font-size:12.5px;line-height:1.5;color:#C8D6D0"><b style="color:#fff">Deletions.</b> Importing into a day that already has stops adds to it, and the last screen says exactly what will be added before you press it.</div>
+<div style="font-size:12.5px;line-height:1.5;color:#C8D6D0">The pasted text is kept with the trip, so a bad import can be undone and re-read rather than retyped.</div>
+</div>
+</div>
+</div>
+
+<div style="display:grid;grid-template-columns:repeat(3,402px);gap:34px 34px;align-items:start;justify-content:start">
+
+<div id="2a" style="flex:none;display:flex;flex-direction:column;gap:10px">
+<div style="display:flex;align-items:baseline;gap:8px;max-width:402px;font:400 11.5px/1.3 'Public Sans',system-ui;color:#6B7A74"><a href="#2a" style="font:800 10.5px ui-monospace,Menlo,monospace;padding:3px 7px;background:#1F6F5C;color:#fff;border-radius:5px;text-decoration:none">2a</a><span><b style="color:#14201C">Paste it in.</b> Reached from an empty trip or Trip settings. One field, the whole message, no formatting rules — and a plain statement of what it will look for, so a bad read is not a mystery.</span></div>
+<div style="width:402px;height:874px;background:#F2F3F1;border-radius:12px;overflow:hidden;box-shadow:0 1px 0 rgba(20,32,28,.08),0 10px 40px rgba(20,32,28,.09);display:flex;flex-direction:column">
+<div style="flex:none;padding:14px 16px 12px;background:#fff;border-bottom:1px solid #E7EAE7;display:flex;align-items:center;gap:10px">
+<div style="width:32px;height:32px;flex:none;display:flex;align-items:center;justify-content:center"><svg width="16" height="16" viewBox="0 0 16 16"><path d="M2 2l12 12M14 2L2 14" stroke="#14201C" stroke-width="2" stroke-linecap="round"></path></svg></div>
+<div style="flex:1;min-width:0"><div style="font-size:17px;font-weight:700;letter-spacing:-.01em">Paste your itinerary</div><div style="font-size:11.5px;color:#6B7A74;margin-top:1px">Meridian City · Group Tour</div></div>
+</div>
+<div style="flex:1;min-height:0;overflow:hidden;padding:14px 16px 24px;display:flex;flex-direction:column">
+<div style="font-size:12.5px;line-height:1.55;color:#3D4C46">Paste the whole thing — the agent's PDF, a WhatsApp message, an email. It is read on this phone; nothing is sent anywhere.</div>
+<div style="flex:1;min-height:0;margin-top:12px;border:1.5px solid #14201C;border-radius:14px;background:#fff;padding:11px 12px;font-size:12px;line-height:1.6;color:#3D4C46;overflow:hidden;white-space:pre-wrap;font-family:ui-monospace,Menlo,monospace">DAY 3 – Sat 14 Mar
+08:30 depart Hotel Meridian (coach bay 2)
+09:15 Lumen Crossing – 45 mins photo stop
+10:30 Ashgate Shrine (1 hr, shoulders covered)
+12:00 set lunch, Harbour Steps
+13:30-15:45 Nishi Market — free time, back at coach 15:45
+16:00 Skyline Deck, sunset 18:04
+evening free, dinner not included
+
+DAY 4 – Sun 15 Mar
+pickup 08:00 lobby
+Kaede Dept Store &amp; Riverside Outlet (whole day)
+…</div>
+<div style="display:flex;gap:6px;flex-wrap:wrap;margin-top:10px">
+<span style="padding:5px 9px;border-radius:9px;background:#F2F3F1;color:#3D4C46;font-size:11.5px;font-weight:650;white-space:nowrap">Paste</span>
+<span style="padding:5px 9px;border-radius:9px;background:#F2F3F1;color:#3D4C46;font-size:11.5px;font-weight:650;white-space:nowrap">Clear</span>
+<span style="padding:5px 9px;border-radius:9px;background:#F2F3F1;color:#98A5A0;font-size:11.5px;font-weight:650;white-space:nowrap">312 words</span>
+</div>
+<div style="background:#fff;border-radius:14px;padding:12px 13px;margin-top:12px">
+<div style="font-size:10.5px;font-weight:800;letter-spacing:.06em;color:#98A5A0">WHAT IT LOOKS FOR</div>
+<div style="font-size:12px;line-height:1.6;color:#3D4C46;margin-top:6px">Day headers — <b>Day 3</b>, <b>14 Mar</b>, <b>Sat 14/3</b> · no header, no new day<br>Times — <b>09:15</b>, <b>9.15am</b>, <b>13:30-15:45</b><br>One stop per line, name after the time</div>
+<div style="font-size:11px;color:#98A5A0;line-height:1.45;margin-top:8px">A PDF has to be copied out as text first — the app cannot open the file itself.</div>
+</div>
+<div style="height:46px;border-radius:12px;background:#1F6F5C;color:#fff;font-size:13px;font-weight:700;display:flex;align-items:center;justify-content:center;margin-top:12px">Read it</div>
+<div style="font-size:11px;color:#98A5A0;line-height:1.45;text-align:center;margin-top:8px">Nothing is added to the trip yet. You confirm every row first.</div>
+</div>
+</div>
+</div>
+
+<div id="2b" style="flex:none;display:flex;flex-direction:column;gap:10px">
+<div style="display:flex;align-items:baseline;gap:8px;max-width:402px;font:400 11.5px/1.3 'Public Sans',system-ui;color:#6B7A74"><a href="#2b" style="font:800 10.5px ui-monospace,Menlo,monospace;padding:3px 7px;background:rgba(20,32,28,.08);color:#14201C;border-radius:5px;text-decoration:none">2b</a><span><b style="color:#14201C">The three grades of row.</b> Jade tick = read as written. Amber = it worked something out and says which part. Grey = it kept your line verbatim and is asking. Day headers are rows too, so a wrong boundary is fixable in place.</span></div>
+<div style="width:402px;height:874px;background:#F2F3F1;border-radius:12px;overflow:hidden;box-shadow:0 1px 0 rgba(20,32,28,.08),0 10px 40px rgba(20,32,28,.09);display:flex;flex-direction:column">
+<div style="flex:none;padding:14px 16px 12px;background:#fff;border-bottom:1px solid #E7EAE7">
+<div style="display:flex;align-items:center;gap:10px">
+<div style="width:32px;height:32px;flex:none;display:flex;align-items:center;justify-content:center"><svg width="11" height="18" viewBox="0 0 11 18"><path d="M9 1L2 9l7 8" stroke="#14201C" stroke-width="2.2" fill="none" stroke-linecap="round" stroke-linejoin="round"></path></svg></div>
+<div style="flex:1;min-width:0"><div style="font-size:17px;font-weight:700;letter-spacing:-.01em">Check what it read</div><div style="font-size:11.5px;color:#6B7A74;margin-top:1px">20 rows · 5 day groups so far · 8 left to check</div></div>
+</div>
+<div style="height:7px;border-radius:4px;background:#EDEFEC;overflow:hidden;margin-top:12px"><i style="display:block;height:100%;width:60%;background:#1F6F5C;border-radius:4px"></i></div>
+<div style="font-size:11px;font-weight:650;color:#6B7A74;margin-top:8px">12 of 20 checked · tick, fix or drop the other 8</div>
+</div>
+<div style="flex:1;min-height:0;overflow:hidden;padding:12px 16px 24px">
+
+<div style="display:flex;align-items:center;gap:8px;padding:0 2px 8px">
+<div style="flex:1;min-width:0;font-size:12.5px;font-weight:700">Day 3 · Sat 14 Mar</div>
+<span style="padding:3px 7px;border-radius:6px;font-size:9.5px;font-weight:800;letter-spacing:.04em;background:#E6EFEB;color:#1F6F5C">FROM THE TEXT</span>
+</div>
+
+<div style="background:#fff;border-radius:14px;padding:11px 12px;display:flex;gap:11px;align-items:center;margin-bottom:8px">
+<div style="width:22px;height:22px;flex:none;border-radius:7px;background:#1F6F5C;border:1.6px solid #1F6F5C;display:flex;align-items:center;justify-content:center"><svg width="11" height="9" viewBox="0 0 11 9"><path d="M1 4.5L4 7.5 10 1" stroke="#fff" stroke-width="2" fill="none" stroke-linecap="round" stroke-linejoin="round"></path></svg></div>
+<div style="width:44px;flex:none;font-size:12px;font-weight:700;font-variant-numeric:tabular-nums">08:30</div>
+<div style="flex:1;min-width:0"><div style="font-size:13.5px;font-weight:650;line-height:1.25">Depart Hotel Meridian</div><div style="font-size:11px;color:#98A5A0;margin-top:2px">coach bay 2</div></div>
+<svg width="7" height="12" viewBox="0 0 7 12" style="flex:none"><path d="M1 1l5 5-5 5" stroke="#98A5A0" stroke-width="1.8" fill="none" stroke-linecap="round"></path></svg>
+</div>
+
+<div style="background:#fff;border-radius:14px;padding:11px 12px;display:flex;gap:11px;align-items:center;margin-bottom:8px">
+<div style="width:22px;height:22px;flex:none;border-radius:7px;background:#1F6F5C;border:1.6px solid #1F6F5C;display:flex;align-items:center;justify-content:center"><svg width="11" height="9" viewBox="0 0 11 9"><path d="M1 4.5L4 7.5 10 1" stroke="#fff" stroke-width="2" fill="none" stroke-linecap="round" stroke-linejoin="round"></path></svg></div>
+<div style="width:44px;flex:none;font-size:12px;font-weight:700;font-variant-numeric:tabular-nums">09:15<div style="font-size:10px;color:#98A5A0;font-weight:650">10:00</div></div>
+<div style="flex:1;min-width:0"><div style="font-size:13.5px;font-weight:650;line-height:1.25">Lumen Crossing</div><div style="font-size:11px;color:#98A5A0;margin-top:2px">45 mins photo stop</div></div>
+<svg width="7" height="12" viewBox="0 0 7 12" style="flex:none"><path d="M1 1l5 5-5 5" stroke="#98A5A0" stroke-width="1.8" fill="none" stroke-linecap="round"></path></svg>
+</div>
+
+<div style="background:#FFFDF7;border:1.5px solid #EBD9B4;border-radius:14px;padding:11px 12px;margin-bottom:8px">
+<div style="display:flex;gap:11px;align-items:center">
+<div style="width:22px;height:22px;flex:none;border-radius:7px;background:#fff;border:1.6px solid #E3CFA3"></div>
+<div style="width:44px;flex:none;font-size:12px;font-weight:700;font-variant-numeric:tabular-nums;color:#8A5A08">12:00<div style="font-size:10px;color:#B08A3E;font-weight:650">13:00</div></div>
+<div style="flex:1;min-width:0"><div style="font-size:13.5px;font-weight:650;line-height:1.25">Set lunch, Harbour Steps</div><div style="font-size:11px;color:#8A5A08;font-weight:650;margin-top:2px">End time guessed — the line only said 12:00</div></div>
+</div>
+<div style="display:flex;gap:6px;margin-top:9px;padding-left:33px;flex-wrap:wrap">
+<div style="height:30px;padding:0 10px;border-radius:9px;background:#14201C;color:#fff;font-size:11.5px;font-weight:700;display:flex;align-items:center;white-space:nowrap">Keep 1 h</div>
+<div style="height:30px;padding:0 10px;border-radius:9px;background:#fff;border:1px solid #E1E5E1;color:#3D4C46;font-size:11.5px;font-weight:650;display:flex;align-items:center;white-space:nowrap">Set the end time</div>
+<div style="height:30px;padding:0 10px;border-radius:9px;background:#fff;border:1px solid #E1E5E1;color:#3D4C46;font-size:11.5px;font-weight:650;display:flex;align-items:center;white-space:nowrap">No end time</div>
+</div>
+</div>
+
+<div style="background:#fff;border-radius:14px;padding:11px 12px;display:flex;gap:11px;align-items:center;margin-bottom:8px">
+<div style="width:22px;height:22px;flex:none;border-radius:7px;background:#1F6F5C;border:1.6px solid #1F6F5C;display:flex;align-items:center;justify-content:center"><svg width="11" height="9" viewBox="0 0 11 9"><path d="M1 4.5L4 7.5 10 1" stroke="#fff" stroke-width="2" fill="none" stroke-linecap="round" stroke-linejoin="round"></path></svg></div>
+<div style="width:44px;flex:none;font-size:12px;font-weight:700;font-variant-numeric:tabular-nums">13:30<div style="font-size:10px;color:#98A5A0;font-weight:650">15:45</div></div>
+<div style="flex:1;min-width:0"><div style="font-size:13.5px;font-weight:650;line-height:1.25">Nishi Market</div><div style="font-size:11px;color:#98A5A0;margin-top:2px">free time, back at coach 15:45</div></div>
+<svg width="7" height="12" viewBox="0 0 7 12" style="flex:none"><path d="M1 1l5 5-5 5" stroke="#98A5A0" stroke-width="1.8" fill="none" stroke-linecap="round"></path></svg>
+</div>
+
+<div style="background:#F7F8F6;border:1.5px dashed #C9D0CB;border-radius:14px;padding:11px 12px;margin-bottom:8px">
+<div style="display:flex;gap:8px;align-items:baseline"><div style="flex:1;font-size:10.5px;font-weight:800;letter-spacing:.06em;color:#98A5A0">COULD NOT READ THIS LINE</div></div>
+<div style="font-size:12px;line-height:1.5;color:#3D4C46;margin-top:6px;font-family:ui-monospace,Menlo,monospace;background:#fff;border-radius:9px;padding:8px 9px">evening free, dinner not included</div>
+<div style="display:flex;gap:6px;margin-top:9px;flex-wrap:wrap">
+<div style="height:30px;padding:0 10px;border-radius:9px;background:#14201C;color:#fff;font-size:11.5px;font-weight:700;display:flex;align-items:center;white-space:nowrap">Make it a stop</div>
+<div style="height:30px;padding:0 10px;border-radius:9px;background:#fff;border:1px solid #E1E5E1;color:#3D4C46;font-size:11.5px;font-weight:650;display:flex;align-items:center;white-space:nowrap">Add to the row above</div>
+<div style="height:30px;padding:0 10px;border-radius:9px;background:#fff;border:1px solid #E1E5E1;color:#3D4C46;font-size:11.5px;font-weight:650;display:flex;align-items:center;white-space:nowrap">Skip it</div>
+</div>
+</div>
+
+<div style="display:flex;align-items:center;gap:8px;padding:6px 2px 8px">
+<div style="flex:1;min-width:0;font-size:12.5px;font-weight:700">Day 4 · Sun 15 Mar</div>
+<span style="padding:3px 7px;border-radius:6px;font-size:9.5px;font-weight:800;letter-spacing:.04em;background:#E6EFEB;color:#1F6F5C">FROM THE TEXT</span>
+</div>
+<div style="background:#fff;border-radius:14px;padding:11px 12px;display:flex;gap:11px;align-items:center">
+<div style="width:22px;height:22px;flex:none;border-radius:7px;background:#1F6F5C;border:1.6px solid #1F6F5C;display:flex;align-items:center;justify-content:center"><svg width="11" height="9" viewBox="0 0 11 9"><path d="M1 4.5L4 7.5 10 1" stroke="#fff" stroke-width="2" fill="none" stroke-linecap="round" stroke-linejoin="round"></path></svg></div>
+<div style="width:44px;flex:none;font-size:12px;font-weight:700;font-variant-numeric:tabular-nums">08:00</div>
+<div style="flex:1;min-width:0"><div style="font-size:13.5px;font-weight:650;line-height:1.25">Pickup, lobby</div></div>
+<svg width="7" height="12" viewBox="0 0 7 12" style="flex:none"><path d="M1 1l5 5-5 5" stroke="#98A5A0" stroke-width="1.8" fill="none" stroke-linecap="round"></path></svg>
+</div>
+
+</div>
+<div style="flex:none;padding:12px 16px calc(14px);background:#fff;border-top:1px solid #E7EAE7;display:flex;gap:8px;align-items:center">
+<div style="flex:1;min-width:0;font-size:11.5px;font-weight:650;color:#6B7A74">8 rows left to check</div>
+<div style="height:42px;padding:0 16px;border-radius:12px;background:#F2F3F1;border:1px solid #E1E5E1;color:#B4BEB9;font-size:13px;font-weight:700;display:flex;align-items:center;white-space:nowrap">Review and save</div>
+</div>
+</div>
+</div>
+
+<div id="2c" style="flex:none;display:flex;flex-direction:column;gap:10px">
+<div style="display:flex;align-items:baseline;gap:8px;max-width:402px;font:400 11.5px/1.3 'Public Sans',system-ui;color:#6B7A74"><a href="#2c" style="font:800 10.5px ui-monospace,Menlo,monospace;padding:3px 7px;background:rgba(20,32,28,.08);color:#14201C;border-radius:5px;text-decoration:none">2c</a><span><b style="color:#14201C">A long day, and a name it can't vouch for.</b> Day headers come only from the text, so with no header for the fifth day everything stays in Day 4 — reading oddly is your cue, and MOVE TO shifts a row, or a row and everything under it, without touching the rest. The header counts the groups it found, so it goes from five to six the moment you move them.</span></div>
+<div style="width:402px;height:874px;background:#F2F3F1;border-radius:12px;overflow:hidden;box-shadow:0 1px 0 rgba(20,32,28,.08),0 10px 40px rgba(20,32,28,.09);display:flex;flex-direction:column">
+<div style="flex:none;padding:14px 16px 12px;background:#fff;border-bottom:1px solid #E7EAE7">
+<div style="display:flex;align-items:center;gap:10px">
+<div style="width:32px;height:32px;flex:none;display:flex;align-items:center;justify-content:center"><svg width="11" height="18" viewBox="0 0 11 18"><path d="M9 1L2 9l7 8" stroke="#14201C" stroke-width="2.2" fill="none" stroke-linecap="round" stroke-linejoin="round"></path></svg></div>
+<div style="flex:1;min-width:0"><div style="font-size:17px;font-weight:700;letter-spacing:-.01em">Check what it read</div><div style="font-size:11.5px;color:#6B7A74;margin-top:1px">20 rows · 5 day groups so far · 5 left to check</div></div>
+</div>
+</div>
+<div style="flex:1;min-height:0;overflow:hidden;padding:12px 16px 24px">
+
+<div style="display:flex;align-items:center;gap:8px;padding:0 2px 8px">
+<div style="flex:1;min-width:0;font-size:12.5px;font-weight:700">Day 4 · Sun 15 Mar</div>
+<span style="padding:3px 7px;border-radius:6px;font-size:9.5px;font-weight:800;letter-spacing:.04em;background:#E6EFEB;color:#1F6F5C">FROM THE TEXT</span>
+</div>
+
+<div style="background:#fff;border-radius:14px;padding:11px 12px;display:flex;gap:11px;align-items:center;margin-bottom:8px">
+<div style="width:22px;height:22px;flex:none;border-radius:7px;background:#1F6F5C;border:1.6px solid #1F6F5C;display:flex;align-items:center;justify-content:center"><svg width="11" height="9" viewBox="0 0 11 9"><path d="M1 4.5L4 7.5 10 1" stroke="#fff" stroke-width="2" fill="none" stroke-linecap="round" stroke-linejoin="round"></path></svg></div>
+<div style="width:44px;flex:none;font-size:12px;font-weight:700;font-variant-numeric:tabular-nums">19:30</div>
+<div style="flex:1;min-width:0"><div style="font-size:13.5px;font-weight:650;line-height:1.25">Back at Hotel Meridian</div></div>
+<svg width="7" height="12" viewBox="0 0 7 12" style="flex:none"><path d="M1 1l5 5-5 5" stroke="#98A5A0" stroke-width="1.8" fill="none" stroke-linecap="round"></path></svg>
+</div>
+
+
+
+<div style="background:#fff;border-radius:14px;padding:11px 12px;margin-bottom:8px">
+<div style="display:flex;gap:11px;align-items:center">
+<div style="width:22px;height:22px;flex:none;border-radius:7px;background:#fff;border:1.6px solid #D2D8D3"></div>
+<div style="width:44px;flex:none;font-size:12px;font-weight:700;font-variant-numeric:tabular-nums">07:45</div>
+<div style="flex:1;min-width:0"><div style="font-size:13.5px;font-weight:650;line-height:1.25">Coach to Hillside Tower</div><div style="font-size:11px;color:#98A5A0;margin-top:2px">read as Day 4, like the rest of the block</div></div>
+</div>
+<div style="display:flex;gap:6px;align-items:center;margin-top:9px;padding-left:33px;flex-wrap:wrap">
+<span style="font-size:10.5px;font-weight:800;color:#98A5A0;letter-spacing:.04em;white-space:nowrap">MOVE TO</span>
+<div style="height:28px;padding:0 9px;border-radius:8px;background:#14201C;color:#fff;font-size:11px;font-weight:700;display:flex;align-items:center">D4</div>
+<div style="height:28px;padding:0 9px;border-radius:8px;background:#F2F3F1;color:#3D4C46;font-size:11px;font-weight:700;display:flex;align-items:center">D5</div>
+<div style="height:28px;padding:0 9px;border-radius:8px;background:#F2F3F1;color:#3D4C46;font-size:11px;font-weight:700;display:flex;align-items:center">D6</div>
+<div style="height:28px;padding:0 9px;border-radius:8px;background:#F2F3F1;color:#3D4C46;font-size:11px;font-weight:650;display:flex;align-items:center;white-space:nowrap">and the rest below it</div>
+</div>
+</div>
+
+<div style="background:#fff;border-radius:14px;padding:11px 12px;margin-bottom:8px">
+<div style="display:flex;gap:11px;align-items:center">
+<div style="width:22px;height:22px;flex:none;border-radius:7px;background:#fff;border:1.6px solid #D2D8D3"></div>
+<div style="width:44px;flex:none;font-size:12px;font-weight:700;font-variant-numeric:tabular-nums">10:00</div>
+<div style="flex:1;min-width:0"><div style="font-size:13.5px;font-weight:650;line-height:1.25">Kaede Dept Store &amp; Riverside Outlet</div><div style="font-size:11px;color:#98A5A0;margin-top:2px">whole day</div></div>
+</div>
+<div style="display:flex;gap:6px;margin-top:9px;padding-left:33px;flex-wrap:wrap">
+<span style="padding:4px 8px;border-radius:8px;background:#F2F3F1;color:#6B7A74;font-size:10.5px;font-weight:700;white-space:nowrap">Two names in one line?</span>
+<div style="height:28px;padding:0 9px;border-radius:8px;background:#14201C;color:#fff;font-size:11px;font-weight:700;display:flex;align-items:center;white-space:nowrap">Split into two stops</div>
+<div style="height:28px;padding:0 9px;border-radius:8px;background:#fff;border:1px solid #E1E5E1;color:#3D4C46;font-size:11px;font-weight:650;display:flex;align-items:center;white-space:nowrap">Leave as one</div>
+</div>
+</div>
+
+<div style="background:#fff;border-radius:14px;padding:11px 12px">
+<div style="display:flex;gap:11px;align-items:center">
+<div style="width:22px;height:22px;flex:none;border-radius:7px;background:#1F6F5C;border:1.6px solid #1F6F5C;display:flex;align-items:center;justify-content:center"><svg width="11" height="9" viewBox="0 0 11 9"><path d="M1 4.5L4 7.5 10 1" stroke="#fff" stroke-width="2" fill="none" stroke-linecap="round" stroke-linejoin="round"></path></svg></div>
+<div style="width:44px;flex:none;font-size:12px;font-weight:700;font-variant-numeric:tabular-nums">13:00</div>
+<div style="flex:1;min-width:0"><div style="font-size:13.5px;font-weight:650;line-height:1.25">Lunch at "Aoi-tei"</div></div>
+</div>
+<div style="display:flex;gap:6px;margin-top:9px;padding-left:33px;flex-wrap:wrap">
+<span style="padding:4px 8px;border-radius:8px;background:#F2F3F1;color:#6B7A74;font-size:10.5px;font-weight:700;white-space:nowrap">No location yet</span>
+<span style="padding:4px 8px;border-radius:8px;background:#F2F3F1;color:#98A5A0;font-size:10.5px;font-weight:650;white-space:nowrap">Look it up when you have signal</span>
+</div>
+</div>
+
+</div>
+<div style="flex:none;padding:12px 16px 14px;background:#fff;border-top:1px solid #E7EAE7;display:flex;gap:8px;align-items:center">
+<div style="flex:1;min-width:0;font-size:11.5px;font-weight:650;color:#6B7A74">5 rows left to check</div>
+<div style="height:42px;padding:0 16px;border-radius:12px;background:#F2F3F1;border:1px solid #E1E5E1;color:#B4BEB9;font-size:13px;font-weight:700;display:flex;align-items:center;white-space:nowrap">Review and save</div>
+</div>
+</div>
+</div>
+
+<div id="2d" style="flex:none;display:flex;flex-direction:column;gap:10px">
+<div style="display:flex;align-items:baseline;gap:8px;max-width:402px;font:400 11.5px/1.3 'Public Sans',system-ui;color:#6B7A74"><a href="#2d" style="font:800 10.5px ui-monospace,Menlo,monospace;padding:3px 7px;background:rgba(20,32,28,.08);color:#14201C;border-radius:5px;text-decoration:none">2d</a><span><b style="color:#14201C">Fixing one row.</b> Tapping a row opens it over the list — the line as pasted stays at the top, so you can see what it was working from. Save returns you to the same scroll position, one row further on.</span></div>
+<div style="width:402px;height:874px;background:#F2F3F1;border-radius:12px;overflow:hidden;box-shadow:0 1px 0 rgba(20,32,28,.08),0 10px 40px rgba(20,32,28,.09);display:flex;flex-direction:column;position:relative">
+<div style="flex:1;min-height:0;position:relative;overflow:hidden">
+<div style="position:absolute;inset:0;background:#F2F3F1;padding:12px 16px">
+<div style="background:#fff;border-radius:14px;padding:11px 12px;margin-bottom:8px;display:flex;gap:11px;align-items:center"><div style="width:22px;height:22px;flex:none;border-radius:7px;background:#1F6F5C;border:1.6px solid #1F6F5C"></div><div style="width:44px;flex:none;font-size:12px;font-weight:700;font-variant-numeric:tabular-nums">08:30</div><div style="flex:1;font-size:13.5px;font-weight:650">Depart Hotel Meridian</div></div>
+<div style="background:#fff;border-radius:14px;padding:11px 12px;margin-bottom:8px;display:flex;gap:11px;align-items:center"><div style="width:22px;height:22px;flex:none;border-radius:7px;background:#1F6F5C;border:1.6px solid #1F6F5C"></div><div style="width:44px;flex:none;font-size:12px;font-weight:700;font-variant-numeric:tabular-nums">09:15</div><div style="flex:1;font-size:13.5px;font-weight:650">Lumen Crossing</div></div>
+</div>
+<div style="position:absolute;inset:0;background:rgba(20,32,28,.42)"></div>
+</div>
+<div style="position:relative;background:#fff;border-radius:22px 22px 0 0;box-shadow:0 -8px 30px rgba(20,32,28,.16);padding:8px 16px 20px">
+<i style="display:block;width:40px;height:4px;border-radius:2px;background:#D8DDD9;margin:0 auto 14px"></i>
+<div style="display:flex;gap:8px;align-items:baseline"><div style="flex:1;font-size:10.5px;font-weight:800;letter-spacing:.06em;color:#98A5A0">ROW 4 OF 20</div><div style="font-size:11px;font-weight:650;color:#98A5A0">Day 3 · Sat 14 Mar</div></div>
+<div style="font-size:12px;line-height:1.5;color:#3D4C46;margin-top:8px;font-family:ui-monospace,Menlo,monospace;background:#F7F8F6;border-radius:10px;padding:9px 10px">12:00 set lunch, Harbour Steps</div>
+<div style="font-size:11px;color:#98A5A0;line-height:1.45;margin-top:6px">Your line, kept as pasted.</div>
+
+<div style="display:flex;flex-direction:column;gap:10px;margin-top:14px">
+<div><div style="font-size:11px;font-weight:800;color:#98A5A0;letter-spacing:.06em">NAME</div><div style="width:100%;font-size:13px;border:1.5px solid #14201C;border-radius:10px;padding:9px 10px;background:#fff;margin-top:4px;font-weight:650">Harbour Steps · set lunch</div></div>
+<div style="display:flex;gap:8px">
+<div style="flex:1"><div style="font-size:11px;font-weight:800;color:#98A5A0;letter-spacing:.06em">STARTS</div><div style="width:100%;font-size:13px;border:1px solid #DDE2DE;border-radius:10px;padding:9px 10px;background:#fff;margin-top:4px;font-variant-numeric:tabular-nums;font-weight:650">12:00</div></div>
+<div style="flex:1"><div style="font-size:11px;font-weight:800;color:#8A5A08;letter-spacing:.06em">ENDS</div><div style="width:100%;font-size:13px;border:1.5px solid #C87F0A;border-radius:10px;padding:9px 10px;background:#FFFDF7;margin-top:4px;font-variant-numeric:tabular-nums;font-weight:650;color:#8A5A08">13:00</div><div style="font-size:10.5px;color:#8A5A08;font-weight:650;margin-top:3px">Guessed — one hour</div></div>
+</div>
+<div><div style="font-size:11px;font-weight:800;color:#98A5A0;letter-spacing:.06em">WHICH DAY</div>
+<div style="display:flex;gap:6px;flex-wrap:wrap;margin-top:6px">
+<div style="height:32px;padding:0 11px;border-radius:10px;background:#fff;border:1px solid #E1E5E1;color:#6B7A74;font-size:12px;font-weight:700;display:flex;align-items:center">D2</div>
+<div style="height:32px;padding:0 11px;border-radius:10px;background:#14201C;border:1px solid #14201C;color:#fff;font-size:12px;font-weight:700;display:flex;align-items:center">D3</div>
+<div style="height:32px;padding:0 11px;border-radius:10px;background:#fff;border:1px solid #E1E5E1;color:#6B7A74;font-size:12px;font-weight:700;display:flex;align-items:center">D4</div>
+<div style="height:32px;padding:0 11px;border-radius:10px;background:#fff;border:1px solid #E1E5E1;color:#6B7A74;font-size:12px;font-weight:700;display:flex;align-items:center">D5</div>
+</div></div>
+<div><div style="display:flex;gap:8px;align-items:baseline"><div style="flex:1;font-size:11px;font-weight:800;color:#98A5A0;letter-spacing:.06em">MAP LINK</div><div style="font-size:10.5px;font-weight:650;color:#98A5A0">optional</div></div>
+<div style="width:100%;font-size:12.5px;border:1px solid #DDE2DE;border-radius:10px;padding:9px 10px;background:#fff;margin-top:4px;color:#98A5A0;display:flex;align-items:center;gap:8px"><span style="flex:1;min-width:0">Paste a Google or Apple Maps link</span><span style="flex:none;padding:3px 8px;border-radius:7px;background:#F2F3F1;color:#3D4C46;font-size:10.5px;font-weight:700">Paste</span></div>
+<div style="font-size:11px;color:#98A5A0;line-height:1.45;margin-top:4px">The link is what gives the stop a position. Leave it and the stop still saves — it just has no pin until you add one from the stop itself.</div></div>
+</div>
+
+<div style="display:flex;gap:8px;margin-top:16px">
+<div style="flex:1;height:44px;border-radius:12px;background:#1F6F5C;color:#fff;font-size:13px;font-weight:700;display:flex;align-items:center;justify-content:center">Confirm and next</div>
+<div style="width:96px;height:44px;border-radius:12px;background:#F8E9E9;color:#9B4B4B;font-size:13px;font-weight:700;display:flex;align-items:center;justify-content:center">Skip row</div>
+</div>
+<div style="font-size:11px;color:#98A5A0;line-height:1.45;margin-top:10px">Skipped rows stay in the list, greyed, so you can change your mind before the summary.</div>
+</div>
+</div>
+</div>
+
+<div id="2e" style="flex:none;display:flex;flex-direction:column;gap:10px">
+<div style="display:flex;align-items:baseline;gap:8px;max-width:402px;font:400 11.5px/1.3 'Public Sans',system-ui;color:#6B7A74"><a href="#2e" style="font:800 10.5px ui-monospace,Menlo,monospace;padding:3px 7px;background:rgba(20,32,28,.08);color:#14201C;border-radius:5px;text-decoration:none">2e</a><span><b style="color:#14201C">Save, once nothing is outstanding.</b> What will be created, per day, and the two honest caveats — no positions and no free time — before the one button that writes to the trip.</span></div>
+<div style="width:402px;height:874px;background:#F2F3F1;border-radius:12px;overflow:hidden;box-shadow:0 1px 0 rgba(20,32,28,.08),0 10px 40px rgba(20,32,28,.09);display:flex;flex-direction:column">
+<div style="flex:none;padding:14px 16px 12px;background:#fff;border-bottom:1px solid #E7EAE7;display:flex;align-items:center;gap:10px">
+<div style="width:32px;height:32px;flex:none;display:flex;align-items:center;justify-content:center"><svg width="11" height="18" viewBox="0 0 11 18"><path d="M9 1L2 9l7 8" stroke="#14201C" stroke-width="2.2" fill="none" stroke-linecap="round" stroke-linejoin="round"></path></svg></div>
+<div style="flex:1;min-width:0"><div style="font-size:17px;font-weight:700;letter-spacing:-.01em">Ready to save</div><div style="font-size:11.5px;color:#6B7A74;margin-top:1px">All 20 rows checked · nothing written yet</div></div>
+</div>
+<div style="flex:1;min-height:0;overflow:hidden;padding:14px 16px 24px">
+<div style="background:#fff;border-radius:16px;padding:14px;margin-bottom:12px">
+<div style="font-size:10.5px;font-weight:800;letter-spacing:.06em;color:#98A5A0">WHAT WILL BE CREATED</div>
+<div style="display:flex;align-items:flex-end;gap:10px;margin-top:4px"><div style="flex:1;font-size:34px;font-weight:700;letter-spacing:-.02em;line-height:1;font-variant-numeric:tabular-nums">17</div><div style="text-align:right;flex:none"><div style="font-size:11px;font-weight:800;color:#98A5A0">ACROSS</div><div style="font-size:13px;font-weight:700">6 days</div></div></div>
+<div style="font-size:12px;color:#6B7A74;margin-top:8px">17 stops confirmed · 3 rows skipped · 2 fixed by hand</div>
+</div>
+
+<div style="background:#fff;border-radius:16px;overflow:hidden;margin-bottom:12px">
+<div style="padding:11px 14px;font-size:10.5px;font-weight:800;letter-spacing:.06em;color:#98A5A0">DAY BY DAY</div>
+<div style="padding:10px 14px;border-top:1px solid #F0F2F0;display:flex;gap:10px;align-items:baseline"><div style="width:52px;flex:none;font-size:12.5px;font-weight:700">Day 1</div><div style="flex:1;font-size:12px;color:#3D4C46">3 stops · 09:00 – 18:30</div><div style="font-size:11px;color:#98A5A0;font-weight:650">Mar 12</div></div>
+<div style="padding:10px 14px;border-top:1px solid #F0F2F0;display:flex;gap:10px;align-items:baseline"><div style="width:52px;flex:none;font-size:12.5px;font-weight:700">Day 2</div><div style="flex:1;font-size:12px;color:#3D4C46">2 stops · 08:00 – 17:00</div><div style="font-size:11px;color:#98A5A0;font-weight:650">Mar 13</div></div>
+<div style="padding:10px 14px;border-top:1px solid #F0F2F0;display:flex;gap:10px;align-items:baseline"><div style="width:52px;flex:none;font-size:12.5px;font-weight:700">Day 3</div><div style="flex:1;font-size:12px;color:#3D4C46">6 stops · 08:30 – 18:00</div><div style="font-size:11px;color:#98A5A0;font-weight:650">Mar 14</div></div>
+<div style="padding:10px 14px;border-top:1px solid #F0F2F0;display:flex;gap:10px;align-items:baseline"><div style="width:52px;flex:none;font-size:12.5px;font-weight:700">Day 4</div><div style="flex:1;font-size:12px;color:#3D4C46">3 stops · 08:00 – 19:30</div><div style="font-size:11px;color:#98A5A0;font-weight:650">Mar 15</div></div>
+<div style="padding:10px 14px;border-top:1px solid #F0F2F0;display:flex;gap:10px;align-items:baseline"><div style="width:52px;flex:none;font-size:12.5px;font-weight:700">Day 5</div><div style="flex:1;font-size:12px;color:#3D4C46">2 stops · 07:45 – 16:00</div><div style="font-size:11px;color:#98A5A0;font-weight:650">Mar 16</div></div>
+<div style="padding:10px 14px;border-top:1px solid #F0F2F0;display:flex;gap:10px;align-items:baseline"><div style="width:52px;flex:none;font-size:12.5px;font-weight:700">Day 6</div><div style="flex:1;font-size:12px;color:#3D4C46">1 stop · 11:00 airport</div><div style="font-size:11px;color:#98A5A0;font-weight:650">Mar 17</div></div>
+</div>
+
+<div style="background:#FFFDF7;border:1.5px solid #EBD9B4;border-radius:16px;padding:13px 14px;margin-bottom:12px">
+<div style="font-size:10.5px;font-weight:800;letter-spacing:.06em;color:#8A5A08">TWO THINGS IT DID NOT DO</div>
+<div style="font-size:12px;line-height:1.5;color:#8A5A08;font-weight:650;margin-top:6px">14 of the 17 stops have no position yet, so they will not appear on the map until you paste a link into them.</div>
+<div style="font-size:12px;line-height:1.5;color:#8A5A08;font-weight:650;margin-top:6px">No sub routes were created. Free time is yours to declare, in the gaps this leaves.</div>
+</div>
+
+<div style="height:48px;border-radius:12px;background:#1F6F5C;color:#fff;font-size:13.5px;font-weight:700;display:flex;align-items:center;justify-content:center">Save 17 stops to the trip</div>
+<div style="height:44px;border-radius:12px;background:#F2F3F1;border:1px solid #E1E5E1;color:#3D4C46;font-size:13px;font-weight:650;display:flex;align-items:center;justify-content:center;margin-top:8px">Back to the rows</div>
+<div style="font-size:11px;color:#98A5A0;line-height:1.45;text-align:center;margin-top:10px">Day 3 already has 8 stops from earlier. Its 6 new ones are added alongside, not over them.</div>
+</div>
+</div>
+</div>
+
+<div id="2f" style="flex:none;display:flex;flex-direction:column;gap:10px">
+<div style="display:flex;align-items:baseline;gap:8px;max-width:402px;font:400 11.5px/1.3 'Public Sans',system-ui;color:#6B7A74"><a href="#2f" style="font:800 10.5px ui-monospace,Menlo,monospace;padding:3px 7px;background:rgba(20,32,28,.08);color:#14201C;border-radius:5px;text-decoration:none">2f</a><span><b style="color:#14201C">Landed.</b> It drops you on Day 1 of the real Plan, not back on a settings screen. One line of receipt, then the day itself. There is no undo: the map-less stops carry a chip until you give them a link, and anything wrong is edited stop by stop.</span></div>
+<div style="width:402px;height:874px;background:#F2F3F1;border-radius:12px;overflow:hidden;box-shadow:0 1px 0 rgba(20,32,28,.08),0 10px 40px rgba(20,32,28,.09);display:flex;flex-direction:column">
+<div style="flex:none;padding:14px 16px 12px;background:#fff;border-bottom:1px solid #E7EAE7">
+<div style="display:flex;align-items:flex-end;justify-content:space-between;gap:10px">
+<div style="flex:1;min-width:0"><div style="font-size:24px;font-weight:700;letter-spacing:-.02em">Day 1</div><div style="font-size:12px;color:#6B7A74;margin-top:2px">Mar 12 · Thu</div></div>
+<div style="width:40px;height:40px;flex:none;border-radius:13px;background:#fff;box-shadow:0 2px 10px rgba(20,32,28,.12);display:flex;align-items:center;justify-content:center"><svg width="17" height="17" viewBox="0 0 14 14"><path d="M9.5 1.5l3 3L5 12H2v-3z" fill="none" stroke="#14201C" stroke-width="1.5" stroke-linejoin="round"></path></svg></div>
+</div>
+<div style="display:flex;gap:6px;margin-top:10px">
+<div style="flex:none;height:30px;padding:0 10px;border-radius:10px;background:#14201C;color:#fff;font-size:12px;font-weight:600;display:flex;align-items:center;gap:5px;white-space:nowrap">D1<span style="font-size:11px;opacity:.75">☀</span></div>
+<div style="flex:none;height:30px;padding:0 10px;border-radius:10px;background:#fff;color:#6B7A74;font-size:12px;font-weight:600;display:flex;align-items:center;gap:5px;white-space:nowrap">D2<span style="font-size:11px;opacity:.75">⛅</span></div>
+<div style="flex:none;height:30px;padding:0 10px;border-radius:10px;background:#fff;color:#6B7A74;font-size:12px;font-weight:600;display:flex;align-items:center;gap:5px;white-space:nowrap">D3<span style="font-size:11px;opacity:.75">☁</span></div>
+<div style="flex:none;height:30px;padding:0 10px;border-radius:10px;background:#fff;color:#6B7A74;font-size:12px;font-weight:600;display:flex;align-items:center;gap:5px;white-space:nowrap">D4<span style="font-size:11px;opacity:.75">🌧</span></div>
+<div style="flex:none;height:30px;padding:0 10px;border-radius:10px;background:#fff;color:#6B7A74;font-size:12px;font-weight:600;display:flex;align-items:center;gap:5px;white-space:nowrap">D5<span style="font-size:11px;opacity:.75">⛅</span></div>
+</div>
+</div>
+<div style="flex:1;min-height:0;overflow:hidden;padding:14px 16px 24px">
+<div style="font-size:11.5px;font-weight:650;color:#6B7A74;padding:0 2px 2px">17 stops saved from your itinerary · 14 still need a position</div>
+<div style="margin-top:14px">
+<div style="display:flex;gap:9px">
+<div style="width:56px;flex:none;padding-top:12px;text-align:right"><div style="font-size:12.5px;font-weight:700;font-variant-numeric:tabular-nums">09:00</div><div style="font-size:11px;color:#98A5A0;font-weight:650;font-variant-numeric:tabular-nums">10:30</div></div>
+<div style="width:20px;flex:none;display:flex;flex-direction:column;align-items:center"><div style="width:11px;height:11px;border-radius:50%;background:#1F6F5C;margin-top:14px;flex:none"></div><div style="flex:1;width:0;border-left:2px solid #DCE2DE"></div></div>
+<div style="flex:1;min-width:0;margin-bottom:6px;padding:11px 13px;background:#fff;border:1px solid #E7EAE7;border-radius:14px">
+<div style="display:flex;gap:8px;align-items:flex-start"><div style="flex:1;min-width:0"><div style="font-size:14.5px;font-weight:650;line-height:1.25">Airport pickup</div><div style="font-size:11.5px;color:#6B7A74;margin-top:3px">meet guide at arrivals, gate B</div></div><span style="flex:none;padding:3px 7px;border-radius:6px;font-size:9.5px;font-weight:800;letter-spacing:.04em;background:#E6EFEB;color:#1F6F5C">MAIN 1</span></div>
+</div>
+</div>
+<div style="display:flex;gap:9px">
+<div style="width:56px;flex:none;padding-top:12px;text-align:right"><div style="font-size:12.5px;font-weight:700;font-variant-numeric:tabular-nums">13:00</div><div style="font-size:11px;color:#98A5A0;font-weight:650;font-variant-numeric:tabular-nums">14:00</div></div>
+<div style="width:20px;flex:none;display:flex;flex-direction:column;align-items:center"><div style="width:11px;height:11px;border-radius:50%;background:#1F6F5C;margin-top:14px;flex:none"></div><div style="flex:1;width:0;border-left:2px solid #DCE2DE"></div></div>
+<div style="flex:1;min-width:0;margin-bottom:6px;padding:11px 13px;background:#fff;border:1px solid #E7EAE7;border-radius:14px">
+<div style="display:flex;gap:8px;align-items:flex-start"><div style="flex:1;min-width:0"><div style="font-size:14.5px;font-weight:650;line-height:1.25">Hotel Meridian, check in</div></div><span style="flex:none;padding:3px 7px;border-radius:6px;font-size:9.5px;font-weight:800;letter-spacing:.04em;background:#E6EFEB;color:#1F6F5C">MAIN 2</span></div>
+<div style="display:flex;gap:6px;flex-wrap:wrap;margin-top:8px"><span style="padding:4px 8px;border-radius:8px;background:#FBF1DE;color:#8A5A08;font-size:10.5px;font-weight:650;white-space:nowrap">No position · add a link</span></div>
+</div>
+</div>
+<div style="display:flex;gap:9px">
+<div style="width:56px;flex:none;padding-top:12px;text-align:right"><div style="font-size:12.5px;font-weight:700;font-variant-numeric:tabular-nums">18:30</div></div>
+<div style="width:20px;flex:none;display:flex;flex-direction:column;align-items:center"><div style="width:11px;height:11px;border-radius:50%;background:#1F6F5C;margin-top:14px;flex:none"></div><div style="flex:1;width:0;border-left:2px dashed #DCE2DE"></div></div>
+<div style="flex:1;min-width:0;margin-bottom:6px;padding:11px 13px;background:#fff;border:1px solid #E7EAE7;border-radius:14px">
+<div style="display:flex;gap:8px;align-items:flex-start"><div style="flex:1;min-width:0"><div style="font-size:14.5px;font-weight:650;line-height:1.25">Welcome dinner</div><div style="font-size:11.5px;color:#6B7A74;margin-top:3px">hotel restaurant, 2nd floor</div></div><span style="flex:none;padding:3px 7px;border-radius:6px;font-size:9.5px;font-weight:800;letter-spacing:.04em;background:#E6EFEB;color:#1F6F5C">MAIN 3</span></div>
+<div style="display:flex;gap:6px;flex-wrap:wrap;margin-top:8px"><span style="padding:4px 8px;border-radius:8px;background:#FBF1DE;color:#8A5A08;font-size:10.5px;font-weight:650;white-space:nowrap">No position · add a link</span></div>
+</div>
+</div>
+<div style="display:flex;gap:9px">
+<div style="width:56px;flex:none;padding-top:11px;text-align:right"><div style="font-size:10px;color:#98A5A0;font-weight:800;letter-spacing:.04em">2H 30M</div></div>
+<div style="width:20px;flex:none;display:flex;flex-direction:column;align-items:center"><div style="flex:1;width:0;border-left:2px dashed #DCE2DE"></div></div>
+<div style="flex:1;min-width:0"><div style="height:38px;border-radius:12px;border:1.5px dashed #C9D0CB;display:flex;align-items:center;justify-content:center;font-size:12px;font-weight:650;color:#3D4C46">+ Sub route here · 14:00 – 18:30</div></div>
+</div>
+</div>
+</div>
+<div style="position:relative;z-index:10;flex:none;display:flex;gap:2px;padding:7px 8px 10px;background:rgba(255,255,255,.94);border-top:1px solid #E4E8E5">
+<div style="flex:1;min-height:46px;display:flex;flex-direction:column;align-items:center;justify-content:center;gap:3px;border-radius:12px;color:#9AA6A1"><svg width="20" height="20" viewBox="0 0 20 20" fill="none"><path d="M10 18s6-5.2 6-10A6 6 0 0 0 4 8c0 4.8 6 10 6 10z" stroke="#9AA6A1" stroke-width="1.7" stroke-linejoin="round"></path><circle cx="10" cy="8" r="2.2" stroke="#9AA6A1" stroke-width="1.7"></circle></svg><span style="font-size:9.5px;font-weight:700">Map</span></div>
+<div style="flex:1;min-height:46px;display:flex;flex-direction:column;align-items:center;justify-content:center;gap:3px;border-radius:12px;background:#F2F3F1;color:#14201C"><svg width="20" height="20" viewBox="0 0 20 20" fill="none"><g stroke="#14201C" stroke-width="1.7" stroke-linecap="round"><path d="M3 5.5h14M3 10h14M3 14.5h9"></path></g></svg><span style="font-size:9.5px;font-weight:700">Plan</span></div>
+<div style="flex:1;min-height:46px;display:flex;flex-direction:column;align-items:center;justify-content:center;gap:3px;border-radius:12px;color:#9AA6A1"><svg width="20" height="20" viewBox="0 0 20 20" fill="none"><path d="M4.5 6.5h11l-1 10h-9l-1-10z" stroke="#9AA6A1" stroke-width="1.7" stroke-linejoin="round"></path><path d="M7.5 6.5V5a2.5 2.5 0 0 1 5 0v1.5" stroke="#9AA6A1" stroke-width="1.7" stroke-linecap="round"></path></svg><span style="font-size:9.5px;font-weight:700">Shop</span></div>
+<div style="flex:1;min-height:46px;display:flex;flex-direction:column;align-items:center;justify-content:center;gap:3px;border-radius:12px;color:#9AA6A1"><svg width="20" height="20" viewBox="0 0 20 20" fill="none"><rect x="3.5" y="6" width="13" height="10.5" rx="2" stroke="#9AA6A1" stroke-width="1.7"></rect><path d="M7.5 6V4.5a1.5 1.5 0 0 1 1.5-1.5h2a1.5 1.5 0 0 1 1.5 1.5V6" stroke="#9AA6A1" stroke-width="1.7" stroke-linecap="round"></path></svg><span style="font-size:9.5px;font-weight:700">Prep</span></div>
+<div style="flex:1;min-height:46px;display:flex;flex-direction:column;align-items:center;justify-content:center;gap:3px;border-radius:12px;color:#9AA6A1"><svg width="20" height="20" viewBox="0 0 20 20" fill="none"><path d="M13 3.5l3.5 3.5L7 16.5H3.5V13z" stroke="#9AA6A1" stroke-width="1.7" stroke-linejoin="round"></path></svg><span style="font-size:9.5px;font-weight:700">Log</span></div>
+</div>
+</div>
+</div>
+
+</div>
+<p style="margin:26px 0 0;font:12px/1.6 'Public Sans',system-ui;color:#6B7A74">Try next: "build the reader into the prototype so I can paste a real one" · "let me re-read the saved text after editing it" · "the summary should let me set the trip's dates from the day headers" · "add a WhatsApp-shaped example that breaks it"</p>
+</section>
+
+<section style="padding:44px 48px 40px">
+<div style="display:flex;align-items:baseline;gap:10px;margin:0 0 8px"><a href="#t1" style="font:800 10px ui-monospace,Menlo,monospace;padding:4px 8px;background:#14201C;color:#fff;border-radius:5px;text-decoration:none">1</a><span style="font:650 13px/1.2 'Public Sans',system-ui">Editable times · several sub routes a day · notes on a place</span></div>
+
+<div style="display:flex;gap:26px;flex-wrap:wrap;align-items:flex-start;margin-bottom:36px">
+<div style="width:520px;background:#fff;border-radius:18px;padding:24px 26px;border:1px solid rgba(20,32,28,.08)">
+<div style="font-size:10.5px;font-weight:800;letter-spacing:.1em;color:#98A5A0">MY RECOMMENDATION</div>
+<div style="font-size:22px;font-weight:700;letter-spacing:-.02em;margin:8px 0 14px">Two times, not a duration</div>
+<p style="font-size:13.5px;line-height:1.6;color:#3D4C46;margin:0 0 10px;text-wrap:pretty">A sub route's deadline is a clock time — 15:45 at the coach door. If a stop stores a start and a duration, that deadline becomes arithmetic you do in your head every time you change something, and the number you most need to protect is the one number never written down. So a stop holds <b>starts</b> and <b>ends</b>, both editable, and the duration is shown underneath as derived grey text.</p>
+<p style="font-size:13.5px;line-height:1.6;color:#3D4C46;margin:0 0 10px"><a href="#1b">1b</a> is the duration version so you can judge it rather than take my word: it is one field lighter and reads well while you are typing, but the end time is then a value the app owns, which is exactly the thing you asked to be able to touch.</p>
+<div style="height:1px;background:#EDEFEC;margin:16px 0"></div>
+<div style="font-size:10.5px;font-weight:800;letter-spacing:.1em;color:#98A5A0">THE OTHER TWO RULES</div>
+<p style="font-size:13.5px;line-height:1.6;color:#3D4C46;margin:8px 0 10px"><b>Free time is a slot, not a stop.</b> The gap between two stops is drawn as a dashed amber lane, and a sub route lives inside it. A day can hold as many lanes as it has gaps, so two or three sub routes never compete for one anchor. Each sub route is one card carrying its name and its own window.</p>
+<p style="font-size:13.5px;line-height:1.6;color:#3D4C46;margin:0"><b>A note belongs to a place and a time.</b> The day still totals them, but it no longer owns them: the Log's day card groups the day's notes under the place they were written at, in the order you wrote them.</p>
+</div>
+<div style="width:360px;background:#14201C;color:#fff;border-radius:18px;padding:24px 26px">
+<div style="font-size:10.5px;font-weight:800;letter-spacing:.1em;color:#8FB3A6">WHAT WARNS, NEVER REFUSES</div>
+<div style="display:flex;flex-direction:column;gap:13px;margin-top:14px">
+<div style="font-size:12.5px;line-height:1.5;color:#C8D6D0">The drag always lands. The row that is now wrong wears an amber strip naming what is wrong and the one tap that fixes it — <b style="color:#fff">out of order</b>, <b style="color:#fff">overlaps</b>, or <b style="color:#fff">ends before it starts</b>.</div>
+<div style="font-size:12.5px;line-height:1.5;color:#C8D6D0">A sub route whose stops no longer fit its window says so on the Plan card as well as inside the sub route, because you will be looking at the Plan when you drag.</div>
+<div style="font-size:12.5px;line-height:1.5;color:#C8D6D0">Day-level count sits under the date, so you can leave the day messy on purpose and still know it is messy.</div>
+<div style="font-size:12.5px;line-height:1.5;color:#C8D6D0">Nothing here needs signal: every check is arithmetic on times you typed.</div>
+</div>
+</div>
+</div>
+
+<div style="display:grid;grid-template-columns:repeat(3,402px);gap:34px 34px;align-items:start;justify-content:start">
+
+<div id="1a" style="flex:none;display:flex;flex-direction:column;gap:10px">
+<div style="display:flex;align-items:baseline;gap:8px;max-width:402px;font:400 11.5px/1.3 'Public Sans',system-ui;color:#6B7A74"><a href="#1a" style="font:800 10.5px ui-monospace,Menlo,monospace;padding:3px 7px;background:#1F6F5C;color:#fff;border-radius:5px;text-decoration:none">1a</a><span><b style="color:#14201C">Plan, edit mode — two times.</b> The messy day: Harbour Steps dragged below Nishi Market, two sub routes, one overrunning. Every warning is a row, not a dialogue.</span></div>
+<div style="width:402px;height:874px;background:#F2F3F1;border-radius:12px;overflow:hidden;box-shadow:0 1px 0 rgba(20,32,28,.08),0 10px 40px rgba(20,32,28,.09);display:flex;flex-direction:column">
+<div style="flex:none;padding:14px 16px 12px;background:#fff;border-bottom:1px solid #E7EAE7">
+<div style="display:flex;align-items:flex-end;justify-content:space-between;gap:10px">
+<div style="flex:1;min-width:0"><div style="font-size:24px;font-weight:700;letter-spacing:-.02em">Day 3</div><div style="font-size:12px;color:#6B7A74;margin-top:2px">Mar 14 · Sat · <span style="color:#8A5A08;font-weight:650">2 things to look at</span></div></div>
+<div style="width:40px;height:40px;flex:none;border-radius:13px;background:#1F6F5C;box-shadow:0 2px 10px rgba(20,32,28,.12);display:flex;align-items:center;justify-content:center"><svg width="15" height="12" viewBox="0 0 11 9"><path d="M1 4.5L4 7.5 10 1" stroke="#fff" stroke-width="2" fill="none" stroke-linecap="round" stroke-linejoin="round"></path></svg></div>
+</div>
+<div style="display:flex;gap:6px;margin-top:10px">
+<div style="flex:none;height:30px;padding:0 10px;border-radius:10px;background:#fff;color:#6B7A74;font-size:12px;font-weight:600;display:flex;align-items:center;gap:5px;white-space:nowrap">D1<span style="font-size:11px;opacity:.75">☀</span></div>
+<div style="flex:none;height:30px;padding:0 10px;border-radius:10px;background:#fff;color:#6B7A74;font-size:12px;font-weight:600;display:flex;align-items:center;gap:5px;white-space:nowrap">D2<span style="font-size:11px;opacity:.75">⛅</span></div>
+<div style="flex:none;height:30px;padding:0 10px;border-radius:10px;background:#14201C;color:#fff;font-size:12px;font-weight:600;display:flex;align-items:center;gap:5px;white-space:nowrap">D3<span style="font-size:11px;opacity:.75">☁</span></div>
+<div style="flex:none;height:30px;padding:0 10px;border-radius:10px;background:#fff;color:#6B7A74;font-size:12px;font-weight:600;display:flex;align-items:center;gap:5px;white-space:nowrap">D4<span style="font-size:11px;opacity:.75">🌧</span></div>
+<div style="flex:none;height:30px;padding:0 10px;border-radius:10px;background:#fff;color:#6B7A74;font-size:12px;font-weight:600;display:flex;align-items:center;gap:5px;white-space:nowrap">D5<span style="font-size:11px;opacity:.75">⛅</span></div>
+</div>
+</div>
+<div style="flex:1;min-height:0;overflow:hidden;padding:14px 16px 24px">
+
+<div style="padding:10px 12px;background:#FBF1DE;border:1px solid #EBD9B4;border-radius:12px;font-size:11.5px;font-weight:650;color:#8A5A08;line-height:1.35">Drag by the handle. Both times are yours to set — the length follows.</div>
+
+<div style="display:flex;gap:9px;margin-top:14px">
+<div style="width:26px;flex:none;display:flex;align-items:flex-start;justify-content:center;padding-top:14px"><svg width="16" height="12" viewBox="0 0 16 12"><g stroke="#98A5A0" stroke-width="2" stroke-linecap="round"><path d="M2 2h12M2 6h12M2 10h12"></path></g></svg></div>
+<div style="width:60px;flex:none;padding-top:10px;display:flex;flex-direction:column;gap:3px">
+<div style="width:60px;padding:5px 3px;font-size:11.5px;text-align:center;font-variant-numeric:tabular-nums;border:1px solid #DDE2DE;border-radius:9px;background:#fff;font-weight:700">13:30</div>
+<div style="width:60px;padding:5px 3px;font-size:11.5px;text-align:center;font-variant-numeric:tabular-nums;border:1px solid #DDE2DE;border-radius:9px;background:#fff;font-weight:700">15:45</div>
+<div style="font-size:10px;color:#98A5A0;font-weight:700;text-align:center">2h 15m</div>
+</div>
+<div style="width:20px;flex:none;display:flex;flex-direction:column;align-items:center"><div style="width:11px;height:11px;border-radius:50%;background:#1F6F5C;margin-top:14px;flex:none"></div><div style="flex:1;width:0;border-left:2px solid #DCE2DE"></div></div>
+<div style="flex:1;min-width:0;margin-bottom:6px;padding:11px 13px;background:#fff;border:1px solid #E7EAE7;border-radius:14px">
+<div style="display:flex;gap:8px;align-items:flex-start"><div style="flex:1;min-width:0"><div style="font-size:14.5px;font-weight:650;line-height:1.25">Nishi Market</div><div style="font-size:11.5px;color:#6B7A74;margin-top:3px;line-height:1.35">Guide releases the group at the north gate.</div></div><div style="flex:none;width:26px;height:26px;border-radius:9px;background:#F8E9E9;color:#9B4B4B;font-size:13px;font-weight:800;display:flex;align-items:center;justify-content:center">✕</div></div>
+</div>
+</div>
+
+<div style="display:flex;gap:9px">
+<div style="width:26px;flex:none"></div>
+<div style="width:60px;flex:none"></div>
+<div style="width:20px;flex:none;display:flex;flex-direction:column;align-items:center"><div style="flex:1;width:0;border-left:2px dashed #EBD9B4"></div></div>
+<div style="flex:1;min-width:0;margin-bottom:8px">
+<div style="padding:11px 12px;background:#FFFDF7;border:1.5px dashed #E3CFA3;border-radius:14px">
+<div style="display:flex;gap:8px;align-items:baseline"><div style="flex:1;min-width:0;font-size:13.5px;font-weight:700;color:#8A5A08">Market afternoon</div><div style="font-size:11px;font-weight:700;color:#8A5A08;font-variant-numeric:tabular-nums">13:45 – 15:45</div></div>
+<div style="font-size:11.5px;color:#6B7A74;margin-top:3px;line-height:1.35">3 stops · Kōri → Canal → Paper &amp; Ink</div>
+<div style="display:flex;gap:6px;flex-wrap:wrap;margin-top:8px"><span style="padding:4px 8px;border-radius:8px;background:#F8E9E9;color:#9B4B4B;font-size:10.5px;font-weight:700;white-space:nowrap">12 min over the window</span><span style="padding:4px 8px;border-radius:8px;background:#F2F3F1;color:#3D4C46;font-size:10.5px;font-weight:650;white-space:nowrap">1.4 km walk</span></div>
+</div>
+<div style="height:32px;border-radius:12px;border:1.5px dashed #E3CFA3;display:flex;align-items:center;justify-content:center;font-size:12px;font-weight:650;color:#8A5A08;margin-top:6px">+ Another sub route here</div>
+</div>
+</div>
+
+<div style="display:flex;gap:9px">
+<div style="width:26px;flex:none;display:flex;align-items:flex-start;justify-content:center;padding-top:14px"><svg width="16" height="12" viewBox="0 0 16 12"><g stroke="#98A5A0" stroke-width="2" stroke-linecap="round"><path d="M2 2h12M2 6h12M2 10h12"></path></g></svg></div>
+<div style="width:60px;flex:none;padding-top:10px;display:flex;flex-direction:column;gap:3px">
+<div style="width:60px;padding:5px 3px;font-size:11.5px;text-align:center;font-variant-numeric:tabular-nums;border:1.5px solid #C87F0A;border-radius:9px;background:#FFFDF7;font-weight:700;color:#8A5A08">12:00</div>
+<div style="width:60px;padding:5px 3px;font-size:11.5px;text-align:center;font-variant-numeric:tabular-nums;border:1.5px solid #C87F0A;border-radius:9px;background:#FFFDF7;font-weight:700;color:#8A5A08">13:00</div>
+<div style="font-size:10px;color:#98A5A0;font-weight:700;text-align:center">1h</div>
+</div>
+<div style="width:20px;flex:none;display:flex;flex-direction:column;align-items:center"><div style="width:11px;height:11px;border-radius:50%;background:#1F6F5C;margin-top:14px;flex:none"></div><div style="flex:1;width:0;border-left:2px solid #DCE2DE"></div></div>
+<div style="flex:1;min-width:0;margin-bottom:6px;padding:11px 13px;background:#fff;border:1.5px solid #EBD9B4;border-radius:14px">
+<div style="display:flex;gap:8px;align-items:flex-start"><div style="flex:1;min-width:0"><div style="font-size:14.5px;font-weight:650;line-height:1.25">Harbour Steps · set lunch</div><div style="font-size:11.5px;color:#6B7A74;margin-top:3px;line-height:1.35">Included. Vegetarian on request the night before.</div></div><div style="flex:none;width:26px;height:26px;border-radius:9px;background:#F8E9E9;color:#9B4B4B;font-size:13px;font-weight:800;display:flex;align-items:center;justify-content:center">✕</div></div>
+<div style="display:flex;gap:9px;align-items:flex-start;margin-top:10px;padding:9px 10px;background:#FBF1DE;border-radius:10px">
+<div style="font-size:10.5px;font-weight:800;color:#8A5A08;letter-spacing:.04em;white-space:nowrap">OUT OF ORDER</div>
+</div>
+<div style="font-size:11.5px;color:#8A5A08;line-height:1.4;margin-top:6px">Starts 12:00 but sits after Nishi Market at 13:30.</div>
+<div style="display:flex;gap:6px;margin-top:8px"><div style="height:30px;padding:0 10px;border-radius:9px;background:#14201C;color:#fff;font-size:11.5px;font-weight:700;display:flex;align-items:center;white-space:nowrap">Move it back</div><div style="height:30px;padding:0 10px;border-radius:9px;background:#fff;border:1px solid #E1E5E1;color:#3D4C46;font-size:11.5px;font-weight:650;display:flex;align-items:center;white-space:nowrap">Set 15:45 – 16:45</div></div>
+</div>
+</div>
+
+<div style="display:flex;gap:9px">
+<div style="width:26px;flex:none;display:flex;align-items:flex-start;justify-content:center;padding-top:14px"><svg width="16" height="12" viewBox="0 0 16 12"><g stroke="#98A5A0" stroke-width="2" stroke-linecap="round"><path d="M2 2h12M2 6h12M2 10h12"></path></g></svg></div>
+<div style="width:60px;flex:none;padding-top:10px;display:flex;flex-direction:column;gap:3px">
+<div style="width:60px;padding:5px 3px;font-size:11.5px;text-align:center;font-variant-numeric:tabular-nums;border:1px solid #DDE2DE;border-radius:9px;background:#fff;font-weight:700">18:00</div>
+<div style="width:60px;padding:5px 3px;font-size:11.5px;text-align:center;font-variant-numeric:tabular-nums;border:1px solid #DDE2DE;border-radius:9px;background:#fff;font-weight:700">—</div>
+<div style="font-size:10px;color:#98A5A0;font-weight:700;text-align:center">open end</div>
+</div>
+<div style="width:20px;flex:none;display:flex;flex-direction:column;align-items:center"><div style="width:11px;height:11px;border-radius:50%;background:#1F6F5C;margin-top:14px;flex:none"></div><div style="flex:1;width:0;border-left:2px dashed #EBD9B4"></div></div>
+<div style="flex:1;min-width:0;margin-bottom:6px;padding:11px 13px;background:#fff;border:1px solid #E7EAE7;border-radius:14px">
+<div style="display:flex;gap:8px;align-items:flex-start"><div style="flex:1;min-width:0"><div style="font-size:14.5px;font-weight:650;line-height:1.25">Hotel Meridian</div><div style="font-size:11.5px;color:#6B7A74;margin-top:3px;line-height:1.35">Dinner not included.</div></div><div style="flex:none;width:26px;height:26px;border-radius:9px;background:#F8E9E9;color:#9B4B4B;font-size:13px;font-weight:800;display:flex;align-items:center;justify-content:center">✕</div></div>
+</div>
+</div>
+
+<div style="display:flex;gap:9px">
+<div style="width:26px;flex:none"></div>
+<div style="width:60px;flex:none"></div>
+<div style="width:20px;flex:none;display:flex;flex-direction:column;align-items:center"><div style="flex:1;width:0;border-left:2px dashed #EBD9B4"></div></div>
+<div style="flex:1;min-width:0">
+<div style="padding:11px 12px;background:#FFFDF7;border:1.5px dashed #E3CFA3;border-radius:14px">
+<div style="display:flex;gap:8px;align-items:baseline"><div style="flex:1;min-width:0;font-size:13.5px;font-weight:700;color:#8A5A08">Night market</div><div style="font-size:11px;font-weight:700;color:#8A5A08;font-variant-numeric:tabular-nums">19:00 – 21:30</div></div>
+<div style="font-size:11.5px;color:#6B7A74;margin-top:3px;line-height:1.35">2 stops · Standing Ramen → Aoi Camera Alley</div>
+<div style="display:flex;gap:6px;flex-wrap:wrap;margin-top:8px"><span style="padding:4px 8px;border-radius:8px;background:#E6EFEB;color:#1F6F5C;font-size:10.5px;font-weight:700;white-space:nowrap">48 min spare</span></div>
+</div>
+</div>
+</div>
+
+</div>
+<div style="position:relative;z-index:10;flex:none;display:flex;gap:2px;padding:7px 8px 10px;background:rgba(255,255,255,.94);border-top:1px solid #E4E8E5">
+<div style="flex:1;min-height:46px;display:flex;flex-direction:column;align-items:center;justify-content:center;gap:3px;border-radius:12px;color:#9AA6A1"><svg width="20" height="20" viewBox="0 0 20 20" fill="none"><path d="M10 18s6-5.2 6-10A6 6 0 0 0 4 8c0 4.8 6 10 6 10z" stroke="#9AA6A1" stroke-width="1.7" stroke-linejoin="round"></path><circle cx="10" cy="8" r="2.2" stroke="#9AA6A1" stroke-width="1.7"></circle></svg><span style="font-size:9.5px;font-weight:700">Map</span></div>
+<div style="flex:1;min-height:46px;display:flex;flex-direction:column;align-items:center;justify-content:center;gap:3px;border-radius:12px;background:#F2F3F1;color:#14201C"><svg width="20" height="20" viewBox="0 0 20 20" fill="none"><g stroke="#14201C" stroke-width="1.7" stroke-linecap="round"><path d="M3 5.5h14M3 10h14M3 14.5h9"></path></g></svg><span style="font-size:9.5px;font-weight:700">Plan</span></div>
+<div style="flex:1;min-height:46px;display:flex;flex-direction:column;align-items:center;justify-content:center;gap:3px;border-radius:12px;color:#9AA6A1"><svg width="20" height="20" viewBox="0 0 20 20" fill="none"><path d="M4.5 6.5h11l-1 10h-9l-1-10z" stroke="#9AA6A1" stroke-width="1.7" stroke-linejoin="round"></path><path d="M7.5 6.5V5a2.5 2.5 0 0 1 5 0v1.5" stroke="#9AA6A1" stroke-width="1.7" stroke-linecap="round"></path></svg><span style="font-size:9.5px;font-weight:700">Shop</span></div>
+<div style="flex:1;min-height:46px;display:flex;flex-direction:column;align-items:center;justify-content:center;gap:3px;border-radius:12px;color:#9AA6A1"><svg width="20" height="20" viewBox="0 0 20 20" fill="none"><rect x="3.5" y="6" width="13" height="10.5" rx="2" stroke="#9AA6A1" stroke-width="1.7"></rect><path d="M7.5 6V4.5a1.5 1.5 0 0 1 1.5-1.5h2a1.5 1.5 0 0 1 1.5 1.5V6" stroke="#9AA6A1" stroke-width="1.7" stroke-linecap="round"></path></svg><span style="font-size:9.5px;font-weight:700">Prep</span></div>
+<div style="flex:1;min-height:46px;display:flex;flex-direction:column;align-items:center;justify-content:center;gap:3px;border-radius:12px;color:#9AA6A1"><svg width="20" height="20" viewBox="0 0 20 20" fill="none"><path d="M13 3.5l3.5 3.5L7 16.5H3.5V13z" stroke="#9AA6A1" stroke-width="1.7" stroke-linejoin="round"></path></svg><span style="font-size:9.5px;font-weight:700">Log</span></div>
+</div>
+</div>
+</div>
+
+<div id="1b" style="flex:none;display:flex;flex-direction:column;gap:10px">
+<div style="display:flex;align-items:baseline;gap:8px;max-width:402px;font:400 11.5px/1.3 'Public Sans',system-ui;color:#6B7A74"><a href="#1b" style="font:800 10.5px ui-monospace,Menlo,monospace;padding:3px 7px;background:rgba(20,32,28,.08);color:#14201C;border-radius:5px;text-decoration:none">1b</a><span><b style="color:#14201C">The alternative — start plus duration.</b> Same day, same warnings. One field lighter; the end time becomes derived grey text, so the sub route's deadline is something the app works out rather than something you set.</span></div>
+<div style="width:402px;height:874px;background:#F2F3F1;border-radius:12px;overflow:hidden;box-shadow:0 1px 0 rgba(20,32,28,.08),0 10px 40px rgba(20,32,28,.09);display:flex;flex-direction:column">
+<div style="flex:none;padding:14px 16px 12px;background:#fff;border-bottom:1px solid #E7EAE7">
+<div style="display:flex;align-items:flex-end;justify-content:space-between;gap:10px">
+<div style="flex:1;min-width:0"><div style="font-size:24px;font-weight:700;letter-spacing:-.02em">Day 3</div><div style="font-size:12px;color:#6B7A74;margin-top:2px">Mar 14 · Sat · <span style="color:#8A5A08;font-weight:650">2 things to look at</span></div></div>
+<div style="width:40px;height:40px;flex:none;border-radius:13px;background:#1F6F5C;box-shadow:0 2px 10px rgba(20,32,28,.12);display:flex;align-items:center;justify-content:center"><svg width="15" height="12" viewBox="0 0 11 9"><path d="M1 4.5L4 7.5 10 1" stroke="#fff" stroke-width="2" fill="none" stroke-linecap="round" stroke-linejoin="round"></path></svg></div>
+</div>
+</div>
+<div style="flex:1;min-height:0;overflow:hidden;padding:14px 16px 24px">
+<div style="padding:10px 12px;background:#FBF1DE;border:1px solid #EBD9B4;border-radius:12px;font-size:12px;font-weight:650;color:#8A5A08;line-height:1.4">Drag by the handle. Set when a stop starts and how long you are there — the end time follows.</div>
+
+<div style="display:flex;gap:9px;margin-top:14px">
+<div style="width:26px;flex:none;display:flex;align-items:flex-start;justify-content:center;padding-top:14px"><svg width="16" height="12" viewBox="0 0 16 12"><g stroke="#98A5A0" stroke-width="2" stroke-linecap="round"><path d="M2 2h12M2 6h12M2 10h12"></path></g></svg></div>
+<div style="width:60px;flex:none;padding-top:10px;display:flex;flex-direction:column;gap:3px">
+<div style="width:60px;padding:5px 3px;font-size:11.5px;text-align:center;font-variant-numeric:tabular-nums;border:1px solid #DDE2DE;border-radius:9px;background:#fff;font-weight:700">13:30</div>
+<div style="width:60px;padding:5px 3px;font-size:11.5px;text-align:center;border:1px solid #DDE2DE;border-radius:9px;background:#fff;font-weight:700">2h 15</div>
+<div style="font-size:10px;color:#98A5A0;font-weight:700;text-align:center">ends 15:45</div>
+</div>
+<div style="width:20px;flex:none;display:flex;flex-direction:column;align-items:center"><div style="width:11px;height:11px;border-radius:50%;background:#1F6F5C;margin-top:14px;flex:none"></div><div style="flex:1;width:0;border-left:2px solid #DCE2DE"></div></div>
+<div style="flex:1;min-width:0;margin-bottom:6px;padding:11px 13px;background:#fff;border:1px solid #E7EAE7;border-radius:14px">
+<div style="display:flex;gap:8px;align-items:flex-start"><div style="flex:1;min-width:0"><div style="font-size:14.5px;font-weight:650;line-height:1.25">Nishi Market</div><div style="font-size:11.5px;color:#6B7A74;margin-top:3px;line-height:1.35">Guide releases the group at the north gate.</div></div><div style="flex:none;width:26px;height:26px;border-radius:9px;background:#F8E9E9;color:#9B4B4B;font-size:13px;font-weight:800;display:flex;align-items:center;justify-content:center">✕</div></div>
+</div>
+</div>
+
+<div style="display:flex;gap:9px">
+<div style="width:26px;flex:none"></div><div style="width:60px;flex:none"></div>
+<div style="width:20px;flex:none;display:flex;flex-direction:column;align-items:center"><div style="flex:1;width:0;border-left:2px dashed #EBD9B4"></div></div>
+<div style="flex:1;min-width:0;margin-bottom:8px">
+<div style="padding:11px 12px;background:#FFFDF7;border:1.5px dashed #E3CFA3;border-radius:14px">
+<div style="display:flex;gap:8px;align-items:baseline"><div style="flex:1;min-width:0;font-size:13.5px;font-weight:700;color:#8A5A08">Market afternoon</div><div style="font-size:11px;font-weight:700;color:#8A5A08;font-variant-numeric:tabular-nums">13:45 – 15:45</div></div>
+<div style="font-size:11.5px;color:#6B7A74;margin-top:3px;line-height:1.35">3 stops · Kōri → Canal → Paper &amp; Ink</div>
+<div style="display:flex;gap:6px;flex-wrap:wrap;margin-top:8px"><span style="padding:4px 8px;border-radius:8px;background:#F8E9E9;color:#9B4B4B;font-size:10.5px;font-weight:700;white-space:nowrap">12 min over the window</span></div>
+</div>
+<div style="height:32px;border-radius:12px;border:1.5px dashed #E3CFA3;display:flex;align-items:center;justify-content:center;font-size:12px;font-weight:650;color:#8A5A08;margin-top:6px">+ Another sub route here</div>
+</div>
+</div>
+
+<div style="display:flex;gap:9px">
+<div style="width:26px;flex:none;display:flex;align-items:flex-start;justify-content:center;padding-top:14px"><svg width="16" height="12" viewBox="0 0 16 12"><g stroke="#98A5A0" stroke-width="2" stroke-linecap="round"><path d="M2 2h12M2 6h12M2 10h12"></path></g></svg></div>
+<div style="width:60px;flex:none;padding-top:10px;display:flex;flex-direction:column;gap:3px">
+<div style="width:60px;padding:5px 3px;font-size:11.5px;text-align:center;font-variant-numeric:tabular-nums;border:1.5px solid #C87F0A;border-radius:9px;background:#FFFDF7;font-weight:700;color:#8A5A08">12:00</div>
+<div style="width:60px;padding:5px 3px;font-size:11.5px;text-align:center;border:1.5px solid #C87F0A;border-radius:9px;background:#FFFDF7;font-weight:700;color:#8A5A08">1h</div>
+<div style="font-size:10px;color:#98A5A0;font-weight:700;text-align:center">ends 13:00</div>
+</div>
+<div style="width:20px;flex:none;display:flex;flex-direction:column;align-items:center"><div style="width:11px;height:11px;border-radius:50%;background:#1F6F5C;margin-top:14px;flex:none"></div><div style="flex:1;width:0;border-left:2px solid #DCE2DE"></div></div>
+<div style="flex:1;min-width:0;margin-bottom:6px;padding:11px 13px;background:#fff;border:1.5px solid #EBD9B4;border-radius:14px">
+<div style="display:flex;gap:8px;align-items:flex-start"><div style="flex:1;min-width:0"><div style="font-size:14.5px;font-weight:650;line-height:1.25">Harbour Steps · set lunch</div><div style="font-size:11.5px;color:#6B7A74;margin-top:3px;line-height:1.35">Included.</div></div><div style="flex:none;width:26px;height:26px;border-radius:9px;background:#F8E9E9;color:#9B4B4B;font-size:13px;font-weight:800;display:flex;align-items:center;justify-content:center">✕</div></div>
+<div style="display:flex;gap:9px;align-items:flex-start;margin-top:10px;padding:9px 10px;background:#FBF1DE;border-radius:10px"><div style="font-size:10.5px;font-weight:800;color:#8A5A08;letter-spacing:.04em;white-space:nowrap">OUT OF ORDER</div></div>
+<div style="font-size:11.5px;color:#8A5A08;line-height:1.4;margin-top:6px">Starts 12:00 but sits after Nishi Market at 13:30.</div>
+<div style="display:flex;gap:6px;margin-top:8px"><div style="height:30px;padding:0 10px;border-radius:9px;background:#14201C;color:#fff;font-size:11.5px;font-weight:700;display:flex;align-items:center;white-space:nowrap">Move it back</div><div style="height:30px;padding:0 10px;border-radius:9px;background:#fff;border:1px solid #E1E5E1;color:#3D4C46;font-size:11.5px;font-weight:650;display:flex;align-items:center;white-space:nowrap">Start 15:45</div></div>
+</div>
+</div>
+
+<div style="display:flex;gap:9px">
+<div style="width:26px;flex:none"></div>
+<div style="width:60px;flex:none;padding-top:8px;text-align:center"><div style="font-size:10px;color:#98A5A0;font-weight:700">1h free</div></div>
+<div style="width:20px;flex:none;display:flex;flex-direction:column;align-items:center"><div style="flex:1;width:0;border-left:2px dashed #DCE2DE"></div></div>
+<div style="flex:1;min-width:0;margin-bottom:8px"><div style="height:38px;border-radius:12px;border:1.5px dashed #C9D0CB;display:flex;align-items:center;justify-content:center;font-size:12px;font-weight:650;color:#3D4C46">+ Free time here · 17:00 – 18:00</div></div>
+</div>
+
+<div style="display:flex;gap:9px">
+<div style="width:26px;flex:none;display:flex;align-items:flex-start;justify-content:center;padding-top:14px"><svg width="16" height="12" viewBox="0 0 16 12"><g stroke="#98A5A0" stroke-width="2" stroke-linecap="round"><path d="M2 2h12M2 6h12M2 10h12"></path></g></svg></div>
+<div style="width:60px;flex:none;padding-top:10px;display:flex;flex-direction:column;gap:3px">
+<div style="width:60px;padding:5px 3px;font-size:11.5px;text-align:center;font-variant-numeric:tabular-nums;border:1px solid #DDE2DE;border-radius:9px;background:#fff;font-weight:700">18:00</div>
+<div style="width:60px;padding:5px 3px;font-size:11.5px;text-align:center;border:1px solid #DDE2DE;border-radius:9px;background:#fff;font-weight:700;color:#98A5A0">—</div>
+<div style="font-size:10px;color:#98A5A0;font-weight:700;text-align:center">open end</div>
+</div>
+<div style="width:20px;flex:none;display:flex;flex-direction:column;align-items:center"><div style="width:11px;height:11px;border-radius:50%;background:#1F6F5C;margin-top:14px;flex:none"></div><div style="flex:1;width:0;border-left:2px dashed #EBD9B4"></div></div>
+<div style="flex:1;min-width:0;margin-bottom:6px;padding:11px 13px;background:#fff;border:1px solid #E7EAE7;border-radius:14px">
+<div style="display:flex;gap:8px;align-items:flex-start"><div style="flex:1;min-width:0"><div style="font-size:14.5px;font-weight:650;line-height:1.25">Hotel Meridian</div><div style="font-size:11.5px;color:#6B7A74;margin-top:3px;line-height:1.35">Dinner not included.</div></div><div style="flex:none;width:26px;height:26px;border-radius:9px;background:#F8E9E9;color:#9B4B4B;font-size:13px;font-weight:800;display:flex;align-items:center;justify-content:center">✕</div></div>
+</div>
+</div>
+
+<div style="display:flex;gap:9px">
+<div style="width:26px;flex:none"></div><div style="width:60px;flex:none"></div>
+<div style="width:20px;flex:none;display:flex;flex-direction:column;align-items:center"><div style="flex:1;width:0;border-left:2px dashed #EBD9B4"></div></div>
+<div style="flex:1;min-width:0"><div style="padding:11px 12px;background:#FFFDF7;border:1.5px dashed #E3CFA3;border-radius:14px">
+<div style="display:flex;gap:8px;align-items:baseline"><div style="flex:1;min-width:0;font-size:13.5px;font-weight:700;color:#8A5A08">Night market</div><div style="font-size:11px;font-weight:700;color:#8A5A08;font-variant-numeric:tabular-nums">19:00 – 21:30</div></div>
+<div style="font-size:11.5px;color:#6B7A74;margin-top:3px;line-height:1.35">2 stops · Standing Ramen → Aoi Camera Alley</div>
+<div style="display:flex;gap:6px;flex-wrap:wrap;margin-top:8px"><span style="padding:4px 8px;border-radius:8px;background:#E6EFEB;color:#1F6F5C;font-size:10.5px;font-weight:700;white-space:nowrap">48 min spare</span></div>
+</div></div>
+</div>
+
+</div>
+<div style="position:relative;z-index:10;flex:none;display:flex;gap:2px;padding:7px 8px 10px;background:rgba(255,255,255,.94);border-top:1px solid #E4E8E5">
+<div style="flex:1;min-height:46px;display:flex;flex-direction:column;align-items:center;justify-content:center;gap:3px;border-radius:12px;color:#9AA6A1"><svg width="20" height="20" viewBox="0 0 20 20" fill="none"><path d="M10 18s6-5.2 6-10A6 6 0 0 0 4 8c0 4.8 6 10 6 10z" stroke="#9AA6A1" stroke-width="1.7" stroke-linejoin="round"></path><circle cx="10" cy="8" r="2.2" stroke="#9AA6A1" stroke-width="1.7"></circle></svg><span style="font-size:9.5px;font-weight:700">Map</span></div>
+<div style="flex:1;min-height:46px;display:flex;flex-direction:column;align-items:center;justify-content:center;gap:3px;border-radius:12px;background:#F2F3F1;color:#14201C"><svg width="20" height="20" viewBox="0 0 20 20" fill="none"><g stroke="#14201C" stroke-width="1.7" stroke-linecap="round"><path d="M3 5.5h14M3 10h14M3 14.5h9"></path></g></svg><span style="font-size:9.5px;font-weight:700">Plan</span></div>
+<div style="flex:1;min-height:46px;display:flex;flex-direction:column;align-items:center;justify-content:center;gap:3px;border-radius:12px;color:#9AA6A1"><svg width="20" height="20" viewBox="0 0 20 20" fill="none"><path d="M4.5 6.5h11l-1 10h-9l-1-10z" stroke="#9AA6A1" stroke-width="1.7" stroke-linejoin="round"></path><path d="M7.5 6.5V5a2.5 2.5 0 0 1 5 0v1.5" stroke="#9AA6A1" stroke-width="1.7" stroke-linecap="round"></path></svg><span style="font-size:9.5px;font-weight:700">Shop</span></div>
+<div style="flex:1;min-height:46px;display:flex;flex-direction:column;align-items:center;justify-content:center;gap:3px;border-radius:12px;color:#9AA6A1"><svg width="20" height="20" viewBox="0 0 20 20" fill="none"><rect x="3.5" y="6" width="13" height="10.5" rx="2" stroke="#9AA6A1" stroke-width="1.7"></rect><path d="M7.5 6V4.5a1.5 1.5 0 0 1 1.5-1.5h2a1.5 1.5 0 0 1 1.5 1.5V6" stroke="#9AA6A1" stroke-width="1.7" stroke-linecap="round"></path></svg><span style="font-size:9.5px;font-weight:700">Prep</span></div>
+<div style="flex:1;min-height:46px;display:flex;flex-direction:column;align-items:center;justify-content:center;gap:3px;border-radius:12px;color:#9AA6A1"><svg width="20" height="20" viewBox="0 0 20 20" fill="none"><path d="M13 3.5l3.5 3.5L7 16.5H3.5V13z" stroke="#9AA6A1" stroke-width="1.7" stroke-linejoin="round"></path></svg><span style="font-size:9.5px;font-weight:700">Log</span></div>
+</div>
+</div>
+</div>
+
+<div id="1c" style="flex:none;display:flex;flex-direction:column;gap:10px">
+<div style="display:flex;align-items:baseline;gap:8px;max-width:402px;font:400 11.5px/1.3 'Public Sans',system-ui;color:#6B7A74"><a href="#1c" style="font:800 10.5px ui-monospace,Menlo,monospace;padding:3px 7px;background:rgba(20,32,28,.08);color:#14201C;border-radius:5px;text-decoration:none">1c</a><span><b style="color:#14201C">The same messy day, not editing.</b> This is the test for soup: two sub routes, each one card in its own dashed lane, and the warning still visible without the pencil. Times read as a range in the gutter.</span></div>
+<div style="width:402px;height:874px;background:#F2F3F1;border-radius:12px;overflow:hidden;box-shadow:0 1px 0 rgba(20,32,28,.08),0 10px 40px rgba(20,32,28,.09);display:flex;flex-direction:column">
+<div style="flex:none;padding:14px 16px 12px;background:#fff;border-bottom:1px solid #E7EAE7">
+<div style="display:flex;align-items:flex-end;justify-content:space-between;gap:10px">
+<div style="flex:1;min-width:0"><div style="font-size:24px;font-weight:700;letter-spacing:-.02em">Day 3</div><div style="font-size:12px;color:#6B7A74;margin-top:2px">Mar 14 · Sat · <span style="color:#8A5A08;font-weight:650">2 things to look at</span></div></div>
+<div style="width:40px;height:40px;flex:none;border-radius:13px;background:#fff;box-shadow:0 2px 10px rgba(20,32,28,.12);display:flex;align-items:center;justify-content:center"><svg width="17" height="17" viewBox="0 0 14 14"><path d="M9.5 1.5l3 3L5 12H2v-3z" fill="none" stroke="#14201C" stroke-width="1.5" stroke-linejoin="round"></path></svg></div>
+</div>
+<div style="display:flex;gap:6px;margin-top:10px">
+<div style="flex:none;height:30px;padding:0 10px;border-radius:10px;background:#fff;color:#6B7A74;font-size:12px;font-weight:600;display:flex;align-items:center;gap:5px;white-space:nowrap">D1<span style="font-size:11px;opacity:.75">☀</span></div>
+<div style="flex:none;height:30px;padding:0 10px;border-radius:10px;background:#fff;color:#6B7A74;font-size:12px;font-weight:600;display:flex;align-items:center;gap:5px;white-space:nowrap">D2<span style="font-size:11px;opacity:.75">⛅</span></div>
+<div style="flex:none;height:30px;padding:0 10px;border-radius:10px;background:#14201C;color:#fff;font-size:12px;font-weight:600;display:flex;align-items:center;gap:5px;white-space:nowrap">D3<span style="font-size:11px;opacity:.75">☁</span></div>
+<div style="flex:none;height:30px;padding:0 10px;border-radius:10px;background:#fff;color:#6B7A74;font-size:12px;font-weight:600;display:flex;align-items:center;gap:5px;white-space:nowrap">D4<span style="font-size:11px;opacity:.75">🌧</span></div>
+<div style="flex:none;height:30px;padding:0 10px;border-radius:10px;background:#fff;color:#6B7A74;font-size:12px;font-weight:600;display:flex;align-items:center;gap:5px;white-space:nowrap">D5<span style="font-size:11px;opacity:.75">⛅</span></div>
+</div>
+</div>
+<div style="flex:1;min-height:0;overflow:hidden;padding:14px 16px 24px">
+<div style="display:flex;align-items:center;gap:11px;padding:11px 12px;background:#E6EFEB;border-radius:12px">
+<div style="font-size:17px;line-height:1;flex:none">☁</div>
+<div style="flex:1;min-width:0;font-size:12px;color:#1F6F5C;font-weight:600;line-height:1.4">Day 3: overcast, 16 °C, 20% rain. 13 °C by evening.<div style="font-size:10.5px;color:#5D8C7C;font-weight:500;margin-top:2px">Forecast from Open-Meteo, 2 h ago · tap for the hourly forecast</div></div>
+<svg width="7" height="12" viewBox="0 0 7 12"><path d="M1 1l5 5-5 5" stroke="#98A5A0" stroke-width="1.8" fill="none" stroke-linecap="round"></path></svg>
+</div>
+
+<div style="display:flex;gap:9px">
+<div style="width:56px;flex:none;padding-top:12px;text-align:right"><div style="font-size:12.5px;font-weight:700;font-variant-numeric:tabular-nums">13:30</div><div style="font-size:11px;color:#98A5A0;font-weight:650;font-variant-numeric:tabular-nums">15:45</div><div style="font-size:10px;color:#B4BEB9;font-weight:700">2h 15m</div></div>
+<div style="width:20px;flex:none;display:flex;flex-direction:column;align-items:center"><div style="width:11px;height:11px;border-radius:50%;background:#1F6F5C;margin-top:14px;flex:none"></div><div style="flex:1;width:0;border-left:2px solid #DCE2DE"></div></div>
+<div style="flex:1;min-width:0;margin-bottom:6px;padding:11px 13px;background:#fff;border:1px solid #E7EAE7;border-radius:14px">
+<div style="display:flex;gap:8px;align-items:flex-start"><div style="flex:1;min-width:0"><div style="font-size:14.5px;font-weight:650;line-height:1.25">Nishi Market</div><div style="font-size:11.5px;color:#6B7A74;margin-top:3px;line-height:1.35">Back at the coach 15:45.</div></div><span style="flex:none;padding:3px 7px;border-radius:6px;font-size:9.5px;font-weight:800;letter-spacing:.04em;background:#E6EFEB;color:#1F6F5C">MAIN 5</span></div>
+<div style="display:flex;gap:6px;flex-wrap:wrap;margin-top:8px"><span style="padding:4px 8px;border-radius:8px;background:#F2F3F1;color:#3D4C46;font-size:10.5px;font-weight:650;white-space:nowrap">4 shopping items</span><span style="padding:4px 8px;border-radius:8px;background:#F2F3F1;color:#3D4C46;font-size:10.5px;font-weight:650;white-space:nowrap">3 notes</span></div>
+</div>
+</div>
+
+<div style="display:flex;gap:9px">
+<div style="width:56px;flex:none;padding-top:11px;text-align:right"><div style="font-size:10px;color:#8A5A08;font-weight:800;letter-spacing:.04em"></div></div>
+<div style="width:20px;flex:none;display:flex;flex-direction:column;align-items:center"><div style="flex:1;width:0;border-left:2px dashed #EBD9B4"></div></div>
+<div style="flex:1;min-width:0;margin-bottom:8px;padding:11px 12px;background:#FFFDF7;border:1.5px dashed #E3CFA3;border-radius:14px">
+<div style="display:flex;gap:8px;align-items:baseline"><div style="flex:1;min-width:0;font-size:13.5px;font-weight:700;color:#8A5A08">Market afternoon</div><div style="font-size:11px;font-weight:700;color:#8A5A08;font-variant-numeric:tabular-nums">13:45 – 15:45</div></div>
+<div style="font-size:11.5px;color:#6B7A74;margin-top:3px;line-height:1.35">3 stops · Kōri → Canal → Paper &amp; Ink</div>
+<div style="display:flex;gap:6px;flex-wrap:wrap;margin-top:8px"><span style="padding:4px 8px;border-radius:8px;background:#F8E9E9;color:#9B4B4B;font-size:10.5px;font-weight:700;white-space:nowrap">12 min over the window</span><span style="padding:4px 8px;border-radius:8px;background:#F2F3F1;color:#3D4C46;font-size:10.5px;font-weight:650;white-space:nowrap">1 note</span></div>
+</div>
+</div>
+
+<div style="display:flex;gap:9px">
+<div style="width:56px;flex:none;padding-top:12px;text-align:right"><div style="font-size:12.5px;font-weight:700;font-variant-numeric:tabular-nums;color:#8A5A08">12:00</div><div style="font-size:11px;color:#8A5A08;font-weight:650;font-variant-numeric:tabular-nums">13:00</div><div style="font-size:10px;color:#B4BEB9;font-weight:700">1h</div></div>
+<div style="width:20px;flex:none;display:flex;flex-direction:column;align-items:center"><div style="width:11px;height:11px;border-radius:50%;background:#C87F0A;margin-top:14px;flex:none"></div><div style="flex:1;width:0;border-left:2px solid #DCE2DE"></div></div>
+<div style="flex:1;min-width:0;margin-bottom:6px;padding:11px 13px;background:#fff;border:1.5px solid #EBD9B4;border-radius:14px">
+<div style="display:flex;gap:8px;align-items:flex-start"><div style="flex:1;min-width:0"><div style="font-size:14.5px;font-weight:650;line-height:1.25">Harbour Steps · set lunch</div><div style="font-size:11.5px;color:#6B7A74;margin-top:3px;line-height:1.35">Included. Vegetarian on request the night before.</div></div><span style="flex:none;padding:3px 7px;border-radius:6px;font-size:9.5px;font-weight:800;letter-spacing:.04em;background:#E6EFEB;color:#1F6F5C">MAIN 4</span></div>
+<div style="display:flex;gap:7px;align-items:center;margin-top:9px"><span style="padding:4px 8px;border-radius:8px;background:#FBF1DE;color:#8A5A08;font-size:10.5px;font-weight:800;letter-spacing:.04em;white-space:nowrap">OUT OF ORDER</span><span style="font-size:11px;color:#8A5A08;font-weight:650">after Nishi Market</span></div>
+</div>
+</div>
+
+<div style="display:flex;gap:9px">
+<div style="width:56px;flex:none;padding-top:12px;text-align:right"><div style="font-size:12.5px;font-weight:700;font-variant-numeric:tabular-nums">16:00</div><div style="font-size:11px;color:#98A5A0;font-weight:650;font-variant-numeric:tabular-nums">17:00</div><div style="font-size:10px;color:#B4BEB9;font-weight:700">1h</div></div>
+<div style="width:20px;flex:none;display:flex;flex-direction:column;align-items:center"><div style="width:11px;height:11px;border-radius:50%;background:#1F6F5C;margin-top:14px;flex:none"></div><div style="flex:1;width:0;border-left:2px solid #DCE2DE"></div></div>
+<div style="flex:1;min-width:0;margin-bottom:6px;padding:11px 13px;background:#fff;border:1px solid #E7EAE7;border-radius:14px">
+<div style="display:flex;gap:8px;align-items:flex-start"><div style="flex:1;min-width:0"><div style="font-size:14.5px;font-weight:650;line-height:1.25">Skyline Deck</div><div style="font-size:11.5px;color:#6B7A74;margin-top:3px;line-height:1.35">Sunset 18:04 — deck faces west.</div></div><span style="flex:none;padding:3px 7px;border-radius:6px;font-size:9.5px;font-weight:800;letter-spacing:.04em;background:#E6EFEB;color:#1F6F5C">MAIN 6</span></div>
+</div>
+</div>
+
+<div style="display:flex;gap:9px">
+<div style="width:56px;flex:none;padding-top:12px;text-align:right"><div style="font-size:12.5px;font-weight:700;font-variant-numeric:tabular-nums">18:00</div></div>
+<div style="width:20px;flex:none;display:flex;flex-direction:column;align-items:center"><div style="width:11px;height:11px;border-radius:50%;background:#1F6F5C;margin-top:14px;flex:none"></div><div style="flex:1;width:0;border-left:2px dashed #EBD9B4"></div></div>
+<div style="flex:1;min-width:0;margin-bottom:6px;padding:11px 13px;background:#fff;border:1px solid #E7EAE7;border-radius:14px">
+<div style="display:flex;gap:8px;align-items:flex-start"><div style="flex:1;min-width:0"><div style="font-size:14.5px;font-weight:650;line-height:1.25">Hotel Meridian</div><div style="font-size:11.5px;color:#6B7A74;margin-top:3px;line-height:1.35">Dinner not included.</div></div><span style="flex:none;padding:3px 7px;border-radius:6px;font-size:9.5px;font-weight:800;letter-spacing:.04em;background:#E6EFEB;color:#1F6F5C">MAIN 7</span></div>
+</div>
+</div>
+
+<div style="display:flex;gap:9px">
+<div style="width:56px;flex:none;padding-top:11px;text-align:right"><div style="font-size:10px;color:#8A5A08;font-weight:800;letter-spacing:.04em"></div></div>
+<div style="width:20px;flex:none;display:flex;flex-direction:column;align-items:center"><div style="flex:1;width:0;border-left:2px dashed #EBD9B4"></div></div>
+<div style="flex:1;min-width:0;padding:11px 12px;background:#FFFDF7;border:1.5px dashed #E3CFA3;border-radius:14px">
+<div style="display:flex;gap:8px;align-items:baseline"><div style="flex:1;min-width:0;font-size:13.5px;font-weight:700;color:#8A5A08">Night market</div><div style="font-size:11px;font-weight:700;color:#8A5A08;font-variant-numeric:tabular-nums">19:00 – 21:30</div></div>
+<div style="font-size:11.5px;color:#6B7A74;margin-top:3px;line-height:1.35">2 stops · Standing Ramen → Aoi Camera Alley</div>
+<div style="display:flex;gap:6px;flex-wrap:wrap;margin-top:8px"><span style="padding:4px 8px;border-radius:8px;background:#E6EFEB;color:#1F6F5C;font-size:10.5px;font-weight:700;white-space:nowrap">48 min spare</span></div>
+</div>
+</div>
+
+</div>
+<div style="position:relative;z-index:10;flex:none;display:flex;gap:2px;padding:7px 8px 10px;background:rgba(255,255,255,.94);border-top:1px solid #E4E8E5">
+<div style="flex:1;min-height:46px;display:flex;flex-direction:column;align-items:center;justify-content:center;gap:3px;border-radius:12px;color:#9AA6A1"><svg width="20" height="20" viewBox="0 0 20 20" fill="none"><path d="M10 18s6-5.2 6-10A6 6 0 0 0 4 8c0 4.8 6 10 6 10z" stroke="#9AA6A1" stroke-width="1.7" stroke-linejoin="round"></path><circle cx="10" cy="8" r="2.2" stroke="#9AA6A1" stroke-width="1.7"></circle></svg><span style="font-size:9.5px;font-weight:700">Map</span></div>
+<div style="flex:1;min-height:46px;display:flex;flex-direction:column;align-items:center;justify-content:center;gap:3px;border-radius:12px;background:#F2F3F1;color:#14201C"><svg width="20" height="20" viewBox="0 0 20 20" fill="none"><g stroke="#14201C" stroke-width="1.7" stroke-linecap="round"><path d="M3 5.5h14M3 10h14M3 14.5h9"></path></g></svg><span style="font-size:9.5px;font-weight:700">Plan</span></div>
+<div style="flex:1;min-height:46px;display:flex;flex-direction:column;align-items:center;justify-content:center;gap:3px;border-radius:12px;color:#9AA6A1"><svg width="20" height="20" viewBox="0 0 20 20" fill="none"><path d="M4.5 6.5h11l-1 10h-9l-1-10z" stroke="#9AA6A1" stroke-width="1.7" stroke-linejoin="round"></path><path d="M7.5 6.5V5a2.5 2.5 0 0 1 5 0v1.5" stroke="#9AA6A1" stroke-width="1.7" stroke-linecap="round"></path></svg><span style="font-size:9.5px;font-weight:700">Shop</span></div>
+<div style="flex:1;min-height:46px;display:flex;flex-direction:column;align-items:center;justify-content:center;gap:3px;border-radius:12px;color:#9AA6A1"><svg width="20" height="20" viewBox="0 0 20 20" fill="none"><rect x="3.5" y="6" width="13" height="10.5" rx="2" stroke="#9AA6A1" stroke-width="1.7"></rect><path d="M7.5 6V4.5a1.5 1.5 0 0 1 1.5-1.5h2a1.5 1.5 0 0 1 1.5 1.5V6" stroke="#9AA6A1" stroke-width="1.7" stroke-linecap="round"></path></svg><span style="font-size:9.5px;font-weight:700">Prep</span></div>
+<div style="flex:1;min-height:46px;display:flex;flex-direction:column;align-items:center;justify-content:center;gap:3px;border-radius:12px;color:#9AA6A1"><svg width="20" height="20" viewBox="0 0 20 20" fill="none"><path d="M13 3.5l3.5 3.5L7 16.5H3.5V13z" stroke="#9AA6A1" stroke-width="1.7" stroke-linejoin="round"></path></svg><span style="font-size:9.5px;font-weight:700">Log</span></div>
+</div>
+</div>
+</div>
+
+<div id="1d" style="flex:none;display:flex;flex-direction:column;gap:10px">
+<div style="display:flex;align-items:baseline;gap:8px;max-width:402px;font:400 11.5px/1.3 'Public Sans',system-ui;color:#6B7A74"><a href="#1d" style="font:800 10.5px ui-monospace,Menlo,monospace;padding:3px 7px;background:rgba(20,32,28,.08);color:#14201C;border-radius:5px;text-decoration:none">1d</a><span><b style="color:#14201C">Starting a second sub route.</b> Tapping a free-time lane opens this. The window is pre-filled from the gap and stays editable; the name is the only thing you have to give it, and it can wait.</span></div>
+<div style="width:402px;height:874px;background:#F2F3F1;border-radius:12px;overflow:hidden;box-shadow:0 1px 0 rgba(20,32,28,.08),0 10px 40px rgba(20,32,28,.09);display:flex;flex-direction:column;position:relative">
+<div style="flex:1;min-height:0;position:relative;overflow:hidden">
+<div style="position:absolute;inset:0;background:#F2F3F1">
+<div style="padding:14px 16px 12px;background:#fff;border-bottom:1px solid #E7EAE7"><div style="font-size:24px;font-weight:700;letter-spacing:-.02em">Day 3</div><div style="font-size:12px;color:#6B7A74;margin-top:2px">Mar 14 · Sat</div></div>
+<div style="padding:14px 16px">
+<div style="display:flex;gap:9px"><div style="width:56px;flex:none;padding-top:12px;text-align:right"><div style="font-size:12.5px;font-weight:700;font-variant-numeric:tabular-nums">16:00</div><div style="font-size:11px;color:#98A5A0;font-weight:650">17:00</div></div><div style="width:20px;flex:none;display:flex;flex-direction:column;align-items:center"><div style="width:11px;height:11px;border-radius:50%;background:#1F6F5C;margin-top:14px"></div><div style="flex:1;width:0;border-left:2px solid #DCE2DE"></div></div><div style="flex:1;padding:11px 13px;background:#fff;border:1px solid #E7EAE7;border-radius:14px;margin-bottom:6px"><div style="font-size:14.5px;font-weight:650">Skyline Deck</div><div style="font-size:11.5px;color:#6B7A74;margin-top:3px">Sunset 18:04.</div></div></div>
+<div style="display:flex;gap:9px"><div style="width:56px;flex:none;padding-top:12px;text-align:right"><div style="font-size:12.5px;font-weight:700;font-variant-numeric:tabular-nums">18:00</div></div><div style="width:20px;flex:none;display:flex;flex-direction:column;align-items:center"><div style="width:11px;height:11px;border-radius:50%;background:#1F6F5C;margin-top:14px"></div><div style="flex:1;width:0;border-left:2px dashed #EBD9B4"></div></div><div style="flex:1;padding:11px 13px;background:#fff;border:1px solid #E7EAE7;border-radius:14px;margin-bottom:6px"><div style="font-size:14.5px;font-weight:650">Hotel Meridian</div><div style="font-size:11.5px;color:#6B7A74;margin-top:3px">Dinner not included.</div></div></div>
+<div style="display:flex;gap:9px"><div style="width:56px;flex:none"></div><div style="width:20px;flex:none;display:flex;flex-direction:column;align-items:center"><div style="flex:1;width:0;border-left:2px dashed #EBD9B4"></div></div><div style="flex:1"><div style="height:38px;border-radius:12px;border:1.5px dashed #E3CFA3;background:#FFFDF7;display:flex;align-items:center;justify-content:center;font-size:12px;font-weight:650;color:#8A5A08">+ Sub route here · 19:00 – 21:30</div></div></div>
+</div>
+</div>
+<div style="position:absolute;inset:0;background:rgba(20,32,28,.42)"></div>
+</div>
+<div style="position:relative;background:#fff;border-radius:22px 22px 0 0;box-shadow:0 -8px 30px rgba(20,32,28,.16);padding:8px 16px 20px">
+<i style="display:block;width:40px;height:4px;border-radius:2px;background:#D8DDD9;margin:0 auto 14px"></i>
+<div style="font-size:10.5px;font-weight:800;letter-spacing:.06em;color:#98A5A0">NEW SUB ROUTE · DAY 3</div>
+<div style="font-size:22px;font-weight:700;letter-spacing:-.02em;margin-top:4px">Free time, 19:00 – 21:30</div>
+<div style="font-size:12.5px;color:#6B7A74;line-height:1.5;margin-top:6px">The gap after Hotel Meridian. Both ends are editable — the sub route protects the later one.</div>
+
+<div style="display:flex;flex-direction:column;gap:10px;margin-top:16px">
+<div><div style="font-size:11px;font-weight:800;color:#98A5A0;letter-spacing:.06em">NAME</div><div style="width:100%;font-size:13px;border:1px solid #DDE2DE;border-radius:10px;padding:9px 10px;background:#fff;margin-top:4px;color:#98A5A0">Night market</div></div>
+<div style="display:flex;gap:8px">
+<div style="flex:1"><div style="font-size:11px;font-weight:800;color:#98A5A0;letter-spacing:.06em">LEAVE</div><div style="width:100%;font-size:13px;border:1px solid #DDE2DE;border-radius:10px;padding:9px 10px;background:#fff;margin-top:4px;font-variant-numeric:tabular-nums">19:00</div></div>
+<div style="flex:1"><div style="font-size:11px;font-weight:800;color:#98A5A0;letter-spacing:.06em">BE BACK BY</div><div style="width:100%;font-size:13px;border:1px solid #DDE2DE;border-radius:10px;padding:9px 10px;background:#fff;margin-top:4px;font-variant-numeric:tabular-nums">21:30</div></div>
+</div>
+<div style="display:flex;gap:8px">
+<div style="flex:1"><div style="font-size:11px;font-weight:800;color:#98A5A0;letter-spacing:.06em">START AT</div><div style="width:100%;font-size:13px;border:1px solid #DDE2DE;border-radius:10px;padding:9px 10px;background:#fff;margin-top:4px;display:flex;align-items:center;justify-content:space-between">Hotel Meridian<svg width="10" height="6" viewBox="0 0 10 6"><path d="M1 1l4 4 4-4" stroke="#6B7A74" stroke-width="1.6" fill="none" stroke-linecap="round"></path></svg></div></div>
+<div style="flex:1"><div style="font-size:11px;font-weight:800;color:#98A5A0;letter-spacing:.06em">END AT</div><div style="width:100%;font-size:13px;border:1px solid #DDE2DE;border-radius:10px;padding:9px 10px;background:#fff;margin-top:4px;display:flex;align-items:center;justify-content:space-between">Nishi Sta., Exit B<svg width="10" height="6" viewBox="0 0 10 6"><path d="M1 1l4 4 4-4" stroke="#6B7A74" stroke-width="1.6" fill="none" stroke-linecap="round"></path></svg></div></div>
+</div>
+<div style="font-size:11px;color:#98A5A0;line-height:1.45">Both ends come from the day's stops, and they need not match — end at the station and the walk is one way.</div>
+</div>
+
+<div style="display:flex;gap:8px;margin-top:16px">
+<div style="flex:1;height:44px;border-radius:12px;background:#1F6F5C;color:#fff;font-size:13px;font-weight:700;display:flex;align-items:center;justify-content:center">Create and pick places</div>
+<div style="width:96px;height:44px;border-radius:12px;background:#F2F3F1;border:1px solid #E1E5E1;font-size:13px;font-weight:650;display:flex;align-items:center;justify-content:center">Cancel</div>
+</div>
+<div style="font-size:11px;color:#98A5A0;line-height:1.45;margin-top:10px">A day can hold a sub route in every gap. Two sub routes never share a window, so the times in one can never move the other.</div>
+</div>
+</div>
+</div>
+
+<div id="1e" style="flex:none;display:flex;flex-direction:column;gap:10px">
+<div style="display:flex;align-items:baseline;gap:8px;max-width:402px;font:400 11.5px/1.3 'Public Sans',system-ui;color:#6B7A74"><a href="#1e" style="font:800 10.5px ui-monospace,Menlo,monospace;padding:3px 7px;background:rgba(20,32,28,.08);color:#14201C;border-radius:5px;text-decoration:none">1e</a><span><b style="color:#14201C">The sub route screen, in view mode.</b> Header names the sub route, the day part and the window, with an <b style="color:#14201C">Edit</b> button beside it — handles, ends and Add places all live behind that, in <a href="#1l">1l</a>. The row underneath moves between this afternoon and tonight without going back.</span></div>
+<div style="width:402px;height:874px;background:#E9EAE6;border-radius:12px;overflow:hidden;box-shadow:0 1px 0 rgba(20,32,28,.08),0 10px 40px rgba(20,32,28,.09);display:flex;flex-direction:column;position:relative">
+<div style="position:absolute;inset:0;z-index:0;background:#E9EAE6"><svg viewBox="0 0 402 300" style="position:absolute;top:0;left:0;width:100%;height:auto"><rect width="402" height="300" fill="#E9EAE6"></rect><g stroke="#DDE0DA" stroke-width="9" fill="none"><path d="M-20 90H420M-20 220H420M120 -20V320M262 -20V320"></path></g><path d="M150 120L206 96L250 150L188 186L150 120" fill="none" stroke="#C87F0A" stroke-width="3.5" stroke-dasharray="3 7" stroke-linecap="round"></path></svg>
+<div style="position:absolute;left:132px;top:102px;width:36px;height:36px;border-radius:50%;background:#14201C;color:#fff;font-size:15px;font-weight:700;display:flex;align-items:center;justify-content:center;box-shadow:0 2px 8px rgba(20,32,28,.35)">↩</div>
+<div style="position:absolute;left:192px;top:82px;width:28px;height:28px;border-radius:50%;background:#C87F0A;color:#fff;font-size:12px;font-weight:800;display:flex;align-items:center;justify-content:center">1</div>
+<div style="position:absolute;left:236px;top:136px;width:28px;height:28px;border-radius:50%;background:#C87F0A;color:#fff;font-size:12px;font-weight:800;display:flex;align-items:center;justify-content:center">2</div>
+<div style="position:absolute;left:174px;top:172px;width:28px;height:28px;border-radius:50%;background:#C87F0A;color:#fff;font-size:12px;font-weight:800;display:flex;align-items:center;justify-content:center">3</div>
+</div>
+<div style="position:relative;z-index:2;flex:none;padding:12px 16px 0;display:flex;flex-direction:column;gap:8px">
+<div style="display:flex;gap:10px">
+<div style="width:40px;height:40px;flex:none;border-radius:13px;background:#fff;box-shadow:0 2px 10px rgba(20,32,28,.12);display:flex;align-items:center;justify-content:center"><svg width="11" height="18" viewBox="0 0 11 18"><path d="M9 1L2 9l7 8" stroke="#14201C" stroke-width="2.2" fill="none" stroke-linecap="round" stroke-linejoin="round"></path></svg></div>
+<div style="flex:1;min-width:0;padding:9px 12px;background:rgba(255,255,255,.92);border-radius:13px;box-shadow:0 2px 10px rgba(20,32,28,.12)">
+<div style="font-size:13.5px;font-weight:700">Market afternoon</div>
+<div style="font-size:11.5px;color:#6B7A74;margin-top:1px">Day 3 afternoon · 13:45 – 15:45 · starts and ends at Nishi Market</div>
+</div>
+<div style="width:40px;height:40px;flex:none;border-radius:13px;background:#fff;box-shadow:0 2px 10px rgba(20,32,28,.12);display:flex;align-items:center;justify-content:center"><svg width="17" height="17" viewBox="0 0 14 14"><path d="M9.5 1.5l3 3L5 12H2v-3z" fill="none" stroke="#14201C" stroke-width="1.5" stroke-linejoin="round"></path></svg></div>
+</div>
+
+</div>
+<div style="position:relative;z-index:3;margin-top:auto;background:#fff;border-radius:22px 22px 0 0;box-shadow:0 -8px 30px rgba(20,32,28,.16);height:75%;display:flex;flex-direction:column;padding-bottom:10px">
+<div style="padding:8px 0 10px;flex:none"><i style="display:block;width:40px;height:4px;border-radius:2px;background:#D8DDD9;margin:0 auto"></i></div>
+<div style="display:flex;gap:6px;padding:0 16px 10px;flex:none;overflow:hidden"><div style="flex:none;height:30px;padding:0 11px;border-radius:10px;background:#14201C;color:#fff;font-size:11.5px;font-weight:700;display:flex;align-items:center;white-space:nowrap">Market afternoon</div><div style="flex:none;height:30px;padding:0 11px;border-radius:10px;background:#F2F3F1;color:#6B7A74;font-size:11.5px;font-weight:650;display:flex;align-items:center;white-space:nowrap">Night market</div></div>
+<div style="display:flex;gap:8px;padding:0 16px 10px;flex:none">
+<div style="flex:1;padding:9px 11px;background:#F2F3F1;border-radius:12px"><div style="font-size:10px;font-weight:800;letter-spacing:.04em;color:#98A5A0">YOU HAVE</div><div style="font-size:15px;font-weight:700;margin-top:2px">2h</div></div>
+<div style="flex:1;padding:9px 11px;background:#F2F3F1;border-radius:12px"><div style="font-size:10px;font-weight:800;letter-spacing:.04em;color:#98A5A0">TRAVELLING</div><div style="font-size:15px;font-weight:700;margin-top:2px">23 min</div></div>
+<div style="flex:1;padding:9px 11px;background:#F8E9E9;border-radius:12px"><div style="font-size:10px;font-weight:800;letter-spacing:.04em;color:#9B4B4B">SHORT BY</div><div style="font-size:15px;font-weight:700;margin-top:2px;color:#9B4B4B">12 min</div></div>
+</div>
+<div style="padding:0 16px 10px;flex:none"><div style="font-size:11.5px;line-height:1.45;color:#9B4B4B">Three stops and getting back take 12 minutes more than the window allows. Edit the sub route to drop a stop, shorten a stay, or push <b>be back by</b> to 15:57 — the stop it belongs to ends at 15:45, so that would run into Skyline Deck.</div></div>
+<div style="padding:0 16px 8px;font-size:11px;font-weight:700;color:#98A5A0;flex:none">Tap a place to open it · Edit to rearrange</div>
+<div style="flex:1;min-height:0;overflow:hidden;padding:0 16px">
+<div style="display:flex;gap:10px;align-items:center;padding:10px 0">
+<div style="width:26px;height:26px;flex:none;border-radius:50%;background:#14201C;color:#fff;font-size:12px;font-weight:800;display:flex;align-items:center;justify-content:center">↳</div>
+<div style="flex:1;min-width:0"><div style="font-size:13.5px;font-weight:650">Leave from Nishi Market</div><div style="font-size:11px;color:#6B7A74;margin-top:1px">main route stop 5 · where the group is released</div></div>
+<div style="text-align:right;flex:none"><div style="font-size:12px;font-weight:700;font-variant-numeric:tabular-nums">13:45</div></div>
+</div>
+<div style="display:flex;gap:10px;align-items:center;padding:10px 0;border-top:1px solid #EDEFEC">
+<div style="width:26px;height:26px;flex:none;border-radius:50%;background:#C87F0A;color:#fff;font-size:12px;font-weight:800;display:flex;align-items:center;justify-content:center">1</div>
+<div style="flex:1;min-width:0"><div style="font-size:13.5px;font-weight:650">Kōri Dessert Bar</div><div style="font-size:11px;color:#6B7A74;margin-top:1px">🚶4 · stay 25 min · ¥¥</div></div>
+<div style="text-align:right;flex:none"><div style="font-size:12px;font-weight:700;font-variant-numeric:tabular-nums">~13:49</div><div style="font-size:11px;color:#98A5A0">4 min away</div></div>
+</div>
+<div style="display:flex;gap:10px;align-items:center;padding:10px 0;border-top:1px solid #EDEFEC">
+<div style="width:26px;height:26px;flex:none;border-radius:50%;background:#C87F0A;color:#fff;font-size:12px;font-weight:800;display:flex;align-items:center;justify-content:center">2</div>
+<div style="flex:1;min-width:0"><div style="font-size:13.5px;font-weight:650">Canal Overlook</div><div style="font-size:11px;color:#6B7A74;margin-top:1px">🚶5 · stay 15 min · Free</div></div>
+<div style="text-align:right;flex:none"><div style="font-size:12px;font-weight:700;font-variant-numeric:tabular-nums">~14:19</div><div style="font-size:11px;color:#98A5A0">5 min away</div></div>
+</div>
+<div style="display:flex;gap:10px;align-items:center;padding:10px 0;border-top:1px solid #EDEFEC">
+<div style="width:26px;height:26px;flex:none;border-radius:50%;background:#C87F0A;color:#fff;font-size:12px;font-weight:800;display:flex;align-items:center;justify-content:center">3</div>
+<div style="flex:1;min-width:0"><div style="font-size:13.5px;font-weight:650">Paper &amp; Ink Stationery</div><div style="font-size:11px;color:#6B7A74;margin-top:1px">🚶6 · stay 20 min · ¥</div></div>
+<div style="text-align:right;flex:none"><div style="font-size:12px;font-weight:700;font-variant-numeric:tabular-nums;color:#9B4B4B">~14:40</div><div style="font-size:11px;color:#98A5A0">6 min away</div></div>
+</div>
+<div style="padding:11px 0;border-top:1px solid #EDEFEC">
+<div style="display:flex;gap:10px;align-items:center"><div style="width:26px;height:26px;flex:none;border-radius:50%;background:#14201C;color:#fff;font-size:12px;font-weight:800;display:flex;align-items:center;justify-content:center;margin-left:22px">↩</div><div style="flex:1;min-width:0"><div style="font-size:13.5px;font-weight:650">Back to Nishi Market</div><div style="font-size:11px;font-weight:650;margin-top:2px;color:#9B4B4B">8 min to get there · be there by 15:45</div></div></div>
+</div>
+<div style="margin:12px 0 4px"><div style="height:44px;border-radius:12px;background:#14201C;color:#fff;font-size:13px;font-weight:700;display:flex;align-items:center;justify-content:center">Send walk to Maps</div><div style="font-size:11px;color:#98A5A0;line-height:1.45;margin-top:6px">Hands Maps your position as the start, then these three in this order, ending at Nishi Market — so it works even if you are already halfway round.</div></div>
+</div>
+</div>
+</div>
+</div>
+
+<div id="1f" style="flex:none;display:flex;flex-direction:column;gap:10px">
+<div style="display:flex;align-items:baseline;gap:8px;max-width:402px;font:400 11.5px/1.3 'Public Sans',system-ui;color:#6B7A74"><a href="#1f" style="font:800 10.5px ui-monospace,Menlo,monospace;padding:3px 7px;background:rgba(20,32,28,.08);color:#14201C;border-radius:5px;text-decoration:none">1f</a><span><b style="color:#14201C">Empty sub route.</b> A sub route exists as soon as you name a window, before it has any places — so this is the state right after <a href="#1d">1d</a>. The whole window is spendable, and the one button goes to Nearby.</span></div>
+<div style="width:402px;height:874px;background:#E9EAE6;border-radius:12px;overflow:hidden;box-shadow:0 1px 0 rgba(20,32,28,.08),0 10px 40px rgba(20,32,28,.09);display:flex;flex-direction:column;position:relative">
+<div style="position:absolute;inset:0;z-index:0;background:#E9EAE6"><svg viewBox="0 0 402 300" style="position:absolute;top:0;left:0;width:100%;height:auto"><rect width="402" height="300" fill="#E9EAE6"></rect><g stroke="#DDE0DA" stroke-width="9" fill="none"><path d="M-20 90H420M-20 220H420M120 -20V320M262 -20V320"></path></g></svg>
+<div style="position:absolute;left:132px;top:102px;width:36px;height:36px;border-radius:50%;background:#14201C;color:#fff;font-size:15px;font-weight:700;display:flex;align-items:center;justify-content:center;box-shadow:0 2px 8px rgba(20,32,28,.35)">↩</div>
+</div>
+<div style="position:relative;z-index:2;flex:none;padding:12px 16px 0;display:flex;flex-direction:column;gap:8px">
+<div style="display:flex;gap:10px">
+<div style="width:40px;height:40px;flex:none;border-radius:13px;background:#fff;box-shadow:0 2px 10px rgba(20,32,28,.12);display:flex;align-items:center;justify-content:center"><svg width="11" height="18" viewBox="0 0 11 18"><path d="M9 1L2 9l7 8" stroke="#14201C" stroke-width="2.2" fill="none" stroke-linecap="round" stroke-linejoin="round"></path></svg></div>
+<div style="flex:1;min-width:0;padding:9px 12px;background:rgba(255,255,255,.92);border-radius:13px;box-shadow:0 2px 10px rgba(20,32,28,.12)">
+<div style="font-size:13.5px;font-weight:700">Night market ✎</div>
+<div style="font-size:11.5px;color:#6B7A74;margin-top:1px">Day 3 evening · 19:00 – 21:30 · Hotel Meridian → Nishi Sta., Exit B</div>
+</div>
+</div>
+
+</div>
+<div style="position:relative;z-index:3;margin-top:auto;background:#fff;border-radius:22px 22px 0 0;box-shadow:0 -8px 30px rgba(20,32,28,.16);height:56%;display:flex;flex-direction:column;padding-bottom:10px">
+<div style="padding:8px 0 10px;flex:none"><i style="display:block;width:40px;height:4px;border-radius:2px;background:#D8DDD9;margin:0 auto"></i></div>
+<div style="display:flex;gap:6px;padding:0 16px 10px;flex:none;overflow:hidden"><div style="flex:none;height:30px;padding:0 11px;border-radius:10px;background:#F2F3F1;color:#6B7A74;font-size:11.5px;font-weight:650;display:flex;align-items:center;white-space:nowrap">Market afternoon</div><div style="flex:none;height:30px;padding:0 11px;border-radius:10px;background:#14201C;color:#fff;font-size:11.5px;font-weight:700;display:flex;align-items:center;white-space:nowrap">Night market</div></div>
+<div style="display:flex;gap:8px;padding:0 16px 10px;flex:none">
+<div style="flex:1;padding:9px 11px;background:#F2F3F1;border-radius:12px"><div style="font-size:10px;font-weight:800;letter-spacing:.04em;color:#98A5A0">YOU HAVE</div><div style="font-size:15px;font-weight:700;margin-top:2px">2h 30m</div></div>
+<div style="flex:1;padding:9px 11px;background:#F2F3F1;border-radius:12px"><div style="font-size:10px;font-weight:800;letter-spacing:.04em;color:#98A5A0">TRAVELLING</div><div style="font-size:15px;font-weight:700;margin-top:2px">—</div></div>
+<div style="flex:1;padding:9px 11px;background:#E6EFEB;border-radius:12px"><div style="font-size:10px;font-weight:800;letter-spacing:.04em;color:#1F6F5C">TO SPEND</div><div style="font-size:15px;font-weight:700;margin-top:2px;color:#1F6F5C">2h 30m</div></div>
+</div>
+<div style="padding:0 16px 10px;flex:none"><div style="font-size:11.5px;line-height:1.45;color:#6B7A74">Nothing picked yet, so the whole window is yours. Nearby is drawn from the two ends you set, so only places along the way are offered.</div></div>
+<div style="flex:1;min-height:0;padding:0 16px;display:flex;flex-direction:column;justify-content:center;align-items:center;gap:14px">
+<div style="font-size:12.5px;line-height:1.5;color:#98A5A0;text-align:center">Nothing in this sub route yet.<br>Pick places between Hotel Meridian and Nishi Sta., Exit B and they land here in walking order.</div>
+<div style="height:44px;padding:0 18px;border-radius:12px;background:#1F6F5C;color:#fff;font-size:13px;font-weight:700;display:flex;align-items:center;justify-content:center">Pick places along this sub route</div>
+</div>
+</div>
+<div style="padding:0 16px"><div style="font-size:11px;color:#98A5A0;line-height:1.45">An empty sub route still holds its window, so it keeps the evening blocked out on the Plan.</div></div>
+</div>
+</div>
+</div>
+
+<div id="1g" style="flex:none;display:flex;flex-direction:column;gap:10px">
+<div style="display:flex;align-items:baseline;gap:8px;max-width:402px;font:400 11.5px/1.3 'Public Sans',system-ui;color:#6B7A74"><a href="#1g" style="font:800 10.5px ui-monospace,Menlo,monospace;padding:3px 7px;background:rgba(20,32,28,.08);color:#14201C;border-radius:5px;text-decoration:none">1g</a><span><b style="color:#14201C">Notes on a place.</b> Three notes at Nishi Market on one day, newest first, each with the time it was written. The tab count is notes, not days. Swipe a note left to delete it.</span></div>
+<div style="width:402px;height:874px;background:#F2F3F1;border-radius:12px;overflow:hidden;box-shadow:0 1px 0 rgba(20,32,28,.08),0 10px 40px rgba(20,32,28,.09);display:flex;flex-direction:column">
+<div style="flex:1;min-height:0;overflow:hidden">
+<div style="position:relative;height:150px;background:repeating-linear-gradient(135deg,#E2E6E2 0 10px,#DADFDA 10px 20px);display:flex;align-items:flex-end;padding:16px">
+<div style="position:absolute;top:12px;left:14px;width:40px;height:40px;border-radius:13px;background:rgba(255,255,255,.9);display:flex;align-items:center;justify-content:center"><svg width="11" height="18" viewBox="0 0 11 18"><path d="M9 1L2 9l7 8" stroke="#14201C" stroke-width="2.2" fill="none" stroke-linecap="round" stroke-linejoin="round"></path></svg></div>
+<div style="display:flex;gap:6px;flex-wrap:wrap"><span style="padding:4px 8px;border-radius:7px;background:#1F6F5C;color:#fff;font-size:10px;font-weight:800;letter-spacing:.04em">MAIN ROUTE · STOP 5</span><span style="padding:4px 8px;border-radius:7px;background:rgba(255,255,255,.92);color:#14201C;font-size:10px;font-weight:800;letter-spacing:.04em">13:30 – 15:45</span></div>
+</div>
+<div style="padding:16px 16px 0;background:#fff">
+<div style="font-size:24px;font-weight:700;letter-spacing:-.02em;line-height:1.15">Nishi Market</div>
+<div style="font-size:12.5px;color:#6B7A74;margin-top:4px">Covered market, 4 blocks · Old Quarter</div>
+<div style="display:flex;gap:16px;margin-top:18px;border-bottom:1px solid #E7EAE7;overflow:hidden">
+<div style="padding-bottom:10px;border-bottom:2px solid transparent;color:#6B7A74;font-size:13px;font-weight:650;white-space:nowrap;flex:none">Info</div>
+<div style="padding-bottom:10px;border-bottom:2px solid transparent;color:#6B7A74;font-size:13px;font-weight:650;white-space:nowrap;flex:none">Nearby <span style="display:inline-block;min-width:16px;padding:0 4px;border-radius:8px;background:#F2F3F1;color:#6B7A74;font-size:10px;font-weight:800;text-align:center">14</span></div>
+<div style="padding-bottom:10px;border-bottom:2px solid transparent;color:#6B7A74;font-size:13px;font-weight:650;white-space:nowrap;flex:none">Must-see <span style="display:inline-block;min-width:16px;padding:0 4px;border-radius:8px;background:#F2F3F1;color:#6B7A74;font-size:10px;font-weight:800;text-align:center">4</span></div>
+<div style="padding-bottom:10px;border-bottom:2px solid transparent;color:#6B7A74;font-size:13px;font-weight:650;white-space:nowrap;flex:none">Shop <span style="display:inline-block;min-width:16px;padding:0 4px;border-radius:8px;background:#F2F3F1;color:#6B7A74;font-size:10px;font-weight:800;text-align:center">4</span></div>
+<div style="padding-bottom:10px;border-bottom:2px solid #14201C;color:#14201C;font-size:13px;font-weight:650;white-space:nowrap;flex:none">Notes <span style="display:inline-block;min-width:16px;padding:0 4px;border-radius:8px;background:#E6EFEB;color:#1F6F5C;font-size:10px;font-weight:800;text-align:center">3</span></div>
+</div>
+</div>
+<div style="padding:14px 16px 24px">
+<div style="display:flex;gap:8px;align-items:center;margin-bottom:10px"><div style="flex:1;font-size:11.5px;font-weight:700;color:#6B7A74">3 notes here · Day 3</div><div style="height:32px;padding:0 12px;border-radius:10px;background:#14201C;color:#fff;font-size:12px;font-weight:700;display:flex;align-items:center;white-space:nowrap">+ Note</div></div>
+
+<div style="position:relative;overflow:hidden;border-radius:16px;background:#F8E9E9;margin-bottom:10px">
+<div style="position:absolute;inset:0 0 0 auto;width:68px;display:flex;align-items:center;justify-content:center"><div style="width:44px;height:44px;border-radius:12px;background:#9B4B4B;display:flex;align-items:center;justify-content:center"><svg width="15" height="16" viewBox="0 0 15 16" fill="none"><path d="M2 4h11M6 2h3M5.5 4v9M9.5 4v9M3 4l.7 10h7.6L12 4" stroke="#fff" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round"></path></svg></div></div>
+<div style="position:relative;z-index:1;transform:translateX(-68px);background:#fff;border-radius:16px;padding:14px">
+<div style="display:flex;gap:8px;align-items:baseline"><div style="flex:1;font-size:12px;font-weight:800;color:#14201C;font-variant-numeric:tabular-nums">15:30</div><div style="font-size:11px;font-weight:650;color:#98A5A0">Day 3 · Mar 14</div></div>
+<div style="font-size:12.5px;line-height:1.55;color:#3D4C46;margin-top:8px">Scallops from the north end are half the price of the dried-goods stalls by the gate. Bought 200 g, paid ¥1,650.</div>
+</div>
+</div>
+
+<div style="background:#fff;border-radius:16px;padding:14px;margin-bottom:10px">
+<div style="display:flex;gap:8px;align-items:baseline"><div style="flex:1;font-size:12px;font-weight:800;color:#14201C;font-variant-numeric:tabular-nums">14:40</div><div style="font-size:11px;font-weight:650;color:#98A5A0">Day 3 · Mar 14</div></div>
+<div style="font-size:12.5px;line-height:1.55;color:#3D4C46;margin-top:8px">Middle aisle is under scaffolding, so the knife stalls are all shifted to the south wall. Stall 44 is now next to the standing bars.</div>
+<div style="display:flex;gap:6px;flex-wrap:wrap;margin-top:10px"><span style="padding:4px 8px;border-radius:8px;background:#F2F3F1;color:#3D4C46;font-size:10.5px;font-weight:650;white-space:nowrap">2 photos</span></div>
+</div>
+
+<div style="background:#fff;border-radius:16px;padding:14px">
+<div style="display:flex;gap:8px;align-items:baseline"><div style="flex:1;font-size:12px;font-weight:800;color:#14201C;font-variant-numeric:tabular-nums">13:52</div><div style="font-size:11px;font-weight:650;color:#98A5A0">Day 3 · Mar 14</div></div>
+<div style="font-size:12.5px;line-height:1.55;color:#3D4C46;margin-top:8px">Sharpening demo runs at 14:00 sharp and the crowd is three deep by 13:55. Come from the south end.</div>
+</div>
+
+<div style="font-size:11px;color:#98A5A0;line-height:1.45;margin-top:12px">Notes belong to this place, so they stay here across days. The Log shows the same three under Nishi Market on Day 3.</div>
+</div>
+</div>
+<div style="position:relative;z-index:10;flex:none;display:flex;gap:2px;padding:7px 8px 10px;background:rgba(255,255,255,.94);border-top:1px solid #E4E8E5">
+<div style="flex:1;min-height:46px;display:flex;flex-direction:column;align-items:center;justify-content:center;gap:3px;border-radius:12px;background:#F2F3F1;color:#14201C"><svg width="20" height="20" viewBox="0 0 20 20" fill="none"><path d="M10 18s6-5.2 6-10A6 6 0 0 0 4 8c0 4.8 6 10 6 10z" stroke="#14201C" stroke-width="1.7" stroke-linejoin="round"></path><circle cx="10" cy="8" r="2.2" stroke="#14201C" stroke-width="1.7"></circle></svg><span style="font-size:9.5px;font-weight:700">Map</span></div>
+<div style="flex:1;min-height:46px;display:flex;flex-direction:column;align-items:center;justify-content:center;gap:3px;border-radius:12px;color:#9AA6A1"><svg width="20" height="20" viewBox="0 0 20 20" fill="none"><g stroke="#9AA6A1" stroke-width="1.7" stroke-linecap="round"><path d="M3 5.5h14M3 10h14M3 14.5h9"></path></g></svg><span style="font-size:9.5px;font-weight:700">Plan</span></div>
+<div style="flex:1;min-height:46px;display:flex;flex-direction:column;align-items:center;justify-content:center;gap:3px;border-radius:12px;color:#9AA6A1"><svg width="20" height="20" viewBox="0 0 20 20" fill="none"><path d="M4.5 6.5h11l-1 10h-9l-1-10z" stroke="#9AA6A1" stroke-width="1.7" stroke-linejoin="round"></path><path d="M7.5 6.5V5a2.5 2.5 0 0 1 5 0v1.5" stroke="#9AA6A1" stroke-width="1.7" stroke-linecap="round"></path></svg><span style="font-size:9.5px;font-weight:700">Shop</span></div>
+<div style="flex:1;min-height:46px;display:flex;flex-direction:column;align-items:center;justify-content:center;gap:3px;border-radius:12px;color:#9AA6A1"><svg width="20" height="20" viewBox="0 0 20 20" fill="none"><rect x="3.5" y="6" width="13" height="10.5" rx="2" stroke="#9AA6A1" stroke-width="1.7"></rect><path d="M7.5 6V4.5a1.5 1.5 0 0 1 1.5-1.5h2a1.5 1.5 0 0 1 1.5 1.5V6" stroke="#9AA6A1" stroke-width="1.7" stroke-linecap="round"></path></svg><span style="font-size:9.5px;font-weight:700">Prep</span></div>
+<div style="flex:1;min-height:46px;display:flex;flex-direction:column;align-items:center;justify-content:center;gap:3px;border-radius:12px;color:#9AA6A1"><svg width="20" height="20" viewBox="0 0 20 20" fill="none"><path d="M13 3.5l3.5 3.5L7 16.5H3.5V13z" stroke="#9AA6A1" stroke-width="1.7" stroke-linejoin="round"></path></svg><span style="font-size:9.5px;font-weight:700">Log</span></div>
+</div>
+</div>
+</div>
+
+<div id="1h" style="flex:none;display:flex;flex-direction:column;gap:10px">
+<div style="display:flex;align-items:baseline;gap:8px;max-width:402px;font:400 11.5px/1.3 'Public Sans',system-ui;color:#6B7A74"><a href="#1h" style="font:800 10.5px ui-monospace,Menlo,monospace;padding:3px 7px;background:rgba(20,32,28,.08);color:#14201C;border-radius:5px;text-decoration:none">1h</a><span><b style="color:#14201C">Log — the day card, notes stacked under their place.</b> Day 3 holds three notes across two places, one of them a sub route stop. The place is the heading; the note is the row.</span></div>
+<div style="width:402px;height:874px;background:#F2F3F1;border-radius:12px;overflow:hidden;box-shadow:0 1px 0 rgba(20,32,28,.08),0 10px 40px rgba(20,32,28,.09);display:flex;flex-direction:column">
+<div style="flex:none;padding:14px 16px 12px;background:#fff;border-bottom:1px solid #E7EAE7"><div style="font-size:24px;font-weight:700;letter-spacing:-.02em">Log</div><div style="font-size:12px;color:#6B7A74;margin-top:2px">Meridian City · 4 notes across 2 days</div></div>
+<div style="flex:1;min-height:0;overflow:hidden;padding:12px 16px 24px">
+
+<div style="background:#fff;border-radius:16px;overflow:hidden;margin-bottom:12px">
+<div style="padding:14px 14px 10px;display:flex;gap:8px;align-items:baseline"><div style="flex:1;min-width:0"><div style="font-size:15px;font-weight:700">Day 3 · Today</div><div style="font-size:11.5px;font-weight:650;color:#C87F0A;margin-top:2px">in progress · 3 notes · 2 sub routes</div></div><div style="height:30px;padding:0 10px;border-radius:9px;background:#F2F3F1;color:#3D4C46;font-size:11.5px;font-weight:700;display:flex;align-items:center;white-space:nowrap">+ Note</div></div>
+
+<div style="padding:10px 14px;border-top:1px solid #F0F2F0;display:flex;gap:8px;align-items:baseline;background:#FAFBFA">
+<div style="width:44px;flex:none;font-size:11px;font-weight:700;color:#6B7A74;font-variant-numeric:tabular-nums">13:30</div>
+<div style="flex:1;min-width:0;font-size:12.5px;font-weight:700">Nishi Market</div>
+<span style="flex:none;padding:3px 7px;border-radius:6px;font-size:9.5px;font-weight:800;letter-spacing:.04em;background:#E6EFEB;color:#1F6F5C">MAIN</span>
+</div>
+<div style="padding:11px 14px 11px 58px;border-top:1px solid #F0F2F0"><div style="display:flex;gap:8px;align-items:baseline"><div style="font-size:11px;font-weight:800;color:#98A5A0;font-variant-numeric:tabular-nums">13:52</div></div><div style="font-size:12.5px;line-height:1.55;color:#3D4C46;margin-top:4px">Sharpening demo runs at 14:00 sharp and the crowd is three deep by 13:55.</div></div>
+<div style="padding:11px 14px 11px 58px;border-top:1px solid #F0F2F0"><div style="display:flex;gap:8px;align-items:baseline"><div style="font-size:11px;font-weight:800;color:#98A5A0;font-variant-numeric:tabular-nums">14:40</div><div style="font-size:10.5px;font-weight:650;color:#98A5A0">2 photos</div></div><div style="font-size:12.5px;line-height:1.55;color:#3D4C46;margin-top:4px">Middle aisle is under scaffolding, so the knife stalls are shifted to the south wall.</div><div style="display:flex;gap:6px;margin-top:8px"><div style="width:52px;height:52px;border-radius:10px;background:repeating-linear-gradient(135deg,#E2E6E2 0 7px,#DADFDA 7px 14px)"></div><div style="width:52px;height:52px;border-radius:10px;background:repeating-linear-gradient(135deg,#E2E6E2 0 7px,#DADFDA 7px 14px)"></div></div></div>
+<div style="padding:11px 14px 11px 58px;border-top:1px solid #F0F2F0"><div style="font-size:11px;font-weight:800;color:#98A5A0;font-variant-numeric:tabular-nums">15:30</div><div style="font-size:12.5px;line-height:1.55;color:#3D4C46;margin-top:4px">Scallops from the north end are half the price. Bought 200 g, paid ¥1,650.</div></div>
+
+<div style="padding:10px 14px;border-top:1px solid #F0F2F0;display:flex;gap:8px;align-items:baseline;background:#FFFDF7">
+<div style="width:44px;flex:none;font-size:11px;font-weight:700;color:#8A5A08;font-variant-numeric:tabular-nums">13:49</div>
+<div style="flex:1;min-width:0;font-size:12.5px;font-weight:700">Kōri Dessert Bar</div>
+<span style="flex:none;padding:3px 7px;border-radius:6px;font-size:9.5px;font-weight:800;letter-spacing:.04em;background:#FBF1DE;color:#8A5A08">MARKET AFTERNOON</span>
+</div>
+<div style="padding:11px 14px 11px 58px;border-top:1px solid #F0F2F0"><div style="font-size:11px;font-weight:800;color:#98A5A0;font-variant-numeric:tabular-nums">14:05</div><div style="font-size:12.5px;line-height:1.55;color:#3D4C46;margin-top:4px">Ask for the seasonal fruit, not the menu board — today was white peach.</div></div>
+
+<div style="padding:11px 14px;border-top:1px solid #F0F2F0;display:flex;gap:6px;flex-wrap:wrap"><span style="padding:4px 8px;border-radius:8px;background:#E6EFEB;color:#1F6F5C;font-size:10.5px;font-weight:650;white-space:nowrap">2 of 4 must-see ✓</span><span style="padding:4px 8px;border-radius:8px;background:#F2F3F1;color:#3D4C46;font-size:10.5px;font-weight:650;white-space:nowrap">¥4,050 spent</span><span style="padding:4px 8px;border-radius:8px;background:#F2F3F1;color:#3D4C46;font-size:10.5px;font-weight:650;white-space:nowrap">1 of 2 sub routes walked</span></div>
+</div>
+
+</div>
+<div style="position:relative;z-index:10;flex:none;display:flex;gap:2px;padding:7px 8px 10px;background:rgba(255,255,255,.94);border-top:1px solid #E4E8E5">
+<div style="flex:1;min-height:46px;display:flex;flex-direction:column;align-items:center;justify-content:center;gap:3px;border-radius:12px;color:#9AA6A1"><svg width="20" height="20" viewBox="0 0 20 20" fill="none"><path d="M10 18s6-5.2 6-10A6 6 0 0 0 4 8c0 4.8 6 10 6 10z" stroke="#9AA6A1" stroke-width="1.7" stroke-linejoin="round"></path><circle cx="10" cy="8" r="2.2" stroke="#9AA6A1" stroke-width="1.7"></circle></svg><span style="font-size:9.5px;font-weight:700">Map</span></div>
+<div style="flex:1;min-height:46px;display:flex;flex-direction:column;align-items:center;justify-content:center;gap:3px;border-radius:12px;color:#9AA6A1"><svg width="20" height="20" viewBox="0 0 20 20" fill="none"><g stroke="#9AA6A1" stroke-width="1.7" stroke-linecap="round"><path d="M3 5.5h14M3 10h14M3 14.5h9"></path></g></svg><span style="font-size:9.5px;font-weight:700">Plan</span></div>
+<div style="flex:1;min-height:46px;display:flex;flex-direction:column;align-items:center;justify-content:center;gap:3px;border-radius:12px;color:#9AA6A1"><svg width="20" height="20" viewBox="0 0 20 20" fill="none"><path d="M4.5 6.5h11l-1 10h-9l-1-10z" stroke="#9AA6A1" stroke-width="1.7" stroke-linejoin="round"></path><path d="M7.5 6.5V5a2.5 2.5 0 0 1 5 0v1.5" stroke="#9AA6A1" stroke-width="1.7" stroke-linecap="round"></path></svg><span style="font-size:9.5px;font-weight:700">Shop</span></div>
+<div style="flex:1;min-height:46px;display:flex;flex-direction:column;align-items:center;justify-content:center;gap:3px;border-radius:12px;color:#9AA6A1"><svg width="20" height="20" viewBox="0 0 20 20" fill="none"><rect x="3.5" y="6" width="13" height="10.5" rx="2" stroke="#9AA6A1" stroke-width="1.7"></rect><path d="M7.5 6V4.5a1.5 1.5 0 0 1 1.5-1.5h2a1.5 1.5 0 0 1 1.5 1.5V6" stroke="#9AA6A1" stroke-width="1.7" stroke-linecap="round"></path></svg><span style="font-size:9.5px;font-weight:700">Prep</span></div>
+<div style="flex:1;min-height:46px;display:flex;flex-direction:column;align-items:center;justify-content:center;gap:3px;border-radius:12px;background:#F2F3F1;color:#14201C"><svg width="20" height="20" viewBox="0 0 20 20" fill="none"><path d="M13 3.5l3.5 3.5L7 16.5H3.5V13z" stroke="#14201C" stroke-width="1.7" stroke-linejoin="round"></path></svg><span style="font-size:9.5px;font-weight:700">Log</span></div>
+</div>
+</div>
+</div>
+
+<div id="1i" style="flex:none;display:flex;flex-direction:column;gap:10px">
+<div style="display:flex;align-items:baseline;gap:8px;max-width:402px;font:400 11.5px/1.3 'Public Sans',system-ui;color:#6B7A74"><a href="#1i" style="font:800 10.5px ui-monospace,Menlo,monospace;padding:3px 7px;background:rgba(20,32,28,.08);color:#14201C;border-radius:5px;text-decoration:none">1i</a><span><b style="color:#14201C">Writing one.</b> Opened from a place, so the place and the day are already answered and shown as a line you can change rather than a list you must re-pick. Time defaults to now.</span></div>
+<div style="width:402px;height:874px;background:#F2F3F1;border-radius:12px;overflow:hidden;box-shadow:0 1px 0 rgba(20,32,28,.08),0 10px 40px rgba(20,32,28,.09);display:flex;flex-direction:column">
+<div style="flex:none;padding:14px 16px 12px;background:#fff;border-bottom:1px solid #E7EAE7;display:flex;align-items:center;gap:10px">
+<div style="width:32px;height:32px;flex:none;display:flex;align-items:center;justify-content:center"><svg width="16" height="16" viewBox="0 0 16 16"><path d="M2 2l12 12M14 2L2 14" stroke="#14201C" stroke-width="2" stroke-linecap="round"></path></svg></div>
+<div style="flex:1;min-width:0;font-size:18px;font-weight:700">New note</div>
+<div style="flex:none;height:38px;padding:0 13px;border-radius:12px;background:#1F6F5C;color:#fff;font-size:12.5px;font-weight:700;display:flex;align-items:center;white-space:nowrap">Save</div>
+</div>
+<div style="flex:1;min-height:0;overflow:hidden;padding:14px 16px 24px">
+<div style="background:#fff;border-radius:14px;padding:12px 13px;display:flex;align-items:center;gap:11px">
+<div style="width:34px;height:34px;flex:none;border-radius:11px;background:#E6EFEB;color:#1F6F5C;display:flex;align-items:center;justify-content:center"><svg width="11" height="13" viewBox="0 0 11 13"><path d="M5.5 1C3 1 1 3 1 5.5C1 9 5.5 12 5.5 12S10 9 10 5.5C10 3 8 1 5.5 1z" fill="none" stroke="#1F6F5C" stroke-width="1.4"></path></svg></div>
+<div style="flex:1;min-width:0"><div style="font-size:13.5px;font-weight:650">Nishi Market</div><div style="font-size:11.5px;color:#6B7A74;margin-top:1px">Day 3 · Mar 14 · main route stop 5</div></div>
+<div style="flex:none;height:30px;padding:0 10px;border-radius:9px;background:#F2F3F1;color:#3D4C46;font-size:11.5px;font-weight:650;display:flex;align-items:center;white-space:nowrap">Change</div>
+</div>
+
+<div style="display:flex;gap:8px;margin-top:12px">
+<div style="width:120px;flex:none"><div style="font-size:11px;font-weight:800;color:#98A5A0;letter-spacing:.06em">TIME</div><div style="width:100%;font-size:13px;border:1px solid #DDE2DE;border-radius:10px;padding:9px 10px;background:#fff;margin-top:4px;font-variant-numeric:tabular-nums;font-weight:650">15:30</div></div>
+<div style="flex:1"><div style="font-size:11px;font-weight:800;color:#98A5A0;letter-spacing:.06em">ALREADY HERE TODAY</div><div style="display:flex;gap:6px;margin-top:8px;flex-wrap:wrap"><span style="padding:5px 9px;border-radius:9px;background:#F2F3F1;color:#3D4C46;font-size:11.5px;font-weight:650;font-variant-numeric:tabular-nums;white-space:nowrap">13:52</span><span style="padding:5px 9px;border-radius:9px;background:#F2F3F1;color:#3D4C46;font-size:11.5px;font-weight:650;font-variant-numeric:tabular-nums;white-space:nowrap">14:40</span></div></div>
+</div>
+
+<div style="font-size:10.5px;font-weight:800;letter-spacing:.06em;color:#98A5A0;margin-top:18px">NOTE</div>
+<div style="width:100%;height:150px;border:1px solid #DDE2DE;border-radius:10px;background:#fff;padding:9px 10px;margin-top:8px;font-size:13px;line-height:1.5;color:#98A5A0">What happened, what to remember next time…</div>
+<div style="height:52px;border-radius:13px;border:1.5px dashed #C9D0CB;display:flex;align-items:center;justify-content:center;font-size:12.5px;font-weight:650;color:#6B7A74;margin-top:10px">+ Photos</div>
+<div style="font-size:11px;color:#98A5A0;line-height:1.45;margin-top:12px">Saved against the place, not the day — so this one sits with the other two at Nishi Market, and the day just counts them.</div>
+</div>
+<div style="position:relative;z-index:10;flex:none;display:flex;gap:2px;padding:7px 8px 10px;background:rgba(255,255,255,.94);border-top:1px solid #E4E8E5">
+<div style="flex:1;min-height:46px;display:flex;flex-direction:column;align-items:center;justify-content:center;gap:3px;border-radius:12px;color:#9AA6A1"><svg width="20" height="20" viewBox="0 0 20 20" fill="none"><path d="M10 18s6-5.2 6-10A6 6 0 0 0 4 8c0 4.8 6 10 6 10z" stroke="#9AA6A1" stroke-width="1.7" stroke-linejoin="round"></path><circle cx="10" cy="8" r="2.2" stroke="#9AA6A1" stroke-width="1.7"></circle></svg><span style="font-size:9.5px;font-weight:700">Map</span></div>
+<div style="flex:1;min-height:46px;display:flex;flex-direction:column;align-items:center;justify-content:center;gap:3px;border-radius:12px;color:#9AA6A1"><svg width="20" height="20" viewBox="0 0 20 20" fill="none"><g stroke="#9AA6A1" stroke-width="1.7" stroke-linecap="round"><path d="M3 5.5h14M3 10h14M3 14.5h9"></path></g></svg><span style="font-size:9.5px;font-weight:700">Plan</span></div>
+<div style="flex:1;min-height:46px;display:flex;flex-direction:column;align-items:center;justify-content:center;gap:3px;border-radius:12px;color:#9AA6A1"><svg width="20" height="20" viewBox="0 0 20 20" fill="none"><path d="M4.5 6.5h11l-1 10h-9l-1-10z" stroke="#9AA6A1" stroke-width="1.7" stroke-linejoin="round"></path><path d="M7.5 6.5V5a2.5 2.5 0 0 1 5 0v1.5" stroke="#9AA6A1" stroke-width="1.7" stroke-linecap="round"></path></svg><span style="font-size:9.5px;font-weight:700">Shop</span></div>
+<div style="flex:1;min-height:46px;display:flex;flex-direction:column;align-items:center;justify-content:center;gap:3px;border-radius:12px;color:#9AA6A1"><svg width="20" height="20" viewBox="0 0 20 20" fill="none"><rect x="3.5" y="6" width="13" height="10.5" rx="2" stroke="#9AA6A1" stroke-width="1.7"></rect><path d="M7.5 6V4.5a1.5 1.5 0 0 1 1.5-1.5h2a1.5 1.5 0 0 1 1.5 1.5V6" stroke="#9AA6A1" stroke-width="1.7" stroke-linecap="round"></path></svg><span style="font-size:9.5px;font-weight:700">Prep</span></div>
+<div style="flex:1;min-height:46px;display:flex;flex-direction:column;align-items:center;justify-content:center;gap:3px;border-radius:12px;background:#F2F3F1;color:#14201C"><svg width="20" height="20" viewBox="0 0 20 20" fill="none"><path d="M13 3.5l3.5 3.5L7 16.5H3.5V13z" stroke="#14201C" stroke-width="1.7" stroke-linejoin="round"></path></svg><span style="font-size:9.5px;font-weight:700">Log</span></div>
+</div>
+</div>
+</div>
+
+<div id="1j" style="flex:none;display:flex;flex-direction:column;gap:10px">
+<div style="display:flex;align-items:baseline;gap:8px;max-width:402px;font:400 11.5px/1.3 'Public Sans',system-ui;color:#6B7A74"><a href="#1j" style="font:800 10.5px ui-monospace,Menlo,monospace;padding:3px 7px;background:rgba(20,32,28,.08);color:#14201C;border-radius:5px;text-decoration:none">1j</a><span><b style="color:#14201C">Empty day — what your trip looks like today.</b> No stops, so no gaps and nothing to warn about. One doorway: add a stop. A sub route needs stops to sit between, so the hotel goes in first and last and the gaps between the day’s stops become the free time.</span></div>
+<div style="width:402px;height:874px;background:#F2F3F1;border-radius:12px;overflow:hidden;box-shadow:0 1px 0 rgba(20,32,28,.08),0 10px 40px rgba(20,32,28,.09);display:flex;flex-direction:column">
+<div style="flex:none;padding:14px 16px 12px;background:#fff;border-bottom:1px solid #E7EAE7">
+<div style="display:flex;align-items:flex-end;justify-content:space-between;gap:10px">
+<div style="flex:1;min-width:0"><div style="font-size:24px;font-weight:700;letter-spacing:-.02em">Day 4</div><div style="font-size:12px;color:#6B7A74;margin-top:2px">Mar 15 · Sun · nothing planned</div></div>
+<div style="width:40px;height:40px;flex:none;border-radius:13px;background:#fff;box-shadow:0 2px 10px rgba(20,32,28,.12);display:flex;align-items:center;justify-content:center"><svg width="17" height="17" viewBox="0 0 14 14"><path d="M9.5 1.5l3 3L5 12H2v-3z" fill="none" stroke="#14201C" stroke-width="1.5" stroke-linejoin="round"></path></svg></div>
+</div>
+<div style="display:flex;gap:6px;margin-top:10px">
+<div style="flex:none;height:30px;padding:0 10px;border-radius:10px;background:#fff;color:#6B7A74;font-size:12px;font-weight:600;display:flex;align-items:center;gap:5px;white-space:nowrap">D1<span style="font-size:11px;opacity:.75">☀</span></div>
+<div style="flex:none;height:30px;padding:0 10px;border-radius:10px;background:#fff;color:#6B7A74;font-size:12px;font-weight:600;display:flex;align-items:center;gap:5px;white-space:nowrap">D2<span style="font-size:11px;opacity:.75">⛅</span></div>
+<div style="flex:none;height:30px;padding:0 10px;border-radius:10px;background:#fff;color:#6B7A74;font-size:12px;font-weight:600;display:flex;align-items:center;gap:5px;white-space:nowrap">D3<span style="font-size:11px;opacity:.75">☁</span></div>
+<div style="flex:none;height:30px;padding:0 10px;border-radius:10px;background:#14201C;color:#fff;font-size:12px;font-weight:600;display:flex;align-items:center;gap:5px;white-space:nowrap">D4<span style="font-size:11px;opacity:.75">🌧</span></div>
+<div style="flex:none;height:30px;padding:0 10px;border-radius:10px;background:#fff;color:#6B7A74;font-size:12px;font-weight:600;display:flex;align-items:center;gap:5px;white-space:nowrap">D5<span style="font-size:11px;opacity:.75">⛅</span></div>
+</div>
+</div>
+<div style="flex:1;min-height:0;overflow:hidden;padding:14px 16px 24px;display:flex;flex-direction:column">
+<div style="display:flex;align-items:center;gap:11px;padding:11px 12px;background:#E6EFEB;border-radius:12px">
+<div style="font-size:17px;line-height:1;flex:none">🌧</div>
+<div style="flex:1;min-width:0;font-size:12px;color:#1F6F5C;font-weight:600;line-height:1.4">Day 4: rain, 14 °C, 80% rain. 11 °C by evening.<div style="font-size:10.5px;color:#5D8C7C;font-weight:500;margin-top:2px">Forecast from Open-Meteo, 2 h ago · tap for the hourly forecast</div></div>
+<svg width="7" height="12" viewBox="0 0 7 12"><path d="M1 1l5 5-5 5" stroke="#98A5A0" stroke-width="1.8" fill="none" stroke-linecap="round"></path></svg>
+</div>
+
+<div style="flex:1;display:flex;flex-direction:column;justify-content:center;align-items:center;gap:6px;padding:0 8px">
+<div style="width:20px;flex:none;display:flex;justify-content:center"><div style="width:0;height:38px;border-left:2px dashed #DCE2DE"></div></div>
+<div style="font-size:15px;font-weight:700;text-align:center">The day is empty</div>
+<div style="font-size:12.5px;line-height:1.55;color:#6B7A74;text-align:center;max-width:280px;text-wrap:pretty">Add the stops your agent gave you and the gaps between them become free time by themselves. Start with the hotel as the first and last stop — a sub route needs somewhere to leave from and come back to.</div>
+<div style="width:100%;display:flex;flex-direction:column;gap:8px;margin-top:14px">
+<div style="height:46px;border-radius:12px;background:#14201C;color:#fff;font-size:13px;font-weight:700;display:flex;align-items:center;justify-content:center">+ Add the first stop</div>
+</div>
+<div style="font-size:11px;color:#98A5A0;line-height:1.45;text-align:center;margin-top:12px;max-width:280px" data-dc-tpl="900">Paste a map link and the stop arrives with its position, and its hours where OpenStreetMap has them. Sub routes appear once the day has stops for them to sit between.</div>
+<div style="width:20px;flex:none;display:flex;justify-content:center;margin-top:6px"><div style="width:0;height:38px;border-left:2px dashed #DCE2DE"></div></div>
+</div>
+</div>
+<div style="position:relative;z-index:10;flex:none;display:flex;gap:2px;padding:7px 8px 10px;background:rgba(255,255,255,.94);border-top:1px solid #E4E8E5">
+<div style="flex:1;min-height:46px;display:flex;flex-direction:column;align-items:center;justify-content:center;gap:3px;border-radius:12px;color:#9AA6A1"><svg width="20" height="20" viewBox="0 0 20 20" fill="none"><path d="M10 18s6-5.2 6-10A6 6 0 0 0 4 8c0 4.8 6 10 6 10z" stroke="#9AA6A1" stroke-width="1.7" stroke-linejoin="round"></path><circle cx="10" cy="8" r="2.2" stroke="#9AA6A1" stroke-width="1.7"></circle></svg><span style="font-size:9.5px;font-weight:700">Map</span></div>
+<div style="flex:1;min-height:46px;display:flex;flex-direction:column;align-items:center;justify-content:center;gap:3px;border-radius:12px;background:#F2F3F1;color:#14201C"><svg width="20" height="20" viewBox="0 0 20 20" fill="none"><g stroke="#14201C" stroke-width="1.7" stroke-linecap="round"><path d="M3 5.5h14M3 10h14M3 14.5h9"></path></g></svg><span style="font-size:9.5px;font-weight:700">Plan</span></div>
+<div style="flex:1;min-height:46px;display:flex;flex-direction:column;align-items:center;justify-content:center;gap:3px;border-radius:12px;color:#9AA6A1"><svg width="20" height="20" viewBox="0 0 20 20" fill="none"><path d="M4.5 6.5h11l-1 10h-9l-1-10z" stroke="#9AA6A1" stroke-width="1.7" stroke-linejoin="round"></path><path d="M7.5 6.5V5a2.5 2.5 0 0 1 5 0v1.5" stroke="#9AA6A1" stroke-width="1.7" stroke-linecap="round"></path></svg><span style="font-size:9.5px;font-weight:700">Shop</span></div>
+<div style="flex:1;min-height:46px;display:flex;flex-direction:column;align-items:center;justify-content:center;gap:3px;border-radius:12px;color:#9AA6A1"><svg width="20" height="20" viewBox="0 0 20 20" fill="none"><rect x="3.5" y="6" width="13" height="10.5" rx="2" stroke="#9AA6A1" stroke-width="1.7"></rect><path d="M7.5 6V4.5a1.5 1.5 0 0 1 1.5-1.5h2a1.5 1.5 0 0 1 1.5 1.5V6" stroke="#9AA6A1" stroke-width="1.7" stroke-linecap="round"></path></svg><span style="font-size:9.5px;font-weight:700">Prep</span></div>
+<div style="flex:1;min-height:46px;display:flex;flex-direction:column;align-items:center;justify-content:center;gap:3px;border-radius:12px;color:#9AA6A1"><svg width="20" height="20" viewBox="0 0 20 20" fill="none"><path d="M13 3.5l3.5 3.5L7 16.5H3.5V13z" stroke="#9AA6A1" stroke-width="1.7" stroke-linejoin="round"></path></svg><span style="font-size:9.5px;font-weight:700">Log</span></div>
+</div>
+</div>
+</div>
+
+<div id="1k" style="flex:none;display:flex;flex-direction:column;gap:10px">
+<div style="display:flex;align-items:baseline;gap:8px;max-width:402px;font:400 11.5px/1.3 'Public Sans',system-ui;color:#6B7A74"><a href="#1k" style="font:800 10.5px ui-monospace,Menlo,monospace;padding:3px 7px;background:rgba(20,32,28,.08);color:#14201C;border-radius:5px;text-decoration:none">1k</a><span><b style="color:#14201C">Empty Log.</b> One sentence and one button — no day cards to read before there is anything to read. Day and place are settled inside the note.</span></div>
+<div style="width:402px;height:874px;background:#F2F3F1;border-radius:12px;overflow:hidden;box-shadow:0 1px 0 rgba(20,32,28,.08),0 10px 40px rgba(20,32,28,.09);display:flex;flex-direction:column">
+<div style="flex:none;padding:14px 16px 12px;background:#fff;border-bottom:1px solid #E7EAE7"><div style="font-size:24px;font-weight:700;letter-spacing:-.02em">Log</div><div style="font-size:12px;color:#6B7A74;margin-top:2px">Meridian City · no notes yet</div></div>
+<div style="flex:1;min-height:0;overflow:hidden;padding:12px 16px 24px;display:flex;flex-direction:column;align-items:center;justify-content:center;gap:18px">
+<div style="font-size:13.5px;line-height:1.6;color:#8A948F;text-align:center;max-width:250px">Fills itself in as you write. Nothing to see until there is a first note.</div>
+<div style="height:46px;padding:0 20px;border-radius:12px;background:#14201C;color:#fff;font-size:13px;font-weight:700;display:flex;align-items:center">+ Note</div>
+<div style="font-size:11px;color:#98A5A0;line-height:1.45;text-align:center;max-width:250px">The day and the place are chosen inside the note. This line goes with the first one you write.</div>
+</div>
+<div style="position:relative;z-index:10;flex:none;display:flex;gap:2px;padding:7px 8px 10px;background:rgba(255,255,255,.94);border-top:1px solid #E4E8E5">
+<div style="flex:1;min-height:46px;display:flex;flex-direction:column;align-items:center;justify-content:center;gap:3px;border-radius:12px;color:#9AA6A1"><svg width="20" height="20" viewBox="0 0 20 20" fill="none"><path d="M10 18s6-5.2 6-10A6 6 0 0 0 4 8c0 4.8 6 10 6 10z" stroke="#9AA6A1" stroke-width="1.7" stroke-linejoin="round"></path><circle cx="10" cy="8" r="2.2" stroke="#9AA6A1" stroke-width="1.7"></circle></svg><span style="font-size:9.5px;font-weight:700">Map</span></div>
+<div style="flex:1;min-height:46px;display:flex;flex-direction:column;align-items:center;justify-content:center;gap:3px;border-radius:12px;color:#9AA6A1"><svg width="20" height="20" viewBox="0 0 20 20" fill="none"><g stroke="#9AA6A1" stroke-width="1.7" stroke-linecap="round"><path d="M3 5.5h14M3 10h14M3 14.5h9"></path></g></svg><span style="font-size:9.5px;font-weight:700">Plan</span></div>
+<div style="flex:1;min-height:46px;display:flex;flex-direction:column;align-items:center;justify-content:center;gap:3px;border-radius:12px;color:#9AA6A1"><svg width="20" height="20" viewBox="0 0 20 20" fill="none"><path d="M4.5 6.5h11l-1 10h-9l-1-10z" stroke="#9AA6A1" stroke-width="1.7" stroke-linejoin="round"></path><path d="M7.5 6.5V5a2.5 2.5 0 0 1 5 0v1.5" stroke="#9AA6A1" stroke-width="1.7" stroke-linecap="round"></path></svg><span style="font-size:9.5px;font-weight:700">Shop</span></div>
+<div style="flex:1;min-height:46px;display:flex;flex-direction:column;align-items:center;justify-content:center;gap:3px;border-radius:12px;color:#9AA6A1"><svg width="20" height="20" viewBox="0 0 20 20" fill="none"><rect x="3.5" y="6" width="13" height="10.5" rx="2" stroke="#9AA6A1" stroke-width="1.7"></rect><path d="M7.5 6V4.5a1.5 1.5 0 0 1 1.5-1.5h2a1.5 1.5 0 0 1 1.5 1.5V6" stroke="#9AA6A1" stroke-width="1.7" stroke-linecap="round"></path></svg><span style="font-size:9.5px;font-weight:700">Prep</span></div>
+<div style="flex:1;min-height:46px;display:flex;flex-direction:column;align-items:center;justify-content:center;gap:3px;border-radius:12px;background:#F2F3F1;color:#14201C"><svg width="20" height="20" viewBox="0 0 20 20" fill="none"><path d="M13 3.5l3.5 3.5L7 16.5H3.5V13z" stroke="#14201C" stroke-width="1.7" stroke-linejoin="round"></path></svg><span style="font-size:9.5px;font-weight:700">Log</span></div>
+</div>
+</div>
+</div>
+
+</div>
+<div id="1l" style="flex:none;display:flex;flex-direction:column;gap:10px">
+<div style="display:flex;align-items:baseline;gap:8px;max-width:402px;font:400 11.5px/1.3 'Public Sans',system-ui;color:#6B7A74"><a href="#1l" style="font:800 10.5px ui-monospace,Menlo,monospace;padding:3px 7px;background:rgba(20,32,28,.08);color:#14201C;border-radius:5px;text-decoration:none">1l</a><span><b style="color:#14201C">The same sub route, edit mode.</b> Per Jelene: handles, the start and end fields, and Add places only live here. <a href="#1e">1e</a> is what you get the rest of the time — tap a place to read it, or send the walk to Maps.</span></div>
+<div style="width:402px;height:874px;background:#E9EAE6;border-radius:12px;overflow:hidden;box-shadow:0 1px 0 rgba(20,32,28,.08),0 10px 40px rgba(20,32,28,.09);display:flex;flex-direction:column;position:relative">
+<div style="position:absolute;inset:0;z-index:0;background:#E9EAE6"><svg viewBox="0 0 402 300" style="position:absolute;top:0;left:0;width:100%;height:auto"><rect width="402" height="300" fill="#E9EAE6"></rect><g stroke="#DDE0DA" stroke-width="9" fill="none"><path d="M-20 90H420M-20 220H420M120 -20V320M262 -20V320"></path></g><path d="M150 120L206 96L250 150L188 186L150 120" fill="none" stroke="#C87F0A" stroke-width="3.5" stroke-dasharray="3 7" stroke-linecap="round"></path></svg>
+<div style="position:absolute;left:132px;top:102px;width:36px;height:36px;border-radius:50%;background:#14201C;color:#fff;font-size:15px;font-weight:700;display:flex;align-items:center;justify-content:center;box-shadow:0 2px 8px rgba(20,32,28,.35)">↩</div>
+<div style="position:absolute;left:192px;top:82px;width:28px;height:28px;border-radius:50%;background:#C87F0A;color:#fff;font-size:12px;font-weight:800;display:flex;align-items:center;justify-content:center">1</div>
+<div style="position:absolute;left:236px;top:136px;width:28px;height:28px;border-radius:50%;background:#C87F0A;color:#fff;font-size:12px;font-weight:800;display:flex;align-items:center;justify-content:center">2</div>
+<div style="position:absolute;left:174px;top:172px;width:28px;height:28px;border-radius:50%;background:#C87F0A;color:#fff;font-size:12px;font-weight:800;display:flex;align-items:center;justify-content:center">3</div>
+</div>
+<div style="position:relative;z-index:2;flex:none;padding:12px 16px 0;display:flex;gap:10px">
+<div style="width:40px;height:40px;flex:none;border-radius:13px;background:#fff;box-shadow:0 2px 10px rgba(20,32,28,.12);display:flex;align-items:center;justify-content:center"><svg width="11" height="18" viewBox="0 0 11 18"><path d="M9 1L2 9l7 8" stroke="#14201C" stroke-width="2.2" fill="none" stroke-linecap="round" stroke-linejoin="round"></path></svg></div>
+<div style="flex:1;min-width:0;padding:9px 12px;background:rgba(255,255,255,.92);border-radius:13px;box-shadow:0 2px 10px rgba(20,32,28,.12)">
+<div style="width:100%;font-size:13.5px;font-weight:700;border:1px solid #DDE2DE;border-radius:9px;padding:5px 8px;background:#fff">Market afternoon</div>
+<div style="font-size:11.5px;color:#6B7A74;margin-top:3px">Day 3 afternoon · editing</div>
+</div>
+<div style="width:40px;height:40px;flex:none;border-radius:13px;background:#1F6F5C;box-shadow:0 2px 10px rgba(20,32,28,.12);display:flex;align-items:center;justify-content:center"><svg width="15" height="12" viewBox="0 0 11 9"><path d="M1 4.5L4 7.5 10 1" stroke="#fff" stroke-width="2" fill="none" stroke-linecap="round" stroke-linejoin="round"></path></svg></div>
+</div>
+<div style="position:relative;z-index:3;margin-top:auto;background:#fff;border-radius:22px 22px 0 0;box-shadow:0 -8px 30px rgba(20,32,28,.16);height:72%;display:flex;flex-direction:column;padding-bottom:10px">
+<div style="padding:8px 0 10px;flex:none"><i style="display:block;width:40px;height:4px;border-radius:2px;background:#D8DDD9;margin:0 auto"></i></div>
+<div style="display:flex;gap:6px;padding:0 16px 10px;flex:none;overflow:hidden"><div style="flex:none;height:30px;padding:0 11px;border-radius:10px;background:#14201C;color:#fff;font-size:11.5px;font-weight:700;display:flex;align-items:center;white-space:nowrap">Market afternoon</div><div style="flex:none;height:30px;padding:0 11px;border-radius:10px;background:#F2F3F1;color:#6B7A74;font-size:11.5px;font-weight:650;display:flex;align-items:center;white-space:nowrap">Night market</div><div style="flex:none;height:30px;padding:0 11px;border-radius:10px;background:#FBF1DE;color:#8A5A08;font-size:11.5px;font-weight:700;display:flex;align-items:center;white-space:nowrap">+ New</div></div>
+<div style="padding:0 16px 10px;flex:none"><div style="padding:9px 11px;background:#FBF1DE;border:1px solid #EBD9B4;border-radius:11px;font-size:11.5px;font-weight:650;color:#8A5A08;line-height:1.4">Hold a handle to reorder. Times recalculate as you go.</div></div>
+<div style="flex:1;min-height:0;overflow:hidden;padding:0 16px">
+<div style="display:flex;gap:10px;align-items:center;padding:9px 0">
+<div style="width:22px;flex:none"></div>
+<div style="width:26px;height:26px;flex:none;border-radius:50%;background:#14201C;color:#fff;font-size:12px;font-weight:800;display:flex;align-items:center;justify-content:center">↳</div>
+<div style="flex:1;min-width:0"><div style="font-size:13.5px;font-weight:650">Leave from Nishi Market</div><div style="font-size:11px;color:#6B7A74;margin-top:1px">13:45 · tap to start somewhere else</div></div>
+<svg width="7" height="12" viewBox="0 0 7 12" style="flex:none"><path d="M1 1l5 5-5 5" stroke="#98A5A0" stroke-width="1.8" fill="none" stroke-linecap="round"></path></svg>
+</div>
+<div style="display:flex;gap:10px;align-items:center;padding:9px 0;border-top:1px solid #EDEFEC">
+<div style="width:22px;flex:none;display:flex;align-items:center;justify-content:center"><svg width="16" height="12" viewBox="0 0 16 12"><g stroke="#98A5A0" stroke-width="2" stroke-linecap="round"><path d="M2 2h12M2 6h12M2 10h12"></path></g></svg></div>
+<div style="width:26px;height:26px;flex:none;border-radius:50%;background:#C87F0A;color:#fff;font-size:12px;font-weight:800;display:flex;align-items:center;justify-content:center">1</div>
+<div style="flex:1;min-width:0"><div style="font-size:13.5px;font-weight:650">Kōri Dessert Bar</div><div style="font-size:11px;color:#6B7A74;margin-top:1px">🚶4 · stay 25 min</div></div>
+<div style="width:26px;height:26px;flex:none;border-radius:9px;background:#F8E9E9;color:#9B4B4B;font-size:13px;font-weight:800;display:flex;align-items:center;justify-content:center">✕</div>
+</div>
+<div style="display:flex;gap:10px;align-items:center;padding:9px 0;border-top:1px solid #EDEFEC">
+<div style="width:22px;flex:none;display:flex;align-items:center;justify-content:center"><svg width="16" height="12" viewBox="0 0 16 12"><g stroke="#98A5A0" stroke-width="2" stroke-linecap="round"><path d="M2 2h12M2 6h12M2 10h12"></path></g></svg></div>
+<div style="width:26px;height:26px;flex:none;border-radius:50%;background:#C87F0A;color:#fff;font-size:12px;font-weight:800;display:flex;align-items:center;justify-content:center">2</div>
+<div style="flex:1;min-width:0"><div style="font-size:13.5px;font-weight:650">Canal Overlook</div><div style="font-size:11px;color:#6B7A74;margin-top:1px">🚶5 · stay 15 min</div></div>
+<div style="width:26px;height:26px;flex:none;border-radius:9px;background:#F8E9E9;color:#9B4B4B;font-size:13px;font-weight:800;display:flex;align-items:center;justify-content:center">✕</div>
+</div>
+<div style="display:flex;gap:10px;align-items:center;padding:9px 0;border-top:1px solid #EDEFEC;box-shadow:inset 0 2px 0 0 #C87F0A">
+<div style="width:22px;flex:none;display:flex;align-items:center;justify-content:center"><svg width="16" height="12" viewBox="0 0 16 12"><g stroke="#98A5A0" stroke-width="2" stroke-linecap="round"><path d="M2 2h12M2 6h12M2 10h12"></path></g></svg></div>
+<div style="width:26px;height:26px;flex:none;border-radius:50%;background:#C87F0A;color:#fff;font-size:12px;font-weight:800;display:flex;align-items:center;justify-content:center">3</div>
+<div style="flex:1;min-width:0"><div style="font-size:13.5px;font-weight:650">Paper &amp; Ink Stationery</div><div style="font-size:11px;color:#6B7A74;margin-top:1px">🚶6 · stay 20 min</div></div>
+<div style="width:26px;height:26px;flex:none;border-radius:9px;background:#F8E9E9;color:#9B4B4B;font-size:13px;font-weight:800;display:flex;align-items:center;justify-content:center">✕</div>
+</div>
+<div style="height:36px;border-radius:12px;border:1.5px dashed #E3CFA3;display:flex;align-items:center;justify-content:center;font-size:12px;font-weight:650;color:#8A5A08;margin-top:10px">+ Add places</div>
+<div style="margin-top:10px;padding:11px 12px;background:#F7F8F6;border-radius:12px;display:flex;flex-direction:column;gap:8px">
+<div style="font-size:10.5px;font-weight:800;letter-spacing:.06em;color:#98A5A0">START AND END</div>
+<div style="display:flex;gap:8px">
+<div style="flex:1"><div style="font-size:11px;color:#98A5A0">Start at</div><div style="width:100%;font-size:12.5px;border:1px solid #DDE2DE;border-radius:9px;padding:7px 9px;background:#fff;margin-top:3px;display:flex;align-items:center;justify-content:space-between">Nishi Market<svg width="10" height="6" viewBox="0 0 10 6"><path d="M1 1l4 4 4-4" stroke="#6B7A74" stroke-width="1.6" fill="none" stroke-linecap="round"></path></svg></div></div>
+<div style="flex:1"><div style="font-size:11px;color:#98A5A0">End at</div><div style="width:100%;font-size:12.5px;border:1px solid #DDE2DE;border-radius:9px;padding:7px 9px;background:#fff;margin-top:3px;display:flex;align-items:center;justify-content:space-between">Nishi Market<svg width="10" height="6" viewBox="0 0 10 6"><path d="M1 1l4 4 4-4" stroke="#6B7A74" stroke-width="1.6" fill="none" stroke-linecap="round"></path></svg></div></div>
+</div>
+<div style="display:flex;gap:8px">
+<div style="flex:1"><div style="font-size:11px;color:#98A5A0">Leave</div><div style="width:100%;font-size:12.5px;border:1px solid #DDE2DE;border-radius:9px;padding:7px 9px;background:#fff;margin-top:3px;font-variant-numeric:tabular-nums">13:45</div></div>
+<div style="flex:1"><div style="font-size:11px;color:#98A5A0">Be back by</div><div style="width:100%;font-size:12.5px;border:1px solid #DDE2DE;border-radius:9px;padding:7px 9px;background:#fff;margin-top:3px;font-variant-numeric:tabular-nums">15:45</div></div>
+</div>
+<div style="display:flex;gap:8px;align-items:baseline"><div style="font-size:11px;color:#98A5A0;flex:none">Return takes</div><div style="flex:1;min-width:0;font-size:12px;font-weight:700;color:#3D4C46">8 min<span style="font-weight:500;color:#98A5A0"> · walk from Paper &amp; Ink, the last place, back to Nishi Market</span></div></div>
+<div style="font-size:11px;color:#98A5A0;line-height:1.45">Ends come from this day's stops. The return is measured from whatever the last place turns out to be, so it changes when you reorder or drop one.</div>
+</div>
+</div>
+</div>
+</div>
+</div>
+
+<p style="margin:26px 0 0;font:12px/1.6 'Public Sans',system-ui;color:#6B7A74">Try next: "go with two times, build it into the prototype" · "the out-of-order strip should also flag overlaps" · "show the day as a real timeline instead of a list" · "sub routes need a colour each, not all amber" · "notes should be pinnable to a must-see shot too"</p>
+</section>
+</x-dc>
+</body>
+</html>

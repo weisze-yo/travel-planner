@@ -241,29 +241,33 @@ async function unifyPlaces() {
 }
 
 /**
- * Item 06's migration. A stop used to carry two strings — "13:30 – 15:45" and
- * "2h15" — either of which could be edited out of agreement with the other.
- * Now it carries a start and a number of minutes, and the window is worked
- * out from those, so the strings are read once and then cleared. Idempotent:
- * a stop that already has `durationMinutes` is left alone.
+ * A stop used to carry two strings that could disagree — "13:30 – 15:45"
+ * and "2h15" — then, for one round, a start and a length. It now carries a
+ * start and an end, both of them the traveller's to set, and the length is
+ * derived. This reads whichever of the three shapes it finds, once, and
+ * leaves a stop that already has `endTime` alone.
  */
 function unifyWindows() {
   for (const d of state.days) {
     let touched = false;
     for (const item of d.items || []) {
-      if (item.durationMinutes !== undefined) continue;
+      if (item.endTime !== undefined) continue;
 
-      let minutes = null;
+      let end = null;
       const ends = String(item.windowLabel || '').split(/[–—-]/);
       if (ends.length === 2) {
-        const from = parseClock(ends[0]);
         const to = parseClock(ends[1]);
-        if (from != null && to != null) minutes = ((to - from) + 1440) % 1440;
+        if (to != null) end = to;
       }
-      if (!minutes) minutes = parseDuration(item.durationLabel);
+      if (end == null) {
+        const start = parseClock(item.time);
+        const minutes = item.durationMinutes ?? parseDuration(item.durationLabel);
+        if (start != null && minutes) end = (start + minutes) % 1440;
+      }
 
-      item.durationMinutes = minutes || null;
+      item.endTime = end == null ? '' : clock(end);
       item.windowLabel = '';
+      delete item.durationMinutes;
       touched = true;
     }
     if (touched) writeDay(d);
@@ -271,39 +275,27 @@ function unifyWindows() {
 }
 
 /**
- * Item 05's migration. A day used to hold one loop, found by its day number,
- * and one row on the itinerary that stood for it implicitly. Loops are now
- * their own records with their own ids, and each row names the loop it shows —
- * so the day's existing loop and row are introduced to each other, and any
- * row left standing for a loop that no longer exists is taken off the day.
+ * Free time became a lane rather than a row on the itinerary, so the rows
+ * that used to stand for a sub route are taken off the day — the sub route
+ * record is the only copy now, and the Plan draws it in the gap its window
+ * falls into. Idempotent: a day with no such rows is left alone.
  */
 function unifyLoops() {
   for (const route of state.subRoutes) {
-    let changed = false;
     if (!route.name) {
       route.name = 'Free time';
-      changed = true;
+      put('subRoutes', route);
     }
-    const d = day(route.dayNumber);
-    const rows = (d?.items || []).filter((i) => i.isSubRouteSummary);
-    const row = rows.find((i) => i.subRouteID === route.id) || rows.find((i) => !i.subRouteID);
-    if (row && row.subRouteID !== route.id) {
-      row.subRouteID = route.id;
-      writeDay(d);
+    // A loop that never had its own times takes them off the stop it hung on.
+    if (route.departMinutes == null || route.returnByMinutes == null) {
+      route.departMinutes = loopStart(route);
+      route.returnByMinutes = loopDeadline(route);
+      put('subRoutes', route);
     }
-    if (route.summaryItemID !== (row?.id ?? null)) {
-      route.summaryItemID = row?.id ?? null;
-      changed = true;
-    }
-    if (changed) put('subRoutes', route);
-    // Either aligns the row it just adopted, or makes the one it lacks.
-    syncLoopRow(route);
   }
 
   for (const d of state.days) {
-    const kept = (d.items || []).filter((i) => (
-      !i.isSubRouteSummary || state.subRoutes.some((r) => r.id === i.subRouteID)
-    ));
+    const kept = (d.items || []).filter((i) => !i.isSubRouteSummary);
     if (kept.length !== (d.items || []).length) {
       d.items = kept;
       writeDay(d);
@@ -320,7 +312,7 @@ function unifyLoops() {
 function unifyNotes() {
   const byName = new Map(state.places.map((pl) => [pl.name.toLowerCase(), pl]));
   for (const entry of state.log) {
-    if (entry.createdAt && entry.placeID !== undefined) continue;
+    if (entry.createdAt && entry.placeID !== undefined && entry.time) continue;
 
     const label = entry.placeLabel || entry.destinationLabel || '';
     const next = {
@@ -331,8 +323,11 @@ function unifyNotes() {
       text: String(entry.text || ''),
       photoPaths: entry.photoPaths || [],
       photoCount: (entry.photoPaths || []).length,
-      createdAt: new Date(2000, 0, 1 + entry.dayNumber).toISOString(),
-      updatedAt: new Date(2000, 0, 1 + entry.dayNumber).toISOString(),
+      // A note written before this round has no time of its own. Midday is
+      // an honest placeholder and it can be corrected in the composer.
+      time: entry.time || '12:00',
+      createdAt: entry.createdAt || new Date(2000, 0, 1 + entry.dayNumber).toISOString(),
+      updatedAt: entry.updatedAt || new Date(2000, 0, 1 + entry.dayNumber).toISOString(),
     };
     put('log', next);
   }
@@ -443,7 +438,9 @@ function sortAll() {
   state.days.sort((a, b) => a.dayNumber - b.dayNumber);
   state.mustSee.sort((a, b) => a.order - b.order);
   state.log.sort((a, b) => (
-    (a.dayNumber - b.dayNumber) || String(a.createdAt || '').localeCompare(String(b.createdAt || ''))
+    (a.dayNumber - b.dayNumber)
+    || ((parseClock(a.time) ?? 0) - (parseClock(b.time) ?? 0))
+    || String(a.createdAt || '').localeCompare(String(b.createdAt || ''))
   ));
   state.shopping.sort((a, b) => (a.groupOrder - b.groupOrder) || (a.order - b.order));
   state.prep.sort((a, b) => (a.categoryOrder - b.categoryOrder) || (a.order - b.order));
@@ -527,58 +524,101 @@ export function mainStopNumbers(d) {
 }
 
 /**
- * A stop's window, item 06.
+ * A stop's window: two times, both of them yours.
  *
- * One time plus a duration, not two times: on a phone you know when you
- * arrive and roughly how long you have, and you almost never know both clock
- * times. So the start and the length are stored and the end is worked out —
- * which is what stops the end drifting out of step with the start, the way
- * the old fixed `windowLabel` string did.
+ * The alternative was a start plus a length, with the end worked out. The
+ * reason it lost is the sub route: its deadline is a clock time — 15:45 at
+ * the coach door — and if the stop only stores a length, that clock time
+ * becomes arithmetic you redo in your head on every edit. The number you
+ * most need to protect would be the one number never written down. So the
+ * stop stores both times and the length is the derived, greyed-out one.
+ *
+ * An end is optional. "Open end" is a real answer for the last stop of a
+ * day, not a missing value to nag about.
  */
 export function itemWindow(item) {
   const start = parseClock(item?.time);
-  const minutes = item?.durationMinutes || null;
-  const end = start != null && minutes ? start + minutes : null;
+  const end = parseClock(item?.endTime);
+  // A window that crosses midnight is a night market, not an error.
+  const minutes = start != null && end != null
+    ? (end >= start ? end - start : (end + 1440) - start)
+    : null;
   return {
     start,
     end,
     minutes,
+    openEnd: end == null,
+    reversed: start != null && end != null && end === start,
     startLabel: start != null ? clock(start) : String(item?.time || ''),
     endLabel: end != null ? clock(end) : '',
     label: end != null ? `${clock(start)} – ${clock(end)}` : (start != null ? clock(start) : ''),
-    durationLabel: minutes ? duration(minutes) : '',
+    durationLabel: minutes ? duration(minutes) : 'open end',
   };
 }
 
 /**
- * What is wrong with the day's clock — as warnings on the row, never as a
- * refused drag. Dragging is allowed to put 09:15 after 18:00; the row then
- * says so, and you decide whether it was a mistake or the coach really is
- * that early.
+ * What is wrong with the day's clock — as a strip on the row, never as a
+ * refused drag. Three kinds, and each carries the one tap that fixes it,
+ * because a warning you cannot act on is just a telling-off.
  *
- * Loops are left out of both checks: a loop happens *inside* another stop's
- * window on purpose, so flagging it as an overlap would cry wolf every time.
+ * Loops are left out: a loop happens *inside* another stop's window on
+ * purpose, so flagging it as an overlap would cry wolf every time.
  */
 export function dayIssues(n = state.selectedDay) {
   const items = activeItems(day(n)).filter((i) => !i.isSubRouteSummary);
   const issues = new Map();
-  const add = (id, text, tone) => {
+  const add = (id, issue) => {
     if (!issues.has(id)) issues.set(id, []);
-    issues.get(id).push({ text, tone });
+    issues.get(id).push(issue);
   };
+
+  // Ends before it starts. Its own kind, because it is a typo rather than a
+  // disagreement with anything else.
+  for (const item of items) {
+    const w = itemWindow(item);
+    if (w.start != null && w.end != null && w.minutes === 0) {
+      add(item.id, {
+        kind: 'reversed',
+        label: 'ENDS WHEN IT STARTS',
+        text: `Starts and ends at ${w.startLabel}.`,
+        fixes: [{ act: 'clear-end', label: 'Leave the end open' }],
+      });
+    }
+  }
 
   // Out of order: the list says one thing and the clock another.
   let previous = null;
   for (const item of items) {
     const at = parseClock(item.time);
     if (at == null) {
-      add(item.id, 'No time set yet', 'amber');
+      add(item.id, { kind: 'notime', label: 'NO TIME', text: 'This stop has no start time.', fixes: [] });
       continue;
     }
     if (previous && at < previous.at) {
-      add(item.id, `Listed after ${previous.name}, which starts at ${clock(previous.at)}`, 'danger');
+      add(item.id, {
+        kind: 'order',
+        label: 'OUT OF ORDER',
+        text: `Starts ${clock(at)} but sits after ${previous.name} at ${clock(previous.at)}.`,
+        // The earliest time this stop could start and still be in order: the
+        // one above it ends then. A stop above with an open end has only its
+        // start to go on, which is still better than offering nothing.
+        fixes: (() => {
+          const after = previous.end ?? previous.at;
+          const mine = itemWindow(item).minutes;
+          return [
+            { act: 'move-back', label: 'Move it back' },
+            {
+              act: 'retime',
+              label: `Set ${clock(after)}${mine ? ` – ${clock(after + mine)}` : ''}`,
+              start: clock(after),
+              end: mine ? clock(after + mine) : '',
+            },
+          ];
+        })(),
+      });
     }
-    previous = { at, name: item.name };
+    const w = itemWindow(item);
+    previous = { at, name: item.name, end: w.end };
   }
 
   // Overlaps, judged on the clock rather than on list order, so a day that is
@@ -592,7 +632,17 @@ export function dayIssues(n = state.selectedDay) {
   let runningName = '';
   for (const row of timed) {
     if (runningEnd != null && row.window.start < runningEnd) {
-      add(row.item.id, `Overlaps ${runningName}, which runs to ${clock(runningEnd)}`, 'danger');
+      add(row.item.id, {
+        kind: 'overlap',
+        label: 'OVERLAPS',
+        text: `${runningName} runs to ${clock(runningEnd)}, so these two are on top of each other.`,
+        fixes: [{
+          act: 'retime',
+          label: `Start ${clock(runningEnd)}`,
+          start: clock(runningEnd),
+          end: row.window.minutes ? clock(runningEnd + row.window.minutes) : '',
+        }],
+      });
     }
     if (row.window.end != null && (runningEnd == null || row.window.end > runningEnd)) {
       runningEnd = row.window.end;
@@ -602,40 +652,97 @@ export function dayIssues(n = state.selectedDay) {
   return issues;
 }
 
-/** Free stretches between the day's stops — where a new loop wants to go. */
-export function dayGaps(n = state.selectedDay) {
-  const rows = activeItems(day(n))
-    .filter((i) => !i.isSubRouteSummary)
-    .map((item) => ({ item, window: itemWindow(item) }))
-    .filter((row) => row.window.start != null)
+/** "2 things to look at", for under the date. */
+export function dayIssueCount(n = state.selectedDay) {
+  return dayIssues(n).size;
+}
+
+/**
+ * The day as stops and lanes.
+ *
+ * Free time is a slot, not a stop: one lane follows each stop, and a sub
+ * route lives inside a lane. That is what lets a day hold two or three of
+ * them without their windows ever competing for one anchor.
+ *
+ * A lane normally runs from where its stop ends to where the next one
+ * starts. The exception is a long stop — the market you are released into
+ * for two hours *is* the free time — so a stop of 90 minutes or more opens
+ * its lane at its own start rather than at its end.
+ */
+export function dayTimeline(n = state.selectedDay) {
+  const stops = activeItems(day(n)).map((item) => ({ item, window: itemWindow(item) }));
+  const loops = subRoutesFor(n);
+  const claimed = new Set();
+  const rows = [];
+
+  const timed = stops
+    .filter((s) => s.window.start != null)
     .sort((a, b) => a.window.start - b.window.start);
 
-  const gaps = [];
-  for (const row of rows) {
-    // A stop with a window of its own is free time inside itself: the market
-    // you are released into for two hours is the commonest loop there is.
-    if (row.window.minutes >= 45) {
-      gaps.push({
-        from: row.window.start,
-        to: row.window.end,
-        during: row.item,
-        label: `inside ${row.item.name}`,
-      });
-    }
+  stops.forEach((row) => {
+    rows.push({ kind: 'stop', item: row.item, window: row.window });
+    if (row.window.start == null) return;
+
+    // Where this stop's lane begins, and where the next stop takes over.
+    const longStop = (row.window.minutes || 0) >= SELF_LANE_MINUTES;
+    const from = longStop ? row.window.start : (row.window.end ?? row.window.start);
+    const next = timed.find((other) => other.window.start > row.window.start);
+    const to = next ? next.window.start : DAY_ENDS_AT;
+    if (to <= from) return;
+
+    const mine = loops.filter((r) => {
+      if (claimed.has(r.id)) return false;
+      const at = loopStart(r);
+      return at != null && at >= from && at < to;
+    });
+    for (const r of mine) claimed.add(r.id);
+
+    // An empty lane is worth drawing only if there is really time in it; a
+    // lane holding a sub route is always drawn.
+    if (!mine.length && to - from < MIN_LANE_MINUTES) return;
+
+    rows.push({
+      kind: 'lane',
+      from,
+      to,
+      label: next ? `between ${row.item.name} and ${next.item.name}` : `after ${row.item.name}`,
+      inside: row.item,
+      loops: mine,
+    });
+  });
+
+  // A loop whose window matches no lane still has to be reachable.
+  const orphans = loops.filter((r) => !claimed.has(r.id));
+  if (orphans.length) {
+    rows.push({
+      kind: 'lane',
+      from: loopStart(orphans[0]) ?? DAY_STARTS_AT,
+      to: loopDeadline(orphans[0]) ?? DAY_ENDS_AT,
+      label: 'free time',
+      inside: null,
+      loops: orphans,
+      orphan: true,
+    });
   }
-  for (let i = 0; i < rows.length - 1; i++) {
-    const end = rows[i].window.end ?? rows[i].window.start;
-    const next = rows[i + 1].window.start;
-    if (next - end >= 45) {
-      gaps.push({
-        from: end,
-        to: next,
-        during: rows[i],
-        label: `between ${rows[i].item.name} and ${rows[i + 1].item.name}`,
-      });
-    }
-  }
-  return gaps.sort((a, b) => (b.to - b.from) - (a.to - a.from));
+
+  // A day with no stops at all still offers somewhere to put free time,
+  // but only once it has stops for a sub route to sit between.
+  return rows;
+}
+
+/** A gap shorter than this is not worth offering a sub route in. */
+const MIN_LANE_MINUTES = 45;
+/** A stop at least this long is itself free time. */
+const SELF_LANE_MINUTES = 90;
+const DAY_STARTS_AT = 6 * 60;
+const DAY_ENDS_AT = 23 * 60;
+
+/** Kept for the screens that only want the gaps, biggest first. */
+export function dayGaps(n = state.selectedDay) {
+  return dayTimeline(n)
+    .filter((row) => row.kind === 'lane' && !row.loops.length)
+    .map((row) => ({ from: row.from, to: row.to, during: row.inside, label: row.label }))
+    .sort((a, b) => (b.to - b.from) - (a.to - a.from));
 }
 
 // ------------------------------------------------------------------- loops
@@ -718,9 +825,8 @@ export function loopStart(handle) {
   if (route.departMinutes != null) return route.departMinutes;
 
   const d = state.days.find((row) => row.dayNumber === route.dayNumber);
-  const summary = (d?.items || []).find((i) => i.id === route.summaryItemID);
   const anchor = (d?.items || []).find((i) => i.placeID === route.anchorPlaceID || i.id === route.anchorPlanItemID);
-  return parseClock(summary?.time) ?? parseClock(anchor?.time) ?? route.startMinutes;
+  return parseClock(anchor?.time) ?? route.startMinutes;
 }
 
 export const subRouteStart = (n = state.selectedDay) => loopStart(activeLoop(n));
@@ -805,7 +911,6 @@ export function renameSubRoute(name, handle) {
   if (!route) return;
   route.name = String(name || '').trim() || 'Free time';
   put('subRoutes', route);
-  syncLoopRow(route);
 }
 
 export function setSubRouteEndpoints({ startPlaceID, endPlaceID }, handle) {
@@ -823,7 +928,6 @@ export function setSubRouteTimes({ depart, returnBy }, handle) {
   if (depart !== undefined) route.departMinutes = parseClock(depart);
   if (returnBy !== undefined) route.returnByMinutes = parseClock(returnBy);
   put('subRoutes', route);
-  syncLoopRow(route);
 }
 
 export function subSummaryLine(handle) {
@@ -832,32 +936,46 @@ export function subSummaryLine(handle) {
 }
 
 /** How a loop names the part of the day it belongs to, now there can be two. */
+export function loopPart(handle) {
+  const start = loopStart(resolveLoop(handle));
+  if (start == null) return '';
+  return start < 12 * 60 ? 'morning' : start < 17 * 60 ? 'afternoon' : 'evening';
+}
+
 export function loopWhen(handle) {
   const route = resolveLoop(handle);
   if (!route) return '';
   const start = loopStart(route);
   if (start == null) return `Day ${route.dayNumber}`;
-  const part = start < 12 * 60 ? 'morning' : start < 17 * 60 ? 'afternoon' : 'evening';
-  return `Day ${route.dayNumber} ${part} · ${clock(start)} – ${clock(loopDeadline(route) ?? start)}`;
+  return `Day ${route.dayNumber} ${loopPart(route)} · ${clock(start)} – ${clock(loopDeadline(route) ?? start)}`;
 }
 
-/** The "Free time · N stops" row reads live, so editing the loop shows up. */
-export function decoratedItem(item) {
-  if (!item.isSubRouteSummary) {
-    const window = itemWindow(item);
-    return { ...item, durationLabel: window.durationLabel, windowLabel: window.label };
-  }
-  const route = subRouteByID(item.subRouteID) || activeLoop(item.dayNumber ?? state.selectedDay);
+/**
+ * How a sub route reads on the Plan: its name, its window, the walk, and
+ * whether what you picked actually fits. The over/spare figure is on the
+ * Plan card as well as inside the sub route, because the Plan is where you
+ * will be when you drag something.
+ */
+export function loopCard(handle) {
+  const route = resolveLoop(handle);
+  if (!route) return null;
   const schedule = loopSchedule(route);
   const count = schedule.stops.length;
-  const km = ((schedule.travelMinutes * 80) / 1000).toFixed(1);
+  const over = schedule.spendableMinutes < 0 ? -schedule.spendableMinutes : 0;
   return {
-    ...item,
-    name: (route?.name || 'Free time') + (count ? ` · ${count} stop${count === 1 ? '' : 's'}` : ''),
-    note: count ? `${subSummaryLine(route)}.` : 'No stops picked yet — open Nearby to add some.',
-    durationLabel: schedule.exists ? duration(schedule.availableMinutes) : '',
-    windowLabel: schedule.exists ? `${clock(schedule.departMinutes)} – ${clock(schedule.returnByMinutes)}` : '',
-    chips: count ? [`${km} km walk`] : [],
+    id: route.id,
+    name: route.name || 'Free time',
+    window: `${clock(schedule.departMinutes)} – ${clock(schedule.returnByMinutes)}`,
+    line: count
+      ? `${count} stop${count === 1 ? '' : 's'} · ${schedule.stops.map((s) => s.place.name).join(' → ')}`
+      : 'No places picked yet',
+    over,
+    spare: over ? 0 : schedule.spendableMinutes,
+    km: ((schedule.travelMinutes * 80) / 1000).toFixed(1),
+    notes: state.log.filter((entry) => (
+      entry.dayNumber === route.dayNumber
+      && (route.placeIDs || []).includes(entry.placeID)
+    )).length,
   };
 }
 
@@ -1059,25 +1177,21 @@ export const outfitFor = (n = state.selectedDay) =>
 // ------------------------------------------------------------------- notes
 
 /**
- * Item 04: a note belongs to a place, and a day holds as many as you wrote.
- * This was the last branch of the model still tied to the day rather than to
- * the place, so it is the one that made the destination screen's Log tab
- * honest-but-useless.
+ * A note belongs to a place and a time. The day still totals them but no
+ * longer owns them, which is what lets three notes at one market on one
+ * afternoon all survive.
+ *
+ * A note need not be pinned to anywhere: "feet destroyed, trainers
+ * tomorrow" is about the day, not about a place, and sits under the day
+ * itself.
  */
 export const noteByID = (id) => state.log.find((e) => e.id === id) || null;
 
-/** The day's notes, in the order their places come on the itinerary. */
+const byNoteTime = (a, b) => (parseClock(b.time) ?? 0) - (parseClock(a.time) ?? 0);
+
+/** The day's notes, newest first — which is the order you wrote them in. */
 export function notesForDay(n = state.selectedDay) {
-  const order = new Map();
-  activeItems(day(n)).forEach((item, index) => {
-    if (item.placeID && !order.has(item.placeID)) order.set(item.placeID, index);
-  });
-  return state.log
-    .filter((entry) => entry.dayNumber === n)
-    .sort((a, b) => (
-      (order.get(a.placeID) ?? 99) - (order.get(b.placeID) ?? 99)
-      || String(a.createdAt || '').localeCompare(String(b.createdAt || ''))
-    ));
+  return state.log.filter((entry) => entry.dayNumber === n).sort(byNoteTime);
 }
 
 /** Every note about one place, whichever day it was written on. */
@@ -1086,34 +1200,116 @@ export function notesForPlace(placeID, { name = '' } = {}) {
   return state.log
     .filter((entry) => (placeID && entry.placeID === placeID)
       || (!entry.placeID && name && entry.placeLabel === name))
-    .sort((a, b) => a.dayNumber - b.dayNumber);
+    .sort((a, b) => (b.dayNumber - a.dayNumber) || byNoteTime(a, b));
+}
+
+/**
+ * The day's notes grouped under the place they were written at, in the
+ * order the places come on the itinerary — which is what the Log's day card
+ * shows. Notes pinned to nowhere sit last, under the day itself.
+ */
+export function noteGroupsForDay(n = state.selectedDay) {
+  const notes = notesForDay(n);
+  if (!notes.length) return [];
+
+  const groups = [];
+  const bucket = (key, head) => {
+    let hit = groups.find((g) => g.key === key);
+    if (!hit) {
+      hit = { key, ...head, notes: [] };
+      groups.push(hit);
+    }
+    return hit;
+  };
+
+  // Where each place sits on this day, and under whose name.
+  const order = new Map();
+  activeItems(day(n)).forEach((item, index) => {
+    if (item.placeID && !order.has(item.placeID)) {
+      order.set(item.placeID, { at: index, time: item.time, badge: 'MAIN', tone: 'main' });
+    }
+  });
+  subRoutesFor(n).forEach((route, loopIndex) => {
+    for (const stop of loopSchedule(route).stops) {
+      if (order.has(stop.place.id)) continue;
+      order.set(stop.place.id, {
+        at: 100 + loopIndex,
+        time: clock(stop.arrival),
+        badge: (route.name || 'free time').toUpperCase(),
+        tone: 'sub',
+      });
+    }
+  });
+
+  for (const note of notes) {
+    if (!note.placeID && !note.placeLabel) {
+      bucket('__day', { name: 'Not about a place', time: '', badge: '', tone: 'none', at: 999 }).notes.push(note);
+      continue;
+    }
+    const where = order.get(note.placeID);
+    const label = note.placeLabel || place(note.placeID)?.name || 'A place';
+    bucket(note.placeID || label, {
+      name: label,
+      time: where?.time || '',
+      badge: where?.badge || '',
+      tone: where?.tone || 'none',
+      at: where?.at ?? 500,
+    }).notes.push(note);
+  }
+
+  for (const group of groups) group.notes.sort((a, b) => (parseClock(a.time) ?? 0) - (parseClock(b.time) ?? 0));
+  return groups.sort((a, b) => a.at - b.at);
 }
 
 /** What a day's card says above its notes, worked out rather than stored. */
 export function dayNoteSummary(n) {
   const d = day(n);
-  const stops = activeItems(d).filter((i) => !i.isSubRouteSummary).length;
+  const notes = notesForDay(n);
+  const loops = subRoutesFor(n);
+  const walked = loops.filter((r) => (r.placeIDs || []).length).length;
   const spent = state.shopping
     .filter((i) => i.bought && itemDay(i) === n)
     .reduce((sum, i) => sum + (i.paidAmount ?? i.estimate ?? 0), 0);
-  const shots = state.mustSee.filter((sh) => sh.captured).length;
-  const bits = [`${stops} stop${stops === 1 ? '' : 's'}`];
-  if (spent) bits.push(`${money(spent, state.trip?.currencySymbol || '¥')} spent`);
-  if (n === state.trip?.currentDay) bits.push('today');
+
+  // Must-see counts for *this* day: the shots at the places it visits, not
+  // the trip's whole tally, which would read the same on every card.
+  const here = new Set(activeItems(d).map((i) => i.placeID).filter(Boolean));
+  for (const route of loops) for (const id of route.placeIDs || []) here.add(id);
+  const dayShots = state.mustSee.filter((sh) => here.has(sh.placeID));
+  const got = dayShots.filter((sh) => sh.captured).length;
+
+  const meta = [`${notes.length} note${notes.length === 1 ? '' : 's'}`];
+  if (loops.length) meta.push(`${loops.length} sub route${loops.length === 1 ? '' : 's'}`);
+
+  const chips = [];
+  if (dayShots.length) chips.push({ label: `${got} of ${dayShots.length} must-see ✓`, tone: 'jade' });
+  if (spent) chips.push({ label: `${money(spent, state.trip?.currencySymbol || '¥')} spent`, tone: '' });
+  if (loops.length) chips.push({ label: `${walked} of ${loops.length} sub route${loops.length === 1 ? '' : 's'} walked`, tone: '' });
+
+  const today = n === state.trip?.currentDay;
   return {
     dayNumber: n,
-    dayLabel: `Day ${n}`,
+    dayLabel: today ? `Day ${n} · Today` : `Day ${n}`,
     dateLabel: d?.shortDate || '',
-    meta: bits.join(' · '),
-    live: n === state.trip?.currentDay,
-    shots,
+    meta: today ? `in progress · ${meta.join(' · ')}` : meta.join(' · '),
+    live: today,
+    chips,
   };
 }
 
 /** Days that have at least one note, newest day first. */
 export function dayNoteGroups() {
   const days = [...new Set(state.log.map((e) => e.dayNumber))].sort((a, b) => b - a);
-  return days.map((n) => ({ ...dayNoteSummary(n), notes: notesForDay(n) }));
+  return days.map((n) => ({ ...dayNoteSummary(n), groups: noteGroupsForDay(n) }));
+}
+
+/** Times already written at this place today, so the composer can offer them. */
+export function noteTimesAt(placeID, n = state.selectedDay) {
+  return state.log
+    .filter((e) => e.dayNumber === n && e.placeID === placeID)
+    .map((e) => e.time)
+    .filter(Boolean)
+    .sort();
 }
 
 export function weatherSourceLine() {
@@ -1159,36 +1355,56 @@ export function movePlanItem(dayNumber, movedId, beforeId) {
 }
 
 /**
- * A stop's start and its length, item 06. Either can be set on its own; the
- * end is never stored, so it cannot fall out of step with the start.
+ * A stop's two times. Either can be set on its own, and clearing the end is
+ * a real edit rather than a mistake — the last stop of a day genuinely has
+ * no end.
  */
-export function setPlanItemWindow(dayNumber, id, { time, durationMinutes } = {}) {
+export function setPlanItemWindow(dayNumber, id, { start, end } = {}) {
   const d = day(dayNumber);
   const item = d?.items.find((i) => i.id === id);
   if (!item) return;
 
-  if (time !== undefined) {
-    const at = parseClock(time);
+  if (start !== undefined) {
+    const at = parseClock(start);
     if (at == null) return;
     item.time = clock(at);
   }
-  if (durationMinutes !== undefined) {
-    const raw = durationMinutes === null || durationMinutes === ''
-      ? null
-      : Math.round(Number(durationMinutes));
-    item.durationMinutes = Number.isFinite(raw) && raw > 0 ? Math.min(1440, raw) : null;
+  if (end !== undefined) {
+    if (end === null || end === '' || end === '—') {
+      item.endTime = '';
+    } else {
+      const at = parseClock(end);
+      if (at == null) return;
+      item.endTime = clock(at);
+    }
   }
   // The old fixed string is not a second source of truth any more.
   item.windowLabel = '';
   writeDay(d);
-
-  // A loop reads its budget off the stop it sits in, so retiming the stop
-  // retimes the loop's row too.
-  for (const route of subRoutesFor(dayNumber)) syncLoopRow(route);
 }
 
 export function setPlanItemTime(dayNumber, id, text) {
-  setPlanItemWindow(dayNumber, id, { time: text });
+  setPlanItemWindow(dayNumber, id, { start: text });
+}
+
+/** The one-tap fixes the warning strips offer. */
+export function applyIssueFix(dayNumber, id, fix) {
+  if (!fix) return;
+  if (fix.act === 'clear-end') {
+    setPlanItemWindow(dayNumber, id, { end: null });
+    return;
+  }
+  if (fix.act === 'retime') {
+    setPlanItemWindow(dayNumber, id, { start: fix.start, end: fix.end || null });
+    return;
+  }
+  if (fix.act === 'move-back') {
+    // Put the row where its own clock says it belongs.
+    const d = day(dayNumber);
+    if (!d) return;
+    d.items = [...d.items].sort(byClock);
+    writeDay(d);
+  }
 }
 
 export function archivePlanItem(dayNumber, id) {
@@ -1225,14 +1441,16 @@ export function movePlanItemToDay(fromDay, id, toDay) {
 
 const byClock = (a, b) => (parseClock(a.time) ?? 9999) - (parseClock(b.time) ?? 9999);
 
-export function addPlanItem(dayNumber, { name, time, placeID = null, kind = 'main', durationMinutes = null, note = '' }) {
+export function addPlanItem(dayNumber, { name, time, endTime = '', placeID = null, kind = 'main', note = '' }) {
   const d = day(dayNumber);
   if (!d || !name) return null;
   const source = placeID ? place(placeID) : null;
+  const start = parseClock(time) ?? 15 * 60;
+  const end = parseClock(endTime);
   const row = {
     id: uid('stop-'),
-    time: clock(parseClock(time) ?? 15 * 60),
-    durationMinutes: durationMinutes || source?.stayMinutes || null,
+    time: clock(start),
+    endTime: end != null ? clock(end) : '',
     durationLabel: '',
     name,
     subtitle: '',
@@ -1242,7 +1460,6 @@ export function addPlanItem(dayNumber, { name, time, placeID = null, kind = 'mai
     chips: [],
     essentials: source?.essentials || [],
     kind: kind === 'sub' ? 'sub' : 'main',
-    isSubRouteSummary: false,
     placeID,
     latitude: source?.latitude ?? null,
     longitude: source?.longitude ?? null,
@@ -1367,7 +1584,7 @@ export async function capturePlace({ input, category, walkMinutes, stayMinutes, 
  * Adds a place to the itinerary as a stop. Same input, same lookup — the only
  * difference from capturePlace is that this one also creates the visit.
  */
-export async function captureStop(dayNumber, { input, time, kind = 'main', placeID = null, durationMinutes = null }) {
+export async function captureStop(dayNumber, { input, time, endTime = '', kind = 'main', placeID = null }) {
   // Picking something already saved skips the lookup entirely.
   const existing = placeID ? place(placeID) : null;
   const record = existing || await (async () => {
@@ -1383,7 +1600,7 @@ export async function captureStop(dayNumber, { input, time, kind = 'main', place
     time,
     placeID: record.id,
     kind,
-    durationMinutes,
+    endTime,
   });
   return { saved: true, located: record.latitude != null, name: record.name, id: record.id };
 }
@@ -1397,7 +1614,15 @@ export async function captureStop(dayNumber, { input, time, kind = 'main', place
  * opening the stop and pasting its map link, one at a time, and only for the
  * stops that turn out to matter. So this stays offline, and says so.
  */
-export async function importItinerary(rows) {
+/** A candidate's length, for seeding the place's stay estimate. */
+function rowMinutes(row) {
+  const from = parseClock(row.time);
+  const to = parseClock(row.endTime);
+  if (from == null || to == null) return 0;
+  return to >= from ? to - from : (to + 1440) - from;
+}
+
+export async function importItinerary(rows, { sourceText = '' } = {}) {
   const wanted = (rows || []).filter((row) => row.include && String(row.name || '').trim());
   if (!wanted.length) return { added: 0, placesMade: 0, reused: 0, lengthened: 0 };
 
@@ -1423,20 +1648,25 @@ export async function importItinerary(rows) {
     if (record) {
       reused += 1;
     } else {
+      // A map link pasted on the row is the one thing that can give a stop a
+      // position, and reading one needs no network at all.
+      const link = row.link ? parseMapLink(String(row.link)) : null;
+      const located = link?.kind === 'link' ? link : null;
+
       record = {
         id: uid('place-'),
         anchorPlaceID: null,
         name,
         category: 'sight',
         priceTier: '—',
-        stayMinutes: Number(row.durationMinutes) || 45,
+        stayMinutes: rowMinutes(row) || 45,
         legs: [],
         note: String(row.note || '').trim() || 'Added from a pasted itinerary',
         isUserAdded: true,
-        latitude: null,
-        longitude: null,
+        latitude: located?.latitude ?? null,
+        longitude: located?.longitude ?? null,
         essentials: [],
-        sourceLink: '',
+        sourceLink: located ? String(row.link) : '',
         isStop: true,
       };
       put('places', record);
@@ -1449,13 +1679,24 @@ export async function importItinerary(rows) {
       time: row.time || '',
       placeID: record.id,
       kind: row.kind === 'sub' ? 'sub' : 'main',
-      durationMinutes: Number(row.durationMinutes) || null,
+      endTime: row.endTime || '',
       note: String(row.note || '').trim(),
     });
     if (landed) added += 1;
   }
 
-  return { added, placesMade, reused, lengthened, unlocated: placesMade };
+  // The pasted text stays with the trip, so a bad import can be re-read
+  // rather than retyped.
+  if (state.trip && sourceText) {
+    putTrip({ ...state.trip, importedText: String(sourceText).slice(0, 20000), importedAt: new Date().toISOString() });
+  }
+
+  const unlocated = wanted.filter((row) => {
+    const hit = byName.get(String(row.name).trim().toLowerCase());
+    return hit && hit.latitude == null;
+  }).length;
+
+  return { added, placesMade, reused, lengthened, unlocated };
 }
 
 export async function addNearbyPlace({ name, category, walkMinutes, stayMinutes, anchorPlaceID }) {
@@ -1500,20 +1741,19 @@ export async function addNearbyPlace({ name, category, walkMinutes, stayMinutes,
 }
 
 /**
- * Starts another loop on a day, item 05. It goes into the largest free
- * stretch the day has — inside a long stop, or in the gap between two — so a
- * second loop lands somewhere plausible rather than on top of the first.
+ * Starts a sub route inside one lane. The window comes pre-filled from the
+ * gap that was tapped and stays editable; the name is the only thing you
+ * have to give it, and it can wait.
  */
-export function addSubRoute(n = state.selectedDay, { name, depart, returnBy } = {}) {
-  const taken = subRoutesFor(n).map((r) => loopStart(r));
-  const gap = dayGaps(n).find((g) => !taken.some((t) => t != null && t >= g.from && t < g.to))
-    || dayGaps(n)[0]
-    || null;
-
-  const anchor = gap?.during || activeItems(day(n)).find((i) => i.kind === 'main' && i.placeID) || null;
-  const from = parseClock(depart) ?? gap?.from ?? (parseClock(anchor?.time) ?? 13 * 60 + 45);
-  const to = parseClock(returnBy) ?? gap?.to ?? from + 120;
+export function addSubRoute(n = state.selectedDay, { name, depart, returnBy, startPlaceID, endPlaceID } = {}) {
+  const from = parseClock(depart) ?? dayGaps(n)[0]?.from ?? 13 * 60 + 45;
+  const to = parseClock(returnBy) ?? dayGaps(n)[0]?.to ?? from + 120;
   const part = from < 12 * 60 ? 'Morning' : from < 17 * 60 ? 'Afternoon' : 'Evening';
+
+  // Both ends come from the day's stops, and they need not match.
+  const stops = activeItems(day(n)).filter((i) => i.placeID);
+  const before = [...stops].reverse().find((i) => (parseClock(i.time) ?? 0) <= from);
+  const anchor = before || stops[0] || null;
 
   const route = {
     id: uid('loop-'),
@@ -1527,78 +1767,20 @@ export function addSubRoute(n = state.selectedDay, { name, depart, returnBy } = 
     placeIDs: [],
     returnTarget: 'coach',
     returnMinutes: 8,
-    startPlaceID: anchor?.placeID || null,
-    endPlaceID: anchor?.placeID || null,
+    startPlaceID: startPlaceID || anchor?.placeID || null,
+    endPlaceID: endPlaceID || startPlaceID || anchor?.placeID || null,
     departMinutes: from,
     returnByMinutes: to,
-    summaryItemID: null,
   };
   put('subRoutes', route);
-  syncLoopRow(route);
   state.loopID = route.id;
   notify();
   return route;
 }
 
-/**
- * Keeps a loop's row on the Plan in step with the loop itself. The row is
- * how the day shows the loop, so its time is the loop's departure and it
- * carries the loop's id rather than the day's.
- */
-function syncLoopRow(route) {
-  const d = day(route.dayNumber);
-  if (!d) return;
-  const from = loopStart(route) ?? 0;
-  const to = loopDeadline(route) ?? from;
-  let row = (d.items || []).find((i) => i.id === route.summaryItemID)
-    || (d.items || []).find((i) => i.isSubRouteSummary && i.subRouteID === route.id);
-  const fresh = !row;
-
-  if (!row) {
-    row = {
-      id: uid('loop-row-'),
-      isSubRouteSummary: true,
-      subRouteID: route.id,
-      kind: 'sub',
-      name: route.name,
-      subtitle: '',
-      note: '',
-      summary: '',
-      chips: [],
-      essentials: [],
-      placeID: null,
-      latitude: null,
-      longitude: null,
-      archived: false,
-      movedToDay: null,
-    };
-    d.items = [...(d.items || []), row];
-  }
-  row.subRouteID = route.id;
-  row.time = clock(from);
-  row.durationMinutes = Math.max(0, to - from) || null;
-  row.windowLabel = '';
-  // Only a brand-new row is placed by the clock. Re-sorting on every edit
-  // would undo a stop the traveller had deliberately dragged out of order —
-  // which is exactly the case item 06 asks us to warn about, not to "fix".
-  if (fresh) d.items.sort(byClock);
-  writeDay(d);
-
-  if (route.summaryItemID !== row.id) {
-    route.summaryItemID = row.id;
-    put('subRoutes', route);
-  }
-}
-
-/** Deleting a loop takes its row off the day with it. */
 export function deleteSubRoute(id) {
   const route = subRouteByID(id);
   if (!route) return;
-  const d = day(route.dayNumber);
-  if (d) {
-    d.items = (d.items || []).filter((i) => !(i.isSubRouteSummary && i.subRouteID === route.id) && i.id !== route.summaryItemID);
-    writeDay(d);
-  }
   if (state.loopID === id) state.loopID = null;
   remove('subRoutes', id);
 }
@@ -1810,19 +1992,22 @@ export function addPrepCategory(name) {
 }
 
 /**
- * Writes one note. An id edits that note; without one a new note is made, so
- * a second note about a second place on the same day no longer overwrites the
- * first.
+ * Writes one note. An id edits that note; without one a new note is made,
+ * so a second note about the same place ten minutes later is a second note.
  */
-export function saveNote({ id, dayNumber, placeID, placeLabel, text, photoPaths }) {
+export function saveNote({ id, dayNumber, time, placeID, placeLabel, text, photoPaths }) {
   const existing = id ? noteByID(id) : null;
   const now = new Date().toISOString();
   const photos = photoPaths || existing?.photoPaths || [];
+  const at = parseClock(time);
   const record = {
     id: existing?.id || uid('note-'),
     dayNumber: dayNumber ?? existing?.dayNumber ?? state.selectedDay,
-    placeID: placeID ?? existing?.placeID ?? null,
-    placeLabel: placeLabel || (placeID ? place(placeID)?.name : '') || existing?.placeLabel || '',
+    time: at != null ? clock(at) : (existing?.time || clock(new Date().getHours() * 60 + new Date().getMinutes())),
+    placeID: placeID === undefined ? (existing?.placeID ?? null) : (placeID || null),
+    placeLabel: placeLabel !== undefined
+      ? placeLabel
+      : (placeID ? place(placeID)?.name : '') || existing?.placeLabel || '',
     text: String(text || ''),
     photoPaths: photos,
     photoCount: photos.length,

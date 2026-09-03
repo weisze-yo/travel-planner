@@ -1,0 +1,878 @@
+<!DOCTYPE html>
+<html>
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<script src="./support.js"></script>
+</head>
+<body>
+<x-dc>
+<helmet data-dc-atomics><meta name="design_doc_mode" content="canvas"><link href="https://fonts.googleapis.com/css2?family=Public+Sans:ital,wght@0,400;0,500;0,600;0,700;0,800;1,400&display=swap" rel="stylesheet"><style>body{margin:0;background:#F2F3F1;font-family:'Public Sans',system-ui,sans-serif;color:#14201C;-webkit-font-smoothing:antialiased}*{box-sizing:border-box}a{color:#1F6F5C}a:hover{color:#14201C}</style></helmet>
+
+<section style="padding:44px 48px 40px">
+<div style="display:flex;align-items:baseline;gap:10px;margin:0 0 8px"><a href="#2a" style="font:800 10px ui-monospace,Menlo,monospace;padding:4px 8px;background:#14201C;color:#fff;border-radius:5px;text-decoration:none">2</a><span style="font:650 13px/1.2 'Public Sans',system-ui">Shared plan, private progress</span></div>
+
+<div style="display:flex;gap:26px;flex-wrap:wrap;align-items:flex-start;margin-bottom:36px">
+<div style="width:520px;background:#fff;border-radius:18px;padding:24px 26px;border:1px solid rgba(20,32,28,.08)">
+<div style="font-size:10.5px;font-weight:800;letter-spacing:.1em;color:#98A5A0">THE RULE THE WHOLE THING HANGS ON</div>
+<div style="font-size:22px;font-weight:700;letter-spacing:-.02em;margin:8px 0 14px">The plan is ours. What I've done about it is mine.</div>
+<p style="font-size:13.5px;line-height:1.6;color:#3D4C46;margin:0 0 10px;text-wrap:pretty">Everything anyone changes about the schedule reaches everyone: stops, times, order, places, and a place's Must-see. Nothing about a person's progress does: what you've bought, what you've packed, and everything in your Log stay on your side and are never visible to anyone.</p>
+<p style="font-size:13.5px;line-height:1.6;color:#3D4C46;margin:0 0 10px">Between those sits the shopping list, which is neither. It is copied once, at the moment you first turn sharing on, and then both lists live their own lives. That has to be said out loud on the share sheet (<a href="#2a">2a</a>), because a list that looks identical on two phones and quietly stops matching is worse than one that never matched.</p>
+<p style="font-size:13.5px;line-height:1.6;color:#3D4C46;margin:0">This removes attribution from almost everywhere. No faces on the shopping list, no names in the Log, no avatar stack in a header. A name appears in exactly one place: the schedule changed, and here is who changed it.</p>
+<div style="height:1px;background:#EDEFEC;margin:16px 0"></div>
+<div style="font-size:10.5px;font-weight:800;letter-spacing:.1em;color:#98A5A0">WHAT I'D PUSH BACK ON</div>
+<p style="font-size:13.5px;line-height:1.6;color:#3D4C46;margin:8px 0 0">Two souvenir warnings are now gone: nobody can see that Ana bought the tenugui, and after the copy nobody sees her add it either. You've decided that gets sorted by talking, and the design says so plainly rather than implying a coordination it doesn't have. If it bites on the real trip, the smallest fix is one shared line per item — not syncing the list.</p>
+</div>
+<div style="width:360px;background:#14201C;color:#fff;border-radius:18px;padding:24px 26px">
+<div style="font-size:10.5px;font-weight:800;letter-spacing:.1em;color:#8FB3A6">THE THREE BEHAVIOURS</div>
+<div style="display:flex;flex-direction:column;gap:14px;margin-top:14px">
+<div><div style="font-size:12.5px;font-weight:800;color:#fff">Syncs, last edit wins</div><div style="font-size:12.5px;line-height:1.5;color:#C8D6D0;margin-top:3px">Stops, times, order, place info, Nearby, Must-see, who's on the trip. No resolver and no locking — the day you open tells you what moved and who moved it (<a href="#2c" style="color:#8FB3A6">2c</a>).</div></div>
+<div><div style="font-size:12.5px;font-weight:800;color:#fff">Copied once, then separate</div><div style="font-size:12.5px;line-height:1.5;color:#C8D6D0;margin-top:3px">The trip shopping list and each place's Shop. Optional. The owner can send new items again later; nothing is ever removed from someone else's list (<a href="#2d" style="color:#8FB3A6">2d</a>).</div></div>
+<div><div style="font-size:12.5px;font-weight:800;color:#fff">Never leaves your phone</div><div style="font-size:12.5px;line-height:1.5;color:#C8D6D0;margin-top:3px">Bought, packed, your whole Log, your photos. Packing isn't in the share at all (<a href="#2e" style="color:#8FB3A6">2e</a>).</div></div>
+<div style="height:1px;background:rgba(255,255,255,.14)"></div>
+<div style="font-size:12.5px;line-height:1.5;color:#C8D6D0">Still true from turn 1: link invite, two levels plus owner, swipe-left to remove — <a href="#1a" style="color:#8FB3A6">1a</a> <a href="#1c" style="color:#8FB3A6">1c</a> <a href="#1d" style="color:#8FB3A6">1d</a> <a href="#1h" style="color:#8FB3A6">1h</a> stand. <a href="#1f" style="color:#8FB3A6">1f</a> <a href="#1g" style="color:#8FB3A6">1g</a> <a href="#1j" style="color:#8FB3A6">1j</a> are superseded here.</div>
+</div>
+</div>
+</div>
+
+<div style="display:grid;grid-template-columns:repeat(3,402px);gap:34px;align-items:start;justify-content:start">
+
+<div id="2a" style="flex:none;display:flex;flex-direction:column;gap:10px">
+<div style="display:flex;align-items:baseline;gap:8px;max-width:402px;font:400 11.5px/1.3 'Public Sans',system-ui;color:#6B7A74"><a href="#2a" style="font:800 10.5px ui-monospace,Menlo,monospace;padding:3px 7px;background:#1F6F5C;color:#fff;border-radius:5px;text-decoration:none">2a</a><span><b style="color:#14201C">Share sheet, revised.</b> The three behaviours are stated before the link, in the order people worry about them. The shopping switch sits next to the link because flipping it is what takes the copy.</span></div>
+<div style="width:402px;height:874px;background:#F2F3F1;border-radius:12px;overflow:hidden;box-shadow:0 1px 0 rgba(20,32,28,.08),0 10px 40px rgba(20,32,28,.09);display:flex;flex-direction:column">
+<div style="flex:none;padding:14px 16px 12px;background:#fff;border-bottom:1px solid #E7EAE7;display:flex;align-items:center;gap:10px">
+<div style="width:32px;height:32px;flex:none;display:flex;align-items:center;justify-content:center"><svg width="11" height="18" viewBox="0 0 11 18"><path d="M9 1L2 9l7 8" stroke="#14201C" stroke-width="2.2" fill="none" stroke-linecap="round" stroke-linejoin="round"></path></svg></div>
+<div style="flex:1;min-width:0"><div style="font-size:17px;font-weight:700;letter-spacing:-.01em">Share this trip</div><div style="font-size:11.5px;color:#6B7A74;margin-top:1px">Meridian City · Group Tour · 4 people</div></div>
+</div>
+<div style="flex:1;min-height:0;overflow:hidden;padding:14px 16px 24px">
+<div style="background:#fff;border-radius:16px;overflow:hidden">
+<div style="padding:11px 14px;font-size:10.5px;font-weight:800;letter-spacing:.06em;color:#98A5A0">WHO HAS IT</div>
+<div style="padding:11px 14px;border-top:1px solid #F0F2F0;display:flex;gap:11px;align-items:center">
+<div style="width:30px;height:30px;flex:none;border-radius:10px;background:#14201C;color:#fff;font-size:12px;font-weight:800;display:flex;align-items:center;justify-content:center">W</div>
+<div style="flex:1;min-width:0"><div style="font-size:13.5px;font-weight:650">You</div><div style="font-size:11.5px;color:#6B7A74;margin-top:1px">Made this trip</div></div>
+<span style="flex:none;padding:3px 7px;border-radius:6px;font-size:9.5px;font-weight:800;letter-spacing:.04em;background:#E6EFEB;color:#1F6F5C">OWNER</span>
+</div>
+<div style="padding:11px 14px;border-top:1px solid #F0F2F0;display:flex;gap:11px;align-items:center">
+<div style="width:30px;height:30px;flex:none;border-radius:10px;background:#EDEFEC;color:#3D4C46;font-size:12px;font-weight:800;display:flex;align-items:center;justify-content:center">A</div>
+<div style="flex:1;min-width:0"><div style="font-size:13.5px;font-weight:650">Ana Lim</div><div style="font-size:11.5px;color:#6B7A74;margin-top:1px">Joined 2 Mar</div></div>
+<span style="flex:none;padding:4px 8px;border-radius:8px;font-size:11px;font-weight:700;background:#F2F3F1;color:#3D4C46">Can edit</span>
+</div>
+<div style="padding:11px 14px;border-top:1px solid #F0F2F0;display:flex;gap:11px;align-items:center">
+<div style="width:30px;height:30px;flex:none;border-radius:10px;background:#EDEFEC;color:#3D4C46;font-size:12px;font-weight:800;display:flex;align-items:center;justify-content:center">陳</div>
+<div style="flex:1;min-width:0"><div style="font-size:13.5px;font-weight:650">陳美玲</div><div style="font-size:11.5px;color:#6B7A74;margin-top:1px">Joined 3 Mar</div></div>
+<span style="flex:none;padding:4px 8px;border-radius:8px;font-size:11px;font-weight:700;background:#F2F3F1;color:#3D4C46">Can read</span>
+</div>
+<div style="padding:11px 14px;border-top:1px solid #F0F2F0;display:flex;gap:11px;align-items:center">
+<div style="width:30px;height:30px;flex:none;border-radius:10px;background:#fff;border:1.5px dashed #C9D0CB;display:flex;align-items:center;justify-content:center"><svg width="12" height="12" viewBox="0 0 12 12"><path d="M6 1v10M1 6h10" stroke="#98A5A0" stroke-width="1.8" stroke-linecap="round"></path></svg></div>
+<div style="flex:1;min-width:0;font-size:13px;font-weight:650;color:#3D4C46">Add someone</div>
+<svg width="7" height="12" viewBox="0 0 7 12" style="flex:none"><path d="M1 1l5 5-5 5" stroke="#98A5A0" stroke-width="1.8" fill="none" stroke-linecap="round"></path></svg>
+</div>
+</div>
+
+<div style="background:#fff;border-radius:16px;overflow:hidden;margin-top:12px">
+<div style="padding:11px 14px;font-size:10.5px;font-weight:800;letter-spacing:.06em;color:#98A5A0">WHAT THEY GET</div>
+<div style="padding:10px 14px;border-top:1px solid #F0F2F0;display:flex;gap:11px;align-items:center">
+<svg width="18" height="18" viewBox="0 0 18 18" fill="none" style="flex:none"><path d="M4 6.5a5 5 0 0 1 8.4-1.6M14 11.5a5 5 0 0 1-8.4 1.6" stroke="#1F6F5C" stroke-width="1.7" stroke-linecap="round"></path><path d="M12.8 2.4v2.7h-2.7M5.2 15.6v-2.7h2.7" stroke="#1F6F5C" stroke-width="1.7" stroke-linecap="round" stroke-linejoin="round"></path></svg>
+<div style="flex:1;min-width:0"><div style="font-size:13px;font-weight:700">The schedule, the same for everyone</div><div style="font-size:11.5px;color:#6B7A74;margin-top:1px">Stops, times, order, places, Must-see</div></div>
+</div>
+<div style="padding:10px 14px;border-top:1px solid #F0F2F0;display:flex;gap:11px;align-items:center">
+<svg width="18" height="18" viewBox="0 0 18 18" fill="none" style="flex:none"><rect x="2.6" y="4.6" width="9" height="10.8" rx="2" stroke="#8A5A08" stroke-width="1.6"></rect><path d="M6.4 4.6V3.4a1.8 1.8 0 0 1 1.8-1.8h5.2a1.8 1.8 0 0 1 1.8 1.8v7.2a1.8 1.8 0 0 1-1.8 1.8h-1.2" stroke="#8A5A08" stroke-width="1.6" stroke-linecap="round"></path></svg>
+<div style="flex:1;min-width:0"><div style="font-size:13px;font-weight:700">A copy of the shopping list, once</div><div style="font-size:11.5px;color:#6B7A74;margin-top:1px">Not kept in step after that</div></div>
+</div>
+<div style="padding:10px 14px;border-top:1px solid #F0F2F0;display:flex;gap:11px;align-items:center">
+<svg width="18" height="18" viewBox="0 0 18 18" fill="none" style="flex:none"><rect x="3.4" y="7.6" width="11.2" height="7.8" rx="2" stroke="#6B7A74" stroke-width="1.6"></rect><path d="M6.2 7.6V5.6a2.8 2.8 0 0 1 5.6 0v2" stroke="#6B7A74" stroke-width="1.6" stroke-linecap="round"></path></svg>
+<div style="flex:1;min-width:0"><div style="font-size:13px;font-weight:700">Nothing you've bought or packed</div><div style="font-size:11.5px;color:#6B7A74;margin-top:1px">Your Log stays on this phone too</div></div>
+</div>
+</div>
+
+<div style="background:#fff;border-radius:16px;padding:14px;margin-top:12px">
+<div style="display:flex;gap:12px;align-items:flex-start">
+<div style="flex:1;min-width:0"><div style="font-size:13.5px;font-weight:700">Include my shopping list</div></div>
+<div style="flex:none;width:48px;height:29px;border-radius:15px;background:#1F6F5C;padding:3px;display:flex;justify-content:flex-end"><div style="width:23px;height:23px;border-radius:50%;background:#fff"></div></div>
+</div>
+<div style="background:#F7F8F6;border-radius:12px;padding:11px 12px;margin-top:12px">
+<div style="font-size:12px;line-height:1.5;color:#3D4C46">Copied on 2 Mar. You've added 4 items since — they don't have those.</div>
+<div style="height:38px;border-radius:10px;background:#14201C;color:#fff;font-size:12.5px;font-weight:700;display:flex;align-items:center;justify-content:center;margin-top:9px">Send the 4 new items</div>
+<div style="font-size:11px;color:#98A5A0;line-height:1.45;margin-top:7px">Only adds. Nothing you've crossed off is taken off their list.</div>
+</div>
+</div>
+
+<div style="background:#fff;border-radius:16px;padding:12px 14px;margin-top:10px">
+<div style="display:flex;gap:8px;align-items:baseline"><div style="flex:1;font-size:10.5px;font-weight:800;letter-spacing:.06em;color:#98A5A0">THE LINK</div><span style="padding:3px 7px;border-radius:6px;font-size:9.5px;font-weight:800;letter-spacing:.04em;background:#E6EFEB;color:#1F6F5C">LIVE</span></div>
+<div style="font-family:ui-monospace,Menlo,monospace;font-size:12px;color:#3D4C46;background:#F7F8F6;border-radius:10px;padding:9px 10px;margin-top:8px;white-space:nowrap;overflow:hidden;text-overflow:ellipsis">planner.app/j/8QK2-M7VD</div>
+<div style="display:flex;gap:8px;margin-top:10px">
+<div style="flex:1;height:42px;border-radius:12px;background:#14201C;color:#fff;font-size:13px;font-weight:700;display:flex;align-items:center;justify-content:center">Send it</div>
+<div style="flex:none;width:96px;height:42px;border-radius:12px;background:#F2F3F1;border:1px solid #E1E5E1;color:#14201C;font-size:13px;font-weight:650;display:flex;align-items:center;justify-content:center">Copy</div>
+</div>
+</div>
+</div>
+</div>
+</div>
+
+<div id="2b" style="flex:none;display:flex;flex-direction:column;gap:10px">
+<div style="display:flex;align-items:baseline;gap:8px;max-width:402px;font:400 11.5px/1.3 'Public Sans',system-ui;color:#6B7A74"><a href="#2b" style="font:800 10.5px ui-monospace,Menlo,monospace;padding:3px 7px;background:rgba(20,32,28,.08);color:#14201C;border-radius:5px;text-decoration:none">2b</a><span><b style="color:#14201C">The invite, with the new promise.</b> Replaces the middle card of <a href="#1c">1c</a>; everything above and below it is unchanged. Saying what stays private is more persuasive to a first-time user than saying what they get.</span></div>
+<div style="width:402px;height:874px;background:#F2F3F1;border-radius:12px;overflow:hidden;box-shadow:0 1px 0 rgba(20,32,28,.08),0 10px 40px rgba(20,32,28,.09);display:flex;flex-direction:column">
+<div style="flex:none;padding:9px 16px;background:#EDEFEC;border-bottom:1px solid #E1E5E1;display:flex;align-items:center;gap:8px">
+<svg width="12" height="12" viewBox="0 0 12 12" fill="none" style="flex:none"><rect x="1.6" y="5" width="8.8" height="6.2" rx="1.6" stroke="#6B7A74" stroke-width="1.4"></rect><path d="M3.9 5V3.4a2.1 2.1 0 0 1 4.2 0V5" stroke="#6B7A74" stroke-width="1.4" stroke-linecap="round"></path></svg>
+<div style="flex:1;min-width:0;font-family:ui-monospace,Menlo,monospace;font-size:11px;color:#6B7A74;white-space:nowrap;overflow:hidden;text-overflow:ellipsis">planner.app/j/8QK2-M7VD</div>
+</div>
+<div style="flex:1;min-height:0;overflow:hidden;padding:20px 16px 24px">
+<div style="display:flex;gap:11px;align-items:center">
+<div style="width:34px;height:34px;flex:none;border-radius:11px;background:#EDEFEC;color:#3D4C46;font-size:13px;font-weight:800;display:flex;align-items:center;justify-content:center">A</div>
+<div style="flex:1;min-width:0;font-size:13px;line-height:1.4;color:#3D4C46"><b style="color:#14201C">Ana Lim</b> is sharing a trip with you</div>
+</div>
+<div style="font-size:28px;font-weight:700;letter-spacing:-.02em;line-height:1.15;margin-top:18px">Meridian City<br>Group Tour</div>
+<div style="font-size:13px;color:#6B7A74;margin-top:6px">12 – 17 Mar 2026 · 6 days · 17 stops</div>
+
+<div style="background:#fff;border-radius:16px;overflow:hidden;margin-top:18px">
+<div style="padding:11px 14px;display:flex;gap:8px;align-items:baseline"><div style="flex:1;font-size:10.5px;font-weight:800;letter-spacing:.06em;color:#98A5A0">DAY 1 · THU 12 MAR</div><div style="font-size:11px;font-weight:650;color:#98A5A0">a look at it</div></div>
+<div style="padding:10px 14px;border-top:1px solid #F0F2F0;display:flex;gap:11px;align-items:center"><div style="width:44px;flex:none;font-size:12.5px;font-weight:700;font-variant-numeric:tabular-nums">09:00</div><div style="flex:1;min-width:0"><div style="font-size:13.5px;font-weight:650">Airport pickup</div><div style="font-size:11.5px;color:#6B7A74;margin-top:2px">meet guide at arrivals, gate B</div></div></div>
+<div style="padding:10px 14px;border-top:1px solid #F0F2F0;display:flex;gap:11px;align-items:center"><div style="width:44px;flex:none;font-size:12.5px;font-weight:700;font-variant-numeric:tabular-nums">13:00</div><div style="flex:1;min-width:0"><div style="font-size:13.5px;font-weight:650">Hotel Meridian, check in</div></div></div>
+<div style="padding:10px 14px;border-top:1px solid #F0F2F0;display:flex;gap:11px;align-items:center"><div style="width:44px;flex:none;font-size:12.5px;font-weight:700;font-variant-numeric:tabular-nums">18:30</div><div style="flex:1;min-width:0"><div style="font-size:13.5px;font-weight:650">Welcome dinner, Harbour Steps</div></div></div>
+<div style="padding:10px 14px;border-top:1px solid #F0F2F0;font-size:11.5px;color:#98A5A0">and five more days</div>
+</div>
+
+<div style="background:#fff;border-radius:16px;padding:14px;margin-top:12px">
+<div style="font-size:10.5px;font-weight:800;letter-spacing:.06em;color:#98A5A0">IF YOU JOIN</div>
+<div style="display:flex;flex-direction:column;gap:10px;margin-top:10px">
+<div style="display:flex;gap:9px;align-items:flex-start"><svg width="13" height="11" viewBox="0 0 11 9" style="flex:none;margin-top:4px"><path d="M1 4.5L4 7.5 10 1" stroke="#1F6F5C" stroke-width="2" fill="none" stroke-linecap="round" stroke-linejoin="round"></path></svg><div style="flex:1;font-size:12.5px;line-height:1.45;color:#3D4C46">You get the schedule and every place on it, and it stays the same on everyone's phone. You can change it too.</div></div>
+<div style="display:flex;gap:9px;align-items:flex-start"><svg width="13" height="11" viewBox="0 0 11 9" style="flex:none;margin-top:4px"><path d="M1 4.5L4 7.5 10 1" stroke="#1F6F5C" stroke-width="2" fill="none" stroke-linecap="round" stroke-linejoin="round"></path></svg><div style="flex:1;font-size:12.5px;line-height:1.45;color:#3D4C46">You get a copy of Ana's shopping list to start from. Yours is then your own.</div></div>
+<div style="display:flex;gap:9px;align-items:flex-start"><svg width="13" height="11" viewBox="0 0 11 9" style="flex:none;margin-top:4px"><path d="M1 4.5L4 7.5 10 1" stroke="#1F6F5C" stroke-width="2" fill="none" stroke-linecap="round" stroke-linejoin="round"></path></svg><div style="flex:1;font-size:12.5px;line-height:1.45;color:#3D4C46">It works with no signal once you have opened it.</div></div>
+</div>
+<div style="background:#F7F8F6;border-radius:12px;padding:11px 12px;margin-top:12px;display:flex;gap:10px;align-items:flex-start">
+<svg width="17" height="17" viewBox="0 0 18 18" fill="none" style="flex:none;margin-top:1px"><rect x="3.4" y="7.6" width="11.2" height="7.8" rx="2" stroke="#3D4C46" stroke-width="1.6"></rect><path d="M6.2 7.6V5.6a2.8 2.8 0 0 1 5.6 0v2" stroke="#3D4C46" stroke-width="1.6" stroke-linecap="round"></path></svg>
+<div style="flex:1;min-width:0;font-size:12px;line-height:1.5;color:#3D4C46"><b style="color:#14201C">Your side stays yours.</b> What you buy, what you pack and anything you write in your Log are never shown to Ana or anyone else on this trip.</div>
+</div>
+</div>
+
+<div style="height:48px;border-radius:12px;background:#1F6F5C;color:#fff;font-size:13.5px;font-weight:700;display:flex;align-items:center;justify-content:center;margin-top:14px">Join this trip</div>
+<div style="font-size:11px;color:#98A5A0;line-height:1.45;text-align:center;margin-top:9px">You sign in next, so the trip follows you to a new phone. Link expires 11 Mar.</div>
+</div>
+</div>
+</div>
+
+<div id="2c" style="flex:none;display:flex;flex-direction:column;gap:10px">
+<div style="display:flex;align-items:baseline;gap:8px;max-width:402px;font:400 11.5px/1.3 'Public Sans',system-ui;color:#6B7A74"><a href="#2c" style="font:800 10.5px ui-monospace,Menlo,monospace;padding:3px 7px;background:#1F6F5C;color:#fff;border-radius:5px;text-decoration:none">2c</a><span><b style="color:#14201C">Two people on the same day, resolved by catching up.</b> Replaces <a href="#1j">1j</a>: no resolver, no presence, last edit wins. The banner names what moved since you last looked, and each row it names keeps a mark until you have scrolled past it once.</span></div>
+<div style="width:402px;height:874px;background:#F2F3F1;border-radius:12px;overflow:hidden;box-shadow:0 1px 0 rgba(20,32,28,.08),0 10px 40px rgba(20,32,28,.09);display:flex;flex-direction:column">
+<div style="flex:none;padding:14px 16px 12px;background:#fff;border-bottom:1px solid #E7EAE7">
+<div style="display:flex;align-items:flex-end;justify-content:space-between;gap:10px">
+<div style="flex:1;min-width:0"><div style="font-size:24px;font-weight:700;letter-spacing:-.02em">Day 3</div><div style="font-size:12px;color:#6B7A74;margin-top:2px">Mar 14 · Sat · 6 stops</div></div>
+<div style="width:40px;height:40px;flex:none;border-radius:13px;background:#14201C;display:flex;align-items:center;justify-content:center"><svg width="17" height="17" viewBox="0 0 14 14"><path d="M9.5 1.5l3 3L5 12H2v-3z" fill="none" stroke="#fff" stroke-width="1.5" stroke-linejoin="round"></path></svg></div>
+</div>
+<div style="display:flex;gap:6px;margin-top:10px">
+<div style="flex:none;height:30px;padding:0 10px;border-radius:10px;background:#fff;color:#6B7A74;font-size:12px;font-weight:600;display:flex;align-items:center;gap:5px">D1<span style="font-size:11px;opacity:.75">☀</span></div>
+<div style="flex:none;height:30px;padding:0 10px;border-radius:10px;background:#fff;color:#6B7A74;font-size:12px;font-weight:600;display:flex;align-items:center;gap:5px">D2<span style="font-size:11px;opacity:.75">⛅</span></div>
+<div style="flex:none;height:30px;padding:0 10px;border-radius:10px;background:#14201C;color:#fff;font-size:12px;font-weight:600;display:flex;align-items:center;gap:5px;position:relative">D3<span style="font-size:11px;opacity:.75">☁</span><i style="position:absolute;top:5px;right:5px;width:6px;height:6px;border-radius:50%;background:#C25A5A"></i></div>
+<div style="flex:none;height:30px;padding:0 10px;border-radius:10px;background:#fff;color:#6B7A74;font-size:12px;font-weight:600;display:flex;align-items:center;gap:5px">D4<span style="font-size:11px;opacity:.75">🌧</span></div>
+<div style="flex:none;height:30px;padding:0 10px;border-radius:10px;background:#fff;color:#6B7A74;font-size:12px;font-weight:600;display:flex;align-items:center;gap:5px">D5<span style="font-size:11px;opacity:.75">⛅</span></div>
+</div>
+</div>
+<div style="flex:1;min-height:0;overflow:hidden;padding:12px 16px 24px">
+
+<div style="background:#FDF7F7;border:1.5px solid #EBD3D3;border-radius:14px;padding:12px 13px;margin-bottom:12px">
+<div style="display:flex;gap:8px;align-items:baseline"><div style="flex:1;min-width:0;font-size:10.5px;font-weight:800;letter-spacing:.06em;color:#9B4B4B">3 CHANGES SINCE YOU LAST OPENED DAY 3</div><div style="font-size:11px;font-weight:700;color:#B87878;white-space:nowrap">Tue 14:10</div></div>
+<div style="display:flex;flex-direction:column;gap:6px;margin-top:9px">
+<div style="font-size:12.5px;line-height:1.45;color:#9B4B4B"><b style="color:#7E3B3B">Ana</b> moved Nishi Market to 13:00, back by 15:30</div>
+<div style="font-size:12.5px;line-height:1.45;color:#9B4B4B"><b style="color:#7E3B3B">Ana</b> added Skyline Deck at 16:00</div>
+<div style="font-size:12.5px;line-height:1.45;color:#9B4B4B"><b style="color:#7E3B3B">Ravi</b> removed Canal Walk</div>
+</div>
+<div style="display:flex;gap:6px;margin-top:11px">
+<div style="height:34px;padding:0 12px;border-radius:10px;background:#14201C;color:#fff;font-size:12px;font-weight:700;display:flex;align-items:center;white-space:nowrap">Got it</div>
+<div style="height:34px;padding:0 12px;border-radius:10px;background:#fff;border:1px solid #EBD3D3;color:#9B4B4B;font-size:12px;font-weight:650;display:flex;align-items:center;white-space:nowrap">Everything that's changed</div>
+</div>
+</div>
+
+<div style="display:flex;gap:9px">
+<div style="width:56px;flex:none;padding-top:12px;text-align:right"><div style="font-size:12.5px;font-weight:700;font-variant-numeric:tabular-nums">08:30</div><div style="font-size:11px;color:#98A5A0;font-weight:650;font-variant-numeric:tabular-nums">09:00</div></div>
+<div style="width:20px;flex:none;display:flex;flex-direction:column;align-items:center"><div style="width:11px;height:11px;border-radius:50%;background:#1F6F5C;margin-top:14px;flex:none"></div><div style="flex:1;width:0;border-left:2px solid #DCE2DE"></div></div>
+<div style="flex:1;min-width:0;margin-bottom:6px;padding:11px 13px;background:#fff;border:1px solid #E7EAE7;border-radius:14px"><div style="font-size:14.5px;font-weight:650;line-height:1.25">Depart Hotel Meridian</div><div style="font-size:11.5px;color:#6B7A74;margin-top:3px">coach bay 2</div></div>
+</div>
+
+<div style="display:flex;gap:9px">
+<div style="width:56px;flex:none;padding-top:12px;text-align:right"><div style="font-size:12.5px;font-weight:700;font-variant-numeric:tabular-nums;color:#9B4B4B">13:00</div><div style="font-size:11px;color:#B87878;font-weight:650;font-variant-numeric:tabular-nums">15:30</div></div>
+<div style="width:20px;flex:none;display:flex;flex-direction:column;align-items:center"><div style="width:11px;height:11px;border-radius:50%;background:#C25A5A;margin-top:14px;flex:none"></div><div style="flex:1;width:0;border-left:2px solid #DCE2DE"></div></div>
+<div style="flex:1;min-width:0;margin-bottom:6px;padding:11px 13px;background:#FDF7F7;border:1.5px solid #EBD3D3;border-radius:14px">
+<div style="display:flex;gap:8px;align-items:flex-start"><div style="flex:1;min-width:0"><div style="font-size:14.5px;font-weight:650;line-height:1.25">Nishi Market</div><div style="font-size:11.5px;color:#9B4B4B;font-weight:650;margin-top:3px">Ana moved this, Tue 15:04 · was 13:30 – 15:45</div></div><span style="flex:none;padding:3px 7px;border-radius:6px;font-size:9.5px;font-weight:800;letter-spacing:.04em;background:#FBF1DE;color:#8A5A08">SUB</span></div>
+</div>
+</div>
+
+<div style="display:flex;gap:9px">
+<div style="width:56px;flex:none;padding-top:12px;text-align:right"><div style="font-size:12.5px;font-weight:700;font-variant-numeric:tabular-nums;color:#9B4B4B">16:00</div><div style="font-size:11px;color:#B87878;font-weight:650;font-variant-numeric:tabular-nums">18:30</div></div>
+<div style="width:20px;flex:none;display:flex;flex-direction:column;align-items:center"><div style="width:11px;height:11px;border-radius:50%;background:#C25A5A;margin-top:14px;flex:none"></div><div style="flex:1;width:0;border-left:2px solid #DCE2DE"></div></div>
+<div style="flex:1;min-width:0;margin-bottom:6px;padding:11px 13px;background:#FDF7F7;border:1.5px solid #EBD3D3;border-radius:14px">
+<div style="font-size:14.5px;font-weight:650;line-height:1.25">Skyline Deck</div><div style="font-size:11.5px;color:#9B4B4B;font-weight:650;margin-top:3px">Ana added this, Tue 15:06</div>
+</div>
+</div>
+
+<div style="display:flex;gap:9px">
+<div style="width:56px;flex:none;padding-top:12px;text-align:right"><div style="font-size:12.5px;font-weight:700;font-variant-numeric:tabular-nums">19:30</div></div>
+<div style="width:20px;flex:none;display:flex;flex-direction:column;align-items:center"><div style="width:11px;height:11px;border-radius:50%;background:#1F6F5C;margin-top:14px;flex:none"></div><div style="flex:1;width:0;border-left:2px solid #DCE2DE"></div></div>
+<div style="flex:1;min-width:0;margin-bottom:8px;padding:11px 13px;background:#fff;border:1px solid #E7EAE7;border-radius:14px"><div style="font-size:14.5px;font-weight:650;line-height:1.25">Back at Hotel Meridian</div></div>
+</div>
+
+<div style="background:#fff;border-radius:14px;padding:11px 13px;display:flex;gap:10px;align-items:flex-start">
+<div style="width:11px;height:11px;flex:none;border-radius:50%;background:#C25A5A;margin-top:3px"></div>
+<div style="flex:1;min-width:0;font-size:11.5px;line-height:1.5;color:#6B7A74">Marks clear once you've scrolled past them. Whoever edited last wins — if Ana's time is wrong, change it back and she'll see the same banner tomorrow.</div>
+</div>
+</div>
+<div style="position:relative;z-index:10;flex:none;display:flex;gap:2px;padding:7px 8px 10px;background:rgba(255,255,255,.94);border-top:1px solid #E4E8E5">
+<div style="flex:1;min-height:46px;display:flex;flex-direction:column;align-items:center;justify-content:center;gap:3px;border-radius:12px;color:#9AA6A1"><svg width="20" height="20" viewBox="0 0 20 20" fill="none"><path d="M10 18s6-5.2 6-10A6 6 0 0 0 4 8c0 4.8 6 10 6 10z" stroke="#9AA6A1" stroke-width="1.7" stroke-linejoin="round"></path><circle cx="10" cy="8" r="2.2" stroke="#9AA6A1" stroke-width="1.7"></circle></svg><span style="font-size:9.5px;font-weight:700">Map</span></div>
+<div style="flex:1;min-height:46px;display:flex;flex-direction:column;align-items:center;justify-content:center;gap:3px;border-radius:12px;background:#F2F3F1;color:#14201C"><svg width="20" height="20" viewBox="0 0 20 20" fill="none"><g stroke="#14201C" stroke-width="1.7" stroke-linecap="round"><path d="M3 5.5h14M3 10h14M3 14.5h9"></path></g></svg><span style="font-size:9.5px;font-weight:700">Plan</span></div>
+<div style="flex:1;min-height:46px;display:flex;flex-direction:column;align-items:center;justify-content:center;gap:3px;border-radius:12px;color:#9AA6A1"><svg width="20" height="20" viewBox="0 0 20 20" fill="none"><path d="M4.5 6.5h11l-1 10h-9l-1-10z" stroke="#9AA6A1" stroke-width="1.7" stroke-linejoin="round"></path><path d="M7.5 6.5V5a2.5 2.5 0 0 1 5 0v1.5" stroke="#9AA6A1" stroke-width="1.7" stroke-linecap="round"></path></svg><span style="font-size:9.5px;font-weight:700">Shop</span></div>
+<div style="flex:1;min-height:46px;display:flex;flex-direction:column;align-items:center;justify-content:center;gap:3px;border-radius:12px;color:#9AA6A1"><svg width="20" height="20" viewBox="0 0 20 20" fill="none"><rect x="3.5" y="6" width="13" height="10.5" rx="2" stroke="#9AA6A1" stroke-width="1.7"></rect><path d="M7.5 6V4.5a1.5 1.5 0 0 1 1.5-1.5h2a1.5 1.5 0 0 1 1.5 1.5V6" stroke="#9AA6A1" stroke-width="1.7" stroke-linecap="round"></path></svg><span style="font-size:9.5px;font-weight:700">Prep</span></div>
+<div style="flex:1;min-height:46px;display:flex;flex-direction:column;align-items:center;justify-content:center;gap:3px;border-radius:12px;color:#9AA6A1"><svg width="20" height="20" viewBox="0 0 20 20" fill="none"><path d="M13 3.5l3.5 3.5L7 16.5H3.5V13z" stroke="#9AA6A1" stroke-width="1.7" stroke-linejoin="round"></path></svg><span style="font-size:9.5px;font-weight:700">Log</span></div>
+</div>
+</div>
+</div>
+
+<div id="2d" style="flex:none;display:flex;flex-direction:column;gap:10px">
+<div style="display:flex;align-items:baseline;gap:8px;max-width:402px;font:400 11.5px/1.3 'Public Sans',system-ui;color:#6B7A74"><a href="#2d" style="font:800 10.5px ui-monospace,Menlo,monospace;padding:3px 7px;background:#1F6F5C;color:#fff;border-radius:5px;text-decoration:none">2d</a><span><b style="color:#14201C">Shopping, on the guest's phone.</b> Replaces <a href="#1f">1f</a>. No faces, no claims, no counts — it looks like a list you own, because you do. The only trace of sharing is the arrival strip when the owner sends more, and one line saying where it came from.</span></div>
+<div style="width:402px;height:874px;background:#F2F3F1;border-radius:12px;overflow:hidden;box-shadow:0 1px 0 rgba(20,32,28,.08),0 10px 40px rgba(20,32,28,.09);display:flex;flex-direction:column">
+<div style="flex:none;padding:14px 16px 12px;background:#fff;border-bottom:1px solid #E7EAE7">
+<div style="font-size:24px;font-weight:700;letter-spacing:-.02em">Shopping</div>
+<div style="font-size:12px;color:#6B7A74;margin-top:2px">7 to buy · 4 bought · ¥18,400 spent</div>
+<div style="display:flex;gap:6px;margin-top:10px">
+<div style="flex:none;height:30px;padding:0 11px;border-radius:10px;background:#14201C;color:#fff;font-size:12px;font-weight:650;display:flex;align-items:center;white-space:nowrap">Everything</div>
+<div style="flex:none;height:30px;padding:0 11px;border-radius:10px;background:#fff;color:#6B7A74;font-size:12px;font-weight:650;display:flex;align-items:center;white-space:nowrap">Still to buy</div>
+<div style="flex:none;height:30px;padding:0 11px;border-radius:10px;background:#fff;color:#6B7A74;font-size:12px;font-weight:650;display:flex;align-items:center;white-space:nowrap">By place</div>
+</div>
+</div>
+<div style="flex:1;min-height:0;overflow:hidden;padding:12px 16px 24px">
+
+<div style="background:#fff;border-radius:14px;padding:12px 13px;margin-bottom:12px;display:flex;gap:11px;align-items:flex-start">
+<div style="width:26px;height:26px;flex:none;border-radius:8px;background:#E6EFEB;display:flex;align-items:center;justify-content:center"><svg width="13" height="13" viewBox="0 0 13 13"><path d="M6.5 11V2M2.5 6l4-4 4 4" stroke="#1F6F5C" stroke-width="1.8" fill="none" stroke-linecap="round" stroke-linejoin="round"></path></svg></div>
+<div style="flex:1;min-width:0"><div style="font-size:13px;font-weight:700">Ana sent 4 more items</div><div style="font-size:11.5px;line-height:1.45;color:#6B7A74;margin-top:2px">Added to your list. Nothing you'd already bought or removed was touched.</div></div>
+<div style="flex:none;font-size:11.5px;font-weight:700;color:#6B7A74">Hide</div>
+</div>
+
+<div style="display:flex;align-items:center;gap:8px;padding:0 2px 8px"><div style="flex:1;min-width:0;font-size:12.5px;font-weight:700">Nishi Market</div><div style="font-size:11px;font-weight:650;color:#98A5A0">4 items</div></div>
+
+<div style="background:#fff;border-radius:14px;padding:11px 12px;display:flex;gap:11px;align-items:center;margin-bottom:8px">
+<div style="width:22px;height:22px;flex:none;border-radius:7px;background:#fff;border:1.6px solid #D2D8D3"></div>
+<div style="flex:1;min-width:0"><div style="font-size:13.5px;font-weight:650;line-height:1.25">Kitchen knife, Sakai steel</div><div style="font-size:11px;color:#98A5A0;margin-top:2px">middle aisle · about ¥12,000</div></div>
+</div>
+
+<div style="background:#fff;border-radius:14px;padding:11px 12px;display:flex;gap:11px;align-items:center;margin-bottom:8px">
+<div style="width:22px;height:22px;flex:none;border-radius:7px;background:#fff;border:1.6px solid #D2D8D3"></div>
+<div style="flex:1;min-width:0"><div style="font-size:13.5px;font-weight:650;line-height:1.25">Yuzu kosho ×3</div><div style="font-size:11px;color:#98A5A0;margin-top:2px">north end, dried goods · ¥900 each</div></div>
+<span style="flex:none;padding:3px 7px;border-radius:6px;font-size:9.5px;font-weight:800;letter-spacing:.04em;background:#E6EFEB;color:#1F6F5C">NEW</span>
+</div>
+
+<div style="border-radius:14px;overflow:hidden;background:#F8E9E9;display:flex;align-items:stretch;margin-bottom:8px">
+<div style="flex:1;min-width:0;background:#fff;padding:11px 12px;display:flex;gap:11px;align-items:center;transform:translateX(-64px)">
+<div style="width:22px;height:22px;flex:none;border-radius:7px;background:#fff;border:1.6px solid #D2D8D3"></div>
+<div style="flex:1;min-width:0"><div style="font-size:13.5px;font-weight:650;line-height:1.25">Indigo tenugui, 4 of them</div><div style="font-size:11px;color:#98A5A0;margin-top:2px">stall 22 · ¥800 each</div></div>
+</div>
+<div style="width:64px;flex:none;display:flex;align-items:center;justify-content:center"><svg width="17" height="18" viewBox="0 0 17 18" fill="none"><path d="M2.5 4.5h12M6 4.5V2.6h5V4.5M4 4.5l.9 11h7.2l.9-11" stroke="#9B4B4B" stroke-width="1.7" stroke-linecap="round" stroke-linejoin="round"></path></svg></div>
+</div>
+<div style="font-size:11px;color:#98A5A0;line-height:1.45;margin:-2px 2px 12px">Same swipe as everywhere else. It leaves your list only — Ana keeps hers.</div>
+
+<div style="display:flex;align-items:center;gap:8px;padding:0 2px 8px"><div style="flex:1;min-width:0;font-size:12.5px;font-weight:700">Kaede Dept Store</div><div style="font-size:11px;font-weight:650;color:#98A5A0">3 items</div></div>
+<div style="background:#fff;border-radius:14px;padding:11px 12px;display:flex;gap:11px;align-items:center;margin-bottom:8px">
+<div style="width:22px;height:22px;flex:none;border-radius:7px;background:#fff;border:1.6px solid #D2D8D3"></div>
+<div style="flex:1;min-width:0"><div style="font-size:13.5px;font-weight:650;line-height:1.25">Matcha, ceremonial grade</div><div style="font-size:11px;color:#98A5A0;margin-top:2px">B1 food hall</div></div>
+</div>
+
+<div style="display:flex;align-items:center;gap:8px;padding:12px 2px 8px"><div style="flex:1;min-width:0;font-size:12.5px;font-weight:700;color:#6B7A74">Bought · 4</div><svg width="11" height="7" viewBox="0 0 10 6" style="flex:none"><path d="M1 1l4 4 4-4" stroke="#98A5A0" stroke-width="1.6" fill="none" stroke-linecap="round"></path></svg></div>
+<div style="background:#F7F8F6;border-radius:14px;padding:10px 12px;display:flex;gap:11px;align-items:center;margin-bottom:6px">
+<div style="width:22px;height:22px;flex:none;border-radius:7px;background:#1F6F5C;border:1.6px solid #1F6F5C;display:flex;align-items:center;justify-content:center"><svg width="11" height="9" viewBox="0 0 11 9"><path d="M1 4.5L4 7.5 10 1" stroke="#fff" stroke-width="2" fill="none" stroke-linecap="round" stroke-linejoin="round"></path></svg></div>
+<div style="flex:1;min-width:0"><div style="font-size:13px;font-weight:600;line-height:1.25;color:#6B7A74">Sesame candy, two boxes</div><div style="font-size:11px;color:#98A5A0;margin-top:2px">¥1,600 · Nishi Market</div></div>
+</div>
+<div style="background:#F7F8F6;border-radius:14px;padding:10px 12px;display:flex;gap:11px;align-items:center;margin-bottom:12px">
+<div style="width:22px;height:22px;flex:none;border-radius:7px;background:#1F6F5C;border:1.6px solid #1F6F5C;display:flex;align-items:center;justify-content:center"><svg width="11" height="9" viewBox="0 0 11 9"><path d="M1 4.5L4 7.5 10 1" stroke="#fff" stroke-width="2" fill="none" stroke-linecap="round" stroke-linejoin="round"></path></svg></div>
+<div style="flex:1;min-width:0"><div style="font-size:13px;font-weight:600;line-height:1.25;color:#6B7A74">Folding fan</div><div style="font-size:11px;color:#98A5A0;margin-top:2px">¥2,200 · Kaede Dept Store</div></div>
+</div>
+
+<div style="background:#fff;border-radius:14px;padding:11px 13px;display:flex;gap:10px;align-items:flex-start">
+<svg width="17" height="17" viewBox="0 0 18 18" fill="none" style="flex:none;margin-top:1px"><rect x="3.4" y="7.6" width="11.2" height="7.8" rx="2" stroke="#3D4C46" stroke-width="1.6"></rect><path d="M6.2 7.6V5.6a2.8 2.8 0 0 1 5.6 0v2" stroke="#3D4C46" stroke-width="1.6" stroke-linecap="round"></path></svg>
+<div style="flex:1;min-width:0;font-size:11.5px;line-height:1.5;color:#6B7A74">Started from Ana's list on 2 Mar. Since then it's yours alone — she can't see what you've bought, and neither can anyone else on the trip.</div>
+</div>
+</div>
+<div style="position:relative;z-index:10;flex:none;display:flex;gap:2px;padding:7px 8px 10px;background:rgba(255,255,255,.94);border-top:1px solid #E4E8E5">
+<div style="flex:1;min-height:46px;display:flex;flex-direction:column;align-items:center;justify-content:center;gap:3px;border-radius:12px;color:#9AA6A1"><svg width="20" height="20" viewBox="0 0 20 20" fill="none"><path d="M10 18s6-5.2 6-10A6 6 0 0 0 4 8c0 4.8 6 10 6 10z" stroke="#9AA6A1" stroke-width="1.7" stroke-linejoin="round"></path><circle cx="10" cy="8" r="2.2" stroke="#9AA6A1" stroke-width="1.7"></circle></svg><span style="font-size:9.5px;font-weight:700">Map</span></div>
+<div style="flex:1;min-height:46px;display:flex;flex-direction:column;align-items:center;justify-content:center;gap:3px;border-radius:12px;color:#9AA6A1"><svg width="20" height="20" viewBox="0 0 20 20" fill="none"><g stroke="#9AA6A1" stroke-width="1.7" stroke-linecap="round"><path d="M3 5.5h14M3 10h14M3 14.5h9"></path></g></svg><span style="font-size:9.5px;font-weight:700">Plan</span></div>
+<div style="flex:1;min-height:46px;display:flex;flex-direction:column;align-items:center;justify-content:center;gap:3px;border-radius:12px;background:#F2F3F1;color:#14201C"><svg width="20" height="20" viewBox="0 0 20 20" fill="none"><path d="M4.5 6.5h11l-1 10h-9l-1-10z" stroke="#14201C" stroke-width="1.7" stroke-linejoin="round"></path><path d="M7.5 6.5V5a2.5 2.5 0 0 1 5 0v1.5" stroke="#14201C" stroke-width="1.7" stroke-linecap="round"></path></svg><span style="font-size:9.5px;font-weight:700">Shop</span></div>
+<div style="flex:1;min-height:46px;display:flex;flex-direction:column;align-items:center;justify-content:center;gap:3px;border-radius:12px;color:#9AA6A1"><svg width="20" height="20" viewBox="0 0 20 20" fill="none"><rect x="3.5" y="6" width="13" height="10.5" rx="2" stroke="#9AA6A1" stroke-width="1.7"></rect><path d="M7.5 6V4.5a1.5 1.5 0 0 1 1.5-1.5h2a1.5 1.5 0 0 1 1.5 1.5V6" stroke="#9AA6A1" stroke-width="1.7" stroke-linecap="round"></path></svg><span style="font-size:9.5px;font-weight:700">Prep</span></div>
+<div style="flex:1;min-height:46px;display:flex;flex-direction:column;align-items:center;justify-content:center;gap:3px;border-radius:12px;color:#9AA6A1"><svg width="20" height="20" viewBox="0 0 20 20" fill="none"><path d="M13 3.5l3.5 3.5L7 16.5H3.5V13z" stroke="#9AA6A1" stroke-width="1.7" stroke-linejoin="round"></path></svg><span style="font-size:9.5px;font-weight:700">Log</span></div>
+</div>
+</div>
+</div>
+
+<div id="2e" style="flex:none;display:flex;flex-direction:column;gap:10px">
+<div style="display:flex;align-items:baseline;gap:8px;max-width:402px;font:400 11.5px/1.3 'Public Sans',system-ui;color:#6B7A74"><a href="#2e" style="font:800 10.5px ui-monospace,Menlo,monospace;padding:3px 7px;background:rgba(20,32,28,.08);color:#14201C;border-radius:5px;text-decoration:none">2e</a><span><b style="color:#14201C">The Log, private and no longer one note per day.</b> Replaces <a href="#1g">1g</a>. Many entries a day, each optionally pinned to a stop or a place; unpinned ones sit under the day itself. No author line anywhere, because there is only ever one author.</span></div>
+<div style="width:402px;height:874px;background:#F2F3F1;border-radius:12px;overflow:hidden;box-shadow:0 1px 0 rgba(20,32,28,.08),0 10px 40px rgba(20,32,28,.09);display:flex;flex-direction:column">
+<div style="flex:none;padding:14px 16px 12px;background:#fff;border-bottom:1px solid #E7EAE7">
+<div style="display:flex;align-items:flex-end;justify-content:space-between;gap:10px">
+<div style="flex:1;min-width:0"><div style="font-size:24px;font-weight:700;letter-spacing:-.02em">Log</div><div style="font-size:12px;color:#6B7A74;margin-top:2px">Day 3 · Mar 14 · 4 of your notes</div></div>
+<div style="width:40px;height:40px;flex:none;border-radius:13px;background:#14201C;display:flex;align-items:center;justify-content:center"><svg width="15" height="15" viewBox="0 0 12 12"><path d="M6 1v10M1 6h10" stroke="#fff" stroke-width="1.9" stroke-linecap="round"></path></svg></div>
+</div>
+<div style="display:flex;gap:6px;margin-top:10px">
+<div style="flex:none;height:30px;padding:0 11px;border-radius:10px;background:#14201C;color:#fff;font-size:12px;font-weight:650;display:flex;align-items:center;white-space:nowrap">This day</div>
+<div style="flex:none;height:30px;padding:0 11px;border-radius:10px;background:#fff;color:#6B7A74;font-size:12px;font-weight:650;display:flex;align-items:center;white-space:nowrap">Whole trip</div>
+<div style="flex:none;height:30px;padding:0 11px;border-radius:10px;background:#fff;color:#6B7A74;font-size:12px;font-weight:650;display:flex;align-items:center;white-space:nowrap">Photos</div>
+</div>
+</div>
+<div style="flex:1;min-height:0;overflow:hidden;padding:12px 16px 24px">
+<div style="background:#fff;border-radius:14px;padding:11px 13px;margin-bottom:12px;display:flex;gap:10px;align-items:flex-start">
+<svg width="17" height="17" viewBox="0 0 18 18" fill="none" style="flex:none;margin-top:1px"><rect x="3.4" y="7.6" width="11.2" height="7.8" rx="2" stroke="#3D4C46" stroke-width="1.6"></rect><path d="M6.2 7.6V5.6a2.8 2.8 0 0 1 5.6 0v2" stroke="#3D4C46" stroke-width="1.6" stroke-linecap="round"></path></svg>
+<div style="flex:1;min-width:0;font-size:11.5px;line-height:1.5;color:#6B7A74">Only you can read this, even on a shared trip. Nothing here is sent to Ana, Ravi or 陳美玲.</div>
+</div>
+
+<div style="display:flex;align-items:center;gap:8px;padding:0 2px 8px"><div style="flex:1;min-width:0;font-size:12.5px;font-weight:700">Nishi Market</div><div style="font-size:11px;font-weight:650;color:#98A5A0">13:00 – 15:30</div></div>
+<div style="background:#fff;border-radius:14px;padding:12px 13px;margin-bottom:8px">
+<div style="font-size:13.5px;line-height:1.5;color:#14201C;text-wrap:pretty">Knife stall in the middle aisle will engrave for free but needs 40 minutes. Left my name, pick up before 15:15 now the time moved.</div>
+<div style="display:flex;gap:5px;margin-top:9px"><div style="width:46px;height:46px;border-radius:9px;background:repeating-linear-gradient(135deg,#E2E6E2 0 8px,#DADFDA 8px 16px)"></div><div style="width:46px;height:46px;border-radius:9px;background:repeating-linear-gradient(135deg,#E2E6E2 0 8px,#DADFDA 8px 16px)"></div></div>
+<div style="font-size:11px;color:#98A5A0;font-weight:650;margin-top:9px;font-variant-numeric:tabular-nums">14:02</div>
+</div>
+<div style="background:#fff;border-radius:14px;padding:12px 13px;margin-bottom:12px">
+<div style="font-size:13.5px;line-height:1.5;color:#14201C">Cash only at the south food bars. ATM at the north gate had a queue.</div>
+<div style="display:flex;gap:8px;align-items:center;margin-top:9px"><span style="padding:3px 6px;border-radius:6px;font-size:9.5px;font-weight:800;letter-spacing:.04em;background:#F2F3F1;color:#6B7A74">NOT SENT YET</span><div style="font-size:11px;color:#98A5A0;font-weight:650;font-variant-numeric:tabular-nums">14:20</div></div>
+</div>
+
+<div style="display:flex;align-items:center;gap:8px;padding:0 2px 8px"><div style="flex:1;min-width:0;font-size:12.5px;font-weight:700">Skyline Deck</div><div style="font-size:11px;font-weight:650;color:#98A5A0">16:00 – 18:30</div></div>
+<div style="background:#fff;border-radius:14px;padding:12px 13px;margin-bottom:12px">
+<div style="font-size:13.5px;line-height:1.5;color:#14201C">Sunset was 18:04 as printed. East rail is where everyone stands — west side was empty.</div>
+<div style="font-size:11px;color:#98A5A0;font-weight:650;margin-top:9px;font-variant-numeric:tabular-nums">18:11</div>
+</div>
+
+<div style="display:flex;align-items:center;gap:8px;padding:0 2px 8px"><div style="flex:1;min-width:0;font-size:12.5px;font-weight:700;color:#6B7A74">Not about a place</div></div>
+<div style="background:#fff;border-radius:14px;padding:12px 13px;margin-bottom:12px">
+<div style="font-size:13.5px;line-height:1.5;color:#14201C">Feet destroyed. Tomorrow: trainers, not the boots.</div>
+<div style="font-size:11px;color:#98A5A0;font-weight:650;margin-top:9px;font-variant-numeric:tabular-nums">21:40</div>
+</div>
+
+<div style="background:#fff;border:1.5px dashed #D8DDD9;border-radius:14px;padding:12px 13px;display:flex;gap:10px;align-items:center">
+<svg width="15" height="15" viewBox="0 0 12 12" style="flex:none"><path d="M6 1v10M1 6h10" stroke="#98A5A0" stroke-width="1.9" stroke-linecap="round"></path></svg>
+<div style="flex:1;min-width:0;font-size:12.5px;font-weight:650;color:#6B7A74">Write a note · pin it to a stop, a place, or nothing</div>
+</div>
+</div>
+<div style="position:relative;z-index:10;flex:none;display:flex;gap:2px;padding:7px 8px 10px;background:rgba(255,255,255,.94);border-top:1px solid #E4E8E5">
+<div style="flex:1;min-height:46px;display:flex;flex-direction:column;align-items:center;justify-content:center;gap:3px;border-radius:12px;color:#9AA6A1"><svg width="20" height="20" viewBox="0 0 20 20" fill="none"><path d="M10 18s6-5.2 6-10A6 6 0 0 0 4 8c0 4.8 6 10 6 10z" stroke="#9AA6A1" stroke-width="1.7" stroke-linejoin="round"></path><circle cx="10" cy="8" r="2.2" stroke="#9AA6A1" stroke-width="1.7"></circle></svg><span style="font-size:9.5px;font-weight:700">Map</span></div>
+<div style="flex:1;min-height:46px;display:flex;flex-direction:column;align-items:center;justify-content:center;gap:3px;border-radius:12px;color:#9AA6A1"><svg width="20" height="20" viewBox="0 0 20 20" fill="none"><g stroke="#9AA6A1" stroke-width="1.7" stroke-linecap="round"><path d="M3 5.5h14M3 10h14M3 14.5h9"></path></g></svg><span style="font-size:9.5px;font-weight:700">Plan</span></div>
+<div style="flex:1;min-height:46px;display:flex;flex-direction:column;align-items:center;justify-content:center;gap:3px;border-radius:12px;color:#9AA6A1"><svg width="20" height="20" viewBox="0 0 20 20" fill="none"><path d="M4.5 6.5h11l-1 10h-9l-1-10z" stroke="#9AA6A1" stroke-width="1.7" stroke-linejoin="round"></path><path d="M7.5 6.5V5a2.5 2.5 0 0 1 5 0v1.5" stroke="#9AA6A1" stroke-width="1.7" stroke-linecap="round"></path></svg><span style="font-size:9.5px;font-weight:700">Shop</span></div>
+<div style="flex:1;min-height:46px;display:flex;flex-direction:column;align-items:center;justify-content:center;gap:3px;border-radius:12px;color:#9AA6A1"><svg width="20" height="20" viewBox="0 0 20 20" fill="none"><rect x="3.5" y="6" width="13" height="10.5" rx="2" stroke="#9AA6A1" stroke-width="1.7"></rect><path d="M7.5 6V4.5a1.5 1.5 0 0 1 1.5-1.5h2a1.5 1.5 0 0 1 1.5 1.5V6" stroke="#9AA6A1" stroke-width="1.7" stroke-linecap="round"></path></svg><span style="font-size:9.5px;font-weight:700">Prep</span></div>
+<div style="flex:1;min-height:46px;display:flex;flex-direction:column;align-items:center;justify-content:center;gap:3px;border-radius:12px;background:#F2F3F1;color:#14201C"><svg width="20" height="20" viewBox="0 0 20 20" fill="none"><path d="M13 3.5l3.5 3.5L7 16.5H3.5V13z" stroke="#14201C" stroke-width="1.7" stroke-linejoin="round"></path></svg><span style="font-size:9.5px;font-weight:700">Log</span></div>
+</div>
+</div>
+</div>
+
+<div id="2f" style="flex:none;display:flex;flex-direction:column;gap:10px">
+<div style="display:flex;align-items:baseline;gap:8px;max-width:402px;font:400 11.5px/1.3 'Public Sans',system-ui;color:#6B7A74"><a href="#2f" style="font:800 10.5px ui-monospace,Menlo,monospace;padding:3px 7px;background:rgba(20,32,28,.08);color:#14201C;border-radius:5px;text-decoration:none">2f</a><span><b style="color:#14201C">Removed from the trip, revised.</b> Replaces <a href="#1i">1i</a>. Under the new model the loss is much smaller and the screen should say so: the schedule goes, but their shopping list and their whole Log were always theirs and stay. That is worth stating, or they will assume the worst.</span></div>
+<div style="width:402px;height:874px;background:#F2F3F1;border-radius:12px;overflow:hidden;box-shadow:0 1px 0 rgba(20,32,28,.08),0 10px 40px rgba(20,32,28,.09);display:flex;flex-direction:column">
+<div style="flex:none;padding:14px 16px 12px;background:#fff;border-bottom:1px solid #E7EAE7"><div style="font-size:24px;font-weight:700;letter-spacing:-.02em">My trips</div><div style="font-size:12px;color:#6B7A74;margin-top:2px">2 trips on this phone</div></div>
+<div style="flex:1;min-height:0;overflow:hidden;padding:14px 16px 24px">
+<div style="background:#fff;border-radius:18px;padding:18px">
+<div style="font-size:10.5px;font-weight:800;letter-spacing:.06em;color:#98A5A0">NO LONGER SHARED WITH YOU</div>
+<div style="font-size:21px;font-weight:700;letter-spacing:-.02em;line-height:1.2;margin-top:8px">Meridian City · Group Tour</div>
+<div style="font-size:13px;line-height:1.55;color:#3D4C46;margin-top:8px;text-wrap:pretty">Ana Lim removed you on 14 Mar. The schedule and the places have gone from this phone — you'll no longer see changes to them.</div>
+<div style="background:#F7F8F6;border-radius:12px;padding:12px;margin-top:14px">
+<div style="font-size:11px;font-weight:800;letter-spacing:.06em;color:#98A5A0">STILL YOURS, UNTOUCHED</div>
+<div style="display:flex;flex-direction:column;gap:7px;margin-top:8px">
+<div style="display:flex;gap:9px;align-items:flex-start"><svg width="13" height="11" viewBox="0 0 11 9" style="flex:none;margin-top:4px"><path d="M1 4.5L4 7.5 10 1" stroke="#1F6F5C" stroke-width="2" fill="none" stroke-linecap="round" stroke-linejoin="round"></path></svg><div style="flex:1;font-size:12px;line-height:1.45;color:#3D4C46">Your shopping list, all 15 items and what you bought</div></div>
+<div style="display:flex;gap:9px;align-items:flex-start"><svg width="13" height="11" viewBox="0 0 11 9" style="flex:none;margin-top:4px"><path d="M1 4.5L4 7.5 10 1" stroke="#1F6F5C" stroke-width="2" fill="none" stroke-linecap="round" stroke-linejoin="round"></path></svg><div style="flex:1;font-size:12px;line-height:1.45;color:#3D4C46">Your Log — 22 notes and 60 photos</div></div>
+<div style="display:flex;gap:9px;align-items:flex-start"><svg width="13" height="11" viewBox="0 0 11 9" style="flex:none;margin-top:4px"><path d="M1 4.5L4 7.5 10 1" stroke="#1F6F5C" stroke-width="2" fill="none" stroke-linecap="round" stroke-linejoin="round"></path></svg><div style="flex:1;font-size:12px;line-height:1.45;color:#3D4C46">Your packing list, which was never shared</div></div>
+</div>
+</div>
+<div style="height:46px;border-radius:12px;background:#14201C;color:#fff;font-size:13px;font-weight:700;display:flex;align-items:center;justify-content:center;margin-top:14px">Keep my side as its own trip</div>
+<div style="height:44px;border-radius:12px;background:#F2F3F1;border:1px solid #E1E5E1;color:#3D4C46;font-size:13px;font-weight:650;display:flex;align-items:center;justify-content:center;margin-top:8px">Message Ana</div>
+</div>
+<div style="font-size:11px;color:#98A5A0;line-height:1.45;margin:12px 2px 0">Keeping it makes a trip only you can see, with the dates, your lists and your Log. The stops don't come with it.</div>
+<div style="background:#fff;border-radius:16px;padding:14px;margin-top:14px;display:flex;gap:12px;align-items:center">
+<div style="width:44px;height:44px;flex:none;border-radius:13px;background:#1F6F5C;color:#fff;font-size:13px;font-weight:700;display:flex;align-items:center;justify-content:center">KY</div>
+<div style="flex:1;min-width:0"><div style="font-size:15px;font-weight:650">Kyoto, on my own</div><div style="font-size:11.5px;color:#6B7A74;margin-top:2px">4 – 9 Apr · 5 days · just you</div></div>
+<svg width="7" height="12" viewBox="0 0 7 12" style="flex:none"><path d="M1 1l5 5-5 5" stroke="#98A5A0" stroke-width="1.8" fill="none" stroke-linecap="round"></path></svg>
+</div>
+</div>
+</div>
+</div>
+
+</div>
+</section>
+
+<section style="padding:44px 48px 40px">
+<div style="display:flex;align-items:baseline;gap:10px;margin:0 0 8px"><a href="#1a" style="font:800 10px ui-monospace,Menlo,monospace;padding:4px 8px;background:#14201C;color:#fff;border-radius:5px;text-decoration:none">1</a><span style="font:650 13px/1.2 'Public Sans',system-ui">Sharing one trip · invite, roles, attribution <span style="font-weight:400;color:#6B7A74">— superseded in part by turn 2</span></span></div>
+
+<div style="display:flex;gap:26px;flex-wrap:wrap;align-items:flex-start;margin-bottom:36px">
+<div style="width:520px;background:#fff;border-radius:18px;padding:24px 26px;border:1px solid rgba(20,32,28,.08)">
+<div style="font-size:10.5px;font-weight:800;letter-spacing:.1em;color:#98A5A0">MY RECOMMENDATION</div>
+<div style="font-size:22px;font-weight:700;letter-spacing:-.02em;margin:8px 0 14px">A link, one per trip, that expires</div>
+<p style="font-size:13.5px;line-height:1.6;color:#3D4C46;margin:0 0 10px;text-wrap:pretty">Your travellers are already in a group chat. A link goes where that conversation is and asks nobody to type anything. A code needs a screen to type it into and a keyboard on a phone, which is a whole flow to build and explain; email needs addresses you may not have and lands in Promotions. The link carries the trip and the role — not your account — so it can be turned off, and it expires on its own if you forget.</p>
+<p style="font-size:13.5px;line-height:1.6;color:#3D4C46;margin:0 0 10px">The other reason is identity. With a link you collect it at the moment of accepting, on their phone, in whichever way they already sign in. You never have to know how your uncle does email.</p>
+<p style="font-size:13.5px;line-height:1.6;color:#3D4C46;margin:0">Before accepting, they see the trip and not a signup: name, dates, who invited them, what they will be allowed to do, and a real read-only look at Day 1 (<a href="#1c">1c</a>). Most of them have never seen this app, so the first screen has to prove it is a schedule.</p>
+<div style="height:1px;background:#EDEFEC;margin:16px 0"></div>
+<div style="font-size:10.5px;font-weight:800;letter-spacing:.1em;color:#98A5A0">TWO LEVELS, AND ONE OWNER</div>
+<p style="font-size:13.5px;line-height:1.6;color:#3D4C46;margin:8px 0 0">Agreed: <b>can edit</b> and <b>can read</b>. The only third level worth anything would be "can add notes but not move stops", and that is a paragraph of explanation for a case that resolves itself socially. What makes two levels enough is that owner is not a level — it is you. Only the owner invites, changes a role, removes a person, or deletes the trip, so an editor can be generous without being dangerous.</p>
+</div>
+<div style="width:360px;background:#14201C;color:#fff;border-radius:18px;padding:24px 26px">
+<div style="font-size:10.5px;font-weight:800;letter-spacing:.1em;color:#8FB3A6">WHERE A NAME APPEARS</div>
+<div style="display:flex;flex-direction:column;gap:13px;margin-top:14px">
+<div style="font-size:12.5px;line-height:1.5;color:#C8D6D0"><b style="color:#fff">Only where two people can collide, or where the words are the point.</b> That is shopping and notes. Everything else stays clean.</div>
+<div style="font-size:12.5px;line-height:1.5;color:#C8D6D0"><b style="color:#fff">Shopping says it in words, not faces.</b> An unclaimed row carries nothing. A claimed row says <i>Ana's getting this</i>. A bought row moves out of the buying list. No avatar grid — the row you can still act on is the row with no name on it.</div>
+<div style="font-size:12.5px;line-height:1.5;color:#C8D6D0"><b style="color:#fff">Notes carry an author</b> because a note is somebody talking. Initial, name, time, once per note.</div>
+<div style="font-size:12.5px;line-height:1.5;color:#C8D6D0"><b style="color:#fff">Packing is nobody's business.</b> Each person's bag is their own list, attributed once at the top, never per item.</div>
+<div style="font-size:12.5px;line-height:1.5;color:#C8D6D0"><b style="color:#fff">Times and stops carry no name</b> until two edits disagree — then, and only then, the row says who moved it (<a href="#1j" style="color:#8FB3A6">1j</a>).</div>
+<div style="font-size:12.5px;line-height:1.5;color:#C8D6D0">People are one grey chip with an initial, so eight travellers and 中文 names both fit.</div>
+</div>
+</div>
+</div>
+
+<div style="display:grid;grid-template-columns:repeat(3,402px);gap:34px;align-items:start;justify-content:start">
+
+<div id="1a" style="flex:none;display:flex;flex-direction:column;gap:10px">
+<div style="display:flex;align-items:baseline;gap:8px;max-width:402px;font:400 11.5px/1.3 'Public Sans',system-ui;color:#6B7A74"><a href="#1a" style="font:800 10.5px ui-monospace,Menlo,monospace;padding:3px 7px;background:#1F6F5C;color:#fff;border-radius:5px;text-decoration:none">1a</a><span><b style="color:#14201C">Share, before anyone has it.</b> Reached from Trip settings. The role and the expiry are chosen before the link exists, so the link is never a thing you have to go back and fix.</span></div>
+<div style="width:402px;height:874px;background:#F2F3F1;border-radius:12px;overflow:hidden;box-shadow:0 1px 0 rgba(20,32,28,.08),0 10px 40px rgba(20,32,28,.09);display:flex;flex-direction:column">
+<div style="flex:none;padding:14px 16px 12px;background:#fff;border-bottom:1px solid #E7EAE7;display:flex;align-items:center;gap:10px">
+<div style="width:32px;height:32px;flex:none;display:flex;align-items:center;justify-content:center"><svg width="11" height="18" viewBox="0 0 11 18"><path d="M9 1L2 9l7 8" stroke="#14201C" stroke-width="2.2" fill="none" stroke-linecap="round" stroke-linejoin="round"></path></svg></div>
+<div style="flex:1;min-width:0"><div style="font-size:17px;font-weight:700;letter-spacing:-.01em">Share this trip</div><div style="font-size:11.5px;color:#6B7A74;margin-top:1px">Meridian City · Group Tour</div></div>
+</div>
+<div style="flex:1;min-height:0;overflow:hidden;padding:14px 16px 24px">
+<div style="background:#fff;border-radius:16px;overflow:hidden">
+<div style="padding:11px 14px;font-size:10.5px;font-weight:800;letter-spacing:.06em;color:#98A5A0">WHO HAS IT</div>
+<div style="padding:11px 14px;border-top:1px solid #F0F2F0;display:flex;gap:11px;align-items:center">
+<div style="width:30px;height:30px;flex:none;border-radius:10px;background:#14201C;color:#fff;font-size:12px;font-weight:800;display:flex;align-items:center;justify-content:center">W</div>
+<div style="flex:1;min-width:0"><div style="font-size:13.5px;font-weight:650">You</div><div style="font-size:11.5px;color:#6B7A74;margin-top:1px">Made this trip</div></div>
+<span style="flex:none;padding:3px 7px;border-radius:6px;font-size:9.5px;font-weight:800;letter-spacing:.04em;background:#E6EFEB;color:#1F6F5C">OWNER</span>
+</div>
+<div style="padding:11px 14px;border-top:1px solid #F0F2F0;font-size:12px;color:#98A5A0">Nobody else, yet.</div>
+</div>
+
+<div style="background:#fff;border-radius:16px;padding:14px;margin-top:12px">
+<div style="font-size:10.5px;font-weight:800;letter-spacing:.06em;color:#98A5A0">INVITE BY LINK</div>
+<div style="font-size:13px;line-height:1.5;color:#3D4C46;margin-top:7px;text-wrap:pretty">Send one link to the group chat. Whoever opens it joins this trip only — your other trips and your account stay yours.</div>
+
+<div style="font-size:11px;font-weight:800;letter-spacing:.06em;color:#98A5A0;margin-top:16px">THEY WILL BE ABLE TO</div>
+<div style="display:flex;gap:8px;margin-top:7px">
+<div style="flex:1;border:1.5px solid #14201C;border-radius:12px;background:#fff;padding:10px 11px"><div style="font-size:13px;font-weight:700">Edit</div><div style="font-size:11px;color:#6B7A74;line-height:1.35;margin-top:2px">Add stops, change times, tick the shopping list, write notes</div></div>
+<div style="flex:1;border:1px solid #E1E5E1;border-radius:12px;background:#fff;padding:10px 11px"><div style="font-size:13px;font-weight:650;color:#3D4C46">Read</div><div style="font-size:11px;color:#98A5A0;line-height:1.35;margin-top:2px">See everything, change nothing</div></div>
+</div>
+<div style="font-size:11px;color:#98A5A0;line-height:1.45;margin-top:7px">You can change this per person afterwards.</div>
+
+<div style="font-size:11px;font-weight:800;letter-spacing:.06em;color:#98A5A0;margin-top:16px">LINK STOPS WORKING AFTER</div>
+<div style="display:flex;gap:6px;margin-top:7px;flex-wrap:wrap">
+<div style="height:32px;padding:0 12px;border-radius:10px;background:#fff;border:1px solid #E1E5E1;color:#3D4C46;font-size:12px;font-weight:650;display:flex;align-items:center;white-space:nowrap">24 hours</div>
+<div style="height:32px;padding:0 12px;border-radius:10px;background:#14201C;border:1px solid #14201C;color:#fff;font-size:12px;font-weight:700;display:flex;align-items:center;white-space:nowrap">7 days</div>
+<div style="height:32px;padding:0 12px;border-radius:10px;background:#fff;border:1px solid #E1E5E1;color:#3D4C46;font-size:12px;font-weight:650;display:flex;align-items:center;white-space:nowrap">Until the trip ends</div>
+</div>
+<div style="height:46px;border-radius:12px;background:#1F6F5C;color:#fff;font-size:13px;font-weight:700;display:flex;align-items:center;justify-content:center;margin-top:16px">Create the link</div>
+</div>
+<div style="font-size:11px;color:#98A5A0;line-height:1.45;margin-top:12px;padding:0 2px">People who join keep the trip until you remove them, even after the link expires.</div>
+</div>
+</div>
+</div>
+
+<div id="1b" style="flex:none;display:flex;flex-direction:column;gap:10px">
+<div style="display:flex;align-items:baseline;gap:8px;max-width:402px;font:400 11.5px/1.3 'Public Sans',system-ui;color:#6B7A74"><a href="#1b" style="font:800 10.5px ui-monospace,Menlo,monospace;padding:3px 7px;background:rgba(20,32,28,.08);color:#14201C;border-radius:5px;text-decoration:none">1b</a><span><b style="color:#14201C">Share, in use.</b> One list of people, one role each, tap a row to change it. Taking it back is the swipe you already have — shown mid-swipe on Ravi. The link is a separate thing from the people, and switching it off leaves them in.</span></div>
+<div style="width:402px;height:874px;background:#F2F3F1;border-radius:12px;overflow:hidden;box-shadow:0 1px 0 rgba(20,32,28,.08),0 10px 40px rgba(20,32,28,.09);display:flex;flex-direction:column">
+<div style="flex:none;padding:14px 16px 12px;background:#fff;border-bottom:1px solid #E7EAE7;display:flex;align-items:center;gap:10px">
+<div style="width:32px;height:32px;flex:none;display:flex;align-items:center;justify-content:center"><svg width="11" height="18" viewBox="0 0 11 18"><path d="M9 1L2 9l7 8" stroke="#14201C" stroke-width="2.2" fill="none" stroke-linecap="round" stroke-linejoin="round"></path></svg></div>
+<div style="flex:1;min-width:0"><div style="font-size:17px;font-weight:700;letter-spacing:-.01em">Share this trip</div><div style="font-size:11.5px;color:#6B7A74;margin-top:1px">Meridian City · Group Tour · 4 people</div></div>
+</div>
+<div style="flex:1;min-height:0;overflow:hidden;padding:14px 16px 24px">
+<div style="background:#fff;border-radius:16px;overflow:hidden">
+<div style="padding:11px 14px;font-size:10.5px;font-weight:800;letter-spacing:.06em;color:#98A5A0">WHO HAS IT</div>
+<div style="padding:11px 14px;border-top:1px solid #F0F2F0;display:flex;gap:11px;align-items:center">
+<div style="width:30px;height:30px;flex:none;border-radius:10px;background:#14201C;color:#fff;font-size:12px;font-weight:800;display:flex;align-items:center;justify-content:center">W</div>
+<div style="flex:1;min-width:0"><div style="font-size:13.5px;font-weight:650">You</div><div style="font-size:11.5px;color:#6B7A74;margin-top:1px">Made this trip</div></div>
+<span style="flex:none;padding:3px 7px;border-radius:6px;font-size:9.5px;font-weight:800;letter-spacing:.04em;background:#E6EFEB;color:#1F6F5C">OWNER</span>
+</div>
+<div style="padding:11px 14px;border-top:1px solid #F0F2F0;display:flex;gap:11px;align-items:center">
+<div style="width:30px;height:30px;flex:none;border-radius:10px;background:#EDEFEC;color:#3D4C46;font-size:12px;font-weight:800;display:flex;align-items:center;justify-content:center">A</div>
+<div style="flex:1;min-width:0"><div style="font-size:13.5px;font-weight:650">Ana Lim</div><div style="font-size:11.5px;color:#6B7A74;margin-top:1px">Joined 2 Mar · last opened 10 min ago</div></div>
+<span style="flex:none;padding:4px 8px;border-radius:8px;font-size:11px;font-weight:700;background:#F2F3F1;color:#3D4C46">Can edit</span>
+</div>
+<div style="padding:11px 14px;border-top:1px solid #F0F2F0;display:flex;gap:11px;align-items:center">
+<div style="width:30px;height:30px;flex:none;border-radius:10px;background:#EDEFEC;color:#3D4C46;font-size:12px;font-weight:800;display:flex;align-items:center;justify-content:center">陳</div>
+<div style="flex:1;min-width:0"><div style="font-size:13.5px;font-weight:650">陳美玲</div><div style="font-size:11.5px;color:#6B7A74;margin-top:1px">Joined 3 Mar</div></div>
+<span style="flex:none;padding:4px 8px;border-radius:8px;font-size:11px;font-weight:700;background:#F2F3F1;color:#3D4C46">Can read</span>
+</div>
+<div style="border-top:1px solid #F0F2F0;position:relative;background:#F8E9E9;display:flex;align-items:stretch">
+<div style="flex:1;min-width:0;padding:11px 14px;display:flex;gap:11px;align-items:center;background:#fff;transform:translateX(-64px)">
+<div style="width:30px;height:30px;flex:none;border-radius:10px;background:#EDEFEC;color:#3D4C46;font-size:12px;font-weight:800;display:flex;align-items:center;justify-content:center">R</div>
+<div style="flex:1;min-width:0"><div style="font-size:13.5px;font-weight:650">Ravi</div><div style="font-size:11.5px;color:#6B7A74;margin-top:1px">Joined 4 Mar</div></div>
+<span style="flex:none;padding:4px 8px;border-radius:8px;font-size:11px;font-weight:700;background:#F2F3F1;color:#3D4C46">Can edit</span>
+</div>
+<div style="width:64px;flex:none;display:flex;align-items:center;justify-content:center;color:#9B4B4B"><svg width="17" height="18" viewBox="0 0 17 18" fill="none"><path d="M2.5 4.5h12M6 4.5V2.6h5V4.5M4 4.5l.9 11h7.2l.9-11" stroke="#9B4B4B" stroke-width="1.7" stroke-linecap="round" stroke-linejoin="round"></path></svg></div>
+</div>
+<div style="padding:11px 14px;border-top:1px solid #F0F2F0;display:flex;gap:11px;align-items:center">
+<div style="width:30px;height:30px;flex:none;border-radius:10px;background:#fff;border:1.5px dashed #C9D0CB;display:flex;align-items:center;justify-content:center"><svg width="12" height="12" viewBox="0 0 12 12"><path d="M6 1v10M1 6h10" stroke="#98A5A0" stroke-width="1.8" stroke-linecap="round"></path></svg></div>
+<div style="flex:1;min-width:0;font-size:13px;font-weight:650;color:#3D4C46">Add someone</div>
+<svg width="7" height="12" viewBox="0 0 7 12" style="flex:none"><path d="M1 1l5 5-5 5" stroke="#98A5A0" stroke-width="1.8" fill="none" stroke-linecap="round"></path></svg>
+</div>
+</div>
+<div style="font-size:11px;color:#98A5A0;line-height:1.45;margin-top:8px;padding:0 2px">Swipe a person left to remove them, the same as anywhere else. They lose the trip; their notes and photos stay in it.</div>
+
+<div style="background:#fff;border-radius:16px;padding:14px;margin-top:12px">
+<div style="display:flex;gap:8px;align-items:baseline"><div style="flex:1;font-size:10.5px;font-weight:800;letter-spacing:.06em;color:#98A5A0">THE LINK</div><span style="padding:3px 7px;border-radius:6px;font-size:9.5px;font-weight:800;letter-spacing:.04em;background:#E6EFEB;color:#1F6F5C">LIVE</span></div>
+<div style="font-family:ui-monospace,Menlo,monospace;font-size:12px;color:#3D4C46;background:#F7F8F6;border-radius:10px;padding:9px 10px;margin-top:8px;white-space:nowrap;overflow:hidden;text-overflow:ellipsis">planner.app/j/8QK2-M7VD</div>
+<div style="font-size:11.5px;color:#6B7A74;margin-top:7px">Joins as <b style="color:#14201C">Can edit</b> · expires 11 Mar · opened 3 times</div>
+<div style="display:flex;gap:8px;margin-top:12px">
+<div style="flex:1;height:42px;border-radius:12px;background:#14201C;color:#fff;font-size:13px;font-weight:700;display:flex;align-items:center;justify-content:center">Send it</div>
+<div style="flex:none;width:96px;height:42px;border-radius:12px;background:#F2F3F1;border:1px solid #E1E5E1;color:#14201C;font-size:13px;font-weight:650;display:flex;align-items:center;justify-content:center">Copy</div>
+</div>
+<div style="height:40px;border-radius:12px;background:#F8E9E9;color:#9B4B4B;font-size:12.5px;font-weight:700;display:flex;align-items:center;justify-content:center;margin-top:8px">Turn the link off</div>
+<div style="font-size:11px;color:#98A5A0;line-height:1.45;margin-top:8px">Turning it off stops new people joining. The three who already have the trip keep it.</div>
+</div>
+</div>
+</div>
+</div>
+
+<div id="1c" style="flex:none;display:flex;flex-direction:column;gap:10px">
+<div style="display:flex;align-items:baseline;gap:8px;max-width:402px;font:400 11.5px/1.3 'Public Sans',system-ui;color:#6B7A74"><a href="#1c" style="font:800 10.5px ui-monospace,Menlo,monospace;padding:3px 7px;background:rgba(20,32,28,.08);color:#14201C;border-radius:5px;text-decoration:none">1c</a><span><b style="color:#14201C">What the invited person sees.</b> Opened in Safari by someone who has never seen this app. Trip first, real stops they can scroll, then one button. No account needed to look — only to join.</span></div>
+<div style="width:402px;height:874px;background:#F2F3F1;border-radius:12px;overflow:hidden;box-shadow:0 1px 0 rgba(20,32,28,.08),0 10px 40px rgba(20,32,28,.09);display:flex;flex-direction:column">
+<div style="flex:none;padding:9px 16px;background:#EDEFEC;border-bottom:1px solid #E1E5E1;display:flex;align-items:center;gap:8px">
+<svg width="12" height="12" viewBox="0 0 12 12" fill="none" style="flex:none"><rect x="1.6" y="5" width="8.8" height="6.2" rx="1.6" stroke="#6B7A74" stroke-width="1.4"></rect><path d="M3.9 5V3.4a2.1 2.1 0 0 1 4.2 0V5" stroke="#6B7A74" stroke-width="1.4" stroke-linecap="round"></path></svg>
+<div style="flex:1;min-width:0;font-family:ui-monospace,Menlo,monospace;font-size:11px;color:#6B7A74;white-space:nowrap;overflow:hidden;text-overflow:ellipsis">planner.app/j/8QK2-M7VD</div>
+</div>
+<div style="flex:1;min-height:0;overflow:hidden;padding:20px 16px 24px">
+<div style="display:flex;gap:11px;align-items:center">
+<div style="width:34px;height:34px;flex:none;border-radius:11px;background:#EDEFEC;color:#3D4C46;font-size:13px;font-weight:800;display:flex;align-items:center;justify-content:center">A</div>
+<div style="flex:1;min-width:0;font-size:13px;line-height:1.4;color:#3D4C46"><b style="color:#14201C">Ana Lim</b> is sharing a trip with you</div>
+</div>
+<div style="font-size:28px;font-weight:700;letter-spacing:-.02em;line-height:1.15;margin-top:18px">Meridian City<br>Group Tour</div>
+<div style="font-size:13px;color:#6B7A74;margin-top:6px">12 – 17 Mar 2026 · 6 days · 17 stops</div>
+
+<div style="background:#fff;border-radius:16px;overflow:hidden;margin-top:18px">
+<div style="padding:11px 14px;display:flex;gap:8px;align-items:baseline"><div style="flex:1;font-size:10.5px;font-weight:800;letter-spacing:.06em;color:#98A5A0">DAY 1 · THU 12 MAR</div><div style="font-size:11px;font-weight:650;color:#98A5A0">a look at it</div></div>
+<div style="padding:10px 14px;border-top:1px solid #F0F2F0;display:flex;gap:11px;align-items:center"><div style="width:44px;flex:none;font-size:12.5px;font-weight:700;font-variant-numeric:tabular-nums">09:00</div><div style="flex:1;min-width:0"><div style="font-size:13.5px;font-weight:650">Airport pickup</div><div style="font-size:11.5px;color:#6B7A74;margin-top:2px">meet guide at arrivals, gate B</div></div></div>
+<div style="padding:10px 14px;border-top:1px solid #F0F2F0;display:flex;gap:11px;align-items:center"><div style="width:44px;flex:none;font-size:12.5px;font-weight:700;font-variant-numeric:tabular-nums">13:00</div><div style="flex:1;min-width:0"><div style="font-size:13.5px;font-weight:650">Hotel Meridian, check in</div></div></div>
+<div style="padding:10px 14px;border-top:1px solid #F0F2F0;display:flex;gap:11px;align-items:center"><div style="width:44px;flex:none;font-size:12.5px;font-weight:700;font-variant-numeric:tabular-nums">18:30</div><div style="flex:1;min-width:0"><div style="font-size:13.5px;font-weight:650">Welcome dinner, Harbour Steps</div></div></div>
+<div style="padding:10px 14px;border-top:1px solid #F0F2F0;font-size:11.5px;color:#98A5A0">and five more days</div>
+</div>
+
+<div style="background:#fff;border-radius:16px;padding:14px;margin-top:12px">
+<div style="font-size:10.5px;font-weight:800;letter-spacing:.06em;color:#98A5A0">IF YOU JOIN</div>
+<div style="display:flex;flex-direction:column;gap:8px;margin-top:9px">
+<div style="display:flex;gap:9px;align-items:flex-start"><svg width="13" height="11" viewBox="0 0 11 9" style="flex:none;margin-top:4px"><path d="M1 4.5L4 7.5 10 1" stroke="#1F6F5C" stroke-width="2" fill="none" stroke-linecap="round" stroke-linejoin="round"></path></svg><div style="flex:1;font-size:12.5px;line-height:1.45;color:#3D4C46">You get the schedule, the shopping list and everyone's notes — and you can change them.</div></div>
+<div style="display:flex;gap:9px;align-items:flex-start"><svg width="13" height="11" viewBox="0 0 11 9" style="flex:none;margin-top:4px"><path d="M1 4.5L4 7.5 10 1" stroke="#1F6F5C" stroke-width="2" fill="none" stroke-linecap="round" stroke-linejoin="round"></path></svg><div style="flex:1;font-size:12.5px;line-height:1.45;color:#3D4C46">It works with no signal once you have opened it.</div></div>
+<div style="display:flex;gap:9px;align-items:flex-start"><svg width="13" height="11" viewBox="0 0 11 9" style="flex:none;margin-top:4px"><path d="M1 4.5L4 7.5 10 1" stroke="#1F6F5C" stroke-width="2" fill="none" stroke-linecap="round" stroke-linejoin="round"></path></svg><div style="flex:1;font-size:12.5px;line-height:1.45;color:#3D4C46">This one trip only. Ana sees nothing else of yours.</div></div>
+</div>
+</div>
+
+<div style="height:48px;border-radius:12px;background:#1F6F5C;color:#fff;font-size:13.5px;font-weight:700;display:flex;align-items:center;justify-content:center;margin-top:14px">Join this trip</div>
+<div style="font-size:11px;color:#98A5A0;line-height:1.45;text-align:center;margin-top:9px">You sign in next, so your name shows on what you change. Link expires 11 Mar.</div>
+</div>
+</div>
+</div>
+
+<div id="1d" style="flex:none;display:flex;flex-direction:column;gap:10px">
+<div style="display:flex;align-items:baseline;gap:8px;max-width:402px;font:400 11.5px/1.3 'Public Sans',system-ui;color:#6B7A74"><a href="#1d" style="font:800 10.5px ui-monospace,Menlo,monospace;padding:3px 7px;background:rgba(20,32,28,.08);color:#14201C;border-radius:5px;text-decoration:none">1d</a><span><b style="color:#14201C">Sign in, at the last possible moment.</b> The trip stays on screen behind the reason. This is also where an existing user's own trips are kept — the one sentence that stops people fearing sign-in.</span></div>
+<div style="width:402px;height:874px;background:#F2F3F1;border-radius:12px;overflow:hidden;box-shadow:0 1px 0 rgba(20,32,28,.08),0 10px 40px rgba(20,32,28,.09);display:flex;flex-direction:column;position:relative">
+<div style="flex:1;min-height:0;position:relative;overflow:hidden">
+<div style="position:absolute;inset:0;background:#F2F3F1;padding:20px 16px">
+<div style="font-size:28px;font-weight:700;letter-spacing:-.02em;line-height:1.15">Meridian City<br>Group Tour</div>
+<div style="font-size:13px;color:#6B7A74;margin-top:6px">12 – 17 Mar 2026 · 6 days · 17 stops</div>
+</div>
+<div style="position:absolute;inset:0;background:rgba(20,32,28,.42)"></div>
+</div>
+<div style="position:relative;background:#fff;border-radius:22px 22px 0 0;box-shadow:0 -8px 30px rgba(20,32,28,.16);padding:8px 16px 20px">
+<i style="display:block;width:40px;height:4px;border-radius:2px;background:#D8DDD9;margin:0 auto 14px"></i>
+<div style="font-size:19px;font-weight:700;letter-spacing:-.01em">Who are you?</div>
+<div style="font-size:12.5px;line-height:1.5;color:#3D4C46;margin-top:6px;text-wrap:pretty">One tap. It is how your name appears on a note you write, and how you get the trip back on a new phone.</div>
+<div style="display:flex;flex-direction:column;gap:8px;margin-top:16px">
+<div style="height:48px;border-radius:12px;background:#14201C;color:#fff;font-size:13.5px;font-weight:700;display:flex;align-items:center;justify-content:center;gap:8px">Continue with Apple</div>
+<div style="height:48px;border-radius:12px;background:#fff;border:1px solid #E1E5E1;color:#14201C;font-size:13.5px;font-weight:650;display:flex;align-items:center;justify-content:center;gap:8px">Continue with Google</div>
+<div style="height:48px;border-radius:12px;background:#fff;border:1px solid #E1E5E1;color:#14201C;font-size:13.5px;font-weight:650;display:flex;align-items:center;justify-content:center;gap:8px">Use my email instead</div>
+</div>
+<div style="background:#F7F8F6;border-radius:12px;padding:11px 12px;margin-top:14px">
+<div style="font-size:10.5px;font-weight:800;letter-spacing:.06em;color:#98A5A0">ALREADY MADE A TRIP ON THIS PHONE?</div>
+<div style="font-size:12px;line-height:1.5;color:#3D4C46;margin-top:5px">It comes with you. Signing in moves what is on this phone into your account — nothing is replaced and nothing is lost.</div>
+</div>
+<div style="font-size:11px;color:#98A5A0;line-height:1.45;margin-top:12px">Your name and photo are the only things other travellers see.</div>
+</div>
+</div>
+</div>
+
+<div id="1e" style="flex:none;display:flex;flex-direction:column;gap:10px">
+<div style="display:flex;align-items:baseline;gap:8px;max-width:402px;font:400 11.5px/1.3 'Public Sans',system-ui;color:#6B7A74"><a href="#1e" style="font:800 10.5px ui-monospace,Menlo,monospace;padding:3px 7px;background:rgba(20,32,28,.08);color:#14201C;border-radius:5px;text-decoration:none">1e</a><span><b style="color:#14201C">A reader's Plan.</b> Read-only is a subtraction, not a different screen: the edit pencil and the add row are simply gone, and one line in the header says why. The home-screen nudge appears once, after joining.</span></div>
+<div style="width:402px;height:874px;background:#F2F3F1;border-radius:12px;overflow:hidden;box-shadow:0 1px 0 rgba(20,32,28,.08),0 10px 40px rgba(20,32,28,.09);display:flex;flex-direction:column">
+<div style="flex:none;padding:14px 16px 12px;background:#fff;border-bottom:1px solid #E7EAE7">
+<div style="display:flex;align-items:flex-end;justify-content:space-between;gap:10px">
+<div style="flex:1;min-width:0"><div style="font-size:24px;font-weight:700;letter-spacing:-.02em">Day 3</div><div style="font-size:12px;color:#6B7A74;margin-top:2px">Mar 14 · Sat · 6 stops</div></div>
+<span style="flex:none;padding:5px 9px;border-radius:8px;font-size:10px;font-weight:800;letter-spacing:.04em;background:#F2F3F1;color:#6B7A74">READING ONLY</span>
+</div>
+<div style="display:flex;gap:6px;margin-top:10px">
+<div style="flex:none;height:30px;padding:0 10px;border-radius:10px;background:#fff;color:#6B7A74;font-size:12px;font-weight:600;display:flex;align-items:center;gap:5px">D1<span style="font-size:11px;opacity:.75">☀</span></div>
+<div style="flex:none;height:30px;padding:0 10px;border-radius:10px;background:#fff;color:#6B7A74;font-size:12px;font-weight:600;display:flex;align-items:center;gap:5px">D2<span style="font-size:11px;opacity:.75">⛅</span></div>
+<div style="flex:none;height:30px;padding:0 10px;border-radius:10px;background:#14201C;color:#fff;font-size:12px;font-weight:600;display:flex;align-items:center;gap:5px">D3<span style="font-size:11px;opacity:.75">☁</span></div>
+<div style="flex:none;height:30px;padding:0 10px;border-radius:10px;background:#fff;color:#6B7A74;font-size:12px;font-weight:600;display:flex;align-items:center;gap:5px">D4<span style="font-size:11px;opacity:.75">🌧</span></div>
+<div style="flex:none;height:30px;padding:0 10px;border-radius:10px;background:#fff;color:#6B7A74;font-size:12px;font-weight:600;display:flex;align-items:center;gap:5px">D5<span style="font-size:11px;opacity:.75">⛅</span></div>
+</div>
+</div>
+<div style="flex:1;min-height:0;overflow:hidden;padding:12px 16px 24px">
+<div style="padding:0 2px 10px;font-size:11.5px;font-weight:650;color:#6B7A74">Ana keeps this trip. You can read it and write notes.</div>
+<div style="display:flex;gap:9px">
+<div style="width:56px;flex:none;padding-top:12px;text-align:right"><div style="font-size:12.5px;font-weight:700;font-variant-numeric:tabular-nums">08:30</div><div style="font-size:11px;color:#98A5A0;font-weight:650;font-variant-numeric:tabular-nums">09:00</div></div>
+<div style="width:20px;flex:none;display:flex;flex-direction:column;align-items:center"><div style="width:11px;height:11px;border-radius:50%;background:#1F6F5C;margin-top:14px;flex:none"></div><div style="flex:1;width:0;border-left:2px solid #DCE2DE"></div></div>
+<div style="flex:1;min-width:0;margin-bottom:6px;padding:11px 13px;background:#fff;border:1px solid #E7EAE7;border-radius:14px"><div style="display:flex;gap:8px;align-items:flex-start"><div style="flex:1;min-width:0"><div style="font-size:14.5px;font-weight:650;line-height:1.25">Depart Hotel Meridian</div><div style="font-size:11.5px;color:#6B7A74;margin-top:3px">coach bay 2</div></div><span style="flex:none;padding:3px 7px;border-radius:6px;font-size:9.5px;font-weight:800;letter-spacing:.04em;background:#E6EFEB;color:#1F6F5C">MAIN 1</span></div></div>
+</div>
+<div style="display:flex;gap:9px">
+<div style="width:56px;flex:none;padding-top:12px;text-align:right"><div style="font-size:12.5px;font-weight:700;font-variant-numeric:tabular-nums">09:15</div><div style="font-size:11px;color:#98A5A0;font-weight:650;font-variant-numeric:tabular-nums">10:00</div></div>
+<div style="width:20px;flex:none;display:flex;flex-direction:column;align-items:center"><div style="width:11px;height:11px;border-radius:50%;background:#1F6F5C;margin-top:14px;flex:none"></div><div style="flex:1;width:0;border-left:2px solid #DCE2DE"></div></div>
+<div style="flex:1;min-width:0;margin-bottom:6px;padding:11px 13px;background:#fff;border:1px solid #E7EAE7;border-radius:14px"><div style="display:flex;gap:8px;align-items:flex-start"><div style="flex:1;min-width:0"><div style="font-size:14.5px;font-weight:650;line-height:1.25">Lumen Crossing</div><div style="font-size:11.5px;color:#6B7A74;margin-top:3px">45 min photo stop</div></div><span style="flex:none;padding:3px 7px;border-radius:6px;font-size:9.5px;font-weight:800;letter-spacing:.04em;background:#E6EFEB;color:#1F6F5C">MAIN 2</span></div></div>
+</div>
+<div style="display:flex;gap:9px">
+<div style="width:56px;flex:none;padding-top:12px;text-align:right"><div style="font-size:12.5px;font-weight:700;font-variant-numeric:tabular-nums">13:30</div><div style="font-size:11px;color:#98A5A0;font-weight:650;font-variant-numeric:tabular-nums">15:45</div></div>
+<div style="width:20px;flex:none;display:flex;flex-direction:column;align-items:center"><div style="width:11px;height:11px;border-radius:50%;background:#1F6F5C;margin-top:14px;flex:none"></div><div style="flex:1;width:0;border-left:2px solid #DCE2DE"></div></div>
+<div style="flex:1;min-width:0;margin-bottom:6px;padding:11px 13px;background:#fff;border:1px solid #E7EAE7;border-radius:14px"><div style="display:flex;gap:8px;align-items:flex-start"><div style="flex:1;min-width:0"><div style="font-size:14.5px;font-weight:650;line-height:1.25">Nishi Market</div><div style="font-size:11.5px;color:#6B7A74;margin-top:3px">free time · back at coach 15:45</div></div><span style="flex:none;padding:3px 7px;border-radius:6px;font-size:9.5px;font-weight:800;letter-spacing:.04em;background:#FBF1DE;color:#8A5A08">SUB</span></div></div>
+</div>
+<div style="background:#fff;border-radius:16px;padding:13px 14px;margin-top:10px;display:flex;gap:11px;align-items:flex-start">
+<svg width="19" height="19" viewBox="0 0 20 20" fill="none" style="flex:none;margin-top:1px"><rect x="3.5" y="3.5" width="13" height="13" rx="3.4" stroke="#14201C" stroke-width="1.6"></rect><path d="M10 6.6v6.8M6.6 10h6.8" stroke="#14201C" stroke-width="1.6" stroke-linecap="round"></path></svg>
+<div style="flex:1;min-width:0"><div style="font-size:13px;font-weight:700">Keep it on your home screen</div><div style="font-size:11.5px;line-height:1.45;color:#6B7A74;margin-top:3px">Safari share button, then <b style="color:#14201C">Add to Home Screen</b>. It opens without a browser and works with no signal.</div></div>
+<div style="flex:none;font-size:11.5px;font-weight:700;color:#6B7A74">Later</div>
+</div>
+</div>
+<div style="position:relative;z-index:10;flex:none;display:flex;gap:2px;padding:7px 8px 10px;background:rgba(255,255,255,.94);border-top:1px solid #E4E8E5">
+<div style="flex:1;min-height:46px;display:flex;flex-direction:column;align-items:center;justify-content:center;gap:3px;border-radius:12px;color:#9AA6A1"><svg width="20" height="20" viewBox="0 0 20 20" fill="none"><path d="M10 18s6-5.2 6-10A6 6 0 0 0 4 8c0 4.8 6 10 6 10z" stroke="#9AA6A1" stroke-width="1.7" stroke-linejoin="round"></path><circle cx="10" cy="8" r="2.2" stroke="#9AA6A1" stroke-width="1.7"></circle></svg><span style="font-size:9.5px;font-weight:700">Map</span></div>
+<div style="flex:1;min-height:46px;display:flex;flex-direction:column;align-items:center;justify-content:center;gap:3px;border-radius:12px;background:#F2F3F1;color:#14201C"><svg width="20" height="20" viewBox="0 0 20 20" fill="none"><g stroke="#14201C" stroke-width="1.7" stroke-linecap="round"><path d="M3 5.5h14M3 10h14M3 14.5h9"></path></g></svg><span style="font-size:9.5px;font-weight:700">Plan</span></div>
+<div style="flex:1;min-height:46px;display:flex;flex-direction:column;align-items:center;justify-content:center;gap:3px;border-radius:12px;color:#9AA6A1"><svg width="20" height="20" viewBox="0 0 20 20" fill="none"><path d="M4.5 6.5h11l-1 10h-9l-1-10z" stroke="#9AA6A1" stroke-width="1.7" stroke-linejoin="round"></path><path d="M7.5 6.5V5a2.5 2.5 0 0 1 5 0v1.5" stroke="#9AA6A1" stroke-width="1.7" stroke-linecap="round"></path></svg><span style="font-size:9.5px;font-weight:700">Shop</span></div>
+<div style="flex:1;min-height:46px;display:flex;flex-direction:column;align-items:center;justify-content:center;gap:3px;border-radius:12px;color:#9AA6A1"><svg width="20" height="20" viewBox="0 0 20 20" fill="none"><rect x="3.5" y="6" width="13" height="10.5" rx="2" stroke="#9AA6A1" stroke-width="1.7"></rect><path d="M7.5 6V4.5a1.5 1.5 0 0 1 1.5-1.5h2a1.5 1.5 0 0 1 1.5 1.5V6" stroke="#9AA6A1" stroke-width="1.7" stroke-linecap="round"></path></svg><span style="font-size:9.5px;font-weight:700">Prep</span></div>
+<div style="flex:1;min-height:46px;display:flex;flex-direction:column;align-items:center;justify-content:center;gap:3px;border-radius:12px;color:#9AA6A1"><svg width="20" height="20" viewBox="0 0 20 20" fill="none"><path d="M13 3.5l3.5 3.5L7 16.5H3.5V13z" stroke="#9AA6A1" stroke-width="1.7" stroke-linejoin="round"></path></svg><span style="font-size:9.5px;font-weight:700">Log</span></div>
+</div>
+</div>
+</div>
+
+<div id="1f" style="flex:none;display:flex;flex-direction:column;gap:10px">
+<div style="display:flex;align:baseline;align-items:baseline;gap:8px;max-width:402px;font:400 11.5px/1.3 'Public Sans',system-ui;color:#6B7A74"><a href="#1f" style="font:800 10.5px ui-monospace,Menlo,monospace;padding:3px 7px;background:#1F6F5C;color:#fff;border-radius:5px;text-decoration:none">1f</a><span><b style="color:#14201C">Shopping, two people on it.</b> The souvenir problem: <b style="color:#14201C">claim before you buy</b>. A row with no name is free to take; a row says whose it is in words. Bought things leave the buying list entirely, so the list you scan is only what is still open.</span></div>
+<div style="width:402px;height:874px;background:#F2F3F1;border-radius:12px;overflow:hidden;box-shadow:0 1px 0 rgba(20,32,28,.08),0 10px 40px rgba(20,32,28,.09);display:flex;flex-direction:column">
+<div style="flex:none;padding:14px 16px 12px;background:#fff;border-bottom:1px solid #E7EAE7">
+<div style="display:flex;align-items:flex-end;justify-content:space-between;gap:10px">
+<div style="flex:1;min-width:0"><div style="font-size:24px;font-weight:700;letter-spacing:-.02em">Shopping</div><div style="font-size:12px;color:#6B7A74;margin-top:2px">7 to buy · 4 bought · ¥18,400 so far</div></div>
+<div style="flex:none;display:flex;align-items:center;gap:-6px"><div style="width:28px;height:28px;border-radius:9px;background:#14201C;color:#fff;font-size:11px;font-weight:800;display:flex;align-items:center;justify-content:center">W</div><div style="width:28px;height:28px;border-radius:9px;background:#EDEFEC;color:#3D4C46;font-size:11px;font-weight:800;display:flex;align-items:center;justify-content:center;margin-left:4px">A</div></div>
+</div>
+<div style="display:flex;gap:6px;margin-top:10px">
+<div style="flex:none;height:30px;padding:0 11px;border-radius:10px;background:#14201C;color:#fff;font-size:12px;font-weight:650;display:flex;align-items:center;white-space:nowrap">Everything</div>
+<div style="flex:none;height:30px;padding:0 11px;border-radius:10px;background:#fff;color:#6B7A74;font-size:12px;font-weight:650;display:flex;align-items:center;white-space:nowrap">Nobody's got it</div>
+<div style="flex:none;height:30px;padding:0 11px;border-radius:10px;background:#fff;color:#6B7A74;font-size:12px;font-weight:650;display:flex;align-items:center;white-space:nowrap">Mine</div>
+</div>
+</div>
+<div style="flex:1;min-height:0;overflow:hidden;padding:12px 16px 24px">
+
+<div style="display:flex;align-items:center;gap:8px;padding:0 2px 8px"><div style="flex:1;min-width:0;font-size:12.5px;font-weight:700">Nishi Market</div><div style="font-size:11px;font-weight:650;color:#98A5A0">4 items</div></div>
+
+<div style="background:#fff;border-radius:14px;padding:11px 12px;display:flex;gap:11px;align-items:center;margin-bottom:8px">
+<div style="width:22px;height:22px;flex:none;border-radius:7px;background:#fff;border:1.6px solid #D2D8D3"></div>
+<div style="flex:1;min-width:0"><div style="font-size:13.5px;font-weight:650;line-height:1.25">Kitchen knife, Sakai steel</div><div style="font-size:11px;color:#98A5A0;margin-top:2px">middle aisle · about ¥12,000</div></div>
+<div style="flex:none;height:30px;padding:0 10px;border-radius:9px;background:#F2F3F1;border:1px solid #E1E5E1;color:#3D4C46;font-size:11.5px;font-weight:700;display:flex;align-items:center;white-space:nowrap">I'll get it</div>
+</div>
+
+<div style="background:#fff;border-radius:14px;padding:11px 12px;margin-bottom:8px">
+<div style="display:flex;gap:11px;align-items:center">
+<div style="width:22px;height:22px;flex:none;border-radius:7px;background:#fff;border:1.6px solid #D2D8D3"></div>
+<div style="flex:1;min-width:0"><div style="font-size:13.5px;font-weight:650;line-height:1.25">Yuzu kosho ×3</div><div style="font-size:11px;color:#98A5A0;margin-top:2px">north end, dried goods · ¥900 each</div></div>
+<div style="flex:none;display:flex;align-items:center;gap:6px"><div style="width:22px;height:22px;border-radius:7px;background:#EDEFEC;color:#3D4C46;font-size:10.5px;font-weight:800;display:flex;align-items:center;justify-content:center">A</div><div style="font-size:11.5px;font-weight:700;color:#3D4C46;white-space:nowrap">Ana's getting this</div></div>
+</div>
+</div>
+
+<div style="background:#FFFDF7;border:1.5px solid #EBD9B4;border-radius:14px;padding:11px 12px;margin-bottom:8px">
+<div style="display:flex;gap:11px;align-items:center">
+<div style="width:22px;height:22px;flex:none;border-radius:7px;background:#fff;border:1.6px solid #E3CFA3"></div>
+<div style="flex:1;min-width:0"><div style="font-size:13.5px;font-weight:650;line-height:1.25">Indigo tenugui, 4 of them</div><div style="font-size:11px;color:#8A5A08;font-weight:650;margin-top:2px">Ana took this two minutes ago, while you were looking</div></div>
+</div>
+<div style="display:flex;gap:6px;margin-top:9px;padding-left:33px;flex-wrap:wrap">
+<div style="height:30px;padding:0 10px;border-radius:9px;background:#14201C;color:#fff;font-size:11.5px;font-weight:700;display:flex;align-items:center;white-space:nowrap">Leave it to Ana</div>
+<div style="height:30px;padding:0 10px;border-radius:9px;background:#fff;border:1px solid #E1E5E1;color:#3D4C46;font-size:11.5px;font-weight:650;display:flex;align-items:center;white-space:nowrap">I'm at the stall — take it back</div>
+</div>
+</div>
+
+<div style="background:#fff;border-radius:14px;padding:11px 12px;display:flex;gap:11px;align-items:center;margin-bottom:14px">
+<div style="width:22px;height:22px;flex:none;border-radius:7px;background:#fff;border:1.6px solid #D2D8D3"></div>
+<div style="flex:1;min-width:0"><div style="font-size:13.5px;font-weight:650;line-height:1.25">Ceramic cups, small ones</div><div style="font-size:11px;color:#98A5A0;margin-top:2px">south aisle · ¥1,500 each</div></div>
+<div style="flex:none;height:30px;padding:0 10px;border-radius:9px;background:#F2F3F1;border:1px solid #E1E5E1;color:#3D4C46;font-size:11.5px;font-weight:700;display:flex;align-items:center;white-space:nowrap">I'll get it</div>
+</div>
+
+<div style="display:flex;align-items:center;gap:8px;padding:0 2px 8px"><div style="flex:1;min-width:0;font-size:12.5px;font-weight:700">Kaede Dept Store</div><div style="font-size:11px;font-weight:650;color:#98A5A0">3 items</div></div>
+<div style="background:#fff;border-radius:14px;padding:11px 12px;display:flex;gap:11px;align-items:center;margin-bottom:8px">
+<div style="width:22px;height:22px;flex:none;border-radius:7px;background:#fff;border:1.6px solid #D2D8D3"></div>
+<div style="flex:1;min-width:0"><div style="font-size:13.5px;font-weight:650;line-height:1.25">Matcha, ceremonial grade</div><div style="font-size:11px;color:#98A5A0;margin-top:2px">B1 food hall</div></div>
+<div style="flex:none;height:30px;padding:0 10px;border-radius:9px;background:#F2F3F1;border:1px solid #E1E5E1;color:#3D4C46;font-size:11.5px;font-weight:700;display:flex;align-items:center;white-space:nowrap">I'll get it</div>
+</div>
+
+<div style="display:flex;align-items:center;gap:8px;padding:12px 2px 8px"><div style="flex:1;min-width:0;font-size:12.5px;font-weight:700;color:#6B7A74">Bought · 4</div><svg width="11" height="7" viewBox="0 0 10 6" style="flex:none"><path d="M1 1l4 4 4-4" stroke="#98A5A0" stroke-width="1.6" fill="none" stroke-linecap="round"></path></svg></div>
+<div style="background:#F7F8F6;border-radius:14px;padding:10px 12px;display:flex;gap:11px;align-items:center;margin-bottom:6px">
+<div style="width:22px;height:22px;flex:none;border-radius:7px;background:#1F6F5C;border:1.6px solid #1F6F5C;display:flex;align-items:center;justify-content:center"><svg width="11" height="9" viewBox="0 0 11 9"><path d="M1 4.5L4 7.5 10 1" stroke="#fff" stroke-width="2" fill="none" stroke-linecap="round" stroke-linejoin="round"></path></svg></div>
+<div style="flex:1;min-width:0"><div style="font-size:13px;font-weight:600;line-height:1.25;color:#6B7A74">Sesame candy, two boxes</div><div style="font-size:11px;color:#98A5A0;margin-top:2px">¥1,600 · Nishi Market</div></div>
+<div style="width:22px;height:22px;flex:none;border-radius:7px;background:#EDEFEC;color:#6B7A74;font-size:10.5px;font-weight:800;display:flex;align-items:center;justify-content:center">A</div>
+</div>
+<div style="background:#F7F8F6;border-radius:14px;padding:10px 12px;display:flex;gap:11px;align-items:center">
+<div style="width:22px;height:22px;flex:none;border-radius:7px;background:#1F6F5C;border:1.6px solid #1F6F5C;display:flex;align-items:center;justify-content:center"><svg width="11" height="9" viewBox="0 0 11 9"><path d="M1 4.5L4 7.5 10 1" stroke="#fff" stroke-width="2" fill="none" stroke-linecap="round" stroke-linejoin="round"></path></svg></div>
+<div style="flex:1;min-width:0"><div style="font-size:13px;font-weight:600;line-height:1.25;color:#6B7A74">Folding fan</div><div style="font-size:11px;color:#98A5A0;margin-top:2px">¥2,200 · Kaede Dept Store</div></div>
+<div style="width:22px;height:22px;flex:none;border-radius:7px;background:#14201C;color:#fff;font-size:10.5px;font-weight:800;display:flex;align-items:center;justify-content:center">W</div>
+</div>
+</div>
+<div style="position:relative;z-index:10;flex:none;display:flex;gap:2px;padding:7px 8px 10px;background:rgba(255,255,255,.94);border-top:1px solid #E4E8E5">
+<div style="flex:1;min-height:46px;display:flex;flex-direction:column;align-items:center;justify-content:center;gap:3px;border-radius:12px;color:#9AA6A1"><svg width="20" height="20" viewBox="0 0 20 20" fill="none"><path d="M10 18s6-5.2 6-10A6 6 0 0 0 4 8c0 4.8 6 10 6 10z" stroke="#9AA6A1" stroke-width="1.7" stroke-linejoin="round"></path><circle cx="10" cy="8" r="2.2" stroke="#9AA6A1" stroke-width="1.7"></circle></svg><span style="font-size:9.5px;font-weight:700">Map</span></div>
+<div style="flex:1;min-height:46px;display:flex;flex-direction:column;align-items:center;justify-content:center;gap:3px;border-radius:12px;color:#9AA6A1"><svg width="20" height="20" viewBox="0 0 20 20" fill="none"><g stroke="#9AA6A1" stroke-width="1.7" stroke-linecap="round"><path d="M3 5.5h14M3 10h14M3 14.5h9"></path></g></svg><span style="font-size:9.5px;font-weight:700">Plan</span></div>
+<div style="flex:1;min-height:46px;display:flex;flex-direction:column;align-items:center;justify-content:center;gap:3px;border-radius:12px;background:#F2F3F1;color:#14201C"><svg width="20" height="20" viewBox="0 0 20 20" fill="none"><path d="M4.5 6.5h11l-1 10h-9l-1-10z" stroke="#14201C" stroke-width="1.7" stroke-linejoin="round"></path><path d="M7.5 6.5V5a2.5 2.5 0 0 1 5 0v1.5" stroke="#14201C" stroke-width="1.7" stroke-linecap="round"></path></svg><span style="font-size:9.5px;font-weight:700">Shop</span></div>
+<div style="flex:1;min-height:46px;display:flex;flex-direction:column;align-items:center;justify-content:center;gap:3px;border-radius:12px;color:#9AA6A1"><svg width="20" height="20" viewBox="0 0 20 20" fill="none"><rect x="3.5" y="6" width="13" height="10.5" rx="2" stroke="#9AA6A1" stroke-width="1.7"></rect><path d="M7.5 6V4.5a1.5 1.5 0 0 1 1.5-1.5h2a1.5 1.5 0 0 1 1.5 1.5V6" stroke="#9AA6A1" stroke-width="1.7" stroke-linecap="round"></path></svg><span style="font-size:9.5px;font-weight:700">Prep</span></div>
+<div style="flex:1;min-height:46px;display:flex;flex-direction:column;align-items:center;justify-content:center;gap:3px;border-radius:12px;color:#9AA6A1"><svg width="20" height="20" viewBox="0 0 20 20" fill="none"><path d="M13 3.5l3.5 3.5L7 16.5H3.5V13z" stroke="#9AA6A1" stroke-width="1.7" stroke-linejoin="round"></path></svg><span style="font-size:9.5px;font-weight:700">Log</span></div>
+</div>
+</div>
+</div>
+
+<div id="1g" style="flex:none;display:flex;flex-direction:column;gap:10px">
+<div style="display:flex;align-items:baseline;gap:8px;max-width:402px;font:400 11.5px/1.3 'Public Sans',system-ui;color:#6B7A74"><a href="#1g" style="font:800 10.5px ui-monospace,Menlo,monospace;padding:3px 7px;background:rgba(20,32,28,.08);color:#14201C;border-radius:5px;text-decoration:none">1g</a><span><b style="color:#14201C">Notes, where the name is the point.</b> The Log groups a day's notes under the place they were written at; the author sits in the byline with the time. One filter, because the common need is "just mine".</span></div>
+<div style="width:402px;height:874px;background:#F2F3F1;border-radius:12px;overflow:hidden;box-shadow:0 1px 0 rgba(20,32,28,.08),0 10px 40px rgba(20,32,28,.09);display:flex;flex-direction:column">
+<div style="flex:none;padding:14px 16px 12px;background:#fff;border-bottom:1px solid #E7EAE7">
+<div style="font-size:24px;font-weight:700;letter-spacing:-.02em">Log</div>
+<div style="font-size:12px;color:#6B7A74;margin-top:2px">Day 3 · Mar 14 · 5 notes from 3 people</div>
+<div style="display:flex;gap:6px;margin-top:10px">
+<div style="flex:none;height:30px;padding:0 11px;border-radius:10px;background:#14201C;color:#fff;font-size:12px;font-weight:650;display:flex;align-items:center;white-space:nowrap">Everyone</div>
+<div style="flex:none;height:30px;padding:0 11px;border-radius:10px;background:#fff;color:#6B7A74;font-size:12px;font-weight:650;display:flex;align-items:center;white-space:nowrap">Just mine</div>
+</div>
+</div>
+<div style="flex:1;min-height:0;overflow:hidden;padding:12px 16px 24px">
+<div style="display:flex;align-items:center;gap:8px;padding:0 2px 8px"><div style="flex:1;min-width:0;font-size:12.5px;font-weight:700">Nishi Market</div><div style="font-size:11px;font-weight:650;color:#98A5A0">13:30 – 15:45</div></div>
+<div style="background:#fff;border-radius:14px;padding:12px 13px;margin-bottom:8px">
+<div style="display:flex;gap:9px;align-items:center"><div style="width:22px;height:22px;flex:none;border-radius:7px;background:#EDEFEC;color:#3D4C46;font-size:10.5px;font-weight:800;display:flex;align-items:center;justify-content:center">A</div><div style="flex:1;min-width:0;font-size:11.5px;font-weight:700;color:#3D4C46">Ana Lim</div><div style="font-size:11px;color:#98A5A0;font-weight:650;font-variant-numeric:tabular-nums">14:02</div></div>
+<div style="font-size:13.5px;line-height:1.5;color:#14201C;margin-top:8px;text-wrap:pretty">Knife stall in the middle aisle will engrave for free but needs 40 minutes. Left my name with them, pick up before 15:30.</div>
+<div style="display:flex;gap:5px;margin-top:9px"><div style="width:46px;height:46px;border-radius:9px;background:repeating-linear-gradient(135deg,#E2E6E2 0 8px,#DADFDA 8px 16px)"></div><div style="width:46px;height:46px;border-radius:9px;background:repeating-linear-gradient(135deg,#E2E6E2 0 8px,#DADFDA 8px 16px)"></div></div>
+</div>
+<div style="background:#fff;border-radius:14px;padding:12px 13px;margin-bottom:8px">
+<div style="display:flex;gap:9px;align-items:center"><div style="width:22px;height:22px;flex:none;border-radius:7px;background:#14201C;color:#fff;font-size:10.5px;font-weight:800;display:flex;align-items:center;justify-content:center">W</div><div style="flex:1;min-width:0;font-size:11.5px;font-weight:700;color:#3D4C46">You</div><div style="font-size:11px;color:#98A5A0;font-weight:650;font-variant-numeric:tabular-nums">14:20</div></div>
+<div style="font-size:13.5px;line-height:1.5;color:#14201C;margin-top:8px">Cash only at the south food bars. ATM at the north gate had a queue.</div>
+</div>
+<div style="background:#fff;border-radius:14px;padding:12px 13px;margin-bottom:14px">
+<div style="display:flex;gap:9px;align-items:center"><div style="width:22px;height:22px;flex:none;border-radius:7px;background:#EDEFEC;color:#3D4C46;font-size:10.5px;font-weight:800;display:flex;align-items:center;justify-content:center">陳</div><div style="flex:1;min-width:0;font-size:11.5px;font-weight:700;color:#3D4C46">陳美玲</div><div style="display:flex;align-items:center;gap:6px;flex:none"><span style="padding:3px 6px;border-radius:6px;font-size:9.5px;font-weight:800;letter-spacing:.04em;background:#F2F3F1;color:#6B7A74">NOT SENT YET</span><div style="font-size:11px;color:#98A5A0;font-weight:650;font-variant-numeric:tabular-nums">15:10</div></div></div>
+<div style="font-size:13.5px;line-height:1.5;color:#14201C;margin-top:8px">南邊小吃攤都只收現金，記得先換錢。</div>
+</div>
+<div style="display:flex;align-items:center;gap:8px;padding:0 2px 8px"><div style="flex:1;min-width:0;font-size:12.5px;font-weight:700">Skyline Deck</div><div style="font-size:11px;font-weight:650;color:#98A5A0">16:00 – 18:30</div></div>
+<div style="background:#fff;border-radius:14px;padding:12px 13px">
+<div style="display:flex;gap:9px;align-items:center"><div style="width:22px;height:22px;flex:none;border-radius:7px;background:#EDEFEC;color:#3D4C46;font-size:10.5px;font-weight:800;display:flex;align-items:center;justify-content:center">R</div><div style="flex:1;min-width:0;font-size:11.5px;font-weight:700;color:#3D4C46">Ravi</div><div style="font-size:11px;color:#98A5A0;font-weight:650;font-variant-numeric:tabular-nums">18:11</div></div>
+<div style="font-size:13.5px;line-height:1.5;color:#14201C;margin-top:8px">Sunset was 18:04 as printed. East rail is where everyone stands — west side was empty.</div>
+</div>
+</div>
+<div style="position:relative;z-index:10;flex:none;display:flex;gap:2px;padding:7px 8px 10px;background:rgba(255,255,255,.94);border-top:1px solid #E4E8E5">
+<div style="flex:1;min-height:46px;display:flex;flex-direction:column;align-items:center;justify-content:center;gap:3px;border-radius:12px;color:#9AA6A1"><svg width="20" height="20" viewBox="0 0 20 20" fill="none"><path d="M10 18s6-5.2 6-10A6 6 0 0 0 4 8c0 4.8 6 10 6 10z" stroke="#9AA6A1" stroke-width="1.7" stroke-linejoin="round"></path><circle cx="10" cy="8" r="2.2" stroke="#9AA6A1" stroke-width="1.7"></circle></svg><span style="font-size:9.5px;font-weight:700">Map</span></div>
+<div style="flex:1;min-height:46px;display:flex;flex-direction:column;align-items:center;justify-content:center;gap:3px;border-radius:12px;color:#9AA6A1"><svg width="20" height="20" viewBox="0 0 20 20" fill="none"><g stroke="#9AA6A1" stroke-width="1.7" stroke-linecap="round"><path d="M3 5.5h14M3 10h14M3 14.5h9"></path></g></svg><span style="font-size:9.5px;font-weight:700">Plan</span></div>
+<div style="flex:1;min-height:46px;display:flex;flex-direction:column;align-items:center;justify-content:center;gap:3px;border-radius:12px;color:#9AA6A1"><svg width="20" height="20" viewBox="0 0 20 20" fill="none"><path d="M4.5 6.5h11l-1 10h-9l-1-10z" stroke="#9AA6A1" stroke-width="1.7" stroke-linejoin="round"></path><path d="M7.5 6.5V5a2.5 2.5 0 0 1 5 0v1.5" stroke="#9AA6A1" stroke-width="1.7" stroke-linecap="round"></path></svg><span style="font-size:9.5px;font-weight:700">Shop</span></div>
+<div style="flex:1;min-height:46px;display:flex;flex-direction:column;align-items:center;justify-content:center;gap:3px;border-radius:12px;color:#9AA6A1"><svg width="20" height="20" viewBox="0 0 20 20" fill="none"><rect x="3.5" y="6" width="13" height="10.5" rx="2" stroke="#9AA6A1" stroke-width="1.7"></rect><path d="M7.5 6V4.5a1.5 1.5 0 0 1 1.5-1.5h2a1.5 1.5 0 0 1 1.5 1.5V6" stroke="#9AA6A1" stroke-width="1.7" stroke-linecap="round"></path></svg><span style="font-size:9.5px;font-weight:700">Prep</span></div>
+<div style="flex:1;min-height:46px;display:flex;flex-direction:column;align-items:center;justify-content:center;gap:3px;border-radius:12px;background:#F2F3F1;color:#14201C"><svg width="20" height="20" viewBox="0 0 20 20" fill="none"><path d="M13 3.5l3.5 3.5L7 16.5H3.5V13z" stroke="#14201C" stroke-width="1.7" stroke-linejoin="round"></path></svg><span style="font-size:9.5px;font-weight:700">Log</span></div>
+</div>
+</div>
+</div>
+
+<div id="1h" style="flex:none;display:flex;flex-direction:column;gap:10px">
+<div style="display:flex;align-items:baseline;gap:8px;max-width:402px;font:400 11.5px/1.3 'Public Sans',system-ui;color:#6B7A74"><a href="#1h" style="font:800 10.5px ui-monospace,Menlo,monospace;padding:3px 7px;background:rgba(20,32,28,.08);color:#14201C;border-radius:5px;text-decoration:none">1h</a><span><b style="color:#14201C">A link that no longer works.</b> It still says which trip and who to ask — a dead end with no name on it is the worst version of this. Below it, the two other ways a link fails.</span></div>
+<div style="width:402px;height:874px;background:#F2F3F1;border-radius:12px;overflow:hidden;box-shadow:0 1px 0 rgba(20,32,28,.08),0 10px 40px rgba(20,32,28,.09);display:flex;flex-direction:column">
+<div style="flex:none;padding:9px 16px;background:#EDEFEC;border-bottom:1px solid #E1E5E1;display:flex;align-items:center;gap:8px">
+<svg width="12" height="12" viewBox="0 0 12 12" fill="none" style="flex:none"><rect x="1.6" y="5" width="8.8" height="6.2" rx="1.6" stroke="#6B7A74" stroke-width="1.4"></rect><path d="M3.9 5V3.4a2.1 2.1 0 0 1 4.2 0V5" stroke="#6B7A74" stroke-width="1.4" stroke-linecap="round"></path></svg>
+<div style="flex:1;min-width:0;font-family:ui-monospace,Menlo,monospace;font-size:11px;color:#6B7A74;white-space:nowrap;overflow:hidden;text-overflow:ellipsis">planner.app/j/8QK2-M7VD</div>
+</div>
+<div style="flex:1;min-height:0;overflow:hidden;padding:20px 16px 24px">
+<div style="background:#FFFDF7;border:1.5px solid #EBD9B4;border-radius:18px;padding:18px">
+<div style="font-size:10.5px;font-weight:800;letter-spacing:.06em;color:#8A5A08">THIS LINK HAS EXPIRED</div>
+<div style="font-size:21px;font-weight:700;letter-spacing:-.02em;line-height:1.2;margin-top:8px">Meridian City · Group Tour</div>
+<div style="font-size:13px;line-height:1.55;color:#8A5A08;font-weight:650;margin-top:8px">Ana Lim's invite stopped working on 11 Mar. Nothing is wrong with your phone and the trip is still there — the link just ran out.</div>
+<div style="height:46px;border-radius:12px;background:#14201C;color:#fff;font-size:13px;font-weight:700;display:flex;align-items:center;justify-content:center;margin-top:16px">Ask Ana for a new link</div>
+<div style="font-size:11.5px;color:#8A5A08;line-height:1.45;margin-top:8px">Opens a message to whoever sent this, with the trip name already in it.</div>
+</div>
+
+<div style="background:#fff;border-radius:16px;padding:14px;margin-top:14px">
+<div style="font-size:10.5px;font-weight:800;letter-spacing:.06em;color:#98A5A0">THE OTHER TWO ENDINGS</div>
+<div style="display:flex;flex-direction:column;gap:11px;margin-top:10px">
+<div><div style="font-size:12.5px;font-weight:700">Ana turned the link off</div><div style="font-size:12px;line-height:1.45;color:#6B7A74;margin-top:2px">Same screen, different first line: <i>Ana switched this link off.</i> Same one button.</div></div>
+<div style="height:1px;background:#F0F2F0"></div>
+<div><div style="font-size:12.5px;font-weight:700">You already have this trip</div><div style="font-size:12px;line-height:1.45;color:#6B7A74;margin-top:2px">No error at all — the link opens the trip on Day 1. A second tap on an old message should never look like a failure.</div></div>
+<div style="height:1px;background:#F0F2F0"></div>
+<div><div style="font-size:12.5px;font-weight:700">You are offline</div><div style="font-size:12px;line-height:1.45;color:#6B7A74;margin-top:2px">Joining needs signal once. The screen says so plainly and keeps the link, so the tap works later without going back to the chat.</div></div>
+</div>
+</div>
+</div>
+</div>
+</div>
+
+<div id="1i" style="flex:none;display:flex;flex-direction:column;gap:10px">
+<div style="display:flex;align-items:baseline;gap:8px;max-width:402px;font:400 11.5px/1.3 'Public Sans',system-ui;color:#6B7A74"><a href="#1i" style="font:800 10.5px ui-monospace,Menlo,monospace;padding:3px 7px;background:rgba(20,32,28,.08);color:#14201C;border-radius:5px;text-decoration:none">1i</a><span><b style="color:#14201C">Opening a trip you have been removed from.</b> On their phone, not yours. It names who and when, says what happened to the copy on the device and to the words they wrote, and leaves them somewhere — their own trips.</span></div>
+<div style="width:402px;height:874px;background:#F2F3F1;border-radius:12px;overflow:hidden;box-shadow:0 1px 0 rgba(20,32,28,.08),0 10px 40px rgba(20,32,28,.09);display:flex;flex-direction:column">
+<div style="flex:none;padding:14px 16px 12px;background:#fff;border-bottom:1px solid #E7EAE7"><div style="font-size:24px;font-weight:700;letter-spacing:-.02em">My trips</div><div style="font-size:12px;color:#6B7A74;margin-top:2px">2 trips on this phone</div></div>
+<div style="flex:1;min-height:0;overflow:hidden;padding:14px 16px 24px">
+<div style="background:#fff;border-radius:18px;padding:18px">
+<div style="font-size:10.5px;font-weight:800;letter-spacing:.06em;color:#98A5A0">NO LONGER SHARED WITH YOU</div>
+<div style="font-size:21px;font-weight:700;letter-spacing:-.02em;line-height:1.2;margin-top:8px">Meridian City · Group Tour</div>
+<div style="font-size:13px;line-height:1.55;color:#3D4C46;margin-top:8px;text-wrap:pretty">Ana Lim removed you from this trip on 14 Mar. It is gone from this phone too, including the copy you were using offline.</div>
+<div style="background:#F7F8F6;border-radius:12px;padding:11px 12px;margin-top:14px">
+<div style="font-size:12px;line-height:1.5;color:#3D4C46">The four notes and eleven photos you added stay with the trip, under your name. If you want them, ask Ana before she deletes it.</div>
+</div>
+<div style="height:46px;border-radius:12px;background:#14201C;color:#fff;font-size:13px;font-weight:700;display:flex;align-items:center;justify-content:center;margin-top:14px">Message Ana</div>
+<div style="height:44px;border-radius:12px;background:#F2F3F1;border:1px solid #E1E5E1;color:#3D4C46;font-size:13px;font-weight:650;display:flex;align-items:center;justify-content:center;margin-top:8px">Dismiss</div>
+</div>
+<div style="font-size:11px;color:#98A5A0;line-height:1.45;margin:12px 2px 0">Your own trips are untouched — nothing you made yourself was shared.</div>
+<div style="background:#fff;border-radius:16px;padding:14px;margin-top:14px;display:flex;gap:12px;align-items:center">
+<div style="width:44px;height:44px;flex:none;border-radius:13px;background:#1F6F5C;color:#fff;font-size:13px;font-weight:700;display:flex;align-items:center;justify-content:center">KY</div>
+<div style="flex:1;min-width:0"><div style="font-size:15px;font-weight:650">Kyoto, on my own</div><div style="font-size:11.5px;color:#6B7A74;margin-top:2px">4 – 9 Apr · 5 days · just you</div></div>
+<svg width="7" height="12" viewBox="0 0 7 12" style="flex:none"><path d="M1 1l5 5-5 5" stroke="#98A5A0" stroke-width="1.8" fill="none" stroke-linecap="round"></path></svg>
+</div>
+<div style="background:#fff;border-radius:16px;padding:14px;margin-top:8px;display:flex;gap:12px;align-items:center">
+<div style="width:44px;height:44px;flex:none;border-radius:13px;background:#EDEFEC;color:#3D4C46;font-size:13px;font-weight:700;display:flex;align-items:center;justify-content:center">HK</div>
+<div style="flex:1;min-width:0"><div style="font-size:15px;font-weight:650">Hong Kong, June</div><div style="font-size:11.5px;color:#6B7A74;margin-top:2px">Planning · 3 people</div></div>
+<svg width="7" height="12" viewBox="0 0 7 12" style="flex:none"><path d="M1 1l5 5-5 5" stroke="#98A5A0" stroke-width="1.8" fill="none" stroke-linecap="round"></path></svg>
+</div>
+</div>
+</div>
+</div>
+
+<div id="1j" style="flex:none;display:flex;flex-direction:column;gap:10px">
+<div style="display:flex;align-items:baseline;gap:8px;max-width:402px;font:400 11.5px/1.3 'Public Sans',system-ui;color:#6B7A74"><a href="#1j" style="font:800 10.5px ui-monospace,Menlo,monospace;padding:3px 7px;background:#1F6F5C;color:#fff;border-radius:5px;text-decoration:none">1j</a><span><b style="color:#14201C">Two people on the same day.</b> Nothing is blocked and nothing is merged behind your back. A live line says who else is in here; a row that was changed under you keeps both versions until you pick. This is the only place a stop carries a name.</span></div>
+<div style="width:402px;height:874px;background:#F2F3F1;border-radius:12px;overflow:hidden;box-shadow:0 1px 0 rgba(20,32,28,.08),0 10px 40px rgba(20,32,28,.09);display:flex;flex-direction:column">
+<div style="flex:none;padding:14px 16px 12px;background:#fff;border-bottom:1px solid #E7EAE7">
+<div style="display:flex;align-items:flex-end;justify-content:space-between;gap:10px">
+<div style="flex:1;min-width:0"><div style="font-size:24px;font-weight:700;letter-spacing:-.02em">Day 3</div><div style="font-size:12px;color:#6B7A74;margin-top:2px">Mar 14 · Sat · editing</div></div>
+<div style="width:40px;height:40px;flex:none;border-radius:13px;background:#14201C;display:flex;align-items:center;justify-content:center"><svg width="17" height="17" viewBox="0 0 14 14"><path d="M9.5 1.5l3 3L5 12H2v-3z" fill="none" stroke="#fff" stroke-width="1.5" stroke-linejoin="round"></path></svg></div>
+</div>
+<div style="display:flex;gap:9px;align-items:center;margin-top:12px;padding:8px 11px;border-radius:11px;background:#F7F8F6">
+<div style="width:22px;height:22px;flex:none;border-radius:7px;background:#EDEFEC;color:#3D4C46;font-size:10.5px;font-weight:800;display:flex;align-items:center;justify-content:center">A</div>
+<div style="flex:1;min-width:0;font-size:11.5px;font-weight:650;color:#3D4C46">Ana is in Day 3 as well, right now</div>
+</div>
+</div>
+<div style="flex:1;min-height:0;overflow:hidden;padding:12px 16px 24px">
+<div style="background:#FFFDF7;border:1.5px solid #EBD9B4;border-radius:14px;padding:11px 12px;margin-bottom:10px">
+<div style="font-size:10.5px;font-weight:800;letter-spacing:.06em;color:#8A5A08">TWO CHANGES CAME IN WHILE YOU WERE OFFLINE</div>
+<div style="font-size:12px;line-height:1.5;color:#8A5A08;font-weight:650;margin-top:5px">Both are marked below. Yours are saved and sent — nothing you typed was thrown away.</div>
+</div>
+
+<div style="background:#fff;border-radius:14px;padding:11px 12px;display:flex;gap:11px;align-items:center;margin-bottom:8px">
+<svg width="14" height="16" viewBox="0 0 14 16" style="flex:none"><g stroke="#C2C9C4" stroke-width="1.8" stroke-linecap="round"><path d="M2 4h10M2 8h10M2 12h10"></path></g></svg>
+<div style="width:44px;flex:none;font-size:12px;font-weight:700;font-variant-numeric:tabular-nums">08:30<div style="font-size:10px;color:#98A5A0;font-weight:650">09:00</div></div>
+<div style="flex:1;min-width:0"><div style="font-size:13.5px;font-weight:650;line-height:1.25">Depart Hotel Meridian</div></div>
+</div>
+
+<div style="background:#FFFDF7;border:1.5px solid #EBD9B4;border-radius:14px;padding:11px 12px;margin-bottom:8px">
+<div style="display:flex;gap:11px;align-items:center">
+<svg width="14" height="16" viewBox="0 0 14 16" style="flex:none"><g stroke="#E3CFA3" stroke-width="1.8" stroke-linecap="round"><path d="M2 4h10M2 8h10M2 12h10"></path></g></svg>
+<div style="width:44px;flex:none;font-size:12px;font-weight:700;font-variant-numeric:tabular-nums;color:#8A5A08">13:30<div style="font-size:10px;color:#B08A3E;font-weight:650">15:45</div></div>
+<div style="flex:1;min-width:0"><div style="font-size:13.5px;font-weight:650;line-height:1.25">Nishi Market</div><div style="font-size:11px;color:#8A5A08;font-weight:650;margin-top:2px">You and Ana both changed this time</div></div>
+</div>
+<div style="display:flex;flex-direction:column;gap:6px;margin-top:9px;padding-left:33px">
+<div style="display:flex;gap:8px;align-items:center;padding:8px 10px;border-radius:10px;background:#fff;border:1.5px solid #14201C"><div style="flex:1;min-width:0;font-size:12px;font-weight:700">13:30 – 15:45<span style="font-weight:650;color:#6B7A74"> · yours, 14:58</span></div><span style="flex:none;padding:3px 7px;border-radius:6px;font-size:9.5px;font-weight:800;background:#14201C;color:#fff">KEEP</span></div>
+<div style="display:flex;gap:8px;align-items:center;padding:8px 10px;border-radius:10px;background:#fff;border:1px solid #E1E5E1"><div style="flex:1;min-width:0;font-size:12px;font-weight:700">13:00 – 15:30<span style="font-weight:650;color:#6B7A74"> · Ana, 15:04</span></div><span style="flex:none;padding:3px 7px;border-radius:6px;font-size:9.5px;font-weight:800;background:#F2F3F1;color:#3D4C46">USE HERS</span></div>
+</div>
+</div>
+
+<div style="background:#fff;border-radius:14px;padding:11px 12px;margin-bottom:8px">
+<div style="display:flex;gap:11px;align-items:center">
+<svg width="14" height="16" viewBox="0 0 14 16" style="flex:none"><g stroke="#C2C9C4" stroke-width="1.8" stroke-linecap="round"><path d="M2 4h10M2 8h10M2 12h10"></path></g></svg>
+<div style="width:44px;flex:none;font-size:12px;font-weight:700;font-variant-numeric:tabular-nums">16:00<div style="font-size:10px;color:#98A5A0;font-weight:650">18:30</div></div>
+<div style="flex:1;min-width:0"><div style="font-size:13.5px;font-weight:650;line-height:1.25">Skyline Deck</div><div style="font-size:11px;color:#98A5A0;margin-top:2px">Ana added this while you were offline</div></div>
+</div>
+</div>
+
+<div style="background:#fff;border-radius:14px;padding:11px 12px;margin-bottom:10px;display:flex;gap:11px;align-items:center">
+<svg width="14" height="16" viewBox="0 0 14 16" style="flex:none"><g stroke="#C2C9C4" stroke-width="1.8" stroke-linecap="round"><path d="M2 4h10M2 8h10M2 12h10"></path></g></svg>
+<div style="width:44px;flex:none;font-size:12px;font-weight:700;font-variant-numeric:tabular-nums">19:30</div>
+<div style="flex:1;min-width:0"><div style="font-size:13.5px;font-weight:650;line-height:1.25">Back at Hotel Meridian</div></div>
+</div>
+
+<div style="font-size:11px;color:#98A5A0;line-height:1.45;padding:0 2px">Only times and order can clash like this. Two people writing notes never conflict — both notes are kept, under both names.</div>
+</div>
+<div style="flex:none;padding:12px 16px 14px;background:#fff;border-top:1px solid #E7EAE7;display:flex;gap:8px;align-items:center">
+<div style="flex:1;min-width:0;font-size:11.5px;font-weight:650;color:#6B7A74">1 row still to settle</div>
+<div style="height:42px;padding:0 16px;border-radius:12px;background:#1F6F5C;color:#fff;font-size:13px;font-weight:700;display:flex;align-items:center;white-space:nowrap">Done editing</div>
+</div>
+</div>
+</div>
+
+</div>
+</section>
+</x-dc>
+</body>
+</html>

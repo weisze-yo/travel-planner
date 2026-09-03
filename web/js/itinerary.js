@@ -3,11 +3,18 @@
 // No paid API and no server, so this happens on the device: text in,
 // candidate stops out, and every row correctable before any of it lands.
 //
-// The design constraint that shapes all of it is that the half-understood row
-// is the normal one. An agent's PDF gives you "Day 3" once and then eight
-// lines of varying shape; a WhatsApp message gives you no days at all. So a
-// row that is missing its day or its time is kept and flagged, never dropped,
-// and every field on it can be corrected on the confirm screen.
+// It reads shapes, not meaning. There is no language model in the loop — just
+// pattern matching — so it can find the shapes itineraries are written in (a
+// day header, a clock, a bullet, an arrow) and everything after the clock it
+// treats as a name without pretending to recognise it.
+//
+// Which is why every row comes back with a grade, and the confirm screen is
+// mostly about the second and third:
+//
+//   read    — taken as written. Jade tick.
+//   worked  — something was inferred, and `inferred` says which part. Amber.
+//   unread  — the line was not understood at all. The raw text is kept
+//             verbatim and the traveller is asked what it is.
 
 import { parseClock, parseDuration, uid } from './util.js';
 
@@ -130,6 +137,33 @@ function cleanName(text) {
     .trim();
 }
 
+/** Whether a line really carries a clock, as against merely a number. */
+function hasRealTime(line) {
+  if (HHMM_RANGE_RE.test(line)) return true;
+  const hit = SINGLE_RE.exec(String(line || ''));
+  return Boolean(hit && readTime(hit[1]) != null);
+}
+
+/**
+ * The aside on a stop's line: a trailing parenthetical, or whatever follows
+ * a dash or a comma once the name has been read. It becomes the stop's note
+ * rather than part of its name, which is what the artboards show.
+ */
+function splitAside(text) {
+  const bracket = /^(.*?)[\s]*[([（]([^)\]）]{2,})[)\]）][\s.,;]*$/.exec(text);
+  if (bracket && cleanName(bracket[1]).length >= 2) {
+    return { name: cleanName(bracket[1]), aside: cleanName(bracket[2]) };
+  }
+  const dash = /^(.{2,}?)\s+[–—]\s+(.{2,})$/.exec(text);
+  if (dash) return { name: cleanName(dash[1]), aside: cleanName(dash[2]) };
+  return { name: cleanName(text), aside: '' };
+}
+
+/** Two names joined by "&" or "and" — the confirm screen offers a split. */
+function looksSplittable(name) {
+  return /\S\s+(?:&|and)\s+\S/i.test(name) && name.length > 18;
+}
+
 /** A line that continues the one above it rather than starting a new stop. */
 function looksLikeContinuation(line) {
   if (/^[([（"'“]/.test(line)) return true;
@@ -154,25 +188,49 @@ export function parseItinerary(text, { startDate = null, dayCount = 0 } = {}) {
   let skipped = 0;
   let previous = null;
 
-  const push = (dayNumber, { time, minutes, name }) => {
+  const at = (minutes) => (minutes == null ? '' : (
+    `${String(Math.floor(minutes / 60)).padStart(2, '0')}:${String(minutes % 60).padStart(2, '0')}`
+  ));
+
+  const push = (dayNumber, { time, end, minutes, name, raw, kind = 'stop' }) => {
     const guessed = dayNumber == null;
+    const inferred = [];
+
+    // An end that came from a length rather than a second clock time is
+    // inferred; so is the hour we invent when there is neither.
+    let endAt = end;
+    if (endAt == null && time != null && minutes) {
+      endAt = (time + minutes) % 1440;
+      inferred.push({ field: 'end', text: `End worked out from "${minutes} min" on the line` });
+    }
+    if (endAt == null && time != null) {
+      endAt = (time + 60) % 1440;
+      inferred.push({ field: 'end', text: 'End time guessed — the line only gave a start' });
+    }
+    if (time == null) inferred.push({ field: 'time', text: 'No time on the line — set one, or leave it' });
+    if (guessed) inferred.push({ field: 'day', text: 'No day header above this line, so it is on day 1' });
+    if (name.length > 70) inferred.push({ field: 'name', text: 'A long name — it may be two stops on one line' });
+    if (dayCount && (dayNumber ?? 1) > dayCount) {
+      inferred.push({ field: 'day', text: `Day ${dayNumber} is past the end of this trip, which will be lengthened` });
+    }
+
     const row = {
       id: uid('cand-'),
+      kind,
+      raw: String(raw || '').trim(),
       dayNumber: dayNumber ?? 1,
       dayGuessed: guessed,
-      time: time == null ? '' : `${String(Math.floor(time / 60)).padStart(2, '0')}:${String(time % 60).padStart(2, '0')}`,
-      durationMinutes: minutes || null,
+      time: at(time),
+      endTime: at(endAt),
       name,
       note: '',
-      include: true,
-      issues: [],
+      inferred,
+      // Nothing is settled until the traveller touches it: a clean row still
+      // has to be ticked, because this is the one place a wrong row is cheap.
+      checked: false,
+      skipped: false,
+      grade: kind === 'unread' ? 'unread' : (inferred.length ? 'worked' : 'read'),
     };
-    if (!row.time) row.issues.push('No time — set one, or leave it and fix it on the day');
-    if (guessed) row.issues.push('No day was given above this line, so it is on day 1');
-    if (name.length > 70) row.issues.push('That is a long name — it may be two stops on one line');
-    if (dayCount && row.dayNumber > dayCount) {
-      row.issues.push(`Day ${row.dayNumber} is past the end of this trip — the trip will be lengthened`);
-    }
     rows.push(row);
     previous = row;
     return row;
@@ -196,7 +254,10 @@ export function parseItinerary(text, { startDate = null, dayCount = 0 } = {}) {
       // "Day 3 — Old Quarter" names the day; "Day 3: 08:30 Depart" starts it.
       // Trailing text with no time in it is a title, so it is left out rather
       // than becoming a stop nobody asked for.
-      if (SINGLE_RE.test(rest) || HHMM_RANGE_RE.test(rest)) readStop(rest, currentDay);
+      // "Day 3 — Sat 14 Mar" names the day; "Day 3: 08:30 Depart" starts it.
+      // The loose token regex matches "14", so the remainder only becomes a
+      // stop when readTime actually finds a clock in it.
+      if (hasRealTime(rest)) readStop(rest, currentDay);
       else titles.set(currentDay, rest);
       continue;
     }
@@ -233,8 +294,8 @@ export function parseItinerary(text, { startDate = null, dayCount = 0 } = {}) {
       }
     }
 
-    let minutes = end != null && time != null ? ((end - time) + 1440) % 1440 : null;
-    if (!minutes) {
+    let minutes = null;
+    if (end == null) {
       const read = readDuration(working);
       if (read) {
         minutes = read.minutes;
@@ -242,7 +303,7 @@ export function parseItinerary(text, { startDate = null, dayCount = 0 } = {}) {
       }
     }
 
-    const name = cleanName(working);
+    const { name, aside } = splitAside(working);
 
     // Nothing but a time, or nothing at all.
     if (!name || name.length < 2) {
@@ -251,12 +312,22 @@ export function parseItinerary(text, { startDate = null, dayCount = 0 } = {}) {
     }
 
     // No time and reading like prose: this belongs to the stop above it.
-    if (time == null && previous && looksLikeContinuation(line)) {
-      previous.note = previous.note ? `${previous.note} ${name}` : name;
+    if (time == null && previous && previous.kind === 'stop' && looksLikeContinuation(line)) {
+      const carried = cleanName(working);
+      previous.note = previous.note ? `${previous.note} ${carried}` : carried;
       return;
     }
 
-    push(dayNumber, { time, minutes, name });
+    // No time, and prose with nothing above it to belong to: the line was not
+    // understood at all. It is kept verbatim and asked about, never guessed.
+    if (time == null && looksLikeContinuation(line)) {
+      push(dayNumber, { time: null, end: null, minutes: null, name, raw: line, kind: 'unread' });
+      return;
+    }
+
+    const row = push(dayNumber, { time, end, minutes, name, raw: line });
+    if (aside) row.note = aside;
+    if (looksSplittable(name)) row.splittable = true;
   }
 
   const days = [...new Set(rows.map((r) => r.dayNumber))].sort((a, b) => a - b);
@@ -266,6 +337,12 @@ export function parseItinerary(text, { startDate = null, dayCount = 0 } = {}) {
     titles,
     skipped,
     sawAnyHeader,
-    needsAttention: rows.filter((r) => r.issues.length).length,
+    text: String(text || ''),
+    words: String(text || '').trim().split(/\s+/).filter(Boolean).length,
+    graded: {
+      read: rows.filter((r) => r.grade === 'read').length,
+      worked: rows.filter((r) => r.grade === 'worked').length,
+      unread: rows.filter((r) => r.grade === 'unread').length,
+    },
   };
 }
