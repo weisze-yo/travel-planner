@@ -6,7 +6,11 @@ import { html, raw, icon, delegate, money } from '../util.js';
 import * as store from '../store.js';
 import { state } from '../store.js';
 import { go, back } from '../nav.js';
-import { mapsLinks, swipeToDelete } from './parts.js';
+import { prepare } from '../photos.js';
+import {
+  backHeader, mapsLinks, swipeToDelete,
+  itemEditor, readItemEditor, shotEditor, readShotEditor, factsEditor, readFactsEditor,
+} from './parts.js';
 
 const TABS = [
   { id: 'info', label: 'Info' },
@@ -31,9 +35,11 @@ export function subject(params = {}) {
         subtitle: hit.item.subtitle,
         summary: hit.item.summary || hit.item.note,
         window: store.itemWindow(hit.item).label,
-        essentials: hit.item.essentials?.length
-          ? hit.item.essentials
-          : (store.place(hit.item.placeID)?.essentials || []),
+        // The place owns these; a row only ever holds them before the
+        // stop-is-a-place migration has run over it.
+        essentials: store.place(hit.item.placeID)?.essentials?.length
+          ? store.place(hit.item.placeID).essentials
+          : (hit.item.essentials || []),
         placeID: hit.item.placeID,
         // A stop is a visit to a place, so everything hangs off the place.
         anchorID: hit.item.placeID,
@@ -69,6 +75,10 @@ export function subject(params = {}) {
     || store.activeItems(day).find((i) => i.kind === 'main');
   return fallback ? subject({ itemID: fallback.id }) : null;
 }
+
+/** Which sheet is open over the panels, if any. */
+let sheet = null;
+const repaint = () => store.selectDay(state.selectedDay);
 
 export default {
   id: 'dest',
@@ -131,6 +141,8 @@ export default {
             ${panel(tab, it, { shopHere, shots, places, notes })}
           </div>
         </div>
+
+        ${sheetMarkup(it, shopHere, shots)}
       </section>`;
   },
 
@@ -149,9 +161,67 @@ export default {
       anchorID: it?.anchorID, anchorName: it?.name, placeID: it?.placeID,
     }));
     delegate(root, '[data-act="all-shop"]', () => go('shop'));
-    delegate(root, '[data-act="all-shots"]', () => go('mustsee', {
-      anchorID: it?.anchorID, anchorName: it?.name,
-    }));
+
+    // --- the three sheets: a shopping item, a must-see spot, and the table.
+    delegate(root, '[data-edit-item]', (el) => { sheet = { kind: 'item', id: el.dataset.editItem }; repaint(); });
+    delegate(root, '[data-act="add-item"]', () => { sheet = { kind: 'item', id: null }; repaint(); });
+    delegate(root, '[data-act="item-cancel"]', () => { sheet = null; repaint(); });
+    delegate(root, '[data-act="item-save"]', () => {
+      const patch = readItemEditor(root);
+      if (!patch) return;
+      if (sheet.id) store.updateShoppingItem(sheet.id, patch);
+      else store.addShoppingItem({ ...patch, placeID: it?.placeID, placeLabel: patch.placeLabel || it?.name });
+      sheet = null;
+    });
+
+    delegate(root, '[data-edit-shot]', (el) => { sheet = { kind: 'shot', id: el.dataset.editShot }; repaint(); });
+    delegate(root, '[data-act="add-shot"]', () => { sheet = { kind: 'shot', id: null }; repaint(); });
+    delegate(root, '[data-act="shot-cancel"]', () => { sheet = null; repaint(); });
+    delegate(root, '[data-act="shot-photo-clear"]', () => {
+      if (sheet?.id) store.updateShot(sheet.id, { imagePath: null });
+      repaint();
+    });
+    root.querySelector('#shot-photo')?.addEventListener('change', async (event) => {
+      const file = event.target.files?.[0];
+      if (!file || !sheet) return;
+      // The reference picture is a thumbnail on the phone, the same route a
+      // Log photo takes when there is no Storage bucket to put it in.
+      const { thumbnail } = await prepare(file);
+      if (!sheet.id) {
+        const made = store.addShot({ placeID: it?.placeID, ...readShotEditor(root), imagePath: thumbnail });
+        sheet = made ? { kind: 'shot', id: made.id } : sheet;
+      } else {
+        store.updateShot(sheet.id, { imagePath: thumbnail });
+      }
+      repaint();
+    });
+    delegate(root, '[data-act="shot-save"]', () => {
+      const patch = readShotEditor(root);
+      if (!patch) return;
+      if (sheet.id) store.updateShot(sheet.id, patch);
+      else store.addShot({ placeID: it?.placeID, ...patch });
+      sheet = null;
+    });
+
+    delegate(root, '[data-act="edit-facts"]', () => { sheet = { kind: 'facts' }; repaint(); });
+    delegate(root, '[data-act="facts-cancel"]', () => { sheet = null; repaint(); });
+    delegate(root, '[data-act="facts-save"]', () => {
+      store.updatePlaceFacts(it?.placeID, readFactsEditor(root));
+      sheet = null;
+    });
+
+    swipeToDelete(root, {
+      rowSelector: '[data-shop-row]',
+      name: (el) => el.dataset.shopName,
+      label: () => 'Off the whole list, not just this stop',
+      onDelete: (el) => store.deleteShoppingItem(el.dataset.shopRow),
+    });
+    swipeToDelete(root, {
+      rowSelector: '[data-shot-row]',
+      name: (el) => el.dataset.shotName,
+      label: () => 'Gone from this place for good',
+      onDelete: (el) => store.deleteShot(el.dataset.shotRow),
+    });
     delegate(root, '[data-act="note"]', () => go('note', {
       dayNumber: state.selectedDay, placeID: it?.placeID, placeName: it?.name,
     }));
@@ -188,9 +258,10 @@ function infoPanel(it) {
       <div class="card pad">
         <div class="eyebrow">NEED TO KNOW</div>
         <div class="f125 muted lh145 mt6">
-          Nothing saved for this stop yet. Paste a map link when you add a place and
-          anything OpenStreetMap knows — hours, phone, website — lands here.
+          Nothing here yet. Pasting a map link fills in whatever OpenStreetMap has — hours,
+          phone, website — and the rest is yours to type.
         </div>
+        <button class="btn ghost wide mt12" data-act="edit-facts">Write what to remember</button>
       </div>`;
   }
   return html`
@@ -203,7 +274,8 @@ function infoPanel(it) {
             ${row.detail ? html`<div class="essential-d">${row.detail}</div>` : ''}
           </div>
         </div>`)}
-    </div>`;
+    </div>
+    <button class="btn ghost wide mt10" data-act="edit-facts">Correct or add to this</button>`;
 }
 
 function nearbyPanel(it, places) {
@@ -236,50 +308,68 @@ function nearbyPanel(it, places) {
             </div>`;
         })}
       </div>
-      ${schedule.stops.length ? html`
-        <button class="linkrow mt10" data-act="arrange">
+    ` : html`
+      <div class="empty">Nothing saved around this stop yet.</div>`}
+
+    <button class="btn-dashed mt10" data-act="all-nearby">
+      ${places.length ? 'Manage places for this stop' : '+ Add a place here'}
+    </button>
+
+    ${schedule.stops.length ? html`
+      <div class="dock-note">
+        <button class="linkrow" data-act="arrange">
           <div class="linkrow-mark">↩</div>
           <div class="grow">
             <div class="linkrow-t">${loop.name} · ${schedule.stops.length} stops</div>
             <div class="linkrow-s">${store.subSummaryLine(loop)}</div>
           </div>
           ${raw(icon.chevron)}
-        </button>` : ''}
-    ` : html`
-      <div class="empty">Nothing saved around this stop yet.</div>`}
-
-    <button class="btn-dashed mt10" data-act="all-nearby">
-      ${places.length ? 'Manage places for this stop' : '+ Add a place here'}
-    </button>`;
+        </button>
+      </div>` : ''}`;
 }
 
+/**
+ * The full card, here, rather than a summary and a screen behind it. A
+ * must-see spot is mostly a picture and a sentence about where to stand —
+ * summarising that to one line and hiding the rest behind a button removed
+ * the only part of it you actually use while standing there.
+ */
 function shotsPanel(it, shots) {
   return html`
     ${shots.length ? html`
-      <div class="col g10">
+      <div class="col g12">
         ${shots.map((shot) => html`
-          <div class="card" style="overflow:hidden">
-            <div class="row g10" style="padding:12px">
-              <button class="box${shot.captured ? ' on' : ''}" data-act="tick-shot" data-id="${shot.id}"
-                      role="checkbox" aria-checked="${shot.captured ? 'true' : 'false'}"
-                      aria-label="Mark ${shot.title} as taken">
-                ${raw(icon.tick('#fff', 11))}
-              </button>
-              <div class="grow">
-                <div class="f13 w700">${shot.title}</div>
-                <div class="f115 muted lh145 mt2">${shot.summary}</div>
-                <div class="shot-where">${raw(icon.pin)}${shot.whereToFind}</div>
+          <div class="swipe-row" data-shot-row="${shot.id}" data-shot-name="${shot.title}">
+            <div class="swipe-bin">
+              <button class="bin" data-swipe-delete aria-label="Delete ${shot.title}">${raw(icon.bin)}</button>
+            </div>
+            <div class="swipe-face card" style="overflow:hidden;border-radius:16px">
+              <div class="shot-img">
+                ${shot.imagePath
+                  ? html`<img src="${shot.imagePath}" alt="${shot.title}">`
+                  : 'example photo'}
+                <button class="shot-tick${shot.captured ? ' on' : ''}" data-act="tick-shot" data-id="${shot.id}"
+                        role="checkbox" aria-checked="${shot.captured ? 'true' : 'false'}"
+                        aria-label="Mark ${shot.title} as taken">
+                  ${raw(icon.tick(shot.captured ? '#fff' : '#B4BEB9', 13))}
+                </button>
               </div>
-              <span class="shot-tag">${shot.tag}</span>
+              <div style="padding:12px 14px">
+                <div class="row g8" style="align-items:baseline">
+                  <div class="shot-title grow">${shot.title}</div>
+                  <div class="shot-tag">${shot.tag}</div>
+                </div>
+                ${shot.summary ? html`<div class="shot-desc">${shot.summary}</div>` : ''}
+                ${shot.whereToFind ? html`<div class="shot-where">${raw(icon.pin)}${shot.whereToFind}</div>` : ''}
+                <button class="btn ghost sm wide mt10" data-edit-shot="${shot.id}">Edit this spot</button>
+              </div>
             </div>
           </div>`)}
       </div>
-      <button class="btn-dashed mt10" data-act="all-shots">Open the full cards</button>
     ` : html`
-      <div class="empty">
-        No must-see spots noted for this stop.<br>
-        Adding your own is still to come.
-      </div>`}`;
+      <div class="empty">No must-see spots noted for this stop yet.</div>`}
+
+    <button class="btn-dashed mt12" data-act="add-shot">+ A shot worth getting here</button>`;
 }
 
 function shopPanel(it, items) {
@@ -290,31 +380,41 @@ function shopPanel(it, items) {
     ${items.length ? html`
       <div class="card-list">
         ${items.map((item) => html`
-          <div class="item">
-            <div class="item-top">
-              <button class="box${item.bought ? ' on' : ''}" data-act="tick-item" data-id="${item.id}"
-                      role="checkbox" aria-checked="${item.bought ? 'true' : 'false'}"
-                      aria-label="Mark ${item.name} as bought">
-                ${raw(icon.tick('#fff', 11))}
-              </button>
-              <div class="grow">
-                <div class="item-name${item.bought ? ' done' : ''}">${item.name}</div>
-                ${item.detail ? html`<div class="item-sub">${item.detail}</div>` : ''}
-              </div>
-              <div class="right none">
-                <div class="item-est">${money(item.paidAmount ?? item.estimate ?? 0, symbol)}</div>
-                <div class="item-est-cap">${item.paidAmount != null ? 'paid' : 'est.'}</div>
+          <div class="swipe-row swipe-flat" data-shop-row="${item.id}" data-shop-name="${item.name}">
+            <div class="swipe-bin">
+              <button class="bin" data-swipe-delete aria-label="Delete ${item.name}">${raw(icon.bin)}</button>
+            </div>
+            <div class="swipe-face item">
+              <div class="item-top">
+                <button class="box${item.bought ? ' on' : ''}" data-act="tick-item" data-id="${item.id}"
+                        role="checkbox" aria-checked="${item.bought ? 'true' : 'false'}"
+                        aria-label="Mark ${item.name} as bought">
+                  ${raw(icon.tick('#fff', 11))}
+                </button>
+                <button class="grow" style="text-align:left" data-edit-item="${item.id}"
+                        aria-label="Correct ${item.name}">
+                  <div class="item-name${item.bought ? ' done' : ''}">
+                    ${item.name}${item.quantity > 1 ? ` ×${item.quantity}` : ''}
+                  </div>
+                  ${item.detail ? html`<div class="item-sub">${item.detail}</div>` : ''}
+                </button>
+                <div class="right none">
+                  <div class="item-est">${money(item.paidAmount ?? item.estimate ?? 0, symbol)}</div>
+                  <div class="item-est-cap">${item.paidAmount != null ? 'paid' : 'est.'}</div>
+                </div>
               </div>
             </div>
           </div>`)}
       </div>
       <div class="f115 muted mt8">
-        ${items.filter((i) => i.bought).length} of ${items.length} bought · ${money(spent, symbol)} spent here
+        ${items.filter((i) => i.bought).length} of ${items.length} bought · ${money(spent, symbol)} spent here ·
+        tap a name to correct it, swipe it left to remove it
       </div>
     ` : html`
       <div class="empty">Nothing on your shopping list for this stop.</div>`}
 
-    <button class="btn-dashed mt10" data-act="all-shop">Open the whole shopping list</button>`;
+    <button class="btn-dashed mt10" data-act="add-item">+ Something to buy here</button>
+    <button class="btn ghost wide mt8" data-act="all-shop">Open the whole shopping list</button>`;
 }
 
 /**
@@ -363,4 +463,21 @@ function logPanel(it, notes) {
       Notes belong to this place, so they stay here across days. The Log shows the same ones
       under ${it.name} on the day each was written.
     </div>`;
+}
+
+/** Whichever sheet is open, over the panels. */
+function sheetMarkup(it, shopHere, shots) {
+  if (!sheet) return '';
+  const symbol = state.trip?.currencySymbol || '¥';
+  if (sheet.kind === 'item') {
+    const item = sheet.id
+      ? shopHere.find((i) => i.id === sheet.id)
+      : { name: '', detail: '', estimate: null, quantity: 1, placeLabel: it?.name || '' };
+    return itemEditor(item, { symbol });
+  }
+  if (sheet.kind === 'shot') {
+    return shotEditor(sheet.id ? shots.find((sh) => sh.id === sheet.id) : null, { placeName: it?.name });
+  }
+  if (sheet.kind === 'facts') return factsEditor(store.place(it?.placeID));
+  return '';
 }

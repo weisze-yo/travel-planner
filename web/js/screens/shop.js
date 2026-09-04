@@ -6,12 +6,14 @@
 import { html, raw, icon, delegate, money, boundedNumber } from '../util.js';
 import * as store from '../store.js';
 import { state } from '../store.js';
-import { checkbox } from './parts.js';
+import { checkbox, itemEditor, readItemEditor } from './parts.js';
 import { PAYMENTS, BADGES, SHOP_CATEGORIES } from '../data.js';
 import { swipeToDelete } from './parts.js';
 import { go } from '../nav.js';
 
 let addOpen = false;
+/** The item whose correction sheet is open, if any. */
+let editing = null;
 
 export default {
   id: 'shop',
@@ -59,6 +61,8 @@ export default {
           ${origin()}
         </div>
 
+        ${editing ? itemEditor(state.shopping.find((i) => i.id === editing), { symbol }) : ''}
+
         <button class="footer-card" data-act="report" aria-label="Open the spend report">
           <div class="row end between g10">
             <div class="grow">
@@ -101,6 +105,15 @@ export default {
     });
 
     delegate(root, '[data-act="tick"]', (el) => store.toggleBought(el.dataset.id));
+
+    delegate(root, '[data-edit-item]', (el) => { editing = el.dataset.editItem; nudge(); });
+    delegate(root, '[data-act="item-cancel"]', () => { editing = null; nudge(); });
+    delegate(root, '[data-act="item-save"]', () => {
+      const patch = readItemEditor(root);
+      if (!patch) return;
+      store.updateShoppingItem(editing, patch);
+      editing = null;
+    });
     root.querySelectorAll('[data-pay-for]').forEach((select) => {
       select.addEventListener('change', () => store.setPayment(select.dataset.payFor, select.value));
     });
@@ -189,9 +202,10 @@ function row(item, symbol) {
       <div class="swipe-face item">
       <div class="item-top">
         ${checkbox(item.bought, { act: 'tick', id: item.id })}
-        <button class="grow" style="text-align:left" data-act="tick" data-id="${item.id}">
+        <button class="grow" style="text-align:left" data-edit-item="${item.id}"
+                aria-label="Correct ${item.name}">
           <div class="item-name${item.bought ? ' done' : ''}">
-            ${item.name}${fresh ? raw(' <span class="badge jade">NEW</span>') : ''}
+            ${item.name}${item.quantity > 1 ? ` ×${item.quantity}` : ''}${fresh ? raw(' <span class="badge jade">NEW</span>') : ''}
           </div>
           ${item.detail ? html`<div class="item-sub">${item.detail}</div>` : ''}
         </button>

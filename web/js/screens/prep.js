@@ -6,6 +6,7 @@ import { html, raw, icon, delegate } from '../util.js';
 import * as store from '../store.js';
 import { state } from '../store.js';
 import { checkbox, swipeToDelete } from './parts.js';
+import { OUTFIT_SUGGESTION, OUTFIT_SUGGESTION_CHIPS, OUTFIT_PICKS } from '../data.js';
 import { PACKED_LOCATIONS } from '../data.js';
 
 let addingTo = null;
@@ -31,6 +32,8 @@ export default {
         </div>
 
         <div class="scroll" style="padding:12px 16px 24px">
+          ${outfitCard()}
+
           ${groups.map((group) => html`
             <div class="card-list mb12">
               <div class="swipe-row swipe-flat" data-cat-row="${group.title}">
@@ -85,6 +88,15 @@ export default {
   },
 
   mount(root) {
+    delegate(root, '[data-act="outfit-remove"]', (el) => store.removeOutfitPiece(el.dataset.piece));
+    delegate(root, '[data-act="outfit-pick"]', (el) => store.addOutfitPiece(el.dataset.piece));
+    delegate(root, '[data-act="outfit-add"]', () => {
+      const input = root.querySelector('#outfit-new');
+      if (!input?.value.trim()) return;
+      store.addOutfitPiece(input.value);
+      input.value = '';
+    });
+
     swipeToDelete(root, {
       rowSelector: '[data-prep-row]',
       name: (row) => row.dataset.prepName,
@@ -124,4 +136,55 @@ export default {
 
 function nudge() {
   store.selectDay(state.selectedDay);
+}
+
+/**
+ * What to wear, which is the same question as what to pack and now sits on
+ * the same screen. The suggestion is read off the day's weather; what you
+ * are actually bringing is your own record and is kept separate from it,
+ * because the app guessing and you deciding are not the same list.
+ */
+function outfitCard() {
+  const wx = store.weather();
+  const mine = store.outfitFor()?.pieces || [];
+  const picks = OUTFIT_PICKS.filter((p) => !mine.includes(p));
+
+  return html`
+    <div class="card pad mb12">
+      <div class="row g8 center">
+        <div class="eyebrow grow" style="font-size:11px">WHAT TO WEAR ON DAY ${state.selectedDay}</div>
+        <div class="f115 w700" style="color:var(--jade)">${wx ? `${wx.high} °C, ${wx.summary}` : ''}</div>
+      </div>
+      <div class="row g12 mt10">
+        <div class="outfit-ref">reference</div>
+        <div class="outfit-text">${OUTFIT_SUGGESTION}</div>
+      </div>
+      <div class="row g6 wrap mt10">
+        ${OUTFIT_SUGGESTION_CHIPS.map((c, i) => html`
+          <span class="chip ${i === 0 ? 'amber' : ''}">${c}</span>`)}
+      </div>
+
+      <div class="hairline"></div>
+
+      <div class="eyebrow jade" style="font-size:11px">WHAT I AM ACTUALLY BRINGING</div>
+      <div class="f115 muted lh145 mt4">Your record, kept separate from the suggestion above.</div>
+
+      ${mine.length ? html`
+        <div class="row g6 wrap mt10">
+          ${mine.map((piece) => html`
+            <button class="mine-chip" data-act="outfit-remove" data-piece="${piece}">
+              ${piece}<span style="font-size:11px;opacity:.6">✕</span>
+            </button>`)}
+        </div>` : ''}
+
+      <div class="row g6 mt10">
+        <input id="outfit-new" class="grow" placeholder="Add a piece">
+        <button class="btn jade none" style="width:58px;height:37px" data-act="outfit-add">Add</button>
+      </div>
+
+      ${picks.length ? html`
+        <div class="row g6 wrap mt8">
+          ${picks.map((p) => html`<button class="pick-chip" data-act="outfit-pick" data-piece="${p}">+ ${p}</button>`)}
+        </div>` : ''}
+    </div>`;
 }

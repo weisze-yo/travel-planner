@@ -165,6 +165,17 @@ async function unifyPlaces() {
 
       if (item.placeID && state.places.some((p) => p.id === item.placeID)) {
         itemToPlace.set(item.id, item.placeID);
+        // An older row kept its own copy of the place's facts, which then
+        // shadowed the place record and made corrections look lost. The
+        // place owns them; move anything still here across and drop it.
+        if (item.essentials?.length) {
+          const owner = state.places.find((p) => p.id === item.placeID);
+          if (owner && !owner.essentials?.length) {
+            put('places', { ...owner, essentials: item.essentials });
+          }
+          delete item.essentials;
+          dayTouched = true;
+        }
         continue;
       }
 
@@ -191,6 +202,7 @@ async function unifyPlaces() {
         put('places', record);
       }
       item.placeID = record.id;
+      delete item.essentials;
       itemToPlace.set(item.id, record.id);
       dayTouched = true;
     }
@@ -2313,12 +2325,65 @@ export function setShoppingCategory(id, category) {
   put('shopping', item);
 }
 
+/**
+ * Correcting an item you got wrong in the shop: the name, what you expect to
+ * pay, how many of them, and which place it belongs to. Moving it between
+ * places is the fiddly part — the group is keyed on the label, so the item
+ * has to take its new group's order or start one.
+ */
+export function updateShoppingItem(id, patch = {}) {
+  const item = state.shopping.find((i) => i.id === id);
+  if (!item) return null;
+  const next = { ...item };
+
+  if (patch.name !== undefined) {
+    const name = String(patch.name).trim();
+    if (!name) return null;
+    next.name = name;
+  }
+  if (patch.detail !== undefined) next.detail = String(patch.detail).trim();
+  if (patch.estimate !== undefined) {
+    const value = patch.estimate === '' || patch.estimate === null ? null : Number(patch.estimate);
+    next.estimate = Number.isFinite(value) ? value : null;
+  }
+  if (patch.quantity !== undefined) {
+    const value = Math.round(Number(patch.quantity));
+    next.quantity = Number.isFinite(value) && value > 1 ? value : 1;
+  }
+  if (patch.category !== undefined) next.category = patch.category;
+  if (patch.payment !== undefined) next.payment = patch.payment;
+
+  if (patch.placeLabel !== undefined && patch.placeLabel !== item.placeLabel) {
+    const label = String(patch.placeLabel).trim() || 'Unplanned · added on the trip';
+    const place = state.places.find((pl) => pl.name === label);
+    const siblings = state.shopping.filter((i) => i.placeLabel === label && i.id !== id);
+    next.placeLabel = label;
+    next.placeID = place?.id || null;
+    next.placeWhen = siblings[0]?.placeWhen || '';
+    next.groupOrder = siblings.length
+      ? siblings[0].groupOrder
+      : Math.max(-1, ...state.shopping.map((i) => i.groupOrder)) + 1;
+    next.order = siblings.length;
+    next.isUnplanned = !place;
+  }
+
+  put('shopping', next);
+  return next;
+}
+
+/** The names an item can be filed under: every place, plus unplanned. */
+export function shoppingPlaceChoices() {
+  const names = new Set(state.shopping.map((i) => i.placeLabel).filter(Boolean));
+  for (const place of state.places) names.add(place.name);
+  return [...names].sort((a, b) => a.localeCompare(b));
+}
+
 export function deleteShoppingItem(id) {
   const item = state.shopping.find((i) => i.id === id);
   removeWithUndo('shopping', id, item ? `${item.name} deleted` : 'Item deleted');
 }
 
-export function addShoppingItem({ name, placeLabel, estimate, payment, category, placeID }) {
+export function addShoppingItem({ name, placeLabel, estimate, payment, category, placeID, quantity }) {
   if (!name) return;
   const label = placeLabel || 'Unplanned · added on the trip';
   // Bind to the place when we can name one, so renaming it keeps the item.
@@ -2340,6 +2405,7 @@ export function addShoppingItem({ name, placeLabel, estimate, payment, category,
     groupOrder,
     order: existing.length,
     estimate: estimate ?? null,
+    quantity: Math.max(1, Math.round(Number(quantity) || 1)),
     paidAmount: null,
     payment: payment || 'cash',
     category: category || 'other',
@@ -2347,6 +2413,82 @@ export function addShoppingItem({ name, placeLabel, estimate, payment, category,
     boughtOn: null,
     isUnplanned: !placeLabel,
   });
+}
+
+/**
+ * A must-see spot of your own. The four fields are the ones you actually
+ * stand there needing: what the shot is, where to stand, when it works, and
+ * a reference picture if you have one.
+ */
+export function addShot({ placeID, title, summary = '', whereToFind = '', tag = 'YOURS', imagePath = null }) {
+  const name = String(title || '').trim();
+  if (!name || !placeID) return null;
+  const place = state.places.find((p) => p.id === placeID) || null;
+  const mine = shotsFor(placeID);
+  const record = {
+    id: uid('shot-'),
+    placeID,
+    title: name,
+    tag: String(tag || 'YOURS').trim().toUpperCase().slice(0, 12) || 'YOURS',
+    summary: String(summary || '').trim(),
+    whereToFind: String(whereToFind || '').trim(),
+    imagePath,
+    captured: false,
+    order: mine.length ? Math.max(...mine.map((sh) => sh.order || 0)) + 1 : 0,
+    latitude: place?.latitude ?? null,
+    longitude: place?.longitude ?? null,
+  };
+  put('mustSee', record);
+  return record;
+}
+
+export function updateShot(id, patch = {}) {
+  const shot = state.mustSee.find((sh) => sh.id === id);
+  if (!shot) return null;
+  const next = { ...shot };
+  if (patch.title !== undefined) {
+    const title = String(patch.title).trim();
+    if (!title) return null;
+    next.title = title;
+  }
+  if (patch.summary !== undefined) next.summary = String(patch.summary).trim();
+  if (patch.whereToFind !== undefined) next.whereToFind = String(patch.whereToFind).trim();
+  if (patch.tag !== undefined) next.tag = String(patch.tag).trim().toUpperCase().slice(0, 12) || 'YOURS';
+  if (patch.imagePath !== undefined) next.imagePath = patch.imagePath;
+  put('mustSee', next);
+  return next;
+}
+
+export function deleteShot(id) {
+  const shot = state.mustSee.find((sh) => sh.id === id);
+  removeWithUndo('mustSee', id, shot ? `${shot.title} deleted` : 'Spot deleted');
+}
+
+/**
+ * Correcting what the app knows about a place. OpenStreetMap fills some of
+ * these for free and leaves the rest empty, and a table that can only ever
+ * be filled by a volunteer somewhere else is a table you stop trusting.
+ */
+export const PLACE_FACTS = [
+  { key: 'Opening hours', hint: '09:00 – 18:00, closed Mondays' },
+  { key: 'Phone', hint: '+81 3 1234 5678' },
+  { key: 'Website', hint: 'example.com' },
+  { key: 'Getting in', hint: 'Tickets at the side office · ¥500' },
+  { key: 'Worth knowing', hint: 'Cash only. Shoulders covered.' },
+];
+
+export function updatePlaceFacts(placeID, rows = []) {
+  const record = state.places.find((p) => p.id === placeID) || null;
+  if (!record) return null;
+  const kept = rows
+    .map((row) => ({
+      key: String(row.key || '').trim(),
+      value: String(row.value || '').trim(),
+      detail: String(row.detail || '').trim(),
+    }))
+    .filter((row) => row.key && row.value);
+  put('places', { ...record, essentials: kept });
+  return kept;
 }
 
 export function toggleShot(id) {

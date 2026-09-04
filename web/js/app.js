@@ -12,7 +12,6 @@ import dest from './screens/dest.js';
 import nearby from './screens/nearby.js';
 import sub from './screens/sub.js';
 import shop from './screens/shop.js';
-import mustsee from './screens/mustsee.js';
 import prep from './screens/prep.js';
 import log from './screens/log.js';
 import note from './screens/note.js';
@@ -27,7 +26,7 @@ import share from './screens/share.js';
 import join from './screens/join.js';
 import changes from './screens/changes.js';
 
-for (const screen of [map, plan, dest, nearby, sub, shop, mustsee, prep, log, note, trip, trips, spend, paste, area, areas, stuck, share, join, changes]) {
+for (const screen of [map, plan, dest, nearby, sub, shop, prep, log, note, trip, trips, spend, paste, area, areas, stuck, share, join, changes]) {
   register(screen);
 }
 

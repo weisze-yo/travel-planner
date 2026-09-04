@@ -2143,3 +2143,12 @@ input.guessed { border: 1.5px solid var(--amber); background: #FFFDF7; color: va
 .sheet-grab { width: 100%; touch-action: none; cursor: grab; }
 .sheet.settling { transition: max-height .18s ease, height .18s ease; }
 .map-sheet, .sub-sheet { max-height: 50%; }
+
+/* A note pinned under a panel rather than left to scroll away with the list
+   above it — the sub route belongs to the stop, not to the list. */
+.dock-note {
+  margin-top: 14px;
+  padding-top: 12px;
+  border-top: 1px solid var(--line-2);
+}
+.form textarea { width: 100%; }

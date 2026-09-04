@@ -480,3 +480,163 @@ export function draggableSheet(sheet, { key = 'sheet', onOpen = null } = {}) {
   grab.addEventListener('pointercancel', up);
   return () => settle(at);
 }
+
+/**
+ * Correcting a shopping item, wherever you are looking at it.
+ *
+ * You write the list at home from a guess and correct it in the shop: the
+ * name was wrong, it is 1,200 not 5,000, you want three of them, and it
+ * turns out to be sold at the other market. All four are one sheet rather
+ * than four different places, and it is the same sheet on the trip's list
+ * and on a place's Shop tab, because it is the same correction.
+ */
+export function itemEditor(item, { symbol = '¥' } = {}) {
+  if (!item) return '';
+  const places = store.shoppingPlaceChoices();
+  return html`
+    <div class="scrim" data-act="item-cancel"></div>
+    <div class="modal">
+      <div class="form">
+        <div class="form-title">Correct this item</div>
+        <label class="f11 soft block">What it is</label>
+        <input id="edit-name" value="${esc(item.name || '')}" placeholder="Kitchen knife">
+        <label class="f11 soft block">Where in the shop, or anything to remember</label>
+        <input id="edit-detail" value="${esc(item.detail || '')}" placeholder="Middle aisle, stall 44">
+        <div class="row g8">
+          <div class="grow">
+            <label class="f11 soft block">What you expect to pay (${esc(symbol)})</label>
+            <input id="edit-estimate" type="number" inputmode="numeric" min="0"
+                   value="${item.estimate ?? ''}" placeholder="—">
+          </div>
+          <div style="width:96px">
+            <label class="f11 soft block">How many</label>
+            <input id="edit-quantity" type="number" inputmode="numeric" min="1" max="99"
+                   value="${item.quantity || 1}">
+          </div>
+        </div>
+        <label class="f11 soft block">Bought at</label>
+        <select id="edit-place">
+          ${places.map((name) => html`
+            <option value="${esc(name)}"${name === item.placeLabel ? ' selected' : ''}>${name}</option>`)}
+          ${places.includes(item.placeLabel) ? '' : html`
+            <option value="${esc(item.placeLabel || '')}" selected>${item.placeLabel || 'Unplanned'}</option>`}
+        </select>
+        <div class="form-actions">
+          <button class="btn jade grow" data-act="item-save">Save</button>
+          <button class="btn ghost" style="width:96px" data-act="item-cancel">Cancel</button>
+        </div>
+        <div class="form-hint">
+          The estimate is what the spend report measures your actual spending against. Moving
+          it to another place moves it into that place's group on the list.
+        </div>
+      </div>
+    </div>`;
+}
+
+/** Reads the editor back. Returns null when the name has been emptied. */
+export function readItemEditor(root) {
+  const name = root.querySelector('#edit-name')?.value.trim();
+  if (!name) return null;
+  return {
+    name,
+    detail: root.querySelector('#edit-detail')?.value ?? '',
+    estimate: root.querySelector('#edit-estimate')?.value ?? '',
+    quantity: root.querySelector('#edit-quantity')?.value ?? 1,
+    placeLabel: root.querySelector('#edit-place')?.value ?? undefined,
+  };
+}
+
+/**
+ * A must-see spot, yours or one that shipped with the trip.
+ *
+ * The reference picture is optional and stays on the phone as a thumbnail —
+ * the same route a Log photo takes — because a shot you cannot picture is
+ * just a sentence you will not read again.
+ */
+export function shotEditor(shot, { placeName = 'this stop' } = {}) {
+  const made = Boolean(shot?.id);
+  return html`
+    <div class="scrim" data-act="shot-cancel"></div>
+    <div class="modal">
+      <div class="form">
+        <div class="form-title">${made ? 'Edit this spot' : `A shot worth getting at ${placeName}`}</div>
+        <label class="f11 soft block">What the shot is</label>
+        <input id="shot-title" value="${esc(shot?.title || '')}" placeholder="Red lantern run, north gate">
+        <label class="f11 soft block">Where to stand</label>
+        <input id="shot-where" value="${esc(shot?.whereToFind || '')}" placeholder="20 m inside the north gate">
+        <label class="f11 soft block">Anything else worth knowing</label>
+        <textarea id="shot-summary" rows="2"
+                  placeholder="Best an hour before sunset — the west side is empty.">${esc(shot?.summary || '')}</textarea>
+        <label class="f11 soft block">Tag</label>
+        <input id="shot-tag" value="${esc(shot?.tag || 'YOURS')}" maxlength="12" placeholder="ICONIC">
+        <div class="row g8 center">
+          <label class="btn ghost sm grow" style="cursor:pointer">
+            ${shot?.imagePath ? 'Change the picture' : 'Add a reference picture'}
+            <input id="shot-photo" type="file" accept="image/*" hidden>
+          </label>
+          ${shot?.imagePath ? html`
+            <button class="btn ghost sm none" style="width:82px" data-act="shot-photo-clear">Remove</button>` : ''}
+        </div>
+        ${shot?.imagePath ? html`
+          <div class="photo-thumb mt8" style="width:100%;height:120px">
+            <img src="${shot.imagePath}" alt=""></div>` : ''}
+        <div class="form-actions">
+          <button class="btn jade grow" data-act="shot-save">${made ? 'Save' : 'Add it'}</button>
+          <button class="btn ghost" style="width:96px" data-act="shot-cancel">Cancel</button>
+        </div>
+      </div>
+    </div>`;
+}
+
+export function readShotEditor(root) {
+  const title = root.querySelector('#shot-title')?.value.trim();
+  if (!title) return null;
+  return {
+    title,
+    whereToFind: root.querySelector('#shot-where')?.value ?? '',
+    summary: root.querySelector('#shot-summary')?.value ?? '',
+    tag: root.querySelector('#shot-tag')?.value ?? 'YOURS',
+  };
+}
+
+/**
+ * What the app knows about a place, typed by you.
+ *
+ * OpenStreetMap fills what it has and leaves the rest empty, so on your own
+ * places the table stands blank. These are the five rows worth typing; an
+ * empty one is simply not kept, so the table never shows a label with
+ * nothing under it.
+ */
+export function factsEditor(place) {
+  const held = new Map((place?.essentials || []).map((row) => [row.key, row]));
+  const rows = store.PLACE_FACTS.map((fact) => ({ ...fact, ...held.get(fact.key) }));
+  const extra = (place?.essentials || []).filter((row) => !store.PLACE_FACTS.some((f) => f.key === row.key));
+
+  return html`
+    <div class="scrim" data-act="facts-cancel"></div>
+    <div class="modal">
+      <div class="form">
+        <div class="form-title">What to remember about ${esc(place?.name || 'this place')}</div>
+        ${[...rows, ...extra].map((row, at) => html`
+          <label class="f11 soft block">${row.key}</label>
+          <input data-fact="${at}" data-fact-key="${esc(row.key)}"
+                 value="${esc(row.value || '')}" placeholder="${esc(row.hint || '')}">`)}
+        <div class="form-actions">
+          <button class="btn jade grow" data-act="facts-save">Save</button>
+          <button class="btn ghost" style="width:96px" data-act="facts-cancel">Cancel</button>
+        </div>
+        <div class="form-hint">
+          Leave a row empty and it is not kept. Anything a map link already found is filled in
+          here and can be corrected like the rest.
+        </div>
+      </div>
+    </div>`;
+}
+
+export function readFactsEditor(root) {
+  return [...root.querySelectorAll('[data-fact]')].map((input) => ({
+    key: input.dataset.factKey,
+    value: input.value,
+    detail: '',
+  }));
+}
