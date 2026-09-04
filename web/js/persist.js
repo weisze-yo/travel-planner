@@ -1,19 +1,35 @@
-// Storage. Two interchangeable backends behind one interface:
+// Storage and who you are. Two interchangeable backends behind one interface:
 //
 //   firebase — Firestore under users/{uid}/trips/{tripId}/…, the same layout
 //              the SwiftUI app uses, so both clients read the same shape.
-//   local    — localStorage, used when Firebase is not configured yet or
-//              cannot be reached. The app stays usable; the data just does
-//              not leave the browser.
+//   local    — localStorage, used when Firebase is not configured yet, when
+//              nobody has signed in on this phone, or when Firestore cannot
+//              be reached. The app stays usable; the data just does not
+//              leave the browser.
+//
+// Signing in is real: Google, or a link sent to an email address. There is no
+// password anywhere in here — a passwordless link is one tap on a phone and
+// there is nothing to reset, forget or leak. What there is *not* any more is
+// anonymous sign-in: an anonymous uid is an account nobody can get back, and
+// the whole point of item 31 is that a trip survives losing the phone.
+//
+// One exception, and it matters: a phone that already has an anonymous user
+// from the previous build keeps it, because its trips live under that uid.
+// Signing in *links* that user rather than replacing it, so the uid — and
+// every trip under it — carries over. New phones never get one.
 
 import { firebaseConfig, FIREBASE_SDK } from './config.js';
-import { TRIP_ID } from './data.js';
 
 export const KINDS = ['days', 'places', 'subRoutes', 'shopping', 'mustSee', 'prep', 'log', 'outfits'];
 
 const LOCAL_PREFIX = 'travel-planner:trip:';
 const LOCAL_INDEX = 'travel-planner:trips';
 const ACTIVE_KEY = 'travel-planner:active-trip';
+/** Where a half-finished email sign-in remembers which address it was for. */
+const EMAIL_KEY = 'travel-planner:sign-in-email';
+/** The one collection two phones both reach. See firebase/firestore.rules. */
+const PUBLISHED = 'published';
+
 const cdn = (mod) => `https://www.gstatic.com/firebasejs/${FIREBASE_SDK}/firebase-${mod}.js`;
 
 export function isConfigured(config = firebaseConfig) {
@@ -38,30 +54,54 @@ export function writeActiveTripID(tripID) {
   }
 }
 
-/** Picks the best backend available, never throwing. */
-export async function createBackend(tripID) {
-  if (isConfigured()) {
-    try {
-      return await createFirebaseBackend(tripID);
-    } catch (error) {
-      console.warn('[travel-planner] Firebase unreachable — saving to this device only.', error);
-      return createLocalBackend(tripID, { degradedFrom: error });
-    }
+function local(name, fallback = null) {
+  try {
+    const stored = localStorage.getItem(name);
+    return stored ? JSON.parse(stored) : fallback;
+  } catch {
+    return fallback;
   }
-  return createLocalBackend(tripID);
 }
 
-// ------------------------------------------------------------------ firebase
+function writeLocal(name, value) {
+  try {
+    if (value == null) localStorage.removeItem(name);
+    else localStorage.setItem(name, JSON.stringify(value));
+  } catch {
+    // Private browsing, or the quota is full. The session still works.
+  }
+}
 
-async function createFirebaseBackend(tripID) {
-  const [{ initializeApp }, authMod, dbMod, storageMod] = await Promise.all([
+// ------------------------------------------------------------ one Firebase
+//
+// Loaded once and shared. The SDK is fetched from a CDN, so this is also the
+// only place that can fail because a network is hostile rather than absent.
+
+let loading = null;
+
+/** The SDK and the three services, or null when there is no project yet. */
+export function firebase() {
+  if (!isConfigured()) return Promise.resolve(null);
+  if (!loading) {
+    loading = load().catch((error) => {
+      // A failed load must not be cached, or one bad launch poisons the app
+      // for as long as it is open.
+      loading = null;
+      throw error;
+    });
+  }
+  return loading;
+}
+
+async function load() {
+  const [appMod, authMod, dbMod, storageMod] = await Promise.all([
     import(cdn('app')),
     import(cdn('auth')),
     import(cdn('firestore')),
     import(cdn('storage')),
   ]);
 
-  const app = initializeApp(firebaseConfig);
+  const app = appMod.initializeApp(firebaseConfig);
   const auth = authMod.getAuth(app);
 
   // Persistent cache, so the trip is readable AND editable with no signal —
@@ -81,20 +121,319 @@ async function createFirebaseBackend(tripID) {
     db = dbMod.getFirestore(app);
   }
 
-  // Anonymous auth gives this browser a real uid, so the rules apply and the
-  // data survives a refresh without a login screen. The SDK restores the uid
-  // from local storage, but that restore is asynchronous — waiting for the
-  // first auth state means an offline launch works instead of hanging on a
-  // sign-in that cannot reach the network.
-  const restored = await new Promise((resolve) => {
-    const stop = authMod.onAuthStateChanged(auth, (user) => {
+  return { app, auth, db, appMod, authMod, dbMod, storageMod };
+}
+
+// ---------------------------------------------------------------- accounts
+
+/**
+ * What the rest of the app is told about a signed-in person. `linked` says
+ * this account grew out of an anonymous one, which is why its trips were
+ * already there.
+ */
+function accountOf(user) {
+  if (!user || user.isAnonymous) return null;
+  const providers = (user.providerData || []).map((p) => p && p.providerId);
+  return {
+    uid: user.uid,
+    name: user.displayName || '',
+    email: user.email || '',
+    provider: providers.includes('google.com') ? 'google' : 'email',
+  };
+}
+
+/** The first auth state the SDK settles on, restored from disk if need be. */
+function firstUser(fb) {
+  return new Promise((resolve) => {
+    const stop = fb.authMod.onAuthStateChanged(fb.auth, (user) => {
       stop();
-      resolve(user);
+      resolve(user || null);
+    }, () => {
+      stop();
+      resolve(null);
     });
   });
-  const uid = restored ? restored.uid : (await authMod.signInAnonymously(auth)).user.uid;
+}
 
+/**
+ * Who is signed in on this phone, waited for properly.
+ *
+ * The SDK restores a session from local storage rather than from the network,
+ * so this resolves offline — which is the whole reason boot waits for it
+ * instead of hanging on a sign-in that cannot reach anyone. Three things can
+ * land here: a redirect coming back from Google, a link opened out of an
+ * email, or nothing at all, which is the ordinary case.
+ *
+ * `reached` distinguishes "nobody is signed in" from "we could not ask",
+ * because only the first should ever sign anybody out.
+ */
+export async function restoreAccount() {
+  let fb = null;
+  try {
+    fb = await firebase();
+  } catch (error) {
+    console.warn('[travel-planner] Firebase could not be loaded', error);
+    return { reached: false, account: null, anonymous: false };
+  }
+  if (!fb) return { reached: true, account: null, anonymous: false, unconfigured: true };
+
+  let notice = '';
+  try {
+    // Both of these are no-ops unless this launch *is* the return leg.
+    const emailed = await completeEmailLink(fb);
+    if (emailed) notice = 'email';
+    else if (await fb.authMod.getRedirectResult(fb.auth)) notice = 'redirect';
+  } catch (error) {
+    console.warn('[travel-planner] sign-in did not complete', error);
+    notice = String(error?.code || error?.message || 'sign-in failed');
+  }
+
+  const user = await firstUser(fb);
+  return {
+    reached: true,
+    account: accountOf(user),
+    // Kept, not created: its trips are under this uid and a sign-in links it.
+    anonymous: Boolean(user && user.isAnonymous),
+    uid: user ? user.uid : null,
+    notice,
+  };
+}
+
+/** Told when another tab signs in or out, so both windows agree. */
+export async function watchAccount(handler) {
+  const fb = await firebase().catch(() => null);
+  if (!fb) return () => {};
+  return fb.authMod.onAuthStateChanged(fb.auth, (user) => handler(accountOf(user), user));
+}
+
+/**
+ * Google. On a phone the popup is the good path — it keeps the app open and
+ * comes straight back — but an installed web app can refuse to open one, so
+ * a refusal falls through to a redirect rather than to an error message.
+ *
+ * When this browser is carrying an old anonymous user, the credential is
+ * *linked* to it: same uid, so every trip already written stays reachable.
+ */
+export async function signInWithGoogle() {
+  const fb = await need();
+  const provider = new fb.authMod.GoogleAuthProvider();
+  // Always ask which account: households share phones, and silently reusing
+  // whichever Google session the browser happens to hold is how you end up
+  // writing to somebody else's trips.
+  provider.setCustomParameters({ prompt: 'select_account' });
+
+  const existing = fb.auth.currentUser;
+  try {
+    const result = existing && existing.isAnonymous
+      ? await fb.authMod.linkWithPopup(existing, provider)
+      : await fb.authMod.signInWithPopup(fb.auth, provider);
+    return accountOf(result.user);
+  } catch (error) {
+    const code = String(error?.code || '');
+
+    // That Google account already has trips of its own. Its data wins; what
+    // was on this phone is migrated by the store afterwards.
+    if (code === 'auth/credential-already-in-use' || code === 'auth/email-already-in-use') {
+      const credential = fb.authMod.GoogleAuthProvider.credentialFromError(error);
+      if (credential) {
+        const result = await fb.authMod.signInWithCredential(fb.auth, credential);
+        return accountOf(result.user);
+      }
+    }
+
+    if (REDIRECT_INSTEAD.has(code)) {
+      // Leaves the page. Nothing after this runs; `restoreAccount` picks the
+      // sign-in up when the browser comes back.
+      await (existing && existing.isAnonymous
+        ? fb.authMod.linkWithRedirect(existing, provider)
+        : fb.authMod.signInWithRedirect(fb.auth, provider));
+      return null;
+    }
+    throw error;
+  }
+}
+
+/** Popups a browser will not open. Every one of these is worth a redirect. */
+const REDIRECT_INSTEAD = new Set([
+  'auth/popup-blocked',
+  'auth/cancelled-popup-request',
+  'auth/operation-not-supported-in-this-environment',
+  'auth/web-storage-unsupported',
+]);
+
+/**
+ * Email, without a password. We send a link, the phone remembers which
+ * address it was for, and opening the link finishes the job — see
+ * `completeEmailLink`. If the address is not on this phone when the link
+ * opens (mail read on a laptop, say) the app asks for it again.
+ */
+export async function sendSignInEmail(address) {
+  const fb = await need();
+  const email = String(address || '').trim();
+  await fb.authMod.sendSignInLinkToEmail(fb.auth, email, {
+    // Back to this app, on whatever host it is on.
+    url: `${location.origin}${location.pathname}`,
+    handleCodeInApp: true,
+  });
+  writeLocal(EMAIL_KEY, email);
+  return email;
+}
+
+/** The address a link was sent to, so the screen can say "check your mail". */
+export const pendingEmail = () => local(EMAIL_KEY, null);
+
+export const forgetPendingEmail = () => writeLocal(EMAIL_KEY, null);
+
+/**
+ * The return leg. Called on every launch and does nothing on almost all of
+ * them; when the URL *is* a sign-in link it completes it, links it onto an
+ * anonymous user if there is one, and tidies the code out of the address bar
+ * so a refresh does not try to spend it twice.
+ */
+async function completeEmailLink(fb) {
+  if (!fb.authMod.isSignInWithEmailLink(fb.auth, location.href)) return null;
+  const email = pendingEmail() || window.prompt('Which email address was this link sent to?') || '';
+  if (!email) return null;
+
+  const existing = fb.auth.currentUser;
+  let user = null;
+  try {
+    if (existing && existing.isAnonymous) {
+      const credential = fb.authMod.EmailAuthProvider.credentialWithLink(email, location.href);
+      user = (await fb.authMod.linkWithCredential(existing, credential)).user;
+    } else {
+      user = (await fb.authMod.signInWithEmailLink(fb.auth, email, location.href)).user;
+    }
+  } catch (error) {
+    if (String(error?.code || '') === 'auth/credential-already-in-use') {
+      // The address already has an account. Sign into it; the store moves
+      // this phone's trips across afterwards.
+      user = (await fb.authMod.signInWithEmailLink(fb.auth, email, location.href)).user;
+    } else {
+      forgetPendingEmail();
+      throw error;
+    }
+  }
+
+  forgetPendingEmail();
+  try {
+    history.replaceState(null, '', `${location.pathname}${location.hash || ''}`);
+  } catch { /* file:// has no history to rewrite */ }
+  return accountOf(user);
+}
+
+export async function signOutAccount() {
+  const fb = await firebase().catch(() => null);
+  if (!fb) return;
+  forgetPendingEmail();
+  await fb.authMod.signOut(fb.auth);
+}
+
+async function need() {
+  const fb = await firebase();
+  if (!fb) throw new Error('No Firebase project is configured yet');
+  return fb;
+}
+
+// ------------------------------------------------- the published envelope
+//
+// One document per link code, and the only thing two phones both reach. It
+// is not a trip: it is a copy of the three shared kinds, sitting where the
+// other side can fetch it. `owner` and `editors` are uids because the rules
+// are, and they are what make "only the owner and editors can publish" a
+// fact rather than a promise.
+
+function publishedDoc(fb, code) {
+  return fb.dbMod.doc(fb.db, PUBLISHED, String(code));
+}
+
+/** Reads one envelope. Anyone holding the code may; nobody may list them. */
+export async function fetchPublished(code) {
+  if (!code) return null;
+  const fb = await firebase().catch(() => null);
+  if (!fb) return null;
+  // Offline this answers from the cache, which is the point of the cache.
+  const snap = await fb.dbMod.getDoc(publishedDoc(fb, code));
+  return snap.exists() ? snap.data() : null;
+}
+
+/**
+ * Publishes. Offline, Firestore keeps the write and replays it — so this
+ * resolves late rather than failing, and the caller must not wait on it.
+ */
+export async function pushPublished(code, envelope) {
+  if (!code) return;
+  const fb = await need();
+  await fb.dbMod.setDoc(publishedDoc(fb, code), envelope);
+}
+
+/**
+ * The other side's copy of the envelope, as it changes. This is what makes
+ * "there is an update waiting" arrive on its own instead of on a refresh.
+ */
+export async function watchPublished(code, handler) {
+  if (!code) return () => {};
+  const fb = await firebase().catch(() => null);
+  if (!fb) return () => {};
+  return fb.dbMod.onSnapshot(
+    publishedDoc(fb, code),
+    (snap) => handler(snap.exists() ? snap.data() : null),
+    (error) => console.warn('[travel-planner] cannot watch the shared link', error),
+  );
+}
+
+/**
+ * Joining with a link that grants editing. The rules let you add your own
+ * uid to `editors` and change nothing else, which is exactly this.
+ */
+export async function claimEditor(code) {
+  if (!code) return false;
+  const fb = await firebase().catch(() => null);
+  if (!fb || !fb.auth.currentUser || fb.auth.currentUser.isAnonymous) return false;
+  const uid = fb.auth.currentUser.uid;
+  try {
+    const ref = publishedDoc(fb, code);
+    const snap = await fb.dbMod.getDoc(ref);
+    if (!snap.exists()) return false;
+    const editors = snap.data().editors || [];
+    if (editors.includes(uid) || snap.data().owner === uid) return true;
+    await fb.dbMod.updateDoc(ref, { editors: [...editors, uid] });
+    return true;
+  } catch (error) {
+    console.warn('[travel-planner] could not join as an editor', error);
+    return false;
+  }
+}
+
+// ------------------------------------------------------------- the backend
+
+/**
+ * Picks the best backend available, never throwing.
+ *
+ * Signed in and reachable, it is Firestore under that uid. Anything else —
+ * no project, nobody signed in, or a Firestore that will not answer — is
+ * this browser's own storage, which is a perfectly good place for a trip to
+ * live and is where a phone that has never signed in keeps everything.
+ */
+export async function createBackend(tripID, { uid = null } = {}) {
+  if (isConfigured() && uid) {
+    try {
+      return await createFirebaseBackend(tripID, uid);
+    } catch (error) {
+      console.warn('[travel-planner] Firebase unreachable — saving to this device only.', error);
+      return createLocalBackend(tripID, { degradedFrom: error });
+    }
+  }
+  return createLocalBackend(tripID);
+}
+
+// ------------------------------------------------------------------ firebase
+
+async function createFirebaseBackend(tripID, uid) {
+  const fb = await firebase();
+  const { app, db, dbMod, storageMod } = fb;
   const { doc, collection, getDocs, getDoc, setDoc, deleteDoc, writeBatch, onSnapshot } = dbMod;
+
   const tripsRef = collection(db, 'users', uid, 'trips');
   const tripRef = doc(tripsRef, tripID);
   const kindRef = (kind) => collection(tripRef, kind);
@@ -172,6 +511,19 @@ async function createFirebaseBackend(tripID) {
       await setDoc(doc(tripsRef, trip.id), trip);
     },
 
+    /** The whole of one trip, for moving a device's trips into an account. */
+    async writeWhole(snapshot) {
+      const target = doc(tripsRef, snapshot.trip.id);
+      const batch = writeBatch(db);
+      batch.set(target, snapshot.trip);
+      for (const kind of KINDS) {
+        for (const row of snapshot[kind] || []) {
+          batch.set(doc(collection(target, kind), row.id), row);
+        }
+      }
+      await batch.commit();
+    },
+
     /** Removes the trip and everything under it. */
     async deleteTrip(id) {
       const target = doc(tripsRef, id);
@@ -204,22 +556,8 @@ function report(error) {
 export function createLocalBackend(tripID, { degradedFrom = null } = {}) {
   const key = LOCAL_PREFIX + tripID;
 
-  const readJSON = (name, fallback) => {
-    try {
-      const stored = localStorage.getItem(name);
-      return stored ? JSON.parse(stored) : fallback;
-    } catch {
-      return fallback;
-    }
-  };
-
-  const writeJSON = (name, value) => {
-    try {
-      localStorage.setItem(name, JSON.stringify(value));
-    } catch {
-      // Private browsing, or the quota is full. The session still works.
-    }
-  };
+  const readJSON = (name, fallback) => local(name, fallback);
+  const writeJSON = (name, value) => writeLocal(name, value);
 
   const read = () => readJSON(key, null);
   let snapshot = read();
@@ -252,6 +590,11 @@ export function createLocalBackend(tripID, { degradedFrom = null } = {}) {
         mustSee: [], prep: [], log: [], outfits: [],
       });
       noteInIndex(trip);
+    },
+
+    async writeWhole(next) {
+      writeJSON(LOCAL_PREFIX + next.trip.id, next);
+      noteInIndex(next.trip);
     },
 
     async deleteTrip(id) {
@@ -302,4 +645,21 @@ export function createLocalBackend(tripID, { degradedFrom = null } = {}) {
       throw new Error('No Cloud Storage bucket on this device');
     },
   };
+}
+
+/**
+ * Everything this browser is keeping, whether or not anyone is signed in.
+ * Sign-in reads it once to carry a phone's own trips into the account.
+ */
+export function localTrips() {
+  return local(LOCAL_INDEX, [])
+    .map((entry) => local(LOCAL_PREFIX + entry.id, null))
+    .filter((snapshot) => snapshot && snapshot.trip);
+}
+
+export function forgetLocalTrip(id) {
+  try {
+    localStorage.removeItem(LOCAL_PREFIX + id);
+  } catch { /* nothing to remove */ }
+  writeLocal(LOCAL_INDEX, local(LOCAL_INDEX, []).filter((t) => t.id !== id));
 }

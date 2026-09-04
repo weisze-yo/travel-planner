@@ -1,10 +1,22 @@
 rules_version = '2';
 
-// Every trip lives under the signed-in uid, and nothing else is readable.
-// Anonymous auth still produces a real uid, so these rules hold for it too;
-// when you link Sign in with Apple later the same uid carries over.
+// Two collections, and they answer two different questions.
+//
+//   users/{uid}/…      your trips. Nobody else's browser can reach them,
+//                      whatever it claims to be.
+//   published/{code}   the envelope a share link points at. Anyone holding
+//                      the code may read one; only the trip's owner and the
+//                      editors may write it.
+//
+// Sign-in is Google or an emailed link — a real account, so a trip survives
+// losing the phone. Anonymous accounts are not created any more; one that a
+// phone still has from an older build keeps working here, because signing in
+// *links* it and the uid never moves.
+
 service cloud.firestore {
   match /databases/{database}/documents {
+
+    // ------------------------------------------------------------ your trips
 
     match /users/{userId} {
       allow read, write: if request.auth != null && request.auth.uid == userId;
@@ -12,6 +24,76 @@ service cloud.firestore {
       match /{document=**} {
         allow read, write: if request.auth != null && request.auth.uid == userId;
       }
+    }
+
+    // ------------------------------------------------- the published envelope
+    //
+    // One document per link code. It holds a snapshot of the three shared
+    // kinds — the itinerary and its sub routes, the places, the must-see
+    // spots — and the link's own terms. It is never a trip: whoever opens it
+    // takes a copy into their own account, and their copy is theirs.
+
+    match /published/{code} {
+
+      // Every one of these has to answer on a document that is not there yet
+      // (the first publish) and on a delete, which carries nothing to inspect.
+      // So each reads through a default rather than off a field that may not
+      // be there: a missing envelope answers "no" rather than throwing. Both
+      // deny the write; only one of them still says why when the shape of an
+      // envelope next changes.
+      function envelope() { return resource != null ? resource.data : {}; }
+      function incoming() { return request.resource != null ? request.resource.data : {}; }
+      function signedIn() { return request.auth != null; }
+      function uid() { return signedIn() ? request.auth.uid : ''; }
+      function editors() { return envelope().get('editors', []); }
+
+      function isOwner() { return signedIn() && envelope().get('owner', '') == uid(); }
+      function isEditor() { return signedIn() && uid() in editors(); }
+
+      // An editor may publish an update; it may not take the envelope over.
+      function keepsWhoseItIs() {
+        return incoming().get('owner', '') == envelope().get('owner', '')
+               && incoming().get('editors', []) == editors();
+      }
+
+      // Joining on a link that grants editing: add yourself to the editors
+      // and change nothing else. This is the only write a guest may make.
+      function joiningAsEditor() {
+        return signedIn()
+               && envelope().get('linkRole', 'read') == 'edit'
+               && incoming().diff(envelope()).affectedKeys().hasOnly(['editors'])
+               && incoming().get('editors', []).hasAll(editors())
+               && incoming().get('editors', []).hasOnly(editors().concat([uid()]));
+      }
+
+      function looksLikeAnEnvelope() {
+        return incoming().keys().hasAll(['owner', 'editors', 'snapshot'])
+               && incoming().get('editors', '') is list
+               && incoming().get('snapshot', '') is map;
+      }
+
+      // Holding the code is the permission: it is an unguessable capability
+      // handed to someone on purpose, and the person opening it has often not
+      // signed in yet. `get` only — `list` stays denied, so nobody can walk
+      // the collection and collect other people's trips.
+      allow get: if true;
+      allow list: if false;
+
+      // The first publish claims the envelope for whoever made the link.
+      allow create: if signedIn()
+                    && looksLikeAnEnvelope()
+                    && incoming().owner == uid();
+
+      allow update: if looksLikeAnEnvelope()
+                    && (
+                      isOwner()
+                      || (isEditor() && keepsWhoseItIs())
+                      || joiningAsEditor()
+                    );
+
+      // Switching a link off is what stops it being used; deleting the
+      // envelope is the owner's alone, and takes the link with it.
+      allow delete: if isOwner();
     }
 
     // Anything not matched above is denied.

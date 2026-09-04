@@ -640,3 +640,87 @@ export function readFactsEditor(root) {
     detail: '',
   }));
 }
+
+// -------------------------------------------------------------- signing in
+//
+// One sheet, in two places: at the end of joining someone's trip, and on the
+// trips home for anyone who arrived without a link. It is late on purpose —
+// nothing here is asked for until it buys something, and what it buys is the
+// trip surviving the phone.
+//
+// Two ways in, and no password anywhere: Google, or a link sent to an email
+// address. A password is one more thing to lose on the device that is already
+// the second factor, and a link that works once is less to explain.
+//
+// Apple is not here. Sign in with Apple on the web needs a Services ID and a
+// signing key, and both come from the Apple Developer Program at $99 a year.
+// The rule this app has held for seven rounds is that nothing costs money.
+
+export function signInPanel({ title = 'Who are you?', sub = '' } = {}) {
+  const waiting = store.awaitingEmail();
+  const notice = state.signInNotice;
+
+  if (waiting) {
+    return html`
+      <div class="eyebrow jade mb8">CHECK YOUR MAIL</div>
+      <div class="f14 w800" style="color:var(--ink)">A link is on its way to ${waiting}.</div>
+      <div class="f12 soft lh145 mt6">
+        Open it on this phone and you are in — nothing to type and nothing to remember.
+        It works once, and it expires.
+      </div>
+      ${notice ? html`<div class="amber-note mt12">${notice}</div>` : ''}
+      <button class="btn ghost mt14" style="width:100%" data-act="sign-cancel">
+        Use a different address
+      </button>`;
+  }
+
+  return html`
+    <div class="f16 w800 mb6" style="color:var(--ink);font-size:17px">${title}</div>
+    ${sub ? html`<div class="f12 soft lh145 mb14">${sub}</div>` : ''}
+    ${notice ? html`<div class="amber-note mb12">${notice}</div>` : ''}
+
+    <label class="f11 soft block mb6">The name other travellers see</label>
+    <input class="paid-input mb12" style="width:100%" data-field="name"
+           value="${esc(store.me().name === 'You' ? '' : store.me().name)}" placeholder="Ana Lim">
+    <button class="sign-btn" data-provider="google">Continue with Google</button>
+
+    <div class="eyebrow mt14 mb8">Or a link to my email</div>
+    <input class="paid-input mb9" style="width:100%" data-field="email" type="email"
+           inputmode="email" autocomplete="email" placeholder="you@example.com">
+    <button class="sign-btn" data-provider="email">Send me a link</button>
+
+    <div class="f11 soft lh145 mt10">
+      There is no password. The link in the mail is the sign-in, and it only works once.
+      Apple sign-in needs a paid Apple Developer account, so it is not offered.
+    </div>`;
+}
+
+/**
+ * The handlers behind that sheet. `onDone` runs only when somebody is
+ * actually signed in — an emailed link is not finished until it is opened,
+ * which happens on a later launch entirely.
+ */
+export function mountSignIn(root, { onDone = () => {} } = {}) {
+  delegate(root, '[data-act="sign-cancel"]', () => store.cancelEmailSignIn());
+
+  delegate(root, '[data-provider]', async (el) => {
+    const provider = el.dataset.provider;
+    const name = root.querySelector('[data-field="name"]')?.value?.trim() || '';
+    const email = root.querySelector('[data-field="email"]')?.value?.trim() || '';
+
+    if (provider === 'email' && !email.includes('@')) {
+      store.noteSignIn('That does not look like an email address.');
+      return;
+    }
+    store.noteSignIn(provider === 'google' ? 'Opening Google…' : `Sending a link to ${email}…`);
+
+    const result = await store.signIn({ provider, name, email });
+    if (result.ok) {
+      store.noteSignIn('');
+      onDone(result);
+    } else if (result.sent) {
+      store.noteSignIn('');
+    }
+    // Anything else has already put its own words in `state.signInNotice`.
+  });
+}

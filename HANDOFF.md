@@ -1,7 +1,7 @@
-# Handoff — Travel Planner, after round six
+# Handoff — Travel Planner, after round eight
 
-Written 4 Sept 2026, at commit `cfb46e8` and after. Read this first if you
-are picking the work up in a new session.
+Written 4 Sept 2026. Read this first if you are picking the work up in a new
+session.
 
 ---
 
@@ -48,11 +48,11 @@ for(const f of walk('js')){ try{ new vm.SourceTextModule(fs.readFileSync(f,'utf8
 
 ### The browser harnesses
 
-There are seven, each a standalone Playwright script that prints a PASS/FAIL
-list. They are the regression suite; run them all after any change that
-touches shared code. They are **not committed** — they live in the session
-scratchpad. If you are starting fresh, write new ones rather than hunting for
-these; the pattern is:
+There are five as of round eight (91 checks), each a standalone script that
+prints a PASS/FAIL list. They are
+the regression suite; run them all after any change that touches shared code.
+They are **not committed** — they live in the session scratchpad. If you are
+starting fresh, write new ones rather than hunting for these; the pattern is:
 
 ```js
 import pw from '/opt/node22/lib/node_modules/playwright/index.js';
@@ -79,13 +79,39 @@ Three traps that have each cost an hour:
    match. Use `/tile\.openstreetmap\.org/`.
 3. `app.js` calls `closeTrip()` when no trip is remembered, which *clears*
    the key — so setting it after `goto` is undone. Use `addInitScript`.
+4. Navigate with `nav.go(id)`, not by setting `location.hash` — there is no
+   hashchange listener.
+5. `page.waitForFunction` polls in Playwright's *isolated* world, where
+   `import('/js/store.js')` is a second, freshly booted copy of the store
+   rather than the app's. Poll with `page.evaluate` in a loop instead.
+
+Round eight added two more pieces of rigging, both worth rebuilding rather than
+skipping, because without them Firebase can only be eyeballed:
+
+- **The rules run for real.** `npm i firebase-tools @firebase/rules-unit-testing
+  firebase` in the scratchpad, then `firebase --project demo-travel
+  emulators:exec --only firestore "node test.mjs"`. The emulator jar downloads
+  once. Twenty-six assertions live there and they are the only proof the rules
+  say what the comments claim. Ignore the emulator's "evaluation error" log
+  lines on deny paths: it evaluates once before loading the document and once
+  after, and the first pass cannot see `resource.data`.
+- **A fake Firebase SDK**, served in place of every
+  `gstatic.com/firebasejs/*` module by `ctx.route`, backed by a tiny HTTP
+  document store so **two browser contexts can share one envelope**. That is
+  the only way to test the thing item 31 is about. Two traps in writing one:
+  give it Firestore's latency compensation (a poll must not hand back a value
+  older than a write the app has just made, and a read that *straddles* a write
+  must be thrown away), or you will chase a phantom race in the app for an hour;
+  and serve the app so `/j/CODE` returns `index.html`, the way Hosting's rewrite
+  does — `http-server` will not do that and pointing its `--proxy` at itself
+  loops.
 
 ## The shape of the code
 
 | File | What it owns |
 | --- | --- |
 | `js/store.js` | The single source of truth. ~3,300 lines. Everything derived lives here; screens only render and call mutations. |
-| `js/persist.js` | Two backends behind one interface: Firestore, or localStorage. `KINDS` is the list of collections. |
+| `js/persist.js` | Signing in, and two backends behind one interface: Firestore when there is an account, localStorage otherwise. `KINDS` is the list of collections. |
 | `js/share.js` | Sharing, pure: link codes, expiries, roles, and the snapshot diff. |
 | `js/sync.js` | The pending-writes ledger, so "stuck for three days" survives a relaunch. |
 | `js/tiles.js` | Slippy-map maths and the capped tile downloader. |
@@ -132,6 +158,8 @@ Everything you change stays on your phone, online or off. Sharing publishes a
 from it. When the owner or an editor presses *Send an update*, a new snapshot
 goes into the envelope at `travel-planner:shared:<code>` and the other side
 **reviews it a change at a time** — yours against theirs, one decision each.
+That envelope is a Firestore document at `published/<code>` as of round eight,
+mirrored into localStorage so it is readable with no signal.
 Three kinds travel (itinerary + sub routes, places, must-see); four never do
 (`shopping`, `prep`, `log`, `outfits`) and `share.js` names both sets so the
 promise is checkable. A role is about *publishing*, not permission.
@@ -140,29 +168,63 @@ promise is checkable. A role is about *publishing*, not permission.
 
 ## What is still open
 
-Numbers match `DESIGN_REVIEW.html`.
+Numbers match `DESIGN_REVIEW.html`. Item 31's code is done; what is left of it
+is a console, and that is the user's.
 
-### Item 31 — stand up Firebase properly ← **the user has said yes to this**
+### Item 31 — **done in round eight**, except the console
 
-The decision is made: a real account, and **a new account starts with no
-trips** until one is created or shared in. What is needed:
+Built, checked, deployed. What remains is steps 1–8 of `WEB_APP_GUIDE.md`,
+which need the user's own Google account and cannot be run or verified from a
+sandbox.
 
-1. Firebase Auth with Google and email (Apple needs an Apple Developer
-   account — confirm before promising it). `js/persist.js` currently does
-   anonymous sign-in only.
-2. Firestore rules keyed on the signed-in uid, plus a **second collection for
-   published snapshots** keyed by link code, readable by anyone holding the
-   code and writable only by the trip's owner and editors. The store already
-   reads and writes that envelope through `readPublished` / `writePublished`
-   in `js/store.js` — swap those two functions and nothing above them changes.
-3. `signIn()` in the store already migrates the anonymous identity by keeping
-   its id. Keep that: every note and role points at it.
-4. Boot currently seeds the demo trip when there is nothing. Change so a
-   signed-in account with no trips gets an **empty** trips home, and the demo
-   only appears for a phone that has never signed in.
+What was built, and the decisions inside it — do not re-litigate these:
 
-The console steps are the user's to do and cannot be verified from a sandbox.
-Write the code, update `WEB_APP_GUIDE.md`, and hand them the console steps.
+- **Anonymous sign-in is gone.** Not replaced-alongside: gone. An anonymous uid
+  is an account nobody can get back, which is the opposite of the point. A
+  phone that still carries one from the old build **keeps it**, and signing in
+  calls `linkWithPopup` / `linkWithCredential` so the uid never moves and every
+  trip under it stays reachable. New phones are never given one.
+- **Not signed in → the `local` backend.** That is what makes item 31's fourth
+  point fall out rather than needing a special case: the demo trip lives on a
+  phone that has never signed in, is never written to any account, and comes
+  back when you sign out. `state.stranded` now means *signed in but stuck on
+  localStorage*, which is a different thing from nobody having signed in.
+- **Email is a link, not a password.** `sendSignInLinkToEmail`, and
+  `completeEmailLink()` finishes it on the launch that opens the link. There is
+  no password field anywhere and nothing to reset.
+- **Trips made before an account are carried into it** by `carryLocalTrips()`,
+  under the ids they already had, so a link handed out earlier still points at
+  the same trip. The demo is the one exception and the sign-in sheet says so.
+- **The envelope is `published/{code}`,** one document per link. `readPublished`
+  is still synchronous — every caller is inside a render — so localStorage is
+  now a *mirror* of that document, refreshed by `watchEnvelope()`. Firestore is
+  the source of truth; the mirror is what this phone last saw, and is what makes
+  it readable with no signal. The old bare-snapshot format is still read, so
+  links handed out before this round still open.
+- **The envelope carries uids** (`owner`, `editors`) because the rules do, and
+  `linkRole` / `live` / `expiresAt` because switching a link off has to reach
+  the other phone. Two functions above `writePublished` changed by one line each
+  for that: `setLinkLive` and `setLinkExpiry` now call `restateTerms()`.
+- **`/j/CODE` really works now.** `app.js` reads the code out of the path and
+  `openLink()` fetches the envelope, so the join screen renders from the
+  *envelope* on a phone that has never seen the trip. `index.html` has a
+  `<base href="/">` for this — without it every relative script resolves against
+  `/j/` and the one screen a stranger ever sees is blank.
+- **Apple sign-in is not offered.** On the web it needs a Services ID and a
+  signing key from the Apple Developer Program at $99 a year, and the no-paid
+  rule holds.
+
+Two follow-ups, both small and both deliberate rather than forgotten:
+
+1. **Publishing without an account only reaches this phone.** The rules have no
+   uid to check, so `writePublished` mirrors and stops. The guide says so; no
+   screen does. If the user wants a nudge in the share sheet, that is a UI
+   decision and wants drawing rather than guessing.
+2. **A demo trip somebody has been using as their own does not follow them into
+   an account.** It stays on the phone rather than being deleted, and both
+   sign-in sheets say so. Carrying it would break item 31's fourth point; the
+   only honest alternative is a "make this trip mine" step, which is a design
+   question, not a bug.
 
 ### Item 30 — trip files *(built; the rest is polish)*
 
@@ -216,6 +278,6 @@ session.
 
 | Not worth drawing | Why |
 | --- | --- |
-| Item 31, Firebase | There is no screen. It is rules, auth and a console. |
+| Item 31, Firebase | Done. There was no screen: it was rules, auth and a console. |
 | Item 30, trip files | Two buttons and a card, both already built. |
 | Item 16, accessibility | It is testing with a screen reader, not drawing. |

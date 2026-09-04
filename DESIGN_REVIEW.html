@@ -304,12 +304,19 @@
       a place's own table can all be corrected. Three things are left, and one of them
       needs your Firebase console rather than my keyboard.
     </p>
+    <p style="margin-top:10px">
+      <b>Round eight did that one.</b> Firebase is stood up properly: a real sign-in with
+      Google or an emailed link, rules keyed on the account, and the published snapshot moved
+      out of one phone's storage into a collection two phones can both reach. What is left of
+      item 31 is the half nobody can do from a keyboard — eight numbered steps in your own
+      console, which are at the top of <code>WEB_APP_GUIDE.md</code>.
+    </p>
     <div class="facts">
-      <span><b>58</b> fixed across seven rounds</span>
+      <span><b>59</b> fixed across eight rounds</span>
       <span><b>3</b> open</span>
-      <span><b>1</b> waiting on you</span>
+      <span><b>1</b> console walkthrough for you</span>
       <span><b>0</b> unanswered questions</span>
-      <span><b>351</b> browser checks, all green</span>
+      <span><b>442</b> browser checks, all green</span>
     </div>
   </header>
 
@@ -321,6 +328,17 @@
       sixteen of your points; and the eight from round one.</span>
     </div>
     <ul class="done-list">
+      <li><i>31</i> <b>Firebase is stood up properly, with a real sign-in.</b> Google, or a
+        link sent to an email address — no password anywhere, because a password is one more
+        thing to lose on the device that is already the second factor. Anonymous sign-in is
+        gone: it was an account nobody could ever get back, which is the opposite of what an
+        account is for. A phone that still carries one keeps it, and signing in *links* it, so
+        the uid never moves and every trip under it stays where it is. The identity keeps its
+        id too, so every note, role and snapshot that pointed at you still does. A new account
+        starts with no trips; the sample trip belongs to a phone that has never signed in and
+        stays there. And the published snapshot is now one document per link code, readable by
+        anyone holding the code and writable only by the trip's owner and its editors — which
+        is the difference between two phones reaching the same envelope and not.</li>
       <li><i>32</i> <b>Sharing is a copy you are handed,</b> not a document you both live in.
         Everything you change stays on your phone, online or off. Sharing publishes a snapshot
         and whoever opens the link gets their own trip seeded from it; pressing Send an update
@@ -554,42 +572,43 @@ day
     </div>
   </div>
 
-  <h2>The one that is yours to do</h2>
+  <h2>The one that is now yours to finish</h2>
   <p class="section-note">
-    You said yes to standing Firebase up properly, and that is the only thing left that I
-    cannot finish on my own — it needs your Google account and a console, not more code.
-    Everything above it is written and waiting.
+    The code for item 31 is written, checked and deployed. What is left is a console, and a
+    console is the one thing I cannot open or verify from here.
   </p>
 
   <section>
 
     <div class="item head-here">
-      <div class="rail"><div class="num">31</div><span class="sev serious">Yours</span></div>
+      <div class="rail"><div class="num">31</div><span class="sev polish">Yours</span></div>
       <div>
-        <h3>Firebase, properly, with a real sign-in<span class="changed">you said yes</span></h3>
+        <h3>Firebase: eight steps in your console<span class="changed">code done</span></h3>
         <p>
-          A new account starts with no trips until one is created or shared in — that is your
-          decision and it is the right one, because seeding somebody else's demo into a fresh
-          account is the app talking about itself rather than about your trip.
+          Everything in the app is built and green. The project itself is not something that
+          can be created, or checked, from a sandbox: it needs your Google account. The steps
+          are numbered in <code>WEB_APP_GUIDE.md</code> and take about ten minutes — create the
+          project, register a <b>web</b> app, paste the config, turn on <b>Google</b> and
+          <b>Email link (passwordless)</b>, create Firestore in Singapore, paste
+          <code>firebase/firestore.rules</code>, deploy, and sign in once on each phone.
         </p>
         <p>
-          What is already written for it: the store reads and writes a published snapshot
-          through two small functions, so pointing them at a Firestore collection instead of
-          this phone is the whole swap and nothing above them changes. Signing in already
-          keeps the anonymous identity's id, so every note, role and snapshot that pointed at
-          it still does.
+          <b>Apple sign-in is not offered, and that is deliberate.</b> On the web it needs a
+          Services ID and a signing key from the Apple Developer Program, which is $99 a year.
+          The rule that nothing costs money has held for eight rounds and it holds here:
+          Google and an emailed link cover everyone, iPhone included.
         </p>
         <p>
-          What needs you: the project, Google sign-in turned on, and the rules pasted in. Apple
-          sign-in additionally needs a paid Apple Developer account — worth deciding whether
-          that is worth it, since Google and email cover everyone who is not on an iPhone-only
-          household.
+          One thing worth knowing before you do it. Until you sign in, a share link still
+          works — but only on the phone that made it, because the rules have no account to
+          check and nothing is published. That is the same as it has always been. The moment
+          you sign in, the same link starts working everywhere.
         </p>
         <div class="ask">
           <b>Next step</b>
-          Ask for the walkthrough and it comes as numbered console steps with the rules to
-          paste. Nothing about the app changes shape; it is the difference between two phones
-          being able to reach the same envelope and not.
+          Open <code>WEB_APP_GUIDE.md</code> and work down steps 1 to 8. If a step's screen
+          does not look like the words, say which one and it gets rewritten — the console
+          moves things and the guide is only as good as its last walk-through.
         </div>
       </div>
     </div>
@@ -711,18 +730,38 @@ day
 
   <h2>What I'd do in what order</h2>
   <p class="section-note">
-    Three things, and the first is yours.
+    Three things, and the first is ten minutes in a console.
   </p>
   <ol class="order">
-    <li><b>Item 31 — Firebase.</b> Ask for the walkthrough. Until it is done, sharing works but only between trips on one phone, which is enough to see the design and not enough to use.</li>
+    <li><b>Item 31 — the console.</b> Steps 1 to 8 of <code>WEB_APP_GUIDE.md</code>. Until they are done the app runs on each phone by itself, which is enough to see the design and not enough to share.</li>
     <li><b>Item 02, the empty states</b>, drawn before built. There are three new ways to arrive at an empty screen since last round and no system for what any of them says.</li>
     <li><b>Item 12's warnings and item 16's screen-reader pass</b>, in either order. Both are passes rather than features, and both want a real phone in your hand.</li>
   </ol>
 
   <div class="footnote">
-    <b>How this was checked.</b> Round seven was driven in a browser at 390×844 like the six
-    before it: <b>351 checks across seven harnesses</b>, all passing, with no console errors
-    on any screen.
+    <b>How this was checked.</b> Round eight was driven in a browser at 390×844 like the
+    seven before it: <b>91 new checks across five harnesses</b>, all passing, on top of round
+    seven's 351, with no console errors on any screen.
+    The rules were not read and hoped over — they were run against Google's own rules engine
+    in the Firestore emulator, 26 assertions of it: another account cannot read your trip or
+    a note deep under it; anyone holding a link code can read that one envelope but nobody can
+    list the collection; a stranger cannot publish into it; a guest on an edit link may add
+    their own uid and nothing else, may then send updates, and may not take the envelope over
+    or quietly drop the other editors; a read link does not let them in at all.
+    Sharing was then checked as <b>two separate browser contexts with nothing in common but
+    the envelope</b> — which is the thing the last seven rounds could not do. One made a trip
+    and a link; the other opened <code>/j/CODE</code> having never seen it, read the trip off
+    the envelope, joined, and got its own document in its own account. The owner sent an
+    update, the other side was told without being rewritten, and taking it was its own
+    decision. Switching the link off reached the far phone; a code nobody published is a dead
+    end with words on it rather than a blank screen.
+    Signing in was followed all the way through: the identity keeps its id, so a role, a note
+    and a snapshot written before signing in still point at the same person; a trip made
+    before an account is carried into it under the id it already had; an anonymous user left
+    by the old build is linked rather than replaced, so its uid does not move; signing out
+    keeps the identity and puts the phone back on its own storage.
+    An account with nothing in it was confirmed to get an empty trips home and to have nothing
+    written into it — the sample trip stays on a phone that has never signed in.
     The new sharing model was checked with two identities on two separate trip documents,
     which is what it now actually makes: a link was created, joined — and joining produced a
     genuinely separate trip carrying the itinerary and none of the owner's shopping, packing
@@ -736,14 +775,21 @@ day
     A shopping item was corrected in all four fields and moved between places; a must-see
     spot was added, edited and refused when untitled; a place's table was typed into and an
     empty row was dropped rather than kept.
-    <b>What that turned up:</b> two bugs, both fixed — an itinerary row shadowing its place's
-    facts, which is the third time that particular duality has bitten; and the Log's privacy
-    promise missing from the empty Log.
+    <b>What that turned up:</b> two bugs, both fixed. The trips home painted before it knew
+    what was in the account, so an account with trips flashed as an empty one. And an invite
+    link would have been a blank page in production: <code>/j/CODE</code> is served the app's
+    own page, so every relative script in it was being resolved against <code>/j/</code> —
+    the one screen a stranger ever sees, broken by a path. Both are fixed and both are now
+    checked.
     <b>What that did not cover:</b> the three free services — weather, geocoding, exchange
     rates — are blocked from this sandbox, so their parsers were verified against recorded
     payloads rather than live calls. Tiles were served locally rather than from
-    OpenStreetMap. And sharing still has no backend, which is item 31: the two phones were
-    two trips in one browser rather than two phones.
+    OpenStreetMap. And <b>no real Firebase project was touched</b>: the rules ran against
+    Google's emulator, but the auth and the database the app itself talked to were stand-ins
+    served in place of the SDK. That means the code paths are real and the console is not —
+    Google's own sign-in sheet, the mail that carries a sign-in link, and whether your project
+    has the two providers switched on are exactly the things step 3 of the guide is for, and
+    the first real sign-in is the proof.
     <b>Still not covered:</b> anything that only shows up on a real trip with real signal, a
     screen reader on a real phone, and any itinerary shaped differently from the ones I could
     invent.

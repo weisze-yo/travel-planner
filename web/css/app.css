@@ -2168,3 +2168,19 @@ input.guessed { border: 1.5px solid var(--amber); background: #FFFDF7; color: va
 .side.theirs .side-k { color: var(--jade-fg); }
 .side-v { font-size: 12px; line-height: 1.4; color: var(--charcoal); margin-top: 3px; word-break: break-word; }
 .side.theirs .side-v { color: var(--jade); font-weight: 650; }
+
+/* Who this phone is, above the trips. One line, and never in the way. */
+.acct {
+  display: flex;
+  align-items: center;
+  gap: 10px;
+  padding: 10px 12px;
+  margin-bottom: 14px;
+  border: 1px solid var(--line);
+  border-radius: 14px;
+  background: #fff;
+}
+.acct-name { font-size: 12.5px; font-weight: 700; color: var(--ink); }
+.acct-sub { font-size: 11px; color: var(--soft); line-height: 1.4; margin-top: 2px; }
+.acct .who-mark { flex: none; }
+.acct .btn.sm { flex: none; }

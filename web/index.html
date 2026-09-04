@@ -2,6 +2,10 @@
 <html lang="en">
 <head>
 <meta charset="utf-8">
+<!-- An invite is a path, not a hash: /j/8QK2-M7VD is served this same page.
+     Without this, every relative src below would be resolved against /j/ and
+     the app would not load at all on the one screen a stranger ever sees. -->
+<base href="/">
 <!-- viewport-fit=cover so the map can sit under the notch, like the design -->
 <meta name="viewport" content="width=device-width, initial-scale=1, viewport-fit=cover, maximum-scale=1">
 <title>Travel Planner</title>

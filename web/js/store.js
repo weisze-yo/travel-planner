@@ -3,7 +3,12 @@
 // backend, and notifies subscribers to re-render.
 
 import * as seed from './data.js';
-import { createBackend, isConfigured, readActiveTripID, writeActiveTripID, KINDS } from './persist.js';
+import {
+  createBackend, isConfigured, readActiveTripID, writeActiveTripID, KINDS,
+  restoreAccount, signInWithGoogle, sendSignInEmail, pendingEmail, forgetPendingEmail,
+  signOutAccount, fetchPublished, pushPublished, watchPublished, claimEditor,
+  localTrips, forgetLocalTrip,
+} from './persist.js';
 import { prepare, storedLength } from './photos.js';
 import { fetchForecast, forecastCoverage, fetchRate, geocode, online, parseMapLink, placeDetails } from './net.js';
 import { clock, duration, money, numeric, parseClock, parseDuration, uid, reorder, dateStamp } from './util.js';
@@ -17,6 +22,14 @@ export const state = {
   ready: false,
   mode: 'local',
   stranded: false,
+  /** The signed-in account, or null on a phone that has never signed in. */
+  account: null,
+  /** What the last sign-in attempt had to say, for the screen that asked. */
+  signInNotice: '',
+  /** An invite being looked at: the envelope behind a /j/CODE link. */
+  invite: null,
+  /** What the auth SDK said this launch, including "could not ask". */
+  session: null,
   /** Null until a trip is chosen — the tabs stay out of reach until then. */
   tripID: null,
   trips: [],
@@ -55,10 +68,13 @@ export const state = {
 
 let backend = null;
 let unsubscribe = null;
+let unwatchEnvelope = null;
 
 function stopListening() {
   if (unsubscribe) unsubscribe();
   unsubscribe = null;
+  if (unwatchEnvelope) unwatchEnvelope();
+  unwatchEnvelope = null;
 }
 
 export function subscribe(fn) {
@@ -75,6 +91,108 @@ function notify() {
 // have no other way to hear that it moved.
 sync.subscribe(notify);
 
+// -------------------------------------------------------------------- account
+//
+// Signing in is real now: Google, or a link sent to an email address. What it
+// is *not* is a login screen in front of the app — nothing here is asked for
+// until it buys something, which is why the sign-in still lives at the end of
+// joining rather than at the start of using it.
+//
+// Two identities meet here and must never drift apart. `me()` is who this
+// phone is to the other travellers — an id that every note, role and snapshot
+// points at. The account is who Firebase says you are, and owns the uid the
+// rules are keyed on. Signing in binds the second to the first *without
+// changing the id*, which is what makes everything already written still
+// point at you afterwards.
+
+/** Asked once per launch: the SDK's answer is the same all the way through. */
+let accountRead = null;
+
+function readAccount() {
+  if (!accountRead) {
+    accountRead = resolveAccount().catch((error) => {
+      console.warn('[travel-planner] could not read the account', error);
+      return { reached: false, account: null, anonymous: false };
+    });
+  }
+  return accountRead;
+}
+
+async function resolveAccount() {
+  const session = await restoreAccount();
+  // Could not ask — a blocked CDN, a hostile network. Keep believing what
+  // the phone already said; only a clear "nobody" signs anybody out.
+  if (session.reached) adoptAccount(session.account);
+  state.session = session;
+  return session;
+}
+
+/**
+ * The uid everything is stored under. Normally the account's. On a phone
+ * carrying an anonymous user from the previous build it is that user's, so
+ * the trips already written stay exactly where they are — signing in links
+ * that user rather than replacing it, and the uid does not move.
+ */
+function identityUID() {
+  const session = state.session;
+  if (!session) return null;
+  if (session.account) return session.account.uid;
+  return session.anonymous ? session.uid : null;
+}
+
+/**
+ * Binding an account onto this phone's identity. The id is kept — that is
+ * the whole migration, and it is why a note written before signing in still
+ * has your name on it. Signing out drops the account and keeps the id, so
+ * signing back in lands on the same person rather than a new one.
+ */
+function adoptAccount(account) {
+  state.account = account;
+  const who = me();
+
+  if (!account) {
+    if (who.account) writeMe({ ...who, account: null, signedInAt: null });
+    return;
+  }
+
+  const named = who.name && who.name !== 'You'
+    ? who.name
+    : (account.name || String(account.email || '').split('@')[0] || 'You');
+  const bound = { provider: account.provider, email: account.email, uid: account.uid };
+
+  if (who.account?.uid === bound.uid && who.name === named) return;
+  writeMe({
+    ...who,
+    name: named,
+    account: bound,
+    signedInAt: who.signedInAt || new Date().toISOString(),
+  });
+}
+
+/**
+ * Trips made before there was an account, moved into it. Each keeps its id,
+ * so a link that was already handed out, a role and every note still point
+ * at the same trip. The demo is not carried: it was never anybody's trip,
+ * and it stays on the phone for whenever nobody is signed in.
+ */
+async function carryLocalTrips() {
+  if (!backend || backend.mode !== 'firebase' || !backend.writeWhole) return [];
+  const carried = [];
+  for (const snapshot of localTrips()) {
+    const id = snapshot?.trip?.id;
+    if (!id || id === seed.TRIP_ID) continue;
+    try {
+      await backend.writeWhole(snapshot);
+      forgetLocalTrip(id);
+      carried.push(id);
+    } catch (error) {
+      // Leave it on the phone rather than losing it; the next launch tries again.
+      console.warn('[travel-planner] could not move a trip into the account', error);
+    }
+  }
+  return carried;
+}
+
 // ------------------------------------------------------------------ lifecycle
 
 /**
@@ -83,19 +201,36 @@ sync.subscribe(notify);
  */
 export async function boot(tripID = readActiveTripID() || seed.TRIP_ID) {
   stopListening();
-  state.tripID = tripID;
 
-  backend = await createBackend(tripID);
+  // Who is signed in decides everything below it: which backend holds the
+  // trip, whether the demo exists at all, and whether a snapshot can be
+  // published to anyone but this phone.
+  await readAccount();
+
+  state.tripID = tripID;
+  backend = await createBackend(tripID, { uid: identityUID() });
   state.mode = backend.mode;
-  // Configured but running on localStorage means writes are stranded in this
+  // Signed in and still on localStorage means writes are stranded in this
   // browser — a different situation from being merely offline, where Firestore
-  // queues them and syncs later.
-  state.stranded = backend.mode === 'local' && isConfigured();
+  // queues them and syncs later, and a different one again from nobody having
+  // signed in, where this browser is simply where the trip lives.
+  state.stranded = backend.mode === 'local' && isConfigured()
+    && (signedIn() || Boolean(identityUID()));
+
+  // Anything made before there was an account comes with it. Idempotent, and
+  // on almost every launch there is nothing to carry.
+  if (backend.mode === 'firebase') await carryLocalTrips();
 
   let snapshot = await backend.loadAll();
   if (!snapshot || !snapshot.trip) {
-    // Only the very first launch gets the demo trip; a trip created by hand
-    // is seeded empty by createTrip.
+    if (signedIn()) {
+      // An account with nothing in it gets an empty trips home. Seeding
+      // somebody else's demo into it would be the app talking about itself
+      // rather than about your trip.
+      return openNothing();
+    }
+    // The demo lives on a phone that has never signed in, and nowhere else.
+    // A trip created by hand is seeded empty by createTrip.
     snapshot = tripID === seed.TRIP_ID ? freshSnapshot() : emptySnapshot(tripID);
     await backend.seed(snapshot);
   }
@@ -122,6 +257,29 @@ export async function boot(tripID = readActiveTripID() || seed.TRIP_ID) {
     notify();
   });
 
+  // The link's envelope is the one thing another phone can change, so it is
+  // watched separately from the trip: an update arrives on its own rather
+  // than on the next refresh.
+  watchEnvelope(state.trip?.link?.code || state.trip?.sharedFrom?.code || null);
+
+  notify();
+  return backend;
+}
+
+/**
+ * A signed-in account with no trips in it. Nothing is written and nothing is
+ * seeded: the trips home is empty until one is created or shared in.
+ */
+async function openNothing() {
+  writeActiveTripID(null);
+  state.tripID = null;
+  state.trip = null;
+  for (const kind of KINDS) state[kind] = [];
+  watchEnvelope(null);
+  // Awaited, not fired off: the trips home is drawn the moment boot returns,
+  // and a list that fills in a beat later reads as an empty account.
+  await refreshTrips();
+  state.ready = true;
   notify();
   return backend;
 }
@@ -2932,26 +3090,113 @@ function writeMe(who) {
 
 /**
  * Signing in, at the last possible moment. Everything already on the phone
- * comes with it: the anonymous identity keeps its id, so every note, every
- * snapshot and every role that already pointed at it still does.
+ * comes with it: the identity keeps its id, so every note, every snapshot
+ * and every role that already pointed at it still does — and the trips this
+ * phone made are moved into the account under the ids they already have.
+ *
+ * Google returns here signed in. Email does not: it sends a link, and the
+ * launch that opens that link is where the sign-in actually finishes, which
+ * is why this can answer `{ sent }` instead of `{ ok }`.
  */
-export function signIn({ provider, name, email = '' }) {
-  const who = {
-    ...me(),
-    name: name || me().name,
-    account: { provider, email },
+export async function signIn({ provider, name = '', email = '' } = {}) {
+  state.signInNotice = '';
+  let account = null;
+
+  try {
+    if (provider === 'google') {
+      account = await signInWithGoogle();
+      // A popup the browser refused becomes a redirect: the page is leaving,
+      // and `restoreAccount` finishes the job when it comes back.
+      if (!account) return { ok: false, redirecting: true };
+    } else if (provider === 'email') {
+      const sent = await sendSignInEmail(email);
+      return { ok: false, sent };
+    } else {
+      throw new Error(`There is no ${provider} sign-in`);
+    }
+  } catch (error) {
+    state.signInNotice = signInProblem(error);
+    notify();
+    return { ok: false, error: state.signInNotice };
+  }
+
+  await landOn(account, name);
+  return { ok: true, account };
+}
+
+/**
+ * What follows a successful sign-in, whichever way it arrived — including a
+ * redirect or an email link that completed during boot.
+ */
+async function landOn(account, name = '') {
+  const before = me();
+  const named = String(name || '').trim()
+    || (before.name && before.name !== 'You' ? before.name : '')
+    || account.name
+    || String(account.email || '').split('@')[0]
+    || 'You';
+  // The id is not touched. That is the migration.
+  writeMe({
+    ...before,
+    name: named,
+    account: { provider: account.provider, email: account.email, uid: account.uid },
     signedInAt: new Date().toISOString(),
-  };
-  writeMe(who);
+  });
+  state.account = account;
+  accountRead = Promise.resolve({ reached: true, account, anonymous: false, uid: account.uid });
+  state.session = { reached: true, account, anonymous: false, uid: account.uid };
+
+  // Your name on the trip you are already on follows the name you gave.
   if (state.trip) {
-    const people = sharePeople().map((p) => (p.id === who.id ? { ...p, name: who.name } : p));
+    const people = sharePeople().map((p) => (p.id === before.id ? { ...p, name: me().name } : p));
     if (people.length) putTrip({ ...state.trip, people });
   }
-  notify();
-  return who;
+
+  // The demo is not yours and is not carried up; anything else on this phone
+  // is, by boot, under the id it already had.
+  if (readActiveTripID() === seed.TRIP_ID) writeActiveTripID(null);
+  await boot(readActiveTripID() || seed.TRIP_ID);
+}
+
+/** Firebase's error codes, in the words the sign-in sheet uses. */
+function signInProblem(error) {
+  const code = String(error?.code || '');
+  if (code === 'auth/popup-closed-by-user') return 'That window closed before it finished. Try again?';
+  if (code === 'auth/network-request-failed') return 'Signing in needs signal, once. Everything else works without it.';
+  if (code === 'auth/invalid-email') return 'That does not look like an email address.';
+  if (code === 'auth/unauthorized-domain') return 'This address is not on the project’s allowed list yet — see step 4 of the guide.';
+  if (code === 'auth/operation-not-allowed') return 'That way of signing in is not switched on in the Firebase console yet.';
+  if (code === 'auth/invalid-action-code') return 'That link has already been used, or it has expired. Ask for a new one.';
+  return String(error?.message || error) || 'That did not work.';
+}
+
+/**
+ * Signing out. The account goes; the identity stays, so signing back in is
+ * the same person and not a new one. What is in the account stays in it —
+ * this phone simply stops being able to see it.
+ */
+export async function signOut() {
+  await signOutAccount().catch(() => {});
+  writeMe({ ...me(), account: null, signedInAt: null });
+  state.account = null;
+  accountRead = Promise.resolve({ reached: true, account: null, anonymous: false });
+  state.session = { reached: true, account: null, anonymous: false };
+  writeActiveTripID(null);
+  await boot(seed.TRIP_ID);
+  closeTrip();
 }
 
 export const signedIn = () => Boolean(me().account);
+
+/** The account, for the row that says who you are. */
+export const account = () => me().account || null;
+
+/** An email sign-in that has been sent but not yet opened. */
+export const awaitingEmail = () => pendingEmail();
+export const cancelEmailSignIn = () => { forgetPendingEmail(); state.signInNotice = ''; notify(); };
+
+/** What the sign-in sheet is currently saying, set by the sheet itself. */
+export const noteSignIn = (line) => { state.signInNotice = line || ''; notify(); };
 
 export const sharePeople = () => state.trip?.people || [];
 
@@ -3031,13 +3276,16 @@ export function createLink({ role = 'edit', expiry = '7d' } = {}) {
   };
 
   const snapshot = shareSnapshot();
-  writePublished(link.code, snapshot);
   putTrip({
     ...state.trip,
     people,
     link,
     share: { on: true, version: snapshot.version, sentAt: snapshot.at, snapshot },
   });
+  // After the trip, not before it: the envelope carries the link's role and
+  // expiry, and those live on the trip.
+  writePublished(link.code, snapshot);
+  watchEnvelope(link.code);
   return link;
 }
 
@@ -3055,29 +3303,148 @@ function tripEndsAt() {
  *
  * There is one of these per link, and it is the only thing two phones both
  * reach: your copy of the trip is yours, theirs is theirs, and this is the
- * envelope in between. On a real backend it is one document under the link
- * code; here it is localStorage, which is the same shape and lets the whole
- * flow be exercised without one. Item 31 is swapping the two.
+ * envelope in between. It is one Firestore document at `published/{code}` —
+ * readable by anyone holding the code, writable only by the trip's owner and
+ * the editors, which is what `firebase/firestore.rules` says in the only
+ * place that can enforce it.
+ *
+ * A copy is kept in localStorage as well, and that copy is what `readPublished`
+ * answers from. Two reasons, both of which decide the design:
+ *
+ *   - Every caller is inside a render and cannot wait for a document.
+ *   - A phone with no signal still has to be able to open the update it was
+ *     told about. Firestore's own cache would cover the second; only the
+ *     mirror covers both.
+ *
+ * Firestore is therefore the source of truth and the mirror is what this
+ * phone last saw of it, refreshed by `watchEnvelope` as it changes.
  */
 const SHARED_KEY = (code) => `travel-planner:shared:${code}`;
 
-function writePublished(code, snapshot) {
-  if (!code) return;
+function mirror(code) {
   try {
-    localStorage.setItem(SHARED_KEY(code), JSON.stringify(snapshot));
+    return JSON.parse(localStorage.getItem(SHARED_KEY(code)) || 'null');
+  } catch {
+    return null;
+  }
+}
+
+function keepMirror(code, envelope) {
+  try {
+    localStorage.setItem(SHARED_KEY(code), JSON.stringify(envelope));
   } catch {
     // Out of room, or private browsing. The owner's own copy still records
     // what was sent, so the sheet does not claim it went.
   }
 }
 
+/**
+ * Before item 31 the mirror held the bare snapshot. Read both shapes and
+ * write only the new one, so a link handed out last week still opens.
+ */
+function envelopeOf(raw) {
+  if (!raw) return null;
+  if (raw.snapshot) return raw;
+  return { code: null, owner: null, editors: [], version: raw.version || 0, snapshot: raw };
+}
+
+function writePublished(code, snapshot) {
+  if (!code) return;
+  const before = envelopeOf(mirror(code)) || {};
+  // The trip knows the link's terms; an editor publishing into someone
+  // else's envelope must not restate them, so it keeps what is there.
+  const link = state.trip?.link?.code === code ? state.trip.link : null;
+  const mine = me().account?.uid || null;
+
+  const envelope = {
+    code,
+    // Whoever made the link owns the envelope. An editor publishing into it
+    // never takes it over — and both are uids, because the rules are.
+    owner: link ? (mine || before.owner || null) : (before.owner || null),
+    editors: before.editors || [],
+    linkRole: link ? link.role : (before.linkRole || 'read'),
+    live: link ? link.live !== false : (before.live !== false),
+    expiresAt: link ? (link.expiresAt || null) : (before.expiresAt ?? null),
+    version: snapshot.version || 0,
+    updatedAt: snapshot.at || new Date().toISOString(),
+    snapshot,
+  };
+  keepMirror(code, envelope);
+
+  if (!mine) {
+    // Nobody is signed in, so there is no uid for the rules to check and the
+    // envelope cannot leave this phone. The link still works here, which is
+    // exactly what it did before there was a backend at all.
+    return;
+  }
+  // Fire and forget: offline, Firestore keeps the write and replays it when
+  // there is signal. Waiting would make publishing an online-only act, which
+  // is the one thing this app is built not to be.
+  pushPublished(code, envelope).catch((error) => {
+    console.warn('[travel-planner] the update has not reached the link yet', error);
+  });
+}
+
 export function readPublished(code) {
   if (!code) return null;
-  try {
-    return JSON.parse(localStorage.getItem(SHARED_KEY(code)) || 'null');
-  } catch {
-    return null;
+  return envelopeOf(mirror(code))?.snapshot || null;
+}
+
+/**
+ * The envelope as the other side changes it. This is what makes "there is an
+ * update waiting" arrive on its own rather than on the next launch.
+ */
+let watching = 0;
+async function watchEnvelope(code) {
+  const token = ++watching;
+  if (unwatchEnvelope) {
+    unwatchEnvelope();
+    unwatchEnvelope = null;
   }
+  if (!code) return;
+
+  const stop = await watchPublished(code, (envelope) => {
+    if (!envelope) return;
+    const seen = envelopeOf(mirror(code));
+    // Ours is newer and still queued: keep it rather than going backwards.
+    if (seen && (seen.version || 0) > (envelope.version || 0)) return;
+    const moved = !seen || (envelope.version || 0) > (seen.version || 0);
+    keepMirror(code, envelope);
+    if (moved) notify();
+  });
+
+  // Another trip was opened while this was resolving.
+  if (token !== watching) stop();
+  else unwatchEnvelope = stop;
+}
+
+/**
+ * Opening someone's link on a phone that has never seen this trip. The
+ * envelope is fetched by code, mirrored, and left in `state.invite` for the
+ * join screen — which is the whole of what a second phone needs to know
+ * before it decides whether to take a copy.
+ */
+export async function openLink(code) {
+  const clean = String(code || '').trim().toUpperCase();
+  if (!clean) return null;
+
+  let envelope = envelopeOf(mirror(clean));
+  let reached = false;
+  try {
+    const fetched = await fetchPublished(clean);
+    reached = true;
+    if (fetched) {
+      keepMirror(clean, fetched);
+      envelope = fetched;
+    }
+  } catch (error) {
+    // No signal, or no project. Whatever is mirrored is still worth showing.
+    console.warn('[travel-planner] could not fetch that link', error);
+  }
+
+  state.invite = { code: clean, envelope: envelope || null, reached };
+  notify();
+  return state.invite;
 }
 
 /**
@@ -3107,6 +3474,7 @@ export function unsentChanges() {
 export function setLinkLive(live) {
   if (!state.trip?.link) return;
   putTrip({ ...state.trip, link: { ...state.trip.link, live: Boolean(live) } });
+  restateTerms();
 }
 
 export function setLinkExpiry(expiry) {
@@ -3115,6 +3483,18 @@ export function setLinkExpiry(expiry) {
     ...state.trip,
     link: { ...state.trip.link, expiry, expiresAt: share.expiryAt(expiry, new Date(), tripEndsAt()) },
   });
+  restateTerms();
+}
+
+/**
+ * Off is only off if the other phone hears about it. The terms live in the
+ * envelope beside the snapshot, so changing them republishes what is already
+ * published rather than sending anything new.
+ */
+function restateTerms() {
+  const code = state.trip?.link?.code;
+  const sent = shareState()?.snapshot;
+  if (code && sent) writePublished(code, sent);
 }
 
 export const linkState = () => share.linkState(state.trip?.link);
@@ -3184,6 +3564,12 @@ export async function joinTrip({ code, role } = {}) {
   for (const kind of ['places', 'subRoutes', 'mustSee']) {
     for (const row of snapshot[kind] || []) put(kind, JSON.parse(JSON.stringify(row)));
   }
+
+  // A link that grants editing has to put this phone's uid in the envelope,
+  // or the rules refuse the first update it tries to send. Nothing waits on
+  // it: an editor who is not signed in yet claims it when they are.
+  if (given === 'edit') claimEditor(linkCode).catch(() => {});
+  state.invite = null;
   notify();
   return given;
 }

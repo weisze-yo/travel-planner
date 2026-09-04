@@ -2,7 +2,7 @@
 // is cached and served cache-first; map tiles and Firebase always go to the
 // network, and Firestore keeps its own offline copy of your data.
 
-const VERSION = 'v4';
+const VERSION = 'v5';
 const SHELL = `travel-planner-shell-${VERSION}`;
 // Map areas the traveller chose to keep. Deliberately not versioned: a
 // deploy must never throw away a download they waited on hotel wifi for.
@@ -33,7 +33,6 @@ const ASSETS = [
   './js/screens/nearby.js',
   './js/screens/sub.js',
   './js/screens/shop.js',
-  './js/screens/mustsee.js',
   './js/screens/prep.js',
   './js/screens/log.js',
   './js/screens/note.js',
@@ -44,6 +43,10 @@ const ASSETS = [
   './js/screens/area.js',
   './js/screens/areas.js',
   './js/screens/stuck.js',
+  './js/screens/share.js',
+  './js/screens/join.js',
+  './js/screens/review.js',
+  './js/share.js',
   './js/net.js',
   './icons/icon.svg',
   './icons/icon-180.png',

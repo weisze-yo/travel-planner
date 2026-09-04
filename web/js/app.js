@@ -1,7 +1,7 @@
 // Boot: bring up storage, register screens, show the first one.
 
 import { $ } from './util.js';
-import { boot, closeTrip, state } from './store.js';
+import { boot, closeTrip, openLink, state } from './store.js';
 import { readActiveTripID } from './persist.js';
 import { register, start } from './nav.js';
 import * as strip from './strip.js';
@@ -51,9 +51,16 @@ async function main() {
   const asked = (location.hash || '').slice(1);
   const insideTrip = ['map', 'plan', 'shop', 'prep', 'log'].includes(asked);
   // An invite link is a path, not a hash: /j/8QK2-M7VD. It lands on the trip
-  // rather than on the app, because whoever opened it has never seen this.
-  const invited = /\/j\/[A-Z0-9-]+/i.test(location.pathname) || asked === 'join';
-  const initial = invited ? 'join' : (remembered ? (insideTrip ? asked : 'map') : 'trips');
+  // rather than on the app, because whoever opened it has never seen this —
+  // and the code is the only thing they have, so the envelope behind it is
+  // fetched before the screen is asked to draw anything.
+  const code = (location.pathname.match(/\/j\/([A-Z0-9-]+)/i) || [])[1] || null;
+  const invited = Boolean(code) || asked === 'join';
+  if (code) await openLink(code).catch(() => {});
+
+  // Where the app lands is decided by what boot actually opened, not by what
+  // was remembered: a signed-in account with no trips has nothing to open.
+  const initial = invited ? 'join' : (state.tripID ? (insideTrip ? asked : 'map') : 'trips');
   start({ initial });
   strip.start();
 

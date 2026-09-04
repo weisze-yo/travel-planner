@@ -12,10 +12,12 @@ import { html, raw, icon, delegate, money } from '../util.js';
 import * as store from '../store.js';
 import { state } from '../store.js';
 import { go } from '../nav.js';
-import { swipeToDelete } from './parts.js';
+import { swipeToDelete, signInPanel, mountSignIn } from './parts.js';
 import { prepare } from '../photos.js';
+import { initialFor } from '../share.js';
 
 let addOpen = false;
+let signingIn = false;
 let busy = '';
 /** The trip whose cover is being chosen, if any. */
 let covering = null;
@@ -50,6 +52,8 @@ export default {
         <div class="scroll" style="padding:14px 16px 32px">
           ${busy ? html`<div class="amber-note f12 mb12">${busy}</div>` : ''}
 
+          ${accountRow()}
+
           ${removedCard()}
 
           ${groups.running.length ? html`
@@ -69,8 +73,11 @@ export default {
               Swipe a trip left to delete it. A finished trip stays until you do.
             </div>` : html`
             <div class="empty">
-              No trips yet.<br>
-              Press <b>+ New trip</b> and give it a name and dates.
+              ${store.signedIn()
+                ? html`Nothing in this account yet.<br>
+                    Press <b>+ New trip</b>, or open a link somebody has shared with you.`
+                : html`No trips yet.<br>
+                    Press <b>+ New trip</b> and give it a name and dates.`}
             </div>`}
         </div>
 
@@ -78,6 +85,20 @@ export default {
           <!-- Inert on purpose: Create and Cancel are the only ways out. -->
           <div class="scrim"></div>
           <div class="modal">${addForm()}</div>` : ''}
+
+        ${signingIn ? html`
+          <div class="scrim" data-act="sign-close"></div>
+          <div class="modal">
+            <div class="form" style="padding:18px 16px 16px">
+              ${signInPanel({
+                title: 'Sign in',
+                sub: 'So this stops being one phone’s trip. Every trip you have made comes with '
+                  + 'you, under the same name and the same links. The sample trip does not — '
+                  + 'it stays here, for whenever nobody is signed in.',
+              })}
+              <button class="btn ghost mt12" style="width:100%" data-act="sign-close">Not now</button>
+            </div>
+          </div>` : ''}
       </section>`;
   },
 
@@ -96,6 +117,21 @@ export default {
       } catch {
         busy = text;
       }
+      store.refreshTrips();
+    });
+
+    delegate(root, '[data-act="sign-open"]', () => { signingIn = true; store.refreshTrips(); });
+    delegate(root, '[data-act="sign-close"]', () => {
+      signingIn = false;
+      store.noteSignIn('');
+    });
+    mountSignIn(root, { onDone: () => { signingIn = false; } });
+
+    delegate(root, '[data-act="sign-out"]', async () => {
+      busy = 'Signing out…';
+      store.refreshTrips();
+      await store.signOut();
+      busy = '';
       store.refreshTrips();
     });
 
@@ -144,6 +180,38 @@ export default {
     });
   },
 };
+
+/**
+ * Who this phone is, above the trips. Signed in it is one quiet line — the
+ * name, the address it is under, and the way out. Signed out it is the only
+ * place in the app that offers a sign-in without an invite link, and it says
+ * what signing in buys rather than demanding it: nothing below this row needs
+ * an account to work.
+ */
+function accountRow() {
+  const who = store.account();
+  if (!who) {
+    return html`
+      <div class="acct">
+        <div class="grow">
+          <div class="acct-name">Everything is on this phone</div>
+          <div class="acct-sub">
+            Sign in and your trips follow you to a new one — and a shared link can reach it.
+          </div>
+        </div>
+        <button class="btn sm ink" data-act="sign-open">Sign in</button>
+      </div>`;
+  }
+  return html`
+    <div class="acct">
+      <span class="who-mark">${initialFor(store.me().name)}</span>
+      <div class="grow">
+        <div class="acct-name">${store.me().name}</div>
+        <div class="acct-sub">${who.email || (who.provider === 'google' ? 'Google account' : 'Signed in')}</div>
+      </div>
+      <button class="btn sm ghost" data-act="sign-out">Sign out</button>
+    </div>`;
+}
 
 // -------------------------------------------------------------- the cards
 

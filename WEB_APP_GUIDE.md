@@ -17,13 +17,22 @@ you is:
 | Part | What it does for this app |
 |---|---|
 | **Hosting** | Serves the web app at `https://your-project.web.app` |
-| **Firestore** | Stores your trip: stops, sub routes, shopping, prep, notes |
-| **Authentication** | Gives each device an anonymous user id, so the rules can protect your data |
+| **Firestore** | Stores your trips, and the snapshot behind a share link |
+| **Authentication** | Google, or a link sent to your email — so a trip survives losing the phone |
 | **Storage** (optional) | Holds photos you attach to notes |
 
 All of that fits in the **free Spark plan**. No card needed, except that some
 new projects now ask for the paid Blaze plan to switch Storage on — if yours
 does, skip Storage. Everything except photo upload still works.
+
+### About Apple sign-in
+
+**Sign in with Apple is not offered, and adding it would cost you $99 a year.**
+On the web it is not just a switch in the Firebase console: it needs a Services
+ID, a registered return URL and a Sign in with Apple private key, and all three
+are created in the Apple Developer portal, which requires a paid Apple Developer
+Program membership. Google and an emailed link cover everyone, including people
+on an iPhone, so the app asks for neither a password nor a developer account.
 
 ---
 
@@ -42,7 +51,7 @@ This is the step people get wrong: register a **Web** app, not an iOS app.
 2. Nickname: `Travel Planner web`. Do **not** tick Firebase Hosting yet.
    → Register app.
 3. Firebase shows a `firebaseConfig = { ... }` block. Copy those values into
-   **`web/js/config.js`**, replacing the empty strings:
+   **`web/js/config.js`**, replacing what is there:
 
    ```js
    export const firebaseConfig = {
@@ -60,14 +69,32 @@ This is the step people get wrong: register a **Web** app, not an iOS app.
    to GitHub is fine and is what the automatic deploy expects.
 
 > Until you fill this in, the app still runs — it just saves to that one
-> browser (localStorage) and nothing syncs. Handy for a first look.
+> browser and nobody can sign in. Handy for a first look.
 
-## Step 3 — Turn on anonymous sign-in
+## Step 3 — Turn on the two ways of signing in
 
 1. Left sidebar → **Build → Authentication → Get started**.
-2. **Sign-in method** tab → **Anonymous** → enable → Save.
-
-This is how each device gets a user id without you building a login screen.
+2. **Sign-in method** tab → **Add new provider** → **Google** → toggle
+   **Enable**.
+   - *Public-facing name*: `Travel Planner` — this is the name people see on
+     the Google sheet, so it should be the app's, not the project id's.
+   - *Support email*: pick your own address from the list.
+   - **Save**.
+3. **Add new provider** → **Email/Password**. Turn on **both** switches:
+   - **Email/Password** — enable.
+   - **Email link (passwordless sign-in)** — enable. This is the one the app
+     actually uses: it sends a link, you open it, you are in. There is no
+     password anywhere in the app, so there is none to reset or to leak.
+   - **Save**.
+4. **Anonymous**: if it is already on, leave it on until every phone that has
+   used the app has signed in once — an older build gave each browser an
+   anonymous id, and signing in *links* that id rather than replacing it, so
+   the trips under it come along. Once everyone has signed in, turn it off.
+   New phones are never given one.
+5. Still in Authentication → **Settings → Authorized domains**. Check that
+   **`<project-id>.web.app`** and **`<project-id>.firebaseapp.com`** are listed
+   (they are added for you). Add a custom domain here too if you ever use one —
+   a domain that is not on this list cannot sign anybody in.
 
 ## Step 4 — Create the database and paste the rules
 
@@ -78,8 +105,18 @@ This is how each device gets a user id without you building a login screen.
 4. Once created, open the **Rules** tab, delete what is there, paste the whole
    contents of **`firebase/firestore.rules`**, and press **Publish**.
 
-Without step 4, production mode blocks everything and the app will fall back to
+Without step 4, production mode blocks everything and the app falls back to
 saving in the browser only.
+
+Those rules cover two collections, and it is worth knowing which is which:
+
+- **`users/{your-uid}/…`** — your trips. Only the account that owns them can
+  read or write them, whatever another browser claims to be.
+- **`published/{link-code}`** — the snapshot behind one share link. Anyone
+  holding the code can read it, which is what makes a link work on a phone
+  that has never seen your trip. Nobody can *list* the collection, so codes
+  cannot be collected. Only the trip's owner and the people the owner gave
+  *can send updates* to may write it.
 
 ## Step 5 — Storage — **optional, skip it if it asks for a card**
 
@@ -144,12 +181,6 @@ the repo.
 4. Deploy:
 
    ```bash
-   firebase deploy --only hosting
-   ```
-
-   To push the Firestore rules from the repo at the same time:
-
-   ```bash
    firebase deploy --only hosting,firestore:rules
    ```
 
@@ -168,29 +199,60 @@ The URL is printed at the end.
 3. Launch it from the home screen. It runs full-screen with no browser bars,
    keeps working when you lose signal, and remembers where you were.
 
+## Step 8 — Sign in, once, on each phone
+
+1. Open the app → **My trips** → the row at the top says *Everything is on this
+   phone* → **Sign in**.
+2. **Continue with Google**, or type an address and **Send me a link**, then
+   open that link on the same phone.
+3. Anything you have already made on that phone moves into the account, keeping
+   the ids it already had — so a link you have handed out still points at the
+   same trip, and every note still has your name on it.
+
+The one thing that does not move is the sample trip (Meridian City). It belongs
+to a phone that has never signed in, not to an account, and it stays on the
+phone: sign out and it is there again.
+
 ---
 
 ## Things worth knowing
 
-**Each device is its own user.** Anonymous sign-in gives *this browser* an id.
-Your iPhone and your laptop will therefore hold **separate** trips, and clearing
-Safari's website data starts a fresh one. To have one trip across devices the app
-needs real sign-in (Apple, Google or email) — a small addition; ask and it can
-be wired in.
+**A new account starts empty.** No demo, no example trip — an account with
+nothing in it says so and offers *+ New trip*. The sample trip appears only on
+a phone where nobody has ever signed in, so that the screens have something in
+them before you have made anything.
 
-**Your data is private to that id.** The Firestore rules only allow reads and
-writes under `users/{your-uid}`, so nobody else's browser can reach your trip.
+**Your trips are private to your account.** The Firestore rules only allow
+reads and writes under `users/{your-uid}`, so nobody else's browser can reach
+them.
 
-**First launch seeds the demo trip** — the Meridian City itinerary from the
-design, so every screen has something in it. Editing, removing and adding all
-work on it; there is no "start an empty trip" button yet.
+**Sharing works between two phones now.** Trip settings → *Share this trip*
+makes a link with a role (can send updates / receives updates) and an expiry.
+Whoever opens the link gets **their own copy** of the itinerary, the sub routes,
+the places and the must-see spots. What they change is theirs; what you change
+is yours; and when either of you presses *Send an update* the other side is told
+and takes it **one change at a time**. Your shopping list, your packing list,
+what you have bought or packed, and your whole Log never travel at all.
+
+The link is a capability: anyone holding the code can read the snapshot, which
+is what makes it work on a phone that has never seen your trip. Switch it off in
+the share sheet and it stops working for everyone — that reaches the other phone
+too, so a link you have turned off really is off.
+
+**You have to be signed in to share between phones.** Making a link without an
+account still works, but the snapshot can only reach that browser — the rules
+have no uid to check, so nothing is published. Sign in first and the same link
+starts working everywhere.
+
+**Signing in on a second phone brings your trips with you**, because they live
+in the account rather than in the browser. Clearing Safari's website data no
+longer loses anything, as long as you have signed in.
 
 **Photos** are downscaled in the browser before they go anywhere, so uploads are
 quick on hotel wifi and nothing depends on the paid plan.
 
-**The map** uses OpenStreetMap tiles (free, no key). The demo trip's coordinates
-are real central-Tokyo ones, so streets line up under the route. The
-Google Maps / Apple Maps buttons hand off to the real apps on your phone.
+**The map** uses OpenStreetMap tiles (free, no key). The Google Maps / Apple Maps
+buttons hand off to the real apps on your phone.
 
 **After you deploy an update**, the app picks it up on next launch; the service
 worker fetches from the network first and only falls back to its cache offline.
@@ -209,26 +271,19 @@ reason that will not fix itself, gets a strip above the tab bar and its own
 screen (Trip settings → *Changes on this phone*) that says why, what would be
 lost, and offers to save a copy off the phone.
 
-**Sharing a trip is built, but it needs a real sign-in to be useful.** Trip
-settings → *Share this trip* makes a link with a role (can edit / can read) and
-an expiry. The rule the whole thing hangs on: the schedule syncs and last edit
-wins; the shopping list is copied once and then both lists are separate; and
-what you have bought, what you have packed and your whole Log never leave your
-phone. Today anonymous sign-in gives each browser its own id, so two phones
-cannot yet reach the same trip document — the link, the roles and the change
-feed all work, but the trip has to be on the same device. Wiring up Apple or
-Google sign-in and the matching Firestore rules is the remaining piece; ask and
-it can be done.
-
 ## If something looks wrong
 
 | Symptom | Cause |
 |---|---|
 | Everything works but nothing syncs; console says "No Firebase config" | `web/js/config.js` is still empty (step 2) |
+| *Sign in* does nothing, console says `auth/operation-not-allowed` | That provider is not enabled yet (step 3) |
+| Console says `auth/unauthorized-domain` | The domain you opened the app on is not in Authentication → Settings → Authorized domains (step 3.5) |
+| The emailed link says it has expired or been used | A sign-in link works once. Ask for another from the same screen |
+| The Google window opens and closes with nothing happening | The popup was dismissed; the app falls back to a full-page redirect on the next try |
 | Data disappears on refresh | Rules not published (step 4), or the browser is in private mode |
+| A share link opens a blank or "cannot reach it" screen | The rules are not published, or that phone has no signal — the link keeps working, so try it again with some |
 | Map is blank grey | No network for tiles, or a tile blocker/VPN |
 | Photos save as small thumbnails | Storage not enabled — expected, see step 5 |
-| "That is as many photos as fit…" | ~55 thumbnails per day is the limit without Storage |
 | GitHub Action fails on "Read and check the Firebase config" | `config.js` was committed still empty (step 2) |
 | GitHub Action fails on "Check the deploy credential exists" | The `FIREBASE_SERVICE_ACCOUNT` secret is missing or misnamed |
 | Action fails inside "Deploy to Firebase Hosting" | Usually the service-account JSON is truncated — re-copy the whole file |
