@@ -20,7 +20,7 @@
 // waiting, which opens the review screen. It never changes the day on its
 // own — nothing does but you.
 
-import { html, raw, icon, delegate, parseClock, clock } from '../util.js';
+import { html, raw, esc, icon, delegate, parseClock, clock } from '../util.js';
 import * as store from '../store.js';
 import { state } from '../store.js';
 import { go } from '../nav.js';
@@ -370,7 +370,7 @@ function loopCard(loop, editing = false) {
   const card = store.loopCard(loop);
   if (!card) return '';
   return html`
-    <div class="swipe-row plan-swipe"${editing ? ` data-loop-row="${card.id}" data-loop-name="${card.name}"` : ''}>
+    <div class="swipe-row plan-swipe"${editing ? raw(` data-loop-row="${esc(card.id)}" data-loop-name="${esc(card.name)}"`) : ''}>
       ${editing ? html`
         <div class="swipe-bin">
           <button class="bin" data-swipe-delete aria-label="Delete ${card.name}">${raw(icon.bin)}</button>
@@ -574,7 +574,7 @@ function archive(rows, editing) {
     <div class="mt18">
       <div class="eyebrow">REMOVED FROM THIS DAY</div>
       ${rows.map((item) => html`
-        <div class="swipe-row mt8"${editing ? ` data-plan-row="${item.id}" data-plan-name="${item.name}"` : ''}>
+        <div class="swipe-row mt8"${editing ? raw(` data-plan-row="${esc(item.id)}" data-plan-name="${esc(item.name)}"`) : ''}>
           ${editing ? html`
             <div class="swipe-bin"><button class="bin" data-swipe-delete aria-label="Delete ${item.name}">${raw(icon.bin)}</button></div>` : ''}
           <div class="swipe-face archive-card">
