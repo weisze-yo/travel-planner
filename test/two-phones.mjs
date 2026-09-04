@@ -251,6 +251,58 @@ check('and its map centre is Reykjavik’s, not Tokyo’s',
   Math.abs(bCopy.latitude - 64.15) < 1 && Math.abs(bCopy.longitude - (-21.94)) < 1,
   `${bCopy.latitude}, ${bCopy.longitude}`);
 
+console.log('\n=== PHONE B’s own Share screen says what it actually is ===');
+// A joiner's Share screen used to be pixel-identical to the owner's, with
+// nothing on it saying that a link made there is a second, disconnected
+// share of their own fork rather than the trip itself.
+await go(B, 'share');
+const bShareText = await text(B);
+console.log('  [B share screen] ' + bShareText.replace(/\n/g, ' | ').slice(0, 220));
+check('a joiner’s Share screen says this is a copy of someone else’s trip',
+  /your copy of wei/i.test(bShareText), bShareText.slice(0, 200));
+check('and warns that a link made here is a second, separate share',
+  /second, separate share/i.test(bShareText), bShareText.slice(0, 260));
+
+console.log('\n=== PHONE A sees that B actually joined ===');
+// The owner's own trip.people is a different account's write reaching into
+// their document — the guest can only ever write its own key into the
+// published envelope, and the owner's phone folds that in from here.
+await A.page.waitForTimeout(3000);
+await go(A, 'share');
+const aShareText = await text(A);
+const aAfterJoin = await A.page.evaluate(() => {
+  const s = window.__store;
+  return {
+    people: s.sharePeople().map((p) => ({ name: p.name, role: p.role })),
+    opens: s.state.trip?.link?.opens ?? null,
+  };
+});
+console.log('  [A share screen] ' + aShareText.replace(/\n/g, ' | ').slice(0, 220));
+console.log('  [A after join] ' + JSON.stringify(aAfterJoin));
+check('the owner’s own store state lists the joiner, not just themselves',
+  aAfterJoin.people.some((p) => p.name === 'ana'), JSON.stringify(aAfterJoin.people));
+check('and the owner’s rendered Share screen shows them too',
+  /ana/.test(aShareText), aShareText.slice(0, 220));
+check('the link records that it has actually been opened',
+  (aAfterJoin.opens || 0) > 0, String(aAfterJoin.opens));
+check('and the owner’s rendered screen says so, not "opened 0 times"',
+  !/opened 0 times/.test(aShareText) && /opened \d+ times?/.test(aShareText), aShareText.slice(0, 220));
+
+console.log('\n=== removing a joiner sticks, even after the link is opened again ===');
+// The envelope still remembers B's join after A removes them — someone else
+// opening the same link fires another envelope change, and that must not
+// read B's still-present joiners entry as a brand new join and fold them
+// straight back into A's people.
+const bID = await A.page.evaluate(() => window.__store.sharePeople().find((p) => p.name === 'ana')?.id);
+await A.page.evaluate((id) => window.__store.removePerson(id), bID);
+await A.page.waitForTimeout(1200);
+await B.page.evaluate((code) => window.__persist.bumpLinkOpens(code), link.code);
+await A.page.waitForTimeout(2000);
+const aAfterRemove = await A.page.evaluate(() => window.__store.sharePeople().map((p) => p.name));
+console.log('  [A people after removing B, then another open] ' + JSON.stringify(aAfterRemove));
+check('removing someone stays removed, not silently re-added by the next envelope change',
+  !aAfterRemove.includes('ana'), JSON.stringify(aAfterRemove));
+
 console.log('\n=== the rules hold ===');
 const peek = await B.page.evaluate(async (otherTrip) => {
   const fb = await window.__persist.firebase();
@@ -267,6 +319,68 @@ const peek = await B.page.evaluate(async (otherTrip) => {
 check('one account cannot read another account’s trip',
   peek.allowed === false || peek.exists === false, JSON.stringify(peek));
 
+// B is already a legitimate editor of the first envelope (it granted the
+// 'edit' role), which would make almost any write to it allowed and prove
+// nothing about the new `joiningAsGuest`/`bumpingOpens` rules specifically.
+// A second, throwaway envelope — B is nobody on it, not owner, not editor —
+// isolates exactly what a bare guest may and may not do.
+const raw2 = await A.page.evaluate(async () => {
+  const fb = await window.__persist.firebase();
+  const { doc, setDoc } = fb.dbMod;
+  const code = 'RULE-TEST2';
+  await setDoc(doc(fb.db, 'published', code), {
+    owner: fb.auth.currentUser.uid, editors: [], joiners: {}, opens: 0,
+    linkRole: 'read', live: true, expiresAt: null, version: 1,
+    updatedAt: new Date().toISOString(), snapshot: { days: [], subRoutes: [], places: [], mustSee: [] },
+  });
+  return { code };
+});
+
+const guestRules = await B.page.evaluate(async (code) => {
+  const fb = await window.__persist.firebase();
+  const { doc, getDoc, updateDoc } = fb.dbMod;
+  const ref = doc(fb.db, 'published', code);
+  const bUid = fb.auth.currentUser.uid;
+  const out = {};
+  const attempt = async (label, data) => {
+    try { await updateDoc(ref, data); out[label] = { allowed: true }; }
+    catch (e) { out[label] = { allowed: false, code: e.code || e.message }; }
+  };
+  const stamp = () => new Date().toISOString();
+
+  await attempt('claims the owner role for itself',
+    { joiners: { [bUid]: { id: 'ana', name: 'Ana', role: 'owner', joinedAt: stamp() } } });
+  await attempt('writes into someone else’s joiners key',
+    { joiners: { 'not-b-at-all': { id: 'x', name: 'X', role: 'read', joinedAt: stamp() } } });
+  await attempt('rides a joiners write to also switch the link off',
+    { joiners: { [bUid]: { id: 'ana', name: 'Ana', role: 'read', joinedAt: stamp() } }, live: false });
+  await attempt('bumps opens by more than one', { opens: 5 });
+  await attempt('honestly joins — its own key, a real role',
+    { joiners: { [bUid]: { id: 'ana', name: 'Ana', role: 'read', joinedAt: stamp() } } });
+  const afterJoin = (await getDoc(ref)).data();
+  await attempt('honestly opens — exactly one more', { opens: (afterJoin.opens || 0) + 1 });
+  const afterOpen = (await getDoc(ref)).data();
+
+  return { out, joinersAfter: afterJoin.joiners || {}, bUid, opensAfter: afterOpen.opens };
+}, raw2.code);
+
+console.log('  [guest rule attempts] ' + JSON.stringify(guestRules.out));
+check('a bare guest cannot claim the owner role for themselves',
+  guestRules.out['claims the owner role for itself'].allowed === false, JSON.stringify(guestRules.out['claims the owner role for itself']));
+check('a bare guest cannot write into someone else’s joiners key',
+  guestRules.out['writes into someone else’s joiners key'].allowed === false, JSON.stringify(guestRules.out['writes into someone else’s joiners key']));
+check('a bare guest cannot ride a joiners write to change anything else on the envelope',
+  guestRules.out['rides a joiners write to also switch the link off'].allowed === false, JSON.stringify(guestRules.out['rides a joiners write to also switch the link off']));
+check('opens can only ever move up by exactly one at a time',
+  guestRules.out['bumps opens by more than one'].allowed === false, JSON.stringify(guestRules.out['bumps opens by more than one']));
+check('but a bare guest really can write their own honest join',
+  guestRules.out['honestly joins — its own key, a real role'].allowed === true, JSON.stringify(guestRules.out['honestly joins — its own key, a real role']));
+check('and a real single-step open really is allowed',
+  guestRules.out['honestly opens — exactly one more'].allowed === true, JSON.stringify(guestRules.out['honestly opens — exactly one more']));
+check('the honest join landed under the guest’s own uid, not anyone else’s',
+  Object.keys(guestRules.joinersAfter).length === 1 && guestRules.joinersAfter[guestRules.bUid]?.role === 'read',
+  JSON.stringify(guestRules.joinersAfter));
+
 console.log('\n=== PHONE A changes something and sends an update ===');
 await A.page.evaluate(() => {
   const s = window.__store;
@@ -278,6 +392,15 @@ const unsent = await A.page.evaluate(() => window.__store.unsentChanges().length
 check('the owner is told there is something to send', unsent === 1, String(unsent));
 await A.page.evaluate(() => window.__store.publishUpdate());
 await A.page.waitForTimeout(2500);
+
+// publishUpdate republishes the whole envelope (setDoc, not a merge) — make
+// sure it carried the joiner and the open count forward rather than wiping
+// them back to nothing, the way it would if writePublished forgot them.
+const envAfterUpdate = await A.page.evaluate((code) => window.__persist.fetchPublished(code), link.code);
+check('sending an update does not erase who already joined',
+  Object.keys(envAfterUpdate?.joiners || {}).length > 0, JSON.stringify(envAfterUpdate?.joiners));
+check('and does not reset the open count back to zero',
+  (envAfterUpdate?.opens || 0) > 0, String(envAfterUpdate?.opens));
 
 console.log('\n=== PHONE B is offered it, one change at a time ===');
 await B.page.reload({ waitUntil: 'domcontentloaded' });

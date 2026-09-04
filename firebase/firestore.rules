@@ -46,6 +46,7 @@ service cloud.firestore {
       function signedIn() { return request.auth != null; }
       function uid() { return signedIn() ? request.auth.uid : ''; }
       function editors() { return envelope().get('editors', []); }
+      function joiners() { return envelope().get('joiners', {}); }
 
       function isOwner() { return signedIn() && envelope().get('owner', '') == uid(); }
       function isEditor() { return signedIn() && uid() in editors(); }
@@ -64,6 +65,31 @@ service cloud.firestore {
                && incoming().diff(envelope()).affectedKeys().hasOnly(['editors'])
                && incoming().get('editors', []).hasAll(editors())
                && incoming().get('editors', []).hasOnly(editors().concat([uid()]));
+      }
+
+      // Telling the owner you actually took the trip — a read-role joiner
+      // included, not only one who can publish. You may write exactly one
+      // key into `joiners`, your own, and nothing else on the envelope: the
+      // owner's phone folds this into their own `trip.people`, which this
+      // rule can never reach directly (it lives under a different user's
+      // `users/{uid}` document, matched above, and stays that way).
+      function joiningAsGuest() {
+        let mine = incoming().get('joiners', {}).get(uid(), null);
+        return signedIn()
+               && incoming().diff(envelope()).affectedKeys().hasOnly(['joiners'])
+               && incoming().get('joiners', {}).diff(joiners()).affectedKeys().hasOnly([uid()])
+               && mine != null
+               && mine.get('id', '') is string && mine.get('id', '') != ''
+               && mine.get('role', '') in ['edit', 'read'];
+      }
+
+      // The one counter nobody on the envelope owns: it may only go up by
+      // exactly one, and touch nothing else, so a real signed-in view can
+      // bump it without needing an owner's or an editor's rights.
+      function bumpingOpens() {
+        return signedIn()
+               && incoming().diff(envelope()).affectedKeys().hasOnly(['opens'])
+               && incoming().get('opens', 0) == envelope().get('opens', 0) + 1;
       }
 
       function looksLikeAnEnvelope() {
@@ -89,6 +115,8 @@ service cloud.firestore {
                       isOwner()
                       || (isEditor() && keepsWhoseItIs())
                       || joiningAsEditor()
+                      || joiningAsGuest()
+                      || bumpingOpens()
                     );
 
       // Switching a link off is what stops it being used; deleting the

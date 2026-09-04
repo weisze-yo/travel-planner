@@ -7,7 +7,7 @@ import {
   createBackend, isConfigured, readActiveTripID, writeActiveTripID, KINDS,
   restoreAccount, signInWithGoogle, sendSignInEmail, pendingEmail, forgetPendingEmail,
   signOutAccount, fetchPublished, pushPublished, watchPublished, claimEditor,
-  localTrips, forgetLocalTrip,
+  announceJoin, bumpLinkOpens, localTrips, forgetLocalTrip,
 } from './persist.js';
 import { prepare, storedLength } from './photos.js';
 import { fetchForecast, forecastCoverage, fetchRate, geocode, online, parseMapLink, placeDetails } from './net.js';
@@ -3444,6 +3444,11 @@ function writePublished(code, snapshot) {
     // never takes it over — and both are uids, because the rules are.
     owner: link ? (mine || before.owner || null) : (before.owner || null),
     editors: before.editors || [],
+    // Neither is this write's to set: a full republish must carry forward
+    // who has already joined and how many times the link has been opened,
+    // or it would wipe both back to nothing every time an update goes out.
+    joiners: before.joiners || {},
+    opens: before.opens || 0,
     linkRole: link ? link.role : (before.linkRole || 'read'),
     live: link ? link.live !== false : (before.live !== false),
     expiresAt: link ? (link.expiresAt || null) : (before.expiresAt ?? null),
@@ -3487,6 +3492,12 @@ async function watchEnvelope(code) {
 
   const stop = await watchPublished(code, (envelope) => {
     if (!envelope) return;
+    // Who has joined and how many times the link has opened only ever grow,
+    // so they are taken regardless of whether the snapshot itself is a stale
+    // echo below — and kept in the mirror now, or the next full republish
+    // from this phone would carry forward a joiners list that has fallen
+    // behind and wipe out someone who joined moments ago.
+    adoptEnvelopeMeta(code, envelope);
     const seen = envelopeOf(mirror(code));
     // Ours is newer and still queued: keep it rather than going backwards.
     if (seen && (seen.version || 0) > (envelope.version || 0)) return;
@@ -3498,6 +3509,59 @@ async function watchEnvelope(code) {
   // Another trip was opened while this was resolving.
   if (token !== watching) stop();
   else unwatchEnvelope = stop;
+}
+
+/**
+ * Folding real joiners into the owner's own `trip.people` — the only write
+ * that ever crosses the ownership boundary, and it happens here, on the
+ * owner's own phone, into the owner's own document. The guest's phone never
+ * touches `trip.people` directly; it only ever writes its own key into the
+ * envelope's `joiners`, which is what the rules allow (see
+ * `firebase/firestore.rules`). A trip that did not make this link — a
+ * joiner looking at their own fork — has nothing to fold in: the people who
+ * joined *their* copy are a different, later question this file does not
+ * answer.
+ */
+function adoptEnvelopeMeta(code, envelope) {
+  const before = envelopeOf(mirror(code));
+  if (before) {
+    keepMirror(code, {
+      ...before,
+      joiners: envelope.joiners || before.joiners || {},
+      opens: envelope.opens ?? before.opens ?? 0,
+    });
+  }
+
+  if (state.trip?.link?.code !== code) return;
+  const joiners = envelope.joiners || {};
+  const known = new Map(sharePeople().map((p) => [p.id, p]));
+  const gone = new Set(state.trip.goneFromShare || []);
+  let peopleChanged = false;
+  for (const j of Object.values(joiners)) {
+    if (!j?.id || known.has(j.id) || gone.has(j.id)) continue;
+    known.set(j.id, {
+      id: j.id,
+      name: j.name || 'Someone',
+      role: j.role === 'edit' ? 'edit' : 'read',
+      joinedAt: j.joinedAt || new Date().toISOString(),
+    });
+    peopleChanged = true;
+  }
+
+  // opens lives twice over: on the envelope, where a guest's phone can
+  // reach it, and on the owner's own trip, which is what the Share screen
+  // actually reads. This is the one place that copies the first into the
+  // second.
+  const opens = envelope.opens || 0;
+  const opensChanged = opens > (state.trip.link.opens || 0);
+
+  if (peopleChanged || opensChanged) {
+    putTrip({
+      ...state.trip,
+      people: peopleChanged ? [...known.values()] : state.trip.people,
+      link: opensChanged ? { ...state.trip.link, opens } : state.trip.link,
+    });
+  }
 }
 
 /**
@@ -3524,9 +3588,34 @@ export async function openLink(code) {
     console.warn('[travel-planner] could not fetch that link', error);
   }
 
+  if (reached && envelope) countOpen(clean);
+
   state.invite = { code: clean, envelope: envelope || null, reached };
   notify();
   return state.invite;
+}
+
+const OPENED_KEY = (code) => `travel-planner:opened:${code}`;
+
+/**
+ * "Opened N times" means a real, signed-in view of the invite — not a
+ * refresh of the same tab. Marked only once the write actually lands, so a
+ * look that happens before signing in (the join screen never demands one)
+ * gets counted the moment a later look on the same device does reach
+ * Firestore, instead of being silently skipped forever.
+ */
+function countOpen(code) {
+  let already = false;
+  try {
+    already = Boolean(localStorage.getItem(OPENED_KEY(code)));
+  } catch {
+    return; // No storage, no way to dedupe — better to undercount than spam.
+  }
+  if (already) return;
+  bumpLinkOpens(code).then((ok) => {
+    if (!ok) return;
+    try { localStorage.setItem(OPENED_KEY(code), '1'); } catch { /* fine, next look retries */ }
+  }).catch(() => {});
 }
 
 /**
@@ -3595,9 +3684,18 @@ export function removePerson(id) {
   const person = sharePeople().find((p) => p.id === id);
   if (!person || person.role === 'owner') return;
   const before = sharePeople();
-  putTrip({ ...state.trip, people: before.filter((p) => p.id !== id) });
+  const beforeGone = state.trip.goneFromShare || [];
+  putTrip({
+    ...state.trip,
+    people: before.filter((p) => p.id !== id),
+    // Their join never leaves the envelope — someone else opening the same
+    // link keeps the envelope's copy of it alive. Without remembering that
+    // this id was put out on purpose, the next envelope change would read
+    // it as a new joiner and fold them straight back in.
+    goneFromShare: beforeGone.includes(id) ? beforeGone : [...beforeGone, id],
+  });
   rememberUndo(`${person.name} removed`, () => {
-    if (state.trip) putTrip({ ...state.trip, people: before });
+    if (state.trip) putTrip({ ...state.trip, people: before, goneFromShare: beforeGone });
   });
 }
 
@@ -3615,6 +3713,7 @@ export async function joinTrip({ code, role } = {}) {
 
   const who = me();
   const given = role || link?.role || 'read';
+  const joinedAt = new Date().toISOString();
   const owner = (state.trip?.people || []).find((p) => p.role === 'owner')
     || { id: snapshot.by, name: snapshot.byName || 'the owner', role: 'owner', joinedAt: snapshot.at };
 
@@ -3645,7 +3744,7 @@ export async function joinTrip({ code, role } = {}) {
     declined: [],
     removed: null,
     mapAreas: [],
-    people: [owner, { id: who.id, name: who.name, role: given, joinedAt: new Date().toISOString() }],
+    people: [owner, { id: who.id, name: who.name, role: given, joinedAt }],
     sharedFrom: { code: linkCode, version: snapshot.version, from: snapshot.byName || 'the owner' },
     tookVersion: snapshot.version,
   };
@@ -3664,6 +3763,12 @@ export async function joinTrip({ code, role } = {}) {
   // or the rules refuse the first update it tries to send. Nothing waits on
   // it: an editor who is not signed in yet claims it when they are.
   if (given === 'edit') claimEditor(linkCode).catch(() => {});
+  // Telling the owner: the only way their own Share screen ever learns
+  // someone actually took the trip, since this is a different account's
+  // document and their phone can never write into it directly. A guest who
+  // is not signed in cannot reach this either — their join stays local to
+  // this phone, the same limit publishing itself already has.
+  announceJoin(linkCode, { id: who.id, name: who.name, role: given, joinedAt }).catch(() => {});
   state.invite = null;
   notify();
   return given;

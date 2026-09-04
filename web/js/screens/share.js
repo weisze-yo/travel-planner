@@ -37,6 +37,7 @@ export default {
     const live = store.linkState() === 'live';
     const shared = Boolean(store.shareState()?.on);
     const unsent = store.unsentChanges();
+    const sharedFrom = state.trip?.sharedFrom || null;
 
     return html`
       <section class="screen">
@@ -54,6 +55,8 @@ export default {
 
         <div class="scroll" style="padding:14px 16px 28px">
           ${notice ? html`<div class="amber-note mb12">${notice}</div>` : ''}
+
+          ${sharedFrom ? relationship(store.ownerName()) : ''}
 
           <div class="eyebrow">Who has it</div>
           <div class="card-list mb14">
@@ -177,6 +180,23 @@ export default {
     });
   },
 };
+
+/**
+ * The thing this screen could not say before an owner could see who joined:
+ * a joiner's own Share screen otherwise looks exactly like the real owner's,
+ * with no sign that "Create the link" here starts a second, disconnected
+ * share rooted at this phone's fork rather than at the trip itself.
+ */
+function relationship(ownerName) {
+  return html`
+    <div class="card mb14" style="padding:12px 13px;background:var(--jade-bg);border-color:var(--jade-bd)">
+      <div class="f12 w650" style="color:var(--jade)">This is your copy of ${ownerName}’s trip.</div>
+      <div class="f11 lh145 mt5" style="color:var(--jade-fg)">
+        What you publish below is a second, separate share — of your copy, not ${ownerName}’s. Anyone who
+        joins through it gets what you have right now, not a live view of ${ownerName}’s trip.
+      </div>
+    </div>`;
+}
 
 /** You, on a trip nobody has yet. */
 function owner() {

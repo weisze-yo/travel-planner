@@ -458,6 +458,56 @@ export async function claimEditor(code) {
   }
 }
 
+/**
+ * Telling the owner someone actually took the trip. The rules let a
+ * signed-in guest write exactly one key into the envelope's `joiners` map —
+ * their own uid — same shape of permission `claimEditor` already has for
+ * `editors`, just open to a read-role joiner too, not only one who can
+ * publish. This is the only thing that ever crosses the ownership boundary;
+ * the owner's own `trip.people` is folded in on their side, from this.
+ */
+export async function announceJoin(code, joiner) {
+  if (!code || !joiner?.id) return false;
+  const fb = await firebase().catch(() => null);
+  if (!fb || !fb.auth.currentUser || fb.auth.currentUser.isAnonymous) return false;
+  const uid = fb.auth.currentUser.uid;
+  try {
+    const ref = publishedDoc(fb, code);
+    const snap = await fb.dbMod.getDoc(ref);
+    if (!snap.exists()) return false;
+    const joiners = snap.data().joiners || {};
+    await fb.dbMod.updateDoc(ref, { joiners: { ...joiners, [uid]: joiner } });
+    return true;
+  } catch (error) {
+    console.warn('[travel-planner] could not tell the owner you joined', error);
+    return false;
+  }
+}
+
+/**
+ * Counting a real, signed-in view of the invite — "opened", as the Share
+ * screen already puts it, not "joined": someone can look without joining
+ * and that should still register. An anonymous look before signing in is
+ * not counted, because nothing unauthenticated ever reaches Firestore here
+ * — the same limit `writePublished` already accepts for publishing itself.
+ * The caller dedupes per device so a refresh does not inflate it.
+ */
+export async function bumpLinkOpens(code) {
+  if (!code) return false;
+  const fb = await firebase().catch(() => null);
+  if (!fb || !fb.auth.currentUser || fb.auth.currentUser.isAnonymous) return false;
+  try {
+    const ref = publishedDoc(fb, code);
+    const snap = await fb.dbMod.getDoc(ref);
+    if (!snap.exists()) return false;
+    await fb.dbMod.updateDoc(ref, { opens: (snap.data().opens || 0) + 1 });
+    return true;
+  } catch (error) {
+    console.warn('[travel-planner] could not record that the link was opened', error);
+    return false;
+  }
+}
+
 // ------------------------------------------------------------- the backend
 
 /**
