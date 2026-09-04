@@ -122,7 +122,14 @@ export default {
               message and confirm the stops it reads — nothing lands until you do.
             </div>
             <button class="btn ghost wide mt10" data-act="paste">Paste an itinerary…</button>
-            <button class="btn ghost wide mt8" data-act="share">
+            <button class="btn ghost wide mt8" data-act="export">Save this trip as a file…</button>
+            <div class="f11 soft lh145 mt7">
+              One JSON file holding the whole trip — every stop and where it is, the sub
+              routes, the places, the must-see spots, your lists and your Log. Open it back
+              on any phone, or keep it as the copy that is not on this one. Photos are left
+              out so the file stays small enough to send.
+            </div>
+            <button class="btn ghost wide mt10" data-act="share">
               ${store.shareState()?.on
     ? `Sharing · ${store.sharePeople().length} ${store.sharePeople().length === 1 ? 'person' : 'people'}`
     : 'Share this trip…'}
@@ -166,6 +173,19 @@ export default {
     delegate(root, '[data-act="back"]', () => { notice = ''; confirming = false; back(); });
     delegate(root, '[data-act="paste"]', () => go('paste'));
     delegate(root, '[data-act="share"]', () => go('share'));
+    delegate(root, '[data-act="export"]', () => {
+      const name = String(state.trip?.name || 'trip').toLowerCase()
+        .replace(/[^a-z0-9]+/g, '-').replace(/^-|-$/g, '') || 'trip';
+      const blob = new Blob([store.tripSnapshot()], { type: 'application/json' });
+      const url = URL.createObjectURL(blob);
+      const link = document.createElement('a');
+      link.href = url;
+      link.download = `${name}-${store.stamp().replace(/\s+/g, '')}.json`;
+      link.click();
+      setTimeout(() => URL.revokeObjectURL(url), 4000);
+      notice = 'Saved. Open it again from Paste an itinerary → Choose a trip file.';
+      nudge();
+    });
     delegate(root, '[data-act="areas"]', () => go('areas'));
     delegate(root, '[data-act="stuck"]', () => go('stuck'));
 

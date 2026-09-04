@@ -43,6 +43,8 @@ let read = null;
 let openRow = null;
 let result = null;
 let busy = '';
+/** A trip file that has been read but not yet turned into a trip. */
+let imported = null;
 
 export default {
   id: 'paste',
@@ -115,11 +117,67 @@ function pasteView() {
         <div class="f11 soft lh145 mt8" style="text-align:center">
           Nothing is added to the trip yet. You confirm every row first.
         </div>
+
+        <div class="hairline"></div>
+
+        <div class="card pad">
+          <div class="eyebrow">OR OPEN A TRIP FILE</div>
+          <div class="f12 lh16 mt6" style="color:var(--charcoal)">
+            Text is the fast way in from an email, but it can only carry what a sentence can
+            say: names and times. A trip file carries the rest — where every stop is on the
+            map, the sub routes, the places saved around them and the must-see spots.
+          </div>
+          <div class="f11 soft lh145 mt8">
+            It is this app's own export, so the way to learn the format is to export a trip
+            and read the file. Opening one makes a new trip; nothing here is touched.
+          </div>
+          ${imported ? html`
+            <div class="card mt10" style="padding:11px 12px;background:var(--jade-bg);border-color:var(--jade-bd)">
+              <div class="f12 w650" style="color:var(--jade)">${imported.name}</div>
+              <div class="f11 lh145 mt3" style="color:var(--jade-fg)">
+                ${imported.counts.stops} stops over ${imported.counts.days} days ·
+                ${imported.counts.places} places · ${imported.counts.mustSee} must-see ·
+                ${imported.counts.shopping} shopping · ${imported.counts.log} notes
+              </div>
+              <div class="row g8 mt10">
+                <button class="btn jade grow" data-act="open-file">Make this a trip</button>
+                <button class="btn ghost none" style="width:96px" data-act="other-file">Another</button>
+              </div>
+            </div>` : html`
+            <label class="btn ghost wide mt10" style="cursor:pointer">
+              Choose a trip file…
+              <input id="trip-file" type="file" accept="application/json,.json" hidden>
+            </label>`}
+        </div>
       </div>
     </section>`;
 }
 
 function mountPaste(root) {
+  root.querySelector('#trip-file')?.addEventListener('change', async (event) => {
+    const file = event.target.files?.[0];
+    if (!file) return;
+    busy = `Reading ${file.name}…`;
+    repaint();
+    const read = store.readTripFile(await file.text());
+    busy = read.ok ? '' : read.reason;
+    imported = read.ok ? read : null;
+    repaint();
+  });
+
+  delegate(root, '[data-act="other-file"]', () => { imported = null; busy = ''; repaint(); });
+
+  delegate(root, '[data-act="open-file"]', async () => {
+    if (!imported) return;
+    busy = `Making ${imported.name}…`;
+    repaint();
+    const made = await store.importTrip(imported.data);
+    imported = null;
+    busy = '';
+    if (made.ok) go('plan', {}, { replace: true });
+    else { busy = made.reason; repaint(); }
+  });
+
   delegate(root, '[data-act="back"]', () => { reset(); back(); });
   const box = root.querySelector('#paste-text');
   box?.addEventListener('input', () => { text = box.value; });

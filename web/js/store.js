@@ -1649,20 +1649,120 @@ export const discardPending = () => { sync.discardPending(); notify(); };
  * is not this phone even when the cloud is refusing it.
  */
 export function tripSnapshot() {
-  return JSON.stringify({
-    savedAt: new Date().toISOString(),
+  return JSON.stringify(exportTrip(), null, 2);
+}
+
+/**
+ * The whole trip as one object — the file format.
+ *
+ * This is the app's own export, which is what makes it worth having: what
+ * comes out of a trip you have built by hand is exactly what goes back in,
+ * so the way to learn the format is to export one and read it. Pasting text
+ * stays the fast way in from an agent's email; this is the way in that keeps
+ * coordinates, sub routes, saved places and must-see spots, none of which a
+ * paragraph of prose can carry.
+ *
+ * `photos` is the one thing left out by default: a trip with sixty pictures
+ * in it makes a file too big to send, and the pictures are the part you
+ * already have elsewhere.
+ */
+export function exportTrip({ photos = false } = {}) {
+  const strip = (note) => (photos ? note : { ...note, photoPaths: [], photoPath: null });
+  return {
     app: 'travel-planner',
-    version: 1,
+    format: 2,
+    savedAt: new Date().toISOString(),
     trip: state.trip,
     days: state.days,
     places: state.places,
     subRoutes: state.subRoutes,
-    shopping: state.shopping,
     mustSee: state.mustSee,
+    shopping: state.shopping,
     prep: state.prep,
-    log: state.log,
+    log: state.log.map(strip),
     outfits: state.outfits,
-  }, null, 2);
+  };
+}
+
+/** What a file has to have before it is worth opening. */
+export function readTripFile(text) {
+  let parsed = null;
+  try {
+    parsed = JSON.parse(text);
+  } catch {
+    return { ok: false, reason: 'That is not a JSON file — it could not be read at all.' };
+  }
+  if (!parsed || typeof parsed !== 'object') {
+    return { ok: false, reason: 'That file does not hold a trip.' };
+  }
+  if (parsed.app && parsed.app !== 'travel-planner') {
+    return { ok: false, reason: `That file says it came from ${parsed.app}, not this app.` };
+  }
+  if (!parsed.trip && !Array.isArray(parsed.days)) {
+    return { ok: false, reason: 'That file has no trip and no days in it.' };
+  }
+
+  const days = Array.isArray(parsed.days) ? parsed.days : [];
+  return {
+    ok: true,
+    data: parsed,
+    name: parsed.trip?.name || 'Imported trip',
+    counts: {
+      days: days.length,
+      stops: days.reduce((n, d) => n + (d.items || []).filter((i) => !i.archived).length, 0),
+      places: (parsed.places || []).length,
+      subRoutes: (parsed.subRoutes || []).length,
+      mustSee: (parsed.mustSee || []).length,
+      shopping: (parsed.shopping || []).length,
+      prep: (parsed.prep || []).length,
+      log: (parsed.log || []).length,
+    },
+  };
+}
+
+/**
+ * Reading a file back as a new trip. Always a new one: importing over the
+ * trip you are standing in would be a destructive operation dressed as an
+ * open, and the way to replace a trip is to import and then delete the old.
+ */
+export async function importTrip(data, { include = null } = {}) {
+  const read = typeof data === 'string' ? readTripFile(data) : { ok: true, data };
+  if (!read.ok) return read;
+  const source = read.data;
+
+  const id = uid('trip-');
+  const trip = {
+    ...JSON.parse(JSON.stringify(seed.TRIP)),
+    ...JSON.parse(JSON.stringify(source.trip || {})),
+    id,
+    // None of the sharing bookkeeping travels in a file: an imported trip is
+    // yours, not a copy of someone's shared one.
+    people: [],
+    link: null,
+    share: null,
+    sharedFrom: null,
+    declined: [],
+    tookVersion: 0,
+    removed: null,
+    mapAreas: [],
+  };
+
+  await backend.createTrip(trip);
+  await openTrip(id);
+
+  const wanted = include || KINDS;
+  for (const kind of KINDS) {
+    if (!wanted.includes(kind)) continue;
+    for (const row of source[kind] || []) put(kind, JSON.parse(JSON.stringify(row)));
+  }
+  await refreshTrips();
+  // Land on the first day that has something on it. A trip whose first day
+  // is a travel day opens on an empty screen otherwise, and an import that
+  // looks empty looks like an import that failed.
+  const first = state.days.find((d) => activeItems(d).length) || state.days[0];
+  state.selectedDay = first?.dayNumber || 1;
+  notify();
+  return { ok: true, id, name: trip.name };
 }
 
 // -------------------------------------------------------- map kept offline
