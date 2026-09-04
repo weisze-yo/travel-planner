@@ -1,29 +1,54 @@
-// Sharing a trip: the link, the roles, and what changed since you looked.
+// Sharing a trip: a copy you are handed, not a document you both live in.
 //
-// The rule the whole thing hangs on is one sentence: the plan is ours, what
-// I've done about it is mine. Everything here serves that split.
+// This replaces the live-sync model. The rule now is simpler and much
+// easier to hold in your head:
 //
-//   syncs, last edit wins   stops, times, order, places, Nearby, Must-see,
-//                           and who is on the trip.
-//   copied once             the shopping list, at the moment sharing is
-//                           turned on. After that both lists live their own
-//                           lives, and the owner can only ever add to yours.
-//   never leaves the phone  bought, packed, the whole Log, the photos.
-//                           Packing is not in the share at all.
+//   Everything you change stays on your phone. Always. Online or off.
 //
-// There is no resolver and no locking. Two people on the same day are
-// resolved by catching up: the day you open tells you what moved and who
-// moved it, and each row it names keeps a mark until you have seen it.
+// Sharing does not change that. It publishes a *snapshot* of the parts of
+// the trip that are worth agreeing on, and whoever has the link takes a copy
+// of it. When the owner or an editor changes something and presses Update,
+// a new snapshot goes out; the other side is told there is one, and reviews
+// it a change at a time — take this, keep mine — rather than having their
+// day rewritten under them.
 //
-// This file is deliberately pure — codes, expiries, roles and the shape of
-// the change feed — so it can be reasoned about without a backend. What it
-// cannot do on its own is authenticate anyone; see `signIn` in the store.
+// Three consequences worth stating, because they are the whole design:
+//
+//   - There is no conflict to resolve. Two people editing the same day are
+//     editing two different copies, and the review screen is where they
+//     meet. Nothing is ever overwritten without someone pressing Take.
+//   - Only three things travel: the itinerary (its stops and its sub
+//     routes), the places you have saved around them, and the must-see
+//     spots. The shopping list, the packing list and the whole Log never
+//     leave the phone and are not in a snapshot at all.
+//   - A role is now about publishing, not permission. `can edit` means you
+//     can send an update to everyone; `can read` means you receive them.
+//     Neither stops you doing whatever you like to your own copy.
+//
+// This file is pure: codes, expiries, roles, and the diff. What it cannot do
+// on its own is authenticate anyone or carry a snapshot between two phones;
+// see `publishUpdate` in the store, and item 31.
 
 /** The three things a person can be. Owner is not a level — it is you. */
 export const ROLES = {
-  owner: { id: 'owner', label: 'Owner', badge: 'OWNER', can: 'everything' },
-  edit: { id: 'edit', label: 'Can edit', badge: '', can: 'Add stops, change times, tick the shopping list, write notes' },
-  read: { id: 'read', label: 'Can read', badge: '', can: 'See everything, change nothing' },
+  owner: {
+    id: 'owner',
+    label: 'Owner',
+    badge: 'OWNER',
+    can: 'Sends updates, invites people, and deletes the trip',
+  },
+  edit: {
+    id: 'edit',
+    label: 'Can send updates',
+    badge: '',
+    can: 'Can send their changes to everyone else on the trip',
+  },
+  read: {
+    id: 'read',
+    label: 'Receives updates',
+    badge: '',
+    can: 'Gets updates and can do whatever they like to their own copy',
+  },
 };
 
 /** How long a link lasts, chosen before it exists so it never needs fixing. */
@@ -32,6 +57,12 @@ export const EXPIRIES = [
   { id: '7d', label: '7 days', hours: 24 * 7 },
   { id: 'trip', label: 'Until the trip ends', hours: null },
 ];
+
+/** The only three kinds of thing a snapshot carries. */
+export const SHARED_KINDS = ['days', 'places', 'subRoutes', 'mustSee'];
+
+/** And the four it never does, named so the promise can be checked. */
+export const PRIVATE_KINDS = ['shopping', 'prep', 'log', 'outfits'];
 
 const ALPHABET = 'ABCDEFGHJKMNPQRSTUVWXYZ23456789';
 
@@ -103,49 +134,161 @@ export function nameList(names, joiner = 'or') {
   return `${names.slice(0, -1).join(', ')} ${joiner} ${names[names.length - 1]}`;
 }
 
-// ------------------------------------------------------ what moved, and who
+// ----------------------------------------------------- what an update changes
 
 /**
- * One line of the change feed. `was` is what it used to say, because "moved
- * Nishi Market to 13:00" is only checkable next to "was 13:30 – 15:45".
+ * A snapshot against your copy, as a list of decisions.
+ *
+ * Every entry is one thing you can take or leave, and each carries enough to
+ * be judged without opening anything: what it is, what yours says, what
+ * theirs says, and which day it is on. Nothing here writes; `applyUpdate` in
+ * the store does that, one entry at a time.
+ *
+ * Matching is by id, because both copies descend from the same snapshot. A
+ * stop that exists on neither side's id but has the same name and time on the
+ * same day is treated as the same stop — otherwise renaming a market on one
+ * phone and retiming it on the other produces two markets.
  */
-export function change({ who, verb, what, dayNumber, itemID = null, was = '', at = new Date() }) {
-  return {
-    id: `c${Math.random().toString(36).slice(2, 9)}`,
-    at: at instanceof Date ? at.toISOString() : at,
-    who,
-    verb,
-    what,
-    dayNumber,
-    itemID,
-    was,
-  };
+export function diffSnapshot(mine, theirs) {
+  const out = [];
+  if (!theirs) return out;
+
+  for (const entry of diffStops(mine, theirs)) out.push(entry);
+  for (const entry of diffRows(mine, theirs, 'subRoutes', 'sub route', (r) => r.name)) out.push(entry);
+  for (const entry of diffRows(mine, theirs, 'places', 'place', (r) => r.name)) out.push(entry);
+  for (const entry of diffRows(mine, theirs, 'mustSee', 'must-see spot', (r) => r.title)) out.push(entry);
+  return out;
 }
 
-/** "moved Nishi Market to 13:00, back by 15:30" */
-export function changeLine(entry) {
-  return `${entry.verb} ${entry.what}`.trim();
+const stopKey = (item, dayNumber) => `${dayNumber}|${String(item.name || '').toLowerCase()}|${item.time || ''}`;
+
+function stopIndex(days) {
+  const byID = new Map();
+  const byShape = new Map();
+  for (const day of days || []) {
+    for (const item of day.items || []) {
+      if (item.archived) continue;
+      byID.set(item.id, { item, dayNumber: day.dayNumber });
+      byShape.set(stopKey(item, day.dayNumber), { item, dayNumber: day.dayNumber });
+    }
+  }
+  return { byID, byShape };
+}
+
+/** The words a stop changed in, in the order they matter on a day. */
+const STOP_FIELDS = [
+  { key: 'time', label: 'starts' },
+  { key: 'endTime', label: 'ends' },
+  { key: 'name', label: 'is called' },
+  { key: 'note', label: 'note' },
+  { key: 'subtitle', label: 'where it is' },
+];
+
+function diffStops(mine, theirs) {
+  const ours = stopIndex(mine.days);
+  const them = stopIndex(theirs.days);
+  const out = [];
+
+  for (const [id, { item, dayNumber }] of them.byID) {
+    const match = ours.byID.get(id) || ours.byShape.get(stopKey(item, dayNumber));
+    if (!match) {
+      out.push({
+        id: `stop-add:${id}`, kind: 'stop', verb: 'added', dayNumber,
+        title: item.name, mineText: 'not on your copy',
+        theirsText: `${item.time || 'no time'}${item.endTime ? ` – ${item.endTime}` : ''}`,
+        payload: { dayNumber, item },
+      });
+      continue;
+    }
+    const changed = STOP_FIELDS
+      .filter((f) => String(match.item[f.key] || '') !== String(item[f.key] || ''))
+      .map((f) => f.label);
+    if (changed.length) {
+      out.push({
+        id: `stop-edit:${id}`, kind: 'stop', verb: 'changed', dayNumber,
+        title: item.name,
+        detail: changed.join(', '),
+        mineText: describeStop(match.item),
+        theirsText: describeStop(item),
+        payload: { dayNumber, item, replaces: match.item.id, wasDay: match.dayNumber },
+      });
+    }
+  }
+
+  for (const [id, { item, dayNumber }] of ours.byID) {
+    if (them.byID.has(id) || them.byShape.has(stopKey(item, dayNumber))) continue;
+    out.push({
+      id: `stop-drop:${id}`, kind: 'stop', verb: 'removed', dayNumber,
+      title: item.name,
+      mineText: describeStop(item), theirsText: 'not on theirs',
+      payload: { dayNumber, removes: id },
+    });
+  }
+  return out;
+}
+
+const describeStop = (item) => [
+  item.time || 'no time',
+  item.endTime ? `– ${item.endTime}` : '',
+  item.name,
+].filter(Boolean).join(' ');
+
+/** Places, sub routes and shots all diff the same way: by id, on a whole row. */
+function diffRows(mine, theirs, kind, noun, nameOf) {
+  const ours = new Map((mine[kind] || []).map((r) => [r.id, r]));
+  const them = new Map((theirs[kind] || []).map((r) => [r.id, r]));
+  const out = [];
+
+  for (const [id, row] of them) {
+    const match = ours.get(id);
+    if (!match) {
+      out.push({
+        id: `${kind}-add:${id}`, kind, verb: 'added', noun,
+        title: nameOf(row), mineText: `no ${noun} of yours`, theirsText: nameOf(row),
+        payload: { kind, row },
+      });
+      continue;
+    }
+    if (JSON.stringify(strip(match)) !== JSON.stringify(strip(row))) {
+      out.push({
+        id: `${kind}-edit:${id}`, kind, verb: 'changed', noun,
+        title: nameOf(row),
+        mineText: nameOf(match), theirsText: nameOf(row),
+        payload: { kind, row, replaces: id },
+      });
+    }
+  }
+
+  for (const [id, row] of ours) {
+    if (them.has(id)) continue;
+    out.push({
+      id: `${kind}-drop:${id}`, kind, verb: 'removed', noun,
+      title: nameOf(row), mineText: nameOf(row), theirsText: `not on theirs`,
+      payload: { kind, removes: id },
+    });
+  }
+  return out;
 }
 
 /**
- * What a day has to tell you when you open it: the changes made by other
- * people since you last looked, newest first, and never your own.
+ * Fields that are yours alone even on a shared row. A shot you have ticked
+ * as taken should not read as a difference just because they have not.
  */
-export function unseenChanges(changes, { dayNumber, since, meID }) {
-  const from = since ? new Date(since).getTime() : 0;
-  return (changes || [])
-    .filter((c) => c.dayNumber === dayNumber)
-    .filter((c) => c.who !== meID)
-    .filter((c) => new Date(c.at).getTime() > from)
-    .sort((a, b) => new Date(b.at) - new Date(a.at));
+const MINE_ALONE = ['captured', 'bought', 'boughtOn', 'paidAmount', 'packed'];
+function strip(row) {
+  const copy = { ...row };
+  for (const key of MINE_ALONE) delete copy[key];
+  return copy;
 }
 
-/**
- * Which shopping rows the guest has not been sent. Only ever adds: nothing
- * the guest crossed off is taken off their list, so this is a set of ids the
- * owner has never sent, not a diff of two lists.
- */
-export function unsentItems(shopping, sentIDs = []) {
-  const sent = new Set(sentIDs);
-  return (shopping || []).filter((row) => !sent.has(row.id));
+/** "3 changes to the itinerary, 1 place" — the line the banner leads with. */
+export function summarise(entries) {
+  const counts = new Map();
+  for (const entry of entries) {
+    const noun = entry.kind === 'stop' ? 'stop'
+      : entry.kind === 'subRoutes' ? 'sub route'
+        : entry.kind === 'places' ? 'place' : 'must-see spot';
+    counts.set(noun, (counts.get(noun) || 0) + 1);
+  }
+  return [...counts].map(([noun, n]) => `${n} ${noun}${n === 1 ? '' : 's'}`).join(' · ');
 }

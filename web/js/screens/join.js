@@ -80,18 +80,20 @@ export default {
 
           <div style="padding:18px 16px 0">
             <div class="eyebrow mb10">If you join</div>
-            ${promise('You get the schedule and every place on it, and it stays the same on '
-              + 'everyone’s phone. You can change it too.')}
-            ${store.shareState()?.shopping
-    ? promise(`You get a copy of ${owner}’s shopping list to start from. Yours is then your own.`)
-    : promise('Your shopping list stays your own — nothing is copied in.')}
+            ${promise(`You get a copy of ${owner}’s itinerary — every stop, the sub routes, `
+              + 'the places saved around them and the must-see spots.')}
+            ${promise('It is yours from then on. Change anything you like; nothing you do here '
+              + 'is sent to anyone.')}
+            ${promise(`When ${owner} changes something you are told, and you choose what to `
+              + 'take from it one thing at a time.')}
             ${promise('It works with no signal once you have opened it.')}
 
             <div class="card mt14" style="padding:12px 13px;background:var(--jade-bg);border-color:var(--jade-bd)">
               <div class="f12 w650" style="color:var(--jade)">Your side stays yours.</div>
               <div class="f11 lh145 mt5" style="color:var(--jade-fg)">
-                What you buy, what you pack and anything you write in your Log are never shown
-                to ${owner} or anyone else on this trip.
+                Your shopping list, your packing list and everything you write in your Log stay
+                on this phone. They are not part of a shared trip at all, so ${owner} cannot see
+                them and no update can touch them.
               </div>
             </div>
           </div>
@@ -110,8 +112,13 @@ export default {
   },
 
   mount(root) {
-    delegate(root, '[data-act="join"]', () => {
-      store.joinTrip();
+    delegate(root, '[data-act="join"]', async () => {
+      // Joining makes your own copy of the trip, so it is a write and takes
+      // a moment; the screen says so rather than looking stuck.
+      notice = 'Making your copy…';
+      repaint();
+      await store.joinTrip();
+      notice = '';
       phase = store.signedIn() ? 'look' : 'signin';
       if (phase === 'look') go('plan');
       else repaint();

@@ -1,13 +1,16 @@
 // Sharing one trip.
 //
-// The three behaviours are stated before the link, in the order people
-// worry about them, because the shopping copy is the part that will bite
-// someone six days into a trip and the only defence is having said it.
+// What you are handing over is a copy, and the sheet says so before it says
+// anything else — because "shared" makes almost everyone assume live sync,
+// and this is not that. Nothing anyone changes reaches anyone else until
+// somebody presses Send an update, and even then it is reviewed a change at
+// a time on the far side.
 //
 // Before anyone has it, this screen is a choice: the role and the expiry are
 // picked first, so the link is never a thing you have to go back and fix.
-// After that it is a list of people, one role each, and the link as a
-// separate thing that can be switched off without turning anybody out.
+// After that it is a list of people, one role each, an update button that
+// says how much there is to send, and the link as a separate thing that can
+// be switched off without turning anybody out.
 
 import { html, raw, icon, esc, delegate } from '../util.js';
 import * as store from '../store.js';
@@ -18,7 +21,6 @@ import { ROLES, EXPIRIES, linkURL, initialFor } from '../share.js';
 
 let role = 'edit';
 let expiry = '7d';
-let withShopping = true;
 let notice = '';
 /** Which person's role is open for changing. */
 let changing = null;
@@ -34,8 +36,7 @@ export default {
     const people = store.sharePeople();
     const live = store.linkState() === 'live';
     const shared = Boolean(store.shareState()?.on);
-    const unsent = store.unsentShopping();
-    const copiedAt = store.shareState()?.shoppingCopiedAt;
+    const unsent = store.unsentChanges();
 
     return html`
       <section class="screen">
@@ -63,11 +64,11 @@ export default {
           </div>
           ${people.length > 1 ? html`
             <div class="f11 soft lh145 mb18">
-              Swipe a person left to remove them, the same as anywhere else. They lose the
-              schedule; their shopping list and their whole Log were always theirs and stay.
+              Swipe a person left to remove them, the same as anywhere else. They keep the
+              copy of the itinerary they already have, and stop receiving your updates.
             </div>` : ''}
 
-          ${shared ? promise({ copiedAt, unsent }) : offer()}
+          ${shared ? sending(unsent) : offer()}
 
           <div class="eyebrow">The link</div>
           ${link ? liveLink(link, live) : html`
@@ -98,17 +99,9 @@ export default {
       else repaint();
     });
 
-    delegate(root, '[data-act="shopping"]', () => {
-      if (store.shareState()?.on) {
-        store.setShareShopping(!store.shareState().shopping);
-      } else {
-        withShopping = !withShopping;
-        repaint();
-      }
-    });
 
     delegate(root, '[data-act="create"]', () => {
-      const made = store.createLink({ role, expiry, withShopping });
+      const made = store.createLink({ role, expiry });
       const lasts = EXPIRIES.find((e) => e.id === expiry);
       notice = made
         ? `Link made. Whoever opens it joins as ${ROLES[role].label.toLowerCase()}, and it stops `
@@ -151,9 +144,13 @@ export default {
       repaint();
     });
 
-    delegate(root, '[data-act="send-items"]', () => {
-      const n = store.sendNewShopping();
-      notice = n ? `Sent ${n} item${n === 1 ? '' : 's'}. Nothing on their list was taken off.` : '';
+    delegate(root, '[data-act="send-update"]', () => {
+      const n = store.unsentChanges().length;
+      const sent = store.publishUpdate();
+      notice = sent
+        ? `Sent. ${n} change${n === 1 ? '' : 's'} are waiting for them to review — nothing on `
+          + 'their copy has moved on its own.'
+        : '';
       repaint();
     });
 
@@ -226,36 +223,33 @@ function person(p) {
     </div>`;
 }
 
-/** What they get, and — the part that matters — what they do not. */
-function promise({ copiedAt, unsent }) {
-  const on = store.shareState()?.shopping;
+/** What sharing does, and — the part that matters — what it does not. */
+function sending(unsent) {
   return html`
     <div class="eyebrow">What they get</div>
     <div class="card mb14" style="padding:13px 14px">
-      ${line('The schedule, the same for everyone', 'Stops, times, order, places, Must-see', 'jade')}
-      ${line(
-    on ? 'A copy of the shopping list, once' : 'No copy of your shopping list',
-    on ? 'Not kept in step after that' : 'Turn it on below to send them a starting point',
-    'amber',
-  )}
-      ${line('Nothing you’ve bought or packed', 'Your Log stays on this phone too', 'ink')}
+      ${line('A copy of the itinerary', 'The stops, the sub routes, the places and the must-see spots', 'jade')}
+      ${line('Nothing else, ever',
+    'Your shopping list, your packing list and your whole Log are not in it', 'ink')}
+      ${line('And it is a copy',
+    'What they change stays on their phone, and what you change stays on yours', 'amber')}
 
-      <button class="row g8 center mt13" data-act="shopping" style="width:100%">
-        <span class="toggle${on ? ' on' : ''}"><i></i></span>
-        <span class="f12 w650 grow left" style="color:var(--charcoal)">Include my shopping list</span>
+      <div class="hairline"></div>
+
+      <div class="f12 w650" style="color:var(--ink)">
+        ${unsent.length
+    ? `${unsent.length} change${unsent.length === 1 ? '' : 's'} since you last sent one`
+    : 'They have everything you have sent'}
+      </div>
+      <div class="f11 soft lh145 mt4">
+        ${unsent.length
+    ? 'They review it a change at a time — nothing is applied to their day for them.'
+    : 'Change something and this will say what there is to send.'}
+      </div>
+      <button class="btn ${unsent.length ? 'jade' : 'ghost'} wide mt10"
+              data-act="send-update"${unsent.length ? '' : ' disabled'}>
+        ${unsent.length ? `Send ${unsent.length} change${unsent.length === 1 ? '' : 's'}` : 'Nothing to send'}
       </button>
-      ${on && copiedAt ? html`
-        <div class="f11 soft lh145 mt8">
-          Copied on ${store.stamp(copiedAt)}.
-          ${unsent.length ? `You’ve added ${unsent.length} item${unsent.length === 1 ? '' : 's'} since — they don’t have those.` : 'Nothing added since.'}
-        </div>
-        ${unsent.length ? html`
-          <button class="btn ghost mt10" style="width:100%" data-act="send-items">
-            Send the ${unsent.length} new item${unsent.length === 1 ? '' : 's'}
-          </button>
-          <div class="f11 soft lh145 mt7">
-            Only adds. Nothing you’ve crossed off is taken off their list.
-          </div>` : ''}` : ''}
     </div>`;
 }
 
@@ -281,13 +275,13 @@ function offer() {
         <button class="pick-chip${expiry === e.id ? ' on' : ''}" data-expiry="${e.id}">${e.label}</button>`)}
     </div>
 
-    <button class="row g8 center mb18" data-act="shopping" style="width:100%">
-      <span class="toggle${withShopping ? ' on' : ''}"><i></i></span>
-      <span class="f12 w650 grow left" style="color:var(--charcoal)">Include my shopping list</span>
-    </button>
-    <div class="f11 soft lh145 mb18" style="margin-top:-12px">
-      A copy is taken the moment you create the link, and the two lists then live their own
-      lives. Nothing you buy or pack is ever in the share.
+    <div class="card mb18" style="padding:12px 13px;background:var(--jade-bg);border-color:var(--jade-bd)">
+      <div class="f12 w650" style="color:var(--jade)">They get a copy, not a live view.</div>
+      <div class="f11 lh145 mt5" style="color:var(--jade-fg)">
+        Whatever either of you changes stays on your own phone. When you want them to have
+        your changes you send an update, and they choose what to take from it. Your shopping
+        list, your packing list and your Log are never in it at all.
+      </div>
     </div>`;
 }
 

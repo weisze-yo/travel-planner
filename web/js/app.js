@@ -24,9 +24,9 @@ import areas from './screens/areas.js';
 import stuck from './screens/stuck.js';
 import share from './screens/share.js';
 import join from './screens/join.js';
-import changes from './screens/changes.js';
+import review from './screens/review.js';
 
-for (const screen of [map, plan, dest, nearby, sub, shop, prep, log, note, trip, trips, spend, paste, area, areas, stuck, share, join, changes]) {
+for (const screen of [map, plan, dest, nearby, sub, shop, prep, log, note, trip, trips, spend, paste, area, areas, stuck, share, join, review]) {
   register(screen);
 }
 

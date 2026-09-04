@@ -80,9 +80,9 @@ function privacyLine() {
   const others = otherNames(store.sharePeople(), store.me().id);
   if (!others.length) return '';
   return html`
-    <div class="f11 soft lh145 mb12">
-      Only you can read this, even on a shared trip. Nothing here is sent to
-      ${nameList(others)}.
+    <div class="f11 soft lh145 mb12" style="max-width:280px;text-align:center;margin-inline:auto">
+      The Log is not part of a shared trip. Nothing here is sent to ${nameList(others)}, and
+      no update they send can reach it.
     </div>`;
 }
 
@@ -161,6 +161,9 @@ function emptyLog() {
           The day, the place and the time are chosen inside the note. This line goes with the
           first one you write.
         </div>
+        <!-- The promise belongs here most of all: this is the screen where
+             someone decides whether to write the honest version. -->
+        ${privacyLine()}
       </div>
     </section>`;
 }

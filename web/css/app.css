@@ -2152,3 +2152,19 @@ input.guessed { border: 1.5px solid var(--amber); background: #FFFDF7; color: va
   border-top: 1px solid var(--line-2);
 }
 .form textarea { width: 100%; }
+
+/* Two copies of one thing, side by side, with one decision under them. */
+.sides { display: flex; gap: 8px; }
+.side {
+  flex: 1;
+  min-width: 0;
+  padding: 8px 10px;
+  border-radius: 11px;
+  background: var(--bone);
+  border: 1px solid var(--line-2);
+}
+.side.theirs { background: var(--jade-bg); border-color: var(--jade-bd); }
+.side-k { font-size: 9.5px; font-weight: 800; letter-spacing: .05em; color: var(--soft); }
+.side.theirs .side-k { color: var(--jade-fg); }
+.side-v { font-size: 12px; line-height: 1.4; color: var(--charcoal); margin-top: 3px; word-break: break-word; }
+.side.theirs .side-v { color: var(--jade); font-weight: 650; }
