@@ -6,13 +6,12 @@ import { html, raw, icon, delegate } from '../util.js';
 import * as store from '../store.js';
 import { state } from '../store.js';
 import { go } from '../nav.js';
-import { dayPills, tripChip, emptyDay } from './parts.js';
+import { dayPills, tripChip, emptyDay, draggableSheet } from './parts.js';
 
 let mapView = null;
 let layers = null;
 let markers = new Map();
 let focused = null;
-let sheetListeners = [];
 
 export default {
   id: 'map',
@@ -49,7 +48,7 @@ export default {
         </div>
 
         <div class="sheet map-sheet">
-          <button class="sheet-grab" data-act="plan" aria-label="Open the day plan"><i></i></button>
+          <button class="sheet-grab" aria-label="Pull the list up"><i></i></button>
           <div class="sheet-head">
             <button class="grow" style="text-align:left" data-act="plan">
               <div class="sheet-day">DAY ${day?.dayNumber ?? '—'} · ${day?.shortDate ?? ''}</div>
@@ -89,10 +88,6 @@ export default {
   },
 
   mount(root) {
-    // Tear down the previous paint's window listeners before adding more.
-    sheetListeners.forEach((off) => off());
-    sheetListeners = [];
-
     delegate(root, '[data-act="trips"]', () => go('trips'));
     delegate(root, '[data-act="trip"]', () => go('trip'));
     delegate(root, '[data-day]', (el) => store.selectDay(Number(el.dataset.day)));
@@ -102,49 +97,12 @@ export default {
     delegate(root, '[data-focus]', (el) => focusStop(el.dataset.focus));
     delegate(root, '[data-focus-loop]', (el) => focusLoop(el.dataset.focusLoop));
 
-    bindSheetSwipe(root.querySelector('.map-sheet'));
+    draggableSheet(root.querySelector('.map-sheet'), { key: 'map' });
     drawMap(root.querySelector('#leaf'));
   },
 };
 
 /** Point 5: a list row frames its stop on the map rather than leaving it. */
-/**
- * Point 6: pull the sheet up to open the Plan. The sheet itself does not
- * resize — the gesture is a shortcut into the full day, which is what the
- * design's "timeline rides on the map" idea implies.
- */
-function bindSheetSwipe(sheet) {
-  if (!sheet) return;
-  let startY = null;
-  let startedOnScroller = false;
-
-  sheet.addEventListener('pointerdown', (event) => {
-    startY = event.clientY;
-    const scroller = event.target.closest('.scroll');
-    // Only treat it as a sheet drag when the list is already at the top,
-    // otherwise scrolling the stops would keep opening Plan.
-    startedOnScroller = Boolean(scroller && scroller.scrollTop > 2);
-  });
-
-  // An upward swipe leaves the sheet almost immediately, so the release is
-  // caught on the window. Capturing the pointer would work too, but it
-  // retargets the click and would stop the rows being tappable at all.
-  const release = (event) => {
-    if (startY === null) return;
-    const travelled = startY - event.clientY;
-    startY = null;
-    if (!startedOnScroller && travelled > 48) go('plan');
-  };
-
-  window.addEventListener('pointerup', release);
-  window.addEventListener('pointercancel', () => { startY = null; });
-
-  // The screen is replaced on every paint, so drop these with it.
-  sheetListeners.push(() => {
-    window.removeEventListener('pointerup', release);
-  });
-}
-
 function focusStop(id) {
   const hit = store.planItem(id);
   if (!hit) return;

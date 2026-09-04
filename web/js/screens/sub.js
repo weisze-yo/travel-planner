@@ -13,7 +13,7 @@ import { html, raw, icon, delegate, clock } from '../util.js';
 import * as store from '../store.js';
 import { state } from '../store.js';
 import { back, go } from '../nav.js';
-import { bindDragReorder, mapsLinks } from './parts.js';
+import { bindDragReorder, mapsLinks, draggableSheet } from './parts.js';
 
 let editing = false;
 let mapView = null;
@@ -57,8 +57,8 @@ export default {
           </button>
         </div>
 
-        <div class="sheet sub-sheet" style="max-height:${editing ? 76 : (count ? 75 : 58)}%">
-          <div class="sheet-grab"><i></i></div>
+        <div class="sheet sub-sheet">
+          <button class="sheet-grab" aria-label="Pull the list up"><i></i></button>
 
           ${siblings.length > 1 || editing ? html`
             <div class="loop-switch">
@@ -228,6 +228,7 @@ export default {
   },
 
   mount(root) {
+    draggableSheet(root.querySelector('.sub-sheet'), { key: 'sub' });
     delegate(root, '[data-act="back"]', () => { editing = false; back(); });
     delegate(root, '[data-act="nearby"]', () => go('nearby', { loopID: store.activeLoop()?.id }));
     delegate(root, '[data-loop]', (el) => { editing = false; store.selectLoop(el.dataset.loop); });

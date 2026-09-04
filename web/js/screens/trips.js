@@ -23,6 +23,8 @@ let covering = null;
 export default {
   id: 'trips',
   tab: null,
+  /** The five tabs belong to a trip; this screen is above all of them. */
+  chrome: false,
 
   render() {
     if (covering) return coverSheet();
@@ -41,13 +43,12 @@ export default {
                 ${groups.running.length ? ` · ${groups.running.length} on now` : ''}
               </div>
             </div>
-            <button class="btn sm ink" data-act="add-toggle">${addOpen ? 'Close' : '+ New trip'}</button>
+            <button class="btn sm ink" data-act="add-toggle"${addOpen ? ' disabled' : ''}>+ New trip</button>
           </div>
         </div>
 
         <div class="scroll" style="padding:14px 16px 32px">
           ${busy ? html`<div class="amber-note f12 mb12">${busy}</div>` : ''}
-          ${addOpen ? addForm() : ''}
 
           ${removedCard()}
 
@@ -72,6 +73,11 @@ export default {
               Press <b>+ New trip</b> and give it a name and dates.
             </div>`}
         </div>
+
+        ${addOpen ? html`
+          <!-- Inert on purpose: Create and Cancel are the only ways out. -->
+          <div class="scrim"></div>
+          <div class="modal">${addForm()}</div>` : ''}
       </section>`;
   },
 
@@ -119,10 +125,6 @@ export default {
       await store.switchTrip(el.dataset.openTrip);
       busy = '';
       go('map');
-    });
-    delegate(root, '[data-recap]', async (el) => {
-      await store.switchTrip(el.dataset.recap);
-      go('log');
     });
     delegate(root, '[data-cover]', (el) => {
       covering = el.dataset.cover;
@@ -261,7 +263,7 @@ function plainCard(trip, kind) {
                      ${gap == null ? 'NO DATES' : (gap === 0 ? 'TOMORROW' : `IN ${gap} DAYS`)}
                    </span>`
             : html`<button class="f12 w700 none" style="color:var(--jade);padding-top:2px"
-                           data-recap="${trip.id}">Recap ›</button>`}
+                           data-open-trip="${trip.id}">Open ›</button>`}
         </div>
 
         ${ready ? html`
@@ -424,7 +426,7 @@ function tripDates(trip) {
 
 function addForm() {
   return html`
-    <div class="form mb14">
+    <div class="form">
       <div class="form-title">New trip</div>
       <input id="new-trip-name" placeholder="Where are you going?">
       <input id="new-trip-place" placeholder="City or area (centres the map)">

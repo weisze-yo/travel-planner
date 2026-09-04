@@ -5,7 +5,7 @@
 import { html, raw, icon, delegate } from '../util.js';
 import * as store from '../store.js';
 import { state } from '../store.js';
-import { checkbox, swipeToDelete, forecastURL } from './parts.js';
+import { checkbox, swipeToDelete } from './parts.js';
 import { PACKED_LOCATIONS } from '../data.js';
 
 let addingTo = null;
@@ -18,7 +18,6 @@ export default {
   render() {
     const groups = store.prepGroups();
     const progress = store.prepProgress();
-    const weather = state.trip?.weather || [];
 
     return html`
       <section class="screen">
@@ -32,24 +31,6 @@ export default {
         </div>
 
         <div class="scroll" style="padding:12px 16px 24px">
-          <div class="card tight mb12" style="padding:12px 13px">
-            <div class="row g8 center">
-              <div class="eyebrow grow">WEATHER FORECAST</div>
-              <a class="f11 w700" style="color:var(--jade)" href="${forecastURL()}"
-                 target="_blank" rel="noopener">Hourly ›</a>
-            </div>
-            <div class="f11 w650 mt4" style="color:var(--faint)">${store.weatherStatus().line}</div>
-            <div class="wx-strip">
-              ${weather.map((w) => html`
-                <div class="wx-day${w.dayNumber === state.selectedDay ? ' on' : ''}">
-                  <div class="wx-d">D${w.dayNumber}</div>
-                  <div class="wx-em">${w.icon}</div>
-                  <div class="wx-hi">${w.high}°</div>
-                  <div class="wx-rain">${w.rainChance}%</div>
-                </div>`)}
-            </div>
-          </div>
-
           ${groups.map((group) => html`
             <div class="card-list mb12">
               <div class="swipe-row swipe-flat" data-cat-row="${group.title}">

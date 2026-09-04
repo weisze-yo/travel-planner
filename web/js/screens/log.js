@@ -11,7 +11,6 @@ import * as store from '../store.js';
 import { otherNames, nameList } from '../share.js';
 import { state } from '../store.js';
 import { go } from '../nav.js';
-import { RECAP_TEXT } from '../data.js';
 import { swipeToDelete } from './parts.js';
 
 export default {
@@ -44,11 +43,6 @@ export default {
           ${privacyLine()}
           ${days.map((entry) => dayCard(entry))}
 
-          <div class="recap">
-            <div class="recap-h">AFTER THE TRIP</div>
-            <div class="recap-t">Trip recap</div>
-            <div class="recap-b">${RECAP_TEXT}</div>
-          </div>
         </div>
       </section>`;
   },

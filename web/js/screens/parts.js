@@ -396,3 +396,87 @@ export function undoBar() {
 export function bindUndo(root) {
   delegate(root, '[data-act="undo"]', () => store.undoLast());
 }
+
+/**
+ * A sheet you can pull up and down over the map.
+ *
+ * Three heights rather than free dragging: a phone is not precise enough for
+ * a continuous handle, and the three that matter are "show me the map",
+ * "show me both" and "show me the list". The drag follows your finger and
+ * settles on whichever of the three you released nearest, so it still feels
+ * continuous; the handle is also a plain button, because a drag-only control
+ * is invisible to anyone who cannot drag.
+ *
+ * The chosen height is remembered per sheet for the session — you set it once
+ * on the coach and it stays that way for the day.
+ */
+const DETENTS = [0.3, 0.5, 0.82];
+const heights = new Map();
+
+export function draggableSheet(sheet, { key = 'sheet', onOpen = null } = {}) {
+  if (!sheet) return () => {};
+  const screen = sheet.closest('.screen') || sheet.parentElement;
+  const grab = sheet.querySelector('.sheet-grab');
+  let at = heights.get(key) ?? 1;
+
+  const apply = (fraction) => {
+    sheet.style.maxHeight = `${Math.round(fraction * 100)}%`;
+    sheet.style.height = `${Math.round(fraction * 100)}%`;
+  };
+  const settle = (index) => {
+    at = Math.max(0, Math.min(DETENTS.length - 1, index));
+    heights.set(key, at);
+    sheet.classList.add('settling');
+    apply(DETENTS[at]);
+    grab?.setAttribute('aria-label', at === DETENTS.length - 1
+      ? 'Shrink the list to see the map'
+      : 'Pull the list up');
+  };
+  settle(at);
+
+  if (!grab) return () => {};
+
+  let startY = null;
+  let startFraction = DETENTS[at];
+  let moved = 0;
+
+  const down = (event) => {
+    startY = event.clientY;
+    startFraction = DETENTS[at];
+    moved = 0;
+    sheet.classList.remove('settling');
+    grab.setPointerCapture?.(event.pointerId);
+  };
+
+  const move = (event) => {
+    if (startY === null) return;
+    moved = startY - event.clientY;
+    const span = screen?.clientHeight || window.innerHeight;
+    const next = Math.max(0.18, Math.min(0.9, startFraction + moved / span));
+    apply(next);
+  };
+
+  const up = () => {
+    if (startY === null) return;
+    startY = null;
+    const span = screen?.clientHeight || window.innerHeight;
+    const landed = startFraction + moved / span;
+    // A tap is not a drag: it steps up, and steps back down from the top.
+    if (Math.abs(moved) < 6) {
+      settle(at === DETENTS.length - 1 ? 0 : at + 1);
+      if (at === 0 && onOpen) onOpen();
+      return;
+    }
+    let best = 0;
+    for (let i = 1; i < DETENTS.length; i++) {
+      if (Math.abs(DETENTS[i] - landed) < Math.abs(DETENTS[best] - landed)) best = i;
+    }
+    settle(best);
+  };
+
+  grab.addEventListener('pointerdown', down);
+  grab.addEventListener('pointermove', move);
+  grab.addEventListener('pointerup', up);
+  grab.addEventListener('pointercancel', up);
+  return () => settle(at);
+}

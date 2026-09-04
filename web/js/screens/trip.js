@@ -96,11 +96,12 @@ export default {
           </div>
 
           <div class="card pad mb12">
-            <div class="eyebrow">ON THE ROAD</div>
+            <div class="eyebrow">WHEN THERE IS NO SIGNAL</div>
             <div class="f125 muted lh145 mt6">
-              Everything but the map works with no signal. The map's tiles are the one part that
-              needs the network, so an area can be kept on the phone for the days you will be
-              walking around it.
+              The trip itself works offline — every screen reads from this phone. Two things
+              do not: the map needs to fetch its tiles, so a patch of it can be kept here in
+              advance; and a change you make offline waits its turn to reach the cloud, so the
+              second button shows anything still waiting.
             </div>
             <div class="row g8 mt10">
               <button class="btn ghost grow" data-act="areas">
@@ -120,8 +121,8 @@ export default {
               The itinerary can arrive all at once. Paste the agent's PDF text or the WhatsApp
               message and confirm the stops it reads — nothing lands until you do.
             </div>
-            <button class="btn ghost mt10" data-act="paste">Paste an itinerary…</button>
-            <button class="btn ghost mt8" data-act="share">
+            <button class="btn ghost wide mt10" data-act="paste">Paste an itinerary…</button>
+            <button class="btn ghost wide mt8" data-act="share">
               ${store.shareState()?.on
     ? `Sharing · ${store.sharePeople().length} ${store.sharePeople().length === 1 ? 'person' : 'people'}`
     : 'Share this trip…'}
@@ -154,7 +155,7 @@ export default {
                 </div>
               </div>
             ` : html`
-              <button class="btn ghost mt12" data-act="clear">Empty this trip…</button>
+              <button class="btn ghost wide mt12" data-act="clear">Empty this trip…</button>
             `}
           </div>
         </div>

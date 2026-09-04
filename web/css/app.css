@@ -349,6 +349,9 @@ select {
 .btn.grow { flex: 1; }
 .btn.sm { height: 38px; font-size: 12.5px; padding: 0 13px; }
 .btn[disabled] { opacity: .45; pointer-events: none; }
+/* A button sizes to its label; one that stands alone in a card should reach
+   the end of the row like the ones inside a stretching column already do. */
+.btn.wide { width: 100%; }
 
 .btn-dashed {
   height: 48px;
@@ -2108,3 +2111,35 @@ input.guessed { border: 1.5px solid var(--amber); background: #FFFDF7; color: va
 .dot.amber { background: var(--amber); }
 .dot.ink { background: var(--ink); }
 .dot.rust { background: var(--danger-fg); }
+
+/* ------------------------------------------------------- a blocking sheet */
+/*
+ * Creating a trip is one of the few things in the app that should not be
+ * half-done: the list behind stays readable so you can see it is still there,
+ * but nothing on it can be touched until you press Create or Cancel.
+ */
+.scrim {
+  position: absolute;
+  inset: 0;
+  z-index: 20;
+  background: rgba(20, 32, 28, .34);
+  backdrop-filter: saturate(.55);
+}
+.modal {
+  position: absolute;
+  z-index: 21;
+  left: 12px;
+  right: 12px;
+  bottom: 12px;
+  max-height: calc(100% - 40px);
+  overflow: auto;
+  box-shadow: 0 14px 44px rgba(20, 32, 28, .3);
+  border-radius: 16px;
+}
+.modal > .form { margin: 0; border-radius: 16px; }
+
+/* The sheet's own handle: a bigger target than the bar it draws, because it
+   is now a drag as well as a tap. */
+.sheet-grab { width: 100%; touch-action: none; cursor: grab; }
+.sheet.settling { transition: max-height .18s ease, height .18s ease; }
+.map-sheet, .sub-sheet { max-height: 50%; }

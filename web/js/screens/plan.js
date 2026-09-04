@@ -382,7 +382,12 @@ function stopChips(item) {
  * seeing that you have two hours loose between the deck and the hotel is the
  * point, and the dashed row is where a sub route starts.
  */
-function laneRow(lane, { last }) {
+function laneRow(lane, { editing, last }) {
+  // An empty lane outside edit mode is just a gap in the day, and drawing a
+  // dashed "+ Sub route here" button in every one of them turned the Plan
+  // into a form. Adding is an edit; it lives behind the pencil.
+  if (!editing && !lane.loops.length) return '';
+
   return html`
     <div class="plan-row">
       <div class="plan-gutter">
@@ -393,25 +398,27 @@ function laneRow(lane, { last }) {
         <div class="plan-line sub${last ? ' short' : ''}"></div>
       </div>
       <div class="grow">
-        ${lane.loops.map((loop) => loopCard(loop))}
-        <button class="lane-add${lane.loops.length ? ' more' : ''}"
-                data-new-loop="1" data-from="${lane.from}" data-to="${lane.to}" data-label="${lane.label}">
-          ${lane.loops.length
-            ? '+ Another sub route here'
-            : `+ Sub route here · ${clock(lane.from)} – ${clock(lane.to)}`}
-        </button>
+        ${lane.loops.map((loop) => loopCard(loop, editing))}
+        ${editing ? html`
+          <button class="lane-add${lane.loops.length ? ' more' : ''}"
+                  data-new-loop="1" data-from="${lane.from}" data-to="${lane.to}" data-label="${lane.label}">
+            ${lane.loops.length
+              ? '+ Another sub route here'
+              : `+ Sub route here · ${clock(lane.from)} – ${clock(lane.to)}`}
+          </button>` : ''}
       </div>
     </div>`;
 }
 
-function loopCard(loop) {
+function loopCard(loop, editing = false) {
   const card = store.loopCard(loop);
   if (!card) return '';
   return html`
-    <div class="swipe-row plan-swipe" data-loop-row="${card.id}" data-loop-name="${card.name}">
-      <div class="swipe-bin">
-        <button class="bin" data-swipe-delete aria-label="Delete ${card.name}">${raw(icon.bin)}</button>
-      </div>
+    <div class="swipe-row plan-swipe"${editing ? ` data-loop-row="${card.id}" data-loop-name="${card.name}"` : ''}>
+      ${editing ? html`
+        <div class="swipe-bin">
+          <button class="bin" data-swipe-delete aria-label="Delete ${card.name}">${raw(icon.bin)}</button>
+        </div>` : ''}
       <button class="swipe-face loop-lane" data-open-loop="${card.id}" aria-label="${card.name}">
         <div class="row g8" style="align-items:baseline">
           <div class="grow loop-lane-name">${card.name}</div>
@@ -611,8 +618,9 @@ function archive(rows, editing) {
     <div class="mt18">
       <div class="eyebrow">REMOVED FROM THIS DAY</div>
       ${rows.map((item) => html`
-        <div class="swipe-row mt8" data-plan-row="${item.id}" data-plan-name="${item.name}">
-          <div class="swipe-bin"><button class="bin" data-swipe-delete aria-label="Delete ${item.name}">${raw(icon.bin)}</button></div>
+        <div class="swipe-row mt8"${editing ? ` data-plan-row="${item.id}" data-plan-name="${item.name}"` : ''}>
+          ${editing ? html`
+            <div class="swipe-bin"><button class="bin" data-swipe-delete aria-label="Delete ${item.name}">${raw(icon.bin)}</button></div>` : ''}
           <div class="swipe-face archive-card">
             <div class="row g8" style="align-items:flex-start">
               <button class="grow" style="text-align:left" data-open="${item.id}">
