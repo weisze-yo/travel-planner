@@ -199,6 +199,63 @@ async function carryLocalTrips() {
 // ------------------------------------------------------------------ lifecycle
 
 /**
+ * Which day a device last had open on this trip — a device preference, not
+ * trip data, so it lives in localStorage rather than on the synced trip
+ * (nobody else sharing this trip needs to be looking at the same day you
+ * are). Keyed by trip id so switching trips never bleeds one trip's day
+ * into another's.
+ */
+const LAST_DAY_KEY = (tripID) => `travel-planner:lastday:${tripID}`;
+
+function readLastDay(tripID) {
+  try {
+    const n = Number(localStorage.getItem(LAST_DAY_KEY(tripID)));
+    return Number.isInteger(n) && n > 0 ? n : null;
+  } catch {
+    return null;
+  }
+}
+
+function writeLastDay(tripID, n) {
+  try {
+    localStorage.setItem(LAST_DAY_KEY(tripID), String(n));
+  } catch {
+    // Private browsing, or the quota is full — the day picker still works
+    // for this visit, it just will not be remembered on the next one.
+  }
+}
+
+function forgetLastDay(tripID) {
+  try {
+    localStorage.removeItem(LAST_DAY_KEY(tripID));
+  } catch {
+    // Nothing to clean up if it never wrote in the first place.
+  }
+}
+
+/**
+ * Which day to land on when a trip opens. A day this device has actually
+ * looked at wins — that is what "reload mid-trip" expects.
+ *
+ * Failing that, "today's real day" (`tripCurrentDay`, the same "today" the
+ * Trips home already uses) only means something while the trip is actually
+ * running — before it starts or after it ends there is no such day to
+ * compute. So an untouched upcoming or finished trip falls back to its own
+ * `currentDay` exactly as it always has, never to `tripCurrentDay`. That
+ * matters beyond just staying conservative: it is what keeps the demo trip
+ * — whose dates are fictional and permanently in the past — opening on
+ * Day 3, the one day the seed data actually populates, rather than
+ * `tripCurrentDay` clamping a finished trip to its last (and, for the demo,
+ * empty) day on every single first look.
+ */
+function pickSelectedDay(trip) {
+  if (!trip) return 1;
+  const remembered = readLastDay(trip.id);
+  if (remembered && remembered <= (trip.dayCount || 1)) return remembered;
+  return tripState(trip) === 'running' ? tripCurrentDay(trip) : (trip.currentDay || 1);
+}
+
+/**
  * Opens one trip. Called on launch for whichever trip was last open, and again
  * whenever another is chosen from the home screen.
  */
@@ -250,7 +307,7 @@ export async function boot(tripID = readActiveTripID() || seed.TRIP_ID) {
   unifyLoops();
   await refreshTrips();
 
-  state.selectedDay = state.trip?.currentDay || 3;
+  state.selectedDay = pickSelectedDay(state.trip);
   state.ready = true;
 
   // A forecast is worth having but never worth blocking the app on.
@@ -786,6 +843,7 @@ export async function switchTrip(tripID) {
 
 export async function deleteTrip(tripID) {
   await backend.deleteTrip(tripID);
+  forgetLastDay(tripID);
   if (tripID === state.tripID) {
     writeActiveTripID(null);
     state.tripID = null;
@@ -930,6 +988,42 @@ export async function attachPhoto(file, path, existing = []) {
 export const day = (n = state.selectedDay) => state.days.find((d) => d.dayNumber === n) || null;
 export const place = (id) => state.places.find((p) => p.id === id) || null;
 export const weather = (n = state.selectedDay) => (state.trip?.weather || []).find((w) => w.dayNumber === n) || null;
+
+/** Temperature band → what to layer. Ordered warmest first. */
+const LAYER_BANDS = [
+  { min: 27, text: 'It will be warm — light, breathable layers are enough', chip: 'light layers' },
+  { min: 21, text: 'Warm enough for a light layer and not much else', chip: 'light layer' },
+  { min: 14, text: 'A mid-weight layer works — something you can shed if it warms up', chip: 'mid layer' },
+  { min: 7, text: 'Bring a warm layer, plus something to add over it', chip: 'warm layer' },
+  { min: -Infinity, text: "It will be properly cold — wear your warmest layer", chip: 'heavy layer' },
+];
+
+/** Rain chance → footwear and whether to carry cover. */
+const RAIN_BANDS = [
+  { min: 60, text: 'rain is likely, so pack closed, waterproof shoes and something to keep you dry', chip: 'rain gear' },
+  { min: 30, text: 'there is a decent chance of rain — shoes that can take a shower are a good idea', chip: 'maybe rain' },
+  { min: -Infinity, text: 'rain is unlikely, so any shoes will do', chip: 'dry likely' },
+];
+
+/**
+ * What to wear, worked out from the day's own forecast instead of a fixed
+ * sentence about one specific market. Two independent bands — temperature
+ * for the layer, rain chance for the footwear — combine into one sentence,
+ * so it reads true on a clear day and a wet one alike, on any trip, not
+ * just the demo's. No wind here: this app does not fetch it (see
+ * `net.js`'s `fetchForecast`), and inventing a figure would be exactly the
+ * kind of false specificity this replaces.
+ */
+export function outfitAdvice(n = state.selectedDay) {
+  const wx = weather(n);
+  if (!wx || wx.high == null) {
+    return { text: 'No forecast for this day yet — check back closer to the date.', chips: [] };
+  }
+  const layer = LAYER_BANDS.find((b) => wx.high >= b.min);
+  const rain = wx.rainChance == null ? null : RAIN_BANDS.find((b) => wx.rainChance >= b.min);
+  const text = rain ? `${layer.text}, and ${rain.text}.` : `${layer.text}.`;
+  return { text, chips: [layer.chip, rain?.chip].filter(Boolean) };
+}
 
 export function planItem(id) {
   for (const d of state.days) {
@@ -2078,7 +2172,9 @@ export function weatherSourceLine() {
 // ----------------------------------------------------------------- mutations
 
 export function selectDay(n) {
+  const moved = n !== state.selectedDay;
   state.selectedDay = n;
+  if (moved && state.trip) writeLastDay(state.trip.id, n);
   notify();
 }
 

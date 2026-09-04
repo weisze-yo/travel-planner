@@ -6,7 +6,7 @@ import { html, raw, icon, delegate } from '../util.js';
 import * as store from '../store.js';
 import { state } from '../store.js';
 import { checkbox, swipeToDelete } from './parts.js';
-import { OUTFIT_SUGGESTION, OUTFIT_SUGGESTION_CHIPS, OUTFIT_PICKS } from '../data.js';
+import { OUTFIT_PICKS } from '../data.js';
 import { PACKED_LOCATIONS } from '../data.js';
 
 let addingTo = null;
@@ -19,13 +19,15 @@ export default {
   render() {
     const groups = store.prepGroups();
     const progress = store.prepProgress();
+    const gap = store.tripDayGap(state.trip);
 
     return html`
       <section class="screen">
         <div class="head">
           <div class="screen-title">Trip prep</div>
           <div class="screen-sub">
-            ${state.trip?.dayCount || 0} days${state.trip?.departsInDays ? ` · departs in ${state.trip.departsInDays} days` : ''}
+            ${state.trip?.dayCount || 0} days${gap != null && gap > 0
+              ? ` · departs in ${gap} day${gap === 1 ? '' : 's'}` : ''}
           </div>
           <div class="progress mt12"><i style="width:${progress.percent}%"></i></div>
           <div class="f11 w650 muted mt6">${progress.packed} of ${progress.total} packed</div>
@@ -146,6 +148,7 @@ function nudge() {
  */
 function outfitCard() {
   const wx = store.weather();
+  const advice = store.outfitAdvice();
   const mine = store.outfitFor()?.pieces || [];
   const picks = OUTFIT_PICKS.filter((p) => !mine.includes(p));
 
@@ -157,10 +160,10 @@ function outfitCard() {
       </div>
       <div class="row g12 mt10">
         <div class="outfit-ref">reference</div>
-        <div class="outfit-text">${OUTFIT_SUGGESTION}</div>
+        <div class="outfit-text">${advice.text}</div>
       </div>
       <div class="row g6 wrap mt10">
-        ${OUTFIT_SUGGESTION_CHIPS.map((c, i) => html`
+        ${advice.chips.map((c, i) => html`
           <span class="chip ${i === 0 ? 'amber' : ''}">${c}</span>`)}
       </div>
 

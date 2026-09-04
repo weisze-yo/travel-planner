@@ -188,8 +188,8 @@ export const MUST_SEE = [
   { id: 'm4', placeID: 'nishi', title: 'South standing bars', tag: 'NIGHT', summary: 'Lights come on after 17:00 — steam, crowd and signage all in one frame.', whereToFind: 'South exit', imagePath: null, captured: false, order: 3, latitude: 35.6795, longitude: 139.7008 },
 ];
 
-export const OUTFIT_SUGGESTION = '16 °C and overcast on this day, so a mid-weight layer works. The market is grey stone and steel, so one solid warm tone reads best — rust, cream or mustard. Flat shoes: the aisles are wet near the fish stalls.';
-export const OUTFIT_SUGGESTION_CHIPS = ['rust coat', 'cream knit', 'flat shoes'];
+// What to wear is generated from each day's real forecast now — see
+// `outfitAdvice()` in store.js — not a fixed sentence about this market.
 export const OUTFIT_PICKS = ['Rust coat', 'Cream knit', 'Flat shoes', 'Shawl'];
 
 export const PREP_CATEGORIES = ['Documents', 'Outfits', 'Carry-on', 'Electronics'];
