@@ -3,8 +3,13 @@
 // Two browser contexts with nothing in common: separate storage, separate
 // accounts, separate trips. Between them sit the real Firebase SDK, the real
 // Auth emulator and the real Firestore emulator running the project's own
-// security rules. Nothing here is stubbed except the console — which is the
-// one thing a sandbox cannot have.
+// security rules. Nothing here is stubbed except the console — and Nominatim
+// and the ECB rate, which a sandboxed browser genuinely cannot reach (verified:
+// Chromium's own network stack cannot complete a request to the open internet
+// here, even though this file's own process can — same reason the map's
+// tiles get routed rather than fetched for real). The fixture below is a
+// real, once-verified Nominatim response for Reykjavik, so what is being
+// tested is createTrip()'s own country → currency plumbing, not the network.
 import pw from '/opt/node22/lib/node_modules/playwright/index.js';
 const { chromium } = pw;
 
@@ -21,11 +26,36 @@ const browser = await chromium.launch({ executablePath: '/opt/pw-browsers/chromi
 const errors = [];
 
 /** One phone: its own storage, its own account, pointed at the emulators. */
-async function phone(label) {
+async function phone(label, { mockGeo = false } = {}) {
   const ctx = await browser.newContext({ viewport: { width: 390, height: 844 }, serviceWorkers: 'block' });
   await ctx.addInitScript(() => {
     localStorage.setItem('travel-planner:emulators', JSON.stringify({ auth: 9099, firestore: 8080 }));
   });
+  if (mockGeo) {
+    // A real Nominatim jsonv2 response for "Reykjavik" (`&addressdetails=1`),
+    // captured once by hand — not invented — so the country code driving the
+    // currency lookup is the one the real service actually returns.
+    await ctx.route(/nominatim\.openstreetmap\.org\/search/, (route) => {
+      const isReykjavik = /reykjavik/i.test(route.request().url());
+      route.fulfill({
+        status: 200,
+        contentType: 'application/json',
+        body: JSON.stringify(isReykjavik ? [{
+          lat: '64.1459810', lon: '-21.9422367',
+          display_name: 'Reykjavíkurborg, Höfuðborgarsvæðið, Ísland',
+          address: { city: 'Reykjavíkurborg', country: 'Ísland', country_code: 'is' },
+        }] : []),
+      });
+    });
+    // The ECB rate for a currency pair Nominatim's country lookup would find
+    // for Reykjavik (ISK) against this app's home currency (MYR).
+    await ctx.route(/api\.frankfurter\.app\/latest/, (route) => {
+      route.fulfill({
+        status: 200, contentType: 'application/json',
+        body: JSON.stringify({ amount: 1, base: 'MYR', date: '2026-09-03', rates: { ISK: 29.9 } }),
+      });
+    });
+  }
   const page = await ctx.newPage();
   page.on('pageerror', (e) => errors.push(`${label}: ${e.message}`));
   page.on('console', (m) => {
@@ -77,7 +107,7 @@ const go = async (p, id, params = {}) => {
 const text = (p) => p.page.locator('#screen').innerText();
 
 console.log('\n=== PHONE A signs in ===');
-const A = await phone('A');
+const A = await phone('A', { mockGeo: true });
 await boot(A);
 const aAccount = await signIn(A, 'wei@example.com');
 check('a phone with no account saves locally and says so', true, `before: mode was local`);
@@ -86,13 +116,52 @@ check('and the backend becomes Firebase, not this browser', aAccount.mode === 'f
 check('nothing is stranded', aAccount.stranded === false);
 
 console.log('\n=== PHONE A makes a trip and shares it ===');
+// A real city, not the empty string a quick smoke test could get away with:
+// this is what actually exercises createTrip()'s geocode → country → currency
+// path, and it lets the join further down check the same thing travels to a
+// second phone instead of that phone's own trip's leftovers.
 const aTrip = await A.page.evaluate(async () => {
   const s = window.__store;
-  const id = await s.createTrip({ name: 'Meridian City · Group Tour', startDate: '2026-03-12', dayCount: 6, locationName: '' });
-  return { id, trips: s.state.trips.length };
+  const id = await s.createTrip({
+    name: 'Meridian City · Group Tour', startDate: '2026-03-12', dayCount: 6, locationName: 'Reykjavik',
+  });
+  const t = s.state.trip;
+  return {
+    id, trips: s.state.trips.length,
+    currencyCode: t?.currencyCode, currencySymbol: t?.currencySymbol, homeCurrencyRate: t?.homeCurrencyRate,
+    latitude: t?.latitude, longitude: t?.longitude, locationNotice: t?.locationNotice,
+  };
 });
 await A.page.waitForTimeout(1500);
 check('a signed-in account can create a trip in the cloud', Boolean(aTrip.id), JSON.stringify(aTrip));
+console.log('  [A trip] ' + JSON.stringify(aTrip));
+check('a real city drives the new trip’s currency, not the demo’s Yen',
+  aTrip.currencyCode === 'ISK' && aTrip.currencyCode !== 'JPY', JSON.stringify(aTrip));
+check('and its rate is not the demo’s frozen 33.7',
+  typeof aTrip.homeCurrencyRate === 'number' && aTrip.homeCurrencyRate !== 33.7, String(aTrip.homeCurrencyRate));
+check('and the map centre is near Reykjavik, not Tokyo',
+  Math.abs(aTrip.latitude - 64.15) < 1 && Math.abs(aTrip.longitude - (-21.94)) < 1,
+  `${aTrip.latitude}, ${aTrip.longitude}`);
+check('geocoding that actually found the city leaves no notice behind', !aTrip.locationNotice, aTrip.locationNotice);
+
+// A city the geocoder cannot find at all must not be swallowed into a silent
+// Tokyo default — it has to say so, on screen, under "City or area".
+const noPlaceTrip = await A.page.evaluate(async () => {
+  const s = window.__store;
+  await s.createTrip({ name: 'Nowhere Weekend', startDate: '2026-05-01', dayCount: 3, locationName: 'Qwxzfjord Nonplace' });
+  const t = s.state.trip;
+  return {
+    currencyCode: t?.currencyCode, latitude: t?.latitude, longitude: t?.longitude, locationNotice: t?.locationNotice,
+  };
+});
+console.log('  [A unfindable-city trip] ' + JSON.stringify(noPlaceTrip));
+check('a city the geocoder cannot find leaves currency and coordinates unset, not Tokyo’s',
+  !noPlaceTrip.currencyCode && noPlaceTrip.latitude == null && noPlaceTrip.longitude == null, JSON.stringify(noPlaceTrip));
+check('and says so on screen instead of failing silently', /not found|could not/i.test(noPlaceTrip.locationNotice || ''), noPlaceTrip.locationNotice);
+
+// Back to the trip actually being shared in the rest of this test.
+await A.page.evaluate((id) => window.__store.switchTrip(id), aTrip.id);
+await A.page.waitForTimeout(800);
 
 // Give it something to share.
 await A.page.evaluate(async () => {
@@ -166,6 +235,8 @@ const bCopy = await B.page.evaluate(() => {
     shopping: s.state.shopping.length, prep: s.state.prep.length, log: s.state.log.length,
     sharedFrom: s.state.trip?.sharedFrom || null,
     mode: s.state.mode,
+    currencyCode: s.state.trip?.currencyCode, currencySymbol: s.state.trip?.currencySymbol,
+    latitude: s.state.trip?.latitude, longitude: s.state.trip?.longitude,
   };
 });
 console.log('  [B copy] ' + JSON.stringify(bCopy));
@@ -174,6 +245,11 @@ check('that copy has the itinerary', bCopy.stops === 2, String(bCopy.stops));
 check('and none of the owner’s shopping, packing or Log',
   bCopy.shopping === 0 && bCopy.prep === 0 && bCopy.log === 0, JSON.stringify(bCopy));
 check('and it knows which link it came from', bCopy.sharedFrom?.code === link.code, JSON.stringify(bCopy.sharedFrom));
+check('the joiner’s copy carries the shared trip’s real currency, not the demo trip open on their own phone',
+  bCopy.currencyCode === 'ISK' && bCopy.currencyCode !== 'JPY', JSON.stringify(bCopy));
+check('and its map centre is Reykjavik’s, not Tokyo’s',
+  Math.abs(bCopy.latitude - 64.15) < 1 && Math.abs(bCopy.longitude - (-21.94)) < 1,
+  `${bCopy.latitude}, ${bCopy.longitude}`);
 
 console.log('\n=== the rules hold ===');
 const peek = await B.page.evaluate(async (otherTrip) => {

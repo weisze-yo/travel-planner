@@ -21,6 +21,13 @@
 //     routes), the places you have saved around them, and the must-see
 //     spots. The shopping list, the packing list and the whole Log never
 //     leave the phone and are not in a snapshot at all.
+//   - The trip's own basic facts travel alongside those three kinds, not as
+//     a fourth kind but as the envelope's own identity: its name, dates,
+//     where it is centred, and what currency it is priced in. Those are not
+//     something to agree on a change at a time the way a stop or a place
+//     is — they simply say what trip this is a copy of, so a join never
+//     falls back to guessing at them from whatever trip happened to be open
+//     on the joining phone already.
 //   - A role is now about publishing, not permission. `can edit` means you
 //     can send an update to everyone; `can read` means you receive them.
 //     Neither stops you doing whatever you like to your own copy.

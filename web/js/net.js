@@ -116,7 +116,7 @@ export async function geocode(query, { latitude, longitude } = {}) {
     ? `&viewbox=${longitude - 0.15},${latitude + 0.15},${longitude + 0.15},${latitude - 0.15}&bounded=0`
     : '';
   const url = 'https://nominatim.openstreetmap.org/search'
-    + `?format=jsonv2&limit=1&q=${encodeURIComponent(query)}${box}`;
+    + `?format=jsonv2&limit=1&addressdetails=1&q=${encodeURIComponent(query)}${box}`;
 
   const results = await get(url);
   const hit = Array.isArray(results) ? results[0] : null;
@@ -125,6 +125,8 @@ export async function geocode(query, { latitude, longitude } = {}) {
     latitude: Number(hit.lat),
     longitude: Number(hit.lon),
     label: hit.display_name,
+    // ISO 3166-1 alpha-2, lowercase — enough to look up a currency by.
+    countryCode: hit.address?.country_code || null,
   };
 }
 

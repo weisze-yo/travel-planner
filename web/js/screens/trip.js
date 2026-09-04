@@ -49,7 +49,8 @@ export default {
             <div class="col g10 mt10">
               ${field('trip-name', 'Name', trip.name)}
               ${field('trip-place', 'City or area', trip.locationName || '',
-                'Used to centre the map and to look up places you add')}
+                trip.locationNotice || 'Used to centre the map and to look up places you add',
+                'text', '', Boolean(trip.locationNotice))}
               <div class="row g8">
                 ${field('trip-start', 'First day', (trip.startDate || '').slice(0, 10), '', 'date')}
                 ${field('trip-days', 'Days', trip.dayCount, '', 'number')}
@@ -250,12 +251,12 @@ function nudge() {
   store.selectDay(state.selectedDay);
 }
 
-function field(id, label, value, hint = '', type = 'text', placeholder = '') {
+function field(id, label, value, hint = '', type = 'text', placeholder = '', warn = false) {
   return html`
     <label class="grow" style="display:block">
       <span class="f11 w800 soft" style="letter-spacing:.06em;text-transform:uppercase">${label}</span>
       <input id="${id}" type="${type}" value="${value ?? ''}" placeholder="${placeholder}"
              class="mt4" style="width:100%">
-      ${hint ? html`<span class="f11 soft" style="display:block;margin-top:3px">${hint}</span>` : ''}
+      ${hint ? html`<span class="f11${warn ? '' : ' soft'} lh145" style="display:block;margin-top:3px${warn ? ';color:var(--danger-fg)' : ''}">${hint}</span>` : ''}
     </label>`;
 }

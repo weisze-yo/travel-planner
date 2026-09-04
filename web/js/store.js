@@ -15,6 +15,7 @@ import { clock, duration, money, numeric, parseClock, parseDuration, uid, reorde
 import * as sync from './sync.js';
 import * as tiles from './tiles.js';
 import * as share from './share.js';
+import { currencyForCountry } from './currency.js';
 
 const listeners = new Set();
 
@@ -695,6 +696,7 @@ export async function createTrip({ name, startDate, dayCount, locationName }) {
   const label = String(name || '').trim() || 'New trip';
   const id = uid('trip-');
   const days = Math.max(1, Math.min(60, Number(dayCount) || 1));
+  const place = String(locationName || '').trim();
 
   const trip = {
     ...JSON.parse(JSON.stringify(seed.TRIP)),
@@ -705,20 +707,52 @@ export async function createTrip({ name, startDate, dayCount, locationName }) {
     dayCount: days,
     currentDay: 1,
     startDate: startDate || null,
-    locationName: String(locationName || '').trim(),
+    locationName: place,
     weather: [],
     weatherUpdatedAt: null,
     prepCategories: [],
+    // A trip that has not been placed anywhere yet must not silently keep
+    // the demo trip's Tokyo currency, rate and coordinates — those come from
+    // the city above, or stay unset until they do.
+    currencySymbol: '',
+    currencyCode: '',
+    homeCurrencyRate: null,
+    rateSource: '',
+    rateUpdatedAt: null,
+    latitude: null,
+    longitude: null,
+    locationNotice: '',
   };
 
-  if (trip.locationName && online()) {
-    try {
-      const hit = await geocode(trip.locationName);
-      if (hit) {
-        trip.latitude = hit.latitude;
-        trip.longitude = hit.longitude;
+  if (place) {
+    if (!online()) {
+      trip.locationNotice = `Offline, so "${place}" could not be located — fix it from Trip settings once you have a signal.`;
+    } else {
+      try {
+        const hit = await geocode(place);
+        if (hit) {
+          trip.latitude = hit.latitude;
+          trip.longitude = hit.longitude;
+          const currency = currencyForCountry(hit.countryCode);
+          if (currency) {
+            trip.currencySymbol = currency.symbol;
+            trip.currencyCode = currency.code;
+            try {
+              const rate = await fetchRate(currency.code, trip.homeCurrencyCode);
+              if (rate) {
+                trip.homeCurrencyRate = rate.rate;
+                trip.rateSource = `ECB ${rate.date}`;
+                trip.rateUpdatedAt = new Date().toISOString();
+              }
+            } catch { /* the rate can be fetched later from Trip settings */ }
+          }
+        } else {
+          trip.locationNotice = `Could not find "${place}" — the map centre and currency are not set. Fix it from Trip settings.`;
+        }
+      } catch {
+        trip.locationNotice = `Could not look up "${place}" — the map centre and currency are not set. Fix it from Trip settings.`;
       }
-    } catch { /* keep the default centre */ }
+    }
   }
 
   await backend.createTrip(trip);
@@ -2988,6 +3022,7 @@ export async function refreshRate() {
 export function rateLine() {
   const trip = state.trip;
   if (!trip) return '';
+  if (!trip.currencyCode || trip.homeCurrencyRate == null) return 'Not set yet — enter it, or fetch it once a currency is set.';
   const pair = `1 ${trip.homeCurrencyCode} = ${trip.homeCurrencyRate} ${trip.currencyCode}`;
   return trip.rateSource ? `${pair} · ${trip.rateSource}` : `${pair} · rate you entered`;
 }
@@ -3007,6 +3042,9 @@ export async function updateTrip(patch) {
       if (hit) {
         next.latitude = hit.latitude;
         next.longitude = hit.longitude;
+        // A location that resolves now retires whatever notice createTrip
+        // may have left about not being able to place the trip.
+        next.locationNotice = '';
       }
     } catch {
       // Keep the old coordinates; the map still works.
@@ -3276,6 +3314,15 @@ export function shareSnapshot() {
     dateRange: state.trip?.dateRange || '',
     dayCount: state.trip?.dayCount || 0,
     startDate: state.trip?.startDate || null,
+    // The trip's own basic facts, so a joiner's fork is placed and priced
+    // where the trip actually is rather than wherever their phone's last
+    // trip happened to be.
+    locationName: state.trip?.locationName || '',
+    latitude: state.trip?.latitude ?? null,
+    longitude: state.trip?.longitude ?? null,
+    currencySymbol: state.trip?.currencySymbol || '',
+    currencyCode: state.trip?.currencyCode || '',
+    homeCurrencyRate: state.trip?.homeCurrencyRate ?? null,
     // Only what people have to agree on.
     days: JSON.parse(JSON.stringify(state.days)),
     subRoutes: JSON.parse(JSON.stringify(state.subRoutes)),
@@ -3579,6 +3626,19 @@ export async function joinTrip({ code, role } = {}) {
     dateRange: snapshot.dateRange || '',
     dayCount: snapshot.dayCount || state.trip?.dayCount || 1,
     startDate: snapshot.startDate || null,
+    // Where and in what currency the trip you are joining actually is — off
+    // the snapshot, never off whatever trip happened to be open on this
+    // phone already. A snapshot published before this field existed leaves
+    // these unset rather than guessing.
+    locationName: snapshot.locationName || '',
+    latitude: snapshot.latitude ?? null,
+    longitude: snapshot.longitude ?? null,
+    currencySymbol: snapshot.currencySymbol || '',
+    currencyCode: snapshot.currencyCode || '',
+    homeCurrencyRate: snapshot.homeCurrencyRate ?? null,
+    // A notice about some other trip's city not being found has nothing to
+    // do with the trip you are joining.
+    locationNotice: '',
     // Your copy is not the owner's, and carries none of their bookkeeping.
     link: null,
     share: null,
