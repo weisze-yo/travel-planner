@@ -281,15 +281,27 @@ export function swipeToDelete(root, { rowSelector, label, onDelete, name }) {
       const dx = event.clientX - startX;
       const dy = event.clientY - startY;
 
-      // Decide once whether this is a horizontal swipe or a vertical scroll,
-      // so scrolling a long list never peels rows open.
+      // Decide whether this is a horizontal swipe or a vertical scroll, so
+      // scrolling a long list never peels rows open. A real finger almost
+      // never moves in a perfectly straight line from the first sample —
+      // especially right here, where the row often sits below the fold and
+      // the touch that reaches it carries a little vertical motion left over
+      // from scrolling down to it a moment before. Judging direction from a
+      // single early sample with a bare dy-vs-dx tie-break locks in a wrong
+      // "that's a scroll" call from one unlucky pixel and never revisits it
+      // (`dragging` stays false for the rest of the gesture) — so this waits
+      // for the vertical lean to be a clear majority, not just a narrow one,
+      // before giving up on the swipe, and otherwise keeps sampling rather
+      // than committing early either way.
       if (!decided) {
-        if (Math.abs(dx) < 8 && Math.abs(dy) < 8) return;
-        decided = true;
-        if (Math.abs(dy) > Math.abs(dx)) {
+        if (Math.abs(dx) < 10 && Math.abs(dy) < 10) return;
+        if (Math.abs(dy) > Math.abs(dx) * 1.4) {
+          decided = true;
           dragging = false;
           return;
         }
+        if (Math.abs(dx) < 12) return;
+        decided = true;
         closeAll(row);
         row.classList.add('dragging-open');
       }
@@ -350,6 +362,11 @@ export function swipeToDelete(root, { rowSelector, label, onDelete, name }) {
       startY = event.clientY;
       dragging = true;
       decided = false;
+      // Keeps the gesture reporting to this row even if the finger drifts
+      // off it mid-drag, the way bindDragReorder's handle already does —
+      // without it a fast real touch can be handed off to whatever the OS
+      // decides is underneath, mid-swipe.
+      row.setPointerCapture?.(event.pointerId);
       window.addEventListener('pointermove', move);
       window.addEventListener('pointerup', end);
       window.addEventListener('pointercancel', cancel);
