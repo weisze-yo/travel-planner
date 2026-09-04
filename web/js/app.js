@@ -5,6 +5,7 @@ import { boot, closeTrip, openLink, state } from './store.js';
 import { readActiveTripID } from './persist.js';
 import { register, start } from './nav.js';
 import * as strip from './strip.js';
+import * as sync from './sync.js';
 
 import map from './screens/map.js';
 import plan from './screens/plan.js';
@@ -72,6 +73,12 @@ async function main() {
   } else if (state.mode === 'local') {
     console.info('[travel-planner] No Firebase config — saving to this browser only. See web/js/config.js.');
   }
+
+  // Another tab of the same app writes the same ledger. Hearing it keeps this
+  // tab's dot and strip honest instead of stale until its own next write.
+  window.addEventListener('storage', (event) => {
+    if (event.key === 'travel-planner:pending') sync.reload();
+  });
 
   if ('serviceWorker' in navigator && location.protocol !== 'file:') {
     navigator.serviceWorker.register('sw.js').catch(() => {});

@@ -80,6 +80,20 @@ function notify() {
   for (const fn of listeners) fn();
 }
 
+/**
+ * Re-reads the ledger from disk.
+ *
+ * Another tab of the same app writes the same key, and `write()` already
+ * merges rather than clobbering — but nothing re-read it, so this tab could
+ * hold a stale count until its own next write. Cheap enough to call on a
+ * storage event or before asking what state we are in.
+ */
+export function reload() {
+  ledger = read();
+  notify();
+  return ledger.length;
+}
+
 export function subscribe(fn) {
   listeners.add(fn);
   return () => listeners.delete(fn);
@@ -139,16 +153,36 @@ export async function track({ kind, id, label, run }) {
 
 /** Why the cloud is refusing, in words, when the reason will not fix itself. */
 const HARD = [
-  [/permission-denied|unauthenticated|insufficient/i, 'Your sign-in expired. The app kept working and kept everything, but it cannot prove who you are, so the cloud is refusing it.'],
+  [/unauthenticated/i, 'Your sign-in expired. The app kept working and kept everything, but it cannot prove who you are, so the cloud is refusing it.'],
   [/not-found/i, 'This trip is no longer on your account — it may have been removed from you.'],
   [/quota|resource-exhausted|storage/i, 'There is no room left in the cloud for this account.'],
   [/invalid-argument|failed-precondition/i, 'The cloud rejected these changes as malformed. That is a bug, not something you did.'],
 ];
 
-function hardReason() {
+/**
+ * Why the cloud is refusing, in words.
+ *
+ * `permission-denied` is the awkward one: Firestore returns it both when
+ * nobody is signed in and when the rules refuse an account it can see. The
+ * two need opposite things done about them — sign in, or go and publish the
+ * app's rules — so telling someone the wrong one sends them round in
+ * circles. Whether anyone is signed in is the thing that separates them, and
+ * only the caller knows it.
+ */
+function hardReason({ signedIn = false } = {}) {
   for (const entry of ledger) {
+    const error = entry.error || '';
+    if (/permission-denied|insufficient/i.test(error)) {
+      return signedIn
+        ? 'The cloud can see who you are and is refusing anyway, which means its security '
+          + 'rules are not the ones this app needs. In the Firebase console: Firestore '
+          + 'Database → Rules, paste firebase/firestore.rules, Publish. Nothing is lost '
+          + 'meanwhile — it is all here on the phone.'
+        : 'The cloud will not take these until you are signed in. Nothing is lost meanwhile; '
+          + 'they are all here on the phone.';
+    }
     for (const [pattern, text] of HARD) {
-      if (pattern.test(entry.error || '')) return text;
+      if (pattern.test(error)) return text;
     }
   }
   return '';
@@ -161,11 +195,11 @@ const DAY = 86400000;
  * What the dot in the trip bar should say, and whether the strip should
  * speak at all.
  */
-export function syncState({ stranded = false, configured = true } = {}) {
+export function syncState({ stranded = false, configured = true, signedIn = false } = {}) {
   const count = ledger.length;
   const oldest = count ? ledger.reduce((a, b) => (a.at < b.at ? a : b)) : null;
   const ageDays = oldest ? Math.floor((Date.now() - new Date(oldest.at).getTime()) / DAY) : 0;
-  const reason = hardReason();
+  const reason = hardReason({ signedIn });
 
   if (!configured) {
     return { kind: 'local', count: 0, line: '', ageDays: 0, reason: '' };

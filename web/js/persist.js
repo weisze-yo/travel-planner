@@ -30,7 +30,16 @@ const EMAIL_KEY = 'travel-planner:sign-in-email';
 /** The one collection two phones both reach. See firebase/firestore.rules. */
 const PUBLISHED = 'published';
 
-const cdn = (mod) => `https://www.gstatic.com/firebasejs/${FIREBASE_SDK}/firebase-${mod}.js`;
+/**
+ * Where the SDK comes from. Google's CDN in production, pinned to a version.
+ *
+ * The emulator flag also redirects this to a local copy, because a test that
+ * has to reach a CDN is a test that fails for reasons that have nothing to do
+ * with the app. Same files, same version — fetched once and served from here.
+ */
+const cdn = (mod) => (localEmulators()
+  ? `/vendor/firebase-local/firebase-${mod}.js`
+  : `https://www.gstatic.com/firebasejs/${FIREBASE_SDK}/firebase-${mod}.js`);
 
 export function isConfigured(config = firebaseConfig) {
   return Boolean(config && config.apiKey && config.projectId);
@@ -104,6 +113,19 @@ async function load() {
   const app = appMod.initializeApp(firebaseConfig);
   const auth = authMod.getAuth(app);
 
+  // Talking to the local emulator suite instead of the real project.
+  //
+  // This exists so the whole of sharing can be driven end to end — two
+  // signed-in people, the real SDK, the real security rules — without a
+  // console, an inbox, or two phones. It is off unless something has
+  // deliberately switched it on, and it can only ever point at this
+  // machine: an emulator flag that a page could set for a stranger would
+  // be a way to serve them a fake backend.
+  const emulators = localEmulators();
+  if (emulators) {
+    authMod.connectAuthEmulator(auth, `http://127.0.0.1:${emulators.auth}`, { disableWarnings: true });
+  }
+
   // Persistent cache, so the trip is readable AND editable with no signal —
   // free time in a foreign market is exactly when there is none. Writes made
   // offline queue up and replay when the connection returns. This has to run
@@ -120,8 +142,39 @@ async function load() {
     console.warn('[travel-planner] offline cache unavailable', error);
     db = dbMod.getFirestore(app);
   }
+  if (emulators) dbMod.connectFirestoreEmulator(db, '127.0.0.1', emulators.firestore);
 
   return { app, auth, db, appMod, authMod, dbMod, storageMod };
+}
+
+/**
+ * Whether to use the emulator suite, and on which ports.
+ *
+ * Two conditions, both required. The page has to be served from this
+ * machine, so a deployed build can never be pointed at a fake backend by
+ * anything a visitor's browser was talked into storing. And the flag has to
+ * be set explicitly — no default, no guessing from the hostname alone,
+ * because a real trip planned on a laptop at localhost is still a real trip.
+ */
+let emulatorAnswer;
+function localEmulators() {
+  if (emulatorAnswer === undefined) emulatorAnswer = emulatorPorts();
+  return emulatorAnswer;
+}
+
+function emulatorPorts() {
+  const localHost = ['localhost', '127.0.0.1', '[::1]', ''].includes(location.hostname);
+  if (!localHost) return null;
+  try {
+    const raw = localStorage.getItem('travel-planner:emulators');
+    if (!raw) return null;
+    const parsed = JSON.parse(raw);
+    if (!parsed?.auth || !parsed?.firestore) return null;
+    console.warn('[travel-planner] using the local emulator suite, not the real project');
+    return { auth: Number(parsed.auth), firestore: Number(parsed.firestore) };
+  } catch {
+    return null;
+  }
 }
 
 // ---------------------------------------------------------------- accounts
@@ -418,13 +471,44 @@ export async function claimEditor(code) {
 export async function createBackend(tripID, { uid = null } = {}) {
   if (isConfigured() && uid) {
     try {
-      return await createFirebaseBackend(tripID, uid);
+      const backend = await createFirebaseBackend(tripID, uid);
+      // Building the backend only proves the SDK loaded. It says nothing
+      // about whether the cloud will accept anything, and the failure that
+      // matters most in practice — security rules that do not allow this
+      // app — happens per-operation, long after this point. Left unchecked
+      // it looks like everything is fine while every write is refused, on
+      // both phones at once, which is indistinguishable from the feature
+      // being broken. So ask once, here, and degrade honestly.
+      const refusal = await refusedOutright(backend);
+      if (refusal) {
+        console.warn('[travel-planner] the cloud refused this account outright — saving to this device only.', refusal);
+        return createLocalBackend(tripID, { degradedFrom: refusal });
+      }
+      return backend;
     } catch (error) {
       console.warn('[travel-planner] Firebase unreachable — saving to this device only.', error);
       return createLocalBackend(tripID, { degradedFrom: error });
     }
   }
   return createLocalBackend(tripID);
+}
+
+/**
+ * One read of this account's own trip list.
+ *
+ * Only an outright refusal counts. Being offline is not a refusal — Firestore
+ * answers from its cache and queues the writes, which is the whole point of
+ * the offline cache — so anything that is not the cloud saying "no" is
+ * allowed through and left to the sync ledger.
+ */
+async function refusedOutright(backend) {
+  try {
+    await backend.listTrips();
+    return null;
+  } catch (error) {
+    const code = String(error?.code || error?.message || '');
+    return /permission-denied|unauthenticated|insufficient/i.test(code) ? error : null;
+  }
 }
 
 // ------------------------------------------------------------------ firebase

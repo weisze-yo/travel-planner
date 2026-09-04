@@ -39,7 +39,7 @@ export default {
           <div class="chiprow">${dayPills()}</div>
           ${state.stranded ? html`
             <div class="stranded">
-              Saved on this device only — Firebase could not be reached, so nothing is syncing.
+              ${store.strandedReason()}
             </div>` : ''}
           <div class="legend">
             <div class="legend-row"><span class="legend-key"></span>Main route</div>

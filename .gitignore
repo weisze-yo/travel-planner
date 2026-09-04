@@ -9,3 +9,9 @@ xcuserdata/
 Package.resolved
 build/
 DerivedData/
+web/vendor/firebase-local/
+
+# Emulator logs
+firebase-debug.log
+firestore-debug.log
+test/node_modules/

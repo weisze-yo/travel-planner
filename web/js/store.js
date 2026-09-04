@@ -22,6 +22,8 @@ export const state = {
   ready: false,
   mode: 'local',
   stranded: false,
+  /** What the cloud actually said, when it said no. */
+  strandedError: null,
   /** The signed-in account, or null on a phone that has never signed in. */
   account: null,
   /** What the last sign-in attempt had to say, for the screen that asked. */
@@ -216,6 +218,9 @@ export async function boot(tripID = readActiveTripID() || seed.TRIP_ID) {
   // signed in, where this browser is simply where the trip lives.
   state.stranded = backend.mode === 'local' && isConfigured()
     && (signedIn() || Boolean(identityUID()));
+  // Why, in the words the banner uses. "Could not be reached" was true of
+  // every case and useful in none of them.
+  state.strandedError = backend.degradedFrom || null;
 
   // Anything made before there was an account comes with it. Idempotent, and
   // on almost every launch there is nothing to carry.
@@ -1793,7 +1798,11 @@ export function noteTimesAt(placeID, n = state.selectedDay) {
  * of every screen; only the stuck case gets more than a dot.
  */
 export function syncState() {
-  return sync.syncState({ stranded: state.stranded, configured: state.mode === 'firebase' || state.stranded });
+  return sync.syncState({
+    stranded: state.stranded,
+    configured: state.mode === 'firebase' || state.stranded,
+    signedIn: signedIn() || Boolean(identityUID()),
+  });
 }
 
 export const pendingSummary = sync.pendingSummary;
@@ -3044,6 +3053,32 @@ export function clearTripContent() {
     put('days', { ...day, areaSpan: '', items: [] });
   }
   if (state.trip) putTrip({ ...state.trip, prepCategories: [] });
+}
+
+/**
+ * Why this phone is saving locally when it should not be.
+ *
+ * Three answers, and they need different things done about them: the cloud
+ * refused an account it can see (its rules are not these rules), the cloud
+ * could not be reached at all, or something else went wrong. Saying "could
+ * not be reached" for all three sent everyone looking at their wifi.
+ */
+export function strandedReason() {
+  const code = String(state.strandedError?.code || state.strandedError?.message || '');
+  if (/permission-denied|insufficient/i.test(code)) {
+    return 'Saved on this phone only. The cloud can see your account and is refusing it, '
+      + 'which means its security rules are not the ones this app needs — in the Firebase '
+      + 'console, Firestore Database → Rules, paste firebase/firestore.rules and press '
+      + 'Publish. Nothing is lost meanwhile.';
+  }
+  if (/unauthenticated/i.test(code)) {
+    return 'Saved on this phone only. The cloud cannot prove who you are — signing in again '
+      + 'should fix it. Nothing is lost meanwhile.';
+  }
+  if (code) {
+    return `Saved on this phone only. The cloud said: ${code}. Nothing is lost meanwhile.`;
+  }
+  return 'Saved on this phone only — the cloud could not be reached, so nothing is syncing yet.';
 }
 
 // ---------------------------------------------------------------- sharing
