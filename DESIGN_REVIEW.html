@@ -294,34 +294,76 @@
 <div class="wrap">
 
   <header class="masthead">
-    <div class="kicker">Design review · round six · all three design sessions, built</div>
+    <div class="kicker">Design review · round seven · your answers, built</div>
     <h1>What the Travel Planner still needs</h1>
     <p class="standfirst">
-      All three design sessions are built and deployed. The day owns its times and its loops
-      and can be filled by pasting an itinerary in; the trips home, the spend report and the
-      swipe are drawn rather than improvised; the app now says when to leave, keeps a patch of
-      map on the phone and admits when a change has not reached the cloud; and a trip can be
-      shared on the rule that the plan is ours and what I've done about it is mine. Thirteen
-      things are still open — the fifteen that were, less the five now built, plus three the
-      sharing work created. Those three are the honest edges of what sharing can promise two
-      people without a server, and the first of them is a decision rather than a drawing.
+      You answered every open item and added eleven notes from using it. All of that is
+      built except the three that are not mine to do. Sharing was redesigned from your
+      answer to item 32 and is now a copy you are handed rather than a document you both
+      live in; a trip can be saved and opened as a file; shopping items, must-see spots and
+      a place's own table can all be corrected. Three things are left, and one of them
+      needs your Firebase console rather than my keyboard.
     </p>
     <div class="facts">
-      <span><b>47</b> fixed across six rounds</span>
-      <span><b>13</b> open, all needing design</span>
-      <span><b>0</b> blockers</span>
+      <span><b>58</b> fixed across seven rounds</span>
+      <span><b>3</b> open</span>
+      <span><b>1</b> waiting on you</span>
       <span><b>0</b> unanswered questions</span>
-      <span><b>3</b> new, from this round's work</span>
+      <span><b>351</b> browser checks, all green</span>
     </div>
   </header>
 
   <div class="done">
     <div class="done-head">
       <b>Fixed and deployed</b>
-      <span>This round's five and the five bugs they turned up, round five's four and its two,
-      round four's seven, all sixteen of your points, and the eight from round one.</span>
+      <span>This round's eleven notes and nine items, and the two bugs they turned up;
+      round six's five and its five; round five's four and its two; round four's seven; all
+      sixteen of your points; and the eight from round one.</span>
     </div>
     <ul class="done-list">
+      <li><i>32</i> <b>Sharing is a copy you are handed,</b> not a document you both live in.
+        Everything you change stays on your phone, online or off. Sharing publishes a snapshot
+        and whoever opens the link gets their own trip seeded from it; pressing Send an update
+        publishes another, and the far side reviews it a change at a time — yours against
+        theirs, one decision each. Nothing is ever applied to anyone's day for them, so there
+        is no conflict left to resolve.</li>
+      <li><i>33</i> <b>The shopping list and the packing list are out of the share entirely,</b>
+        along with the Log and the photos. Three kinds travel — the itinerary and its sub
+        routes, the places, the must-see spots — and both lists are named in the code so the
+        promise can be checked rather than believed.</li>
+      <li><i>30</i> <b>A trip is a file you can save and open.</b> One JSON document holding
+        everything, and it is the app's own export, so the way to learn the format is to export
+        a trip and read it. Text stays as the fast way in from an agent's email; the screen says
+        why both exist. Photos are left out so a file can be sent.</li>
+      <li><i>10</i> <b>A shopping item can be corrected</b> — name, what you expect to pay, how
+        many, and which place it belongs to. One sheet, reached from the list or from a place's
+        Shop tab, because it is the same correction.</li>
+      <li><i>08</i> <b>Must-see spots can be added, edited and deleted,</b> with an optional
+        reference picture kept as a thumbnail on the phone.</li>
+      <li><i>07</i> <b>A place's table is typeable.</b> Five rows worth having; an empty one is
+        not kept, so the table never shows a label with nothing under it.</li>
+      <li><i>note</i> <b>The map's list is a sheet you can pull</b> — three heights, settled
+        from wherever you let go and remembered for the session. The handle is a button as well
+        as a drag. The sub route screen takes the same one.</li>
+      <li><i>note</i> <b>Creating a trip blocks the rest of the screen.</b> The list stays
+        visible behind a scrim; Create or Cancel are the only ways out.</li>
+      <li><i>note</i> <b>The five tabs are gone from the trips home,</b> where they never meant
+        anything, and the settings icon is a gear rather than a sun.</li>
+      <li><i>note</i> <b>Adding a sub route, deleting one, and deleting a removed stop</b> all
+        live behind the pencil now. An empty lane outside edit mode draws nothing.</li>
+      <li><i>note</i> <b>The Must-see tab shows the full card,</b> not a summary and a button to
+        the real thing — which retired a whole screen. The outfit advice it also held moved to
+        Prep, and the forecast strip left Prep, which is about the bag.</li>
+      <li><i>note</i> <b>A stop's sub route is pinned under the Nearby panel</b> rather than
+        left to scroll away among the places. The Log's recap card, which described a feature
+        that did not exist, is gone until it does.</li>
+      <li><i>bug</i> <b>An itinerary row kept its own copy of the place's facts,</b> which
+        shadowed the place record — so corrections saved and then vanished. Third time this
+        exact duality has bitten; the place owns them now and the row's copy is deleted on
+        migration.</li>
+      <li><i>bug</i> <b>The Log's privacy promise only appeared once there was a note in it,</b>
+        so it was missing from the empty Log — the one screen where somebody is deciding
+        whether to write the honest version.</li>
       <li><i>29</i> <b>The trips home is a status board.</b> A running trip gets a cover, the day
         it is on and the next thing on it; an upcoming one says how ready it is and how many
         days away; a finished one carries its recap. The cover can be a photo from the Log, one
@@ -512,252 +554,99 @@ day
     </div>
   </div>
 
-  <h2>Settle these first</h2>
+  <h2>The one that is yours to do</h2>
   <p class="section-note">
-    The three sessions took everything they were drawn for. What is left is three new items
-    the sharing work created — each one an edge of what "no paid APIs and it must work
-    offline" can actually promise two people — plus the six that were always going to wait.
-    These three are the ones to answer before anyone uses the share on a real trip.
+    You said yes to standing Firebase up properly, and that is the only thing left that I
+    cannot finish on my own — it needs your Google account and a console, not more code.
+    Everything above it is written and waiting.
   </p>
 
   <section>
 
     <div class="item head-here">
-      <div class="rail"><div class="num">31</div><span class="sev serious">New</span></div>
+      <div class="rail"><div class="num">31</div><span class="sev serious">Yours</span></div>
       <div>
-        <h3>Sharing needs a server the free plan does not give it<span class="changed">new</span></h3>
+        <h3>Firebase, properly, with a real sign-in<span class="changed">you said yes</span></h3>
         <p>
-          The whole of session three is built and works against one trip document: the people,
-          the roles, the link, the change feed, the copied-once shopping list, and the promise
-          that the Log never leaves the phone. Two phones reading and writing the same document
-          behave exactly as designed — I verified that by running both sides against one store.
+          A new account starts with no trips until one is created or shared in — that is your
+          decision and it is the right one, because seeding somebody else's demo into a fresh
+          account is the app talking about itself rather than about your trip.
         </p>
         <p>
-          What is missing sits underneath. Firestore's free tier will hold the document, but
-          opening exactly one trip to exactly the people invited to it needs security rules
-          keyed on a real signed-in identity, and Apple and Google sign-in both need a client
-          id and a redirect this app cannot own from a static host. So today the sign-in screen
-          collects the name it needs and says so plainly, rather than pretending to be OAuth.
+          What is already written for it: the store reads and writes a published snapshot
+          through two small functions, so pointing them at a Firestore collection instead of
+          this phone is the whole swap and nothing above them changes. Signing in already
+          keeps the anonymous identity's id, so every note, role and snapshot that pointed at
+          it still does.
+        </p>
+        <p>
+          What needs you: the project, Google sign-in turned on, and the rules pasted in. Apple
+          sign-in additionally needs a paid Apple Developer account — worth deciding whether
+          that is worth it, since Google and email cover everyone who is not on an iPhone-only
+          household.
         </p>
         <div class="ask">
-          <b>To decide, not design</b>
-          Whether to stand up the Firebase project properly (free, but it needs your Google
-          account and a domain for the redirect), or to keep sharing as one-device-per-trip and
-          exchange a trip as a file — which the stuck screen's "Save a copy" already does.
-          Everything drawn in session three works either way; only who can reach the document
-          changes.
-        </div>
-      </div>
-    </div>
-
-    <div class="item head-here">
-      <div class="rail"><div class="num">32</div><span class="sev serious">New</span></div>
-      <div>
-        <h3>Two phones with no signal both win<span class="changed">new</span></h3>
-        <p>
-          Last edit wins is the right rule and it is what is built. The case it does not cover
-          is the one this trip is most likely to hit: both phones offline in a market, both
-          editing Day 3, both writing when signal returns. The later write lands second and
-          wins — not the later <em>edit</em>. So the person who reconnects last wins, which is
-          not the same thing and is not what the banner promises.
-        </p>
-        <p>
-          The banner does still tell the truth about what moved, and the fix is the one the
-          design already names: change it back and they see the same banner tomorrow. But a
-          six-hour-old edit overwriting a fresh one is worth knowing about before it happens.
-        </p>
-        <div class="ask">
-          <b>To design</b>
-          Whether a write that is older than the value it replaces should say so — a mark on
-          the row, or a line in the banner — and whether that is worth a timestamp per field
-          rather than per document.
-        </div>
-      </div>
-    </div>
-
-    <div class="item head-here">
-      <div class="rail"><div class="num">33</div><span class="sev serious">New</span></div>
-      <div>
-        <h3>Nobody can see that Ana bought the tenugui<span class="changed">new</span></h3>
-        <p>
-          Your call, and the design says it out loud rather than implying a coordination it does
-          not have: the shopping list is copied once, and after that nobody sees anyone else's
-          additions or purchases. The guest's list carries one line saying where it came from,
-          and the owner's sheet says how many items the other side does not have.
-        </p>
-        <p>
-          Now that it is built, the shape of the gap is clearer than it was on paper. It is not
-          symmetrical: the owner can send new items and knows they arrived, while a guest who
-          adds something has no way to tell anyone. So the person who made the trip keeps a
-          channel and everyone else does not.
-        </p>
-        <div class="ask">
-          <b>To design, if it bites</b>
-          The smallest fix is still one shared line per item rather than syncing the list — and
-          the second smallest is letting a guest send items back the same way the owner sends
-          them out. Worth leaving alone until a real trip proves it needs one.
+          <b>Next step</b>
+          Ask for the walkthrough and it comes as numbered console steps with the rules to
+          paste. Nothing about the app changes shape; it is the difference between two phones
+          being able to reach the same envelope and not.
         </div>
       </div>
     </div>
 
   </section>
 
-  <h2>Then these</h2>
+  <h2>Then these two</h2>
+  <p class="section-note">
+    Both are passes across every screen rather than features, which is why they are last:
+    they are worth doing once the screens have stopped moving, and this round moved a lot of
+    them.
+  </p>
 
   <section>
 
     <div class="item">
-      <div class="rail"><div class="num">30</div><span class="sev serious">Serious</span></div>
-      <div>
-        <h3>A pasted itinerary has no positions, so the map is empty<span class="changed">sharper</span></h3>
-        <p>
-          Pasting six days in takes about a minute and gives you every stop, every time and
-          every length — and not one coordinate, because reading a map link is per-place and
-          needs the network. So on a real trip the Plan is complete and the Map is blank, which
-          is the opposite way round from the demo.
-        </p>
-        <p>
-          Sharper now that keeping a map area is built, because that feature has to draw its
-          box around something. Today it falls back to the trip's own position and says how
-          many stops are inside; on a freshly pasted trip that number is zero, and the box is a
-          guess. The same hole shows up in the leave-now strip, which needs a walking distance
-          it cannot compute without positions.
-        </p>
-        <div class="ask">
-          <b>To design</b>
-          How an unlocated stop reads on the Plan and on the Map, where the count lives, and
-          whether there is a way to work through them in one pass. Worth deciding whether
-          locating a stop is even worth doing for all of them, or only for the ones you will
-          walk from.
-        </div>
-      </div>
-    </div>
-
-    <div class="item">
-      <div class="rail"><div class="num">08</div><span class="sev serious">Serious</span></div>
-      <div>
-        <h3>Must-see spots can be ticked, but not added</h3>
-        <p>
-          Sharper again this round. Shots now correctly belong to one stop, so your real trip has
-          none and no way to create any — the four demo shots belong to the demo market. Every
-          stop's Must-see tab reads "nothing noted yet · adding your own is still to come",
-          which is an honest label for a hole.
-        </p>
-        <div class="ask">
-          <b>To design</b>
-          Adding a spot — name, where to stand, best time — attaching a reference image, and the
-          card once your own photo sits beside the reference. Without Cloud Storage photos are
-          320px thumbnails, so do not design for full-bleed images.
-        </div>
-      </div>
-    </div>
-
-    <div class="item">
-      <div class="rail"><div class="num">10</div><span class="sev serious">Serious</span></div>
-      <div>
-        <h3>A shopping item still can't be corrected<span class="changed">progressed</span></h3>
-        <p>
-          You can now delete an item, tag it with a category, and filter the list by day and
-          place. You still cannot rename one, change its estimate, move it to a different shop,
-          or give it a quantity — so a typo means delete and retype.
-        </p>
-        <div class="ask">
-          <b>To design</b>
-          The edit state of an item. Quantity is worth deciding on at the same time, since it
-          changes how a price reads.
-        </div>
-      </div>
-    </div>
-
-    <div class="item">
-      <div class="rail"><div class="num">07</div><span class="sev serious">Serious</span></div>
-      <div>
-        <h3>What place information is worth typing<span class="changed">progressed</span></h3>
-        <p>
-          Partly answered by the work: pasting a map link now pulls opening hours, a phone number
-          and a website from OpenStreetMap when it has them, which costs nothing. Coverage is
-          volunteer data, so most places will come back with a position and little else.
-        </p>
-        <p>
-          So the eight-row table stands mostly empty for anywhere you added yourself, and there
-          is no way to fill a row by hand.
-        </p>
-        <p>
-          Sharper this round: a pasted stop arrives with a name, a time, a length and an entirely
-          empty table. That is now the commonest state a stop is in, so how a mostly-empty table
-          reads is no longer an edge case.
-        </p>
-        <div class="ask">
-          <b>To design</b>
-          Which rows earn their keep, how a mostly-empty table reads, and whether a single
-          free-text "what I need to know" beats eight labelled rows for your own places. A
-          pasted itinerary's continuation lines already land in the stop's note, which may be
-          most of what that free-text field would hold.
-        </div>
-      </div>
-    </div>
-
-    <div class="item">
       <div class="rail"><div class="num">12</div><span class="sev serious">Serious</span></div>
       <div>
-        <h3>Bilingual, and the gap widens with every screen<span class="changed">wider</span></h3>
+        <h3>More than one language, typed into the itinerary<span class="changed">answered</span></h3>
         <p>
-          Wider again. On top of round four's five screens, this round added the paste screen,
-          the confirm screen and its per-row flags, the two out-of-order warnings, the loop
-          switcher and every string on the rebuilt Log. The warnings are the awkward ones: they
-          are generated sentences with a place name and a time in them, not labels.
+          Your answer: people will type Chinese, Japanese and Korean into this, and the screens
+          have to hold whatever they type. So this is a robustness pass rather than a
+          translation project, which makes it much smaller than it looked.
         </p>
         <p>
-          Worth knowing that the parser reads Chinese day headings and times already
-          (<em>第三天</em>, <em>下午3:00</em>), so the input half is bilingual and the output half
-          is not.
+          The parser already reads CJK day headers and times, and a name is abbreviated by
+          taking its first character rather than transliterating it, so 陳美玲 shows as 陳. What
+          is left is every place a line is clamped or a width is fixed, and the warnings — every
+          one of those is a sentence the app builds in English, which is the real gap.
         </p>
         <div class="ask">
           <b>To design</b>
-          Both languages in any new artboard, and how a generated warning sentence reads in
-          Chinese. And the awkward cases settled: place names that
-          stay local, and a long Chinese label in a chip sized for English.
+          What a warning strip says when the stop it names is in a script the sentence around
+          it is not. Seeing one drawn in three scripts is the only way to know whether it
+          reads.
         </div>
-      </div>
-    </div>
-
-    <div class="item">
-      <div class="rail"><div class="num">13</div><span class="sev polish">Polish</span></div>
-      <div>
-        <h3>No dark mode</h3>
-        <p>
-          Unchanged. Light only, and half your use will be at night on a coach or in bed planning
-          tomorrow. The route colours want re-checking on a dark ground rather than inverting.
-        </p>
-        <div class="ask"><b>To design</b> A dark palette for the existing tokens.</div>
       </div>
     </div>
 
     <div class="item">
       <div class="rail"><div class="num">02</div><span class="sev polish">Polish</span></div>
       <div>
-        <h3>Empty states and the first launch<span class="changed">progressed</span></h3>
+        <h3>Every screen's empty state<span class="changed">answered</span></h3>
         <p>
-          Most of these now exist in plain form — the empty day, the stop with nothing saved
-          around it, the stop with no shots, the trip with no trips. They are functional, not
-          designed.
+          Agreed as needed, and this round made it more so: importing a trip file, joining a
+          shared one and starting from an account with nothing in it are all new ways to arrive
+          at an empty screen.
         </p>
         <p>
-          The first-launch question is now sharper: the app still seeds a demo trip so the
-          screens have content, and you have to open trip settings to empty it. With a trips
-          home in place, a first run could simply offer "start a trip" beside "look around the
-          demo".
-        </p>
-        <p>
-          And a third option exists now that did not before: <em>paste an itinerary</em>. It is
-          the fastest route from an empty trip to a usable one, and it is currently buried behind
-          Plan's pencil and a line in trip settings.
+          Some are already good — the empty Log is one sentence and one button, the empty day
+          says what a day is for. Several are a grey line that says nothing. The answer is a
+          system rather than twelve sentences, which is why it is worth drawing.
         </p>
         <div class="ask">
           <b>To design</b>
-          The first-run choice — start empty, look around the demo, or paste one in — and a
-          starter packing list, since Prep is completely blank after emptying a trip and is the
-          least helpful screen in the app right now.
+          One shape for all of them: what it says, whether it offers the action, and what it
+          does on a screen where the emptiness is somebody else's doing rather than yours.
         </div>
       </div>
     </div>
@@ -765,129 +654,99 @@ day
     <div class="item">
       <div class="rail"><div class="num">16</div><span class="sev polish">Polish</span></div>
       <div>
-        <h3>Accessibility pass<span class="changed">progressed</span></h3>
+        <h3>The accessibility pass<span class="changed">answered</span></h3>
         <p>
-          The payment control is a real target now and the category picker beside it matches. The
-          rest stands: amber-on-cream chips near the edge of readable contrast, labels at
-          9.5–10px, the sort and packed-in controls still under 44px. The new swipe gesture also
-          needs a keyboard and screen-reader equivalent — right now deleting is gesture-only, and
-          that now includes deleting a stretch of free time.
-        </p>
-        <p>
-          This round added more of the same problem. The FOR/MIN length field on a plan row is
-          56px wide, and the confirm screen packs a day picker, a start time and a length onto
-          one line with 9.5px labels between them. Both are the densest controls in the app.
+          Agreed. The two densest controls are the swipe row and the sheet handle, and both now
+          have a keyboard-reachable alternative — the handle is a button as well as a drag, and
+          a swipe row's bin is a real button. Neither has been through a screen reader.
         </p>
         <div class="ask">
-          <b>To design</b>
-          Minimum sizes and contrast, a check against iOS larger-text settings, a non-gesture
-          route to delete, and a look at whether a time and a length can be entered together at
-          a comfortable size on a phone.
+          <b>To do, not design</b>
+          A pass with VoiceOver on a real phone, and the contrast check on the amber and rust
+          text. It needs the device more than it needs a drawing.
         </div>
-      </div>
-    </div>
-
-    <div class="item">
-      <div class="rail"><div class="num">14</div><span class="sev polish">Polish</span></div>
-      <div>
-        <h3>Nothing is searchable</h3>
-        <p>
-          Unchanged as work, larger as a problem. Fine at fourteen places; not at a hundred —
-          and a day now holds as many notes as you wrote rather than one, so the Log grows
-          faster than it did. The day and place filters on Shop help there and nowhere else.
-        </p>
-        <div class="ask"><b>To design</b> Per-screen or one trip-wide search, and what it returns.</div>
-      </div>
-    </div>
-
-    <div class="item">
-      <div class="rail"><div class="num">15</div><span class="sev polish">Polish</span></div>
-      <div>
-        <h3>The trip recap is promised but doesn't exist</h3>
-        <p>
-          Unchanged as work. The Log's black card still describes route map, all photos, what
-          you bought, and the places you saved but never reached. The spend report now covers
-          part of the money half of that promise, and the Log's day cards part of the notes
-          half.
-        </p>
-        <div class="ask"><b>To design</b> The recap, especially the saved-but-never-reached list.</div>
       </div>
     </div>
 
   </section>
 
-  <h2>Both questions, answered</h2>
+  <h2>Closed, at your word</h2>
 
   <div class="questions">
     <div class="q">
-      <div class="q-label">People</div>
+      <div class="q-label">Item 13</div>
       <div>
-        <h3>Family and friends, one trip at a time</h3>
+        <h3>Light only, for now</h3>
+        <p>Dark mode is off the list. The palette is defined in one place if it comes back.</p>
+      </div>
+    </div>
+    <div class="q">
+      <div class="q-label">Item 14</div>
+      <div>
+        <h3>No search yet</h3>
+        <p>Kept as a future enhancement. Nothing in the app promises it.</p>
+      </div>
+    </div>
+    <div class="q">
+      <div class="q-label">Item 15</div>
+      <div>
+        <h3>The recap is gone</h3>
         <p>
-          So item 11 is real design work rather than sign-in housekeeping, and it is the biggest
-          thing left on the list. It is written out above with the four pieces I need drawn.
+          Removed rather than left promised. A finished trip's card still carries its real
+          counts — stops, spent, notes — because those are facts rather than a promise.
         </p>
       </div>
     </div>
     <div class="q">
-      <div class="q-label">Platforms</div>
+      <div class="q-label">Item 33</div>
       <div>
-        <h3>The web app, and only the web app</h3>
+        <h3>The lists are not shared at all</h3>
         <p>
-          Parked, and this is the last time it appears in one of these. Every screen you draw is
-          a web screen on an iPhone: Safari's chrome, the home-screen install, no native
-          navigation bar to lean on. Nothing is lost if a Mac turns up later — the data layer is
-          the same either way.
+          Your call, and it simplified the whole model rather than complicating it. Shopping and
+          packing are now on the same side of the line as the Log.
         </p>
       </div>
     </div>
   </div>
 
-  <h2>What I'd design in what order</h2>
+  <h2>What I'd do in what order</h2>
   <p class="section-note">
-    The three sessions are done. What is left has no session shape to it, so this is simply
-    the order I would take it in.
+    Three things, and the first is yours.
   </p>
   <ol class="order">
-    <li><b>Item 31 first, and it is a decision rather than a drawing.</b> Whether sharing gets a real backend or stays a file you hand someone. Everything drawn in session three works either way, but items 32 and 33 only matter if the answer is a backend.</li>
-    <li><b>Item 30</b>, the pasted itinerary with no positions. It is now the thing most other features trip over: the map area has nothing to draw a box around, and the leave-now strip has no walk to measure.</li>
-    <li><b>Items 8 and 10</b> — adding a must-see spot, and correcting a shopping item you got wrong in the shop. Both are small holes in screens that otherwise work.</li>
-    <li><b>Items 7 and 12</b> — what place information is worth typing, and the second language. Twelve gets wider with every screen and this round added six of them.</li>
-    <li><b>The rest</b> — dark mode, empty states, the accessibility pass, search, the recap — once you have used it for a day and know what you actually reached for.</li>
+    <li><b>Item 31 — Firebase.</b> Ask for the walkthrough. Until it is done, sharing works but only between trips on one phone, which is enough to see the design and not enough to use.</li>
+    <li><b>Item 02, the empty states</b>, drawn before built. There are three new ways to arrive at an empty screen since last round and no system for what any of them says.</li>
+    <li><b>Item 12's warnings and item 16's screen-reader pass</b>, in either order. Both are passes rather than features, and both want a real phone in your hand.</li>
   </ol>
 
   <div class="footnote">
-    <b>How this was checked.</b> Round six was driven in a browser at 390×844 like the five
-    before it: <b>145 checks across three harnesses</b> — 56 for the trips home, the spend
-    report and the swipe, 56 for the strip, the offline map and the sync ledger, 89 for
-    sharing — all passing, with no console errors on any screen.
-    The reminder rules were run against a real schedule at four different clock times and
-    silenced and re-raised as designed. The tile maths was checked against the trip's own
-    box: 300 tiles for streets, 4,018 for doorways, and the second refused as bulk. A real
-    download of twelve tiles was run end to end and the tiles were found afterwards in the
-    cache the service worker serves from. A ledger three days old was planted and the strip,
-    the stuck screen and the discard were driven through to an empty queue.
-    Sharing was checked with both sides running against one trip document, which is the shape
-    a backend would give them: a link was made as can-read expiring in 24 hours, opened on a
-    second identity, joined, signed in — and the anonymous identity carried through rather
-    than being replaced. The owner then moved a stop, and the reader's Day 3 named the change,
-    who made it and what it used to say, cleared it on Got it, and offered the whole record.
-    The share snapshot was inspected directly and carries no Log, no packing list and nothing
-    marked bought. A removal was run and the kept-side trip came out with the lists and the
-    Log and none of the stops.
-    <b>What that turned up:</b> five bugs, all listed above and all fixed — nothing listening
-    to the sync ledger, a warning about an area state that could not exist, a date formatter
-    that threw inside a render, a removed trip listed twice, and an unnamed owner reading as
-    "You keeps this trip".
+    <b>How this was checked.</b> Round seven was driven in a browser at 390×844 like the six
+    before it: <b>351 checks across seven harnesses</b>, all passing, with no console errors
+    on any screen.
+    The new sharing model was checked with two identities on two separate trip documents,
+    which is what it now actually makes: a link was created, joined — and joining produced a
+    genuinely separate trip carrying the itinerary and none of the owner's shopping, packing
+    or Log — then the owner changed a stop, sent an update, and the far side was offered one
+    decision with both versions side by side. Keeping theirs left the day alone; taking
+    theirs wrote it in. The snapshot was inspected directly and carries none of the four
+    private kinds.
+    A trip was exported, read back, and every stop, coordinate, place, sub route, must-see
+    spot, shopping item and note counted on both sides. Three kinds of unreadable file were
+    each refused with their own sentence.
+    A shopping item was corrected in all four fields and moved between places; a must-see
+    spot was added, edited and refused when untitled; a place's table was typed into and an
+    empty row was dropped rather than kept.
+    <b>What that turned up:</b> two bugs, both fixed — an itinerary row shadowing its place's
+    facts, which is the third time that particular duality has bitten; and the Log's privacy
+    promise missing from the empty Log.
     <b>What that did not cover:</b> the three free services — weather, geocoding, exchange
     rates — are blocked from this sandbox, so their parsers were verified against recorded
     payloads rather than live calls. Tiles were served locally rather than from
-    OpenStreetMap, so the cap and the two-lane pacing are verified but the real servers'
-    behaviour is not. And sharing has no backend yet, which is item 31: two phones were
-    simulated against one document rather than actually being two phones.
-    <b>Still not covered:</b> anything that only shows up on a real trip with real signal —
-    and, for the parser, any itinerary shaped differently from the ones I could invent. It
-    will misread lines; the confirm screen is the answer to that, not the parser.
+    OpenStreetMap. And sharing still has no backend, which is item 31: the two phones were
+    two trips in one browser rather than two phones.
+    <b>Still not covered:</b> anything that only shows up on a real trip with real signal, a
+    screen reader on a real phone, and any itinerary shaped differently from the ones I could
+    invent.
   </div>
 
 </div>
