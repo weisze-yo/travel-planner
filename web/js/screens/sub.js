@@ -13,7 +13,7 @@ import { html, raw, icon, delegate, clock } from '../util.js';
 import * as store from '../store.js';
 import { state } from '../store.js';
 import { back, go } from '../nav.js';
-import { bindDragReorder, mapsLinks, draggableSheet } from './parts.js';
+import { bindDragReorder, mapsLinks, draggableSheet, swipeToDelete } from './parts.js';
 
 let editing = false;
 let mapView = null;
@@ -208,9 +208,14 @@ export default {
                 </div>
                 <button class="btn jade" data-act="loop-save">Save these</button>
               </div>
-              <button class="btn none mt12" style="color:var(--danger-fg);height:38px" data-act="delete-loop">
-                Delete this sub route
-              </button>
+              <div class="swipe-row swipe-flat mt12" data-loop-row="${route.id}" data-loop-name="${route.name}">
+                <div class="swipe-bin"><button class="bin" data-swipe-delete aria-label="Delete ${route.name}">${raw(icon.bin)}</button></div>
+                <div class="swipe-face">
+                  <div class="row center" style="height:38px;padding:0 2px">
+                    <span class="f125 w650" style="color:var(--danger-fg)">Delete this sub route</span>
+                  </div>
+                </div>
+              </div>
             ` : (count ? html`
               <div class="row g8" style="margin:12px 0 4px">
                 <a class="btn ink grow" style="height:44px" href="${walkURL(schedule)}" target="_blank" rel="noopener">
@@ -256,14 +261,15 @@ export default {
       store.setReturn({ minutes: root.querySelector('#back-mins')?.value }, loop);
     });
 
-    delegate(root, '[data-act="delete-loop"]', () => {
-      const loop = store.activeLoop();
-      if (!loop) return;
-      // eslint-disable-next-line no-alert -- deliberate: deletion is permanent.
-      if (!window.confirm(`Delete "${loop.name}"? The places you picked stay saved; only the sub route goes.`)) return;
-      store.deleteSubRoute(loop.id);
-      editing = false;
-      back();
+    swipeToDelete(root, {
+      rowSelector: '[data-loop-row]',
+      name: (row) => row.dataset.loopName,
+      label: () => 'The places you picked stay saved; only the sub route goes.',
+      onDelete: (row) => {
+        store.deleteSubRoute(row.dataset.loopRow);
+        editing = false;
+        back();
+      },
     });
 
     const nameBox = root.querySelector('#loop-name');

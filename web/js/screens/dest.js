@@ -22,6 +22,8 @@ const TABS = [
 
 /** Which panel is showing. Point 7: the tabs stay on this screen. */
 let tab = 'info';
+/** The stop/place `tab` belongs to, so a genuinely different subject resets it. */
+let tabSubject = null;
 
 /** Resolves whichever handle the caller had: a plan row, or a nearby place. */
 export function subject(params = {}) {
@@ -88,6 +90,13 @@ export default {
     const it = subject(params);
     if (!it) {
       return html`<section class="screen"><div class="empty">This stop is no longer on your plan.</div></section>`;
+    }
+
+    // A different stop/place is a different subject: land back on Info
+    // rather than carrying over whichever tab the last one was left on.
+    if (it.anchorID !== tabSubject) {
+      tabSubject = it.anchorID;
+      tab = 'info';
     }
 
     // Everything on this screen is scoped to this one stop.

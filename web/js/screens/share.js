@@ -63,7 +63,7 @@ export default {
             ${people.length ? people.map((p) => person(p)) : owner()}
             ${people.length ? '' : html`<div class="f12 soft" style="padding:10px 12px">Nobody else, yet.</div>`}
             ${shared ? html`
-              <button class="btn-dashed" data-act="add">+ Add someone</button>` : ''}
+              <button class="btn-dashed" data-act="resend">Resend the link</button>` : ''}
           </div>
           ${people.length > 1 ? html`
             <div class="f11 soft lh145 mb18">
@@ -71,20 +71,10 @@ export default {
               copy of the itinerary they already have, and stop receiving your updates.
             </div>` : ''}
 
-          ${shared ? sending(unsent) : offer()}
+          ${shared ? sending(unsent) : ''}
 
-          <div class="eyebrow">The link</div>
-          ${link ? liveLink(link, live) : html`
-            <div class="card" style="padding:13px 14px">
-              <div class="f12 soft lh145 mb12">
-                Send one link to the group chat. Whoever opens it joins this trip only —
-                your other trips and your account stay yours.
-              </div>
-              <button class="btn jade" style="width:100%;height:46px" data-act="create">Create the link</button>
-              <div class="f11 soft lh145 mt10">
-                People who join keep the trip until you remove them, even after the link expires.
-              </div>
-            </div>`}
+          <div class="eyebrow">${link ? 'The link' : 'Make a link'}</div>
+          ${link ? liveLink(link, live) : offer()}
         </div>
       </section>`;
   },
@@ -166,7 +156,7 @@ export default {
       changing = null;
     });
 
-    delegate(root, '[data-act="add"]', () => {
+    delegate(root, '[data-act="resend"]', () => {
       notice = 'Send the link again — whoever opens it joins as '
         + `${ROLES[state.trip?.link?.role || 'read'].label.toLowerCase()}.`;
       repaint();
@@ -273,34 +263,47 @@ function sending(unsent) {
     </div>`;
 }
 
-/** Before anyone has it: the role and the expiry, chosen first. */
+/**
+ * Before anyone has it: role, then expiry, then the button they both feed —
+ * one card, top to bottom, so picking either visibly leads to Create the
+ * link rather than reading as a separate setting.
+ */
 function offer() {
   return html`
-    <div class="eyebrow">They will be able to</div>
-    <div class="card-list mb14">
-      ${['edit', 'read'].map((id) => html`
-        <button class="linkrow left" data-role="${id}" style="width:100%">
-          <span class="radio${role === id ? ' on' : ''}"></span>
-          <span class="grow">
-            <span class="linkrow-t">${ROLES[id].label.replace('Can ', '').replace(/^./, (c) => c.toUpperCase())}</span>
-            <span class="linkrow-s">${ROLES[id].can}</span>
-          </span>
-        </button>`)}
-    </div>
-    <div class="f11 soft lh145 mb18">You can change this per person afterwards.</div>
-
-    <div class="eyebrow">Link stops working after</div>
-    <div class="chiprow mb8">
-      ${EXPIRIES.map((e) => html`
-        <button class="pick-chip${expiry === e.id ? ' on' : ''}" data-expiry="${e.id}">${e.label}</button>`)}
-    </div>
-
-    <div class="card mb18" style="padding:12px 13px;background:var(--jade-bg);border-color:var(--jade-bd)">
+    <div class="card mb14" style="padding:12px 13px;background:var(--jade-bg);border-color:var(--jade-bd)">
       <div class="f12 w650" style="color:var(--jade)">They get a copy, not a live view.</div>
       <div class="f11 lh145 mt5" style="color:var(--jade-fg)">
         Whatever either of you changes stays on your own phone. When you want them to have
         your changes you send an update, and they choose what to take from it. Your shopping
         list, your packing list and your Log are never in it at all.
+      </div>
+    </div>
+
+    <div class="card pad">
+      <div class="eyebrow">1 · They will be able to</div>
+      <div class="card-list mt8 mb10">
+        ${['edit', 'read'].map((id) => html`
+          <button class="linkrow left" data-role="${id}" style="width:100%">
+            <span class="radio${role === id ? ' on' : ''}"></span>
+            <span class="grow">
+              <span class="linkrow-t">${ROLES[id].label.replace('Can ', '').replace(/^./, (c) => c.toUpperCase())}</span>
+              <span class="linkrow-s">${ROLES[id].can}</span>
+            </span>
+          </button>`)}
+      </div>
+      <div class="f11 soft lh145 mb18">You can change this per person afterwards.</div>
+
+      <div class="eyebrow">2 · Link stops working after</div>
+      <div class="chiprow mt8 mb18">
+        ${EXPIRIES.map((e) => html`
+          <button class="pick-chip${expiry === e.id ? ' on' : ''}" data-expiry="${e.id}">${e.label}</button>`)}
+      </div>
+
+      <div class="eyebrow mb8">3 · Send it</div>
+      <button class="btn jade wide" style="height:46px" data-act="create">Create the link</button>
+      <div class="f11 soft lh145 mt10">
+        Whoever opens it joins this trip only — your other trips and your account stay yours.
+        They keep it until you remove them, even after the link expires.
       </div>
     </div>`;
 }
