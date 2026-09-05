@@ -2,7 +2,8 @@
 
 **Date:** 5 Sep 2026 · **Session type:** review, reconciliation, planning. **No application code was changed.**
 **Audited against:** `main` @ `39e00b3` (app code unchanged since `4233c9a`).
-**Read first:** `final-implementation-readiness-review.md`, then `implementation-readiness-map.md`. This document does not replace either. It reconciles the map against the code as it stands **today**, because the map was written against a snapshot that is behind `main`.
+**Updated 5 Sep 2026:** all five open decisions are now answered — see §5. **Verdict is now READY FOR IMPLEMENTATION.**
+**Read first:** `final-implementation-readiness-review.md` (including its appended §13, the decision record), then `implementation-readiness-map.md` (including its appended §9). This document does not replace either. It reconciles the map against the code as it stands **today**, because the map was written against a snapshot that is behind `main`.
 
 **The single most important thing in this document:** the map is accurate in substance and four of its findings are already fixed. Verify by symbol, never by line number — the map's line numbers have drifted by 20–170 lines.
 
@@ -93,19 +94,26 @@ Verified this session, not assumed:
 
 ---
 
-## 5. Open decisions
+## 5. Decisions — all closed
 
-**Four from the readiness review, all still open**, plus one this audit narrows:
+**Answered by the product owner, 5 Sep 2026.** Canonical record: `final-implementation-readiness-review.md` §13, mirrored into `implementation-readiness-map.md` §9. **Nothing in this section is waiting on anyone.**
 
-| ID | Question | Design's recommendation | Gates |
-|---|---|---|---|
-| **OD-6** | May `Empty this trip` delete the Shopping List, Packing List and Log? | Yes, with the corrected confirmation naming them | M-11, and `clearTripContent()`'s scope |
-| **OD-9** | After Create, keep forcing the user into Paste? | Keep it; add nothing | The New-trip modal's exit |
-| **OD-7** | Should a blank map explain why? | No | N-10's copy only — the card works either way |
-| **OD-8** | Is install / first-run in scope, and on which platforms? | Android only, one line on Trips home after a second launch | N-15 — **and its premise needs restating: the manifest and icons already ship, so this is the install *line*, not the plumbing** |
-| **D-1** | An inverted end time yields a long overnight window. Should an implausibly long derived window be flagged? | **None — this audit found the code already decides "overnight", deliberately.** The remaining question is narrower than the map states. | Batch 4 only |
+| ID | Answer | What it means for the build |
+|---|---|---|
+| **OD-6** | **YES** | `Empty this trip` may delete the Shopping List, Packing List and Log alongside everything else. Implement the corrected confirmation that names them. On a joined copy it also clears the review base — so M-11 stays sequenced after N-2. |
+| **OD-9** | **Add the choice** | The design's own named alternative, taken: **one ghost on the New-trip modal, label `I'll do this later`,** landing on the trip just created. Not a new screen, not a step inside Paste, not a changed default — Paste stays the default path. The map's §5 row for this flips from rejected-pending to approved. Review §13.1 is canonical. |
+| **OD-7** | **NO** | The blank map ships its approved amber card and never guesses the cause. N-10 unblocked; "a guess about why the map is blank" remains a permanent rejection. |
+| **OD-8** | **YES**, Android only | One unobtrusive install line on Trips Home after a second launch. No first-visit prompt, no banner; iOS is not prompted. **N-15 is withdrawn — the scope is the line alone** (see below). |
+| **D-1** | **No flag** | `itemWindow()`'s overnight rule is now an approved decision rather than an unexamined one. A `19h 15m` derived length is correct output. Add no plausibility check, no rust line, no fifth `dayIssues()` kind, no automatic correction; leave the explanatory comment in place. |
 
----
+### 5.1 OD-8 is smaller than the review's rationale implies
+
+The review argued install was "half-built" because the manifest was absent and *"a `cache.addAll()` rejection fails the whole service-worker install."* **Both halves are wrong**, verified here:
+
+- `web/manifest.webmanifest` has shipped since `283bc79`, is valid, names four icons, and returns **200 in production**.
+- `sw.js` line 65 is `Promise.all(ASSETS.map((url) => cache.add(url).catch(() => {})))`, under the comment *"addAll fails the whole install if one file 404s, so add individually."* There is no `addAll` and no install failure. `existing-ui-audit.md` §282 already said the service worker is defensive and *"install is unaffected"*; the review contradicted its own earlier document.
+
+**Android installability already works today.** The approved work under OD-8 is the Trips-Home line and nothing else. Do not touch `web/manifest.webmanifest`, `web/icons/` or `web/sw.js`.
 
 ## 6. Implementation roadmap
 
@@ -116,14 +124,14 @@ Re-evaluated against the current tree. Batch 0 items are one-liners; batches are
 | **0** | Three CSS additions | `.hint-jade` (N-1) · `.sync-dot.grey` → hollow (M-15) · `.side.stacked` + `.review-group` (N-14) | nothing |
 | **1** | Pending + silent refusals | P0-5's eleven rules · M-6 add-a-stop · M-7 the three Destination editors · M-14 the sign-in notice slot | nothing. **Before the screens change again** |
 | **2** | Currency | **nine** sites, not eight (§2) · P0-2's six states of the derived line · Create never gated | nothing |
-| **3** | Review | **N-2 `trip.reviewedSnapshot` first** · three-way diff (third arg; `null` ⇒ today's behaviour) · N-3 no-base mode · N-4 entry fields and the eleven cases · M-2 stacked row · M-3 sticky foot, staged bulk, `finishReview` → `settle()` · N-5 `lastReview` + receipt · M-13 `keepMySide()` | N-2; **and M-11's base-clearing on OD-6** |
-| **4** | Plan editing | **M-4 the archive card first** (it is the ladder's visible half) → N-9 `Moved to Day 4.` · N-8 `not a time` · **M-5 needs no work — already fixed** | M-4 → N-9; D-1 if you answer it |
+| **3** | Review | **N-2 `trip.reviewedSnapshot` first** · three-way diff (third arg; `null` ⇒ today's behaviour) · N-3 no-base mode · N-4 entry fields and the eleven cases · M-2 stacked row · M-3 sticky foot, staged bulk, `finishReview` → `settle()` · N-5 `lastReview` + receipt · M-13 `keepMySide()` · **M-11 `Empty this trip` (OD-6 = yes), which also clears the base** | N-2 |
+| **4** | Plan editing | **M-4 the archive card first** (it is the ladder's visible half) → N-9 `Moved to Day 4.` · N-8 `not a time` · **M-5 needs no work — already fixed** · **D-1 needs no work — the overnight rule is approved as it stands** | M-4 → N-9 |
 | **5** | Destination · status · absence | M-9 the Shop currency rule · N-10 blank map · N-11 no position · N-12 the stop that has gone · M-12 · M-16 · **M-8 and M-10 need no work — already fixed** | batch 2 for M-9 |
 | **6** | Backend-gated | N-6 the removal detector · N-13 a refused read · N-7 the return-leg reader (**buildable now**; seeing it needs real auth) | a backend |
 | **7** | P0-1 role wiring | `myRole()` reaches no screen; the `read` send block, the marker on five surfaces, the arrival banner | nothing — **the map does not schedule this and it is the oldest confirmed gap** |
-| **8** | Install line | The Trips-home line only. **The manifest and icons already ship.** | OD-8 |
+| **8** | Install line | The Trips-home line only, Android, after a second launch. **The manifest, the icons and the service worker already ship and are correct — do not touch them.** | nothing |
 
-Batches 0, 1, 2, 4, 5 and 7 are **not** gated on any open decision and could start today.
+**No batch is gated on an open decision.** The whole roadmap is buildable now, in the order given.
 
 ---
 
@@ -138,7 +146,7 @@ The suite lives in `test/` and is committed. Run on 8099 for the Track B harness
 | 2 | a trip with no currency renders bare tabular numbers everywhere; a probe that fails if any `\|\| '¥'` or `= '¥'` reappears | full suite |
 | 3 | three-way with `base = null` produces byte-identical entries to today; a stop you added is never badged `THEY REMOVED`; bulk skips rows you both changed; the receipt survives navigation and relaunch | `two-phones.mjs` must stay at or above its recorded count |
 | 4 | the archive card's computed contrast ≥ 4.5:1 (the probe in §3 inverted into an assertion); `not a time` renders and clears | `plan-delete.mjs`, `swipe-delete.mjs` — real CDP touch, never `page.click()` |
-| 5 | tier assertions keyed off `store.sharedEmptyContext()`, not markup | `empty-states.mjs` |
+| 5 | tier assertions keyed off `store.sharedEmptyContext()`, not markup; the blank-map card renders with **no** cause sentence | `empty-states.mjs` |
 | 6 | emulator-backed | `two-phones.mjs`, `refused-rules.mjs` |
 | 7 | a `read` role reaches no enabled send control | `two-phones.mjs` |
 
@@ -156,6 +164,8 @@ Per batch: tests green → commit → push → wait for the run → confirm **bo
 
 ## 9. Verdict
 
-**BLOCKED — USER DECISION REQUIRED**, on OD-6, OD-7, OD-8, OD-9 (and optionally D-1).
+**READY FOR IMPLEMENTATION.**
 
-Six of the nine batches are not gated on any of them.
+All five decisions are recorded (§5). No batch is gated. The regression suite is green at `4233c9a`: 35 + 34 + 11 + 9 + 9 + 5 checks, zero page errors, every module parsing. `two-phones.mjs` (60 recorded at `d6c12ff`) and `refused-rules.mjs` need the Firebase emulators and were not re-run in this session — treat that count as recorded, not re-verified, and run them before any batch that touches sharing, the snapshot path or the rules.
+
+The implementation session stops only for a genuinely **new** product ambiguity that the canonical documents cannot settle. The five above are settled.

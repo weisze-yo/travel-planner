@@ -226,3 +226,56 @@ High level only. The full graph, with the reasons the dependencies exist, is in 
 **You do not need to open a single artboard, and you do not need to look at any of the 28 frames.** They are evidence behind §4 and §7; three of them show defects that are already written down in words.
 
 **The one sentence worth carrying out of this session:** the design is finished and internally consistent, and the thing that was never checked — whether the code agrees with it — turns out to disagree in sixteen specific, written-down places. That is a good position to start implementing from, and it was not true yesterday.
+
+---
+
+# 13. DECISIONS RECORDED — 5 Sep 2026
+
+**Appended only. Nothing above this line was changed.** The product owner answered the four open decisions in §6, and the design ambiguity in §1. **§6 now carries no open decisions.**
+
+| ID | Decision | Matches §6's recommendation? |
+|---|---|---|
+| **OD-6** | **YES.** `Empty this trip` may delete the Shopping List, the Packing List and the Log alongside everything else it already clears. Use the corrected confirmation that names the consequences. | Yes |
+| **OD-9** | **Add the choice.** The app no longer forces the user into Paste with only the back gesture as a way out. | **No — the alternative was taken** |
+| **OD-7** | **NO explanatory message.** A blank map does not guess why it is blank. | Yes |
+| **OD-8** | **YES, at the approved scope.** Android only; one unobtrusive install line on the trips home after a second launch. No first-visit prompt, no banner. iOS is not prompted. | Yes |
+| **D-1** | **No flag.** The existing intentional overnight-window behaviour stands. Do not introduce a warning and do not reinterpret the derived duration unless a later canonical design explicitly requires it. | n/a — new |
+
+## 13.1 OD-9 — what was approved, precisely
+
+§6 recommended keeping the behaviour. The owner chose the alternative, which §6 itself named and bounded:
+
+> *"If you disagree, the alternative is one ghost on the modal — not a new screen."*
+
+So this is the conditional in `implementation-readiness-map.md` §5 resolving the other way, **not** an override of a rejection. That row — *"An 'I'll do this later' ghost on the New-trip modal · Pending OD-9. If the answer is 'keep it', nothing is added"* — is now **approved to add**, in exactly the shape it names:
+
+- **One ghost button on the New-trip modal.** Not a new screen, not a second step, not a skip link inside Paste.
+- **Label: `I'll do this later`** — the phrase every document uses for this control, adopted verbatim so no new copy is invented. No design document carries it in a copy section, so it is recorded here and this section is canonical for it.
+- **It lands on the trip that was just created**, per PR-2 (a return lands on the thing the action was about). The trip already exists at that point; `trips.js`'s `go('paste')` after `createTrip` is the only line involved.
+- Everything else on the modal is unchanged, and Paste remains the default path.
+
+**The owner's phrase "or another choice" is deliberately not treated as latitude.** Anything other than the ghost above — a third button, a new screen, a changed default — would be new design and is out of scope. If the wording of the label is to change, that is one line and a question for the owner, not an implementer's call.
+
+## 13.2 OD-8 — the scope is smaller than §6 states
+
+§6's rationale reads: *"three install icons are committed and the manifest is absent, so install is half-built. Worse than half: `sw.js` precaches `./manifest.webmanifest`, and a `cache.addAll()` rejection fails the whole service-worker install."*
+
+**Both halves of that are wrong**, verified against the working tree (see `transition-audit.md` §2):
+
+- `web/manifest.webmanifest` has been in the repository since `283bc79`, is valid, names four icons, and **returns 200 in production**.
+- `sw.js` does not use `addAll`. Line 65 is `Promise.all(ASSETS.map((url) => cache.add(url).catch(() => {})))`, under the comment *"addAll fails the whole install if one file 404s, so add individually."* The install cannot fail on a single asset. `existing-ui-audit.md` §282 already said so; §6 contradicted it.
+
+**Therefore OD-8's approved work is the install line alone.** The manifest, the icons and the service worker are complete and correct. Android installability already works today. Nothing is to be added to `web/manifest.webmanifest`, `web/icons/` or `web/sw.js` under this decision.
+
+## 13.3 D-1 — the behaviour that stands
+
+`itemWindow()` (`store.js`, locate by symbol) computes `end >= start ? end - start : (end + 1440) - start` under the comment *"A window that crosses midnight is a night market, not an error."* `reversed` is `end === start`, so `ENDS WHEN IT STARTS` fires only on identical times and its label is exact.
+
+**This is now an approved decision rather than an unexamined one.** A derived length such as `19h 15m` from a `13:45 → 09:00` window is correct output, not a defect. Do not add a plausibility check, a rust line, a fifth `dayIssues()` kind, or an automatic correction. The comment at `itemWindow()` should be left as it is — it is the record of the decision.
+
+## 13.4 What this changes elsewhere
+
+- **§6 of this document** carries no open decisions. Read it with this section.
+- **`implementation-readiness-map.md` §5** — the "I'll do this later" row flips from rejected-pending to approved. Every other rejection in that list stands, and OD-6/OD-7's conditional notes resolve as recorded above.
+- **`p1-absence-and-removal-design.md` §5** — OD-6 answered YES, so the corrected `Empty this trip` confirmation is to be implemented as written, and on a joined copy it also clears the review base.
+- **`p1-status-visibility-design.md` §4** — OD-7 answered NO, so the blank-map card ships with its approved copy and no cause sentence.

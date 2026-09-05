@@ -252,3 +252,21 @@ Only dependencies the source or the approved documents make explicit. Everything
 - **Any new design.** Two contradictions found this session (M-4, M-8) are corrections to *source claims in approved documents*, not changes to approved decisions.
 - **Engineering detail the design does not constrain** — module boundaries, data-layer shape, test strategy, migration mechanics for `reviewedSnapshot` on existing trips. Those are the implementer's calls.
 - **The four OPEN DECISIONS.** They are in `final-implementation-readiness-review.md` §6 and only the product owner closes them. Two of them (OD-6, OD-9) change code; do not proceed on the recommendation alone.
+
+---
+
+## 9. DECISIONS RECORDED — 5 Sep 2026
+
+**Appended only. Nothing above this line was changed.** The four open decisions and the one design ambiguity are closed. Canonical record: `final-implementation-readiness-review.md` §13.
+
+| ID | Answer | Effect on this map |
+|---|---|---|
+| **OD-6** | **YES** — `Empty this trip` may delete Shopping, Packing and Log; use the corrected confirmation | **M-11 is unblocked** and implemented as written. On a joined copy it also clears the review base (so it stays sequenced after N-2). |
+| **OD-9** | **Add the choice** | §5's row *"An 'I'll do this later' ghost on the New-trip modal"* **flips from rejected-pending to approved.** One ghost on the modal, label `I'll do this later`, landing on the trip just created. Not a new screen, not a step inside Paste, not a changed default. §13.1 of the review is canonical for it. |
+| **OD-7** | **NO** cause sentence | **N-10 is unblocked** and ships with its approved copy only. §5's *"a guess about why the map is blank"* stands as a permanent rejection. |
+| **OD-8** | **YES**, Android only, one line on the trips home after a second launch | **N-15 is withdrawn.** `web/manifest.webmanifest` has shipped since `283bc79` and returns 200 in production, and `sw.js` line 65 adds assets individually with `.catch(() => {})` — it does not use `addAll`, so no install failure exists to fix. The approved work is **the install line alone**; do not touch the manifest, the icons or the service worker. See review §13.2. |
+| **D-1** | **No flag** | The class-**D** row *"An end time before the start"* in §6 becomes **A — existing and correct.** `itemWindow()`'s overnight rule is an approved decision. Do not add a plausibility check, a rust line, a fifth `dayIssues()` kind, or an automatic correction; leave the explanatory comment in place. See review §13.3. |
+
+**Every other rejection in §5 stands, and the eleven closed decisions (R-1 · C-1 · S-1 · S-2 · S-3 · S-4 · OD-1 · OD-2 · OD-3 · OD-4 · OD-5) are unchanged.**
+
+**Before working from §3, §4, §6 or §7, read `transition-audit.md`.** This map was written against tree `1d3df59`; four of its findings (M-5, M-8, M-10, N-15) are already resolved in `main`, two of its counts are wrong, and every line number it cites has drifted.
