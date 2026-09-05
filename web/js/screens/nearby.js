@@ -233,9 +233,17 @@ function card(p) {
           <span class="nearby-price">${p.priceTier}</span>
         </div>
         <div class="nearby-note">
-          ${store.categoryLabel(p.category)} · ${p.note}${p.latitude ? '' : ' · no location'}
+          ${store.categoryLabel(p.category)} · ${p.note}
         </div>
         <div class="row g5 center wrap mt6">
+          ${p.latitude ? '' : html`
+            <!-- N-11 · the same chip the Plan row already carries, shorter
+                 because a Nearby card has no room for "· add a link" and the
+                 card is one tap from the screen that fixes it. It comes OUT
+                 of the metadata line: a consequence is not a footnote. The
+                 words are the app's own — "no position", never "unlocated",
+                 which is an internal word. -->
+            <span class="chip amber">No position</span>`}
           ${(p.legs || []).map((leg) => html`
             <span class="leg"><span style="font-size:11px">${MODE_ICONS[leg.mode]}</span>${MODE_LABELS[leg.mode]} ${leg.minutes}</span>`)}
           <span class="leg-total">${store.duration(travel)}</span>

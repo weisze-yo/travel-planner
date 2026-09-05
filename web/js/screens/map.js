@@ -41,6 +41,22 @@ export default {
             <div class="stranded">
               ${store.strandedReason()}
             </div>` : ''}
+          ${blankMap && !store.mapAreas().length ? html`
+            <!-- The same card .map-top already stacks, in AMBER rather than
+                 rust, because nothing is broken: the plan works and the
+                 missing thing is a picture. The sentence reuses the clause
+                 strip.js outside() already uses, so the two versions of this
+                 message are the same message, and the action is the same
+                 destination, so there is one route to it from both states.
+                 It never guesses WHY the map is blank — OD-7, answered no. -->
+            <div class="stranded" style="background:var(--amber-bg);color:var(--amber-fg)">
+              <div class="f105 w800" style="letter-spacing:.04em">NO MAP PICTURE</div>
+              <div class="mt2">
+                Distances, order and walking times are all worked out on the phone.
+                Only the streets are missing.
+              </div>
+              <button class="warn-fix first mt8" data-act="keep-area">Keep an area for offline</button>
+            </div>` : ''}
           <div class="legend">
             <div class="legend-row"><span class="legend-key"></span>Main route</div>
             <div class="legend-row sub"><span class="legend-key dash"></span>Sub route</div>
@@ -90,6 +106,9 @@ export default {
   mount(root) {
     delegate(root, '[data-act="trips"]', () => go('trips'));
     delegate(root, '[data-act="trip"]', () => go('trip'));
+    // The same destination strip.js outside() names, so there is one route to
+    // keeping an area whichever of the two states you are in.
+    delegate(root, '[data-act="keep-area"]', () => go('area'));
     delegate(root, '[data-day]', (el) => store.selectDay(Number(el.dataset.day)));
     delegate(root, '[data-act="plan"]', () => go('plan'));
     delegate(root, '[data-act="nearby"]', () => go('nearby', { dayScope: true }));
@@ -159,8 +178,14 @@ function sheetAwarePadding() {
   };
 }
 
+/** Whether any tile has ever drawn, and whether the blank-map card is up. */
+let tileSeen = false;
+let blankMap = false;
+
 function drawMap(container) {
   if (!container || typeof L === 'undefined') return;
+  tileSeen = false;
+  blankMap = false;
 
   const day = store.day();
   const items = store.activeItems(day).filter((i) => i.latitude && i.longitude);
@@ -177,10 +202,30 @@ function drawMap(container) {
     zoom: 14,
   });
 
-  L.tileLayer('https://{s}.tile.openstreetmap.org/{z}/{x}/{y}.png', {
+  const tiles = L.tileLayer('https://{s}.tile.openstreetmap.org/{z}/{x}/{y}.png', {
     maxZoom: 19,
     detectRetina: true,
   }).addTo(mapView);
+
+  // N-10 · the one condition nothing covers: no kept areas AND no tile
+  // arriving. `strip.js` outside() returns null on its first line when no
+  // area is kept, and `.stranded` is about saving rather than the map — so a
+  // phone with no offline areas and no signal drew a grey canvas with
+  // numbered pins on it and said nothing at all, which is the state a
+  // first-time user offline is most likely to be in.
+  //
+  // Read from the layer itself rather than guessed from navigator.onLine: a
+  // tile that 404s or is refused looks the same to the user as no signal, and
+  // the app deliberately does not try to tell them apart (OD-7 = no).
+  tiles.on('tileload', () => {
+    if (blankMap) { blankMap = false; store.selectDay(state.selectedDay); }
+    tileSeen = true;
+  });
+  tiles.on('tileerror', () => {
+    if (tileSeen || store.mapAreas().length || blankMap) return;
+    blankMap = true;
+    store.selectDay(state.selectedDay);
+  });
 
   layers = L.layerGroup().addTo(mapView);
   markers = new Map();

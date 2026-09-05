@@ -84,6 +84,28 @@ export default {
             </div>
           </div>
 
+          ${(() => {
+            // N-11 · the TRAVELLING tile is derived from positioned stops
+            // only, so a place with no position is silently not in the walk
+            // and the number above says nothing about it. One line, only when
+            // the count is non-zero. Not amber: nothing is wrong with the
+            // loop and the tiles are correct for what they measure — this is
+            // a caveat about coverage, and it takes the same quiet treatment
+            // the tile-download caveat does.
+            const all = (schedule.stops || []).length;
+            const placed = (schedule.stops || []).filter((s) => s.place?.latitude != null).length;
+            const missing = all - placed;
+            if (!missing) return '';
+            return html`
+              <div class="pad16" style="padding-bottom:0;flex:none">
+                <div class="f11 soft lh145">
+                  ${missing} of ${all} place${all === 1 ? '' : 's'}
+                  ${missing === 1 ? 'has' : 'have'} no position, so
+                  ${missing === 1 ? 'it is' : 'they are'} not in the walk.
+                </div>
+              </div>`;
+          })()}
+
           <div class="pad16" style="padding-bottom:10px;flex:none">
             <div class="f115 lh145" style="color:${tight ? 'var(--danger-fg)' : 'var(--muted)'}">
               ${!count

@@ -95,7 +95,31 @@ export default {
   render(params) {
     const it = subject(params);
     if (!it) {
-      return html`<section class="screen"><div class="empty">This stop is no longer on your plan.</div></section>`;
+      // N-12 · it used to be one `.empty` sentence on an otherwise blank
+      // screen with NO HEADER — Destination's back control lives in
+      // `.hero-back` inside the hero, which this branch never renders — so
+      // the only way out was to leave the whole area by changing tab. It now
+      // gets the same push chrome as every other push screen, names the
+      // subject when the caller knew it, and offers the one action that can
+      // actually be completed. Tier 2, and a ghost rather than an ink
+      // primary: this is a recovery, not the user's next intention.
+      const gone = params.anchorName || params.name || '';
+      const fromNearby = Boolean(params.anchorID || params.fromNearby);
+      return html`
+        <section class="screen">
+          ${backHeader({ title: 'That stop has gone', sub: state.trip?.name || 'This trip' })}
+          <div class="scroll" style="padding:16px">
+            <div class="empty" style="text-align:left">
+              <div>${gone ? `${gone} is not on this trip any more.` : 'That stop is not on this trip any more.'}</div>
+              <div class="mt6">
+                It was removed from the plan. Everything else on the trip is untouched.
+              </div>
+            </div>
+            <button class="btn ghost wide mt12" data-act="${fromNearby ? 'gone-back' : 'gone-plan'}">
+              ${fromNearby ? 'Back to the places' : 'Back to the day'}
+            </button>
+          </div>
+        </section>`;
     }
 
     // A different stop/place is a different subject: land back on Info
@@ -143,6 +167,25 @@ export default {
               <a class="btn ghost grow" href="${mapsLinks.apple(it.name, it.coord)}" target="_blank" rel="noopener">Apple Maps</a>
             </div>
 
+            ${it.coord ? '' : html`
+              <!-- N-11 · the strip's normal job in its normal shape, directly
+                   under the two controls it is about: a position is exactly
+                   what would make those two buttons work. A presentational
+                   reuse of the .warn strip, not a fifth dayIssues() kind. -->
+              <div class="warn">
+                <div class="row g8 center">
+                  <div class="grow">
+                    <div class="warn-label">NO POSITION</div>
+                    <div class="warn-fact">The map cannot place this one, so it is off the route too.</div>
+                  </div>
+                  <!-- Its own action, not the Info tab's edit-facts: two
+                       controls with one action made the pair ambiguous both
+                       to a reader and to a selector. See the note in the
+                       commit about the field this cannot open at. -->
+                  <button class="warn-fix first" data-act="fix-position">Paste a map link</button>
+                </div>
+              </div>`}
+
             <div class="dest-tabs">
               ${TABS.map((entry) => html`
                 <button class="dest-tab${entry.id === tab ? ' on' : ''}" data-panel="${entry.id}">
@@ -176,6 +219,8 @@ export default {
       anchorID: it?.anchorID, anchorName: it?.name, placeID: it?.placeID,
     }));
     delegate(root, '[data-act="all-shop"]', () => go('shop'));
+    delegate(root, '[data-act="gone-plan"]', () => go('plan'));
+    delegate(root, '[data-act="gone-back"]', () => back());
 
     // --- the three sheets: a shopping item, a must-see spot, and the table.
     delegate(root, '[data-edit-item]', (el) => { sheet = { kind: 'item', id: el.dataset.editItem }; sheetError = ''; repaint(); });
@@ -233,6 +278,7 @@ export default {
     });
 
     delegate(root, '[data-act="edit-facts"]', () => { sheet = { kind: 'facts' }; sheetError = ''; repaint(); });
+    delegate(root, '[data-act="fix-position"]', () => { sheet = { kind: 'facts' }; sheetError = ''; repaint(); });
     delegate(root, '[data-act="facts-cancel"]', () => { sheet = null; sheetError = ''; repaint(); });
     delegate(root, '[data-act="facts-save"]', () => {
       store.updatePlaceFacts(it?.placeID, readFactsEditor(root));
@@ -332,8 +378,12 @@ function nearbyPanel(it, places) {
                   <span class="nearby-price">${place.priceTier}</span>
                 </div>
                 <div class="nearby-note">
-                  ${store.categoryLabel(place.category)} · ${store.duration(travel)} away${place.latitude ? '' : ' · no location'}
+                  ${store.categoryLabel(place.category)} · ${store.duration(travel)} away
                 </div>
+                ${place.latitude ? '' : html`
+                  <!-- N-11 · the same chip the Plan row carries, on its own
+                       row rather than tucked into the metadata line. -->
+                  <div class="row g5 mt6"><span class="chip amber">No position</span></div>`}
               </div>
               <button class="nearby-add${picked ? ' on' : ''}" data-pick="${place.id}"
                       aria-label="${picked
@@ -446,10 +496,20 @@ function shopPanel(it, items) {
             </div>
           </div>`)}
       </div>
+      <!-- M-9 · p0-2-currency-design.md §7.1: with no currency the money
+           clause is OMITTED rather than shown as a bare or yen-prefixed
+           number, and the panel says once why the prices have no symbol. Do
+           not zero a summary, and do not label one with a currency the trip
+           does not have. -->
       <div class="f115 muted mt8">
-        ${items.filter((i) => i.bought).length} of ${items.length} bought · ${money(spent, symbol)} spent here ·
+        ${items.filter((i) => i.bought).length} of ${items.length} bought ·${
+          symbol ? html` ${money(spent, symbol)} spent here ·` : ''}
         tap a name to correct it, swipe it left to remove it
       </div>
+      ${symbol ? '' : html`
+        <div class="f11 w650 lh145 mt6" style="color:var(--amber-fg)">
+          Prices have no currency yet. Set it in Trip settings.
+        </div>`}
     ` : html`
       <div class="empty">Nothing on your shopping list for this stop.</div>`}
 

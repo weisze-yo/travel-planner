@@ -67,8 +67,12 @@ export default {
 
           <div class="card pad mt12">
             <div class="eyebrow">STORAGE</div>
-            <div class="row g8 mt6" style="align-items:baseline">
-              <div class="f18 w700 tnum">${tiles.size(totalBytes)}</div>
+            <!-- M-16 · the 18px figure sits at intrinsic width in a row with
+                 no wrap and no nowrap, so it fits at "0 kB" and wraps into
+                 the paragraph below at a wider value or with wider metrics.
+                 One row, one line. -->
+            <div class="row g8 mt6 wrap" style="align-items:baseline">
+              <div class="f18 w700 tnum" style="white-space:nowrap">${tiles.size(totalBytes)}</div>
               <div class="f115 w650 muted">of map${held ? ` · ${tiles.size(held.bytes)} actually on disk` : ''}</div>
             </div>
             <div class="f115 muted lh145 mt8">

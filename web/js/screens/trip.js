@@ -341,11 +341,17 @@ function field(id, label, value, hint = '', type = 'text', placeholder = '', war
   const tone = warn === 'jade'
     ? ';color:var(--jade)'
     : (warn ? ';color:var(--danger-fg)' : '');
+  // M-12 · three of these sit in one `.row.g8` at 390px, where `YOUR
+  // CURRENCY` is just too wide and wraps to two lines — which pushed its own
+  // input 19px below the other two (measured y = 507 · 507 · 526) and made
+  // the row read as two rows. A column with the input pushed to the bottom
+  // aligns the three inputs whatever their labels do, without shortening a
+  // label or narrowing a field.
   return html`
-    <label class="grow" style="display:block">
+    <label class="grow" style="display:flex;flex-direction:column">
       <span class="f11 w800 soft" style="letter-spacing:.06em;text-transform:uppercase">${label}</span>
       <input id="${id}" type="${type}" value="${value ?? ''}" placeholder="${placeholder}"
-             class="mt4" style="width:100%">
+             class="mt4" style="width:100%;margin-top:auto">
       ${hint ? html`<span class="f11${warn ? '' : ' soft'} lh145" style="display:block;margin-top:3px${tone}">${hint}</span>` : ''}
     </label>`;
 }
