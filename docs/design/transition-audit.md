@@ -123,7 +123,7 @@ Re-evaluated against the current tree. Batch 0 items are one-liners; batches are
 |---|---|---|---|
 | **0** | Three CSS additions | `.hint-jade` (N-1) · `.sync-dot.grey` → hollow (M-15) · `.side.stacked` + `.review-group` (N-14) | nothing |
 | **1** | Pending + silent refusals | P0-5's eleven rules · M-6 add-a-stop · M-7 the three Destination editors · M-14 the sign-in notice slot | nothing. **Before the screens change again** |
-| **2** | Currency | **nine** sites, not eight (§2) · P0-2's six states of the derived line · Create never gated | nothing |
+| **2** | Currency, **and the OD-9 ghost with it** | **nine** sites, not eight (§2) · P0-2's six states of the derived line · Create never gated · **the `I'll do this later` ghost** — P0-2's derived currency line and the OD-9 ghost are both on the New-trip modal, so it is opened once, not twice | nothing |
 | **3** | Review | **N-2 `trip.reviewedSnapshot` first** · three-way diff (third arg; `null` ⇒ today's behaviour) · N-3 no-base mode · N-4 entry fields and the eleven cases · M-2 stacked row · M-3 sticky foot, staged bulk, `finishReview` → `settle()` · N-5 `lastReview` + receipt · M-13 `keepMySide()` · **M-11 `Empty this trip` (OD-6 = yes), which also clears the base** | N-2 |
 | **4** | Plan editing | **M-4 the archive card first** (it is the ladder's visible half) → N-9 `Moved to Day 4.` · N-8 `not a time` · **M-5 needs no work — already fixed** · **D-1 needs no work — the overnight rule is approved as it stands** | M-4 → N-9 |
 | **5** | Destination · status · absence | M-9 the Shop currency rule · N-10 blank map · N-11 no position · N-12 the stop that has gone · M-12 · M-16 · **M-8 and M-10 need no work — already fixed** | batch 2 for M-9 |
@@ -143,7 +143,7 @@ The suite lives in `test/` and is committed. Run on 8099 for the Track B harness
 |---|---|---|
 | 0 | computed-style assertions: `.hint-jade` is a jade card at 12–13px; `.sync-dot.grey` has a transparent centre and a 1.5px ring | `contrast.mjs`, `accessibility.mjs` |
 | 1 | one case per refusal site: the message appears **in the field**, in rust; the button carries the pending label and `[disabled]`; the form stays up until the await resolves; a double tap does nothing | full suite |
-| 2 | a trip with no currency renders bare tabular numbers everywhere; a probe that fails if any `\|\| '¥'` or `= '¥'` reappears | full suite |
+| 2 | a trip with no currency renders bare tabular numbers everywhere; a probe that fails if any `\|\| '¥'` or `= '¥'` reappears; **the ghost lands on the trip just created, and Paste is still the default path** | full suite |
 | 3 | three-way with `base = null` produces byte-identical entries to today; a stop you added is never badged `THEY REMOVED`; bulk skips rows you both changed; the receipt survives navigation and relaunch | `two-phones.mjs` must stay at or above its recorded count |
 | 4 | the archive card's computed contrast ≥ 4.5:1 (the probe in §3 inverted into an assertion); `not a time` renders and clears | `plan-delete.mjs`, `swipe-delete.mjs` — real CDP touch, never `page.click()` |
 | 5 | tier assertions keyed off `store.sharedEmptyContext()`, not markup; the blank-map card renders with **no** cause sentence | `empty-states.mjs` |
