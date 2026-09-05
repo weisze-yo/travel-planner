@@ -38,6 +38,10 @@ await page.evaluate(() => window.__nav.go('map'));
 await page.waitForTimeout(900);
 const banner = await page.locator('.stranded').innerText().catch(() => '(no banner)');
 console.log('banner:    ' + banner.replace(/\n/g, ' '));
-await page.screenshot({ path: process.env.SC + '/locked-rules.png' });
+// `process.env.SC` was undefined whenever it was not exported, so this wrote
+// a screenshot into a literal `undefined/` directory at the repo root. Default
+// to the system temp dir instead: the frame is a debugging aid, not an
+// artefact anyone commits.
+await page.screenshot({ path: `${process.env.SC || '/tmp'}/locked-rules.png` });
 console.log('warnings:  ' + JSON.stringify(warn.slice(0, 3)));
 await browser.close();

@@ -174,10 +174,15 @@ export default {
 
           <div class="card pad">
             <div class="eyebrow" style="color:var(--danger-fg)">START THIS TRIP FRESH</div>
+            <!-- The card now explains what the control DOES rather than why
+                 it shipped. "The app ships with a demo itinerary" is true of
+                 the seed trip and false of every trip the user made, so on a
+                 trip with 9 notes and 14 photos the card's own explanation
+                 did not describe the button under it. -->
             <div class="f125 muted lh145 mt6">
-              The app ships with a demo itinerary so the screens have something in them. This
-              empties the trip and keeps its settings — use it once you are ready to put your
-              own itinerary in.
+              Empties this trip and keeps its settings — the dates, the currency and the map
+              centre stay. Use it when you are ready to put your own itinerary in, or to clear
+              the demo the app ships with.
             </div>
             <div class="row g6 wrap mt10">
               <span class="chip">${counts.stops} stops</span>
@@ -186,10 +191,24 @@ export default {
               <span class="chip">${counts.prep} packing</span>
               <span class="chip">${counts.notes} notes</span>
             </div>
+            ${state.trip?.sharedFrom ? html`
+              <!-- Stated before the tap rather than discovered after it. -->
+              <div class="f11 soft lh145 mt8">
+                This is ${state.trip.sharedFrom.from || 'their'}'s copy. Emptying it does not leave the
+                trip — the next update they send will offer everything back.
+              </div>` : ''}
             ${confirming ? html`
               <div class="col g8 mt12">
+                <!-- OD-6 answered YES on 5 Sep 2026: this control may delete
+                     the private kinds, and the confirm names them, because
+                     they are the surprise. Four approved strings promise the
+                     Log, the shopping list and the packing list are never in
+                     a snapshot and no update can reach them — all four are
+                     true, and none of them is about this button. No count is
+                     interpolated: the chips above already carry the numbers. -->
                 <div class="f125 w650" style="color:var(--danger-fg)">
-                  This cannot be undone. Everything listed above will be deleted.
+                  This cannot be undone. Everything listed above goes, including your shopping
+                  list, your packing list and your Log.
                 </div>
                 <div class="row g8">
                   <button class="btn grow" style="background:var(--danger-bg);color:var(--danger-fg)"

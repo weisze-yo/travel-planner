@@ -157,7 +157,15 @@ const noPlaceTrip = await A.page.evaluate(async () => {
 console.log('  [A unfindable-city trip] ' + JSON.stringify(noPlaceTrip));
 check('a city the geocoder cannot find leaves currency and coordinates unset, not Tokyo’s',
   !noPlaceTrip.currencyCode && noPlaceTrip.latitude == null && noPlaceTrip.longitude == null, JSON.stringify(noPlaceTrip));
-check('and says so on screen instead of failing silently', /not found|could not/i.test(noPlaceTrip.locationNotice || ''), noPlaceTrip.locationNotice);
+// The four standing failure notices were rewritten to p0-2-currency-design.md
+// §9 and all four dropped "Fix it from Trip settings." — the only screen that
+// renders `locationNotice` IS Trip settings, so the old strings told the
+// reader to go where they already were. This assertion follows the canonical
+// copy rather than the phrasing that happened to ship first.
+check('and says so on screen instead of failing silently',
+  /^Nothing was found for ".+"\. The map centre and the currency are not set\.$/
+    .test(noPlaceTrip.locationNotice || ''),
+  noPlaceTrip.locationNotice);
 
 // Back to the trip actually being shared in the rest of this test.
 await A.page.evaluate((id) => window.__store.switchTrip(id), aTrip.id);

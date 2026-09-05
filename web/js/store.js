@@ -2205,6 +2205,9 @@ export async function importTrip(data, { include = null } = {}) {
     share: null,
     sharedFrom: null,
     declined: [],
+    reviewed: [],
+    lastReview: null,
+    reviewedSnapshot: null,
     tookVersion: 0,
     removed: null,
     mapAreas: [],
@@ -3410,7 +3413,27 @@ export function clearTripContent() {
   for (const day of [...state.days]) {
     put('days', { ...day, areaSpan: '', items: [] });
   }
-  if (state.trip) putTrip({ ...state.trip, prepCategories: [] });
+  // On a joined copy, emptying also resets the review base — and that is what
+  // makes the itinerary recoverable rather than permanently stranded.
+  //
+  // Without this, `reviewedSnapshot` would still hold every stop while your
+  // copy holds none, so every one of them becomes case 7 ("I removed it") in
+  // the three-way diff — and case 7 never reaches the screen. The next update
+  // would offer nothing and no route in the app could get the trip back.
+  // Clearing it puts the trip into P0-4 §2.3's already-approved no-base mode:
+  // the next update arrives badged THEY SENT, every row is offered, and the
+  // trip enters that mode at most once because the next finishReview writes a
+  // base again. No new state, no new mode, no new copy.
+  if (state.trip) {
+    putTrip({
+      ...state.trip,
+      prepCategories: [],
+      reviewedSnapshot: null,
+      reviewed: [],
+      declined: [],
+      lastReview: null,
+    });
+  }
 }
 
 /**
@@ -4064,6 +4087,14 @@ export async function joinTrip({ code, role } = {}) {
     link: null,
     share: null,
     declined: [],
+    reviewed: [],
+    lastReview: null,
+    // N-2 · the review base. At t0 it IS the snapshot this copy was seeded
+    // from, so base === mine exactly and the first update can be attributed
+    // from the first row. The sending side has always done this with
+    // `share.snapshot`; three-way makes the two sides symmetric rather than
+    // adding a mechanism.
+    reviewedSnapshot: sharedShape(snapshot),
     removed: null,
     mapAreas: [],
     people: [owner, { id: who.id, name: who.name, role: given, joinedAt }],
@@ -4111,18 +4142,49 @@ export function pendingUpdate() {
   if (snapshot.by === me().id) return null;
   if (snapshot.version <= takenVersion()) return null;
 
-  const entries = share.diffSnapshot(mySharedState(), snapshot)
-    .filter((entry) => !(state.trip?.declined || []).includes(entry.id));
-  if (!entries.length) return null;
+  const base = reviewBase();
+  const all = share.diffSnapshot(mySharedState(), snapshot, base);
+  const settled = decidedIDs();
+  const entries = all.filter((entry) => !settled.has(entry.id));
+  const decided = settled.size;
+
+  // Taking a change makes the difference GO AWAY — your copy now says what
+  // theirs says — so a taken row leaves `all` entirely, while a kept row
+  // stays in it and is filtered out by `settled`. The count of things this
+  // update contained is therefore what still differs plus what was taken, or
+  // the header would tick downwards as the user worked.
+  const keptStillDiffering = all.length - entries.length;
+  const total = all.length + Math.max(0, decided - keptStillDiffering);
+
+  // Nothing left to ask AND nothing was ever asked: not this trip's update.
+  if (!all.length && !decided) return null;
 
   return {
     version: snapshot.version,
     from: snapshot.byName || ownerName(),
     at: snapshot.at,
+    snapshot,
     entries,
+    decided,
+    total,
+    /** True once every difference in this version has been dealt with. */
+    finished: entries.length === 0,
+    noBase: !base,
     line: share.summarise(entries),
   };
 }
+
+/** Ids already decided in this update. `reviewed` supersedes `declined`. */
+function decidedIDs() {
+  const rows = state.trip?.reviewed;
+  if (rows?.length) return new Set(rows.map((r) => r.id));
+  // A trip mid-review when this shipped still has its old list; it is read
+  // once and never written again.
+  return new Set(state.trip?.declined || []);
+}
+
+/** The decisions made in the update being reviewed, newest last. */
+export const reviewedRows = () => [...(state.trip?.reviewed || [])];
 
 /**
  * The empty-state system's own source test (p0-3-system-sign-off.md §1.2):
@@ -4177,14 +4239,83 @@ function mySharedState() {
   };
 }
 
+/** Only the four kinds that travel, deep-copied — a base is a snapshot. */
+function sharedShape(source) {
+  if (!source) return null;
+  return JSON.parse(JSON.stringify({
+    days: source.days || [],
+    subRoutes: source.subRoutes || [],
+    places: source.places || [],
+    mustSee: source.mustSee || [],
+  }));
+}
+
+/**
+ * The last snapshot the two copies agreed on. An owner's base IS their last
+ * published snapshot, which `publishUpdate()` already keeps — so the read
+ * falls through to it rather than duplicating the write.
+ */
+export function reviewBase() {
+  return state.trip?.reviewedSnapshot || shareState()?.snapshot || null;
+}
+
+/** Whether this review is running blind. Drives the whole no-base mode. */
+export const hasReviewBase = () => Boolean(reviewBase());
+
 /**
  * Taking one change. Every branch writes through the same mutations the
  * screens use, so an accepted change is indistinguishable from one you made
  * yourself — which is the point: it is your copy either way.
  */
-export function takeChange(entry) {
+/**
+ * A one-line fact about your day, for the receipt (§5.4). Never a restatement
+ * of the decision — the tag already says what was chosen — always what the
+ * day now says.
+ */
+function outcomeOf(entry, choice) {
+  const where = entry.kind === 'stop' ? `Day ${entry.dayNumber}` : 'This trip';
+  if (choice === 'took') {
+    if (entry.verb === 'removed') return `${where} · off the day`;
+    if (entry.verb === 'added') return `${where} · now on the day`;
+    return `${where} · now ${entry.theirsText}`;
+  }
+  if (entry.verb === 'added') return `${where} · left out`;
+  if (entry.verb === 'removed') return `${where} · still on the day`;
+  return `${where} · still ${entry.mineText}`;
+}
+
+/**
+ * Everything a decision touches, deep-copied BEFORE the write, so undo puts
+ * the day back exactly. Same pattern `deletePlace` already uses.
+ */
+function snapshotFor(entry) {
+  const p = entry.payload || {};
+  if (entry.kind === 'stop') {
+    const nums = new Set([p.dayNumber, p.wasDay].filter((n) => n != null));
+    return {
+      days: [...nums].map((n) => day(n)).filter(Boolean).map((d) => JSON.parse(JSON.stringify(d))),
+    };
+  }
+  const kind = p.kind;
+  return { kind, rows: JSON.parse(JSON.stringify(state[kind] || [])) };
+}
+
+function restoreFrom(held, entry) {
+  if (entry.kind === 'stop') {
+    for (const d of held.days) writeDay(JSON.parse(JSON.stringify(d)));
+    return;
+  }
+  const kind = held.kind;
+  const now = new Map((state[kind] || []).map((r) => [r.id, r]));
+  const then = new Map(held.rows.map((r) => [r.id, r]));
+  for (const [id] of now) if (!then.has(id)) remove(kind, id);
+  for (const [, row] of then) put(kind, JSON.parse(JSON.stringify(row)));
+}
+
+export function takeChange(entry, { quiet = false } = {}) {
   if (!entry) return false;
   const p = entry.payload || {};
+  const held = snapshotFor(entry);
 
   if (entry.kind === 'stop') {
     const d = day(p.dayNumber);
@@ -4215,28 +4346,108 @@ export function takeChange(entry) {
     return false;
   }
 
-  markReviewed(entry.id);
+  markReviewed(entry, 'took');
+  // §5.2: the app's rule is undo, not confirm, and this was the one screen it
+  // did not reach. The row returns to the list when the decision is undone —
+  // it must, or the undo is only half true. `quiet` is for the bulk actions,
+  // which get ONE undo for the whole batch rather than one per row.
+  if (!quiet) {
+    rememberUndo(
+      entry.verb === 'added' ? `Added ${entry.title}`
+        : (entry.verb === 'removed' ? `Removed ${entry.title}` : `Took theirs for ${entry.title}`),
+      () => { restoreFrom(held, entry); unmarkReviewed(entry.id); },
+    );
+  }
   return true;
 }
 
 /** Keeping yours. It is not asked about again, even if they send it twice. */
-export function keepMine(entry) {
+export function keepMine(entry, { quiet = false } = {}) {
   if (!entry) return false;
-  markReviewed(entry.id);
+  markReviewed(entry, 'kept');
+  // Nothing happened to the day, so there is nothing to put back but the row.
+  if (!quiet) rememberUndo(`Kept yours for ${entry.title}`, () => unmarkReviewed(entry.id));
   return true;
 }
 
-function markReviewed(id) {
-  if (!state.trip) return;
-  const declined = [...(state.trip.declined || []), id];
-  putTrip({ ...state.trip, declined: declined.slice(-400) });
+/**
+ * Everything a bulk action could touch, deep-copied before it runs, so the
+ * two bulk controls get exactly one undo between them (§5.2) rather than one
+ * per row — which would be a stacked undo bar, and the app has one bar.
+ */
+export function holdReview() {
+  return {
+    days: JSON.parse(JSON.stringify(state.days || [])),
+    subRoutes: JSON.parse(JSON.stringify(state.subRoutes || [])),
+    places: JSON.parse(JSON.stringify(state.places || [])),
+    mustSee: JSON.parse(JSON.stringify(state.mustSee || [])),
+    reviewed: JSON.parse(JSON.stringify(state.trip?.reviewed || [])),
+  };
 }
 
-/** Done with this update, whatever you took from it. */
-export function finishReview(version) {
-  if (!state.trip) return;
-  putTrip({ ...state.trip, tookVersion: version || shareState()?.version || 0, declined: [] });
+export function releaseReview(held) {
+  if (!held || !state.trip) return;
+  for (const d of held.days) writeDay(JSON.parse(JSON.stringify(d)));
+  for (const kind of ['subRoutes', 'places', 'mustSee']) {
+    const then = new Map(held[kind].map((r) => [r.id, r]));
+    for (const row of [...(state[kind] || [])]) if (!then.has(row.id)) remove(kind, row.id);
+    for (const [, row] of then) put(kind, JSON.parse(JSON.stringify(row)));
+  }
+  putTrip({ ...state.trip, reviewed: held.reviewed });
 }
+
+function markReviewed(entry, choice) {
+  if (!state.trip) return;
+  const rows = [...(state.trip.reviewed || []), {
+    id: entry.id,
+    choice,
+    title: entry.title,
+    outcome: outcomeOf(entry, choice),
+    at: new Date().toISOString(),
+  }];
+  putTrip({ ...state.trip, reviewed: rows.slice(-400) });
+}
+
+function unmarkReviewed(id) {
+  if (!state.trip) return;
+  putTrip({
+    ...state.trip,
+    reviewed: (state.trip.reviewed || []).filter((r) => r.id !== id),
+    declined: (state.trip.declined || []).filter((x) => x !== id),
+  });
+}
+
+/**
+ * Done with this update, whatever you took from it — and the two things that
+ * makes true for the next one: the snapshot just reviewed becomes the base
+ * (N-2), and the decisions become a receipt that survives navigation and
+ * relaunch (N-5) instead of being discarded.
+ *
+ * Not undoable, deliberately: it is the act of leaving, and by then every row
+ * has been decided and each was individually undoable at the time.
+ */
+export function finishReview(version, snapshot = null) {
+  if (!state.trip) return;
+  const decisions = [...(state.trip.reviewed || [])];
+  putTrip({
+    ...state.trip,
+    tookVersion: version || shareState()?.version || 0,
+    reviewedSnapshot: sharedShape(snapshot) || state.trip.reviewedSnapshot || null,
+    lastReview: decisions.length
+      ? {
+        version: version || shareState()?.version || 0,
+        from: state.trip.sharedFrom?.from || ownerName(),
+        at: new Date().toISOString(),
+        decisions,
+      }
+      : state.trip.lastReview || null,
+    reviewed: [],
+    declined: [],
+  });
+}
+
+/** The receipt for the update last dealt with, or null. One blob, replaced. */
+export const lastReview = () => state.trip?.lastReview || null;
 
 /**
  * Being removed from a trip, on their phone. Under this model almost nothing
@@ -4291,6 +4502,13 @@ export function keepMySide() {
     share: null,
     removed: null,
     declined: [],
+    // M-13: the base and the receipt go with the connection. A former shared
+    // copy must not keep a starting point for a trip it is no longer
+    // connected to, nor a receipt for an update from someone who can no
+    // longer send one.
+    reviewed: [],
+    reviewedSnapshot: null,
+    lastReview: null,
     tookVersion: 0,
   });
 }
