@@ -2244,3 +2244,22 @@ body {
   font-family: 'Public Sans', 'Hiragino Sans', 'Hiragino Kaku Gothic ProN', 'Yu Gothic',
     'PingFang SC', 'Microsoft YaHei', 'Noto Sans CJK JP', system-ui, -apple-system, sans-serif;
 }
+
+/* ============================================================ item 16 ===
+   Accessibility pass. A visible focus ring for keyboard users — the audit's
+   own finding (existing-ui-audit.md §193): "no visible focus ring on any
+   button anywhere". `:focus-visible` so a tap does not draw one, only a
+   real keyboard/switch-control focus does.
+   ========================================================================== */
+button:focus-visible,
+a:focus-visible,
+[role="button"]:focus-visible,
+[tabindex]:focus-visible {
+  outline: 2px solid var(--jade);
+  outline-offset: 2px;
+}
+/* A ring drawn tight against the pill/tab family would clip against a
+   sibling; give those a little more room instead of a bigger outline. */
+.pill:focus-visible, .cat:focus-visible, .dest-tab:focus-visible, .loop-chip:focus-visible {
+  outline-offset: 1px;
+}
