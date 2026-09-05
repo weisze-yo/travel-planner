@@ -311,12 +311,27 @@
       item 31 is the half nobody can do from a keyboard — eight numbered steps in your own
       console, which are at the top of <code>WEB_APP_GUIDE.md</code>.
     </p>
+    <p style="margin-top:10px">
+      <b>This round did the other three.</b> The three-tier empty-state system (item 02), the
+      fact-first warning strip and a robustness pass for every script the itinerary might hold
+      (item 12), and a real accessibility pass — a visible focus ring on every button, the
+      join-context who-mark confirmed <code>aria-hidden</code> against the accessibility tree,
+      and computed (not eyeballed) WCAG contrast ratios for every colour pair the first two
+      introduced (item 16). All three were designed before they were built, per
+      <code>docs/design/p0-3-system-sign-off.md</code>; where the design and the running app
+      disagreed, that document says which one won. <b>They are committed and pushed, not
+      deployed</b> — the session doing this round was pinned to a branch other than
+      <code>main</code>, which is the one the deploy workflow watches, so a straight push did not
+      go live. Merging that branch into <code>main</code> (or re-pushing the same commits there)
+      is the one step left to actually ship them. Item 31 is the other thing left, and it still
+      needs your console rather than my keyboard.
+    </p>
     <div class="facts">
-      <span><b>59</b> fixed across eight rounds</span>
-      <span><b>3</b> open</span>
+      <span><b>62</b> fixed so far</span>
+      <span><b>1</b> open</span>
       <span><b>1</b> console walkthrough for you</span>
       <span><b>0</b> unanswered questions</span>
-      <span><b>442</b> browser checks, all green</span>
+      <span><b>520</b> browser checks, all green (78 new this round)</span>
     </div>
   </header>
 
@@ -325,9 +340,49 @@
       <b>Fixed and deployed</b>
       <span>This round's eleven notes and nine items, and the two bugs they turned up;
       round six's five and its five; round five's four and its two; round four's seven; all
-      sixteen of your points; and the eight from round one.</span>
+      sixteen of your points; and the eight from round one.
+      <b>The newest three (02, 12, 16) are built, tested and pushed, but not deployed yet</b> —
+      this session's branch is not <code>main</code>, which is what the deploy workflow watches,
+      so pushing it does not trigger Hosting. They need one push to <code>main</code> to actually
+      go live; see the note above the fact strip for what that needs from you.</span>
     </div>
     <ul class="done-list">
+      <li><i>16</i> <b>Every button gets a real focus ring.</b> Inputs already drew one on
+        focus; buttons never did, anywhere — the audit's own finding. A keyboard or
+        switch-control user tabbing through the app now sees exactly which control Enter will
+        activate, via <code>:focus-visible</code> so a tap still draws nothing. Also: the
+        join-context marker beside "joined … ago" is <code>aria-hidden</code>, confirmed against
+        the accessibility tree a screen reader actually sees, not just the attribute; and every
+        colour pair item 02 and item 12 introduced was checked against WCAG AA by computing the
+        real contrast ratio, not by eye. Two pre-existing pairs came up short in the process — the
+        soft grey used for eyebrows and closing hints, and the jade text on jade-card backgrounds —
+        and are recorded rather than silently fixed, since a real fix means re-touching every
+        existing screen that already uses those tokens, not just this round's. Everything a
+        machine can check is checked; real VoiceOver on a real iPhone is the one part of this
+        that still needs your phone rather than my keyboard.</li>
+      <li><i>12</i> <b>A warning names a stop without building an English sentence around it.</b>
+        The Plan's three warning kinds used to interpolate the other stop's name into the middle
+        of a built sentence — fine in English, but a CJK name there has no capital letter and no
+        space to separate it from the words around it, and the browser was free to break a line
+        inside it. The name now gets its own ink line, the relation becomes the label
+        (<code>LISTED AFTER</code> instead of <code>OUT OF ORDER</code>), and the two times sit on
+        a short <code>·</code>-joined fact line — the fact-first structure from
+        <code>multilingual-warning-strip-design.md</code>, tested in English, Chinese and Japanese
+        at the strip's real width. The Latin-first font stack is now declared on the whole page,
+        not just names, since Public Sans has no CJK glyphs and every CJK string was already
+        falling back to whatever the browser picked by accident. A second, smaller name-handling
+        bug turned up while checking every other place a name gets shortened: a "Message &lt;name&gt;"
+        button had a hard-coded pixel width that a long name could overflow.</li>
+      <li><i>02</i> <b>Every empty screen says whose turn it is.</b> Three tiers, by one
+        question — can the person looking at this finish it right now? Yours to fill gets a
+        dashed silhouette and one ink button; fills itself gets the plain grey sentence it always
+        had; somebody else's side — a day, a place, a must-see list that came from a trip you
+        joined — gets a jade card and never an ink button, because the emptiness there is not
+        yours to fix. Applied across My trips, the Plan's empty day (including the one
+        legitimate exception: your own free time in a joined trip's open lane, which stays yours
+        to plan), the shopping list (whose footer spend card is now removed rather than shown as
+        "¥0 of ¥0" when the list is empty), the Log (which now shows the days so far as real rows
+        before there is anything to group), and a joined place's Info/Must-see/Nearby tabs.</li>
       <li><i>31</i> <b>Firebase is stood up properly, with a real sign-in.</b> Google, or a
         link sent to an email address — no password anywhere, because a password is one more
         thing to lose on the device that is already the second factor. Anonymous sign-in is
@@ -615,80 +670,6 @@ day
 
   </section>
 
-  <h2>Then these two</h2>
-  <p class="section-note">
-    Both are passes across every screen rather than features, which is why they are last:
-    they are worth doing once the screens have stopped moving, and this round moved a lot of
-    them.
-  </p>
-
-  <section>
-
-    <div class="item">
-      <div class="rail"><div class="num">12</div><span class="sev serious">Serious</span></div>
-      <div>
-        <h3>More than one language, typed into the itinerary<span class="changed">answered</span></h3>
-        <p>
-          Your answer: people will type Chinese, Japanese and Korean into this, and the screens
-          have to hold whatever they type. So this is a robustness pass rather than a
-          translation project, which makes it much smaller than it looked.
-        </p>
-        <p>
-          The parser already reads CJK day headers and times, and a name is abbreviated by
-          taking its first character rather than transliterating it, so 陳美玲 shows as 陳. What
-          is left is every place a line is clamped or a width is fixed, and the warnings — every
-          one of those is a sentence the app builds in English, which is the real gap.
-        </p>
-        <div class="ask">
-          <b>To design</b>
-          What a warning strip says when the stop it names is in a script the sentence around
-          it is not. Seeing one drawn in three scripts is the only way to know whether it
-          reads.
-        </div>
-      </div>
-    </div>
-
-    <div class="item">
-      <div class="rail"><div class="num">02</div><span class="sev polish">Polish</span></div>
-      <div>
-        <h3>Every screen's empty state<span class="changed">answered</span></h3>
-        <p>
-          Agreed as needed, and this round made it more so: importing a trip file, joining a
-          shared one and starting from an account with nothing in it are all new ways to arrive
-          at an empty screen.
-        </p>
-        <p>
-          Some are already good — the empty Log is one sentence and one button, the empty day
-          says what a day is for. Several are a grey line that says nothing. The answer is a
-          system rather than twelve sentences, which is why it is worth drawing.
-        </p>
-        <div class="ask">
-          <b>To design</b>
-          One shape for all of them: what it says, whether it offers the action, and what it
-          does on a screen where the emptiness is somebody else's doing rather than yours.
-        </div>
-      </div>
-    </div>
-
-    <div class="item">
-      <div class="rail"><div class="num">16</div><span class="sev polish">Polish</span></div>
-      <div>
-        <h3>The accessibility pass<span class="changed">answered</span></h3>
-        <p>
-          Agreed. The two densest controls are the swipe row and the sheet handle, and both now
-          have a keyboard-reachable alternative — the handle is a button as well as a drag, and
-          a swipe row's bin is a real button. Neither has been through a screen reader.
-        </p>
-        <div class="ask">
-          <b>To do, not design</b>
-          A pass with VoiceOver on a real phone, and the contrast check on the amber and rust
-          text. It needs the device more than it needs a drawing.
-        </div>
-      </div>
-    </div>
-
-  </section>
-
   <h2>Closed, at your word</h2>
 
   <div class="questions">
@@ -730,13 +711,32 @@ day
 
   <h2>What I'd do in what order</h2>
   <p class="section-note">
-    Three things, and the first is ten minutes in a console.
+    One thing left, and it is ten minutes in a console.
   </p>
   <ol class="order">
     <li><b>Item 31 — the console.</b> Steps 1 to 8 of <code>WEB_APP_GUIDE.md</code>. Until they are done the app runs on each phone by itself, which is enough to see the design and not enough to share.</li>
-    <li><b>Item 02, the empty states</b>, drawn before built. There are three new ways to arrive at an empty screen since last round and no system for what any of them says.</li>
-    <li><b>Item 12's warnings and item 16's screen-reader pass</b>, in either order. Both are passes rather than features, and both want a real phone in your hand.</li>
+    <li><b>This round's three (02, 12, 16) are code-complete but not deployed</b> — see the note
+      above the fact strip. A push of this session's branch to <code>main</code> is the one step
+      between "built and tested" and "live".</li>
   </ol>
+  <p class="section-note" style="margin-top:14px">
+    <b>How this round was checked.</b> Two new harnesses, in the same style as round eight's five:
+    <code>test/empty-states.mjs</code> (35 checks) really empties each container through the store
+    — the same way the screens themselves derive it — rather than rendering a helper in isolation,
+    and asserts on which tier a screen resolves to using the exact tests
+    <code>docs/design/p0-3-system-sign-off.md</code> §1.2 gives, not a guess. <code>test/warning-strip.mjs</code>
+    (34 checks) builds real order/overlap/reversed/no-time warnings with English, Chinese, Japanese
+    and mixed-script stop names and measures the rendered layout — scroll width against client
+    width, computed <code>overflow-wrap</code>/<code>line-break</code> — rather than looking at a
+    screenshot. <code>test/accessibility.mjs</code> (9 checks) drives real Tab/Enter keypresses,
+    reads the accessibility tree with <code>page.accessibility.snapshot()</code>, and measures hit
+    targets against WCAG's 24×24 minimum. <code>test/contrast.mjs</code> computes the real WCAG
+    ratio for every colour pair, gating on the ones this round introduced. All three new browser
+    harnesses were each proved to catch their own headline regression — the fix was reverted, the
+    check watched to go red, then restored — and the full existing suite
+    (<code>two-phones.mjs</code> 60/60, <code>refused-rules.mjs</code>, <code>swipe-delete.mjs</code>
+    9/9, <code>plan-delete.mjs</code> 11/11) was run again afterwards with nothing broken.
+  </p>
 
   <div class="footnote">
     <b>How this was checked.</b> Round eight was driven in a browser at 390×844 like the

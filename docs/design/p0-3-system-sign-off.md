@@ -299,3 +299,22 @@ Checked deliberately, since it is the point of this batch.
 | Role & copy identity | **Yes.** Copy is exact in §7 of its own document, states are enumerated, no new component. | none |
 
 **One process rule, restated because it has already been broken twice:** the markdown is canonical; an artboard illustrates it. Any string on an artboard that is not in a design document's copy section is drift, and should be treated as a bug in the artboard rather than as a decision.
+
+---
+
+## IMPLEMENTED — 5 Sep 2026
+
+Built against this document as it stood at commit `9a21d8d` (tree unchanged from what this document reconciled against). Landed as two commits on `claude/travel-planner-track-b-9zyxkc`:
+
+- **`949e04d`** — the empty-state system (§1, tiers 1–3) and the warning strip (§2, fact-first). `store.isSharedEmptyKind(kind)` and `store.sharedEmptyContext()` are the literal implementations of the §1.2 source tests; `dayIssues()` now returns `{label, name, fact}` exactly as §2.2/§2.5 specify, with `OUT OF ORDER` renamed to `LISTED AFTER` per the final table. S-2 was decided `body` (the recommended direction) and is one rule at the end of `app.css`.
+- **`1a5d655`** — the accessibility pass named in DESIGN_REVIEW.html item 16 (not itself a system in this document's scope, but touches the same files): `:focus-visible` on every button, and the `.who-mark` in the new tier-3 context line is `aria-hidden` per `p0-1-role-and-copy-identity-design.md` §11.4.
+
+**Decisions taken, both already recommended in §6 and not re-litigated:**
+- **S-1** (the three tier-3 sentences) — approved as written, used verbatim.
+- **S-2** (Latin-first stack scope) — `body`.
+- **S-4** (stopless shared day, no action) — accepted; `dayTimeline()` untouched.
+- **S-3** (Review's bulk safety rule) — still out of scope; Review was not touched.
+
+**Reconciliations from §7 exercised as written:** 1A's "arrive by link" landed as the closing-hint copy line, no second control. 1F's amber action does not fire on a stopless day; it does fire, unchanged copy ("+ Plan free time here"), on a shared day that has stops and a lane wide enough for `dayTimeline()` to have built in the first place — which was always the resolution's own condition.
+
+**Not deployed as of this note** — the session that built this pushed to a non-`main` branch; see `DESIGN_REVIEW.html`'s masthead for the current status. This does not change anything above: the commits are real, tested (35 + 34 + 9 new browser checks, full existing suite re-run clean), and complete against this document.
