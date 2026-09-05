@@ -14,6 +14,12 @@ import { go } from '../nav.js';
 let addOpen = false;
 /** The item whose correction sheet is open, if any. */
 let editing = null;
+/**
+ * The item editor's refusal, when the name has been emptied. Same rule and
+ * same sentence as Destination's copy of this sheet — it is one editor, so it
+ * refuses the same way wherever it is opened (`p1-destination-tabs-design.md` §6).
+ */
+let editError = '';
 
 export default {
   id: 'shop',
@@ -69,7 +75,7 @@ export default {
             </div>`}
         </div>
 
-        ${editing ? itemEditor(state.shopping.find((i) => i.id === editing), { symbol }) : ''}
+        ${editing ? itemEditor(state.shopping.find((i) => i.id === editing), { symbol, error: editError }) : ''}
 
         ${groups.length ? html`
           <button class="footer-card" data-act="report" aria-label="Open the spend report">
@@ -114,11 +120,17 @@ export default {
 
     delegate(root, '[data-act="tick"]', (el) => store.toggleBought(el.dataset.id));
 
-    delegate(root, '[data-edit-item]', (el) => { editing = el.dataset.editItem; nudge(); });
-    delegate(root, '[data-act="item-cancel"]', () => { editing = null; nudge(); });
+    delegate(root, '[data-edit-item]', (el) => { editing = el.dataset.editItem; editError = ''; nudge(); });
+    delegate(root, '[data-act="item-cancel"]', () => { editing = null; editError = ''; nudge(); });
     delegate(root, '[data-act="item-save"]', () => {
       const patch = readItemEditor(root);
-      if (!patch) return;
+      if (!patch) {
+        editError = 'What is it? One word is enough.';
+        nudge();
+        root.querySelector('#edit-name')?.focus();
+        return;
+      }
+      editError = '';
       store.updateShoppingItem(editing, patch);
       editing = null;
     });

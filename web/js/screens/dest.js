@@ -80,6 +80,12 @@ export function subject(params = {}) {
 
 /** Which sheet is open over the panels, if any. */
 let sheet = null;
+/**
+ * The open sheet's refusal, when its one required field is empty. Cleared
+ * whenever a sheet opens or closes, so a refusal never outlives the form it
+ * was about (`p1-destination-tabs-design.md` §6.2).
+ */
+let sheetError = '';
 const repaint = () => store.selectDay(state.selectedDay);
 
 export default {
@@ -172,20 +178,28 @@ export default {
     delegate(root, '[data-act="all-shop"]', () => go('shop'));
 
     // --- the three sheets: a shopping item, a must-see spot, and the table.
-    delegate(root, '[data-edit-item]', (el) => { sheet = { kind: 'item', id: el.dataset.editItem }; repaint(); });
-    delegate(root, '[data-act="add-item"]', () => { sheet = { kind: 'item', id: null }; repaint(); });
-    delegate(root, '[data-act="item-cancel"]', () => { sheet = null; repaint(); });
+    delegate(root, '[data-edit-item]', (el) => { sheet = { kind: 'item', id: el.dataset.editItem }; sheetError = ''; repaint(); });
+    delegate(root, '[data-act="add-item"]', () => { sheet = { kind: 'item', id: null }; sheetError = ''; repaint(); });
+    delegate(root, '[data-act="item-cancel"]', () => { sheet = null; sheetError = ''; repaint(); });
     delegate(root, '[data-act="item-save"]', () => {
       const patch = readItemEditor(root);
-      if (!patch) return;
+      // Was `if (!patch) return;` — Save on a nameless item did nothing at
+      // all: no message, no field, no closed sheet. It now answers.
+      if (!patch) {
+        sheetError = 'What is it? One word is enough.';
+        repaint();
+        root.querySelector('#edit-name')?.focus();
+        return;
+      }
+      sheetError = '';
       if (sheet.id) store.updateShoppingItem(sheet.id, patch);
       else store.addShoppingItem({ ...patch, placeID: it?.placeID, placeLabel: patch.placeLabel || it?.name });
       sheet = null;
     });
 
-    delegate(root, '[data-edit-shot]', (el) => { sheet = { kind: 'shot', id: el.dataset.editShot }; repaint(); });
-    delegate(root, '[data-act="add-shot"]', () => { sheet = { kind: 'shot', id: null }; repaint(); });
-    delegate(root, '[data-act="shot-cancel"]', () => { sheet = null; repaint(); });
+    delegate(root, '[data-edit-shot]', (el) => { sheet = { kind: 'shot', id: el.dataset.editShot }; sheetError = ''; repaint(); });
+    delegate(root, '[data-act="add-shot"]', () => { sheet = { kind: 'shot', id: null }; sheetError = ''; repaint(); });
+    delegate(root, '[data-act="shot-cancel"]', () => { sheet = null; sheetError = ''; repaint(); });
     delegate(root, '[data-act="shot-photo-clear"]', () => {
       if (sheet?.id) store.updateShot(sheet.id, { imagePath: null });
       repaint();
@@ -206,14 +220,20 @@ export default {
     });
     delegate(root, '[data-act="shot-save"]', () => {
       const patch = readShotEditor(root);
-      if (!patch) return;
+      if (!patch) {
+        sheetError = 'What the shot is — a few words.';
+        repaint();
+        root.querySelector('#shot-title')?.focus();
+        return;
+      }
+      sheetError = '';
       if (sheet.id) store.updateShot(sheet.id, patch);
       else store.addShot({ placeID: it?.placeID, ...patch });
       sheet = null;
     });
 
-    delegate(root, '[data-act="edit-facts"]', () => { sheet = { kind: 'facts' }; repaint(); });
-    delegate(root, '[data-act="facts-cancel"]', () => { sheet = null; repaint(); });
+    delegate(root, '[data-act="edit-facts"]', () => { sheet = { kind: 'facts' }; sheetError = ''; repaint(); });
+    delegate(root, '[data-act="facts-cancel"]', () => { sheet = null; sheetError = ''; repaint(); });
     delegate(root, '[data-act="facts-save"]', () => {
       store.updatePlaceFacts(it?.placeID, readFactsEditor(root));
       sheet = null;
@@ -493,10 +513,11 @@ function sheetMarkup(it, shopHere, shots) {
     const item = sheet.id
       ? shopHere.find((i) => i.id === sheet.id)
       : { name: '', detail: '', estimate: null, quantity: 1, placeLabel: it?.name || '' };
-    return itemEditor(item, { symbol });
+    return itemEditor(item, { symbol, error: sheetError });
   }
   if (sheet.kind === 'shot') {
-    return shotEditor(sheet.id ? shots.find((sh) => sh.id === sheet.id) : null, { placeName: it?.name });
+    return shotEditor(sheet.id ? shots.find((sh) => sh.id === sheet.id) : null,
+      { placeName: it?.name, error: sheetError });
   }
   if (sheet.kind === 'facts') return factsEditor(store.place(it?.placeID));
   return '';

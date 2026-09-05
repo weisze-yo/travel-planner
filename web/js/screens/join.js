@@ -20,6 +20,12 @@ import { signInPanel, mountSignIn } from './parts.js';
 /** 'look' → 'signin' → in. */
 let phase = 'look';
 let notice = '';
+/**
+ * Which control is doing async work — a key, never a free string (P0-5 R1).
+ * Join is one of the three flows whose surface IS the work (R8), so the
+ * sticky foot stays up and carries it.
+ */
+let pending = '';
 
 const repaint = () => store.selectDay(state.selectedDay);
 
@@ -166,8 +172,11 @@ export default {
         </div>
 
         <div class="join-foot">
-          <button class="btn jade" style="width:100%;height:50px" data-act="join">
-            ${kind === 'joined' ? 'Open this trip' : 'Join this trip'}
+          <button class="btn jade" style="width:100%;height:50px" data-act="join"${
+            pending === 'join' ? raw(' disabled aria-busy="true"') : ''}>
+            ${pending === 'join'
+              ? 'Making your copy…'
+              : (kind === 'joined' ? 'Open this trip' : 'Join this trip')}
           </button>
           <div class="join-fine">
             You sign in next, so the trip follows you to a new phone.
@@ -181,11 +190,13 @@ export default {
     delegate(root, '[data-act="join"]', async () => {
       // Joining makes your own copy of the trip, so it is a write and takes
       // a moment; the screen says so rather than looking stuck.
+      if (pending) return;
       const seen = invited();
-      notice = 'Making your copy…';
+      pending = 'join';
+      notice = '';
       repaint();
       await store.joinTrip({ code: seen.code, role: seen.role });
-      notice = '';
+      pending = '';
       phase = store.signedIn() ? 'look' : 'signin';
       if (phase === 'look') go('plan');
       else repaint();

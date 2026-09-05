@@ -305,9 +305,23 @@ export function swipeToDelete(root, { rowSelector, label, onDelete, name }) {
       });
       ask.querySelector('.swipe-ask-yes').addEventListener('click', async (event) => {
         event.stopPropagation();
-        ask.remove();
-        row.classList.remove('confirming');
+        // P0-5 R1/R7 (#3): pending belongs to the control that started the
+        // work, so the confirm's own button becomes `Deleting…` and goes
+        // [disabled] rather than the row vanishing into a wait with no
+        // feedback anywhere. Cancel goes with it — the decision is made and
+        // there is nothing left to cancel. The row is torn down by the
+        // screen's own repaint on success; removing the ask here as well is
+        // only for the case where the row survives (a refusal, or a screen
+        // that does not repaint), so a second delete is still reachable.
+        const yes = event.currentTarget;
+        const no = ask.querySelector('.swipe-ask-no');
+        yes.textContent = 'Deleting…';
+        yes.disabled = true;
+        yes.setAttribute('aria-busy', 'true');
+        if (no) no.disabled = true;
         await onDelete(row);
+        row.classList.remove('confirming');
+        ask.remove();
       });
     };
 
@@ -542,7 +556,7 @@ export function draggableSheet(sheet, { key = 'sheet', onOpen = null } = {}) {
  * than four different places, and it is the same sheet on the trip's list
  * and on a place's Shop tab, because it is the same correction.
  */
-export function itemEditor(item, { symbol = '¥' } = {}) {
+export function itemEditor(item, { symbol = '¥', error = '' } = {}) {
   if (!item) return '';
   const places = store.shoppingPlaceChoices();
   return html`
@@ -552,6 +566,10 @@ export function itemEditor(item, { symbol = '¥' } = {}) {
         <div class="form-title">Correct this item</div>
         <label class="f11 soft block">What it is</label>
         <input id="edit-name" value="${esc(item.name || '')}" placeholder="Kitchen knife">
+        <!-- A form that refuses says which field, in that field, in rust, and
+             leaves the button alone (p1-destination-tabs-design.md §6.2). -->
+        ${error ? html`
+          <div class="f11 lh145" style="color:var(--danger-fg);margin-top:-4px">${error}</div>` : ''}
         <label class="f11 soft block">Where in the shop, or anything to remember</label>
         <input id="edit-detail" value="${esc(item.detail || '')}" placeholder="Middle aisle, stall 44">
         <div class="row g8">
@@ -605,7 +623,7 @@ export function readItemEditor(root) {
  * the same route a Log photo takes — because a shot you cannot picture is
  * just a sentence you will not read again.
  */
-export function shotEditor(shot, { placeName = 'this stop' } = {}) {
+export function shotEditor(shot, { placeName = 'this stop', error = '' } = {}) {
   const made = Boolean(shot?.id);
   return html`
     <div class="scrim" data-act="shot-cancel"></div>
@@ -614,6 +632,8 @@ export function shotEditor(shot, { placeName = 'this stop' } = {}) {
         <div class="form-title">${made ? 'Edit this spot' : `A shot worth getting at ${placeName}`}</div>
         <label class="f11 soft block">What the shot is</label>
         <input id="shot-title" value="${esc(shot?.title || '')}" placeholder="Red lantern run, north gate">
+        ${error ? html`
+          <div class="f11 lh145" style="color:var(--danger-fg);margin-top:-4px">${error}</div>` : ''}
         <label class="f11 soft block">Where to stand</label>
         <input id="shot-where" value="${esc(shot?.whereToFind || '')}" placeholder="20 m inside the north gate">
         <label class="f11 soft block">Anything else worth knowing</label>
@@ -708,6 +728,17 @@ export function readFactsEditor(root) {
 // signing key, and both come from the Apple Developer Program at $99 a year.
 // The rule this app has held for seven rounds is that nothing costs money.
 
+/**
+ * Which sign-in control is in flight. Module scope, screen-local, cleared by
+ * the module being re-entered (P0-5 §8.3). It is deliberately NOT store
+ * state: `state.signInNotice` carried pending, a refusal and seven
+ * deployment failures in one string, and G-4's fix is to split them rather
+ * than add a sixth meaning to the same variable.
+ */
+let signPending = '';
+/** The email field's own refusal, in rust, beside the field it is about. */
+let emailError = '';
+
 export function signInPanel({ title = 'Who are you?', sub = '' } = {}) {
   const waiting = store.awaitingEmail();
   const notice = state.signInNotice;
@@ -734,12 +765,23 @@ export function signInPanel({ title = 'Who are you?', sub = '' } = {}) {
     <label class="f11 soft block mb6">The name other travellers see</label>
     <input class="paid-input mb12" style="width:100%" data-field="name"
            value="${esc(store.me().name === 'You' ? '' : store.me().name)}" placeholder="Ana Lim">
-    <button class="sign-btn" data-provider="google">Continue with Google</button>
+    <button class="sign-btn" data-provider="google"${
+      signPending ? raw(' disabled aria-busy="true"') : ''}>${
+      signPending === 'google' ? 'Opening Google…' : 'Continue with Google'}</button>
 
     <div class="eyebrow mt14 mb8">Or a link to my email</div>
-    <input class="paid-input mb9" style="width:100%" data-field="email" type="email"
+    <input class="paid-input${emailError ? '' : ' mb9'}" style="width:100%" data-field="email" type="email"
            inputmode="email" autocomplete="email" placeholder="you@example.com">
-    <button class="sign-btn" data-provider="email">Send me a link</button>
+    <!-- G-4: a refusal about the email field belongs beside the email field,
+         in rust — not in a box above two buttons, where the reader has to
+         work out which control it refers to. -->
+    ${emailError ? html`
+      <div class="f11 lh145 mt4 mb9" style="color:var(--danger-fg)">${emailError}</div>` : ''}
+    <!-- "Sending the link" drops the address (P0-5 §6): a pending label
+         never interpolates, and the address is in the field one row up. -->
+    <button class="sign-btn" data-provider="email"${
+      signPending ? raw(' disabled aria-busy="true"') : ''}>${
+      signPending === 'email' ? 'Sending the link…' : 'Send me a link'}</button>
 
     <div class="f11 soft lh145 mt10">
       There is no password. The link in the mail is the sign-in, and it only works once.
@@ -753,26 +795,41 @@ export function signInPanel({ title = 'Who are you?', sub = '' } = {}) {
  * which happens on a later launch entirely.
  */
 export function mountSignIn(root, { onDone = () => {} } = {}) {
-  delegate(root, '[data-act="sign-cancel"]', () => store.cancelEmailSignIn());
+  delegate(root, '[data-act="sign-cancel"]', () => {
+    // A refusal must not outlive the form it was about.
+    emailError = '';
+    signPending = '';
+    store.cancelEmailSignIn();
+  });
 
   delegate(root, '[data-provider]', async (el) => {
+    if (signPending) return;
     const provider = el.dataset.provider;
     const name = root.querySelector('[data-field="name"]')?.value?.trim() || '';
     const email = root.querySelector('[data-field="email"]')?.value?.trim() || '';
 
     if (provider === 'email' && !email.includes('@')) {
-      store.noteSignIn('That does not look like an email address.');
+      emailError = 'That does not look like an email address.';
+      store.noteSignIn('');
       return;
     }
-    store.noteSignIn(provider === 'google' ? 'Opening Google…' : `Sending a link to ${email}…`);
+    emailError = '';
+    // R1: pending goes on the control that was pressed. The note slot is now
+    // failures only — it is never written to on the way in.
+    signPending = provider === 'google' ? 'google' : 'email';
+    store.noteSignIn('');
 
     const result = await store.signIn({ provider, name, email });
+    signPending = '';
     if (result.ok) {
       store.noteSignIn('');
       onDone(result);
     } else if (result.sent) {
       store.noteSignIn('');
+    } else {
+      // A failure has already put its own words in `state.signInNotice`;
+      // repaint so the button comes back live and the note is read.
+      store.noteSignIn(state.signInNotice);
     }
-    // Anything else has already put its own words in `state.signInNotice`.
   });
 }

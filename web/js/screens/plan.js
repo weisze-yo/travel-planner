@@ -29,6 +29,18 @@ import { dayPills, weatherBanner, bindDragReorder, swipeToDelete, emptyShared } 
 let addOpen = false;
 let form = { name: '', start: '', end: '', kind: 'main' };
 let notice = '';
+/**
+ * Which control is doing async work — a key, never a free string (P0-5 R1).
+ * `notice` keeps the outcomes it already carries, including the "added
+ * without a location" caveat, which is a real outcome and stays (R4).
+ */
+let pending = '';
+/**
+ * The add-a-stop form's one required field, when it has refused. The rust
+ * field hint, in the field — never a pre-disabled primary
+ * (`p1-destination-tabs-design.md` §6.2, `p1-plan-editing-design.md` §7.3).
+ */
+let addError = '';
 /** The lane whose "new sub route" sheet is open, if any. */
 let laneSheet = null;
 /** "Later" holds the update banner off until the screen is left. */
@@ -170,29 +182,63 @@ export default {
       store.selectDay(state.selectedDay);
     });
 
-    delegate(root, '[data-act="add-open"]', () => { addOpen = true; store.setEditingPlan(true); });
-    delegate(root, '[data-act="add-cancel"]', () => { addOpen = false; store.setEditingPlan(true); });
+    delegate(root, '[data-act="add-open"]', () => {
+      addOpen = true; addError = ''; notice = ''; store.setEditingPlan(true);
+    });
+    delegate(root, '[data-act="add-cancel"]', () => {
+      if (pending) return;
+      addOpen = false; addError = ''; store.setEditingPlan(true);
+    });
     delegate(root, '[data-act="add-save"]', async () => {
+      if (pending) return;
       const placeID = root.querySelector('#add-place')?.value || '';
       const typed = root.querySelector('#add-name')?.value.trim();
-      if (!typed && !placeID) return;
+      // Was `if (!typed && !placeID) return;` — a primary that ignored a tap
+      // and said nothing. It now answers in the field it is about, in rust,
+      // and the button stays live: the app does not pre-disable, it refuses
+      // out loud.
+      if (!typed && !placeID) {
+        addError = 'A name, or a map link.';
+        // Keep whatever was typed in the other fields across the repaint, or
+        // a refusal quietly throws away the times the user just set.
+        form = {
+          name: typed || '',
+          start: root.querySelector('#add-start')?.value.trim() || '',
+          end: root.querySelector('#add-end')?.value.trim() || '',
+          kind: root.querySelector('[name="add-kind"]:checked')?.value || 'main',
+        };
+        store.setEditingPlan(true);
+        root.querySelector('#add-name')?.focus();
+        return;
+      }
+      addError = '';
 
       const start = root.querySelector('#add-start')?.value.trim() || '09:00';
       const end = root.querySelector('#add-end')?.value.trim() || '';
       const kind = root.querySelector('[name="add-kind"]:checked')?.value || 'main';
 
-      addOpen = false;
-      notice = /^https?:/i.test(typed) ? 'Reading that link…' : 'Adding…';
+      // R8: the form STAYS UP until the work resolves. It used to close on
+      // this line and leave `Adding…` at the top of the screen, above a form
+      // that was no longer there.
+      form = { name: typed || '', start, end, kind };
+      pending = /^https?:/i.test(typed) ? 'link' : 'add';
+      notice = '';
       store.setEditingPlan(true);
 
       const result = await store.captureStop(state.selectedDay, {
         input: typed, time: start, endTime: end, kind, placeID: placeID || null,
       });
 
+      pending = '';
       notice = result.saved
         ? (result.located ? '' : `"${result.name}" was added without a location, so it will not show on the map.`)
         : result.reason;
-      form = { name: '', start: '', end: '', kind: 'main' };
+      // Only a saved stop closes the form and clears it. A failure leaves the
+      // form up with what was typed still in it, so the retry is one tap.
+      if (result.saved) {
+        addOpen = false;
+        form = { name: '', start: '', end: '', kind: 'main' };
+      }
       store.setEditingPlan(true);
     });
 
@@ -569,6 +615,8 @@ function addForm() {
       <div class="form-title">Add a stop</div>
 
       <input id="add-name" placeholder="Name, or paste a Google / Apple Maps link" value="${form.name}">
+      ${addError ? html`
+        <div class="f11 lh145" style="color:var(--danger-fg);margin-top:-4px">${addError}</div>` : ''}
 
       ${saved.length ? html`
         <select id="add-place">
@@ -594,8 +642,11 @@ function addForm() {
           <span class="f11 soft">Ends</span>
           <input id="add-end" placeholder="—" value="${form.end}" style="width:82px" inputmode="numeric">
         </label>
-        <button class="btn jade grow" style="align-self:flex-end" data-act="add-save">Add</button>
-        <button class="btn ghost none" data-act="add-cancel" style="width:38px;align-self:flex-end" aria-label="Cancel">✕</button>
+        <button class="btn jade grow" style="align-self:flex-end" data-act="add-save"${
+          pending ? raw(' disabled aria-busy="true"') : ''}>${
+          pending === 'link' ? 'Reading that link…' : (pending === 'add' ? 'Adding…' : 'Add')}</button>
+        <button class="btn ghost none" data-act="add-cancel"
+                style="width:38px;align-self:flex-end${pending ? ';pointer-events:none' : ''}" aria-label="Cancel">✕</button>
       </div>
 
       <div class="form-hint">

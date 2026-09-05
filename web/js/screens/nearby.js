@@ -13,6 +13,15 @@ import { MODE_ICONS, MODE_LABELS, CATEGORY_LABELS } from '../data.js';
 let sortOpen = false;
 let addOpen = false;
 let notice = '';
+/**
+ * Which control is doing async work — a key, never a free string (P0-5 R1).
+ * The pending label never interpolates the name (§6): it is already on
+ * screen, in the field it was typed into, and a long CJK name inside a button
+ * would wrap or overflow.
+ */
+let pending = '';
+/** The add-a-place form's refusal, in its own field, in rust. */
+let addError = '';
 
 const CATS = ['all', 'food', 'cosme', 'cloth', 'shopping', 'sight', 'rest'];
 const SORTS = [
@@ -154,15 +163,27 @@ export default {
     delegate(root, '[data-pick]', (el) => store.toggleSubRoutePlace(el.dataset.pick, store.activeLoop()));
     delegate(root, '[data-open-place]', (el) => go('dest', { placeID: el.dataset.openPlace }));
 
-    delegate(root, '[data-act="add-open"]', () => { addOpen = true; rerender(); });
-    delegate(root, '[data-act="add-cancel"]', () => { addOpen = false; rerender(); });
+    delegate(root, '[data-act="add-open"]', () => { addOpen = true; addError = ''; notice = ''; rerender(); });
+    delegate(root, '[data-act="add-cancel"]', () => {
+      if (pending) return;
+      addOpen = false; addError = ''; rerender();
+    });
     delegate(root, '[data-act="add-save"]', async (el) => {
+      if (pending) return;
       const name = root.querySelector('#np-name')?.value.trim();
-      if (!name) return;
+      if (!name) {
+        addError = 'A name, or a map link.';
+        rerender();
+        root.querySelector('#np-name')?.focus();
+        return;
+      }
+      addError = '';
       const anchorID = params.anchorID || store.subRoute()?.anchorPlanItemID || null;
 
-      notice = /^https?:/i.test(name) ? 'Reading that link…' : `Looking up ${name}…`;
-      addOpen = false;
+      // R8: the form stays up until the work resolves — it used to close
+      // here, leaving the pending line above a form that had gone.
+      pending = /^https?:/i.test(name) ? 'link' : 'add';
+      notice = '';
       rerender();
 
       const result = await store.capturePlace({
@@ -183,6 +204,10 @@ export default {
           ? `"${result.name}" added, with what OpenStreetMap knows about it.`
           : '';
       }
+      pending = '';
+      // Only a saved place closes the form; a failure leaves it up with what
+      // was typed still in it, so the retry is one tap.
+      if (result.saved) addOpen = false;
       rerender();
     });
   },
@@ -238,7 +263,9 @@ function addForm() {
         <input id="np-walk" placeholder="Walk min" style="width:104px" inputmode="numeric">
       </div>
       <div class="form-actions">
-        <button class="btn jade grow" style="height:40px" data-act="add-save">Save</button>
+        <button class="btn jade grow" style="height:40px" data-act="add-save"${
+          pending ? raw(' disabled aria-busy="true"') : ''}>${
+          pending === 'link' ? 'Reading that link…' : (pending === 'add' ? 'Looking it up…' : 'Save')}</button>
         <button class="btn ghost" style="width:88px;height:40px" data-act="add-cancel">Cancel</button>
       </div>
       <div class="form-hint">

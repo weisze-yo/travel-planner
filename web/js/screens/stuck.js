@@ -12,6 +12,12 @@ import { state } from '../store.js';
 import { back } from '../nav.js';
 
 let notice = '';
+/**
+ * Which control is doing async work — a key, never a free string (P0-5 R1).
+ * `notice` keeps the outcomes it already carries: `Still 2 waiting.`,
+ * `All sent.`, the save receipt, the discard confirmation.
+ */
+let pending = '';
 let confirming = false;
 let savedCopyAt = null;
 
@@ -47,7 +53,8 @@ export default {
               <div class="f125 w800">Why they are stuck</div>
               <div class="f12 w650 lh15 mt4">${sync.reason || 'The cloud has not accepted them yet.'}</div>
               <button class="btn mt11" style="width:100%;height:42px;background:#9B4B4B;color:#fff"
-                      data-act="retry">Try sending them now</button>
+                      data-act="retry"${pending === 'retry' ? raw(' disabled aria-busy="true"') : ''}>${
+                        pending === 'retry' ? 'Trying…' : 'Try sending them now'}</button>
             </div>
 
             <div class="card-list mt12">
@@ -115,15 +122,18 @@ export default {
   },
 
   mount(root) {
-    delegate(root, '[data-act="back"]', () => { notice = ''; confirming = false; back(); });
+    delegate(root, '[data-act="back"]', () => { notice = ''; pending = ''; confirming = false; back(); });
 
     delegate(root, '[data-act="retry"]', async () => {
-      notice = 'Trying…';
+      if (pending) return;
+      pending = 'retry';
+      notice = '';
       repaint();
       // Re-opening the trip replays every outstanding write through the same
       // path that queued it, which is the only honest way to retry.
       await store.boot(state.tripID);
       const after = store.syncState();
+      pending = '';
       notice = after.count
         ? `Still ${after.count} waiting. ${after.reason || ''}`.trim()
         : 'All sent.';

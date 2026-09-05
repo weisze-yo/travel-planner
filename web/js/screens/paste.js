@@ -43,6 +43,12 @@ let read = null;
 let openRow = null;
 let result = null;
 let busy = '';
+/**
+ * Which control is doing async work — a key, never a free string (P0-5 R1).
+ * `busy` keeps only outcomes and refusals (R4). `Read it` and the row edits
+ * are synchronous and deliberately get nothing at all (R10).
+ */
+let pending = '';
 /** A trip file that has been read but not yet turned into a trip. */
 let imported = null;
 
@@ -140,12 +146,22 @@ function pasteView() {
                 ${imported.counts.shopping} shopping · ${imported.counts.log} notes
               </div>
               <div class="row g8 mt10">
-                <button class="btn jade grow" data-act="open-file">Make this a trip</button>
-                <button class="btn ghost none" style="width:96px" data-act="other-file">Another</button>
+                <button class="btn jade grow" data-act="open-file"${
+                  pending === 'open-file' ? raw(' disabled aria-busy="true"') : ''}>${
+                  pending === 'open-file' ? 'Making it…' : 'Make this a trip'}</button>
+                <!-- R11: Another is this action's family. Non-interactive,
+                     not faded. -->
+                <button class="btn ghost none" style="width:96px${
+                  pending === 'open-file' ? ';pointer-events:none' : ''}" data-act="other-file">Another</button>
               </div>
             </div>` : html`
-            <label class="btn ghost wide mt10" style="cursor:pointer">
-              Choose a trip file…
+            <!-- A file label is not a <button>; P0-5 §4 applies the same
+                 two properties directly. The label never interpolates the
+                 file name (§6) — it is already on screen. -->
+            <label class="btn ghost wide mt10" style="cursor:pointer${
+              pending === 'file' ? ';opacity:.45;pointer-events:none' : ''}"${
+              pending === 'file' ? raw(' aria-busy="true"') : ''}>
+              ${pending === 'file' ? 'Reading it…' : 'Choose a trip file…'}
               <input id="trip-file" type="file" accept="application/json,.json" hidden>
             </label>`}
         </div>
@@ -157,23 +173,26 @@ function mountPaste(root) {
   root.querySelector('#trip-file')?.addEventListener('change', async (event) => {
     const file = event.target.files?.[0];
     if (!file) return;
-    busy = `Reading ${file.name}…`;
+    pending = 'file';
+    busy = '';
     repaint();
     const read = store.readTripFile(await file.text());
+    pending = '';
     busy = read.ok ? '' : read.reason;
     imported = read.ok ? read : null;
     repaint();
   });
 
-  delegate(root, '[data-act="other-file"]', () => { imported = null; busy = ''; repaint(); });
+  delegate(root, '[data-act="other-file"]', () => { imported = null; busy = ''; pending = ''; repaint(); });
 
   delegate(root, '[data-act="open-file"]', async () => {
-    if (!imported) return;
-    busy = `Making ${imported.name}…`;
+    if (!imported || pending) return;
+    pending = 'open-file';
+    busy = '';
     repaint();
     const made = await store.importTrip(imported.data);
+    pending = '';
     imported = null;
-    busy = '';
     if (made.ok) go('plan', {}, { replace: true });
     else { busy = made.reason; repaint(); }
   });
@@ -659,8 +678,11 @@ function summaryView() {
 
         ${busy ? html`<div class="amber-note f12 mb12">${busy}</div>` : ''}
 
-        <button class="btn jade" style="width:100%;height:48px" data-act="save"${busy ? ' disabled' : ''}>
-          Save ${rows.length} stop${rows.length === 1 ? '' : 's'} to the trip
+        <button class="btn jade" style="width:100%;height:48px" data-act="save"${
+          pending === 'save' ? raw(' disabled aria-busy="true"') : ''}>${
+          pending === 'save'
+            ? 'Adding them to the trip…'
+            : html`Save ${rows.length} stop${rows.length === 1 ? '' : 's'} to the trip`}
         </button>
         <button class="btn ghost mt8" style="width:100%" data-act="back-to-rows">Back to the rows</button>
         ${existingNote(days)}
@@ -686,13 +708,14 @@ function mountSummary(root) {
   delegate(root, '[data-act="back"]', () => { phase = 'review'; repaint(); });
   delegate(root, '[data-act="back-to-rows"]', () => { phase = 'review'; repaint(); });
   delegate(root, '[data-act="save"]', async () => {
-    busy = 'Adding them to the trip…';
+    if (pending) return;
+    pending = 'save';
     repaint();
     result = await store.importItinerary(
       wanted().map((row) => ({ ...row, include: true })),
       { sourceText: read.text },
     );
-    busy = '';
+    pending = '';
     phase = 'done';
     repaint();
   });
@@ -759,4 +782,5 @@ function reset() {
   openRow = null;
   result = null;
   busy = '';
+  pending = '';
 }

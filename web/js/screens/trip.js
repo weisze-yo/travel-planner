@@ -9,6 +9,12 @@ import { state } from '../store.js';
 import { back, go } from '../nav.js';
 
 let notice = '';
+/**
+ * Which control is doing async work — a key, never a free string (P0-5 R1).
+ * `notice` keeps only outcomes and errors (R4): `Trip saved.`, the rate line,
+ * the forecast status, the export receipt.
+ */
+let pending = '';
 let confirming = false;
 
 export default {
@@ -59,7 +65,9 @@ export default {
                 Changing the dates or the length re-labels the days and keeps what you have
                 already planned on the days that still exist.
               </div>
-              <button class="btn jade" data-act="save-trip">Save trip</button>
+              <button class="btn jade" data-act="save-trip"${
+                pending === 'save-trip' ? raw(' disabled aria-busy="true"') : ''}>${
+                pending === 'save-trip' ? 'Saving…' : 'Save trip'}</button>
             </div>
           </div>
 
@@ -73,8 +81,12 @@ export default {
               </div>
               ${field('home-rate', 'Rate', trip.homeCurrencyRate, store.rateLine(), 'number')}
               <div class="row g8">
-                <button class="btn ghost grow" data-act="save-money">Save</button>
-                <button class="btn ink grow" data-act="refresh-rate">Fetch today's rate</button>
+                <button class="btn ghost grow" data-act="save-money"${
+                  pending === 'save-money' ? raw(' disabled aria-busy="true"') : ''}>${
+                  pending === 'save-money' ? 'Saving…' : 'Save'}</button>
+                <button class="btn ink grow" data-act="refresh-rate"${
+                  pending === 'rate' ? raw(' disabled aria-busy="true"') : ''}>${
+                  pending === 'rate' ? 'Fetching the rate…' : html`Fetch today's rate`}</button>
               </div>
               <div class="f11 soft lh145">
                 Rates come from the European Central Bank's daily publication — free, and it
@@ -87,7 +99,9 @@ export default {
             <div class="eyebrow">FORECAST</div>
             <div class="row g8 center mt8">
               <div class="grow f125">${weather.line}</div>
-              <button class="btn ghost sm none" data-act="refresh-weather">Refresh</button>
+              <button class="btn ghost sm none" data-act="refresh-weather"${
+                pending === 'weather' ? raw(' disabled aria-busy="true"') : ''}>${
+                pending === 'weather' ? 'Fetching the forecast…' : 'Refresh'}</button>
             </div>
             <div class="f11 soft lh145 mt8">
               Live figures come from Open-Meteo for the trip's location, once the trip is
@@ -171,7 +185,7 @@ export default {
   },
 
   mount(root) {
-    delegate(root, '[data-act="back"]', () => { notice = ''; confirming = false; back(); });
+    delegate(root, '[data-act="back"]', () => { notice = ''; pending = ''; confirming = false; back(); });
     delegate(root, '[data-act="paste"]', () => go('paste'));
     delegate(root, '[data-act="share"]', () => go('share'));
     delegate(root, '[data-act="export"]', () => {
@@ -196,7 +210,9 @@ export default {
       const start = root.querySelector('#trip-start')?.value;
       const days = Number(root.querySelector('#trip-days')?.value);
 
-      notice = 'Saving…';
+      if (pending) return;
+      pending = 'save-trip';
+      notice = '';
       nudge();
       await store.updateTrip({
         name: name || state.trip.name,
@@ -204,12 +220,17 @@ export default {
         startDate: start || state.trip.startDate,
         dayCount: Number.isFinite(days) && days > 0 ? days : state.trip.dayCount,
       });
+      pending = '';
       notice = 'Trip saved.';
       nudge();
     });
 
     delegate(root, '[data-act="save-money"]', async () => {
+      if (pending) return;
       const rate = Number(root.querySelector('#home-rate')?.value);
+      pending = 'save-money';
+      notice = '';
+      nudge();
       await store.updateTrip({
         currencySymbol: root.querySelector('#cur-symbol')?.value.trim() || state.trip.currencySymbol,
         currencyCode: (root.querySelector('#cur-code')?.value || '').trim().toUpperCase(),
@@ -217,22 +238,31 @@ export default {
         homeCurrencyRate: rate > 0 ? rate : state.trip.homeCurrencyRate,
         rateSource: '',
       });
+      pending = '';
       notice = 'Currency saved.';
       nudge();
     });
 
     delegate(root, '[data-act="refresh-rate"]', async () => {
-      notice = 'Fetching the rate…';
+      if (pending) return;
+      pending = 'rate';
+      notice = '';
       nudge();
       const result = await store.refreshRate();
+      // R6 in reverse: the outcome IS the value, so `rateLine()` updating in
+      // place is most of the answer; the note carries the rest.
+      pending = '';
       notice = result.ok ? `Rate updated: ${store.rateLine()}` : result.reason;
       nudge();
     });
 
     delegate(root, '[data-act="refresh-weather"]', async () => {
-      notice = 'Fetching the forecast…';
+      if (pending) return;
+      pending = 'weather';
+      notice = '';
       nudge();
       const done = await store.refreshWeather({ force: true });
+      pending = '';
       notice = done ? 'Forecast updated.' : store.weatherStatus().line;
       nudge();
     });

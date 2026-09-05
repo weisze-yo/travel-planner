@@ -15,6 +15,11 @@ let draft = {
   text: '', photos: [], loadedFor: null,
 };
 let photoNotice = '';
+/**
+ * The photo label's own pending state (P0-5 R1, #14). `photoNotice` keeps its
+ * existing job — the storage notice and the error — where it already is.
+ */
+let addingPhotos = false;
 let picking = false;
 
 const nowClock = () => {
@@ -86,8 +91,11 @@ export default {
                 </div>`)}
             </div>` : ''}
 
-          <label class="photo-drop mt10">
-            + Photos
+          <!-- A file label is not a <button>, so the same two properties go
+               on it directly (P0-5 §4). -->
+          <label class="photo-drop mt10" style="${addingPhotos ? 'opacity:.45;pointer-events:none' : ''}"${
+            addingPhotos ? raw(' aria-busy="true"') : ''}>
+            ${addingPhotos ? 'Adding photos…' : '+ Photos'}
             <input type="file" id="note-photos" accept="image/*" multiple hidden>
           </label>
 
@@ -146,7 +154,8 @@ export default {
       keep(root);
       const day = draft.dayNumber ?? state.selectedDay;
       let inlined = false;
-      photoNotice = 'Adding photos…';
+      addingPhotos = true;
+      photoNotice = '';
       store.selectDay(day);
 
       for (const file of Array.from(picker.files || [])) {
@@ -155,12 +164,14 @@ export default {
           draft.photos = [...draft.photos, result.url];
           if (result.stored === 'inline') inlined = true;
         } catch (error) {
+          addingPhotos = false;
           photoNotice = error.message || 'That photo could not be added';
           store.selectDay(day);
           return;
         }
       }
 
+      addingPhotos = false;
       photoNotice = !inlined ? '' : (state.mode === 'firebase'
         ? 'Kept as thumbnails, because Cloud Storage is not enabled on your Firebase project. Enable Storage for full-resolution photos — everything else already syncs.'
         : 'Kept as thumbnails on this device, because Firebase is not configured yet.');
@@ -272,6 +283,7 @@ function reset() {
     text: '', photos: [], loadedFor: null,
   };
   photoNotice = '';
+  addingPhotos = false;
   picking = false;
 }
 
