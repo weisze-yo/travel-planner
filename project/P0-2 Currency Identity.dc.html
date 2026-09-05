@@ -1,0 +1,402 @@
+<!DOCTYPE html>
+<html>
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<script src="./support.js"></script>
+</head>
+<body>
+<x-dc>
+<helmet>
+<meta name="design_doc_mode" content="canvas">
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link href="https://fonts.googleapis.com/css2?family=Public+Sans:wght@400;600;700;800&display=swap" rel="stylesheet">
+<style>
+  body { margin:0; background:#E4E6E2; -webkit-font-smoothing:antialiased; }
+  a { color:#1F6F5C; text-decoration:none; }
+  a:hover { color:#14201C; }
+</style>
+</helmet>
+
+<section style="font-family:'Public Sans',system-ui,sans-serif;color:#14201C;padding:44px 48px 64px;display:flex;flex-direction:column;gap:34px;width:2280px;box-sizing:border-box">
+
+  <div style="display:flex;flex-direction:column;gap:9px;max-width:860px">
+    <div style="font-size:10.5px;font-weight:800;letter-spacing:.06em;color:#98A5A0">TRAVEL PLANNER · P0-2 · DESIGN FOR REVIEW</div>
+    <div style="font-size:34px;font-weight:700;letter-spacing:-.025em;line-height:1.1">Currency inference &amp; currency identity</div>
+    <div style="font-size:13.5px;line-height:1.55;color:#3D4C46;text-wrap:pretty">The guess becomes visible before Create, the failure is told where it happened, and an unset currency stops rendering as yen. Every frame 390 × 844, light only, built from existing <b>app.css</b> parts — no new component. Canonical spec: <b>docs/design/p0-2-currency-design.md</b>; every piece of <i>copy</i> here is from its §9, and everything else on these frames is sample trip data.</div>
+  </div>
+
+  <div style="display:flex;gap:20px;flex-wrap:wrap">
+    <div style="background:#FBF1DE;border:1px solid #EBD9B4;border-radius:16px;padding:13px 15px;max-width:340px">
+      <div style="font-size:10.5px;font-weight:800;letter-spacing:.06em;color:#8A5A08;margin-bottom:5px">THE GUESS IS AMBER</div>
+      <div style="font-size:12.5px;line-height:1.5;color:#14201C">A silent correct guess and a silent wrong guess are the same screen. Amber is the app's word for <b>uncertain and yours</b>, so the currency line is amber even when it worked.</div>
+    </div>
+    <div style="background:#F8E9E9;border:1px solid #E9D3D3;border-radius:16px;padding:13px 15px;max-width:340px">
+      <div style="font-size:10.5px;font-weight:800;letter-spacing:.06em;color:#9B4B4B;margin-bottom:5px">TOLD WHERE IT HAPPENED</div>
+      <div style="font-size:12.5px;line-height:1.5;color:#14201C">The lookup runs on the city field, so success and failure are on screen <b>before Create</b>. No string is the only account of a failure on a screen nobody opens.</div>
+    </div>
+    <div style="background:#fff;border:1px solid #E7EAE7;border-radius:16px;padding:13px 15px;max-width:340px">
+      <div style="font-size:10.5px;font-weight:800;letter-spacing:.06em;color:#98A5A0;margin-bottom:5px">SYMBOL + CODE + PLACE</div>
+      <div style="font-size:12.5px;line-height:1.5;color:#3D4C46">$ is USD, ARS and MXN. ¥ is JPY and CNY. A provenance line always carries all three, so the inference is checkable.</div>
+    </div>
+    <div style="background:#E6EFEB;border:1px solid #CFE0D9;border-radius:16px;padding:13px 15px;max-width:340px">
+      <div style="font-size:10.5px;font-weight:800;letter-spacing:.06em;color:#5D8C7C;margin-bottom:5px">CREATE IS NEVER GATED</div>
+      <div style="font-size:12.5px;line-height:1.5;color:#14201C">A trip with no currency is a working trip with unpriced numbers. Nothing about money stops a trip existing.</div>
+    </div>
+  </div>
+
+  <div style="height:1px;background:#D8DCD8"></div>
+
+  <div style="display:flex;flex-direction:column;gap:16px">
+    <div style="font-size:15px;font-weight:700">A · New trip, the guess resolved — full frame</div>
+    <div style="display:flex;gap:26px;align-items:flex-start">
+
+      <div style="flex:0 0 auto;display:flex;flex-direction:column;gap:9px">
+        <div style="font-size:11px;font-weight:800;letter-spacing:.04em;color:#98A5A0">MY TRIPS · NEW TRIP MODAL · STATE 2 RESOLVED</div>
+        <div style="width:390px;height:844px;background:#F2F3F1;border:1px solid #D8DCD8;border-radius:10px;overflow:hidden;position:relative;display:flex;flex-direction:column">
+
+          <div style="background:#fff;border-bottom:1px solid #E7EAE7;padding:26px 16px 12px">
+            <div style="display:flex;align-items:flex-end;justify-content:space-between;gap:10px">
+              <div>
+                <div style="font-size:24px;font-weight:700;letter-spacing:-.02em">My trips</div>
+                <div style="font-size:12px;color:#B4BEB9;margin-top:2px">— background chrome, not specified here —</div>
+              </div>
+              <div style="height:38px;padding:0 13px;border-radius:12px;background:#14201C;color:#fff;font-size:12.5px;font-weight:700;display:flex;align-items:center">+ New trip</div>
+            </div>
+          </div>
+
+          <div style="flex:1;padding:14px 16px;display:flex;flex-direction:column;gap:12px">
+            <div style="background:#fff;border-radius:16px;padding:13px 14px;display:flex;align-items:center;gap:11px">
+              <div style="width:30px;height:30px;border-radius:50%;background:#1F6F5C;color:#fff;font-size:13px;font-weight:700;display:flex;align-items:center;justify-content:center">A</div>
+              <div style="flex:1;min-width:0">
+                <div style="font-size:13px;font-weight:650">Everything is on this phone</div>
+                <div style="font-size:11.5px;color:#6B7A74;line-height:1.4;margin-top:1px">Sign in and your trips follow you to a new one.</div>
+              </div>
+            </div>
+            <div style="background:#fff;border-radius:16px;height:150px;display:flex;align-items:flex-end;padding:14px">
+              <div style="font-size:13px;font-weight:600;color:#B4BEB9">Meridian City</div>
+            </div>
+          </div>
+
+          <div style="position:absolute;inset:0;background:rgba(20,32,28,.34)"></div>
+
+          <div style="position:absolute;left:0;right:0;bottom:0;padding:0 10px 10px">
+            <div style="background:#fff;border:1.5px solid #14201C;border-radius:18px;padding:16px;display:flex;flex-direction:column;gap:8px">
+              <div style="font-size:12.5px;font-weight:800">New trip</div>
+              <div style="border:1px solid #DDE2DE;border-radius:10px;padding:9px 10px;font-size:13px;color:#14201C">Japan with Mum</div>
+              <div style="border:1px solid #1F6F5C;border-radius:10px;padding:9px 10px;font-size:13px;color:#14201C">Kyoto</div>
+              <div style="font-size:11px;line-height:1.45;color:#8A5A08;margin-top:2px">Prices in ¥ JPY — from Kyoto, Japan</div>
+              <div style="display:flex;gap:8px">
+                <div style="flex:1;border:1px solid #DDE2DE;border-radius:10px;padding:9px 10px;font-size:13px;color:#6B7A74">12 / 03 / 2026</div>
+                <div style="width:88px;border:1px solid #DDE2DE;border-radius:10px;padding:9px 10px;font-size:13px;text-align:center">5</div>
+              </div>
+              <div style="display:flex;gap:8px;margin-top:2px">
+                <div style="flex:1;height:42px;border-radius:12px;background:#1F6F5C;color:#fff;font-size:13px;font-weight:700;display:flex;align-items:center;justify-content:center">Create</div>
+                <div style="width:96px;height:42px;border-radius:12px;background:#F2F3F1;border:1px solid #E1E5E1;font-size:13px;font-weight:650;display:flex;align-items:center;justify-content:center">Cancel</div>
+              </div>
+              <div style="font-size:11px;color:#98A5A0;line-height:1.45">It goes straight to pasting the itinerary in, which is the fastest way from an empty trip to a usable one. You can skip that and add stops one at a time instead.</div>
+            </div>
+          </div>
+        </div>
+      </div>
+
+      <div style="flex:1;min-width:0;display:flex;flex-direction:column;gap:12px;max-width:760px">
+        <div style="background:#fff;border:1px solid #E7EAE7;border-radius:16px;padding:15px 16px;display:flex;flex-direction:column;gap:10px">
+          <div style="font-size:13px;font-weight:700">One line added, in the slot a form hint already occupies</div>
+          <div style="font-size:12px;line-height:1.55;color:#3D4C46;text-wrap:pretty">Four fields, two buttons and the existing <b>.form-hint</b> are untouched. The derived line sits directly under <b>City or area</b> because it is that field's own consequence — the same relationship <b>locationNotice</b> already has with the same field on Trip settings. No new field, no new control, no second step.</div>
+          <div style="font-size:12px;line-height:1.55;color:#3D4C46;text-wrap:pretty">It is <b>text only</b>: no border, no fill, no strip. An amber block inside a bordered white modal on a scrim would make a warning of a normal outcome and push Create toward the fold at 390 × 844. Type colour carries the whole distinction.</div>
+        </div>
+        <div style="background:#fff;border:1px solid #E7EAE7;border-radius:16px;padding:15px 16px;display:flex;flex-direction:column;gap:9px">
+          <div style="font-size:13px;font-weight:700">Verified source behaviour this frame answers</div>
+          <div style="display:grid;grid-template-columns:190px 1fr;gap:8px 12px;font-size:11.5px;line-height:1.45">
+            <div style="font-weight:800;letter-spacing:.03em;color:#B4BEB9">TODAY</div>
+            <div style="color:#3D4C46">The modal closes on Create, then <b>createTrip</b> awaits a geocode and a rate fetch, then the app jumps to Paste. The guess is never shown and the failure is written to a screen the app does not send you to.</div>
+            <div style="font-weight:800;letter-spacing:.03em;color:#B4BEB9">FIVE OUTCOMES</div>
+            <div style="color:#3D4C46">Resolved · resolved-but-no-rate · <b>located with no currency (no notice is written at all)</b> · not found · offline.</div>
+            <div style="font-weight:800;letter-spacing:.03em;color:#B4BEB9">THE ¥ DEFECT</div>
+            <div style="color:#3D4C46">Every money consumer reads <b>currencySymbol || '¥'</b>, so an unset currency prices the whole trip in the demo trip's yen. An unset rate converts at 1:1.</div>
+            <div style="font-weight:800;letter-spacing:.03em;color:#B4BEB9">THE BROKEN REMEDY</div>
+            <div style="color:#3D4C46">"Fix it from Trip settings" clears the notice and fixes the map — <b>updateTrip</b> never re-derives currency, so the money stays broken with nothing left on screen to say so.</div>
+          </div>
+        </div>
+      </div>
+    </div>
+  </div>
+
+  <div style="height:1px;background:#D8DCD8"></div>
+
+  <div style="display:flex;flex-direction:column;gap:14px">
+    <div style="font-size:15px;font-weight:700">B · The derived line — six states, one element</div>
+    <div style="font-size:12.5px;line-height:1.5;color:#6B7A74;max-width:900px">Modal crops at the real 390px width. Geometry is identical in every state — 11px / 400 / line-height 1.45, 2px top margin. Only the colour and the words change: <b>--soft</b> idle, <b>--amber-fg</b> for a guess, <b>--danger-fg</b> when something the user asked for did not happen.</div>
+
+    <div style="display:flex;gap:20px;flex-wrap:wrap">
+
+      <div style="width:390px;display:flex;flex-direction:column;gap:8px">
+        <div style="display:flex;align-items:baseline;gap:8px">
+          <div style="font-size:11px;font-weight:800;letter-spacing:.04em;padding:3px 7px;border-radius:7px;background:#F2F3F1;color:#6B7A74">0 · IDLE</div>
+          <div style="font-size:11.5px;color:#98A5A0">city empty or untouched</div>
+        </div>
+        <div style="background:#fff;border:1.5px solid #14201C;border-radius:18px;padding:14px;display:flex;flex-direction:column;gap:8px">
+          <div style="border:1px solid #DDE2DE;border-radius:10px;padding:9px 10px;font-size:13px;color:#B4BEB9">City or area (centres the map)</div>
+          <div style="font-size:11px;line-height:1.45;color:#98A5A0">Used to centre the map and to look up places you add</div>
+        </div>
+      </div>
+
+      <div style="width:390px;display:flex;flex-direction:column;gap:8px">
+        <div style="display:flex;align-items:baseline;gap:8px">
+          <div style="font-size:11px;font-weight:800;letter-spacing:.04em;padding:3px 7px;border-radius:7px;background:#FBF1DE;color:#8A5A08">1 · PENDING</div>
+          <div style="font-size:11.5px;color:#98A5A0">lookup in flight · Create stays live</div>
+        </div>
+        <div style="background:#fff;border:1.5px solid #14201C;border-radius:18px;padding:14px;display:flex;flex-direction:column;gap:8px">
+          <div style="border:1px solid #1F6F5C;border-radius:10px;padding:9px 10px;font-size:13px;color:#14201C">Kyoto</div>
+          <div style="font-size:11px;line-height:1.45;color:#8A5A08">Looking up Kyoto…</div>
+        </div>
+      </div>
+
+      <div style="width:390px;display:flex;flex-direction:column;gap:8px">
+        <div style="display:flex;align-items:baseline;gap:8px">
+          <div style="font-size:11px;font-weight:800;letter-spacing:.04em;padding:3px 7px;border-radius:7px;background:#FBF1DE;color:#8A5A08">2 · RESOLVED</div>
+          <div style="font-size:11.5px;color:#98A5A0">the common case, and today it is silent</div>
+        </div>
+        <div style="background:#fff;border:1.5px solid #14201C;border-radius:18px;padding:14px;display:flex;flex-direction:column;gap:8px">
+          <div style="border:1px solid #DDE2DE;border-radius:10px;padding:9px 10px;font-size:13px;color:#14201C">Kyoto</div>
+          <div style="font-size:11px;line-height:1.45;color:#8A5A08">Prices in ¥ JPY — from Kyoto, Japan</div>
+        </div>
+      </div>
+
+      <div style="width:390px;display:flex;flex-direction:column;gap:8px">
+        <div style="display:flex;align-items:baseline;gap:8px">
+          <div style="font-size:11px;font-weight:800;letter-spacing:.04em;padding:3px 7px;border-radius:7px;background:#FBF1DE;color:#8A5A08">3 · NO CURRENCY KNOWN</div>
+          <div style="font-size:11.5px;color:#9B4B4B;font-weight:650">new state — today nothing is written</div>
+        </div>
+        <div style="background:#fff;border:1.5px solid #14201C;border-radius:18px;padding:14px;display:flex;flex-direction:column;gap:8px">
+          <div style="border:1px solid #DDE2DE;border-radius:10px;padding:9px 10px;font-size:13px;color:#14201C">Oranjestad</div>
+          <div style="font-size:11px;line-height:1.45;color:#8A5A08">Oranjestad, Aruba — no currency known for it, so prices stay unset. Set one in Trip settings.</div>
+        </div>
+      </div>
+
+      <div style="width:390px;display:flex;flex-direction:column;gap:8px">
+        <div style="display:flex;align-items:baseline;gap:8px">
+          <div style="font-size:11px;font-weight:800;letter-spacing:.04em;padding:3px 7px;border-radius:7px;background:#F8E9E9;color:#9B4B4B">4 · NOT FOUND</div>
+          <div style="font-size:11.5px;color:#98A5A0">rust: something asked for did not happen</div>
+        </div>
+        <div style="background:#fff;border:1.5px solid #14201C;border-radius:18px;padding:14px;display:flex;flex-direction:column;gap:8px">
+          <div style="border:1px solid #DDE2DE;border-radius:10px;padding:9px 10px;font-size:13px;color:#14201C">Kyotoo</div>
+          <div style="font-size:11px;line-height:1.45;color:#9B4B4B">Nothing found for "Kyotoo" — the map centre and the currency stay unset. Try another spelling, or set both in Trip settings.</div>
+        </div>
+      </div>
+
+      <div style="width:390px;display:flex;flex-direction:column;gap:8px">
+        <div style="display:flex;align-items:baseline;gap:8px">
+          <div style="font-size:11px;font-weight:800;letter-spacing:.04em;padding:3px 7px;border-radius:7px;background:#F8E9E9;color:#9B4B4B">5 · OFFLINE</div>
+          <div style="font-size:11.5px;color:#98A5A0">the trip is still made</div>
+        </div>
+        <div style="background:#fff;border:1.5px solid #14201C;border-radius:18px;padding:14px;display:flex;flex-direction:column;gap:8px">
+          <div style="border:1px solid #DDE2DE;border-radius:10px;padding:9px 10px;font-size:13px;color:#14201C">Kyoto</div>
+          <div style="font-size:11px;line-height:1.45;color:#9B4B4B">No signal, so "Kyoto" was not looked up. The trip is made anyway — set the currency in Trip settings, or fix the city there once you have a signal.</div>
+        </div>
+      </div>
+
+    </div>
+
+    <div style="display:flex;gap:20px;flex-wrap:wrap;margin-top:4px">
+      <div style="width:390px;display:flex;flex-direction:column;gap:8px">
+        <div style="font-size:11px;font-weight:800;letter-spacing:.04em;color:#98A5A0">CREATE PRESSED WHILE STATE 1 IS STILL TRUE</div>
+        <div style="background:#fff;border:1.5px solid #14201C;border-radius:18px;padding:14px;display:flex;flex-direction:column;gap:8px">
+          <div style="font-size:11px;line-height:1.45;color:#8A5A08">Looking up Kyoto…</div>
+          <div style="display:flex;gap:8px;margin-top:2px">
+            <div style="flex:1;height:42px;border-radius:12px;background:#1F6F5C;color:#fff;font-size:13px;font-weight:700;display:flex;align-items:center;justify-content:center;opacity:.45">Creating…</div>
+            <div style="width:96px;height:42px;border-radius:12px;background:#F2F3F1;border:1px solid #E1E5E1;font-size:13px;font-weight:650;display:flex;align-items:center;justify-content:center;opacity:.45">Cancel</div>
+          </div>
+        </div>
+        <div style="font-size:11.5px;line-height:1.45;color:#6B7A74;text-wrap:pretty">The modal <b>stays up</b> rather than being torn down over a wait that has an outcome. Label swap plus <b>[disabled]</b> is P0-5's rule, not a new pattern.</div>
+      </div>
+
+      <div style="width:390px;display:flex;flex-direction:column;gap:8px">
+        <div style="font-size:11px;font-weight:800;letter-spacing:.04em;color:#98A5A0">E · PASTE — ONLY WHEN THE LOOKUP RACED CREATE AND FAILED</div>
+        <div style="background:#F2F3F1;border:1px solid #D8DCD8;border-radius:12px;padding:14px 16px;display:flex;flex-direction:column;gap:12px">
+          <div style="font-size:12px;font-weight:650;color:#8A5A08;line-height:1.45">Kyoto was not found, so this trip has no map centre and no currency. Both are on Trip settings.</div>
+          <div style="font-size:13.5px;font-weight:700">Paste an itinerary</div>
+          <div style="background:#fff;border:1px solid #DDE2DE;border-radius:12px;height:120px"></div>
+        </div>
+        <div style="font-size:11.5px;line-height:1.45;color:#6B7A74;text-wrap:pretty">Paste is the screen the app actually moves to, so it is the screen that carries the news. One <b>.amber-note</b>, the existing outcome idiom.</div>
+      </div>
+    </div>
+  </div>
+
+  <div style="height:1px;background:#D8DCD8"></div>
+
+  <div style="display:flex;flex-direction:column;gap:14px">
+    <div style="font-size:15px;font-weight:700">C · Trip settings — provenance, and re-derivation as an offer</div>
+    <div style="display:flex;gap:20px;flex-wrap:wrap;align-items:flex-start">
+
+      <div style="width:390px;display:flex;flex-direction:column;gap:8px">
+        <div style="font-size:11px;font-weight:800;letter-spacing:.04em;color:#98A5A0">MONEY · DERIVED AND UNTOUCHED</div>
+        <div style="background:#fff;border-radius:16px;padding:14px;display:flex;flex-direction:column;gap:10px">
+          <div style="font-size:10.5px;font-weight:800;letter-spacing:.06em;color:#98A5A0">MONEY</div>
+          <div style="display:flex;gap:8px">
+            <div style="flex:1;display:flex;flex-direction:column;gap:4px">
+              <div style="font-size:10.5px;font-weight:800;letter-spacing:.04em;color:#98A5A0">SYMBOL</div>
+              <div style="border:1px solid #DDE2DE;border-radius:10px;padding:9px 10px;font-size:13px">¥</div>
+            </div>
+            <div style="flex:1;display:flex;flex-direction:column;gap:4px">
+              <div style="font-size:10.5px;font-weight:800;letter-spacing:.04em;color:#98A5A0">SPENDING IN</div>
+              <div style="border:1px solid #DDE2DE;border-radius:10px;padding:9px 10px;font-size:13px">JPY</div>
+            </div>
+            <div style="flex:1;display:flex;flex-direction:column;gap:4px">
+              <div style="font-size:10.5px;font-weight:800;letter-spacing:.04em;color:#98A5A0">YOUR CURRENCY</div>
+              <div style="border:1px solid #DDE2DE;border-radius:10px;padding:9px 10px;font-size:13px">MYR</div>
+            </div>
+          </div>
+          <div style="font-size:11px;line-height:1.45;color:#98A5A0">From Kyoto, Japan — the city above.</div>
+          <div style="display:flex;flex-direction:column;gap:4px">
+            <div style="font-size:10.5px;font-weight:800;letter-spacing:.04em;color:#98A5A0">RATE</div>
+            <div style="border:1px solid #DDE2DE;border-radius:10px;padding:9px 10px;font-size:13px">33.7</div>
+            <div style="font-size:11px;color:#98A5A0;line-height:1.45">1 MYR = 33.7 JPY · ECB 2026-09-04</div>
+          </div>
+        </div>
+        <div style="font-size:11.5px;line-height:1.45;color:#6B7A74;text-wrap:pretty">One 11px line answers "where did this come from". It needs one stored field — <b>trip.currencyFrom</b>: city · user · joined · empty — the only data-shape addition in this design.</div>
+      </div>
+
+      <div style="width:390px;display:flex;flex-direction:column;gap:8px">
+        <div style="font-size:11px;font-weight:800;letter-spacing:.04em;color:#98A5A0">THE OTHER THREE PROVENANCE LINES</div>
+        <div style="background:#fff;border:1px solid #E7EAE7;border-radius:16px;padding:14px;display:flex;flex-direction:column;gap:11px">
+          <div style="display:flex;flex-direction:column;gap:3px">
+            <div style="font-size:10px;font-weight:800;letter-spacing:.04em;color:#B4BEB9">TYPED OR CHANGED BY THE USER</div>
+            <div style="font-size:11px;color:#98A5A0">You set this.</div>
+          </div>
+          <div style="height:1px;background:#F0F2F0"></div>
+          <div style="display:flex;flex-direction:column;gap:3px">
+            <div style="font-size:10px;font-weight:800;letter-spacing:.04em;color:#B4BEB9">A JOINED COPY — ALREADY IMPLEMENTED IN joinTrip</div>
+            <div style="font-size:11px;color:#98A5A0">From the copy you joined.</div>
+          </div>
+          <div style="height:1px;background:#F0F2F0"></div>
+          <div style="display:flex;flex-direction:column;gap:3px">
+            <div style="font-size:10px;font-weight:800;letter-spacing:.04em;color:#B4BEB9">EMPTY</div>
+            <div style="font-size:11px;color:#98A5A0">Not set — prices show without a symbol until this is filled in.</div>
+          </div>
+        </div>
+        <div style="font-size:11.5px;line-height:1.45;color:#6B7A74;text-wrap:pretty">A joined trip's money is <b>given</b>, like the rest of the copy — which is why it is named rather than presented as the user's own setting. Ties to P0-1.</div>
+      </div>
+
+      <div style="width:390px;display:flex;flex-direction:column;gap:8px">
+        <div style="font-size:11px;font-weight:800;letter-spacing:.04em;color:#98A5A0">THE CITY CHANGED · CURRENCY ALREADY SET</div>
+        <div style="background:#fff;border-radius:16px;padding:14px;display:flex;flex-direction:column;gap:10px">
+          <div style="font-size:10.5px;font-weight:800;letter-spacing:.06em;color:#98A5A0">MONEY</div>
+          <div style="display:flex;gap:8px">
+            <div style="flex:1;border:1px solid #DDE2DE;border-radius:10px;padding:9px 10px;font-size:13px">RM</div>
+            <div style="flex:1;border:1px solid #DDE2DE;border-radius:10px;padding:9px 10px;font-size:13px">MYR</div>
+            <div style="flex:1;border:1px solid #DDE2DE;border-radius:10px;padding:9px 10px;font-size:13px">MYR</div>
+          </div>
+          <div style="font-size:11px;line-height:1.45;color:#98A5A0">You set this.</div>
+          <div style="display:flex;gap:8px;align-items:center;flex-wrap:wrap">
+            <div style="flex:1;min-width:170px;font-size:12px;font-weight:650;color:#8A5A08;line-height:1.4">Kyoto is in Japan. Price this trip in ¥ JPY?</div>
+            <div style="height:38px;padding:0 13px;border-radius:12px;background:#14201C;color:#fff;font-size:12.5px;font-weight:700;display:flex;align-items:center">Use ¥ JPY</div>
+          </div>
+        </div>
+        <div style="font-size:11.5px;line-height:1.45;color:#6B7A74;text-wrap:pretty">Money the user typed is theirs. The offer <b>never overwrites</b> — and when the currency is unset it is adopted silently instead, with the city field's hint saying so in jade: <b style="color:#1F6F5C">Kyoto, Japan — prices set to ¥ JPY.</b></div>
+      </div>
+
+      <div style="width:390px;display:flex;flex-direction:column;gap:8px">
+        <div style="font-size:11px;font-weight:800;letter-spacing:.04em;color:#98A5A0">THE STANDING FAILURE RECORD · RUST FIELD HINT</div>
+        <div style="background:#fff;border-radius:16px;padding:14px;display:flex;flex-direction:column;gap:10px">
+          <div style="font-size:10.5px;font-weight:800;letter-spacing:.06em;color:#98A5A0">THE TRIP</div>
+          <div style="display:flex;flex-direction:column;gap:4px">
+            <div style="font-size:10.5px;font-weight:800;letter-spacing:.04em;color:#98A5A0">CITY OR AREA</div>
+            <div style="border:1px solid #E9D3D3;border-radius:10px;padding:9px 10px;font-size:13px">Kyotoo</div>
+            <div style="font-size:11px;color:#9B4B4B;line-height:1.45">Nothing was found for "Kyotoo". The map centre and the currency are not set.</div>
+          </div>
+        </div>
+        <div style="font-size:11.5px;line-height:1.45;color:#6B7A74;text-wrap:pretty">All four rewritten notices drop "Fix it from Trip settings." — the reader is already on Trip settings. The current strings tell the reader to go where they are.</div>
+      </div>
+    </div>
+  </div>
+
+  <div style="height:1px;background:#D8DCD8"></div>
+
+  <div style="display:flex;flex-direction:column;gap:14px">
+    <div style="font-size:15px;font-weight:700">D · An unset currency renders as unset — not as yen</div>
+    <div style="display:flex;gap:20px;flex-wrap:wrap;align-items:flex-start">
+
+      <div style="width:390px;display:flex;flex-direction:column;gap:8px">
+        <div style="font-size:11px;font-weight:800;letter-spacing:.04em;color:#9B4B4B">TODAY · currencySymbol || '¥'</div>
+        <div style="background:#fff;border-radius:16px;padding:14px;display:flex;flex-direction:column;gap:11px">
+          <div style="display:flex;justify-content:space-between;align-items:flex-end">
+            <div>
+              <div style="font-size:10.5px;font-weight:800;letter-spacing:.06em;color:#98A5A0">SPENT SO FAR</div>
+              <div style="font-size:20px;font-weight:700;font-variant-numeric:tabular-nums;margin-top:2px">¥ 18,400</div>
+            </div>
+            <div style="text-align:right">
+              <div style="font-size:10.5px;font-weight:800;letter-spacing:.06em;color:#8FB3A6">≈ RM</div>
+              <div style="font-size:17px;font-weight:700;font-variant-numeric:tabular-nums">18,400</div>
+            </div>
+          </div>
+          <div style="height:1px;background:#F0F2F0"></div>
+          <div style="display:flex;justify-content:space-between;font-size:12.5px">
+            <div>Fabric, Nishiki market</div>
+            <div style="font-weight:700;font-variant-numeric:tabular-nums">¥ 2,600</div>
+          </div>
+        </div>
+        <div style="font-size:11.5px;line-height:1.45;color:#9B4B4B;text-wrap:pretty">A trip with no currency prices itself in the demo trip's yen, and converts at 1:1 because the rate is null. Both numbers are wrong and both look authoritative.</div>
+      </div>
+
+      <div style="width:390px;display:flex;flex-direction:column;gap:8px">
+        <div style="font-size:11px;font-weight:800;letter-spacing:.04em;color:#1F6F5C">DESIGNED · no currency, no symbol</div>
+        <div style="background:#fff;border-radius:16px;padding:14px;display:flex;flex-direction:column;gap:11px">
+          <div style="display:flex;justify-content:space-between;align-items:flex-end">
+            <div>
+              <div style="font-size:10.5px;font-weight:800;letter-spacing:.06em;color:#98A5A0">SPENT SO FAR</div>
+              <div style="font-size:20px;font-weight:700;font-variant-numeric:tabular-nums;margin-top:2px">18,400</div>
+            </div>
+          </div>
+          <div style="font-size:12px;font-weight:650;color:#8A5A08;line-height:1.45">Prices have no currency yet. Set it in Trip settings.</div>
+          <div style="height:1px;background:#F0F2F0"></div>
+          <div style="display:flex;justify-content:space-between;font-size:12.5px">
+            <div>Fabric, Nishiki market</div>
+            <div style="font-weight:700;font-variant-numeric:tabular-nums">2,600</div>
+          </div>
+        </div>
+        <div style="font-size:11.5px;line-height:1.45;color:#6B7A74;text-wrap:pretty">The bare number is still true. The conversion row is <b>removed, not zeroed</b> — the approved empty-state rule — and only the two screens that <i>summarise</i> money carry the line. Item rows stay quiet.</div>
+      </div>
+
+      <div style="width:390px;display:flex;flex-direction:column;gap:8px">
+        <div style="font-size:11px;font-weight:800;letter-spacing:.04em;color:#98A5A0">MY TRIPS CARD · THE MONEY CHIP IS OMITTED</div>
+        <div style="background:#fff;border-radius:16px;padding:14px;display:flex;flex-direction:column;gap:10px">
+          <div style="font-size:15px;font-weight:700">Japan with Mum</div>
+          <div style="font-size:11.5px;color:#6B7A74">12–16 Mar 2026 · 5 days</div>
+          <div style="display:flex;gap:6px">
+            <div style="padding:4px 8px;border-radius:8px;background:#F2F3F1;color:#3D4C46;font-size:10.5px;font-weight:650">7 stops</div>
+            <div style="padding:4px 8px;border-radius:8px;background:#F2F3F1;color:#3D4C46;font-size:10.5px;font-weight:650">2 sub routes</div>
+          </div>
+        </div>
+        <div style="font-size:11.5px;line-height:1.45;color:#6B7A74;text-wrap:pretty">Not zeroed, not yen-labelled, not replaced with a placeholder chip. A number pretending to be information is worse than no chip.</div>
+      </div>
+
+      <div style="width:390px;background:#FBF1DE;border:1px solid #EBD9B4;border-radius:16px;padding:14px 16px;display:flex;flex-direction:column;gap:8px">
+        <div style="font-size:10.5px;font-weight:800;letter-spacing:.06em;color:#8A5A08">OPEN DECISION · C-1</div>
+        <div style="font-size:12.5px;line-height:1.5;color:#14201C;text-wrap:pretty">Bare numbers, or no money at all until a currency is set? <b>Recommendation: bare numbers.</b> A number with no symbol is still true, and hiding the shopping estimates punishes the user for a failed lookup. The alternative is only defensible if unlabelled money is considered worse than absent money — a product-policy call, so it is yours.</div>
+      </div>
+    </div>
+  </div>
+
+  <div style="height:1px;background:#D8DCD8"></div>
+
+  <div style="display:flex;flex-direction:column;gap:14px">
+    <div style="font-size:15px;font-weight:700">F · Countries whose currency cannot be guessed from the country</div>
+    <div style="font-size:12.5px;line-height:1.5;color:#6B7A74;max-width:900px">These are the rows that make a symbol-only line dangerous: the user cannot check them from the country name, which is exactly why every line carries the code and the place together.</div>
+    <div style="display:flex;gap:12px;flex-wrap:wrap">
+      <div style="background:#fff;border:1px solid #E7EAE7;border-radius:12px;padding:11px 13px;font-size:11.5px;line-height:1.5;color:#3D4C46;width:250px">Prices in <b>$ USD</b> — from Quito, <b>Ecuador</b><div style="color:#98A5A0;margin-top:3px">also El Salvador, Timor-Leste, Panama</div></div>
+      <div style="background:#fff;border:1px solid #E7EAE7;border-radius:12px;padding:11px 13px;font-size:11.5px;line-height:1.5;color:#3D4C46;width:250px">Prices in <b>kr DKK</b> — from Nuuk, <b>Greenland</b></div>
+      <div style="background:#fff;border:1px solid #E7EAE7;border-radius:12px;padding:11px 13px;font-size:11.5px;line-height:1.5;color:#3D4C46;width:250px">Prices in <b>XOF</b> — from Dakar, <b>Senegal</b><div style="color:#98A5A0;margin-top:3px">symbol equals code, so the code prints once</div></div>
+      <div style="background:#fff;border:1px solid #E7EAE7;border-radius:12px;padding:11px 13px;font-size:11.5px;line-height:1.5;color:#3D4C46;width:250px">Prices in <b>₪ ILS</b> — from Bethlehem, <b>Palestine</b></div>
+      <div style="background:#fff;border:1px solid #E7EAE7;border-radius:12px;padding:11px 13px;font-size:11.5px;line-height:1.5;color:#3D4C46;width:250px">Prices in <b>NZ$ NZD</b> — from Avarua, <b>Cook Islands</b></div>
+      <div style="background:#FBF1DE;border:1px solid #EBD9B4;border-radius:12px;padding:11px 13px;font-size:11.5px;line-height:1.5;color:#8A5A08;width:250px"><b>No row in the table at all:</b> Aruba, Curaçao, Puerto Rico, Réunion, Bermuda — and anything Nominatim returns without a country code. This is state 3.</div>
+    </div>
+  </div>
+
+</section>
+
+</x-dc>
+</body>
+</html>

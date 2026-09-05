@@ -1,0 +1,832 @@
+<!DOCTYPE html>
+<html>
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<script src="./support.js"></script>
+</head>
+<body>
+<x-dc>
+<helmet>
+<meta name="design_doc_mode" content="canvas">
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link href="https://fonts.googleapis.com/css2?family=Public+Sans:wght@400;600;700;800&display=swap" rel="stylesheet">
+<style>
+  body { margin:0; background:#E4E6E2; -webkit-font-smoothing:antialiased; }
+  a { color:#1F6F5C; text-decoration:none; }
+  a:hover { color:#14201C; }
+</style>
+</helmet>
+
+<section style="font-family:'Public Sans',system-ui,sans-serif;color:#14201C;padding:44px 48px 64px;display:flex;flex-direction:column;gap:34px;width:2760px;box-sizing:border-box">
+
+  <div style="display:flex;flex-direction:column;gap:9px;max-width:900px">
+    <div style="font-size:10.5px;font-weight:800;letter-spacing:.06em;color:#98A5A0">TRAVEL PLANNER · P1 · DESIGN FOR REVIEW</div>
+    <div style="font-size:34px;font-weight:700;letter-spacing:-.025em;line-height:1.1">Share → Join → Review, as one flow</div>
+    <div style="font-size:13.5px;line-height:1.55;color:#3D4C46;text-wrap:pretty">Eleven surfaces, one round trip. The screens were already sound; <b>five things were missing or wrong, and all five are in the seams</b>. Canonical spec: <b>docs/design/p1-share-join-review-flow-design.md</b> — every string here is from its §11, and everything else is sample trip data.</div>
+  </div>
+
+  <div style="display:flex;gap:18px;flex-wrap:wrap">
+    <div style="background:#F8E9E9;border:1px solid #E9D3D3;border-radius:16px;padding:13px 15px;width:300px;box-sizing:border-box">
+      <div style="font-size:10.5px;font-weight:800;letter-spacing:.06em;color:#9B4B4B;margin-bottom:5px">F-1 · THE DOOR CLOSES</div>
+      <div style="font-size:12.5px;line-height:1.5;color:#14201C"><b>Later</b> sets a module flag that is never reset, and <b>go('review')</b> exists in exactly one place — on the banner it hides. Tap it and the update is unreachable until the app restarts.</div>
+    </div>
+    <div style="background:#F8E9E9;border:1px solid #E9D3D3;border-radius:16px;padding:13px 15px;width:300px;box-sizing:border-box">
+      <div style="font-size:10.5px;font-weight:800;letter-spacing:.06em;color:#9B4B4B;margin-bottom:5px">F-2 · THE JOIN IS SILENT</div>
+      <div style="font-size:12.5px;line-height:1.5;color:#14201C"><b>Making your copy…</b> is assigned and then rendered nowhere. The button stays live through a multi-second write that creates a trip and a row per day, place, route and shot.</div>
+    </div>
+    <div style="background:#FBF1DE;border:1px solid #EBD9B4;border-radius:16px;padding:13px 15px;width:300px;box-sizing:border-box">
+      <div style="font-size:10.5px;font-weight:800;letter-spacing:.06em;color:#8A5A08;margin-bottom:5px">F-3 · ROLE IS FROZEN</div>
+      <div style="font-size:12.5px;line-height:1.5;color:#14201C">A link's <b>expiry</b> can be changed after it is handed out. Its <b>role</b> cannot — there is no <b>setLinkRole</b>. The one that matters more is the one that is fixed.</div>
+    </div>
+    <div style="background:#FBF1DE;border:1px solid #EBD9B4;border-radius:16px;padding:13px 15px;width:300px;box-sizing:border-box">
+      <div style="font-size:10.5px;font-weight:800;letter-spacing:.06em;color:#8A5A08;margin-bottom:5px">F-4 · THE EXPLANATION IS BEHIND THE DECISION</div>
+      <div style="font-size:12.5px;line-height:1.5;color:#14201C">The three-bullet <b>What they get</b> card renders only once sharing is on. The person deciding whether to share never sees the clearest statement of the copy model in the app.</div>
+    </div>
+    <div style="background:#E6EFEB;border:1px solid #CFE0D9;border-radius:16px;padding:13px 15px;width:300px;box-sizing:border-box">
+      <div style="font-size:10.5px;font-weight:800;letter-spacing:.06em;color:#5D8C7C;margin-bottom:5px">RC-1 · THE DOCS WERE WRONG</div>
+      <div style="font-size:12.5px;line-height:1.5;color:#14201C">The join preview does <b>not</b> follow the selected day. <b>firstDay()</b> picks the first day with stops — deterministic on every phone. D-4 closes with a label, not a behaviour change.</div>
+    </div>
+  </div>
+
+  <div style="height:1px;background:#D8DCD8"></div>
+
+  <!-- ============================ A · SHARE ============================ -->
+  <div style="font-size:15px;font-weight:700">A · Share — what you understand before you create a link</div>
+  <div style="display:flex;gap:26px;align-items:flex-start;flex-wrap:wrap">
+
+    <div style="display:flex;flex-direction:column;gap:9px">
+      <div style="font-size:11px;font-weight:800;letter-spacing:.04em;color:#9B4B4B">TODAY · RADIOS FIRST, EXPLANATION NEVER</div>
+      <div style="width:390px;height:844px;background:#F2F3F1;border:1px solid #D8DCD8;border-radius:10px;overflow:hidden;display:flex;flex-direction:column">
+        <div style="background:#fff;border-bottom:1px solid #E7EAE7;padding:22px 16px 12px;flex:none">
+          <div style="display:flex;align-items:center;justify-content:space-between;gap:10px">
+            <button style="width:32px;height:32px;flex:none;display:flex;align-items:center;justify-content:center;border-radius:10px;background:none;border:0;padding:0"><svg width="11" height="18" viewBox="0 0 11 18"><path d="M9 1L2 9l7 8" stroke="#14201C" stroke-width="2.2" fill="none" stroke-linecap="round" stroke-linejoin="round"></path></svg></button>
+            <div style="flex:1;min-width:0"><div style="font-size:17px;font-weight:700;letter-spacing:-.01em">Share this trip</div><div style="font-size:11.5px;color:#6B7A74;margin-top:1px">Meridian City · Group Tour</div></div>
+          </div>
+        </div>
+        <div style="flex:1;min-height:0;padding:14px 16px;display:flex;flex-direction:column;gap:14px;overflow:hidden">
+          <div>
+            <div style="font-size:10.5px;font-weight:800;letter-spacing:.06em;color:#98A5A0;margin-bottom:8px">WHO HAS IT</div>
+            <div style="background:#fff;border-radius:16px;padding:11px 12px;display:flex;align-items:center;gap:11px">
+              <div style="flex:none;width:30px;height:30px;border-radius:9px;background:#F2F3F1;border:1px solid #E7EAE7;display:grid;place-items:center;font-size:12px;font-weight:800;color:#3D4C46">A</div>
+              <div style="flex:1"><div style="font-size:13px;font-weight:650">Ana</div><div style="font-size:11px;color:#98A5A0">Made this trip</div></div>
+              <div style="font-size:9.5px;font-weight:800;letter-spacing:.04em;color:#6B7A74;background:#F2F3F1;border-radius:6px;padding:3px 7px">OWNER</div>
+            </div>
+          </div>
+          <div>
+            <div style="font-size:10.5px;font-weight:800;letter-spacing:.06em;color:#98A5A0;margin-bottom:8px">THEY WILL BE ABLE TO</div>
+            <div style="background:#fff;border-radius:16px;overflow:hidden">
+              <div style="padding:13px 14px;background:#fff;border-radius:14px;display:flex;align-items:center;gap:11px;width:100%;text-align:left;box-sizing:border-box;border-bottom:1px solid #EDEFEC">
+                <div style="width:16px;height:16px;flex:none;border-radius:50%;border:1.6px solid #1F6F5C;background:#1F6F5C;box-shadow:inset 0 0 0 3px #fff;margin-top:2px"></div>
+                <div><div style="font-size:13.5px;font-weight:650">Send updates</div><div style="font-size:11.5px;color:#6B7A74;line-height:1.4;margin-top:1px">Can send their changes to everyone else on the trip</div></div>
+              </div>
+              <div style="padding:13px 14px;background:#fff;border-radius:14px;display:flex;align-items:center;gap:11px;width:100%;text-align:left;box-sizing:border-box">
+                <div style="width:16px;height:16px;flex:none;border-radius:50%;border:1.6px solid #D2D8D3;background:#fff;margin-top:2px"></div>
+                <div><div style="font-size:13.5px;font-weight:650">Receives updates</div><div style="font-size:11.5px;color:#6B7A74;line-height:1.4;margin-top:1px">Gets updates and can do whatever they like to their own copy</div></div>
+              </div>
+            </div>
+            <div style="font-size:11px;color:#98A5A0;margin-top:8px">You can change this per person afterwards.</div>
+          </div>
+          <div>
+            <div style="font-size:10.5px;font-weight:800;letter-spacing:.06em;color:#98A5A0;margin-bottom:8px">LINK STOPS WORKING AFTER</div>
+            <div style="display:flex;gap:6px">
+              <div style="padding:5px 9px;border-radius:9px;background:#F2F3F1;font-size:11.5px;font-weight:650;color:#3D4C46;font-variant-numeric:tabular-nums">24 hours</div>
+              <div style="padding:5px 9px;border-radius:9px;background:#1F6F5C;color:#fff;font-size:11.5px;font-weight:650;font-variant-numeric:tabular-nums">7 days</div>
+              <div style="padding:5px 9px;border-radius:9px;background:#F2F3F1;font-size:11.5px;font-weight:650;color:#3D4C46;font-variant-numeric:tabular-nums">Until the trip ends</div>
+            </div>
+          </div>
+          <div style="background:#E6EFEB;border:1px solid #CFE0D9;border-radius:16px;padding:12px 13px">
+            <div style="font-size:12px;font-weight:650;color:#1F6F5C">They get a copy, not a live view.</div>
+            <div style="font-size:11px;line-height:1.45;color:#5D8C7C;margin-top:5px">Whatever either of you changes stays on your own phone. When you want them to have your changes you send an update, and they choose what to take from it. Your shopping list, your packing list and your Log are never in it at all.</div>
+          </div>
+        </div>
+              <div style="flex:none;background:#fff;border-top:1px solid #E4E8E5;display:flex;gap:2px;padding:7px 8px 10px">
+          <div style="flex:1;min-height:46px;border-radius:12px;display:flex;flex-direction:column;align-items:center;justify-content:center;gap:3px;color:#9AA6A1"><svg width="20" height="20" viewBox="0 0 20 20" fill="none"><path d="M10 18s6-5.2 6-10A6 6 0 0 0 4 8c0 4.8 6 10 6 10z" stroke="#9AA6A1" stroke-width="1.7" stroke-linejoin="round"></path><circle cx="10" cy="8" r="2.2" stroke="#9AA6A1" stroke-width="1.7"></circle></svg><span style="font-size:9.5px;font-weight:700">Map</span></div>
+          <div style="flex:1;min-height:46px;border-radius:12px;display:flex;flex-direction:column;align-items:center;justify-content:center;gap:3px;color:#9AA6A1"><svg width="20" height="20" viewBox="0 0 20 20" fill="none"><g stroke="#9AA6A1" stroke-width="1.7" stroke-linecap="round"><path d="M3 5.5h14M3 10h14M3 14.5h9"></path></g></svg><span style="font-size:9.5px;font-weight:700">Plan</span></div>
+          <div style="flex:1;min-height:46px;border-radius:12px;display:flex;flex-direction:column;align-items:center;justify-content:center;gap:3px;color:#9AA6A1"><svg width="20" height="20" viewBox="0 0 20 20" fill="none"><path d="M4.5 6.5h11l-1 10h-9l-1-10z" stroke="#9AA6A1" stroke-width="1.7" stroke-linejoin="round"></path><path d="M7.5 6.5V5a2.5 2.5 0 0 1 5 0v1.5" stroke="#9AA6A1" stroke-width="1.7" stroke-linecap="round"></path></svg><span style="font-size:9.5px;font-weight:700">Shop</span></div>
+          <div style="flex:1;min-height:46px;border-radius:12px;display:flex;flex-direction:column;align-items:center;justify-content:center;gap:3px;color:#9AA6A1"><svg width="20" height="20" viewBox="0 0 20 20" fill="none"><rect x="3.5" y="6" width="13" height="10.5" rx="2" stroke="#9AA6A1" stroke-width="1.7"></rect><path d="M7.5 6V4.5a1.5 1.5 0 0 1 1.5-1.5h2a1.5 1.5 0 0 1 1.5 1.5V6" stroke="#9AA6A1" stroke-width="1.7" stroke-linecap="round"></path></svg><span style="font-size:9.5px;font-weight:700">Prep</span></div>
+          <div style="flex:1;min-height:46px;border-radius:12px;display:flex;flex-direction:column;align-items:center;justify-content:center;gap:3px;color:#9AA6A1"><svg width="20" height="20" viewBox="0 0 20 20" fill="none"><path d="M13 3.5l3.5 3.5L7 16.5H3.5V13z" stroke="#9AA6A1" stroke-width="1.7" stroke-linejoin="round"></path></svg><span style="font-size:9.5px;font-weight:700">Log</span></div>
+        </div>
+      </div>
+      <div style="width:390px;font-size:11.5px;line-height:1.45;color:#9B4B4B;text-wrap:pretty">The eyebrow frames a role as a permission. The radio labels are non-parallel — one imperative, one third-person. And the copy model is a paragraph <i>after</i> the choice, in a card the eye reaches last.</div>
+    </div>
+
+    <div style="display:flex;flex-direction:column;gap:9px">
+      <div style="font-size:11px;font-weight:800;letter-spacing:.04em;color:#1F6F5C">DESIGNED · WHAT THEY GET, THEN WHO SENDS</div>
+      <div style="width:390px;height:844px;background:#F2F3F1;border:1px solid #D8DCD8;border-radius:10px;overflow:hidden;display:flex;flex-direction:column">
+        <div style="background:#fff;border-bottom:1px solid #E7EAE7;padding:22px 16px 12px;flex:none">
+          <div style="display:flex;align-items:center;justify-content:space-between;gap:10px">
+            <button style="width:32px;height:32px;flex:none;display:flex;align-items:center;justify-content:center;border-radius:10px;background:none;border:0;padding:0"><svg width="11" height="18" viewBox="0 0 11 18"><path d="M9 1L2 9l7 8" stroke="#14201C" stroke-width="2.2" fill="none" stroke-linecap="round" stroke-linejoin="round"></path></svg></button>
+            <div style="flex:1;min-width:0"><div style="font-size:17px;font-weight:700;letter-spacing:-.01em">Share this trip</div><div style="font-size:11.5px;color:#6B7A74;margin-top:1px">Meridian City · Group Tour</div></div>
+          </div>
+        </div>
+        <div style="flex:1;min-height:0;padding:14px 16px;display:flex;flex-direction:column;gap:14px;overflow:hidden">
+          <div>
+            <div style="font-size:10.5px;font-weight:800;letter-spacing:.06em;color:#98A5A0;margin-bottom:8px">WHO HAS IT</div>
+            <div style="background:#fff;border-radius:16px;padding:11px 12px;display:flex;align-items:center;gap:11px">
+              <div style="flex:none;width:30px;height:30px;border-radius:9px;background:#F2F3F1;border:1px solid #E7EAE7;display:grid;place-items:center;font-size:12px;font-weight:800;color:#3D4C46">A</div>
+              <div style="flex:1"><div style="font-size:13px;font-weight:650">Ana</div><div style="font-size:11px;color:#98A5A0">Made this trip</div></div>
+              <div style="font-size:9.5px;font-weight:800;letter-spacing:.04em;color:#6B7A74;background:#F2F3F1;border-radius:6px;padding:3px 7px">OWNER</div>
+            </div>
+            <div style="font-size:12px;color:#98A5A0;margin-top:8px">Nobody else, yet.</div>
+          </div>
+
+          <div>
+            <div style="font-size:10.5px;font-weight:800;letter-spacing:.06em;color:#98A5A0;margin-bottom:8px">WHAT THEY GET</div>
+            <div style="background:#fff;border-radius:16px;padding:13px 14px">
+              <div style="display:flex;gap:10px;margin-bottom:11px"><span style="width:7px;height:7px;border-radius:50%;background:#1F6F5C;margin-top:6px;flex:none"></span><span><span style="font-size:12px;font-weight:650;display:block">A copy of the itinerary</span><span style="font-size:11px;color:#98A5A0;line-height:1.45;display:block">The stops, the sub routes, the places and the must-see spots</span></span></div>
+              <div style="display:flex;gap:10px;margin-bottom:11px"><span style="width:7px;height:7px;border-radius:50%;background:#14201C;margin-top:6px;flex:none"></span><span><span style="font-size:12px;font-weight:650;display:block">Nothing else, ever</span><span style="font-size:11px;color:#98A5A0;line-height:1.45;display:block">Your shopping list, your packing list and your whole Log are not in it</span></span></div>
+              <div style="display:flex;gap:10px"><span style="width:7px;height:7px;border-radius:50%;background:#C87F0A;margin-top:6px;flex:none"></span><span><span style="font-size:12px;font-weight:650;display:block">And it is a copy</span><span style="font-size:11px;color:#98A5A0;line-height:1.45;display:block">What they change stays on their phone, and what you change stays on yours</span></span></div>
+              <div style="height:1px;background:#EDEFEC;margin:14px 0"></div>
+              <div style="font-size:11px;line-height:1.45;color:#98A5A0">Whatever either of you changes stays on your own phone. When you want them to have your changes you send an update, and they choose what to take from it.</div>
+            </div>
+          </div>
+
+          <div>
+            <div style="font-size:10.5px;font-weight:800;letter-spacing:.06em;color:#98A5A0;margin-bottom:6px">SENDING UPDATES</div>
+            <div style="font-size:11px;line-height:1.45;color:#98A5A0;margin-bottom:8px">Everyone who joins gets their own copy and can change it however they like. This only decides whose changes go out to everyone else.</div>
+            <div style="background:#fff;border-radius:16px;overflow:hidden">
+              <div style="padding:13px 14px;background:#fff;border-radius:14px;display:flex;align-items:center;gap:11px;width:100%;text-align:left;box-sizing:border-box;border-bottom:1px solid #EDEFEC">
+                <div style="width:16px;height:16px;flex:none;border-radius:50%;border:1.6px solid #1F6F5C;background:#1F6F5C;box-shadow:inset 0 0 0 3px #fff;margin-top:2px"></div>
+                <div><div style="font-size:13.5px;font-weight:650">Can send updates</div><div style="font-size:11.5px;color:#6B7A74;line-height:1.4;margin-top:1px">Their changes go out to everyone on the trip.</div></div>
+              </div>
+              <div style="padding:13px 14px;background:#fff;border-radius:14px;display:flex;align-items:center;gap:11px;width:100%;text-align:left;box-sizing:border-box">
+                <div style="width:16px;height:16px;flex:none;border-radius:50%;border:1.6px solid #D2D8D3;background:#fff;margin-top:2px"></div>
+                <div><div style="font-size:13.5px;font-weight:650">Receives updates</div><div style="font-size:11.5px;color:#6B7A74;line-height:1.4;margin-top:1px">They get your updates, and change their own copy however they like.</div></div>
+              </div>
+            </div>
+            <div style="font-size:11px;color:#98A5A0;margin-top:8px">You can change this per person afterwards.</div>
+          </div>
+        </div>
+              <div style="flex:none;background:#fff;border-top:1px solid #E4E8E5;display:flex;gap:2px;padding:7px 8px 10px">
+          <div style="flex:1;min-height:46px;border-radius:12px;display:flex;flex-direction:column;align-items:center;justify-content:center;gap:3px;color:#9AA6A1"><svg width="20" height="20" viewBox="0 0 20 20" fill="none"><path d="M10 18s6-5.2 6-10A6 6 0 0 0 4 8c0 4.8 6 10 6 10z" stroke="#9AA6A1" stroke-width="1.7" stroke-linejoin="round"></path><circle cx="10" cy="8" r="2.2" stroke="#9AA6A1" stroke-width="1.7"></circle></svg><span style="font-size:9.5px;font-weight:700">Map</span></div>
+          <div style="flex:1;min-height:46px;border-radius:12px;display:flex;flex-direction:column;align-items:center;justify-content:center;gap:3px;color:#9AA6A1"><svg width="20" height="20" viewBox="0 0 20 20" fill="none"><g stroke="#9AA6A1" stroke-width="1.7" stroke-linecap="round"><path d="M3 5.5h14M3 10h14M3 14.5h9"></path></g></svg><span style="font-size:9.5px;font-weight:700">Plan</span></div>
+          <div style="flex:1;min-height:46px;border-radius:12px;display:flex;flex-direction:column;align-items:center;justify-content:center;gap:3px;color:#9AA6A1"><svg width="20" height="20" viewBox="0 0 20 20" fill="none"><path d="M4.5 6.5h11l-1 10h-9l-1-10z" stroke="#9AA6A1" stroke-width="1.7" stroke-linejoin="round"></path><path d="M7.5 6.5V5a2.5 2.5 0 0 1 5 0v1.5" stroke="#9AA6A1" stroke-width="1.7" stroke-linecap="round"></path></svg><span style="font-size:9.5px;font-weight:700">Shop</span></div>
+          <div style="flex:1;min-height:46px;border-radius:12px;display:flex;flex-direction:column;align-items:center;justify-content:center;gap:3px;color:#9AA6A1"><svg width="20" height="20" viewBox="0 0 20 20" fill="none"><rect x="3.5" y="6" width="13" height="10.5" rx="2" stroke="#9AA6A1" stroke-width="1.7"></rect><path d="M7.5 6V4.5a1.5 1.5 0 0 1 1.5-1.5h2a1.5 1.5 0 0 1 1.5 1.5V6" stroke="#9AA6A1" stroke-width="1.7" stroke-linecap="round"></path></svg><span style="font-size:9.5px;font-weight:700">Prep</span></div>
+          <div style="flex:1;min-height:46px;border-radius:12px;display:flex;flex-direction:column;align-items:center;justify-content:center;gap:3px;color:#9AA6A1"><svg width="20" height="20" viewBox="0 0 20 20" fill="none"><path d="M13 3.5l3.5 3.5L7 16.5H3.5V13z" stroke="#9AA6A1" stroke-width="1.7" stroke-linejoin="round"></path></svg><span style="font-size:9.5px;font-weight:700">Log</span></div>
+        </div>
+      </div>
+      <div style="width:390px;font-size:11.5px;line-height:1.45;color:#6B7A74;text-wrap:pretty">The card answers the question the radios raise. The separate jade explainer is <b>removed</b> — its paragraph is the card's foot, so the copy model is stated once. Expiry and <b>Create the link</b> follow below the fold, unchanged.</div>
+      <div style="width:390px;background:#fff;border:1px solid #E7EAE7;border-radius:14px;padding:12px 13px;box-sizing:border-box">
+        <div style="font-size:11px;font-weight:800;letter-spacing:.04em;color:#98A5A0;margin-bottom:6px">WHERE THIS SCREEN LIVES · ANSWERS FOR MING</div>
+        <div style="font-size:11.5px;line-height:1.5;color:#3D4C46">Trip settings → <b>Share this trip</b>, on the owner's phone, <b>before any link exists</b>. It is the whole screen at that moment — nothing above, expiry and <b>Create the link</b> below the fold.</div>
+        <div style="height:1px;background:#EDEFEC;margin:14px 0"></div>
+        <div style="font-size:11.5px;line-height:1.5;color:#3D4C46"><b>What they get</b> exists because "shared" in this app means <i>a copy is handed over</i>, not a live document. It is the only place that is stated, and today it renders <b>after</b> the decision it explains — so the person choosing whether to share never sees it. Three bullets: what travels, what never travels, and that it is a copy.</div>
+        <div style="height:1px;background:#EDEFEC;margin:14px 0"></div>
+        <div style="font-size:11.5px;line-height:1.5;color:#3D4C46"><b>Sending updates</b> is <b>owner-only, and only here</b> — correct. A non-owner's Share screen has no radios, no expiry, no link card and no <b>Create the link</b>; role is a flat <b>.badge</b>, not a chip. That is P0-1 §4.3, and B-5 in this batch fixes the fact that a joined copy renders this offer screen today.</div>
+      </div>
+    </div>
+
+    <div style="display:flex;flex-direction:column;gap:20px;width:420px">
+      <div style="display:flex;flex-direction:column;gap:9px">
+        <div style="font-size:11px;font-weight:800;letter-spacing:.04em;color:#1F6F5C">DESIGNED · THE LINK CARD GAINS A ROLE ROW (F-3)</div>
+        <div style="width:390px;background:#fff;border:1px solid #E7EAE7;border-radius:16px;padding:13px 14px;box-sizing:border-box">
+          <div style="display:flex;align-items:center;gap:8px;margin-bottom:9px">
+            <span style="font-size:9.5px;font-weight:800;letter-spacing:.04em;color:#1F6F5C;background:#E6EFEB;border-radius:6px;padding:3px 7px">LIVE</span>
+            <span style="flex:1;font-size:12px;font-weight:650;font-variant-numeric:tabular-nums">planner.app/j/ANA1-2345</span>
+          </div>
+          <div style="font-size:11px;color:#98A5A0;margin-bottom:12px">Opened 3 times · 1 person has joined</div>
+          <div style="font-size:11px;color:#98A5A0;margin-bottom:6px">Whoever opens it joins as</div>
+          <div style="display:flex;gap:6px;margin-bottom:11px">
+            <div style="padding:5px 9px;border-radius:9px;background:#1F6F5C;color:#fff;font-size:11.5px;font-weight:650;font-variant-numeric:tabular-nums">Can send updates</div>
+            <div style="padding:5px 9px;border-radius:9px;background:#F2F3F1;font-size:11.5px;font-weight:650;color:#3D4C46;font-variant-numeric:tabular-nums">Receives updates</div>
+          </div>
+          <div style="font-size:11px;color:#98A5A0;margin-bottom:6px">Link stops working after</div>
+          <div style="display:flex;gap:6px;margin-bottom:12px">
+            <div style="padding:5px 9px;border-radius:9px;background:#F2F3F1;font-size:11.5px;font-weight:650;color:#3D4C46;font-variant-numeric:tabular-nums">24 hours</div>
+            <div style="padding:5px 9px;border-radius:9px;background:#1F6F5C;color:#fff;font-size:11.5px;font-weight:650;font-variant-numeric:tabular-nums">7 days</div>
+            <div style="padding:5px 9px;border-radius:9px;background:#F2F3F1;font-size:11.5px;font-weight:650;color:#3D4C46;font-variant-numeric:tabular-nums">Until the trip ends</div>
+          </div>
+          <div style="display:flex;gap:8px">
+            <div style="flex:1;height:42px;border-radius:12px;background:#1F6F5C;color:#fff;font-size:13px;font-weight:700;display:flex;align-items:center;justify-content:center">Send it</div>
+            <div style="width:88px;height:42px;border-radius:12px;background:#F2F3F1;border:1px solid #E1E5E1;font-size:13px;font-weight:650;color:#14201C;display:flex;align-items:center;justify-content:center">Copy</div>
+          </div>
+          <div style="height:42px;border-radius:12px;background:#F2F3F1;border:1px solid #E1E5E1;font-size:13px;font-weight:650;color:#14201C;display:flex;align-items:center;justify-content:center;margin-top:10px">Turn the link off</div>
+          <div style="font-size:11px;line-height:1.45;color:#98A5A0;margin-top:8px">Turning it off stops new people joining. Everyone who already has the trip keeps it. Changing the role changes it for whoever opens the link next. People who have already joined keep the role they have — change theirs above.</div>
+        </div>
+        <div style="width:390px;font-size:11.5px;line-height:1.45;color:#6B7A74;text-wrap:pretty">The same <b>.chiprow</b> the expiry already uses, and the same republish path (<b>restateTerms</b>). The two counts stay separate: <b>opened</b> is not <b>joined</b>. Lives in the same Share screen, in place of the offer phase, once a link exists.</div>
+        <div style="width:390px;background:#F0EAF6;border:1px solid #DCD0E8;border-radius:14px;padding:12px 13px;box-sizing:border-box">
+          <div style="font-size:11px;font-weight:800;letter-spacing:.04em;color:#6B4E8F;margin-bottom:6px">OD-4 · MING'S PROPOSAL — INVITE BY EMAIL INSTEAD OF A LINK</div>
+          <div style="font-size:11.5px;line-height:1.5;color:#14201C">Owner types an email address · that person sees the trip when they sign in with it · no copy-paste · the share stays available until the owner removes them.</div>
+          <div style="font-size:11.5px;line-height:1.5;color:#3D4C46;margin-top:8px"><b>This is a product decision, not a layout one</b>, so it is recorded rather than absorbed. It changes three things this batch treats as fixed: the <b>link</b> becomes an <b>invite</b> (no expiry chips, no opens count, no <b>Copy</b>); <b>who can join</b> becomes a named list instead of whoever holds the URL; and <b>"until the owner removes them"</b> reads as continuing access, which is the live-sync model the copy model deliberately replaced.</div>
+          <div style="font-size:11.5px;line-height:1.5;color:#3D4C46;margin-top:8px"><b>Resolved in review: design both, decide in development.</b> Both are designed in <b>§F</b> below — one Share screen, one join, two doors onto it. Email is the better front door (nothing to paste, nothing to expire, revocable by name) and needs a backend address lookup and a notification path that do not exist yet; the link needs neither. Full write-up: <b>overnight-p1-review-pack.md</b> §5, OD-4.</div>
+        </div>
+      </div>
+
+      <div style="display:flex;flex-direction:column;gap:9px">
+        <div style="font-size:11px;font-weight:800;letter-spacing:.04em;color:#1F6F5C">DESIGNED · THE SENT STATE, IN THE CARD (F-5)</div>
+        <div style="width:390px;background:#fff;border:1px solid #E7EAE7;border-radius:16px;padding:13px 14px;box-sizing:border-box">
+          <div style="font-size:12px;font-weight:650;color:#14201C">Sent 22:04 · 5 changes are with them</div>
+          <div style="font-size:11px;line-height:1.45;color:#98A5A0;margin-top:4px">They decide what to take, one thing at a time. Nothing on their copy has moved on its own.</div>
+          <div style="height:42px;border-radius:12px;background:#F2F3F1;border:1px solid #E1E5E1;font-size:13px;font-weight:650;color:#14201C;display:flex;align-items:center;justify-content:center;margin-top:10px;opacity:.45">Nothing to send</div>
+        </div>
+        <div style="width:390px;font-size:11.5px;line-height:1.45;color:#6B7A74;text-wrap:pretty">Derived from <b>share.sentAt</b>, not from a handler variable — so it survives leaving the screen. No amber note at the top of the scroller, and <b>no pending state</b>: publishing is synchronous and the write is fire-and-forget.</div>
+      </div>
+
+      <div style="display:flex;flex-direction:column;gap:9px">
+        <div style="font-size:11px;font-weight:800;letter-spacing:.04em;color:#9B4B4B">RECORDED · A NON-OWNER SEES THE OFFER PHASE TODAY (IF-6)</div>
+        <div style="width:390px;background:#F8E9E9;border:1px solid #E9D3D3;border-radius:16px;padding:13px 15px;box-sizing:border-box;font-size:12.5px;line-height:1.5">On a joined copy <b>trip.link</b> and <b>trip.share</b> are both null, so <b>shared</b> is false and Share renders role radios, expiry chips and <b>Create the link</b> to somebody who owns nothing. Worse than a dead control — a dead screen. Designed: a non-owner's Share is the manage view and nothing else.</div>
+      </div>
+    </div>
+  </div>
+
+  <div style="height:1px;background:#D8DCD8"></div>
+
+  <!-- ============================ B · JOIN ============================ -->
+  <div style="font-size:15px;font-weight:700">B · Join — the product's front door, with its three layout defects fixed</div>
+  <div style="display:flex;gap:26px;align-items:flex-start;flex-wrap:wrap">
+
+    <div style="display:flex;flex-direction:column;gap:9px">
+      <div style="font-size:11px;font-weight:800;letter-spacing:.04em;color:#1F6F5C">DESIGNED · THE WHOLE INVITE</div>
+      <div style="width:390px;height:844px;background:#fff;border:1px solid #D8DCD8;border-radius:10px;overflow:hidden;display:flex;flex-direction:column">
+        <div style="flex:none;background:#F2F3F1;border-bottom:1px solid #E7EAE7;display:flex;align-items:center;gap:7px;padding:9px 14px;font-size:11px;color:#6B7A74;font-variant-numeric:tabular-nums">
+          <span style="flex:0 1 auto;min-width:0;display:flex;gap:0"><span style="flex:0 1 auto;min-width:0;overflow:hidden;text-overflow:ellipsis;white-space:nowrap">travel-planner-3e0d3.web</span><span style="flex:none">.app/j/ANA1-2345</span></span>
+        </div>
+        <div style="flex:1;overflow:hidden;padding:20px 16px 0">
+          <div style="display:flex;gap:11px;align-items:center;margin-bottom:14px">
+            <div style="flex:none;width:30px;height:30px;border-radius:9px;background:#F2F3F1;border:1px solid #E7EAE7;display:grid;place-items:center;font-size:12px;font-weight:800;color:#3D4C46">A</div>
+            <div style="min-width:0">
+              <div style="font-size:13px;font-weight:700;overflow:hidden;text-overflow:ellipsis;white-space:nowrap">Ana</div>
+              <div style="font-size:11.5px;color:#6B7A74">is sharing a trip with you</div>
+            </div>
+          </div>
+          <div style="font-size:24px;font-weight:800;letter-spacing:-.02em;line-height:1.15">Meridian City</div>
+          <div style="font-size:13px;color:#3D4C46;margin-top:3px">Group Tour</div>
+          <div style="font-size:11.5px;color:#98A5A0;margin-top:6px">Mar 12–17 · agent itinerary · 6 days · 7 stops</div>
+          <div style="font-size:11.5px;line-height:1.45;color:#3D4C46;margin-top:10px">You will get Ana's updates. Everything you change stays on your copy.</div>
+
+          <div style="background:#fff;border:1px solid #E7EAE7;border-radius:13px;padding:12px 13px;margin-top:14px">
+            <div style="font-size:10.5px;font-weight:800;letter-spacing:.06em;color:#98A5A0">A LOOK AT IT</div>
+            <div style="font-size:13px;font-weight:700;margin-top:4px;margin-bottom:10px">Day 3 · Sat 14 Mar</div>
+            <div style="display:flex;gap:10px;margin-bottom:9px"><span style="width:44px;flex:none;font-size:12px;font-weight:650;font-variant-numeric:tabular-nums">09:15</span><span><span style="font-size:12px;font-weight:650;display:block">Lumen Crossing</span><span style="font-size:11px;color:#98A5A0;display:block">Harbour side</span></span></div>
+            <div style="display:flex;gap:10px;margin-bottom:9px"><span style="width:44px;flex:none;font-size:12px;font-weight:650;font-variant-numeric:tabular-nums">10:30</span><span><span style="font-size:12px;font-weight:650;display:block">Ashgate Shrine</span><span style="font-size:11px;color:#98A5A0;display:block">Shoulders covered</span></span></div>
+            <div style="display:flex;gap:10px;margin-bottom:9px"><span style="width:44px;flex:none;font-size:12px;font-weight:650;font-variant-numeric:tabular-nums">13:30</span><span><span style="font-size:12px;font-weight:650;display:block">Nishi Market</span><span style="font-size:11px;color:#98A5A0;display:block">Free time</span></span></div>
+            <div style="font-size:11px;color:#98A5A0">Day 1 and Day 2 have nothing on them yet.</div>
+            <div style="font-size:11px;color:#98A5A0;padding-top:9px">and 5 more days</div>
+          </div>
+
+          <div style="font-size:10.5px;font-weight:800;letter-spacing:.06em;color:#98A5A0;margin:18px 0 10px">IF YOU JOIN</div>
+          <div style="display:flex;gap:10px;margin-bottom:10px"><span style="width:7px;height:7px;border-radius:50%;background:#1F6F5C;margin-top:7px;flex:none"></span><span style="font-size:12px;line-height:1.45;color:#3D4C46">You get a copy of Ana's itinerary — every stop, the sub routes, the places saved around them and the must-see spots.</span></div>
+          <div style="display:flex;gap:10px;margin-bottom:10px"><span style="width:7px;height:7px;border-radius:50%;background:#1F6F5C;margin-top:7px;flex:none"></span><span style="font-size:12px;line-height:1.45;color:#3D4C46">It is yours from then on. Change anything you like; nothing you do here is sent to anyone.</span></div>
+          <div style="display:flex;gap:10px;margin-bottom:10px"><span style="width:7px;height:7px;border-radius:50%;background:#1F6F5C;margin-top:7px;flex:none"></span><span style="font-size:12px;line-height:1.45;color:#3D4C46">When Ana changes something you are told, and you choose what to take from it one thing at a time.</span></div>
+          <div style="display:flex;gap:10px"><span style="width:7px;height:7px;border-radius:50%;background:#1F6F5C;margin-top:7px;flex:none"></span><span style="font-size:12px;line-height:1.45;color:#3D4C46">It works with no signal once you have opened it.</span></div>
+        </div>
+        <div style="flex:none;background:linear-gradient(to top,#fff 62%,rgba(255,255,255,0));padding:14px 16px 14px">
+          <div style="height:50px;border-radius:12px;background:#1F6F5C;color:#fff;font-size:15px;font-weight:700;display:flex;align-items:center;justify-content:center">Join this trip</div>
+          <div style="font-size:10.5px;line-height:1.45;color:#98A5A0;text-align:center;margin-top:9px">You sign in next, so the trip follows you to a new phone. Link expires 12 Mar.</div>
+        </div>
+      </div>
+      <div style="width:390px;font-size:11.5px;line-height:1.45;color:#6B7A74;text-wrap:pretty">Rows rebuilt from <b>stopRow()</b> in <b>plan.js</b>: <b>.plan-gutter</b> 56px right-aligned (start 12.5/700, end 11/650 <b>--soft</b>, derived duration 10/700 <b>--faint</b>) \u00b7 <b>.plan-spine</b> 20px with its 11px jade dot at <b>margin-top 14</b> and the 2px <b>#DCE2DE</b> line \u00b7 <b>.plan-card</b> r14 with <b>.plan-name</b> 14.5/650, <b>.plan-note</b> 11.5 <b>--muted</b> and the numbered <b>MAIN n</b> badge. There is no chevron on a Plan row. <b>No lock glyph either</b> \u2014 <b>icon.lock</b> does not exist in <b>util.js</b>, so <b>raw(icon.lock || '')</b> has always rendered nothing, and a padlock drawn by the page would counterfeit the browser's own security indicator. The link bar truncates the <b>host</b> and never the code. The inviter is two lines, so no phrase can break across them. <b>A LOOK AT IT</b> is the eyebrow and the day is the content — the right-hand column that collided is gone. The jade <b>Your side stays yours</b> card sits below the fourth promise.</div>
+    </div>
+
+    <div style="display:flex;flex-direction:column;gap:20px;width:420px">
+      <div style="display:flex;flex-direction:column;gap:9px">
+        <div style="font-size:11px;font-weight:800;letter-spacing:.04em;color:#9B4B4B">TODAY · THE THREE DEFECTS, AT SIZE</div>
+        <div style="width:390px;background:#fff;border:1px solid #E9D3D3;border-radius:10px;overflow:hidden;box-sizing:border-box">
+          <div style="height:46px;background:#F2F3F1;border-bottom:1px solid #E7EAE7;padding:5px 14px;font-size:11.5px;color:#6B7A74;word-break:break-all;line-height:1.4">https://travel-planner-3e0d3.web.app/j/ANA1-2345</div>
+          <div style="padding:14px">
+            <div style="display:flex;gap:11px;align-items:flex-start;margin-bottom:14px">
+              <div style="flex:none;width:30px;height:30px;border-radius:9px;background:#F2F3F1;border:1px solid #E7EAE7;display:grid;place-items:center;font-size:12px;font-weight:800;color:#3D4C46">A</div>
+              <div style="font-size:12px;color:#6B7A74;line-height:1.4;width:150px"><b style="color:#14201C">Ana</b> is sharing a trip with<br>you</div>
+            </div>
+            <div style="background:#fff;border:1px solid #E7EAE7;border-radius:13px;padding:12px 13px;display:flex;gap:8px">
+              <div style="flex:1;font-size:10.5px;font-weight:800;letter-spacing:.06em;color:#98A5A0">DAY 3 · SAT 14 MAR</div>
+              <div style="width:52px;font-size:11px;color:#98A5A0;line-height:1.3">a look at<br>it</div>
+            </div>
+          </div>
+        </div>
+        <div style="width:390px;font-size:11.5px;line-height:1.45;color:#9B4B4B;text-wrap:pretty">1 · the bar wraps to two lines and pushes the page down. 2 · <b>with</b> ends line one and <b>you</b> sits alone. 3 · the label breaks over two lines in a 52px column and collides with the day.</div>
+      </div>
+
+      <div style="display:flex;flex-direction:column;gap:9px">
+        <div style="font-size:11px;font-weight:800;letter-spacing:.04em;color:#1F6F5C">DESIGNED · THE JOIN IS NO LONGER SILENT (F-2)</div>
+        <div style="width:390px;border:1px solid #E7EAE7;border-radius:10px;background:linear-gradient(to top,#fff 62%,rgba(255,255,255,0));padding:14px 16px;box-sizing:border-box">
+          <div style="height:50px;border-radius:12px;background:#1F6F5C;color:#fff;font-size:15px;font-weight:700;display:flex;align-items:center;justify-content:center;opacity:.45">Making your copy…</div>
+          <div style="font-size:10.5px;line-height:1.45;color:#98A5A0;text-align:center;margin-top:9px">You sign in next, so the trip follows you to a new phone. Link expires 12 Mar.</div>
+        </div>
+        <div style="width:390px;border:1px solid #E7EAE7;border-radius:10px;background:linear-gradient(to top,#fff 62%,rgba(255,255,255,0));padding:14px 16px;box-sizing:border-box">
+          <div style="background:#FBF1DE;border:1px solid #EBD9B4;border-radius:10px;padding:8px 10px;font-size:12px;font-weight:650;color:#8A5A08;line-height:1.45;margin-bottom:10px">That did not go through. Nothing was made on this phone — try it again.</div>
+          <div style="height:50px;border-radius:12px;background:#1F6F5C;color:#fff;font-size:15px;font-weight:700;display:flex;align-items:center;justify-content:center">Join this trip</div>
+        </div>
+        <div style="width:390px;font-size:11.5px;line-height:1.45;color:#6B7A74;text-wrap:pretty">P0-5 R1/R2: the label swaps, the button disables, nothing else on the screen moves. The failure is an <b>outcome</b>, so it is amber and it sits above the foot.</div>
+      </div>
+
+      <div style="display:flex;flex-direction:column;gap:9px">
+        <div style="font-size:11px;font-weight:800;letter-spacing:.04em;color:#1F6F5C">C · ARRIVAL — P0-1, ON THE DAY THE PREVIEW SHOWED</div>
+        <div style="width:390px;background:#F2F3F1;border:1px solid #D8DCD8;border-radius:10px;padding:14px 16px;box-sizing:border-box">
+          <div style="display:flex;align-items:flex-start;gap:10px;border:1px solid #CFE0D9;background:#E6EFEB;border-radius:12px;padding:10px 12px;margin-bottom:12px">
+            <div style="flex:none;width:30px;height:30px;border-radius:9px;background:#F2F3F1;border:1px solid #E7EAE7;display:grid;place-items:center;font-size:12px;font-weight:800;color:#3D4C46">A</div>
+            <div style="min-width:0">
+              <div style="font-size:12px;font-weight:800;color:#1F6F5C">YOUR COPY</div>
+              <div style="font-size:11px;line-height:1.45;color:#5D8C7C;margin-top:2px">This copy is yours. Change anything you like — it stays on this phone.</div>
+            </div>
+          </div>
+          <div style="display:flex;align-items:center;gap:8px;margin-top:12px;background:#fff;border-radius:14px;padding:9px 11px">
+            <div style="width:26px;height:26px;border-radius:8px;background:#14201C;color:#fff;font-size:11px;font-weight:700;display:flex;align-items:center;justify-content:center">MC</div>
+            <div style="flex:1"><div style="font-size:12.5px;font-weight:700">Meridian City</div><div style="font-size:10.5px;font-weight:650;color:#98A5A0;display:flex;align-items:center;gap:5px"><span style="width:14px;height:14px;border-radius:50%;background:#1F6F5C;color:#fff;font-size:8px;font-weight:700;display:flex;align-items:center;justify-content:center">A</span>from Ana</div></div>
+            <span style="width:6px;height:6px;border-radius:50%;background:#B4BEB9"></span>
+          </div>
+        </div>
+        <div style="width:390px;font-size:11.5px;line-height:1.45;color:#6B7A74;text-wrap:pretty">Landing on <b>Day 3</b> — the day the preview showed — makes joining continuous rather than a jump into a stranger's week. The <b>.arrived</b> banner is shown once; the <b>from Ana</b> marker stays for good.</div>
+      </div>
+    </div>
+  </div>
+
+  <div style="height:1px;background:#D8DCD8"></div>
+
+  <!-- ============================ D · UPDATE → REVIEW ============================ -->
+  <div style="font-size:15px;font-weight:700">D · Update → Review — the door that must not close (F-1), and where bulk lives</div>
+  <div style="display:flex;gap:26px;align-items:flex-start;flex-wrap:wrap">
+
+    <div style="display:flex;flex-direction:column;gap:9px;width:390px">
+      <div style="font-size:11px;font-weight:800;letter-spacing:.04em;color:#6B7A74">1 · THE BANNER — UNCHANGED</div>
+      <div style="background:#FBF1DE;border:1px solid #EBD9B4;border-radius:12px;padding:11px 12px">
+        <div style="font-size:10.5px;font-weight:800;letter-spacing:.05em;color:#8A5A08;margin-bottom:8px">Ana sent an update · 22:02</div>
+        <div style="font-size:12px;line-height:1.45;color:#3D4C46;margin-top:5px">5 stops · 1 sub route · 1 place. Nothing has changed on your copy — you decide what to take, one thing at a time.</div>
+        <div style="display:flex;gap:8px;margin-top:11px">
+          <div style="flex:1;height:38px;border-radius:12px;background:#14201C;color:#fff;font-size:12.5px;font-weight:700;display:flex;align-items:center;justify-content:center">See what changed</div>
+          <div style="width:96px;height:38px;border-radius:12px;background:#F2F3F1;border:1px solid #E1E5E1;color:#14201C;font-size:12.5px;font-weight:650;display:flex;align-items:center;justify-content:center">Later</div>
+        </div>
+      </div>
+      <div style="font-size:11px;font-weight:800;letter-spacing:.04em;color:#9B4B4B;margin-top:6px">2 · TODAY, AFTER "LATER" — NOTHING, FOR THE REST OF THE SESSION</div>
+      <div style="height:56px;border:1px dashed #E9D3D3;border-radius:12px;display:flex;align-items:center;justify-content:center;font-size:11.5px;color:#9B4B4B">the update, and the only route to Review, are gone</div>
+      <div style="font-size:11px;font-weight:800;letter-spacing:.04em;color:#1F6F5C;margin-top:6px">3 · DESIGNED — IT COLLAPSES</div>
+      <div style="height:34px;background:#FBF1DE;border:1px solid #EBD9B4;border-radius:12px;display:flex;align-items:center;padding:0 12px;font-size:11.5px;font-weight:650;color:#8A5A08">
+        <span style="flex:1">Ana's update · 6 to decide</span><span style="flex:none;display:flex"><svg width="7" height="12" viewBox="0 0 7 12"><path d="M1 1l5 5-5 5" stroke="#98A5A0" stroke-width="1.8" fill="none" stroke-linecap="round"></path></svg></span>
+      </div>
+      <div style="font-size:11.5px;line-height:1.45;color:#6B7A74;text-wrap:pretty">Same object, one line high, in the place the user already looked. It expands again on the next launch, or the moment a newer update arrives. Deciding everything removes it. Its chevron is <b>icon.chevron</b> verbatim, which hardcodes <b>#98A5A0</b> \u2014 grey against the amber row, as <b>.wx-banner</b> already renders it. Tinting it would mean parameterising the icon the way <b>icon.pencil</b> and <b>icon.tick</b> already are; not worth a source change for this. <b>Both states are on the Plan tab — the full screen is on the right.</b></div>
+    </div>
+
+    <div style="display:flex;flex-direction:column;gap:9px;width:390px">
+      <div style="font-size:11px;font-weight:800;letter-spacing:.04em;color:#9B4B4B">TODAY · BULK, TWO SCREENS BELOW THE FOLD</div>
+      <div style="width:390px;height:470px;background:#F2F3F1;border:1px solid #D8DCD8;border-radius:10px;overflow:hidden;position:relative">
+        <div style="padding:14px 16px;display:flex;flex-direction:column;gap:12px">
+          <div style="background:#fff;border-radius:16px;padding:12px 13px;height:150px;box-sizing:border-box"><div style="font-size:9.5px;font-weight:800;color:#8A5A08;background:#FBF1DE;border-radius:6px;padding:3px 7px;display:inline-block">THEY CHANGED</div><div style="font-size:13.5px;font-weight:700;margin-top:8px">Lumen Crossing</div><div style="font-size:11px;color:#98A5A0;margin-top:2px">Day 3 · stop 2 of 6</div></div>
+          <div style="background:#fff;border-radius:16px;padding:12px 13px;height:150px;box-sizing:border-box"><div style="font-size:9.5px;font-weight:800;color:#1F6F5C;background:#E6EFEB;border-radius:6px;padding:3px 7px;display:inline-block">THEY ADDED</div><div style="font-size:13.5px;font-weight:700;margin-top:8px">上野公園</div><div style="font-size:11px;color:#98A5A0;margin-top:2px">Day 3 · stop 4 of 6</div></div>
+          <div style="background:#fff;border-radius:16px;padding:12px 13px;height:150px;box-sizing:border-box;opacity:.5"></div>
+        </div>
+        <div style="position:absolute;left:0;right:0;bottom:0;height:74px;background:linear-gradient(180deg,rgba(242,243,241,0) 0%,#F2F3F1 70%);display:flex;align-items:flex-end;justify-content:center;padding-bottom:10px;font-size:11.5px;font-weight:700;color:#9B4B4B">…four more cards, then the bulk buttons</div>
+      </div>
+      <div style="font-size:11.5px;line-height:1.45;color:#9B4B4B;text-wrap:pretty">The cheap way out of a long update is the hardest thing to find, and <b>.review-foot</b> — which exists in <b>app.css</b> and which <b>Paste already uses correctly</b> — is not used here at all.</div>
+    </div>
+
+    <div style="display:flex;flex-direction:column;gap:16px;width:420px">
+      <div style="font-size:11px;font-weight:800;letter-spacing:.04em;color:#1F6F5C">DESIGNED · THE STICKY FOOT, STAGED</div>
+      <div style="width:390px;display:flex;flex-direction:column;gap:12px">
+        <div>
+          <div style="font-size:11px;color:#98A5A0;margin-bottom:5px">a · nothing decided, 3 rows or fewer</div>
+          <div style="background:#fff;border-top:1px solid #E7EAE7;border-radius:0 0 10px 10px;padding:12px 16px;font-size:11px;font-weight:650;color:#98A5A0;font-variant-numeric:tabular-nums">3 to decide</div>
+        </div>
+        <div>
+          <div style="font-size:11px;color:#98A5A0;margin-bottom:5px">b · nothing decided, 4+ rows</div>
+          <div style="background:#fff;border-top:1px solid #E7EAE7;border-radius:0 0 10px 10px;padding:12px 16px;display:flex;align-items:center;gap:10px">
+            <span style="flex:1;font-size:11px;font-weight:650;color:#98A5A0;font-variant-numeric:tabular-nums">6 to decide</span>
+            <span style="height:30px;padding:0 12px;border-radius:10px;border:1px solid #E7EAE7;font-size:12px;font-weight:700;color:#3D4C46;display:flex;align-items:center">More</span>
+          </div>
+        </div>
+        <div>
+          <div style="font-size:11px;color:#98A5A0;margin-bottom:5px">c · at least one decided, or More tapped</div>
+          <div style="background:#fff;border-top:1px solid #E7EAE7;border-radius:0 0 10px 10px;padding:12px 16px">
+            <div style="font-size:11px;font-weight:650;color:#98A5A0;font-variant-numeric:tabular-nums;margin-bottom:9px">4 to decide · 2 done</div>
+            <div style="display:flex;gap:8px">
+              <div style="flex:1;height:38px;border-radius:12px;background:#F2F3F1;border:1px solid #E1E5E1;font-size:12.5px;font-weight:650;color:#14201C;display:flex;align-items:center;justify-content:center;text-align:center">Keep all of mine</div>
+              <div style="flex:1;height:38px;border-radius:12px;background:#1F6F5C;color:#fff;font-size:12.5px;font-weight:700;display:flex;align-items:center;justify-content:center;text-align:center;line-height:1.2;padding:0 8px;box-sizing:border-box">Take the 4 you have not touched</div>
+            </div>
+          </div>
+        </div>
+        <div>
+          <div style="font-size:11px;color:#98A5A0;margin-bottom:5px">d · only conflicts left</div>
+          <div style="background:#fff;border-top:1px solid #E7EAE7;border-radius:0 0 10px 10px;padding:12px 16px">
+            <div style="font-size:11px;font-weight:650;color:#98A5A0;font-variant-numeric:tabular-nums;margin-bottom:9px">2 to decide · 4 done</div>
+            <div style="height:38px;border-radius:12px;background:#F2F3F1;border:1px solid #E1E5E1;font-size:12.5px;font-weight:650;color:#14201C;display:flex;align-items:center;justify-content:center">Keep all of mine</div>
+            <div style="font-size:11px;line-height:1.45;color:#98A5A0;margin-top:8px">2 left, and you have changed both. They go one at a time.</div>
+          </div>
+        </div>
+      </div>
+      <div style="width:390px;font-size:11.5px;line-height:1.45;color:#6B7A74;text-wrap:pretty">Always reachable, never pre-armed. <b>Take all of theirs</b> is gone (P0-4 A-11), so the only genuinely destructive bulk action does not exist — which is why no confirmation is needed and one batch undo is enough. Full reasoning: <b>docs/design/p1-review-bulk-actions-refinement.md</b>.</div>
+    </div>
+  </div>
+
+  <div style="height:1px;background:#D8DCD8"></div>
+
+  <!-- ============================ E · IN SITU ============================ -->
+  <div style="font-size:15px;font-weight:700">E · Where the update banner lives — the full Plan screen, both states</div>
+  <div style="display:flex;gap:26px;align-items:flex-start;flex-wrap:wrap">
+
+    <div style="display:flex;flex-direction:column;gap:9px">
+      <div style="font-size:11px;font-weight:800;letter-spacing:.04em;color:#6B7A74">PLAN TAB · AN UPDATE IS WAITING</div>
+      <div style="width:390px;height:844px;background:#F2F3F1;border:1px solid #D8DCD8;border-radius:10px;overflow:hidden;display:flex;flex-direction:column">
+        <div style="background:#fff;border-bottom:1px solid #E7EAE7;padding:22px 16px 12px;flex:none">
+          <div style="display:flex;align-items:flex-end;justify-content:space-between;gap:10px">
+            <div style="flex:1;min-width:0">
+              <div style="font-size:24px;font-weight:700;letter-spacing:-.02em">Day 3</div>
+              <div style="font-size:12px;color:#6B7A74;margin-top:2px">Sat 14 Mar</div>
+            </div>
+            <button style="width:40px;height:40px;flex:none;display:flex;align-items:center;justify-content:center;border-radius:13px;background:#fff;box-shadow:0 2px 10px rgba(20,32,28,.12);border:0;padding:0"><svg width="17" height="17" viewBox="0 0 14 14"><path d="M9.5 1.5l3 3L5 12H2v-3z" fill="none" stroke="#14201C" stroke-width="1.5" stroke-linejoin="round"></path></svg></button>
+          </div>
+          <div style="display:flex;gap:6px;margin-top:10px;overflow:hidden"><button style="flex:none;height:30px;padding:0 10px;border-radius:10px;background:#fff;color:#6B7A74;font-size:12px;font-weight:600;display:flex;align-items:center;gap:5px;white-space:nowrap;border:0">D1<span style="font-size:11px;opacity:.75"></span></button><button style="flex:none;height:30px;padding:0 10px;border-radius:10px;background:#fff;color:#6B7A74;font-size:12px;font-weight:600;display:flex;align-items:center;gap:5px;white-space:nowrap;border:0">D2<span style="font-size:11px;opacity:.75"></span></button><button style="flex:none;height:30px;padding:0 10px;border-radius:10px;background:#14201C;color:#fff;font-size:12px;font-weight:600;display:flex;align-items:center;gap:5px;white-space:nowrap;border:0">D3<span style="font-size:11px;opacity:.75"></span></button><button style="flex:none;height:30px;padding:0 10px;border-radius:10px;background:#fff;color:#6B7A74;font-size:12px;font-weight:600;display:flex;align-items:center;gap:5px;white-space:nowrap;border:0">D4<span style="font-size:11px;opacity:.75"></span></button><button style="flex:none;height:30px;padding:0 10px;border-radius:10px;background:#fff;color:#6B7A74;font-size:12px;font-weight:600;display:flex;align-items:center;gap:5px;white-space:nowrap;border:0">D5<span style="font-size:11px;opacity:.75"></span></button><button style="flex:none;height:30px;padding:0 10px;border-radius:10px;background:#fff;color:#6B7A74;font-size:12px;font-weight:600;display:flex;align-items:center;gap:5px;white-space:nowrap;border:0">D6<span style="font-size:11px;opacity:.75"></span></button></div>
+        </div>
+        <div style="flex:1;overflow:hidden;padding:12px 16px;display:flex;flex-direction:column;gap:11px">
+          <div style="background:#FBF1DE;border:1px solid #EBD9B4;border-radius:12px;padding:11px 12px">
+            <div style="font-size:10.5px;font-weight:800;letter-spacing:.05em;color:#8A5A08;margin-bottom:8px">Ana sent an update · 22:02</div>
+            <div style="font-size:12px;line-height:1.45;color:#3D4C46;margin-top:5px">5 stops · 1 sub route · 1 place. Nothing has changed on your copy — you decide what to take, one thing at a time.</div>
+            <div style="display:flex;gap:8px;margin-top:11px">
+              <div style="flex:1;height:38px;border-radius:12px;background:#14201C;color:#fff;font-size:12.5px;font-weight:700;display:flex;align-items:center;justify-content:center">See what changed</div>
+              <div style="width:96px;height:38px;border-radius:12px;background:#F2F3F1;border:1px solid #E1E5E1;color:#14201C;font-size:12.5px;font-weight:650;display:flex;align-items:center;justify-content:center">Later</div>
+            </div>
+          </div>
+          <div style="display:flex;gap:9px">
+            <div style="width:56px;flex:none;padding-top:12px;text-align:right;display:flex;flex-direction:column;gap:1px">
+              <div style="font-size:12.5px;font-weight:700;font-variant-numeric:tabular-nums">09:15</div>
+              <div style="font-size:11px;font-weight:650;color:#98A5A0;font-variant-numeric:tabular-nums">10:00</div>
+              <div style="font-size:10px;font-weight:700;color:#B4BEB9;text-align:right">45 min</div>
+            </div>
+            <div style="width:20px;flex:none;display:flex;flex-direction:column;align-items:center">
+              <div style="width:11px;height:11px;border-radius:50%;background:#1F6F5C;margin-top:14px;flex:none"></div>
+              <div style="flex:1;width:0;border-left:2px solid #DCE2DE"></div>
+            </div>
+            <div style="flex:1;min-width:0;margin-bottom:8px;padding:12px 13px;background:#fff;border:1px solid #E7EAE7;border-radius:14px;text-align:left">
+              <div style="display:flex;gap:8px;align-items:flex-start">
+                <div style="flex:1;min-width:0">
+                  <div style="font-size:14.5px;font-weight:650;line-height:1.25">Lumen Crossing</div>
+                  <div style="font-size:11.5px;color:#6B7A74;margin-top:3px;line-height:1.35">Harbour side</div>
+                </div>
+                <span style="flex:none;padding:3px 7px;border-radius:6px;font-size:9.5px;font-weight:800;letter-spacing:.04em;white-space:nowrap;background:#E6EFEB;color:#1F6F5C">MAIN 1</span>
+              </div>
+            </div>
+          </div>
+          <div style="display:flex;gap:9px">
+            <div style="width:56px;flex:none;padding-top:12px;text-align:right;display:flex;flex-direction:column;gap:1px">
+              <div style="font-size:12.5px;font-weight:700;font-variant-numeric:tabular-nums">10:30</div>
+              <div style="font-size:11px;font-weight:650;color:#98A5A0;font-variant-numeric:tabular-nums">11:30</div>
+              <div style="font-size:10px;font-weight:700;color:#B4BEB9;text-align:right">1 hr</div>
+            </div>
+            <div style="width:20px;flex:none;display:flex;flex-direction:column;align-items:center">
+              <div style="width:11px;height:11px;border-radius:50%;background:#1F6F5C;margin-top:14px;flex:none"></div>
+              <div style="flex:1;width:0;border-left:2px solid #DCE2DE"></div>
+            </div>
+            <div style="flex:1;min-width:0;margin-bottom:8px;padding:12px 13px;background:#fff;border:1px solid #E7EAE7;border-radius:14px;text-align:left">
+              <div style="display:flex;gap:8px;align-items:flex-start">
+                <div style="flex:1;min-width:0">
+                  <div style="font-size:14.5px;font-weight:650;line-height:1.25">Ashgate Shrine</div>
+                  <div style="font-size:11.5px;color:#6B7A74;margin-top:3px;line-height:1.35">Shoulders covered</div>
+                </div>
+                <span style="flex:none;padding:3px 7px;border-radius:6px;font-size:9.5px;font-weight:800;letter-spacing:.04em;white-space:nowrap;background:#E6EFEB;color:#1F6F5C">MAIN 2</span>
+              </div>
+            </div>
+          </div>
+          <div style="display:flex;gap:9px">
+            <div style="width:56px;flex:none;padding-top:12px;text-align:right;display:flex;flex-direction:column;gap:1px">
+              <div style="font-size:12.5px;font-weight:700;font-variant-numeric:tabular-nums">13:30</div>
+              <div style="font-size:11px;font-weight:650;color:#98A5A0;font-variant-numeric:tabular-nums">15:45</div>
+              <div style="font-size:10px;font-weight:700;color:#B4BEB9;text-align:right">2h 15m</div>
+            </div>
+            <div style="width:20px;flex:none;display:flex;flex-direction:column;align-items:center">
+              <div style="width:11px;height:11px;border-radius:50%;background:#1F6F5C;margin-top:14px;flex:none"></div>
+              
+            </div>
+            <div style="flex:1;min-width:0;margin-bottom:8px;padding:12px 13px;background:#fff;border:1px solid #E7EAE7;border-radius:14px;text-align:left">
+              <div style="display:flex;gap:8px;align-items:flex-start">
+                <div style="flex:1;min-width:0">
+                  <div style="font-size:14.5px;font-weight:650;line-height:1.25">Nishi Market</div>
+                  <div style="font-size:11.5px;color:#6B7A74;margin-top:3px;line-height:1.35">Free time · 3 places on a sub route</div>
+                </div>
+                <span style="flex:none;padding:3px 7px;border-radius:6px;font-size:9.5px;font-weight:800;letter-spacing:.04em;white-space:nowrap;background:#E6EFEB;color:#1F6F5C">MAIN 3</span>
+              </div>
+            </div>
+          </div>
+        </div>
+        <div style="flex:none;background:#fff;border-top:1px solid #E4E8E5;display:flex;gap:2px;padding:7px 8px 10px">
+          <div style="flex:1;min-height:46px;border-radius:12px;display:flex;flex-direction:column;align-items:center;justify-content:center;gap:3px;color:#9AA6A1"><svg width="20" height="20" viewBox="0 0 20 20" fill="none"><path d="M10 18s6-5.2 6-10A6 6 0 0 0 4 8c0 4.8 6 10 6 10z" stroke="#9AA6A1" stroke-width="1.7" stroke-linejoin="round"></path><circle cx="10" cy="8" r="2.2" stroke="#9AA6A1" stroke-width="1.7"></circle></svg><span style="font-size:9.5px;font-weight:700">Map</span></div>
+          <div style="flex:1;min-height:46px;border-radius:12px;background:#F2F3F1;display:flex;flex-direction:column;align-items:center;justify-content:center;gap:3px;color:#14201C"><svg width="20" height="20" viewBox="0 0 20 20" fill="none"><g stroke="#14201C" stroke-width="1.7" stroke-linecap="round"><path d="M3 5.5h14M3 10h14M3 14.5h9"></path></g></svg><span style="font-size:9.5px;font-weight:700">Plan</span></div>
+          <div style="flex:1;min-height:46px;border-radius:12px;display:flex;flex-direction:column;align-items:center;justify-content:center;gap:3px;color:#9AA6A1"><svg width="20" height="20" viewBox="0 0 20 20" fill="none"><path d="M4.5 6.5h11l-1 10h-9l-1-10z" stroke="#9AA6A1" stroke-width="1.7" stroke-linejoin="round"></path><path d="M7.5 6.5V5a2.5 2.5 0 0 1 5 0v1.5" stroke="#9AA6A1" stroke-width="1.7" stroke-linecap="round"></path></svg><span style="font-size:9.5px;font-weight:700">Shop</span></div>
+          <div style="flex:1;min-height:46px;border-radius:12px;display:flex;flex-direction:column;align-items:center;justify-content:center;gap:3px;color:#9AA6A1"><svg width="20" height="20" viewBox="0 0 20 20" fill="none"><rect x="3.5" y="6" width="13" height="10.5" rx="2" stroke="#9AA6A1" stroke-width="1.7"></rect><path d="M7.5 6V4.5a1.5 1.5 0 0 1 1.5-1.5h2a1.5 1.5 0 0 1 1.5 1.5V6" stroke="#9AA6A1" stroke-width="1.7" stroke-linecap="round"></path></svg><span style="font-size:9.5px;font-weight:700">Prep</span></div>
+          <div style="flex:1;min-height:46px;border-radius:12px;display:flex;flex-direction:column;align-items:center;justify-content:center;gap:3px;color:#9AA6A1"><svg width="20" height="20" viewBox="0 0 20 20" fill="none"><path d="M13 3.5l3.5 3.5L7 16.5H3.5V13z" stroke="#9AA6A1" stroke-width="1.7" stroke-linejoin="round"></path></svg><span style="font-size:9.5px;font-weight:700">Log</span></div>
+        </div>
+      </div>
+      <div style="width:390px;font-size:11.5px;line-height:1.45;color:#6B7A74;text-wrap:pretty">Head and chips from <b>plan.js</b> 53–72 and <b>dayPills</b> in <b>parts.js</b>: the title is the <b>day</b> (<b>.screen-title</b> 24/700), the trip's date label is <b>.screen-sub</b>, and the right-hand control is an <b>.iconbtn.filled</b> 40×40 r13 holding <b>icon.pencil('#14201C', 17)</b> — not a ⋯ glyph, and there is no status dot in <b>.head-row</b>. Pills are <b>.pill.small</b> h30 with a <b>.pill-wx</b> forecast slot. <b>This frame is the no-forecast state</b> — <b>store.weather()</b> has returned nothing, so the <b>.pill-wx</b> glyphs are empty and <b>weatherBanner()</b> renders nothing, which is why the update banner is first in the scroller. With a forecast, the weather strip sits above it. <b>See what changed</b> is the app's only route to Review.</div>
+      <div style="width:390px;background:#E6EFEB;border:1px solid #CFE0D9;border-radius:14px;padding:11px 12px;box-sizing:border-box;font-size:11.5px;line-height:1.5;color:#14201C"><b>Tab bar taken from source, not approximated</b> — order and colours from <b>TABS</b> in <b>nav.js</b>, the five real glyphs lifted verbatim from <b>icon.tabMap/tabPlan/tabShop/tabPrep/tabLog</b> in <b>util.js</b> (20×20, stroke 1.7, recoloured by the caller), and the shell from <b>app.css</b>: <b>.tabbar</b> gap 2, pad 7/8/10, top rule <b>#E4E8E5</b> · <b>.tab</b> min-height 46, radius 12 · <b>.tab.on</b> filled <b>--bone #F2F3F1</b> · <b>.tab-label</b> 9.5px/700 for every tab. Two earlier errors of mine: an invented <b>Trips</b> tab with Plan first, then placeholder squares with no active pill. The bar hides entirely when there is no open trip, and on the invite and sign-in screens (<b>chrome === false</b>).</div>
+    </div>
+
+    <div style="display:flex;flex-direction:column;gap:9px">
+      <div style="font-size:11px;font-weight:800;letter-spacing:.04em;color:#1F6F5C">SAME SCREEN, AFTER "LATER" — THE COLLAPSED ROW IN PLACE</div>
+      <div style="width:390px;background:#fff;border:1px solid #E7EAE7;border-radius:14px;padding:11px 12px;box-sizing:border-box;font-size:11.5px;line-height:1.5;color:#3D4C46"><b style="color:#14201C">"Later" is the ghost button on the banner above</b> — the way out of "someone sent an update" when you are busy. It is existing copy. Today it means <b>gone</b>: the banner disappears for the rest of the session and Review, which has no other entrance, becomes unreachable. In this design it means what the word says — <b>the banner shrinks to the one-line row below and waits</b>. Kept as <b>Later</b> for that reason; it is now accurate rather than misleading.</div>
+      <div style="width:390px;height:844px;background:#F2F3F1;border:1px solid #D8DCD8;border-radius:10px;overflow:hidden;display:flex;flex-direction:column">
+        <div style="background:#fff;border-bottom:1px solid #E7EAE7;padding:22px 16px 12px;flex:none">
+          <div style="display:flex;align-items:flex-end;justify-content:space-between;gap:10px">
+            <div style="flex:1;min-width:0">
+              <div style="font-size:24px;font-weight:700;letter-spacing:-.02em">Day 3</div>
+              <div style="font-size:12px;color:#6B7A74;margin-top:2px">Sat 14 Mar</div>
+            </div>
+            <button style="width:40px;height:40px;flex:none;display:flex;align-items:center;justify-content:center;border-radius:13px;background:#fff;box-shadow:0 2px 10px rgba(20,32,28,.12);border:0;padding:0"><svg width="17" height="17" viewBox="0 0 14 14"><path d="M9.5 1.5l3 3L5 12H2v-3z" fill="none" stroke="#14201C" stroke-width="1.5" stroke-linejoin="round"></path></svg></button>
+          </div>
+          <div style="display:flex;gap:6px;margin-top:10px;overflow:hidden"><button style="flex:none;height:30px;padding:0 10px;border-radius:10px;background:#fff;color:#6B7A74;font-size:12px;font-weight:600;display:flex;align-items:center;gap:5px;white-space:nowrap;border:0">D1<span style="font-size:11px;opacity:.75"></span></button><button style="flex:none;height:30px;padding:0 10px;border-radius:10px;background:#fff;color:#6B7A74;font-size:12px;font-weight:600;display:flex;align-items:center;gap:5px;white-space:nowrap;border:0">D2<span style="font-size:11px;opacity:.75"></span></button><button style="flex:none;height:30px;padding:0 10px;border-radius:10px;background:#14201C;color:#fff;font-size:12px;font-weight:600;display:flex;align-items:center;gap:5px;white-space:nowrap;border:0">D3<span style="font-size:11px;opacity:.75"></span></button><button style="flex:none;height:30px;padding:0 10px;border-radius:10px;background:#fff;color:#6B7A74;font-size:12px;font-weight:600;display:flex;align-items:center;gap:5px;white-space:nowrap;border:0">D4<span style="font-size:11px;opacity:.75"></span></button><button style="flex:none;height:30px;padding:0 10px;border-radius:10px;background:#fff;color:#6B7A74;font-size:12px;font-weight:600;display:flex;align-items:center;gap:5px;white-space:nowrap;border:0">D5<span style="font-size:11px;opacity:.75"></span></button><button style="flex:none;height:30px;padding:0 10px;border-radius:10px;background:#fff;color:#6B7A74;font-size:12px;font-weight:600;display:flex;align-items:center;gap:5px;white-space:nowrap;border:0">D6<span style="font-size:11px;opacity:.75"></span></button></div>
+        </div>
+        <div style="flex:1;overflow:hidden;padding:12px 16px;display:flex;flex-direction:column;gap:11px">
+          <div style="height:34px;background:#FBF1DE;border:1px solid #EBD9B4;border-radius:12px;display:flex;align-items:center;padding:0 12px;font-size:11.5px;font-weight:650;color:#8A5A08;flex:none">
+            <span style="flex:1">Ana's update · 6 to decide</span><span style="flex:none;display:flex"><svg width="7" height="12" viewBox="0 0 7 12"><path d="M1 1l5 5-5 5" stroke="#98A5A0" stroke-width="1.8" fill="none" stroke-linecap="round"></path></svg></span>
+          </div>
+          <div style="display:flex;gap:9px">
+            <div style="width:56px;flex:none;padding-top:12px;text-align:right;display:flex;flex-direction:column;gap:1px">
+              <div style="font-size:12.5px;font-weight:700;font-variant-numeric:tabular-nums">09:15</div>
+              <div style="font-size:11px;font-weight:650;color:#98A5A0;font-variant-numeric:tabular-nums">10:00</div>
+              <div style="font-size:10px;font-weight:700;color:#B4BEB9;text-align:right">45 min</div>
+            </div>
+            <div style="width:20px;flex:none;display:flex;flex-direction:column;align-items:center">
+              <div style="width:11px;height:11px;border-radius:50%;background:#1F6F5C;margin-top:14px;flex:none"></div>
+              <div style="flex:1;width:0;border-left:2px solid #DCE2DE"></div>
+            </div>
+            <div style="flex:1;min-width:0;margin-bottom:8px;padding:12px 13px;background:#fff;border:1px solid #E7EAE7;border-radius:14px;text-align:left">
+              <div style="display:flex;gap:8px;align-items:flex-start">
+                <div style="flex:1;min-width:0">
+                  <div style="font-size:14.5px;font-weight:650;line-height:1.25">Lumen Crossing</div>
+                  <div style="font-size:11.5px;color:#6B7A74;margin-top:3px;line-height:1.35">Harbour side</div>
+                </div>
+                <span style="flex:none;padding:3px 7px;border-radius:6px;font-size:9.5px;font-weight:800;letter-spacing:.04em;white-space:nowrap;background:#E6EFEB;color:#1F6F5C">MAIN 1</span>
+              </div>
+            </div>
+          </div>
+          <div style="display:flex;gap:9px">
+            <div style="width:56px;flex:none;padding-top:12px;text-align:right;display:flex;flex-direction:column;gap:1px">
+              <div style="font-size:12.5px;font-weight:700;font-variant-numeric:tabular-nums">10:30</div>
+              <div style="font-size:11px;font-weight:650;color:#98A5A0;font-variant-numeric:tabular-nums">11:30</div>
+              <div style="font-size:10px;font-weight:700;color:#B4BEB9;text-align:right">1 hr</div>
+            </div>
+            <div style="width:20px;flex:none;display:flex;flex-direction:column;align-items:center">
+              <div style="width:11px;height:11px;border-radius:50%;background:#1F6F5C;margin-top:14px;flex:none"></div>
+              <div style="flex:1;width:0;border-left:2px solid #DCE2DE"></div>
+            </div>
+            <div style="flex:1;min-width:0;margin-bottom:8px;padding:12px 13px;background:#fff;border:1px solid #E7EAE7;border-radius:14px;text-align:left">
+              <div style="display:flex;gap:8px;align-items:flex-start">
+                <div style="flex:1;min-width:0">
+                  <div style="font-size:14.5px;font-weight:650;line-height:1.25">Ashgate Shrine</div>
+                  <div style="font-size:11.5px;color:#6B7A74;margin-top:3px;line-height:1.35">Shoulders covered</div>
+                </div>
+                <span style="flex:none;padding:3px 7px;border-radius:6px;font-size:9.5px;font-weight:800;letter-spacing:.04em;white-space:nowrap;background:#E6EFEB;color:#1F6F5C">MAIN 2</span>
+              </div>
+            </div>
+          </div>
+          <div style="display:flex;gap:9px">
+            <div style="width:56px;flex:none;padding-top:12px;text-align:right;display:flex;flex-direction:column;gap:1px">
+              <div style="font-size:12.5px;font-weight:700;font-variant-numeric:tabular-nums">13:30</div>
+              <div style="font-size:11px;font-weight:650;color:#98A5A0;font-variant-numeric:tabular-nums">15:45</div>
+              <div style="font-size:10px;font-weight:700;color:#B4BEB9;text-align:right">2h 15m</div>
+            </div>
+            <div style="width:20px;flex:none;display:flex;flex-direction:column;align-items:center">
+              <div style="width:11px;height:11px;border-radius:50%;background:#1F6F5C;margin-top:14px;flex:none"></div>
+              <div style="flex:1;width:0;border-left:2px solid #DCE2DE"></div>
+            </div>
+            <div style="flex:1;min-width:0;margin-bottom:8px;padding:12px 13px;background:#fff;border:1px solid #E7EAE7;border-radius:14px;text-align:left">
+              <div style="display:flex;gap:8px;align-items:flex-start">
+                <div style="flex:1;min-width:0">
+                  <div style="font-size:14.5px;font-weight:650;line-height:1.25">Nishi Market</div>
+                  <div style="font-size:11.5px;color:#6B7A74;margin-top:3px;line-height:1.35">Free time · 3 places on a sub route</div>
+                </div>
+                <span style="flex:none;padding:3px 7px;border-radius:6px;font-size:9.5px;font-weight:800;letter-spacing:.04em;white-space:nowrap;background:#E6EFEB;color:#1F6F5C">MAIN 3</span>
+              </div>
+            </div>
+          </div>
+          <div style="display:flex;gap:9px">
+            <div style="width:56px;flex:none;padding-top:12px;text-align:right;display:flex;flex-direction:column;gap:1px">
+              <div style="font-size:12.5px;font-weight:700;font-variant-numeric:tabular-nums">18:00</div>
+              <div style="font-size:11px;font-weight:650;color:#98A5A0;font-variant-numeric:tabular-nums">19:30</div>
+              <div style="font-size:10px;font-weight:700;color:#B4BEB9;text-align:right">1h 30m</div>
+            </div>
+            <div style="width:20px;flex:none;display:flex;flex-direction:column;align-items:center">
+              <div style="width:11px;height:11px;border-radius:50%;background:#1F6F5C;margin-top:14px;flex:none"></div>
+              
+            </div>
+            <div style="flex:1;min-width:0;margin-bottom:8px;padding:12px 13px;background:#fff;border:1px solid #E7EAE7;border-radius:14px;text-align:left">
+              <div style="display:flex;gap:8px;align-items:flex-start">
+                <div style="flex:1;min-width:0">
+                  <div style="font-size:14.5px;font-weight:650;line-height:1.25">Harbour Steps</div>
+                  <div style="font-size:11.5px;color:#6B7A74;margin-top:3px;line-height:1.35">Set dinner</div>
+                </div>
+                <span style="flex:none;padding:3px 7px;border-radius:6px;font-size:9.5px;font-weight:800;letter-spacing:.04em;white-space:nowrap;background:#E6EFEB;color:#1F6F5C">MAIN 4</span>
+              </div>
+            </div>
+          </div>
+        </div>
+        <div style="flex:none;background:#fff;border-top:1px solid #E4E8E5;display:flex;gap:2px;padding:7px 8px 10px">
+          <div style="flex:1;min-height:46px;border-radius:12px;display:flex;flex-direction:column;align-items:center;justify-content:center;gap:3px;color:#9AA6A1"><svg width="20" height="20" viewBox="0 0 20 20" fill="none"><path d="M10 18s6-5.2 6-10A6 6 0 0 0 4 8c0 4.8 6 10 6 10z" stroke="#9AA6A1" stroke-width="1.7" stroke-linejoin="round"></path><circle cx="10" cy="8" r="2.2" stroke="#9AA6A1" stroke-width="1.7"></circle></svg><span style="font-size:9.5px;font-weight:700">Map</span></div>
+          <div style="flex:1;min-height:46px;border-radius:12px;background:#F2F3F1;display:flex;flex-direction:column;align-items:center;justify-content:center;gap:3px;color:#14201C"><svg width="20" height="20" viewBox="0 0 20 20" fill="none"><g stroke="#14201C" stroke-width="1.7" stroke-linecap="round"><path d="M3 5.5h14M3 10h14M3 14.5h9"></path></g></svg><span style="font-size:9.5px;font-weight:700">Plan</span></div>
+          <div style="flex:1;min-height:46px;border-radius:12px;display:flex;flex-direction:column;align-items:center;justify-content:center;gap:3px;color:#9AA6A1"><svg width="20" height="20" viewBox="0 0 20 20" fill="none"><path d="M4.5 6.5h11l-1 10h-9l-1-10z" stroke="#9AA6A1" stroke-width="1.7" stroke-linejoin="round"></path><path d="M7.5 6.5V5a2.5 2.5 0 0 1 5 0v1.5" stroke="#9AA6A1" stroke-width="1.7" stroke-linecap="round"></path></svg><span style="font-size:9.5px;font-weight:700">Shop</span></div>
+          <div style="flex:1;min-height:46px;border-radius:12px;display:flex;flex-direction:column;align-items:center;justify-content:center;gap:3px;color:#9AA6A1"><svg width="20" height="20" viewBox="0 0 20 20" fill="none"><rect x="3.5" y="6" width="13" height="10.5" rx="2" stroke="#9AA6A1" stroke-width="1.7"></rect><path d="M7.5 6V4.5a1.5 1.5 0 0 1 1.5-1.5h2a1.5 1.5 0 0 1 1.5 1.5V6" stroke="#9AA6A1" stroke-width="1.7" stroke-linecap="round"></path></svg><span style="font-size:9.5px;font-weight:700">Prep</span></div>
+          <div style="flex:1;min-height:46px;border-radius:12px;display:flex;flex-direction:column;align-items:center;justify-content:center;gap:3px;color:#9AA6A1"><svg width="20" height="20" viewBox="0 0 20 20" fill="none"><path d="M13 3.5l3.5 3.5L7 16.5H3.5V13z" stroke="#9AA6A1" stroke-width="1.7" stroke-linejoin="round"></path></svg><span style="font-size:9.5px;font-weight:700">Log</span></div>
+        </div>
+      </div>
+      <div style="width:390px;font-size:11.5px;line-height:1.45;color:#6B7A74;text-wrap:pretty">One 34px row in the banner's place, same amber palette, tappable straight into Review. <b>Today this row does not exist</b> — the banner disappears and Review becomes unreachable until the app restarts (F-1).</div>
+    </div>
+
+    <div style="width:420px;background:#fff;border:1px solid #E7EAE7;border-radius:16px;padding:15px 16px;box-sizing:border-box">
+      <div style="font-size:13px;font-weight:700;margin-bottom:9px">The eleven surfaces, and which tab each one is on</div>
+      <div style="display:grid;grid-template-columns:auto 1fr;gap:7px 12px;font-size:11.5px;line-height:1.45">
+        <div style="font-weight:700;color:#98A5A0">Trips ⋯</div><div style="color:#3D4C46">Share offer · manage sharing · send an update</div>
+        <div style="font-weight:700;color:#98A5A0">browser</div><div style="color:#3D4C46">the invite · preview · Join · sign-in</div>
+        <div style="font-weight:700;color:#98A5A0">Plan</div><div style="color:#3D4C46">arrival banner · update banner · the collapsed row</div>
+        <div style="font-weight:700;color:#98A5A0">Plan ▸</div><div style="color:#3D4C46">Review · the receipt</div>
+        <div style="font-weight:700;color:#98A5A0">everywhere</div><div style="color:#3D4C46">the <b>from Ana</b> marker — My trips, the Map trip chip, Trip settings</div>
+      </div>
+      <div style="font-size:11.5px;line-height:1.5;color:#6B7A74;margin-top:11px">Review is a push screen on the Plan tab, not a tab of its own, and the banner is its only entrance — which is why F-1 matters more than it looks.</div>
+    </div>
+  </div>
+
+  <div style="height:1px;background:#D8DCD8"></div>
+
+  <!-- ============================ F · ROUND 2 ============================ -->
+  <div style="display:flex;flex-direction:column;gap:7px;max-width:900px">
+    <div style="font-size:15px;font-weight:700">F · Round 2 — the Share screen rebuilt around the review</div>
+    <div style="font-size:12.5px;line-height:1.5;color:#3D4C46;text-wrap:pretty">Three changes, all from Ming's comments: <b>the role choice moves into the act of sharing</b> and stops being a standing setting · <b>"What they get" collapses</b> once it has been read once · <b>email invites are designed alongside the link</b>, sharing one screen and one join.</div>
+  </div>
+  <div style="display:flex;gap:26px;align-items:flex-start;flex-wrap:wrap">
+
+    <div style="display:flex;flex-direction:column;gap:9px">
+      <div style="font-size:11px;font-weight:800;letter-spacing:.04em;color:#1F6F5C">SHARE · AT REST, NOTHING SHARED YET</div>
+      <div style="width:390px;height:844px;background:#F2F3F1;border:1px solid #D8DCD8;border-radius:10px;overflow:hidden;display:flex;flex-direction:column">
+        <div style="background:#fff;border-bottom:1px solid #E7EAE7;padding:22px 16px 12px;flex:none">
+          <div style="display:flex;align-items:center;justify-content:space-between;gap:10px">
+            <button style="width:32px;height:32px;flex:none;display:flex;align-items:center;justify-content:center;border-radius:10px;background:none;border:0;padding:0"><svg width="11" height="18" viewBox="0 0 11 18"><path d="M9 1L2 9l7 8" stroke="#14201C" stroke-width="2.2" fill="none" stroke-linecap="round" stroke-linejoin="round"></path></svg></button>
+            <div style="flex:1;min-width:0">
+              <div style="font-size:17px;font-weight:700;letter-spacing:-.01em">Share this trip</div>
+              <div style="font-size:11.5px;color:#6B7A74;margin-top:1px">Meridian City · Group Tour</div>
+            </div>
+          </div>
+        </div>
+        <div style="flex:1;overflow:hidden;padding:14px 16px;display:flex;flex-direction:column;gap:14px">
+          <div>
+            <div style="font-size:10.5px;font-weight:800;letter-spacing:.06em;color:#98A5A0;margin-bottom:8px">WHO HAS IT</div>
+            <div style="background:#fff;border-radius:16px;padding:11px 12px;display:flex;align-items:center;gap:11px">
+              <div style="flex:none;width:30px;height:30px;border-radius:9px;background:#F2F3F1;border:1px solid #E7EAE7;display:grid;place-items:center;font-size:12px;font-weight:800;color:#3D4C46">A</div>
+              <div style="flex:1"><div style="font-size:13px;font-weight:650">Ana</div><div style="font-size:11px;color:#98A5A0">Made this trip</div></div>
+              <div style="font-size:9.5px;font-weight:800;letter-spacing:.04em;color:#6B7A74;background:#F2F3F1;border-radius:6px;padding:3px 7px">OWNER</div>
+            </div>
+            <div style="font-size:12px;color:#98A5A0;margin-top:8px">Nobody else, yet.</div>
+          </div>
+
+          <div style="background:#fff;border-radius:16px;padding:13px 14px">
+            <div style="font-size:12.5px;font-weight:700">They get a copy of the itinerary</div>
+            <div style="font-size:11.5px;line-height:1.45;color:#98A5A0;margin-top:4px">Your shopping list, your packing list and your Log are never in it. What they change stays on their phone, and what you change stays on yours.</div>
+            <div style="display:flex;align-items:center;gap:5px;margin-top:9px;font-size:11.5px;font-weight:700;color:#1F6F5C">What they get<span style="flex:none;display:flex"><svg width="7" height="12" viewBox="0 0 7 12"><path d="M1 1l5 5-5 5" stroke="#98A5A0" stroke-width="1.8" fill="none" stroke-linecap="round"></path></svg></span></div>
+          </div>
+
+          <div style="display:flex;flex-direction:column;gap:9px">
+            <div style="height:46px;border-radius:12px;background:#1F6F5C;color:#fff;font-size:14px;font-weight:700;display:flex;align-items:center;justify-content:center">Invite someone by email</div>
+            <div style="height:46px;border-radius:12px;background:#F2F3F1;border:1px solid #E1E5E1;color:#14201C;font-size:13px;font-weight:650;display:flex;align-items:center;justify-content:center">Create a link instead</div>
+            <div style="font-size:11px;line-height:1.45;color:#98A5A0">An invite goes to one person and stays until you remove them. A link works for whoever opens it, until it expires.</div>
+          </div>
+        </div>
+              <div style="flex:none;background:#fff;border-top:1px solid #E4E8E5;display:flex;gap:2px;padding:7px 8px 10px">
+          <div style="flex:1;min-height:46px;border-radius:12px;display:flex;flex-direction:column;align-items:center;justify-content:center;gap:3px;color:#9AA6A1"><svg width="20" height="20" viewBox="0 0 20 20" fill="none"><path d="M10 18s6-5.2 6-10A6 6 0 0 0 4 8c0 4.8 6 10 6 10z" stroke="#9AA6A1" stroke-width="1.7" stroke-linejoin="round"></path><circle cx="10" cy="8" r="2.2" stroke="#9AA6A1" stroke-width="1.7"></circle></svg><span style="font-size:9.5px;font-weight:700">Map</span></div>
+          <div style="flex:1;min-height:46px;border-radius:12px;display:flex;flex-direction:column;align-items:center;justify-content:center;gap:3px;color:#9AA6A1"><svg width="20" height="20" viewBox="0 0 20 20" fill="none"><g stroke="#9AA6A1" stroke-width="1.7" stroke-linecap="round"><path d="M3 5.5h14M3 10h14M3 14.5h9"></path></g></svg><span style="font-size:9.5px;font-weight:700">Plan</span></div>
+          <div style="flex:1;min-height:46px;border-radius:12px;display:flex;flex-direction:column;align-items:center;justify-content:center;gap:3px;color:#9AA6A1"><svg width="20" height="20" viewBox="0 0 20 20" fill="none"><path d="M4.5 6.5h11l-1 10h-9l-1-10z" stroke="#9AA6A1" stroke-width="1.7" stroke-linejoin="round"></path><path d="M7.5 6.5V5a2.5 2.5 0 0 1 5 0v1.5" stroke="#9AA6A1" stroke-width="1.7" stroke-linecap="round"></path></svg><span style="font-size:9.5px;font-weight:700">Shop</span></div>
+          <div style="flex:1;min-height:46px;border-radius:12px;display:flex;flex-direction:column;align-items:center;justify-content:center;gap:3px;color:#9AA6A1"><svg width="20" height="20" viewBox="0 0 20 20" fill="none"><rect x="3.5" y="6" width="13" height="10.5" rx="2" stroke="#9AA6A1" stroke-width="1.7"></rect><path d="M7.5 6V4.5a1.5 1.5 0 0 1 1.5-1.5h2a1.5 1.5 0 0 1 1.5 1.5V6" stroke="#9AA6A1" stroke-width="1.7" stroke-linecap="round"></path></svg><span style="font-size:9.5px;font-weight:700">Prep</span></div>
+          <div style="flex:1;min-height:46px;border-radius:12px;display:flex;flex-direction:column;align-items:center;justify-content:center;gap:3px;color:#9AA6A1"><svg width="20" height="20" viewBox="0 0 20 20" fill="none"><path d="M13 3.5l3.5 3.5L7 16.5H3.5V13z" stroke="#9AA6A1" stroke-width="1.7" stroke-linejoin="round"></path></svg><span style="font-size:9.5px;font-weight:700">Log</span></div>
+        </div>
+      </div>
+      <div style="width:390px;font-size:11.5px;line-height:1.45;color:#6B7A74;text-wrap:pretty">No radios, no expiry chips, no role setting at rest — the screen is now <b>who has it</b>, <b>what they get</b>, and <b>two ways to share</b>. Ming: <i>"this shall just appear in the session when you want to share the link or add a person."</i></div>
+    </div>
+
+    <div style="display:flex;flex-direction:column;gap:9px">
+      <div style="font-size:11px;font-weight:800;letter-spacing:.04em;color:#1F6F5C">THE SHARING MOMENT · ONE SHEET, EMAIL</div>
+      <div style="width:390px;height:844px;background:rgba(20,32,28,.34);border:1px solid #D8DCD8;border-radius:10px;overflow:hidden;display:flex;flex-direction:column;justify-content:flex-end">
+        <div style="position:relative;z-index:3;margin-top:auto;background:#fff;border-radius:22px 22px 0 0;box-shadow:0 -8px 30px rgba(20,32,28,.16);display:flex;flex-direction:column;min-height:0;box-sizing:border-box;padding:0 16px 20px">
+          <div style="padding:8px 0 10px;flex:none"><i style="display:block;width:40px;height:4px;border-radius:2px;background:#D8DDD9;margin:0 auto"></i></div>
+          <div style="font-size:17px;font-weight:700">Invite someone</div>
+          <div style="font-size:11.5px;line-height:1.45;color:#98A5A0;margin-top:3px">They see this trip when they sign in with that address.</div>
+
+          <div style="font-size:11px;color:#98A5A0;margin:14px 0 5px">Their email</div>
+          <div style="border:1px solid #DDE2DE;border-radius:10px;padding:9px 10px;background:#fff;box-sizing:border-box;font-size:13px;color:#14201C">sam@example.com</div>
+
+          <div style="font-size:10.5px;font-weight:800;letter-spacing:.06em;color:#98A5A0;margin:16px 0 6px">WHAT SAM CAN DO</div>
+          <div style="font-size:11px;line-height:1.45;color:#98A5A0;margin-bottom:8px">Everyone who joins gets their own copy and can change it however they like. This only decides whose changes go out to everyone else.</div>
+          <div style="border:1px solid #EFF1EE;border-radius:14px;overflow:hidden">
+            <div style="padding:13px 14px;background:#fff;border-radius:14px;display:flex;align-items:center;gap:11px;width:100%;text-align:left;box-sizing:border-box;border-bottom:1px solid #EDEFEC">
+              <div style="width:16px;height:16px;flex:none;border-radius:50%;border:1.6px solid #D2D8D3;background:#fff;margin-top:2px"></div>
+              <div><div style="font-size:13.5px;font-weight:650">Can send updates</div><div style="font-size:11.5px;color:#6B7A74;line-height:1.4;margin-top:1px">Their changes go out to everyone on the trip.</div></div>
+            </div>
+            <div style="padding:13px 14px;background:#fff;border-radius:14px;display:flex;align-items:center;gap:11px;width:100%;text-align:left;box-sizing:border-box">
+              <div style="width:16px;height:16px;flex:none;border-radius:50%;border:1.6px solid #1F6F5C;background:#1F6F5C;box-shadow:inset 0 0 0 3px #fff;margin-top:2px"></div>
+              <div><div style="font-size:13.5px;font-weight:650">Receives updates</div><div style="font-size:11.5px;color:#6B7A74;line-height:1.4;margin-top:1px">They get your updates, and change their own copy however they like.</div></div>
+            </div>
+          </div>
+          <div style="font-size:11px;color:#98A5A0;margin-top:8px">You can change this per person afterwards.</div>
+
+          <div style="height:50px;border-radius:12px;background:#1F6F5C;color:#fff;font-size:15px;font-weight:700;display:flex;align-items:center;justify-content:center;margin-top:16px">Send the invite</div>
+          <div style="font-size:11px;line-height:1.45;color:#98A5A0;margin-top:8px">They keep the trip until you remove them. Removing them stops your updates reaching them; the copy they already have stays on their phone.</div>
+        </div>
+        <div style="flex:none;background:#fff;border-top:1px solid #E4E8E5;display:flex;gap:2px;padding:7px 8px 10px">
+          <div style="flex:1;min-height:46px;border-radius:12px;display:flex;flex-direction:column;align-items:center;justify-content:center;gap:3px;color:#9AA6A1"><svg width="20" height="20" viewBox="0 0 20 20" fill="none"><path d="M10 18s6-5.2 6-10A6 6 0 0 0 4 8c0 4.8 6 10 6 10z" stroke="#9AA6A1" stroke-width="1.7" stroke-linejoin="round"></path><circle cx="10" cy="8" r="2.2" stroke="#9AA6A1" stroke-width="1.7"></circle></svg><span style="font-size:9.5px;font-weight:700">Map</span></div>
+          <div style="flex:1;min-height:46px;border-radius:12px;display:flex;flex-direction:column;align-items:center;justify-content:center;gap:3px;color:#9AA6A1"><svg width="20" height="20" viewBox="0 0 20 20" fill="none"><g stroke="#9AA6A1" stroke-width="1.7" stroke-linecap="round"><path d="M3 5.5h14M3 10h14M3 14.5h9"></path></g></svg><span style="font-size:9.5px;font-weight:700">Plan</span></div>
+          <div style="flex:1;min-height:46px;border-radius:12px;display:flex;flex-direction:column;align-items:center;justify-content:center;gap:3px;color:#9AA6A1"><svg width="20" height="20" viewBox="0 0 20 20" fill="none"><path d="M4.5 6.5h11l-1 10h-9l-1-10z" stroke="#9AA6A1" stroke-width="1.7" stroke-linejoin="round"></path><path d="M7.5 6.5V5a2.5 2.5 0 0 1 5 0v1.5" stroke="#9AA6A1" stroke-width="1.7" stroke-linecap="round"></path></svg><span style="font-size:9.5px;font-weight:700">Shop</span></div>
+          <div style="flex:1;min-height:46px;border-radius:12px;display:flex;flex-direction:column;align-items:center;justify-content:center;gap:3px;color:#9AA6A1"><svg width="20" height="20" viewBox="0 0 20 20" fill="none"><rect x="3.5" y="6" width="13" height="10.5" rx="2" stroke="#9AA6A1" stroke-width="1.7"></rect><path d="M7.5 6V4.5a1.5 1.5 0 0 1 1.5-1.5h2a1.5 1.5 0 0 1 1.5 1.5V6" stroke="#9AA6A1" stroke-width="1.7" stroke-linecap="round"></path></svg><span style="font-size:9.5px;font-weight:700">Prep</span></div>
+          <div style="flex:1;min-height:46px;border-radius:12px;display:flex;flex-direction:column;align-items:center;justify-content:center;gap:3px;color:#9AA6A1"><svg width="20" height="20" viewBox="0 0 20 20" fill="none"><path d="M13 3.5l3.5 3.5L7 16.5H3.5V13z" stroke="#9AA6A1" stroke-width="1.7" stroke-linejoin="round"></path></svg><span style="font-size:9.5px;font-weight:700">Log</span></div>
+        </div>
+      </div>
+      <div style="width:390px;font-size:11.5px;line-height:1.45;color:#6B7A74;text-wrap:pretty">Sheet shell from <b>app.css</b>: <b>.sheet</b> radius 22 with a <b>0 -8px 30px rgba(20,32,28,.16)</b> lift, <b>.sheet-grab</b> pad 8/0/10 and a 40×4 <b>#D8DDD9</b> bar, over the <b>.scrim</b>'s <b>rgba(20,32,28,.34)</b>. The tab bar stays visible and undimmed — <b>not</b> by stacking: <b>.scrim</b> is <b>z-index 20</b>, above <b>.tabbar</b>'s 10. It is <b>containment</b> — every scrim is rendered inside <b>section.screen</b>, and <b>.screen</b> and <b>.screen-host</b> are both <b>position:relative</b>, so an <b>inset:0</b> scrim is clipped to the host box, which is <b>flex:1</b> above <b>#tabbar</b> in the app column. Raising the scrim's z-index would not dim the bar, and lifting a scrim out of the screen would. The role choice lives <b>here</b> — attached to a named person, at the moment of sharing, where it is a real question. Same two options and the same P0-1 copy, relocated. The <b>Create a link</b> sheet is identical but for its head, its field (a generated code, not an address) and one extra row: the expiry chips.</div>
+    </div>
+
+    <div style="display:flex;flex-direction:column;gap:9px">
+      <div style="font-size:11px;font-weight:800;letter-spacing:.04em;color:#1F6F5C">SHARE · AFTER SHARING, BOTH DOORS OPEN</div>
+      <div style="width:390px;height:844px;background:#F2F3F1;border:1px solid #D8DCD8;border-radius:10px;overflow:hidden;display:flex;flex-direction:column">
+        <div style="background:#fff;border-bottom:1px solid #E7EAE7;padding:22px 16px 12px;flex:none">
+          <div style="display:flex;align-items:center;justify-content:space-between;gap:10px">
+            <button style="width:32px;height:32px;flex:none;display:flex;align-items:center;justify-content:center;border-radius:10px;background:none;border:0;padding:0"><svg width="11" height="18" viewBox="0 0 11 18"><path d="M9 1L2 9l7 8" stroke="#14201C" stroke-width="2.2" fill="none" stroke-linecap="round" stroke-linejoin="round"></path></svg></button>
+            <div style="flex:1;min-width:0">
+              <div style="font-size:17px;font-weight:700;letter-spacing:-.01em">Share this trip</div>
+              <div style="font-size:11.5px;color:#6B7A74;margin-top:1px">Meridian City · Group Tour</div>
+            </div>
+          </div>
+        </div>
+        <div style="flex:1;overflow:hidden;padding:14px 16px;display:flex;flex-direction:column;gap:14px">
+          <div>
+            <div style="font-size:10.5px;font-weight:800;letter-spacing:.06em;color:#98A5A0;margin-bottom:8px">WHO HAS IT</div>
+            <div style="background:#fff;border-radius:16px;overflow:hidden">
+              <div style="padding:11px 12px;display:flex;align-items:center;gap:11px;border-bottom:1px solid #EFF1EE">
+                <div style="flex:none;width:30px;height:30px;border-radius:9px;background:#F2F3F1;border:1px solid #E7EAE7;display:grid;place-items:center;font-size:12px;font-weight:800;color:#3D4C46">A</div>
+                <div style="flex:1"><div style="font-size:13px;font-weight:650">Ana</div><div style="font-size:11px;color:#98A5A0">Made this trip</div></div>
+                <div style="font-size:9.5px;font-weight:800;letter-spacing:.04em;color:#6B7A74;background:#F2F3F1;border-radius:6px;padding:3px 7px">YOU</div>
+              </div>
+              <div style="padding:11px 12px;display:flex;align-items:center;gap:11px;border-bottom:1px solid #EFF1EE">
+                <div style="flex:none;width:30px;height:30px;border-radius:9px;background:#F2F3F1;border:1px solid #E7EAE7;display:grid;place-items:center;font-size:12px;font-weight:800;color:#3D4C46">S</div>
+                <div style="flex:1"><div style="font-size:13px;font-weight:650">Sam</div><div style="font-size:11px;color:#98A5A0">Joined 1 Sept</div></div>
+                <div style="display:flex;align-items:center;gap:3px;font-size:11px;font-weight:650;color:#3D4C46;background:#F2F3F1;border-radius:8px;padding:4px 8px">Receives updates<svg width="10" height="6" viewBox="0 0 10 6"><path d="M1 1l4 4 4-4" stroke="#6B7A74" stroke-width="1.6" fill="none" stroke-linecap="round"></path></svg></div>
+              </div>
+              <div style="padding:11px 12px;display:flex;align-items:center;gap:11px">
+                <div style="flex:none;width:30px;height:30px;border-radius:9px;background:#F2F3F1;border:1px solid #E7EAE7;display:grid;place-items:center;font-size:12px;font-weight:800;color:#3D4C46">陳</div>
+                <div style="flex:1;min-width:0"><div style="font-size:13px;font-weight:650;overflow:hidden;text-overflow:ellipsis;white-space:nowrap">陳美玲</div><div style="font-size:11px;color:#8A5A08">Invited 2 Sept · not signed in yet</div></div>
+                <div style="display:flex;align-items:center;gap:3px;font-size:11px;font-weight:650;color:#3D4C46;background:#F2F3F1;border-radius:8px;padding:4px 8px">Can send<svg width="10" height="6" viewBox="0 0 10 6"><path d="M1 1l4 4 4-4" stroke="#6B7A74" stroke-width="1.6" fill="none" stroke-linecap="round"></path></svg></div>
+              </div>
+            </div>
+            <div style="height:48px;box-sizing:border-box;border-radius:14px;border:1.5px dashed #C9D0CB;display:flex;align-items:center;justify-content:center;font-size:13px;font-weight:650;color:#3D4C46;margin-top:10px">+ Add someone</div>
+            <div style="font-size:11px;color:#98A5A0;margin-top:8px">Swipe a row to remove someone.</div>
+          </div>
+
+          <div style="background:#fff;border-radius:16px;padding:13px 14px">
+            <div style="display:flex;align-items:center;gap:5px;font-size:11.5px;font-weight:700;color:#1F6F5C">What they get<span style="flex:none;display:flex"><svg width="7" height="12" viewBox="0 0 7 12"><path d="M1 1l5 5-5 5" stroke="#98A5A0" stroke-width="1.8" fill="none" stroke-linecap="round"></path></svg></span></div>
+          </div>
+
+          <div>
+            <div style="font-size:10.5px;font-weight:800;letter-spacing:.06em;color:#98A5A0;margin-bottom:8px">THE LINK</div>
+            <div style="background:#fff;border-radius:16px;padding:13px 14px">
+              <div style="display:flex;align-items:center;gap:8px;margin-bottom:8px">
+                <span style="font-size:9.5px;font-weight:800;letter-spacing:.04em;color:#1F6F5C;background:#E6EFEB;border-radius:6px;padding:3px 7px">LIVE</span>
+                <span style="flex:1;font-size:12px;font-weight:650;font-variant-numeric:tabular-nums">planner.app/j/ANA1-2345</span>
+              </div>
+              <div style="font-size:11px;color:#98A5A0">Opened 3 times · joins as Receives updates · expires 12 Mar</div>
+              <div style="display:flex;gap:8px;margin-top:11px">
+                <div style="flex:1;height:40px;border-radius:12px;background:#F2F3F1;border:1px solid #E1E5E1;font-size:12.5px;font-weight:650;color:#14201C;display:flex;align-items:center;justify-content:center">Send it</div>
+                <div style="flex:1;height:40px;border-radius:12px;background:#F2F3F1;border:1px solid #E1E5E1;font-size:12.5px;font-weight:650;color:#14201C;display:flex;align-items:center;justify-content:center">Change it</div>
+              </div>
+            </div>
+          </div>
+
+          <div style="background:#fff;border-radius:16px;padding:13px 14px">
+            <div style="font-size:12px;font-weight:650;color:#14201C">Sent 22:04 · 5 changes are with them</div>
+            <div style="font-size:11px;line-height:1.45;color:#98A5A0;margin-top:4px">They decide what to take, one thing at a time. Nothing on their copy has moved on its own.</div>
+            <div style="height:42px;border-radius:12px;background:#F2F3F1;border:1px solid #E1E5E1;font-size:13px;font-weight:650;color:#14201C;display:flex;align-items:center;justify-content:center;margin-top:10px;opacity:.45">Nothing to send</div>
+          </div>
+        </div>
+              <div style="flex:none;background:#fff;border-top:1px solid #E4E8E5;display:flex;gap:2px;padding:7px 8px 10px">
+          <div style="flex:1;min-height:46px;border-radius:12px;display:flex;flex-direction:column;align-items:center;justify-content:center;gap:3px;color:#9AA6A1"><svg width="20" height="20" viewBox="0 0 20 20" fill="none"><path d="M10 18s6-5.2 6-10A6 6 0 0 0 4 8c0 4.8 6 10 6 10z" stroke="#9AA6A1" stroke-width="1.7" stroke-linejoin="round"></path><circle cx="10" cy="8" r="2.2" stroke="#9AA6A1" stroke-width="1.7"></circle></svg><span style="font-size:9.5px;font-weight:700">Map</span></div>
+          <div style="flex:1;min-height:46px;border-radius:12px;display:flex;flex-direction:column;align-items:center;justify-content:center;gap:3px;color:#9AA6A1"><svg width="20" height="20" viewBox="0 0 20 20" fill="none"><g stroke="#9AA6A1" stroke-width="1.7" stroke-linecap="round"><path d="M3 5.5h14M3 10h14M3 14.5h9"></path></g></svg><span style="font-size:9.5px;font-weight:700">Plan</span></div>
+          <div style="flex:1;min-height:46px;border-radius:12px;display:flex;flex-direction:column;align-items:center;justify-content:center;gap:3px;color:#9AA6A1"><svg width="20" height="20" viewBox="0 0 20 20" fill="none"><path d="M4.5 6.5h11l-1 10h-9l-1-10z" stroke="#9AA6A1" stroke-width="1.7" stroke-linejoin="round"></path><path d="M7.5 6.5V5a2.5 2.5 0 0 1 5 0v1.5" stroke="#9AA6A1" stroke-width="1.7" stroke-linecap="round"></path></svg><span style="font-size:9.5px;font-weight:700">Shop</span></div>
+          <div style="flex:1;min-height:46px;border-radius:12px;display:flex;flex-direction:column;align-items:center;justify-content:center;gap:3px;color:#9AA6A1"><svg width="20" height="20" viewBox="0 0 20 20" fill="none"><rect x="3.5" y="6" width="13" height="10.5" rx="2" stroke="#9AA6A1" stroke-width="1.7"></rect><path d="M7.5 6V4.5a1.5 1.5 0 0 1 1.5-1.5h2a1.5 1.5 0 0 1 1.5 1.5V6" stroke="#9AA6A1" stroke-width="1.7" stroke-linecap="round"></path></svg><span style="font-size:9.5px;font-weight:700">Prep</span></div>
+          <div style="flex:1;min-height:46px;border-radius:12px;display:flex;flex-direction:column;align-items:center;justify-content:center;gap:3px;color:#9AA6A1"><svg width="20" height="20" viewBox="0 0 20 20" fill="none"><path d="M13 3.5l3.5 3.5L7 16.5H3.5V13z" stroke="#9AA6A1" stroke-width="1.7" stroke-linejoin="round"></path></svg><span style="font-size:9.5px;font-weight:700">Log</span></div>
+        </div>
+      </div>
+      <div style="width:390px;font-size:11.5px;line-height:1.45;color:#6B7A74;text-wrap:pretty">Role is now a <b>per-person chip</b> and nothing else — which is where P0-1 always put it. The link's three facts collapse to one line with <b>Change it</b> reopening the sheet, so the role row (F-3) and the expiry live there rather than on the screen. An invited person who has not signed in yet is an amber sub-line, not a separate state.</div>
+    </div>
+
+    <div style="display:flex;flex-direction:column;gap:16px;width:430px">
+      <div style="background:#fff;border:1px solid #E7EAE7;border-radius:16px;padding:15px 16px">
+        <div style="font-size:13px;font-weight:700;margin-bottom:8px">"What they get" — display only, so can it hide?</div>
+        <div style="font-size:12px;line-height:1.55;color:#3D4C46">Yes, it is display-only, and yes — <b>after the first read</b>. It stays open the first time, because it is the only place the app says that sharing hands over a <i>copy</i> rather than a live document, and that is the one thing the owner must know <b>before</b> tapping either share button. From then on it is a <b>What they get ›</b> row that opens the three bullets as a sheet.</div>
+        <div style="font-size:12px;line-height:1.55;color:#3D4C46;margin-top:9px">The summary sentence above it stays visible even when collapsed — one line, not three bullets, so the model is never entirely hidden. Collapsed state persists per trip.</div>
+      </div>
+
+      <div style="background:#fff;border:1px solid #E7EAE7;border-radius:16px;padding:15px 16px">
+        <div style="font-size:13px;font-weight:700;margin-bottom:8px">Why role moved, and what it costs</div>
+        <div style="font-size:12px;line-height:1.55;color:#3D4C46">Ming is right that a standing <b>SENDING UPDATES</b> section reads as a setting, when it is really a property of one act of sharing. Moving it into the sheet makes the Share screen shorter, removes the radios a non-owner should never see, and puts the choice next to the name it applies to.</div>
+        <div style="font-size:12px;line-height:1.55;color:#3D4C46;margin-top:9px"><b>Nothing in P0-1 changes but placement.</b> Both options, the invariant line and the per-person chips keep their approved copy. The owner's own row is <b>OWNER</b>/<b>YOU</b> and has no chip — an owner can always send, and that was never adjustable.</div>
+        <div style="font-size:12px;line-height:1.55;color:#3D4C46;margin-top:9px"><b>The cost:</b> the offer phase no longer explains the two roles before you commit to sharing at all. Accepted — the sheet is one tap away and is where the question is actually asked, and it is cancellable.</div>
+      </div>
+
+      <div style="background:#F0EAF6;border:1px solid #DCD0E8;border-radius:16px;padding:15px 16px">
+        <div style="font-size:11px;font-weight:800;letter-spacing:.04em;color:#6B4E8F;margin-bottom:7px">OD-4 · BOTH DESIGNED — WHAT DEVELOPMENT DECIDES</div>
+        <div style="font-size:12px;line-height:1.55;color:#14201C">The two doors differ in exactly three places, and everything downstream of joining is identical — same snapshot, same copy, same arrival, same Review.</div>
+        <div style="display:grid;grid-template-columns:auto 1fr 1fr;gap:7px 11px;font-size:11.5px;line-height:1.4;margin-top:11px">
+          <div></div><div style="font-weight:800;color:#98A5A0">EMAIL INVITE</div><div style="font-weight:800;color:#98A5A0">LINK</div>
+          <div style="font-weight:700;color:#98A5A0">Who</div><div style="color:#3D4C46">one named person</div><div style="color:#3D4C46">whoever opens it</div>
+          <div style="font-weight:700;color:#98A5A0">Ends</div><div style="color:#3D4C46">when you remove them</div><div style="color:#3D4C46">at the expiry</div>
+          <div style="font-weight:700;color:#98A5A0">Needs</div><div style="color:#3D4C46">an address lookup and a way to tell them</div><div style="color:#3D4C46">nothing new</div>
+        </div>
+        <div style="font-size:12px;line-height:1.55;color:#3D4C46;margin-top:11px"><b>One thing the invite must not become.</b> "Stays available until removed" governs <b>who may take a copy</b>, not what a copy is. Joining is still one copy, once; a person invited today and signing in next week takes the trip as it stands then. If it ever means continuing access to a live document, that is the live-sync model this product deliberately replaced — and it would invalidate P0-1, P0-4 and the four promises together.</div>
+      </div>
+    </div>
+  </div>
+
+</section>
+</x-dc>
+</body>
+</html>

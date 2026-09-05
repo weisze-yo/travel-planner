@@ -1,0 +1,497 @@
+<!DOCTYPE html>
+<html>
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<script src="./support.js"></script>
+</head>
+<body>
+<x-dc>
+<helmet>
+<meta name="design_doc_mode" content="canvas">
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link href="https://fonts.googleapis.com/css2?family=Public+Sans:wght@400;600;700;800&display=swap" rel="stylesheet">
+<style>
+  body { margin:0; background:#E4E6E2; -webkit-font-smoothing:antialiased; }
+  a { color:#1F6F5C; text-decoration:none; }
+  a:hover { color:#14201C; }
+</style>
+</helmet>
+
+<section style="font-family:'Public Sans',system-ui,sans-serif;color:#14201C;padding:44px 48px 64px;display:flex;flex-direction:column;gap:34px;width:2460px;box-sizing:border-box">
+
+  <div style="display:flex;flex-direction:column;gap:9px;max-width:880px">
+    <div style="font-size:10.5px;font-weight:800;letter-spacing:.06em;color:#98A5A0">TRAVEL PLANNER · P0-4 · DESIGN FOR REVIEW</div>
+    <div style="font-size:34px;font-weight:700;letter-spacing:-.025em;line-height:1.1">Review, redesigned</div>
+    <div style="font-size:13.5px;line-height:1.55;color:#3D4C46;text-wrap:pretty">A retained base makes the screen truthful, the row stops wrapping at 390px, and the one row where both of you moved is the only one that carries weight. Canonical spec: <b>docs/design/p0-4-review-design.md</b>; every piece of <i>copy</i> here is from its §10, and everything else on these frames is sample trip data. New CSS in the whole design: <b>.side.stacked</b> and <b>.review-group</b>.</div>
+  </div>
+
+  <div style="display:flex;gap:20px;flex-wrap:wrap">
+    <div style="background:#F8E9E9;border:1px solid #E9D3D3;border-radius:16px;padding:13px 15px;max-width:350px">
+      <div style="font-size:10.5px;font-weight:800;letter-spacing:.06em;color:#9B4B4B;margin-bottom:5px">WHAT TWO-WAY GETS WRONG</div>
+      <div style="font-size:12.5px;line-height:1.5;color:#14201C">Three rows reachable today name <b>the other person as the author of your own work</b>, and one of the two buttons destroys it: your edit reverted, your deleted stop re-added, your new stop deleted.</div>
+    </div>
+    <div style="background:#E6EFEB;border:1px solid #CFE0D9;border-radius:16px;padding:13px 15px;max-width:350px">
+      <div style="font-size:10.5px;font-weight:800;letter-spacing:.06em;color:#5D8C7C;margin-bottom:5px">THE BASE ALREADY EXISTS</div>
+      <div style="font-size:12.5px;line-height:1.5;color:#14201C">The sending side keeps <b>share.snapshot</b> and diffs against it. Three-way makes the two sides <b>symmetric</b> — one blob per trip — rather than adding a mechanism.</div>
+    </div>
+    <div style="background:#FBF1DE;border:1px solid #EBD9B4;border-radius:16px;padding:13px 15px;max-width:350px">
+      <div style="font-size:10.5px;font-weight:800;letter-spacing:.06em;color:#8A5A08;margin-bottom:5px">STAKES, NOT SYMMETRY</div>
+      <div style="font-size:12.5px;line-height:1.5;color:#14201C">Only the row where <b>both</b> of you changed the same thing costs anything. It is the only row that gets a rust badge and a line naming what leaves.</div>
+    </div>
+    <div style="background:#fff;border:1px solid #E7EAE7;border-radius:16px;padding:13px 15px;max-width:350px">
+      <div style="font-size:10.5px;font-weight:800;letter-spacing:.06em;color:#98A5A0;margin-bottom:5px">UNDO, NOT CONFIRM</div>
+      <div style="font-size:12.5px;line-height:1.5;color:#3D4C46">Decisions keep writing immediately and join the app's existing 6-second undo bar. The house rule finally applies to the screen it was missing from.</div>
+    </div>
+  </div>
+
+  <div style="height:1px;background:#D8DCD8"></div>
+
+  <div style="display:flex;flex-direction:column;gap:16px">
+    <div style="font-size:15px;font-weight:700">A · Review in progress — full frame, three-way</div>
+    <div style="display:flex;gap:26px;align-items:flex-start">
+
+      <div style="flex:0 0 auto;display:flex;flex-direction:column;gap:9px">
+        <div style="font-size:11px;font-weight:800;letter-spacing:.04em;color:#98A5A0">REVIEW · 4 TO DECIDE · 2 DONE</div>
+        <div style="width:390px;height:844px;background:#F2F3F1;border:1px solid #D8DCD8;border-radius:10px;overflow:hidden;display:flex;flex-direction:column">
+
+          <div style="background:#fff;border-bottom:1px solid #E7EAE7;padding:26px 16px 12px;display:flex;align-items:center;gap:10px;flex:none">
+            <div style="width:34px;height:34px;border-radius:11px;background:#F2F3F1;display:flex;align-items:center;justify-content:center;color:#6B7A74;font-size:15px">‹</div>
+            <div style="flex:1;min-width:0">
+              <div style="font-size:17px;font-weight:700;letter-spacing:-.01em">Ana sent an update</div>
+              <div style="font-size:11.5px;color:#6B7A74;margin-top:1px">6 things · 2 decided · 20 min ago</div>
+            </div>
+          </div>
+
+          <div style="flex:1;overflow:hidden;padding:14px 16px 10px;display:flex;flex-direction:column;gap:0">
+
+            <div style="font-size:10.5px;font-weight:800;letter-spacing:.06em;color:#98A5A0;margin-bottom:9px">DAY 3 · SAT 14 MAR · 3 THINGS</div>
+
+            <div style="background:#fff;border-radius:16px;padding:12px 13px;margin-bottom:12px">
+              <div style="display:flex;align-items:center;gap:8px;margin-bottom:8px">
+                <div style="padding:3px 7px;border-radius:6px;background:#F2F3F1;color:#3D4C46;font-size:9.5px;font-weight:800;letter-spacing:.04em">THEY CHANGED</div>
+                <div style="font-size:11px;color:#98A5A0;flex:1">a different time</div>
+                <div style="padding:3px 7px;border-radius:6px;background:#F8E9E9;color:#9B4B4B;font-size:9.5px;font-weight:800;letter-spacing:.04em">YOU CHANGED IT TOO</div>
+              </div>
+              <div style="font-size:13.5px;font-weight:700;line-height:1.25">Lumen Crossing</div>
+              <div style="font-size:11px;color:#98A5A0;margin-top:2px">stop 2 of 6</div>
+              <div style="display:flex;flex-direction:column;gap:8px;margin-top:10px">
+                <div style="background:#FAFBFA;border:1px solid #EDEFEC;border-radius:10px;padding:8px 9px">
+                  <div style="font-size:9.5px;font-weight:800;letter-spacing:.05em;color:#98A5A0">YOURS</div>
+                  <div style="font-size:12px;line-height:1.4;margin-top:2px;font-variant-numeric:tabular-nums">09:15 – 10:00</div>
+                </div>
+                <div style="background:#E6EFEB;border:1px solid #CFE0D9;border-radius:10px;padding:8px 9px">
+                  <div style="font-size:9.5px;font-weight:800;letter-spacing:.05em;color:#5D8C7C">THEIRS</div>
+                  <div style="font-size:12px;line-height:1.4;margin-top:2px;font-variant-numeric:tabular-nums">10:30 – 11:15</div>
+                </div>
+              </div>
+              <div style="display:flex;justify-content:center;margin-top:9px">
+                <div style="padding:4px 8px;border-radius:8px;background:#FBF1DE;color:#8A5A08;font-size:10.5px;font-weight:650;font-variant-numeric:tabular-nums">1h 15m later</div>
+              </div>
+              <div style="font-size:11.5px;font-weight:650;color:#9B4B4B;line-height:1.4;margin-top:9px">Takes theirs and drops your 09:15 start.</div>
+              <div style="display:flex;gap:8px;margin-top:9px">
+                <div style="flex:1;height:38px;border-radius:12px;background:#F2F3F1;border:1px solid #E1E5E1;font-size:12.5px;font-weight:650;display:flex;align-items:center;justify-content:center">Keep mine</div>
+                <div style="flex:1;height:38px;border-radius:12px;background:#1F6F5C;color:#fff;font-size:12.5px;font-weight:700;display:flex;align-items:center;justify-content:center">Take theirs</div>
+              </div>
+            </div>
+
+            <div style="background:#fff;border-radius:16px;padding:12px 13px;margin-bottom:12px">
+              <div style="display:flex;align-items:center;gap:8px;margin-bottom:8px">
+                <div style="padding:3px 7px;border-radius:6px;background:#E6EFEB;color:#1F6F5C;font-size:9.5px;font-weight:800;letter-spacing:.04em">THEY ADDED</div>
+                <div style="font-size:11px;color:#98A5A0;flex:1">a stop</div>
+              </div>
+              <div style="font-size:13.5px;font-weight:700;line-height:1.35">上野公園</div>
+              <div style="font-size:11px;color:#98A5A0;margin-top:2px">stop 5 of 7</div>
+              <div style="display:flex;flex-direction:column;gap:8px;margin-top:10px">
+                <div style="background:#FAFBFA;border:1px solid #EDEFEC;border-radius:10px;padding:8px 9px">
+                  <div style="font-size:9.5px;font-weight:800;letter-spacing:.05em;color:#98A5A0">YOURS</div>
+                  <div style="font-size:12px;line-height:1.4;margin-top:2px;color:#B4BEB9">not on your day</div>
+                </div>
+                <div style="background:#E6EFEB;border:1px solid #CFE0D9;border-radius:10px;padding:8px 9px">
+                  <div style="font-size:9.5px;font-weight:800;letter-spacing:.05em;color:#5D8C7C">THEIRS</div>
+                  <div style="font-size:12px;line-height:1.4;margin-top:2px;font-variant-numeric:tabular-nums">10:30 – 11:15 · 上野公園</div>
+                </div>
+              </div>
+              <div style="display:flex;gap:8px;margin-top:9px">
+                <div style="flex:1;height:38px;border-radius:12px;background:#F2F3F1;border:1px solid #E1E5E1;font-size:12.5px;font-weight:650;display:flex;align-items:center;justify-content:center">Leave it out</div>
+                <div style="flex:1;height:38px;border-radius:12px;background:#1F6F5C;color:#fff;font-size:12.5px;font-weight:700;display:flex;align-items:center;justify-content:center">Add it</div>
+              </div>
+            </div>
+
+            <div style="background:#fff;border-radius:16px;padding:12px 13px">
+              <div style="display:flex;align-items:center;gap:8px;margin-bottom:8px">
+                <div style="padding:3px 7px;border-radius:6px;background:#F2F3F1;color:#3D4C46;font-size:9.5px;font-weight:800;letter-spacing:.04em">THEY CHANGED</div>
+                <div style="font-size:11px;color:#98A5A0;flex:1">renamed</div>
+              </div>
+              <div style="font-size:13.5px;font-weight:700;line-height:1.25">Ashgate Shrine</div>
+            </div>
+
+          </div>
+
+          <div style="flex:none;background:#fff;border-top:1px solid #E7EAE7;padding:12px 16px 14px">
+            <div style="font-size:11px;color:#98A5A0;font-variant-numeric:tabular-nums;margin-bottom:8px">4 to decide · 2 done</div>
+            <div style="display:flex;gap:8px">
+              <div style="flex:1;height:38px;border-radius:12px;background:#F2F3F1;border:1px solid #E1E5E1;font-size:12.5px;font-weight:650;display:flex;align-items:center;justify-content:center">Keep all of mine</div>
+              <div style="flex:1;height:38px;border-radius:12px;background:#14201C;color:#fff;font-size:12.5px;font-weight:700;display:flex;align-items:center;justify-content:center;text-align:center;line-height:1.2;padding:0 8px">Take the 4 you have not touched</div>
+            </div>
+            <div style="font-size:11px;color:#98A5A0;line-height:1.45;margin-top:8px">Your copy has not changed. Take what you want from theirs; anything you keep is not asked about again. What you have bought, packed or written is not in here at all — it never leaves this phone.</div>
+          </div>
+        </div>
+      </div>
+
+      <div style="flex:1;min-width:0;max-width:780px;display:flex;flex-direction:column;gap:12px">
+        <div style="background:#fff;border:1px solid #E7EAE7;border-radius:16px;padding:15px 16px;display:flex;flex-direction:column;gap:10px">
+          <div style="font-size:13px;font-weight:700">Four things this frame changes</div>
+          <div style="display:grid;grid-template-columns:150px 1fr;gap:9px 12px;font-size:11.5px;line-height:1.45">
+            <div style="font-weight:800;letter-spacing:.03em;color:#B4BEB9">STACKED SIDES</div>
+            <div style="color:#3D4C46">Full width, so a value has 318px instead of 150px. Two stacked one-line boxes replace two side-by-side boxes that each wrapped to two lines — the vertical cost is roughly neutral, and the wrapping is gone.</div>
+            <div style="font-weight:800;letter-spacing:.03em;color:#B4BEB9">DAY GROUPING</div>
+            <div style="color:#3D4C46">One eyebrow per day replaces the <b>Day 3</b> chip that currently repeats on every card. The card's context line carries position instead.</div>
+            <div style="font-weight:800;letter-spacing:.03em;color:#B4BEB9">THE STICKY FOOT</div>
+            <div style="color:#3D4C46"><b>.review-foot</b> is already in app.css and unused. Today the bulk actions sit two screens below the fold, so the cheap way out of a long update is the hardest thing to find.</div>
+            <div style="font-weight:800;letter-spacing:.03em;color:#B4BEB9">THE PREAMBLE MOVES</div>
+            <div style="color:#3D4C46">Same three sentences, under the foot's buttons instead of above the first row.</div>
+          </div>
+        </div>
+        <div style="background:#fff;border:1px solid #E7EAE7;border-radius:16px;padding:15px 16px;display:flex;flex-direction:column;gap:9px">
+          <div style="font-size:13px;font-weight:700">Where the base is written — three places, nowhere else</div>
+          <div style="display:grid;grid-template-columns:150px 1fr;gap:8px 12px;font-size:11.5px;line-height:1.45">
+            <div style="font-weight:800;letter-spacing:.03em;color:#B4BEB9">joinTrip()</div>
+            <div style="color:#3D4C46">the snapshot you were seeded from — at t0, base and mine are identical</div>
+            <div style="font-weight:800;letter-spacing:.03em;color:#B4BEB9">finishReview()</div>
+            <div style="color:#3D4C46">the snapshot just reviewed — their state at that version, whatever you took from it</div>
+            <div style="font-weight:800;letter-spacing:.03em;color:#B4BEB9">publishUpdate()</div>
+            <div style="color:#3D4C46">already writes <b>share.snapshot</b>; an owner's base <i>is</i> their last published snapshot</div>
+          </div>
+          <div style="font-size:11.5px;line-height:1.5;color:#6B7A74;text-wrap:pretty;margin-top:2px">A side effect worth having: "whatever you skip is not asked about again" becomes <b>structural</b>. Keep yours at version V and at V+1 your side differs from base while theirs matches it — so it is not asked. It returns only if they change the same thing again, which is a genuinely new question.</div>
+        </div>
+      </div>
+    </div>
+  </div>
+
+  <div style="height:1px;background:#D8DCD8"></div>
+
+  <div style="display:flex;flex-direction:column;gap:14px">
+    <div style="font-size:15px;font-weight:700">B · The eleven cases — five of them never reach the screen</div>
+    <div style="font-size:12.5px;line-height:1.5;color:#6B7A74;max-width:940px">B = base, M = mine, T = theirs. An entry is produced only when M ≠ T, exactly as today; the base decides what kind of entry it is. Card crops at the real 390px width.</div>
+
+    <div style="display:flex;gap:20px;flex-wrap:wrap">
+
+      <div style="width:390px;display:flex;flex-direction:column;gap:8px">
+        <div style="display:flex;align-items:baseline;gap:8px">
+          <div style="font-size:11px;font-weight:800;letter-spacing:.04em;padding:3px 7px;border-radius:7px;background:#F2F3F1;color:#3D4C46">2 · THEY CHANGED IT</div>
+          <div style="font-size:11px;color:#98A5A0;font-variant-numeric:tabular-nums">M = B · T ≠ B</div>
+        </div>
+        <div style="background:#fff;border-radius:16px;padding:12px 13px">
+          <div style="display:flex;align-items:center;gap:8px;margin-bottom:8px">
+            <div style="padding:3px 7px;border-radius:6px;background:#F2F3F1;color:#3D4C46;font-size:9.5px;font-weight:800;letter-spacing:.04em">THEY CHANGED</div>
+            <div style="font-size:11px;color:#98A5A0;flex:1">where it is</div>
+          </div>
+          <div style="font-size:13.5px;font-weight:700;line-height:1.25">Skyline Deck</div>
+          <div style="font-size:11px;color:#98A5A0;margin-top:2px">stop 4 of 6</div>
+          <div style="display:flex;flex-direction:column;gap:8px;margin-top:10px">
+            <div style="background:#FAFBFA;border:1px solid #EDEFEC;border-radius:10px;padding:8px 9px">
+              <div style="font-size:9.5px;font-weight:800;letter-spacing:.05em;color:#98A5A0">YOURS</div>
+              <div style="font-size:12px;line-height:1.4;margin-top:2px">West gate, level 3</div>
+            </div>
+            <div style="background:#E6EFEB;border:1px solid #CFE0D9;border-radius:10px;padding:8px 9px">
+              <div style="font-size:9.5px;font-weight:800;letter-spacing:.05em;color:#5D8C7C">THEIRS</div>
+              <div style="font-size:12px;line-height:1.4;margin-top:2px">North lobby, level 3</div>
+            </div>
+          </div>
+          <div style="display:flex;gap:8px;margin-top:9px">
+            <div style="flex:1;height:38px;border-radius:12px;background:#F2F3F1;border:1px solid #E1E5E1;font-size:12.5px;font-weight:650;display:flex;align-items:center;justify-content:center">Keep mine</div>
+            <div style="flex:1;height:38px;border-radius:12px;background:#1F6F5C;color:#fff;font-size:12.5px;font-weight:700;display:flex;align-items:center;justify-content:center">Take theirs</div>
+          </div>
+        </div>
+        <div style="font-size:11.5px;line-height:1.45;color:#6B7A74">You never touched it, so keeping yours costs nothing and nothing says otherwise. Eligible for bulk.</div>
+      </div>
+
+      <div style="width:390px;display:flex;flex-direction:column;gap:8px">
+        <div style="display:flex;align-items:baseline;gap:8px">
+          <div style="font-size:11px;font-weight:800;letter-spacing:.04em;padding:3px 7px;border-radius:7px;background:#F8E9E9;color:#9B4B4B">9 · RENAMED</div>
+          <div style="font-size:11px;color:#98A5A0">closes D-5</div>
+        </div>
+        <div style="background:#fff;border-radius:16px;padding:12px 13px">
+          <div style="display:flex;align-items:center;gap:8px;margin-bottom:8px">
+            <div style="padding:3px 7px;border-radius:6px;background:#F2F3F1;color:#3D4C46;font-size:9.5px;font-weight:800;letter-spacing:.04em">THEY CHANGED</div>
+            <div style="font-size:11px;color:#98A5A0;flex:1">renamed</div>
+          </div>
+          <div style="font-size:13.5px;font-weight:700;line-height:1.25">Ashgate Shrine</div>
+          <div style="font-size:11px;color:#98A5A0;margin-top:2px">stop 3 of 6</div>
+          <div style="display:flex;flex-direction:column;gap:8px;margin-top:10px">
+            <div style="background:#FAFBFA;border:1px solid #EDEFEC;border-radius:10px;padding:8px 9px">
+              <div style="font-size:9.5px;font-weight:800;letter-spacing:.05em;color:#98A5A0">YOURS</div>
+              <div style="font-size:12px;line-height:1.4;margin-top:2px">Ashgate Shrine</div>
+            </div>
+            <div style="background:#E6EFEB;border:1px solid #CFE0D9;border-radius:10px;padding:8px 9px">
+              <div style="font-size:9.5px;font-weight:800;letter-spacing:.05em;color:#5D8C7C">THEIRS</div>
+              <div style="font-size:12px;line-height:1.4;margin-top:2px">灰門神社</div>
+            </div>
+          </div>
+          <div style="display:flex;gap:8px;margin-top:9px">
+            <div style="flex:1;height:38px;border-radius:12px;background:#F2F3F1;border:1px solid #E1E5E1;font-size:12.5px;font-weight:650;display:flex;align-items:center;justify-content:center">Keep mine</div>
+            <div style="flex:1;height:38px;border-radius:12px;background:#1F6F5C;color:#fff;font-size:12.5px;font-weight:700;display:flex;align-items:center;justify-content:center">Take theirs</div>
+          </div>
+        </div>
+        <div style="font-size:11.5px;line-height:1.45;color:#6B7A74;text-wrap:pretty">The title is <b>the name in the base</b> — the one you know it by. Today the card is titled <b>灰門神社</b>, so it announces the change as already true and the thing being decided <i>is</i> the title. The incoming name appears once, in the box labelled as theirs.</div>
+      </div>
+
+      <div style="width:390px;display:flex;flex-direction:column;gap:8px">
+        <div style="display:flex;align-items:baseline;gap:8px">
+          <div style="font-size:11px;font-weight:800;letter-spacing:.04em;padding:3px 7px;border-radius:7px;background:#F8E9E9;color:#9B4B4B">6 · THEY REMOVED IT</div>
+          <div style="font-size:11px;color:#98A5A0;font-variant-numeric:tabular-nums">in B · in M · not in T</div>
+        </div>
+        <div style="background:#fff;border-radius:16px;padding:12px 13px">
+          <div style="display:flex;align-items:center;gap:8px;margin-bottom:8px">
+            <div style="padding:3px 7px;border-radius:6px;background:#F8E9E9;color:#9B4B4B;font-size:9.5px;font-weight:800;letter-spacing:.04em">THEY REMOVED</div>
+            <div style="font-size:11px;color:#98A5A0;flex:1">a stop</div>
+          </div>
+          <div style="font-size:13.5px;font-weight:700;line-height:1.25">Nishi Market</div>
+          <div style="font-size:11px;color:#98A5A0;margin-top:2px">stop 6 of 6</div>
+          <div style="display:flex;flex-direction:column;gap:8px;margin-top:10px">
+            <div style="background:#FAFBFA;border:1px solid #EDEFEC;border-radius:10px;padding:8px 9px">
+              <div style="font-size:9.5px;font-weight:800;letter-spacing:.05em;color:#98A5A0">YOURS</div>
+              <div style="font-size:12px;line-height:1.4;margin-top:2px;font-variant-numeric:tabular-nums">13:30 – 15:00 Nishi Market</div>
+            </div>
+            <div style="background:#E6EFEB;border:1px solid #CFE0D9;border-radius:10px;padding:8px 9px">
+              <div style="font-size:9.5px;font-weight:800;letter-spacing:.05em;color:#5D8C7C">THEIRS</div>
+              <div style="font-size:12px;line-height:1.4;margin-top:2px;color:#5D8C7C">off the day</div>
+            </div>
+          </div>
+          <div style="display:flex;gap:8px;margin-top:9px">
+            <div style="flex:1;height:38px;border-radius:12px;background:#F2F3F1;border:1px solid #E1E5E1;font-size:12.5px;font-weight:650;display:flex;align-items:center;justify-content:center">Keep it</div>
+            <div style="flex:1;height:38px;border-radius:12px;background:#1F6F5C;color:#fff;font-size:12.5px;font-weight:700;display:flex;align-items:center;justify-content:center">Remove it</div>
+          </div>
+        </div>
+        <div style="font-size:11.5px;line-height:1.45;color:#6B7A74">Verb-matched buttons: the same two mutations, honest labels. The absent side is <b>written, not blank</b>.</div>
+      </div>
+
+      <div style="width:390px;display:flex;flex-direction:column;gap:8px">
+        <div style="display:flex;align-items:baseline;gap:8px">
+          <div style="font-size:11px;font-weight:800;letter-spacing:.04em;padding:3px 7px;border-radius:7px;background:#F2F3F1;color:#6B7A74">NO BASE · LEGACY TRIPS</div>
+          <div style="font-size:11px;color:#98A5A0">degrades to today's two-way</div>
+        </div>
+        <div style="background:#F2F3F1;border:1px solid #D8DCD8;border-radius:12px;padding:12px 13px;display:flex;flex-direction:column;gap:10px">
+          <div style="font-size:11px;line-height:1.45;color:#98A5A0">This update is being compared without a starting point, so both sides are shown as they are.</div>
+          <div style="background:#fff;border-radius:16px;padding:12px 13px">
+            <div style="display:flex;align-items:center;gap:8px;margin-bottom:8px">
+              <div style="padding:3px 7px;border-radius:6px;background:#F2F3F1;color:#3D4C46;font-size:9.5px;font-weight:800;letter-spacing:.04em">THEY SENT</div>
+              <div style="font-size:11px;color:#98A5A0;flex:1">a different time</div>
+            </div>
+            <div style="font-size:13.5px;font-weight:700;line-height:1.25">Lumen Crossing</div>
+          </div>
+        </div>
+        <div style="font-size:11.5px;line-height:1.45;color:#6B7A74;text-wrap:pretty">Bone, not amber and not rust — nothing is broken. <b>THEY SENT</b> because the app genuinely does not know who moved. No row is dropped, no conflict badge, and bulk is limited to <b>Keep all of mine</b>. A trip is in this mode at most once.</div>
+      </div>
+
+      <div style="width:390px;display:flex;flex-direction:column;gap:10px">
+        <div style="font-size:11px;font-weight:800;letter-spacing:.04em;color:#9B4B4B">3 · 7 · 8 — DROPPED. THESE ARE THE THREE FAILURES.</div>
+        <div style="background:#F8E9E9;border:1px solid #E9D3D3;border-radius:16px;padding:14px;display:flex;flex-direction:column;gap:12px">
+          <div>
+            <div style="font-size:11.5px;font-weight:800;color:#9B4B4B">3 · I changed it &nbsp;<span style="font-weight:400;font-variant-numeric:tabular-nums">T = B · M ≠ B</span></div>
+            <div style="font-size:11.5px;line-height:1.45;color:#3D4C46;margin-top:3px">Today: badged <b>THEY CHANGED</b>, and <b>Take theirs</b> reverts your own edit while describing it as accepting somebody else's change.</div>
+          </div>
+          <div style="height:1px;background:#E9D3D3"></div>
+          <div>
+            <div style="font-size:11.5px;font-weight:800;color:#9B4B4B">7 · I removed it &nbsp;<span style="font-weight:400">in B · not in M · in T</span></div>
+            <div style="font-size:11.5px;line-height:1.45;color:#3D4C46;margin-top:3px">Today: badged <b>THEY ADDED</b>, and <b>Add it</b> re-adds the stop you deleted, as if they had just proposed it.</div>
+          </div>
+          <div style="height:1px;background:#E9D3D3"></div>
+          <div>
+            <div style="font-size:11.5px;font-weight:800;color:#9B4B4B">8 · I added it &nbsp;<span style="font-weight:400">not in B · in M · not in T</span></div>
+            <div style="font-size:11.5px;line-height:1.45;color:#3D4C46;margin-top:3px">Today: badged <b>THEY REMOVED</b>, and <b>Take theirs</b> deletes the stop you just made — with no undo.</div>
+          </div>
+        </div>
+        <div style="font-size:11.5px;line-height:1.45;color:#6B7A74;text-wrap:pretty">Plus <b>1 · unchanged</b> (never an entry, today or after) and a whole class of dead row: an entry whose payload no longer applies, which <b>takeChange()</b> silently refuses today. The list gets shorter <i>and</i> truer — nothing is hidden that you did not do yourself.</div>
+      </div>
+
+    </div>
+  </div>
+
+  <div style="height:1px;background:#D8DCD8"></div>
+
+  <div style="display:flex;flex-direction:column;gap:14px">
+    <div style="font-size:15px;font-weight:700">C · Why the row had to stop being two columns</div>
+    <div style="display:flex;gap:20px;flex-wrap:wrap;align-items:flex-start">
+      <div style="width:390px;display:flex;flex-direction:column;gap:8px">
+        <div style="font-size:11px;font-weight:800;letter-spacing:.04em;color:#9B4B4B">TODAY · .sides, TWO COLUMNS OF ~150px</div>
+        <div style="background:#fff;border-radius:16px;padding:12px 13px">
+          <div style="display:grid;grid-template-columns:1fr 1fr;gap:8px">
+            <div style="background:#FAFBFA;border:1px solid #EDEFEC;border-radius:10px;padding:8px 9px">
+              <div style="font-size:9.5px;font-weight:800;letter-spacing:.05em;color:#98A5A0">YOURS</div>
+              <div style="font-size:12px;line-height:1.4;margin-top:2px;font-variant-numeric:tabular-nums">09:15 – 10:00<br>Lumen Crossing</div>
+            </div>
+            <div style="background:#E6EFEB;border:1px solid #CFE0D9;border-radius:10px;padding:8px 9px">
+              <div style="font-size:9.5px;font-weight:800;letter-spacing:.05em;color:#5D8C7C">THEIRS</div>
+              <div style="font-size:12px;line-height:1.4;margin-top:2px;font-variant-numeric:tabular-nums">10:30 – 11:15<br>Lumen Crossing</div>
+            </div>
+          </div>
+        </div>
+        <div style="font-size:11.5px;line-height:1.45;color:#9B4B4B">Verified at 390px: <b>no value of realistic length fits one line</b>. Every side wraps, even short ones.</div>
+      </div>
+      <div style="width:390px;display:flex;flex-direction:column;gap:8px">
+        <div style="font-size:11px;font-weight:800;letter-spacing:.04em;color:#1F6F5C">DESIGNED · .side.stacked, FULL WIDTH</div>
+        <div style="background:#fff;border-radius:16px;padding:12px 13px">
+          <div style="display:flex;flex-direction:column;gap:8px">
+            <div style="background:#FAFBFA;border:1px solid #EDEFEC;border-radius:10px;padding:8px 9px">
+              <div style="font-size:9.5px;font-weight:800;letter-spacing:.05em;color:#98A5A0">YOURS</div>
+              <div style="font-size:12px;line-height:1.4;margin-top:2px;font-variant-numeric:tabular-nums">09:15 – 10:00 Lumen Crossing</div>
+            </div>
+            <div style="background:#E6EFEB;border:1px solid #CFE0D9;border-radius:10px;padding:8px 9px">
+              <div style="font-size:9.5px;font-weight:800;letter-spacing:.05em;color:#5D8C7C">THEIRS</div>
+              <div style="font-size:12px;line-height:1.4;margin-top:2px;font-variant-numeric:tabular-nums">10:30 – 11:15 Lumen Crossing</div>
+            </div>
+          </div>
+        </div>
+        <div style="font-size:11.5px;line-height:1.45;color:#6B7A74">Same boxes, same colours, same recipe — one axis turned. 318px instead of 150px, and the only thing that grows now is a genuinely long value.</div>
+      </div>
+      <div style="width:390px;display:flex;flex-direction:column;gap:8px">
+        <div style="font-size:11px;font-weight:800;letter-spacing:.04em;color:#98A5A0">THE UNDO BAR — ALREADY IN THE APP</div>
+        <div style="background:#14201C;border-radius:14px;padding:12px 14px;display:flex;align-items:center;gap:12px">
+          <div style="flex:1;color:#fff;font-size:12.5px;font-weight:650">Took theirs for Lumen Crossing</div>
+          <div style="color:#fff;font-size:12.5px;font-weight:800;letter-spacing:.03em">Undo</div>
+        </div>
+        <div style="font-size:11.5px;line-height:1.45;color:#6B7A74;text-wrap:pretty"><b>rememberUndo(label, restore)</b> — 6 seconds, one app-wide bar, already used by place delete, stop delete, area remove and person remove. Review joins it; no new component. A row <b>returns to the list</b> when its decision is undone, or the undo is only half true.</div>
+        <div style="background:#fff;border:1px solid #E7EAE7;border-radius:12px;padding:11px 13px;font-size:11.5px;line-height:1.5;color:#3D4C46">Bulk gets <b>one</b> undo for the whole batch. <b>finishReview</b> is deliberately not undoable — it is the act of leaving, and every row was individually undoable at the time.</div>
+      </div>
+    </div>
+  </div>
+
+  <div style="height:1px;background:#D8DCD8"></div>
+
+  <div style="display:flex;flex-direction:column;gap:14px">
+    <div style="font-size:15px;font-weight:700">D · The sticky foot — and the rule that lets bulk exist</div>
+    <div style="display:flex;gap:20px;flex-wrap:wrap;align-items:flex-start">
+
+      <div style="width:390px;display:flex;flex-direction:column;gap:8px">
+        <div style="font-size:11px;font-weight:800;letter-spacing:.04em;color:#98A5A0">MIXED · 4 SAFE ROWS LEFT</div>
+        <div style="background:#fff;border-top:1px solid #E7EAE7;border-radius:0 0 12px 12px;padding:12px 16px 14px">
+          <div style="font-size:11px;color:#98A5A0;font-variant-numeric:tabular-nums;margin-bottom:8px">4 to decide · 2 done</div>
+          <div style="display:flex;gap:8px">
+            <div style="flex:1;height:38px;border-radius:12px;background:#F2F3F1;border:1px solid #E1E5E1;font-size:12.5px;font-weight:650;display:flex;align-items:center;justify-content:center">Keep all of mine</div>
+            <div style="flex:1;height:38px;border-radius:12px;background:#14201C;color:#fff;font-size:12.5px;font-weight:700;display:flex;align-items:center;justify-content:center;text-align:center;line-height:1.2;padding:0 8px">Take the 4 you have not touched</div>
+          </div>
+        </div>
+      </div>
+
+      <div style="width:390px;display:flex;flex-direction:column;gap:8px">
+        <div style="font-size:11px;font-weight:800;letter-spacing:.04em;color:#9B4B4B">ONLY CONFLICTS LEFT · THE INK BUTTON IS ABSENT</div>
+        <div style="background:#fff;border-top:1px solid #E7EAE7;border-radius:0 0 12px 12px;padding:12px 16px 14px">
+          <div style="font-size:11px;color:#98A5A0;font-variant-numeric:tabular-nums;margin-bottom:8px">2 to decide · 4 done</div>
+          <div style="display:flex;gap:8px">
+            <div style="flex:1;height:38px;border-radius:12px;background:#F2F3F1;border:1px solid #E1E5E1;font-size:12.5px;font-weight:650;display:flex;align-items:center;justify-content:center">Keep all of mine</div>
+          </div>
+          <div style="font-size:11px;color:#98A5A0;line-height:1.45;margin-top:8px">2 left, and you have changed both. They go one at a time.</div>
+        </div>
+        <div style="font-size:11.5px;line-height:1.45;color:#6B7A74">The safety rule, said in the app's own voice, at the moment it applies.</div>
+      </div>
+
+      <div style="width:430px;background:#fff;border:1px solid #E7EAE7;border-radius:16px;padding:15px 16px;display:flex;flex-direction:column;gap:10px">
+        <div style="font-size:13px;font-weight:700">A bulk action may never decide a row where both of you changed the same thing</div>
+        <div style="display:grid;grid-template-columns:1fr;gap:9px;font-size:11.5px;line-height:1.45">
+          <div style="color:#3D4C46"><b>Keep all of mine</b> — applies to every remaining row, conflicts included. It changes nothing on your copy, so it must never be gated: it is the "not now" exit.</div>
+          <div style="height:1px;background:#F0F2F0"></div>
+          <div style="color:#3D4C46"><b>Take the n you have not touched</b> — only rows where mine equals base. On those, taking theirs discards nothing of yours. The count is in the label, so the button says how much it is doing. Absent when n = 0.</div>
+          <div style="height:1px;background:#F0F2F0"></div>
+          <div style="color:#9B4B4B"><b>Take all of theirs — removed.</b> Under three-way it would silently discard your own edits on exactly the rows the screen exists to protect, and nothing else in the app has a one-tap control that destroys work with no per-item view.</div>
+        </div>
+        <div style="font-size:11.5px;line-height:1.5;color:#6B7A74;text-wrap:pretty;margin-top:2px">One-decision-per-difference was never "every row must be tapped" — it was "no single tap may resolve a difference whose stakes you have not seen". Both surviving bulk actions honour that.</div>
+      </div>
+    </div>
+  </div>
+
+  <div style="height:1px;background:#D8DCD8"></div>
+
+  <div style="display:flex;flex-direction:column;gap:14px">
+    <div style="font-size:15px;font-weight:700">E · Completion — five states, all reachable, all specified</div>
+    <div style="display:flex;gap:20px;flex-wrap:wrap;align-items:flex-start">
+
+      <div style="width:390px;display:flex;flex-direction:column;gap:8px">
+        <div style="font-size:11px;font-weight:800;letter-spacing:.04em;color:#98A5A0">1 · NOTHING TO REVIEW, FIRST VISIT — UNCHANGED</div>
+        <div style="background:#F2F3F1;border:1px solid #D8DCD8;border-radius:12px;overflow:hidden">
+          <div style="background:#fff;border-bottom:1px solid #E7EAE7;padding:14px 16px">
+            <div style="font-size:17px;font-weight:700">Nothing to review</div>
+            <div style="font-size:11.5px;color:#6B7A74;margin-top:1px">Meridian City</div>
+          </div>
+          <div style="padding:16px">
+            <div style="padding:28px 16px;text-align:center;font-size:12.5px;line-height:1.5;color:#98A5A0">Their copy and yours say the same thing. An update appears here when somebody sends one.</div>
+            <div style="height:42px;border-radius:12px;background:#1F6F5C;color:#fff;font-size:13px;font-weight:700;display:flex;align-items:center;justify-content:center;margin-top:14px">Back to the day</div>
+          </div>
+        </div>
+      </div>
+
+      <div style="width:390px;display:flex;flex-direction:column;gap:8px">
+        <div style="font-size:11px;font-weight:800;letter-spacing:.04em;color:#98A5A0">3 · PARTIALLY DECIDED, RETURNING</div>
+        <div style="background:#F2F3F1;border:1px solid #D8DCD8;border-radius:12px;overflow:hidden">
+          <div style="background:#fff;border-bottom:1px solid #E7EAE7;padding:14px 16px">
+            <div style="font-size:17px;font-weight:700">Ana sent an update</div>
+            <div style="font-size:11.5px;color:#6B7A74;margin-top:1px">6 things · 2 decided · 20 min ago</div>
+          </div>
+          <div style="padding:14px 16px;display:flex;flex-direction:column;gap:10px">
+            <div style="background:#fff;border-radius:16px;padding:12px 13px;font-size:13.5px;font-weight:700">Skyline Deck</div>
+            <div style="height:38px;border-radius:12px;background:#F2F3F1;border:1px solid #E1E5E1;font-size:12.5px;font-weight:650;display:flex;align-items:center;justify-content:center">See the 2 you have decided</div>
+          </div>
+        </div>
+        <div style="font-size:11.5px;line-height:1.45;color:#6B7A74;text-wrap:pretty">The state today's screen cannot show, though the data is there. Decided rows vanish, so a returning user sees a <i>smaller update</i> and no account of the rest. Collapsed by default — it is a check, not the task.</div>
+      </div>
+
+      <div style="width:390px;display:flex;flex-direction:column;gap:8px">
+        <div style="font-size:11px;font-weight:800;letter-spacing:.04em;color:#1F6F5C">4 · THE RECEIPT — AND 5 · STILL THERE WHEN YOU COME BACK</div>
+        <div style="background:#F2F3F1;border:1px solid #D8DCD8;border-radius:12px;overflow:hidden">
+          <div style="background:#fff;border-bottom:1px solid #E7EAE7;padding:14px 16px">
+            <div style="font-size:17px;font-weight:700">Nothing to review</div>
+            <div style="font-size:11.5px;color:#6B7A74;margin-top:1px">Meridian City</div>
+          </div>
+          <div style="padding:14px 16px;display:flex;flex-direction:column;gap:12px">
+            <div style="background:#E6EFEB;border:1px solid #CFE0D9;border-radius:16px;padding:14px">
+              <div style="font-size:10.5px;font-weight:800;letter-spacing:.06em;color:#1F6F5C">UPDATE DEALT WITH</div>
+              <div style="font-size:13px;font-weight:700;margin-top:5px">5 things decided — 3 taken, 2 left as yours.</div>
+              <div style="font-size:12px;line-height:1.5;color:#5D8C7C;margin-top:4px">Your copy is yours again until the next update arrives.</div>
+            </div>
+            <div style="background:#fff;border-radius:16px;overflow:hidden">
+              <div style="padding:11px 13px;display:flex;align-items:center;gap:9px">
+                <div style="flex:1;min-width:0">
+                  <div style="font-size:12.5px;font-weight:650">Lumen Crossing</div>
+                  <div style="font-size:11px;color:#98A5A0;font-variant-numeric:tabular-nums;margin-top:1px">Day 3 · now 10:30 – 11:15</div>
+                </div>
+                <div style="padding:3px 7px;border-radius:6px;background:#E6EFEB;color:#1F6F5C;font-size:9.5px;font-weight:800;letter-spacing:.04em">TAKEN</div>
+              </div>
+              <div style="border-top:1px solid #F0F2F0;padding:11px 13px;display:flex;align-items:center;gap:9px">
+                <div style="flex:1;min-width:0">
+                  <div style="font-size:12.5px;font-weight:650">Ashgate Shrine</div>
+                  <div style="font-size:11px;color:#98A5A0;font-variant-numeric:tabular-nums;margin-top:1px">Day 3 · still 09:15 – 10:00</div>
+                </div>
+                <div style="padding:3px 7px;border-radius:6px;background:#F2F3F1;color:#3D4C46;font-size:9.5px;font-weight:800;letter-spacing:.04em">KEPT</div>
+              </div>
+              <div style="border-top:1px solid #F0F2F0;padding:11px 13px;display:flex;align-items:center;gap:9px">
+                <div style="flex:1;min-width:0">
+                  <div style="font-size:12.5px;font-weight:650">Nishi Market</div>
+                  <div style="font-size:11px;color:#98A5A0;margin-top:1px">Day 3 · off the day</div>
+                </div>
+                <div style="padding:3px 7px;border-radius:6px;background:#E6EFEB;color:#1F6F5C;font-size:9.5px;font-weight:800;letter-spacing:.04em">TAKEN</div>
+              </div>
+            </div>
+            <div style="height:42px;border-radius:12px;background:#1F6F5C;color:#fff;font-size:13px;font-weight:700;display:flex;align-items:center;justify-content:center">Back to the day</div>
+            <div style="font-size:11px;color:#98A5A0;line-height:1.45">An update appears here when somebody sends one.</div>
+          </div>
+        </div>
+        <div style="font-size:11.5px;line-height:1.45;color:#6B7A74;text-wrap:pretty">Rendered from <b>trip.lastReview</b>, so it survives navigation and a relaunch until a newer snapshot arrives. Today <b>done</b> is a module-level counter reset by the <b>Back to the day</b> handler: decide seven things, leave, come back, and the screen says nothing ever happened.</div>
+      </div>
+
+      <div style="width:390px;background:#fff;border:1px solid #E7EAE7;border-radius:16px;padding:15px 16px;display:flex;flex-direction:column;gap:10px">
+        <div style="font-size:13px;font-weight:700">What a decision records</div>
+        <div style="font-size:11.5px;line-height:1.5;color:#3D4C46;text-wrap:pretty">Today both <b>keepMine</b> and <b>takeChange</b> end in the same <b>markReviewed()</b>, so <i>which</i> differences you dealt with persists — but not <b>which way</b>. That is the whole gap, and it needs one field, not a new mechanism:</div>
+        <div style="background:#F2F3F1;border-radius:10px;padding:11px 12px;font-family:ui-monospace,SFMono-Regular,Menlo,monospace;font-size:11px;line-height:1.55;color:#14201C">trip.reviewed: [{ id, choice, title, outcome, at }]</div>
+        <div style="font-size:11.5px;line-height:1.5;color:#3D4C46">…which <b>pendingUpdate()</b> filters on exactly as it filters <b>declined</b> today, and which <b>finishReview</b> moves into <b>trip.lastReview</b> instead of discarding.</div>
+        <div style="font-size:11.5px;line-height:1.5;color:#6B7A74">Leaving mid-review needs no warning: decisions are already written and already persisted, and there is no dirty state to lose. The Plan banner's ghost <b>Later</b> exists for exactly that — what it does is D-1, still out of scope.</div>
+      </div>
+    </div>
+  </div>
+
+</section>
+
+</x-dc>
+</body>
+</html>

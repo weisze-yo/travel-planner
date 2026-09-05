@@ -1,0 +1,294 @@
+<!DOCTYPE html>
+<html>
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<script src="./support.js"></script>
+</head>
+<body>
+<x-dc>
+<helmet>
+<meta name="design_doc_mode" content="canvas">
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link href="https://fonts.googleapis.com/css2?family=Public+Sans:wght@400;600;700;800&family=IBM+Plex+Mono:wght@400&display=swap" rel="stylesheet">
+<style>
+  body { margin:0; background:#E4E6E2; -webkit-font-smoothing:antialiased; }
+  a { color:#1F6F5C; text-decoration:none; }
+  a:hover { color:#14201C; }
+</style>
+</helmet>
+
+<section style="font-family:'Public Sans',system-ui,sans-serif;color:#14201C;padding:44px 48px 64px;display:flex;flex-direction:column;gap:34px;width:2400px;box-sizing:border-box">
+
+  <div style="display:flex;flex-direction:column;gap:9px;max-width:900px">
+    <div style="font-size:10.5px;font-weight:800;letter-spacing:.06em;color:#98A5A0">TRAVEL PLANNER · P1 · DESIGN FOR REVIEW</div>
+    <div style="font-size:34px;font-weight:700;letter-spacing:-.025em;line-height:1.1">Paste, end to end</div>
+    <div style="font-size:13.5px;line-height:1.55;color:#3D4C46;text-wrap:pretty">The parser already grades every row. The screen ignores the grades and asks for eight identical confirmations. <b>The gate goes; the grades stay.</b> Canonical spec: <b>docs/design/p1-paste-review-design.md</b> — every string here is from its §10.</div>
+  </div>
+
+  <div style="display:flex;gap:18px;flex-wrap:wrap">
+    <div style="background:#E6EFEB;border:1px solid #CFE0D9;border-radius:16px;padding:13px 15px;width:340px;box-sizing:border-box">
+      <div style="font-size:10.5px;font-weight:800;letter-spacing:.06em;color:#5D8C7C;margin-bottom:5px">THE GRADES ALREADY EXIST</div>
+      <div style="font-size:12.5px;line-height:1.5;color:#14201C">In the captured frame, <b>6 of 8 rows were graded <i>read</i></b> — nothing inferred, nothing to ask. Each still needed a tap. One was <b>worked</b>, one was <b>unread</b>, and one read row broke when it was edited: those three are the only real questions.</div>
+    </div>
+    <div style="background:#FBF1DE;border:1px solid #EBD9B4;border-radius:16px;padding:13px 15px;width:340px;box-sizing:border-box">
+      <div style="font-size:10.5px;font-weight:800;letter-spacing:.06em;color:#8A5A08;margin-bottom:5px">TEN CONTROLS IS THE WORST CASE</div>
+      <div style="font-size:12.5px;line-height:1.5;color:#14201C">Three ladders can stack in one card with no order between them. A clean row has four things. <b>One ladder at a time</b> takes the worst case from ten to four.</div>
+    </div>
+    <div style="background:#F8E9E9;border:1px solid #E9D3D3;border-radius:16px;padding:13px 15px;width:340px;box-sizing:border-box">
+      <div style="font-size:10.5px;font-weight:800;letter-spacing:.06em;color:#9B4B4B;margin-bottom:5px">SAVE CANNOT FAIL, APPARENTLY</div>
+      <div style="font-size:12.5px;line-height:1.5;color:#14201C"><b>mountSummary</b> awaits <b>importItinerary</b> and sets <b>phase = 'done'</b> whatever comes back. A failed import renders as a receipt for zero stops.</div>
+    </div>
+    <div style="background:#fff;border:1px solid #E7EAE7;border-radius:16px;padding:13px 15px;width:340px;box-sizing:border-box">
+      <div style="font-size:10.5px;font-weight:800;letter-spacing:.06em;color:#98A5A0;margin-bottom:5px">THE BAR MEANS THE WRONG THING</div>
+      <div style="font-size:12.5px;line-height:1.5;color:#3D4C46"><b>.progress</b> is the tile downloader's bar. Here nothing is loading — the user is. It is removed, and a count that falls to zero replaces it.</div>
+    </div>
+  </div>
+
+  <div style="height:1px;background:#D8DCD8"></div>
+
+  <div style="font-size:15px;font-weight:700">A · The review pass, before and after</div>
+  <div style="display:flex;gap:26px;align-items:flex-start;flex-wrap:wrap">
+
+    <div style="display:flex;flex-direction:column;gap:9px">
+      <div style="font-size:11px;font-weight:800;letter-spacing:.04em;color:#9B4B4B">TODAY · A LOADING BAR, A TICK EVERY ROW, THREE LADDERS AT ONCE</div>
+      <div style="width:390px;height:844px;background:#F2F3F1;border:1px solid #D8DCD8;border-radius:10px;overflow:hidden;display:flex;flex-direction:column">
+        <div style="background:#fff;border-bottom:1px solid #E7EAE7;padding:22px 16px 12px;flex:none">
+          <div style="display:flex;align-items:center;justify-content:space-between;gap:10px"><button style="width:32px;height:32px;flex:none;display:flex;align-items:center;justify-content:center;border-radius:10px;background:none;border:0;padding:0"><svg width="11" height="18" viewBox="0 0 11 18"><path d="M9 1L2 9l7 8" stroke="#14201C" stroke-width="2.2" fill="none" stroke-linecap="round" stroke-linejoin="round"></path></svg></button><div style="flex:1;min-width:0"><div style="font-size:17px;font-weight:700;letter-spacing:-.01em">Check what it read</div><div style="font-size:11.5px;color:#6B7A74;margin-top:1px">8 rows · 2 day groups so far · 8 left to check</div></div></div>
+          <div style="height:7px;border-radius:4px;background:#EDEFEC;margin-top:12px"></div>
+          <div style="font-size:11px;font-weight:650;color:#6B7A74;margin-top:8px">0 of 8 checked · tick, fix or drop the other 8</div>
+        </div>
+        <div style="flex:1;min-height:0;padding:12px 16px;display:flex;flex-direction:column;gap:10px;overflow:hidden">
+          <div style="display:flex;align-items:center;gap:8px"><div style="flex:1;font-size:12.5px;font-weight:700">Day 3 · Sat 14 Mar</div><span style="font-size:9.5px;font-weight:800;letter-spacing:.04em;color:#1F6F5C;background:#E6EFEB;border-radius:6px;padding:3px 7px">FROM THE TEXT</span></div>
+          <div style="background:#FFFDF7;border:1.5px solid #EBD9B4;border-radius:14px;padding:11px 12px;margin-bottom:8px">
+            <div style="display:flex;gap:11px;align-items:center">
+              <div style="width:22px;height:22px;flex:none;border-radius:7px;border:1.6px solid #D2D8D3;background:#fff;display:flex;align-items:center;justify-content:center"><svg width="11" height="9" viewBox="0 0 11 9" style="opacity:0"><path d="M1 4.5L4 7.5 10 1" stroke="#fff" stroke-width="2" fill="none" stroke-linecap="round" stroke-linejoin="round"></path></svg></div>
+              <div style="width:44px;flex:none"><div style="font-size:12px;font-weight:700;color:#8A5A08;font-variant-numeric:tabular-nums">09:15</div><div style="font-size:10px;font-weight:650;color:#B08A3E;font-variant-numeric:tabular-nums">10:00</div></div>
+              <div style="flex:1;min-width:0"><div style="font-size:13.5px;font-weight:650;line-height:1.25">Lumen Crossing</div><div style="font-size:11px;color:#98A5A0">45 mins photo stop</div><div style="font-size:11px;font-weight:650;color:#8A5A08;margin-top:2px">End time guessed — the line only gave a start</div></div>
+              <span style="flex:none;display:flex"><svg width="7" height="12" viewBox="0 0 7 12"><path d="M1 1l5 5-5 5" stroke="#98A5A0" stroke-width="1.8" fill="none" stroke-linecap="round"></path></svg></span>
+            </div>
+            <div style="display:flex;gap:6px;flex-wrap:wrap;margin-top:9px;padding-left:33px">
+              <span style="height:30px;padding:0 10px;border-radius:9px;background:#14201C;border:1px solid #14201C;color:#fff;font-size:11.5px;font-weight:700;display:flex;align-items:center">Keep 45 min</span>
+              <span style="height:30px;padding:0 10px;border-radius:9px;background:#fff;border:1px solid #E1E5E1;font-size:11.5px;font-weight:650;color:#3D4C46;display:flex;align-items:center">Set the end time</span>
+              <span style="height:30px;padding:0 10px;border-radius:9px;background:#fff;border:1px solid #E1E5E1;font-size:11.5px;font-weight:650;color:#3D4C46;display:flex;align-items:center">No end time</span>
+            </div>
+            <div style="display:flex;gap:6px;flex-wrap:wrap;margin-top:9px;padding-left:33px;align-items:center">
+              <span style="padding:5px 9px;border-radius:9px;background:#F2F3F1;font-size:10.5px;font-weight:700;letter-spacing:.04em;color:#98A5A0">MOVE TO</span>
+              <span style="height:26px;padding:0 8px;border-radius:8px;background:#F2F3F1;font-size:11px;font-weight:700;color:#3D4C46;display:flex;align-items:center">D1</span>
+              <span style="height:26px;padding:0 8px;border-radius:8px;background:#F2F3F1;font-size:11px;font-weight:700;color:#3D4C46;display:flex;align-items:center">D2</span>
+              <span style="height:26px;padding:0 8px;border-radius:8px;background:#A8CFC0;color:#14201C;font-size:11px;font-weight:700;display:flex;align-items:center">D3</span>
+              <span style="height:26px;padding:0 8px;border-radius:8px;background:#F2F3F1;font-size:11px;font-weight:700;color:#3D4C46;display:flex;align-items:center">D4</span>
+              <span style="height:26px;padding:0 8px;border-radius:8px;background:#F2F3F1;font-size:11px;font-weight:700;color:#3D4C46;display:flex;align-items:center">D5</span>
+              <span style="height:26px;padding:0 8px;border-radius:8px;background:#F2F3F1;font-size:11px;font-weight:700;color:#3D4C46;display:flex;align-items:center">D6</span>
+              <span style="height:30px;padding:0 10px;border-radius:9px;background:#fff;border:1px solid #E1E5E1;font-size:11.5px;font-weight:650;color:#3D4C46;display:flex;align-items:center">and the rest below it</span>
+            </div>
+          </div>
+          <div style="background:#fff;border:1px solid #E7EAE7;border-radius:14px;padding:11px 12px;margin-bottom:8px;display:flex;gap:11px;align-items:center">
+            <div style="width:22px;height:22px;flex:none;border-radius:7px;border:1.6px solid #D2D8D3;background:#fff;display:flex;align-items:center;justify-content:center"><svg width="11" height="9" viewBox="0 0 11 9" style="opacity:0"><path d="M1 4.5L4 7.5 10 1" stroke="#fff" stroke-width="2" fill="none" stroke-linecap="round" stroke-linejoin="round"></path></svg></div>
+            <div style="width:44px;flex:none;font-size:12px;font-weight:700;font-variant-numeric:tabular-nums">10:30</div>
+            <div style="flex:1"><div style="font-size:13.5px;font-weight:650">Ashgate Shrine</div><div style="font-size:11px;color:#98A5A0">1 hr, shoulders covered</div></div>
+            <span style="flex:none;display:flex"><svg width="7" height="12" viewBox="0 0 7 12"><path d="M1 1l5 5-5 5" stroke="#98A5A0" stroke-width="1.8" fill="none" stroke-linecap="round"></path></svg></span>
+          </div>
+          <div style="background:#fff;border:1px solid #E7EAE7;border-radius:14px;padding:11px 12px;margin-bottom:8px;display:flex;gap:11px;align-items:center">
+            <div style="width:22px;height:22px;flex:none;border-radius:7px;border:1.6px solid #D2D8D3;background:#fff;display:flex;align-items:center;justify-content:center"><svg width="11" height="9" viewBox="0 0 11 9" style="opacity:0"><path d="M1 4.5L4 7.5 10 1" stroke="#fff" stroke-width="2" fill="none" stroke-linecap="round" stroke-linejoin="round"></path></svg></div>
+            <div style="width:44px;flex:none;font-size:12px;font-weight:700;font-variant-numeric:tabular-nums">12:00</div>
+            <div style="flex:1"><div style="font-size:13.5px;font-weight:650">Harbour Steps</div><div style="font-size:11px;color:#98A5A0">set lunch</div></div>
+            <span style="flex:none;display:flex"><svg width="7" height="12" viewBox="0 0 7 12"><path d="M1 1l5 5-5 5" stroke="#98A5A0" stroke-width="1.8" fill="none" stroke-linecap="round"></path></svg></span>
+          </div>
+        </div>
+        <div style="margin-top:auto;background:#fff;border-top:1px solid #E7EAE7;padding:12px 16px;display:flex;align-items:center;gap:10px;flex:none">
+          <span style="flex:1;font-size:11.5px;font-weight:650;color:#6B7A74">8 rows left to check</span>
+          <span style="height:42px;padding:0 16px;border-radius:12px;background:#1F6F5C;color:#fff;font-size:13px;font-weight:700;display:flex;align-items:center;opacity:.45">Review and save</span>
+        </div>
+              <div style="flex:none;background:#fff;border-top:1px solid #E4E8E5;display:flex;gap:2px;padding:7px 8px 10px">
+          <div style="flex:1;min-height:46px;border-radius:12px;display:flex;flex-direction:column;align-items:center;justify-content:center;gap:3px;color:#9AA6A1"><svg width="20" height="20" viewBox="0 0 20 20" fill="none"><path d="M10 18s6-5.2 6-10A6 6 0 0 0 4 8c0 4.8 6 10 6 10z" stroke="#9AA6A1" stroke-width="1.7" stroke-linejoin="round"></path><circle cx="10" cy="8" r="2.2" stroke="#9AA6A1" stroke-width="1.7"></circle></svg><span style="font-size:9.5px;font-weight:700">Map</span></div>
+          <div style="flex:1;min-height:46px;border-radius:12px;background:#F2F3F1;display:flex;flex-direction:column;align-items:center;justify-content:center;gap:3px;color:#14201C"><svg width="20" height="20" viewBox="0 0 20 20" fill="none"><g stroke="#14201C" stroke-width="1.7" stroke-linecap="round"><path d="M3 5.5h14M3 10h14M3 14.5h9"></path></g></svg><span style="font-size:9.5px;font-weight:700">Plan</span></div>
+          <div style="flex:1;min-height:46px;border-radius:12px;display:flex;flex-direction:column;align-items:center;justify-content:center;gap:3px;color:#9AA6A1"><svg width="20" height="20" viewBox="0 0 20 20" fill="none"><path d="M4.5 6.5h11l-1 10h-9l-1-10z" stroke="#9AA6A1" stroke-width="1.7" stroke-linejoin="round"></path><path d="M7.5 6.5V5a2.5 2.5 0 0 1 5 0v1.5" stroke="#9AA6A1" stroke-width="1.7" stroke-linecap="round"></path></svg><span style="font-size:9.5px;font-weight:700">Shop</span></div>
+          <div style="flex:1;min-height:46px;border-radius:12px;display:flex;flex-direction:column;align-items:center;justify-content:center;gap:3px;color:#9AA6A1"><svg width="20" height="20" viewBox="0 0 20 20" fill="none"><rect x="3.5" y="6" width="13" height="10.5" rx="2" stroke="#9AA6A1" stroke-width="1.7"></rect><path d="M7.5 6V4.5a1.5 1.5 0 0 1 1.5-1.5h2a1.5 1.5 0 0 1 1.5 1.5V6" stroke="#9AA6A1" stroke-width="1.7" stroke-linecap="round"></path></svg><span style="font-size:9.5px;font-weight:700">Prep</span></div>
+          <div style="flex:1;min-height:46px;border-radius:12px;display:flex;flex-direction:column;align-items:center;justify-content:center;gap:3px;color:#9AA6A1"><svg width="20" height="20" viewBox="0 0 20 20" fill="none"><path d="M13 3.5l3.5 3.5L7 16.5H3.5V13z" stroke="#9AA6A1" stroke-width="1.7" stroke-linejoin="round"></path></svg><span style="font-size:9.5px;font-weight:700">Log</span></div>
+        </div>
+      </div>
+      <div style="width:390px;font-size:11.5px;line-height:1.45;color:#9B4B4B;text-wrap:pretty">Rows two and three were read cleanly and still carry an empty checkbox. The bar at the top is the same element the tile downloader uses for a real transfer.</div>
+    </div>
+
+    <div style="display:flex;flex-direction:column;gap:9px">
+      <div style="font-size:11px;font-weight:800;letter-spacing:.04em;color:#1F6F5C">DESIGNED · CLEAN ROWS ARE IN; THREE ROWS NEED YOU</div>
+      <div style="width:390px;height:844px;background:#F2F3F1;border:1px solid #D8DCD8;border-radius:10px;overflow:hidden;display:flex;flex-direction:column">
+        <div style="background:#fff;border-bottom:1px solid #E7EAE7;padding:22px 16px 12px;flex:none">
+          <div style="display:flex;align-items:center;justify-content:space-between;gap:10px">
+            <button style="width:32px;height:32px;flex:none;display:flex;align-items:center;justify-content:center;border-radius:10px;background:none;border:0;padding:0"><svg width="11" height="18" viewBox="0 0 11 18"><path d="M9 1L2 9l7 8" stroke="#14201C" stroke-width="2.2" fill="none" stroke-linecap="round" stroke-linejoin="round"></path></svg></button>
+            <div style="flex:1;min-width:0">
+              <div style="font-size:17px;font-weight:700;letter-spacing:-.01em">Check what it read</div>
+              <div style="font-size:11.5px;color:#6B7A74;margin-top:1px">8 rows · 2 days · 3 need you</div>
+            </div>
+          </div>
+        </div>
+        <div style="flex:1;min-height:0;padding:12px 16px;display:flex;flex-direction:column;gap:10px;overflow:hidden">
+          <div style="display:flex;align-items:center;gap:8px"><div style="flex:1;font-size:12.5px;font-weight:700">Day 3 · Sat 14 Mar</div><span style="font-size:9.5px;font-weight:800;letter-spacing:.04em;color:#1F6F5C;background:#E6EFEB;border-radius:6px;padding:3px 7px">FROM THE TEXT</span><span style="font-size:11px;color:#98A5A0">6 stops</span></div>
+
+          <div style="background:#FFFDF7;border:1.5px solid #EBD9B4;border-radius:14px;padding:11px 12px;margin-bottom:8px">
+            <div style="display:flex;gap:11px;align-items:center">
+              <div style="width:44px;flex:none"><div style="font-size:12px;font-weight:650;font-variant-numeric:tabular-nums">09:15</div><div style="font-size:11px;font-weight:650;color:#8A5A08;font-variant-numeric:tabular-nums">10:00</div></div>
+              <div style="flex:1;min-width:0"><div style="font-size:13.5px;font-weight:650;line-height:1.25">Lumen Crossing</div><div style="font-size:11px;color:#98A5A0">45 mins photo stop</div></div>
+              <div style="width:22px;height:22px;border-radius:50%;background:#FBF1DE;color:#8A5A08;font-size:12px;font-weight:800;display:flex;align-items:center;justify-content:center;flex:none">?</div>
+            </div>
+            <div style="height:1px;background:#EBD9B4;margin:10px 0"></div>
+            <div style="font-size:11px;font-weight:650;color:#8A5A08">End time guessed — the line only gave a start</div>
+            <div style="display:flex;gap:6px;flex-wrap:wrap;margin-top:8px">
+              <span style="height:30px;padding:0 10px;border-radius:9px;background:#14201C;border:1px solid #14201C;color:#fff;font-size:11.5px;font-weight:700;display:flex;align-items:center">Keep 45 min</span>
+              <span style="height:30px;padding:0 10px;border-radius:9px;background:#fff;border:1px solid #E1E5E1;font-size:11.5px;font-weight:650;color:#3D4C46;display:flex;align-items:center">Set the end</span>
+              <span style="height:30px;padding:0 10px;border-radius:9px;background:#fff;border:1px solid #E1E5E1;font-size:11.5px;font-weight:650;color:#3D4C46;display:flex;align-items:center">No end time</span>
+            </div>
+          </div>
+
+          <div style="background:#fff;border:1px solid #E7EAE7;border-radius:14px;padding:11px 12px;margin-bottom:8px;display:flex;gap:11px;align-items:center">
+            <div style="width:44px;flex:none"><div style="font-size:12px;font-weight:650;font-variant-numeric:tabular-nums">10:30</div><div style="font-size:10px;font-weight:650;color:#98A5A0;font-variant-numeric:tabular-nums">11:30</div></div>
+            <div style="flex:1"><div style="font-size:13.5px;font-weight:650">Ashgate Shrine</div><div style="font-size:11px;color:#98A5A0">1 hr, shoulders covered</div></div>
+            <div style="width:22px;height:22px;border-radius:50%;background:#E6EFEB;color:#1F6F5C;font-size:12px;font-weight:800;display:flex;align-items:center;justify-content:center;flex:none">✓</div>
+          </div>
+
+
+          <div style="background:#fff;border:1px solid #E7EAE7;border-left:2px solid #9B4B4B;border-radius:14px;padding:11px 12px;margin-bottom:8px">
+            <div style="display:flex;gap:11px;align-items:center">
+              <div style="width:44px;flex:none"><div style="font-size:12px;font-weight:650;font-variant-numeric:tabular-nums">13:45</div><div style="font-size:11px;font-weight:650;color:#9B4B4B;font-variant-numeric:tabular-nums">09:00</div></div>
+              <div style="flex:1"><div style="font-size:13.5px;font-weight:650">Nishi Market</div><div style="font-size:11px;color:#98A5A0">free time, back at coach</div></div>
+              <div style="width:22px;height:22px;border-radius:50%;background:#F8E9E9;color:#9B4B4B;font-size:12px;font-weight:800;display:flex;align-items:center;justify-content:center;flex:none">!</div>
+            </div>
+            <div style="height:1px;background:#EDEFEC;margin:14px 0"></div>
+            <div style="font-size:11px;font-weight:650;color:#9B4B4B">Ends before it starts — 09:00 after a 13:45 start.</div>
+            <div style="display:flex;gap:6px;flex-wrap:wrap;margin-top:8px">
+              <span style="height:30px;padding:0 10px;border-radius:9px;background:#14201C;border:1px solid #14201C;color:#fff;font-size:11.5px;font-weight:700;display:flex;align-items:center">Swap them</span>
+              <span style="height:30px;padding:0 10px;border-radius:9px;background:#fff;border:1px solid #E1E5E1;font-size:11.5px;font-weight:650;color:#3D4C46;display:flex;align-items:center">Clear the end</span>
+              <span style="height:30px;padding:0 10px;border-radius:9px;background:#fff;border:1px solid #E1E5E1;font-size:11.5px;font-weight:650;color:#3D4C46;display:flex;align-items:center">Set the end</span>
+            </div>
+          </div>
+
+          <div style="background:#F7F8F6;border:1.5px dashed #C9D0CB;border-radius:14px;padding:11px 12px;margin-bottom:8px">
+            <div style="display:flex;gap:11px;align-items:flex-start">
+              <div style="flex:1;min-width:0">
+                <div style="font-size:10.5px;font-weight:800;letter-spacing:.06em;color:#98A5A0">COULD NOT READ THIS LINE</div>
+                <div style="font-size:12px;line-height:1.5;color:#3D4C46;margin-top:6px;font-family:ui-monospace,Menlo,monospace;background:#fff;border:1px solid #E7EAE7;border-radius:9px;padding:8px 9px;white-space:pre-wrap">coach transfer — driver will confirm</div>
+              </div>
+              <div style="width:22px;height:22px;border-radius:50%;background:#FBF1DE;color:#8A5A08;font-size:12px;font-weight:800;display:flex;align-items:center;justify-content:center;flex:none">?</div>
+            </div>
+            <div style="display:flex;gap:6px;flex-wrap:wrap;margin-top:9px;padding-left:0">
+              <span style="height:30px;padding:0 10px;border-radius:9px;background:#14201C;border:1px solid #14201C;color:#fff;font-size:11.5px;font-weight:700;display:flex;align-items:center">Make it a stop</span>
+              <span style="height:30px;padding:0 10px;border-radius:9px;background:#fff;border:1px solid #E1E5E1;font-size:11.5px;font-weight:650;color:#3D4C46;display:flex;align-items:center">Add to the row above</span>
+              <span style="height:30px;padding:0 10px;border-radius:9px;background:#fff;border:1px solid #E1E5E1;font-size:11.5px;font-weight:650;color:#3D4C46;display:flex;align-items:center">Skip it</span>
+            </div>
+          </div>
+          <div style="background:#fff;border:1px solid #E7EAE7;border-radius:14px;padding:11px 12px;margin-bottom:8px;display:flex;gap:11px;align-items:center;opacity:.45">
+            <div style="width:44px;flex:none;font-size:12px;font-weight:700;font-variant-numeric:tabular-nums">18:04</div>
+            <div style="flex:1"><div style="font-size:13.5px;font-weight:650">evening free</div><div style="font-size:11px;color:#98A5A0">dinner not included</div></div>
+            <div style="width:22px;height:22px;border-radius:50%;background:#F2F3F1;color:#B4BEB9;font-size:12px;font-weight:800;display:flex;align-items:center;justify-content:center;flex:none">—</div>
+          </div>
+        </div>
+        <div style="margin-top:auto;background:#fff;border-top:1px solid #E7EAE7;padding:12px 16px;display:flex;align-items:center;gap:10px;flex:none">
+          <span style="flex:1;font-size:11.5px;font-weight:650;color:#6B7A74">3 rows still need you</span>
+          <span style="height:30px;padding:0 11px;border-radius:10px;border:1px solid #E7EAE7;font-size:12px;font-weight:700;color:#3D4C46;display:flex;align-items:center">More</span>
+          <span style="height:42px;padding:0 16px;border-radius:12px;background:#1F6F5C;color:#fff;font-size:13px;font-weight:700;display:flex;align-items:center;opacity:.45">Save 7 stops</span>
+        </div>
+              <div style="flex:none;background:#fff;border-top:1px solid #E4E8E5;display:flex;gap:2px;padding:7px 8px 10px">
+          <div style="flex:1;min-height:46px;border-radius:12px;display:flex;flex-direction:column;align-items:center;justify-content:center;gap:3px;color:#9AA6A1"><svg width="20" height="20" viewBox="0 0 20 20" fill="none"><path d="M10 18s6-5.2 6-10A6 6 0 0 0 4 8c0 4.8 6 10 6 10z" stroke="#9AA6A1" stroke-width="1.7" stroke-linejoin="round"></path><circle cx="10" cy="8" r="2.2" stroke="#9AA6A1" stroke-width="1.7"></circle></svg><span style="font-size:9.5px;font-weight:700">Map</span></div>
+          <div style="flex:1;min-height:46px;border-radius:12px;background:#F2F3F1;display:flex;flex-direction:column;align-items:center;justify-content:center;gap:3px;color:#14201C"><svg width="20" height="20" viewBox="0 0 20 20" fill="none"><g stroke="#14201C" stroke-width="1.7" stroke-linecap="round"><path d="M3 5.5h14M3 10h14M3 14.5h9"></path></g></svg><span style="font-size:9.5px;font-weight:700">Plan</span></div>
+          <div style="flex:1;min-height:46px;border-radius:12px;display:flex;flex-direction:column;align-items:center;justify-content:center;gap:3px;color:#9AA6A1"><svg width="20" height="20" viewBox="0 0 20 20" fill="none"><path d="M4.5 6.5h11l-1 10h-9l-1-10z" stroke="#9AA6A1" stroke-width="1.7" stroke-linejoin="round"></path><path d="M7.5 6.5V5a2.5 2.5 0 0 1 5 0v1.5" stroke="#9AA6A1" stroke-width="1.7" stroke-linecap="round"></path></svg><span style="font-size:9.5px;font-weight:700">Shop</span></div>
+          <div style="flex:1;min-height:46px;border-radius:12px;display:flex;flex-direction:column;align-items:center;justify-content:center;gap:3px;color:#9AA6A1"><svg width="20" height="20" viewBox="0 0 20 20" fill="none"><rect x="3.5" y="6" width="13" height="10.5" rx="2" stroke="#9AA6A1" stroke-width="1.7"></rect><path d="M7.5 6V4.5a1.5 1.5 0 0 1 1.5-1.5h2a1.5 1.5 0 0 1 1.5 1.5V6" stroke="#9AA6A1" stroke-width="1.7" stroke-linecap="round"></path></svg><span style="font-size:9.5px;font-weight:700">Prep</span></div>
+          <div style="flex:1;min-height:46px;border-radius:12px;display:flex;flex-direction:column;align-items:center;justify-content:center;gap:3px;color:#9AA6A1"><svg width="20" height="20" viewBox="0 0 20 20" fill="none"><path d="M13 3.5l3.5 3.5L7 16.5H3.5V13z" stroke="#9AA6A1" stroke-width="1.7" stroke-linejoin="round"></path></svg><span style="font-size:9.5px;font-weight:700">Log</span></div>
+        </div>
+      </div>
+      <div style="width:390px;font-size:11.5px;line-height:1.45;color:#6B7A74;text-wrap:pretty">One state glyph replaces the leading checkbox and the trailing chevron, giving the name 32px back. Jade ✓ accepted · amber ? needs a decision · rust ! invalid · grey — dropped. One ladder per card, and the invalid row differs on three axes at once.</div>
+      <div style="width:390px;background:#fff;border:1px solid #E7EAE7;border-radius:14px;padding:12px 13px;box-sizing:border-box">
+        <div style="font-size:11px;font-weight:800;letter-spacing:.04em;color:#98A5A0;margin-bottom:6px">THE STICKY FOOT · ANSWERS FOR MING</div>
+        <div style="font-size:11.5px;line-height:1.5;color:#3D4C46"><b>Save 7 stops</b> is disabled while anything is genuinely unresolved, and enabled the moment nothing is. Unresolved means exactly three things: a line the parser <b>could not read</b>, a row where it <b>guessed</b> and nobody has answered, or a row that is <b>invalid</b> (§4). It is <b>not</b> gated on rows the parser read cleanly — that gate is what this design removes, so on a clean paste the button is live on arrival. The count beside it says what is holding it: <b>3 rows still need you</b> → <b>7 stops ready</b>.</div>
+        <div style="height:1px;background:#EDEFEC;margin:14px 0"></div>
+        <div style="font-size:11.5px;line-height:1.5;color:#3D4C46;margin-bottom:9px"><b>"Is a row resolved automatically until there is no conflict?"</b> — near enough, and here it is exactly. Every row arrives in one of three grades from the parser, and <b>the grade decides the starting state</b>. Nothing is ever resolved on your behalf that the parser had to guess at.</div>
+        <div style="display:grid;grid-template-columns:auto auto 1fr;gap:6px 10px;font-size:11px;line-height:1.4;margin-bottom:9px">
+          <div style="font-weight:800;color:#98A5A0">GRADE</div><div style="font-weight:800;color:#98A5A0">STARTS AS</div><div style="font-weight:800;color:#98A5A0">TO CLEAR IT</div>
+          <div style="font-weight:700;color:#1F6F5C">read</div><div style="color:#1F6F5C;font-weight:700">✓ accepted</div><div style="color:#3D4C46">nothing — every field came off the line, so there is no question to ask</div>
+          <div style="font-weight:700;color:#8A5A08">worked</div><div style="color:#8A5A08;font-weight:700">? needs you</div><div style="color:#3D4C46">answer the one ladder (or open the row and confirm) → ✓</div>
+          <div style="font-weight:700;color:#9B4B4B">unread</div><div style="color:#9B4B4B;font-weight:700">? needs you</div><div style="color:#3D4C46">make it a stop, merge it upward, or skip it → ✓ or —</div>
+          <div style="font-weight:700;color:#9B4B4B">invalid</div><div style="color:#9B4B4B;font-weight:700">! blocked</div><div style="color:#3D4C46">a validator caught it after an edit (§4) — fix or drop it</div>
+        </div>
+        <div style="font-size:11.5px;line-height:1.5;color:#3D4C46;margin-bottom:9px">So the save unblocks when <b>no row is left in <span style="color:#8A5A08">?</span> or <span style="color:#9B4B4B">!</span></b>. A dropped row (<b>—</b>) never blocks anything and never saves. You can also drop or restore an accepted row at any time by tapping its glyph — accepted is a starting state, not a lock.</div>
+        <div style="height:1px;background:#EDEFEC;margin:14px 0"></div>
+        <div style="font-size:11.5px;line-height:1.5;color:#3D4C46"><b>More</b> holds the two bulk actions, kept out of sight because in a well-graded list there is usually nothing to do in bulk: <b>Drop the 3 rows that need me</b> — the honest exit from a bad paste, which touches only the unresolved rows and never one the parser read — and <b>Undo the drops</b>. Dropped rows stay in the list, greyed, and go back with one tap. There is deliberately no <b>Accept everything</b>: the clean rows are already accepted, so the only thing it could do is answer the questions the screen exists to ask.</div>
+      </div>
+    </div>
+
+    <div style="display:flex;flex-direction:column;gap:20px;width:440px">
+      <div style="display:flex;flex-direction:column;gap:9px">
+        <div style="font-size:11px;font-weight:800;letter-spacing:.04em;color:#1F6F5C">THE FIX LADDER, IN PRIORITY ORDER — ONE AT A TIME</div>
+        <div style="background:#fff;border:1px solid #E7EAE7;border-radius:16px;padding:15px 16px;display:grid;grid-template-columns:20px 1fr;gap:9px 11px;font-size:11.5px;line-height:1.45">
+          <div style="font-weight:800;color:#B4BEB9">1</div><div style="color:#3D4C46"><b>Could not read this line</b> — Make it a stop · Add to the row above · Skip it</div>
+          <div style="font-weight:800;color:#B4BEB9">2</div><div style="color:#3D4C46"><b>No time on the line</b> — Give it a time · Skip it</div>
+          <div style="font-weight:800;color:#B4BEB9">3</div><div style="color:#3D4C46"><b>End time guessed</b> — Keep 45 min · Set the end · No end time</div>
+          <div style="font-weight:800;color:#B4BEB9">4</div><div style="color:#3D4C46"><b>Wrong day?</b> — MOVE TO · D2 · <b>D3</b> · D4 · Another day… · and the rest below it</div>
+          <div style="font-weight:800;color:#B4BEB9">5</div><div style="color:#3D4C46"><b>Two names in one line?</b> — Split into two · Leave as one</div>
+        </div>
+        <div style="font-size:11.5px;line-height:1.45;color:#6B7A74;text-wrap:pretty">Answering one reveals the next, if there is one. On a trip longer than six days the day chips become the current day, its two neighbours and <b>Another day…</b>, which opens the row editor at its WHICH DAY block — a grid that already exists and already wraps.</div>
+      </div>
+
+      <div style="display:flex;flex-direction:column;gap:9px">
+        <div style="font-size:11px;font-weight:800;letter-spacing:.04em;color:#1F6F5C">SAVE · PENDING, THEN FAILURE (P0-5)</div>
+        <div style="width:390px;background:#fff;border:1px solid #E7EAE7;border-radius:16px;padding:13px 14px;box-sizing:border-box">
+          <div style="height:46px;border-radius:12px;background:#1F6F5C;color:#fff;font-size:14px;font-weight:700;display:flex;align-items:center;justify-content:center;opacity:.45">Saving…</div>
+        </div>
+        <div style="width:390px;background:#fff;border:1px solid #E7EAE7;border-radius:16px;padding:13px 14px;box-sizing:border-box">
+          <div style="background:#FBF1DE;border:1px solid #EBD9B4;border-radius:10px;padding:8px 10px;font-size:12px;font-weight:650;color:#8A5A08;line-height:1.45;margin-bottom:11px">Nothing was saved. Your rows are still here — try again.</div>
+          <div style="height:46px;border-radius:12px;background:#1F6F5C;color:#fff;font-size:14px;font-weight:700;display:flex;align-items:center;justify-content:center">Save 7 stops to the trip</div>
+        </div>
+        <div style="font-size:11.5px;line-height:1.45;color:#6B7A74;text-wrap:pretty">The rows genuinely are still there — the whole draft is module state — so the sentence is true. Same shape as the join failure, deliberately.</div>
+      </div>
+
+      <div style="display:flex;flex-direction:column;gap:9px">
+        <div style="font-size:11px;font-weight:800;letter-spacing:.04em;color:#1F6F5C">DONE · THE RECEIPT SAYS WHERE THINGS LANDED</div>
+        <div style="width:390px;background:#fff;border-radius:16px;padding:14px;box-sizing:border-box">
+          <div style="font-size:10.5px;font-weight:800;letter-spacing:.06em;color:#1F6F5C">DONE</div>
+          <div style="font-size:12.5px;line-height:1.55;color:#3D4C46;margin-top:8px">7 stops saved from your itinerary. 3 new places were created for them, and 1 matched somewhere you had already saved.</div>
+          <div style="font-size:12px;font-weight:650;color:#14201C;margin-top:8px">Day 3 · 5 stops · Day 4 · 2 stops</div>
+          <div style="font-size:11.5px;line-height:1.45;color:#6B7A74;margin-top:10px">2 still need a position, so they will not appear on the map until you open one and paste its map link. Everything else — times, notes, shopping, must-see shots — works on them straight away.</div>
+          <div style="height:42px;width:150px;border-radius:12px;background:#1F6F5C;color:#fff;font-size:13px;font-weight:700;display:flex;align-items:center;justify-content:center;margin-top:14px">Open the Plan</div>
+        </div>
+        <div style="font-size:11.5px;line-height:1.45;color:#6B7A74;text-wrap:pretty"><b>Open the Plan</b> lands on the first day that got stops, not on whatever day happened to be selected. <b>The full screen is below.</b></div>
+      </div>
+
+      <div style="display:flex;flex-direction:column;gap:9px">
+        <div style="font-size:11px;font-weight:800;letter-spacing:.04em;color:#6B7A74">DONE · THE FULL SCREEN, AFTER SAVE SUCCEEDS</div>
+        <div style="width:390px;height:844px;background:#F2F3F1;border:1px solid #D8DCD8;border-radius:10px;overflow:hidden;display:flex;flex-direction:column">
+          <div style="background:#fff;border-bottom:1px solid #E7EAE7;padding:22px 16px 14px;flex:none">
+            <div style="display:flex;align-items:center;justify-content:space-between;gap:10px"><button style="width:32px;height:32px;flex:none;display:flex;align-items:center;justify-content:center;border-radius:10px;background:none;border:0;padding:0"><svg width="11" height="18" viewBox="0 0 11 18"><path d="M9 1L2 9l7 8" stroke="#14201C" stroke-width="2.2" fill="none" stroke-linecap="round" stroke-linejoin="round"></path></svg></button><div style="flex:1;min-width:0"><div style="font-size:17px;font-weight:700;letter-spacing:-.01em">Saved</div><div style="font-size:11.5px;color:#6B7A74;margin-top:1px">7 stops on your itinerary</div></div></div>
+          </div>
+          <div style="flex:1;min-height:0;overflow:hidden;padding:14px 16px 24px">
+            <div style="background:#fff;border-radius:16px;padding:14px">
+              <div style="font-size:10.5px;font-weight:800;letter-spacing:.06em;color:#1F6F5C">DONE</div>
+              <div style="font-size:12.5px;line-height:1.55;color:#3D4C46;margin-top:8px">7 stops saved from your itinerary. 3 new places were created for them, and 1 matched somewhere you had already saved.</div>
+              <div style="font-size:12px;font-weight:650;color:#14201C;margin-top:8px">Day 3 · 5 stops · Day 4 · 2 stops</div>
+              <div style="font-size:11.5px;line-height:1.45;color:#6B7A74;margin-top:10px">2 still need a position, so they will not appear on the map until you open one and paste its map link. Everything else — times, notes, shopping, must-see shots — works on them straight away.</div>
+              <div style="height:42px;border-radius:12px;background:#1F6F5C;color:#fff;font-size:13px;font-weight:700;display:flex;align-items:center;justify-content:center;margin-top:14px">Open the Plan</div>
+            </div>
+            <div style="font-size:11px;line-height:1.45;color:#98A5A0;margin-top:12px">There is no undo, but the text you pasted is kept with the trip: paste again and it is waiting under <b>Last import</b>. Anything wrong is edited stop by stop, and a stop on the wrong day can be dragged or moved in Plan's edit mode.</div>
+          </div>
+                  <div style="flex:none;background:#fff;border-top:1px solid #E4E8E5;display:flex;gap:2px;padding:7px 8px 10px">
+            <div style="flex:1;min-height:46px;border-radius:12px;display:flex;flex-direction:column;align-items:center;justify-content:center;gap:3px;color:#9AA6A1"><svg width="20" height="20" viewBox="0 0 20 20" fill="none"><path d="M10 18s6-5.2 6-10A6 6 0 0 0 4 8c0 4.8 6 10 6 10z" stroke="#9AA6A1" stroke-width="1.7" stroke-linejoin="round"></path><circle cx="10" cy="8" r="2.2" stroke="#9AA6A1" stroke-width="1.7"></circle></svg><span style="font-size:9.5px;font-weight:700">Map</span></div>
+            <div style="flex:1;min-height:46px;border-radius:12px;background:#F2F3F1;display:flex;flex-direction:column;align-items:center;justify-content:center;gap:3px;color:#14201C"><svg width="20" height="20" viewBox="0 0 20 20" fill="none"><g stroke="#14201C" stroke-width="1.7" stroke-linecap="round"><path d="M3 5.5h14M3 10h14M3 14.5h9"></path></g></svg><span style="font-size:9.5px;font-weight:700">Plan</span></div>
+            <div style="flex:1;min-height:46px;border-radius:12px;display:flex;flex-direction:column;align-items:center;justify-content:center;gap:3px;color:#9AA6A1"><svg width="20" height="20" viewBox="0 0 20 20" fill="none"><path d="M4.5 6.5h11l-1 10h-9l-1-10z" stroke="#9AA6A1" stroke-width="1.7" stroke-linejoin="round"></path><path d="M7.5 6.5V5a2.5 2.5 0 0 1 5 0v1.5" stroke="#9AA6A1" stroke-width="1.7" stroke-linecap="round"></path></svg><span style="font-size:9.5px;font-weight:700">Shop</span></div>
+            <div style="flex:1;min-height:46px;border-radius:12px;display:flex;flex-direction:column;align-items:center;justify-content:center;gap:3px;color:#9AA6A1"><svg width="20" height="20" viewBox="0 0 20 20" fill="none"><rect x="3.5" y="6" width="13" height="10.5" rx="2" stroke="#9AA6A1" stroke-width="1.7"></rect><path d="M7.5 6V4.5a1.5 1.5 0 0 1 1.5-1.5h2a1.5 1.5 0 0 1 1.5 1.5V6" stroke="#9AA6A1" stroke-width="1.7" stroke-linecap="round"></path></svg><span style="font-size:9.5px;font-weight:700">Prep</span></div>
+            <div style="flex:1;min-height:46px;border-radius:12px;display:flex;flex-direction:column;align-items:center;justify-content:center;gap:3px;color:#9AA6A1"><svg width="20" height="20" viewBox="0 0 20 20" fill="none"><path d="M13 3.5l3.5 3.5L7 16.5H3.5V13z" stroke="#9AA6A1" stroke-width="1.7" stroke-linejoin="round"></path></svg><span style="font-size:9.5px;font-weight:700">Log</span></div>
+          </div>
+        </div>
+        <div style="width:390px;font-size:11.5px;line-height:1.45;color:#6B7A74;text-wrap:pretty">Reached from <b>Trips ▸ Paste an itinerary</b>, and only after <b>Save 7 stops to the trip</b> returns successfully.</div>
+        <div style="width:390px;background:#fff;border:1px solid #E7EAE7;border-radius:14px;padding:12px 13px;box-sizing:border-box">
+          <div style="font-size:11px;font-weight:800;letter-spacing:.04em;color:#98A5A0;margin-bottom:6px">"WHAT HAPPENS IF I EXIT? WHY IS THIS PAGE NEEDED?"</div>
+          <div style="font-size:11.5px;line-height:1.5;color:#3D4C46"><b>The back arrow and Open the Plan do the same thing</b>, and that is verified, not proposed — both run <b>reset(); go('plan', {}, { replace: true })</b> in the source today. (The control is <b>icon.back</b>, not a close cross: <b>paste.js</b> 707 renders this screen through <b>backHeader</b> like every other push screen.) <b>The stops are already saved either way.</b> The write finished before this screen appeared; nothing here is a commit step and nothing is lost by leaving.</div>
+          <div style="font-size:11.5px;line-height:1.5;color:#3D4C46;margin-top:8px"><b>So it earns its place on one thing only: what it tells you that the Plan cannot.</b> Two sentences — <b>2 stops have no position</b>, so they are missing from the map until someone pastes a map link, and <b>the pasted text is kept under Last import</b>, which is the only undo this flow has. Neither is visible on the Plan, and both matter later.</div>
+          <div style="font-size:11.5px;line-height:1.5;color:#3D4C46;margin-top:8px"><b>Recommendation: keep it.</b> A back arrow beside an identical primary is fine when the screen is a receipt — nothing here can be cancelled, and the title <b>Saved</b> says so before either control is read. <b>If it were ever cut</b>, the unplaced-stop count would have to move onto the Plan's warning strip first — otherwise the flow ends by silently hiding its one caveat.</div>
+        </div>
+      </div>
+    </div>
+  </div>
+
+</section>
+</x-dc>
+</body>
+</html>

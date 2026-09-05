@@ -1,0 +1,264 @@
+<!DOCTYPE html>
+<html>
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<script src="./support.js"></script>
+</head>
+<body>
+<x-dc>
+<helmet>
+<meta name="design_doc_mode" content="canvas">
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link href="https://fonts.googleapis.com/css2?family=Public+Sans:wght@400;600;700;800&display=swap" rel="stylesheet">
+<style>
+  body { margin:0; background:#E4E6E2; -webkit-font-smoothing:antialiased; }
+  a { color:#1F6F5C; text-decoration:none; }
+  a:hover { color:#14201C; }
+</style>
+</helmet>
+
+<section style="font-family:'Public Sans',system-ui,sans-serif;color:#14201C;padding:44px 48px 64px;display:flex;flex-direction:column;gap:34px;width:2280px;box-sizing:border-box">
+
+  <div style="display:flex;flex-direction:column;gap:9px;max-width:880px">
+    <div style="font-size:10.5px;font-weight:800;letter-spacing:.06em;color:#98A5A0">TRAVEL PLANNER · P0-5 · DESIGN FOR REVIEW</div>
+    <div style="font-size:34px;font-weight:700;letter-spacing:-.025em;line-height:1.1">Pending work</div>
+    <div style="font-size:13.5px;line-height:1.55;color:#3D4C46;text-wrap:pretty">One rule: <b>pending belongs to the control, outcomes belong to the screen</b>. No spinner, no overlay, no skeleton, no new component — and <b>zero CSS additions</b>. Canonical spec: <b>docs/design/p0-5-pending-work-design.md</b>; every piece of copy here is from its §7, and everything else on these frames is sample trip data.</div>
+  </div>
+
+  <div style="display:flex;gap:20px;flex-wrap:wrap">
+    <div style="background:#F8E9E9;border:1px solid #E9D3D3;border-radius:16px;padding:13px 15px;max-width:350px">
+      <div style="font-size:10.5px;font-weight:800;letter-spacing:.06em;color:#9B4B4B;margin-bottom:5px">TODAY · THREE DEFECTS</div>
+      <div style="font-size:12.5px;line-height:1.5;color:#14201C">Twelve strings, two variable names, three placements. The message appears <b>far from the control</b> — on My trips, above the account row, when the button was in the header or a card below. And most actions can be <b>double-tapped mid-flight</b>.</div>
+    </div>
+    <div style="background:#E6EFEB;border:1px solid #CFE0D9;border-radius:16px;padding:13px 15px;max-width:350px">
+      <div style="font-size:10.5px;font-weight:800;letter-spacing:.06em;color:#5D8C7C;margin-bottom:5px">THE MECHANISM EXISTS</div>
+      <div style="font-size:12.5px;line-height:1.5;color:#14201C"><b>.btn[disabled]</b> already means <b>opacity .45; pointer-events none</b>, and the Paste save button already uses it. Fifteen other call sites do not. The disabled state <i>is</i> the double-tap prevention.</div>
+    </div>
+    <div style="background:#FBF1DE;border:1px solid #EBD9B4;border-radius:16px;padding:13px 15px;max-width:350px">
+      <div style="font-size:10.5px;font-weight:800;letter-spacing:.06em;color:#8A5A08;margin-bottom:5px">AMBER MEANS OUTCOME</div>
+      <div style="font-size:12.5px;line-height:1.5;color:#14201C">The top-of-scroller <b>.amber-note</b> keeps the one job it is good at — outcomes, errors, refusals, payloads — and stops carrying "in progress" entirely.</div>
+    </div>
+    <div style="background:#fff;border:1px solid #E7EAE7;border-radius:16px;padding:13px 15px;max-width:350px">
+      <div style="font-size:10.5px;font-weight:800;letter-spacing:.06em;color:#98A5A0;margin-bottom:5px">NO SPINNER, EVER</div>
+      <div style="font-size:12.5px;line-height:1.5;color:#3D4C46">The app has exactly one animated indicator — the sync dot's ring — and it means "the outbox is working". A second animation vocabulary would make every wait look like a sync.</div>
+    </div>
+  </div>
+
+  <div style="height:1px;background:#D8DCD8"></div>
+
+  <div style="display:flex;flex-direction:column;gap:14px">
+    <div style="font-size:15px;font-weight:700">A · The same wait, before and after — "Opening…", the weakest feedback in the product</div>
+    <div style="display:flex;gap:26px;align-items:flex-start;flex-wrap:wrap">
+
+      <div style="display:flex;flex-direction:column;gap:9px">
+        <div style="font-size:11px;font-weight:800;letter-spacing:.04em;color:#9B4B4B">TODAY · THE NOTE IS ABOVE THE ACCOUNT ROW; THE TAP WAS ON THE CARD</div>
+        <div style="width:390px;height:560px;background:#F2F3F1;border:1px solid #D8DCD8;border-radius:10px;overflow:hidden;display:flex;flex-direction:column">
+          <div style="background:#fff;border-bottom:1px solid #E7EAE7;padding:26px 16px 12px;display:flex;align-items:flex-end;justify-content:space-between;gap:10px;flex:none">
+            <div style="font-size:24px;font-weight:700;letter-spacing:-.02em">My trips</div>
+            <div style="height:38px;padding:0 13px;border-radius:12px;background:#14201C;color:#fff;font-size:12.5px;font-weight:700;display:flex;align-items:center">+ New trip</div>
+          </div>
+          <div style="padding:14px 16px;display:flex;flex-direction:column;gap:12px">
+            <div style="font-size:12px;font-weight:650;color:#8A5A08">Opening…</div>
+            <div style="background:#fff;border-radius:16px;padding:13px 14px;display:flex;align-items:center;gap:11px">
+              <div style="width:30px;height:30px;border-radius:50%;background:#1F6F5C;color:#fff;font-size:13px;font-weight:700;display:flex;align-items:center;justify-content:center">A</div>
+              <div style="flex:1;min-width:0;font-size:13px;font-weight:650">Everything is on this phone</div>
+            </div>
+            <div style="background:#fff;border-radius:16px;padding:14px;display:flex;flex-direction:column;gap:10px;border:2px solid #EBD9B4">
+              <div style="font-size:15px;font-weight:700">Meridian City</div>
+              <div style="font-size:11.5px;color:#6B7A74">12–17 Mar 2026 · 6 days</div>
+              <div style="display:flex;gap:6px">
+                <div style="padding:4px 8px;border-radius:8px;background:#F2F3F1;color:#3D4C46;font-size:10.5px;font-weight:650">7 stops</div>
+                <div style="padding:4px 8px;border-radius:8px;background:#F2F3F1;color:#3D4C46;font-size:10.5px;font-weight:650">¥ 18,400</div>
+              </div>
+            </div>
+          </div>
+        </div>
+        <div style="width:390px;font-size:11.5px;line-height:1.45;color:#9B4B4B;text-wrap:pretty">Two multi-second waits exist in this product — opening a trip and joining one — and both are among the first things a new user does. The card is still fully tappable, so it can be double-tapped into two competing navigations.</div>
+      </div>
+
+      <div style="display:flex;flex-direction:column;gap:9px">
+        <div style="font-size:11px;font-weight:800;letter-spacing:.04em;color:#1F6F5C">DESIGNED · THE CARD ANSWERS THE TAP</div>
+        <div style="width:390px;height:560px;background:#F2F3F1;border:1px solid #D8DCD8;border-radius:10px;overflow:hidden;display:flex;flex-direction:column">
+          <div style="background:#fff;border-bottom:1px solid #E7EAE7;padding:26px 16px 12px;display:flex;align-items:flex-end;justify-content:space-between;gap:10px;flex:none">
+            <div style="font-size:24px;font-weight:700;letter-spacing:-.02em">My trips</div>
+            <div style="height:38px;padding:0 13px;border-radius:12px;background:#14201C;color:#fff;font-size:12.5px;font-weight:700;display:flex;align-items:center">+ New trip</div>
+          </div>
+          <div style="padding:14px 16px;display:flex;flex-direction:column;gap:12px">
+            <div style="background:#fff;border-radius:16px;padding:13px 14px;display:flex;align-items:center;gap:11px">
+              <div style="width:30px;height:30px;border-radius:50%;background:#1F6F5C;color:#fff;font-size:13px;font-weight:700;display:flex;align-items:center;justify-content:center">A</div>
+              <div style="flex:1;min-width:0;font-size:13px;font-weight:650">Everything is on this phone</div>
+            </div>
+            <div style="background:#fff;border-radius:16px;padding:14px;display:flex;flex-direction:column;gap:10px;opacity:.45">
+              <div style="font-size:15px;font-weight:700">Meridian City</div>
+              <div style="font-size:11.5px;color:#6B7A74">12–17 Mar 2026 · 6 days</div>
+              <div style="display:flex;gap:6px">
+                <div style="padding:4px 8px;border-radius:8px;background:#FBF1DE;color:#8A5A08;font-size:10.5px;font-weight:650">Opening…</div>
+              </div>
+            </div>
+            <div style="background:#fff;border-radius:16px;padding:14px;display:flex;flex-direction:column;gap:10px">
+              <div style="font-size:15px;font-weight:700">Japan with Mum</div>
+              <div style="font-size:11.5px;color:#6B7A74">12–16 Mar 2026 · 5 days</div>
+              <div style="display:flex;gap:6px">
+                <div style="padding:4px 8px;border-radius:8px;background:#F2F3F1;color:#3D4C46;font-size:10.5px;font-weight:650">7 stops</div>
+              </div>
+            </div>
+          </div>
+        </div>
+        <div style="width:390px;font-size:11.5px;line-height:1.45;color:#6B7A74;text-wrap:pretty">One <b>.chip.amber</b> replaces the pressed card's stat chips; the card goes to <b>opacity .45</b>. The other cards go <b>pointer-events: none</b> with <b>no fade</b> — two navigations cannot both win, and only the pressed control should carry the visual state, so it stays obvious which tap the app is answering.</div>
+      </div>
+
+      <div style="flex:1;min-width:420px;max-width:640px;display:flex;flex-direction:column;gap:12px">
+        <div style="background:#fff;border:1px solid #E7EAE7;border-radius:16px;padding:15px 16px;display:flex;flex-direction:column;gap:9px">
+          <div style="font-size:13px;font-weight:700">Eleven rules, in force order</div>
+          <div style="display:grid;grid-template-columns:34px 1fr;gap:7px 10px;font-size:11.5px;line-height:1.45">
+            <div style="font-weight:800;color:#B4BEB9">R1</div><div style="color:#3D4C46">Pending renders <b>on the control that started the work</b> — label swap plus disabled. Never elsewhere on the screen.</div>
+            <div style="font-weight:800;color:#B4BEB9">R2</div><div style="color:#3D4C46">The label is the control's own verb in the present participle: <b>Create → Creating…</b></div>
+            <div style="font-weight:800;color:#B4BEB9">R3</div><div style="color:#3D4C46">No spinner, ever.</div>
+            <div style="font-weight:800;color:#B4BEB9">R4</div><div style="color:#3D4C46"><b>.amber-note</b> is for outcomes and errors only.</div>
+            <div style="font-weight:800;color:#B4BEB9">R5</div><div style="color:#3D4C46">Work the user did not start gets no indicator — boot, the cross-tab refresh, the automatic forecast, the fire-and-forget publish.</div>
+            <div style="font-weight:800;color:#B4BEB9">R6</div><div style="color:#3D4C46">Real progress only when it measures something. Never an indeterminate bar.</div>
+            <div style="font-weight:800;color:#B4BEB9">R7</div><div style="color:#3D4C46">The disabled state <i>is</i> the double-tap prevention. No timers, no debouncing.</div>
+            <div style="font-weight:800;color:#B4BEB9">R8</div><div style="color:#3D4C46">Navigation during pending is allowed and pending state is disposable; the outcome surfaces where the result lives. Three flows keep their surface: <b>Create</b>, <b>Join</b>, <b>the Paste save</b>.</div>
+            <div style="font-weight:800;color:#B4BEB9">R9</div><div style="color:#3D4C46">Cancellation only where the work is long, measurable and resumable — the tile download, and nothing else.</div>
+            <div style="font-weight:800;color:#B4BEB9">R10</div><div style="color:#9B4B4B"><b>Synchronous work gets no pending state at all.</b> The rule most likely to be "helpfully" broken later.</div>
+            <div style="font-weight:800;color:#B4BEB9">R11</div><div style="color:#3D4C46">A navigating action disables its family, without fading it.</div>
+          </div>
+        </div>
+      </div>
+    </div>
+  </div>
+
+  <div style="height:1px;background:#D8DCD8"></div>
+
+  <div style="display:flex;flex-direction:column;gap:14px">
+    <div style="font-size:15px;font-weight:700">B · Every control, in its pending state</div>
+    <div style="font-size:12.5px;line-height:1.5;color:#6B7A74;max-width:900px">Resting above, pending below. Nothing changes but the words and the opacity — the height, the type and the flex behaviour are identical, so nothing underneath moves.</div>
+
+    <div style="display:flex;gap:18px;flex-wrap:wrap">
+
+      <div style="width:250px;display:flex;flex-direction:column;gap:9px">
+        <div style="font-size:10.5px;font-weight:800;letter-spacing:.04em;color:#98A5A0">CREATE · MODAL STAYS UP</div>
+        <div style="height:42px;border-radius:12px;background:#1F6F5C;color:#fff;font-size:13px;font-weight:700;display:flex;align-items:center;justify-content:center">Create</div>
+        <div style="height:42px;border-radius:12px;background:#1F6F5C;color:#fff;font-size:13px;font-weight:700;display:flex;align-items:center;justify-content:center;opacity:.45">Creating…</div>
+      </div>
+
+      <div style="width:250px;display:flex;flex-direction:column;gap:9px">
+        <div style="font-size:10.5px;font-weight:800;letter-spacing:.04em;color:#98A5A0">JOIN · STICKY FOOT, h50</div>
+        <div style="height:50px;border-radius:12px;background:#1F6F5C;color:#fff;font-size:13px;font-weight:700;display:flex;align-items:center;justify-content:center">Join this trip</div>
+        <div style="height:50px;border-radius:12px;background:#1F6F5C;color:#fff;font-size:13px;font-weight:700;display:flex;align-items:center;justify-content:center;opacity:.45">Making your copy…</div>
+      </div>
+
+      <div style="width:250px;display:flex;flex-direction:column;gap:9px">
+        <div style="font-size:10.5px;font-weight:800;letter-spacing:.04em;color:#98A5A0">TRIP SETTINGS · SAVE</div>
+        <div style="height:42px;border-radius:12px;background:#1F6F5C;color:#fff;font-size:13px;font-weight:700;display:flex;align-items:center;justify-content:center">Save</div>
+        <div style="height:42px;border-radius:12px;background:#1F6F5C;color:#fff;font-size:13px;font-weight:700;display:flex;align-items:center;justify-content:center;opacity:.45">Saving…</div>
+      </div>
+
+      <div style="width:250px;display:flex;flex-direction:column;gap:9px">
+        <div style="font-size:10.5px;font-weight:800;letter-spacing:.04em;color:#98A5A0">RATE · FETCH · .btn.sm</div>
+        <div style="height:38px;padding:0 13px;border-radius:12px;background:#F2F3F1;border:1px solid #E1E5E1;font-size:12.5px;font-weight:650;display:flex;align-items:center;justify-content:center">Fetch</div>
+        <div style="height:38px;padding:0 13px;border-radius:12px;background:#F2F3F1;border:1px solid #E1E5E1;font-size:12.5px;font-weight:650;display:flex;align-items:center;justify-content:center;opacity:.45">Fetching the rate…</div>
+      </div>
+
+      <div style="width:250px;display:flex;flex-direction:column;gap:9px">
+        <div style="font-size:10.5px;font-weight:800;letter-spacing:.04em;color:#98A5A0">ACCOUNT ROW · SIGN OUT</div>
+        <div style="height:38px;padding:0 13px;border-radius:12px;background:#F2F3F1;border:1px solid #E1E5E1;font-size:12.5px;font-weight:650;display:flex;align-items:center;justify-content:center">Sign out</div>
+        <div style="height:38px;padding:0 13px;border-radius:12px;background:#F2F3F1;border:1px solid #E1E5E1;font-size:12.5px;font-weight:650;display:flex;align-items:center;justify-content:center;opacity:.45">Signing out…</div>
+      </div>
+
+      <div style="width:250px;display:flex;flex-direction:column;gap:9px">
+        <div style="font-size:10.5px;font-weight:800;letter-spacing:.04em;color:#98A5A0">SWIPE ROW · IN-ROW CONFIRM</div>
+        <div style="height:38px;padding:0 13px;border-radius:12px;background:#F8E9E9;color:#9B4B4B;font-size:12.5px;font-weight:700;display:flex;align-items:center;justify-content:center;font-style:italic;opacity:.7">existing confirm label</div>
+        <div style="height:38px;padding:0 13px;border-radius:12px;background:#F8E9E9;color:#9B4B4B;font-size:12.5px;font-weight:700;display:flex;align-items:center;justify-content:center;opacity:.45">Deleting…</div>
+      </div>
+
+      <div style="width:250px;display:flex;flex-direction:column;gap:9px">
+        <div style="font-size:10.5px;font-weight:800;letter-spacing:.04em;color:#98A5A0">FILE LABEL · NOT A BUTTON</div>
+        <div style="height:42px;border-radius:12px;background:#F2F3F1;border:1px solid #E1E5E1;font-size:13px;font-weight:650;display:flex;align-items:center;justify-content:center">Choose from phone</div>
+        <div style="height:42px;border-radius:12px;background:#F2F3F1;border:1px solid #E1E5E1;font-size:13px;font-weight:650;display:flex;align-items:center;justify-content:center;opacity:.45">Shrinking it…</div>
+      </div>
+
+      <div style="width:250px;display:flex;flex-direction:column;gap:9px">
+        <div style="font-size:10.5px;font-weight:800;letter-spacing:.04em;color:#1F6F5C">PASTE SAVE · ALREADY CORRECT TODAY</div>
+        <div style="height:48px;border-radius:12px;background:#1F6F5C;color:#fff;font-size:13px;font-weight:700;display:flex;align-items:center;justify-content:center">Review and save</div>
+        <div style="height:48px;border-radius:12px;background:#1F6F5C;color:#fff;font-size:13px;font-weight:700;display:flex;align-items:center;justify-content:center;opacity:.45">Adding them to the trip…</div>
+      </div>
+
+    </div>
+
+    <div style="display:flex;gap:20px;flex-wrap:wrap;margin-top:6px">
+      <div style="width:390px;display:flex;flex-direction:column;gap:8px">
+        <div style="font-size:11px;font-weight:800;letter-spacing:.04em;color:#1F6F5C">REAL PROGRESS · UNCHANGED, BECAUSE IT MEASURES SOMETHING</div>
+        <div style="background:#fff;border-radius:16px;padding:14px;display:flex;flex-direction:column;gap:10px">
+          <div style="display:flex;justify-content:space-between;font-size:11px;font-weight:650;color:#6B7A74;font-variant-numeric:tabular-nums">
+            <div>240 of 900 tiles</div><div>3.1 MB</div>
+          </div>
+          <div style="height:7px;border-radius:4px;background:#EDEFEC;overflow:hidden"><div style="width:27%;height:100%;background:#1F6F5C;border-radius:4px"></div></div>
+          <div style="height:38px;border-radius:12px;background:#F2F3F1;border:1px solid #E1E5E1;font-size:12.5px;font-weight:650;display:flex;align-items:center;justify-content:center">Stop</div>
+        </div>
+        <div style="font-size:11.5px;line-height:1.45;color:#6B7A74">The only place with real units, and the only place with a <b>Stop</b>. A bar that measures nothing is a spinner with extra pixels.</div>
+      </div>
+
+      <div style="width:390px;display:flex;flex-direction:column;gap:8px">
+        <div style="font-size:11px;font-weight:800;letter-spacing:.04em;color:#8A5A08">AFTER THE WORK · THE SLOT KEEPS ITS REAL JOB</div>
+        <div style="background:#F2F3F1;border:1px solid #D8DCD8;border-radius:12px;padding:14px;display:flex;flex-direction:column;gap:9px">
+          <div style="font-size:12px;font-weight:650;color:#8A5A08;line-height:1.45">Message copied.</div>
+          <div style="height:1px;background:#DCE0DC"></div>
+          <div style="font-size:12px;font-weight:650;color:#8A5A08;line-height:1.45">Saved. Keep it somewhere that is not this phone.</div>
+          <div style="height:1px;background:#DCE0DC"></div>
+          <div style="font-size:12px;font-weight:650;color:#8A5A08;line-height:1.45">Still 2 waiting.</div>
+          <div style="height:1px;background:#DCE0DC"></div>
+          <div style="font-size:12px;font-weight:650;color:#8A5A08;line-height:1.45">Open this trip first to change its cover.</div>
+        </div>
+        <div style="font-size:11.5px;line-height:1.45;color:#6B7A74;text-wrap:pretty">Outcomes, errors, refusals and payloads — all existing strings, all unchanged, all staying exactly where they render now. <b>No new outcome string is introduced by this design.</b></div>
+      </div>
+
+      <div style="width:390px;display:flex;flex-direction:column;gap:8px">
+        <div style="font-size:11px;font-weight:800;letter-spacing:.04em;color:#9B4B4B">NO PENDING STATE EXISTS HERE — DO NOT ADD ONE</div>
+        <div style="background:#F8E9E9;border:1px solid #E9D3D3;border-radius:16px;padding:14px;display:flex;flex-direction:column;gap:11px">
+          <div style="font-size:11.5px;line-height:1.45;color:#3D4C46"><b>Send n changes</b> — <b>publishUpdate()</b> is synchronous and the network write is fire-and-forget. There is no interval in which a pending state could be true.</div>
+          <div style="height:1px;background:#E9D3D3"></div>
+          <div style="font-size:11.5px;line-height:1.45;color:#3D4C46"><b>Read it</b> — the parse is synchronous.</div>
+          <div style="height:1px;background:#E9D3D3"></div>
+          <div style="font-size:11.5px;line-height:1.45;color:#3D4C46"><b>Keep mine / Take theirs</b> — the writes are synchronous. Review gets the undo bar instead, per P0-4.</div>
+        </div>
+        <div style="font-size:11.5px;line-height:1.45;color:#6B7A74;text-wrap:pretty">A label that flickers to "…" for one frame is worse than nothing, and it implies a network round trip that is not happening. There is also <b>no minimum display time</b> anywhere: if the work finishes before the next paint, the swap never renders.</div>
+      </div>
+
+      <div style="width:390px;display:flex;flex-direction:column;gap:8px">
+        <div style="font-size:11px;font-weight:800;letter-spacing:.04em;color:#98A5A0">ONE COPY OVERRIDE · A PENDING LABEL NEVER INTERPOLATES</div>
+        <div style="background:#fff;border:1px solid #E7EAE7;border-radius:16px;padding:14px;display:flex;flex-direction:column;gap:9px">
+          <div style="display:grid;grid-template-columns:1fr 1fr;gap:8px 10px;font-size:11.5px;line-height:1.4">
+            <div style="color:#9B4B4B;text-decoration:line-through">Creating {name}…</div><div style="font-weight:700">Creating…</div>
+            <div style="color:#9B4B4B;text-decoration:line-through">Reading {file}…</div><div style="font-weight:700">Reading it…</div>
+            <div style="color:#9B4B4B;text-decoration:line-through">Making {name}…</div><div style="font-weight:700">Making it…</div>
+            <div style="color:#9B4B4B;text-decoration:line-through">Looking up {name}…</div><div style="font-weight:700">Looking it up…</div>
+          </div>
+        </div>
+        <div style="font-size:11.5px;line-height:1.45;color:#6B7A74;text-wrap:pretty">Inside a button a long or CJK name would wrap or overflow. The name is already on screen — in the field the user just typed it into. Four strings, and it is the only place this design overrides existing copy.</div>
+      </div>
+    </div>
+  </div>
+
+  <div style="height:1px;background:#D8DCD8"></div>
+
+  <div style="display:flex;flex-direction:column;gap:14px">
+    <div style="font-size:15px;font-weight:700">C · Not designed, deliberately</div>
+    <div style="display:flex;gap:12px;flex-wrap:wrap">
+      <div style="background:#fff;border:1px solid #E7EAE7;border-radius:12px;padding:11px 13px;font-size:11.5px;color:#6B7A74;width:220px">a skeleton-screen family</div>
+      <div style="background:#fff;border:1px solid #E7EAE7;border-radius:12px;padding:11px 13px;font-size:11.5px;color:#6B7A74;width:220px">a global loading overlay</div>
+      <div style="background:#fff;border:1px solid #E7EAE7;border-radius:12px;padding:11px 13px;font-size:11.5px;color:#6B7A74;width:220px">a toast system</div>
+      <div style="background:#fff;border:1px solid #E7EAE7;border-radius:12px;padding:11px 13px;font-size:11.5px;color:#6B7A74;width:220px">an indeterminate progress bar</div>
+      <div style="background:#fff;border:1px solid #E7EAE7;border-radius:12px;padding:11px 13px;font-size:11.5px;color:#6B7A74;width:220px">a Spinner component</div>
+      <div style="background:#fff;border:1px solid #E7EAE7;border-radius:12px;padding:11px 13px;font-size:11.5px;color:#6B7A74;width:220px">optimistic UI with rollback</div>
+      <div style="background:#E6EFEB;border:1px solid #CFE0D9;border-radius:12px;padding:11px 13px;font-size:11.5px;line-height:1.5;color:#14201C;width:460px">What this is instead: <b>a convention</b> — where the pending text goes, what it says, and what disables — plus the removal of pending text from a slot that should only hold outcomes. Per-call-site and mechanical. <b>Zero CSS additions.</b></div>
+    </div>
+  </div>
+
+</section>
+
+</x-dc>
+</body>
+</html>

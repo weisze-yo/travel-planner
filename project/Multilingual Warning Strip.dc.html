@@ -1,0 +1,338 @@
+<!DOCTYPE html>
+<html>
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<script src="./support.js"></script>
+</head>
+<body>
+<x-dc>
+<helmet>
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link href="https://fonts.googleapis.com/css2?family=Public+Sans:wght@400;600;700;800&family=Noto+Sans+JP:wght@400;600;700&family=Noto+Sans+SC:wght@400;600;700&display=swap" rel="stylesheet">
+<style>
+  body { margin: 0; background: #E4E6E2; -webkit-font-smoothing: antialiased; }
+  a { color: #1F6F5C; }
+  a:hover { color: #14201C; }
+  .sc::-webkit-scrollbar { width: 0; height: 0; }
+</style>
+</helmet>
+
+<div style="width:390px;height:844px;overflow:hidden;position:relative;background:#F2F3F1;display:flex;flex-direction:column;font-family:'Public Sans','Noto Sans SC','Noto Sans JP',system-ui,sans-serif;color:#14201C;box-shadow:0 14px 44px rgba(20,32,28,.18)">
+
+  <div style="flex:none;padding:14px 16px 12px;background:#fff;border-bottom:1px solid #E7EAE7">
+    <div style="display:flex;align-items:flex-end;justify-content:space-between;gap:10px">
+      <div style="min-width:0">
+        <div style="font-size:24px;font-weight:700;letter-spacing:-.02em">Plan</div>
+        <div style="font-size:12px;color:#6B7A74;margin-top:2px">Day 3 of 6 · Fri 12 Sep</div>
+      </div>
+      <div style="flex:none;width:40px;height:40px;border-radius:13px;background:#F2F3F1;display:flex;align-items:center;justify-content:center">
+        <svg width="19" height="19" viewBox="0 0 14 14" fill="none"><path d="M9.5 1.5l3 3L5 12H2v-3z" stroke="#14201C" stroke-width="1.5" stroke-linejoin="round"></path></svg>
+      </div>
+    </div>
+    <div style="display:flex;gap:6px;margin-top:10px;overflow:hidden">
+      <div style="flex:none;height:30px;padding:0 10px;border-radius:10px;background:#fff;border:1px solid #E7EAE7;color:#6B7A74;font-size:12px;font-weight:600;display:flex;align-items:center">D1</div>
+      <div style="flex:none;height:30px;padding:0 10px;border-radius:10px;background:#fff;border:1px solid #E7EAE7;color:#6B7A74;font-size:12px;font-weight:600;display:flex;align-items:center">D2</div>
+      <div style="flex:none;height:30px;padding:0 10px;border-radius:10px;background:#14201C;color:#fff;font-size:12px;font-weight:600;display:flex;align-items:center">D3</div>
+      <div style="flex:none;height:30px;padding:0 10px;border-radius:10px;background:#fff;border:1px solid #E7EAE7;color:#6B7A74;font-size:12px;font-weight:600;display:flex;align-items:center">D4</div>
+      <div style="flex:none;height:30px;padding:0 10px;border-radius:10px;background:#fff;border:1px solid #E7EAE7;color:#6B7A74;font-size:12px;font-weight:600;display:flex;align-items:center">D5</div>
+      <div style="flex:none;height:30px;padding:0 10px;border-radius:10px;background:#fff;border:1px solid #E7EAE7;color:#6B7A74;font-size:12px;font-weight:600;display:flex;align-items:center">D6</div>
+    </div>
+  </div>
+
+  <div class="sc" style="flex:1;min-height:0;overflow-y:auto;padding:14px 16px 96px;scrollbar-width:none">
+
+    <div style="font-size:10.5px;font-weight:800;letter-spacing:.06em;color:#98A5A0">FRIDAY 12 SEPTEMBER · 8 STOPS</div>
+    <div style="font-size:17px;font-weight:700;letter-spacing:-.01em;line-height:1.35;margin-top:4px;text-wrap:pretty">大稻埕・迪化街老屋與布市半日散步</div>
+    <div style="font-size:11.5px;color:#6B7A74;margin-top:3px;font-variant-numeric:tabular-nums">09:30 – 18:40 · 3 need a second look</div>
+
+    <div style="margin-top:14px;padding:11px 12px;background:#fff;border:1px solid #E7EAE7;border-radius:14px">
+      <div style="font-size:10.5px;font-weight:800;letter-spacing:.06em;color:#98A5A0">PLACE NAME IN THE WARNINGS BELOW</div>
+      <div style="display:flex;gap:6px;margin-top:8px">
+        <button style="{{ pillEn }}" onClick="{{ setEn }}">English</button>
+        <button style="{{ pillZh }}" onClick="{{ setZh }}">中文</button>
+        <button style="{{ pillJa }}" onClick="{{ setJa }}">日本語</button>
+      </div>
+      <div style="font-size:11px;color:#98A5A0;line-height:1.45;margin-top:8px">The four stops below carry the same warning in four shapes. Only the place name changes script.</div>
+    </div>
+
+    <sc-if value="{{ notes }}" hint-placeholder-val="{{ true }}">
+      <div style="display:flex;align-items:center;gap:8px;margin:18px 0 6px">
+        <div style="flex:none;width:18px;height:18px;border-radius:6px;background:#14201C;color:#fff;font-size:9.5px;font-weight:800;display:flex;align-items:center;justify-content:center">A</div>
+        <div style="font-size:10.5px;font-weight:800;letter-spacing:.06em;color:#98A5A0">INLINE SENTENCE</div>
+      </div>
+    </sc-if>
+
+    <div style="display:flex">
+      <div style="width:56px;flex:none;padding-top:12px;text-align:right;display:flex;flex-direction:column;gap:1px">
+        <div style="font-size:12.5px;font-weight:700;font-variant-numeric:tabular-nums;color:#8A5A08">13:00</div>
+        <div style="font-size:11px;font-weight:650;color:#98A5A0;font-variant-numeric:tabular-nums">13:45</div>
+      </div>
+      <div style="width:20px;flex:none;display:flex;flex-direction:column;align-items:center">
+        <div style="width:11px;height:11px;border-radius:50%;background:#C87F0A;margin-top:14px;flex:none"></div>
+        <div style="flex:1;width:0;border-left:2px solid #DCE2DE"></div>
+      </div>
+      <div style="flex:1;min-width:0;margin-bottom:8px;padding:12px 13px;background:#fff;border:1.5px solid #EBD9B4;border-radius:14px">
+        <div style="display:flex;gap:8px;align-items:flex-start">
+          <div style="flex:1;min-width:0">
+            <div style="font-size:14.5px;font-weight:650;line-height:1.25;text-wrap:pretty">永樂布業商場二樓・布料選購</div>
+            <div style="font-size:11.5px;color:#6B7A74;margin-top:3px;line-height:1.35">Second floor, fabric stalls</div>
+          </div>
+          <div style="flex:none;padding:3px 7px;border-radius:6px;background:#E6EFEB;color:#1F6F5C;font-size:9.5px;font-weight:800;letter-spacing:.04em;white-space:nowrap">MAIN 4</div>
+        </div>
+        <div style="margin-top:10px;padding:9px 10px;border-radius:10px;background:#FBF1DE">
+          <div style="font-size:10.5px;font-weight:800;letter-spacing:.04em;color:#8A5A08">OUT OF ORDER</div>
+          <div style="font-size:11.5px;line-height:1.4;color:#8A5A08;margin-top:4px;text-wrap:pretty">Listed after {{ market }}, which starts at 13:30.</div>
+          <div style="display:flex;gap:6px;flex-wrap:wrap;margin-top:8px">
+            <div style="height:30px;padding:0 10px;border-radius:9px;background:#14201C;color:#fff;font-size:11.5px;font-weight:700;display:flex;align-items:center;white-space:nowrap">Move it back</div>
+            <div style="height:30px;padding:0 10px;border-radius:9px;background:#fff;border:1px solid #E1E5E1;color:#3D4C46;font-size:11.5px;font-weight:650;display:flex;align-items:center;white-space:nowrap">Start 13:45</div>
+          </div>
+        </div>
+      </div>
+    </div>
+
+    <sc-if value="{{ notes }}" hint-placeholder-val="{{ true }}">
+      <div style="display:flex;align-items:center;gap:8px;margin:12px 0 6px">
+        <div style="flex:none;width:18px;height:18px;border-radius:6px;background:#14201C;color:#fff;font-size:9.5px;font-weight:800;display:flex;align-items:center;justify-content:center">B</div>
+        <div style="font-size:10.5px;font-weight:800;letter-spacing:.06em;color:#98A5A0">NAME ON ITS OWN LINE</div>
+      </div>
+    </sc-if>
+
+    <div style="display:flex">
+      <div style="width:56px;flex:none;padding-top:12px;text-align:right;display:flex;flex-direction:column;gap:1px">
+        <div style="font-size:12.5px;font-weight:700;font-variant-numeric:tabular-nums;color:#8A5A08">13:10</div>
+        <div style="font-size:11px;font-weight:650;color:#98A5A0;font-variant-numeric:tabular-nums">14:00</div>
+      </div>
+      <div style="width:20px;flex:none;display:flex;flex-direction:column;align-items:center">
+        <div style="width:11px;height:11px;border-radius:50%;background:#C87F0A;margin-top:14px;flex:none"></div>
+        <div style="flex:1;width:0;border-left:2px solid #DCE2DE"></div>
+      </div>
+      <div style="flex:1;min-width:0;margin-bottom:8px;padding:12px 13px;background:#fff;border:1.5px solid #EBD9B4;border-radius:14px">
+        <div style="display:flex;gap:8px;align-items:flex-start">
+          <div style="flex:1;min-width:0">
+            <div style="font-size:14.5px;font-weight:650;line-height:1.25;text-wrap:pretty">浅草寺仲見世通り食べ歩きコース</div>
+          </div>
+          <div style="flex:none;padding:3px 7px;border-radius:6px;background:#E6EFEB;color:#1F6F5C;font-size:9.5px;font-weight:800;letter-spacing:.04em;white-space:nowrap">MAIN 5</div>
+        </div>
+        <div style="margin-top:10px;padding:9px 10px;border-radius:10px;background:#FBF1DE">
+          <div style="font-size:10.5px;font-weight:800;letter-spacing:.04em;color:#8A5A08">OUT OF ORDER</div>
+          <div style="font-size:11.5px;line-height:1.4;color:#8A5A08;margin-top:4px">Listed after</div>
+          <div style="font-size:13px;font-weight:700;color:#14201C;line-height:1.3;margin-top:2px;text-wrap:pretty">{{ market }}</div>
+          <div style="font-size:11.5px;line-height:1.4;color:#8A5A08;margin-top:2px">which starts at 13:30.</div>
+          <div style="display:flex;gap:6px;flex-wrap:wrap;margin-top:8px">
+            <div style="height:30px;padding:0 10px;border-radius:9px;background:#14201C;color:#fff;font-size:11.5px;font-weight:700;display:flex;align-items:center;white-space:nowrap">Move it back</div>
+            <div style="height:30px;padding:0 10px;border-radius:9px;background:#fff;border:1px solid #E1E5E1;color:#3D4C46;font-size:11.5px;font-weight:650;display:flex;align-items:center;white-space:nowrap">Start 14:00</div>
+          </div>
+        </div>
+      </div>
+    </div>
+
+    <sc-if value="{{ notes }}" hint-placeholder-val="{{ true }}">
+      <div style="display:flex;align-items:center;gap:8px;margin:12px 0 6px">
+        <div style="flex:none;width:18px;height:18px;border-radius:6px;background:#14201C;color:#fff;font-size:9.5px;font-weight:800;display:flex;align-items:center;justify-content:center">C</div>
+        <div style="font-size:10.5px;font-weight:800;letter-spacing:.06em;color:#98A5A0">QUOTED NAME</div>
+      </div>
+    </sc-if>
+
+    <div style="display:flex">
+      <div style="width:56px;flex:none;padding-top:12px;text-align:right;display:flex;flex-direction:column;gap:1px">
+        <div style="font-size:12.5px;font-weight:700;font-variant-numeric:tabular-nums;color:#8A5A08">13:20</div>
+        <div style="font-size:11px;font-weight:650;color:#98A5A0;font-variant-numeric:tabular-nums">14:10</div>
+      </div>
+      <div style="width:20px;flex:none;display:flex;flex-direction:column;align-items:center">
+        <div style="width:11px;height:11px;border-radius:50%;background:#C87F0A;margin-top:14px;flex:none"></div>
+        <div style="flex:1;width:0;border-left:2px solid #DCE2DE"></div>
+      </div>
+      <div style="flex:1;min-width:0;margin-bottom:8px;padding:12px 13px;background:#fff;border:1.5px solid #EBD9B4;border-radius:14px">
+        <div style="display:flex;gap:8px;align-items:flex-start">
+          <div style="flex:1;min-width:0">
+            <div style="font-size:14.5px;font-weight:650;line-height:1.25;text-wrap:pretty">Dihua Street dried-goods row</div>
+          </div>
+          <div style="flex:none;padding:3px 7px;border-radius:6px;background:#E6EFEB;color:#1F6F5C;font-size:9.5px;font-weight:800;letter-spacing:.04em;white-space:nowrap">MAIN 6</div>
+        </div>
+        <div style="margin-top:10px;padding:9px 10px;border-radius:10px;background:#FBF1DE">
+          <div style="font-size:10.5px;font-weight:800;letter-spacing:.04em;color:#8A5A08">OUT OF ORDER</div>
+          <div style="font-size:11.5px;line-height:1.4;color:#8A5A08;margin-top:4px;text-wrap:pretty">Listed after “{{ market }}”, which starts at 13:30.</div>
+          <div style="display:flex;gap:6px;flex-wrap:wrap;margin-top:8px">
+            <div style="height:30px;padding:0 10px;border-radius:9px;background:#14201C;color:#fff;font-size:11.5px;font-weight:700;display:flex;align-items:center;white-space:nowrap">Move it back</div>
+            <div style="height:30px;padding:0 10px;border-radius:9px;background:#fff;border:1px solid #E1E5E1;color:#3D4C46;font-size:11.5px;font-weight:650;display:flex;align-items:center;white-space:nowrap">Start 14:10</div>
+          </div>
+        </div>
+      </div>
+    </div>
+
+    <sc-if value="{{ notes }}" hint-placeholder-val="{{ true }}">
+      <div style="display:flex;align-items:center;gap:8px;margin:12px 0 6px">
+        <div style="flex:none;width:18px;height:18px;border-radius:6px;background:#1F6F5C;color:#fff;font-size:9.5px;font-weight:800;display:flex;align-items:center;justify-content:center">D</div>
+        <div style="font-size:10.5px;font-weight:800;letter-spacing:.06em;color:#1F6F5C">FACT-FIRST · RECOMMENDED</div>
+      </div>
+    </sc-if>
+
+    <div style="display:flex">
+      <div style="width:56px;flex:none;padding-top:12px;text-align:right;display:flex;flex-direction:column;gap:1px">
+        <div style="font-size:12.5px;font-weight:700;font-variant-numeric:tabular-nums;color:#8A5A08">13:25</div>
+        <div style="font-size:11px;font-weight:650;color:#98A5A0;font-variant-numeric:tabular-nums">14:20</div>
+      </div>
+      <div style="width:20px;flex:none;display:flex;flex-direction:column;align-items:center">
+        <div style="width:11px;height:11px;border-radius:50%;background:#C87F0A;margin-top:14px;flex:none"></div>
+        <div style="flex:1;width:0;border-left:2px solid #DCE2DE"></div>
+      </div>
+      <div style="flex:1;min-width:0;margin-bottom:8px;padding:12px 13px;background:#fff;border:1.5px solid #EBD9B4;border-radius:14px">
+        <div style="display:flex;gap:8px;align-items:flex-start">
+          <div style="flex:1;min-width:0">
+            <div style="font-size:14.5px;font-weight:650;line-height:1.25;text-wrap:pretty">霞海城隍廟・月老參拜</div>
+            <div style="font-size:11.5px;color:#6B7A74;margin-top:3px;line-height:1.35">Queue is longest at midday</div>
+          </div>
+          <div style="flex:none;padding:3px 7px;border-radius:6px;background:#E6EFEB;color:#1F6F5C;font-size:9.5px;font-weight:800;letter-spacing:.04em;white-space:nowrap">MAIN 7</div>
+        </div>
+        <div style="margin-top:10px;padding:9px 10px;border-radius:10px;background:#FBF1DE">
+          <div style="font-size:10.5px;font-weight:800;letter-spacing:.04em;color:#8A5A08">LISTED AFTER</div>
+          <div style="font-size:13px;font-weight:700;color:#14201C;line-height:1.3;margin-top:3px;text-wrap:pretty">{{ market }}</div>
+          <div style="font-size:11.5px;line-height:1.4;color:#8A5A08;margin-top:3px;font-variant-numeric:tabular-nums">Starts 13:30 · this stop 13:25</div>
+          <div style="display:flex;gap:6px;flex-wrap:wrap;margin-top:8px">
+            <div style="height:30px;padding:0 10px;border-radius:9px;background:#14201C;color:#fff;font-size:11.5px;font-weight:700;display:flex;align-items:center;white-space:nowrap">Move it back</div>
+            <div style="height:30px;padding:0 10px;border-radius:9px;background:#fff;border:1px solid #E1E5E1;color:#3D4C46;font-size:11.5px;font-weight:650;display:flex;align-items:center;white-space:nowrap">Start 14:20</div>
+          </div>
+        </div>
+      </div>
+    </div>
+
+    <sc-if value="{{ notes }}" hint-placeholder-val="{{ true }}">
+      <div style="display:flex;align-items:center;gap:8px;margin:12px 0 6px">
+        <div style="flex:none;width:18px;height:18px;border-radius:6px;background:#1F6F5C;color:#fff;font-size:9.5px;font-weight:800;display:flex;align-items:center;justify-content:center">D</div>
+        <div style="font-size:10.5px;font-weight:800;letter-spacing:.06em;color:#1F6F5C">SAME SHAPE ON A SUB ROUTE · OVERLAPS</div>
+      </div>
+    </sc-if>
+
+    <div style="display:flex">
+      <div style="width:56px;flex:none;padding-top:12px;text-align:right">
+        <div style="font-size:10px;font-weight:800;letter-spacing:.04em;color:#98A5A0;padding-top:11px">1H 40M</div>
+      </div>
+      <div style="width:20px;flex:none;display:flex;flex-direction:column;align-items:center">
+        <div style="flex:1;width:0;border-left:2px dashed #EBD9B4"></div>
+      </div>
+      <div style="flex:1;min-width:0">
+        <div style="padding:11px 12px;background:#FFFDF7;border:1.5px dashed #E3CFA3;border-radius:14px;margin-bottom:8px">
+          <div style="display:flex;gap:8px;align-items:baseline">
+            <div style="flex:1;min-width:0;font-size:13.5px;font-weight:700;color:#8A5A08;line-height:1.3;text-wrap:pretty">寧夏夜市與雙連朝市小吃巡禮</div>
+            <div style="flex:none;font-size:11px;font-weight:700;color:#8A5A08;font-variant-numeric:tabular-nums">14:00 – 15:40</div>
+          </div>
+          <div style="font-size:11.5px;color:#6B7A74;margin-top:3px;line-height:1.35">4 stops · back by 15:40</div>
+          <div style="margin-top:10px;padding:9px 10px;border-radius:10px;background:#FBF1DE">
+            <div style="font-size:10.5px;font-weight:800;letter-spacing:.04em;color:#8A5A08">OVERLAPS</div>
+            <div style="font-size:13px;font-weight:700;color:#14201C;line-height:1.3;margin-top:3px;text-wrap:pretty">{{ shrine }}</div>
+            <div style="font-size:11.5px;line-height:1.4;color:#8A5A08;margin-top:3px;font-variant-numeric:tabular-nums">Runs to 14:30 · this starts 14:00</div>
+            <div style="display:flex;gap:6px;flex-wrap:wrap;margin-top:8px">
+              <div style="height:30px;padding:0 10px;border-radius:9px;background:#14201C;color:#fff;font-size:11.5px;font-weight:700;display:flex;align-items:center;white-space:nowrap">Leave at 14:30</div>
+              <div style="height:30px;padding:0 10px;border-radius:9px;background:#fff;border:1px solid #E1E5E1;color:#3D4C46;font-size:11.5px;font-weight:650;display:flex;align-items:center;white-space:nowrap">Shorten the shrine</div>
+            </div>
+          </div>
+          <div style="display:flex;gap:6px;flex-wrap:wrap;margin-top:8px">
+            <div style="padding:4px 8px;border-radius:8px;background:#F8E9E9;color:#9B4B4B;font-size:10.5px;font-weight:650;white-space:nowrap">12m over the window</div>
+            <div style="padding:4px 8px;border-radius:8px;background:#F2F3F1;color:#3D4C46;font-size:10.5px;font-weight:650;white-space:nowrap">2.1 km walk</div>
+          </div>
+        </div>
+      </div>
+    </div>
+
+    <sc-if value="{{ notes }}" hint-placeholder-val="{{ true }}">
+      <div style="display:flex;align-items:center;gap:8px;margin:12px 0 6px">
+        <div style="flex:none;width:18px;height:18px;border-radius:6px;background:#1F6F5C;color:#fff;font-size:9.5px;font-weight:800;display:flex;align-items:center;justify-content:center">D</div>
+        <div style="font-size:10.5px;font-weight:800;letter-spacing:.06em;color:#1F6F5C">NO SECOND PARTY · NO INK LINE</div>
+      </div>
+    </sc-if>
+
+    <div style="display:flex">
+      <div style="width:56px;flex:none;padding-top:12px;text-align:right;display:flex;flex-direction:column;gap:1px">
+        <div style="font-size:12.5px;font-weight:700;font-variant-numeric:tabular-nums;color:#8A5A08">16:10</div>
+        <div style="font-size:11px;font-weight:650;color:#8A5A08;font-variant-numeric:tabular-nums">16:10</div>
+      </div>
+      <div style="width:20px;flex:none;display:flex;flex-direction:column;align-items:center">
+        <div style="width:11px;height:11px;border-radius:50%;background:#C87F0A;margin-top:14px;flex:none"></div>
+      </div>
+      <div style="flex:1;min-width:0;margin-bottom:8px;padding:12px 13px;background:#fff;border:1.5px solid #EBD9B4;border-radius:14px">
+        <div style="display:flex;gap:8px;align-items:flex-start">
+          <div style="flex:1;min-width:0">
+            <div style="font-size:14.5px;font-weight:650;line-height:1.25;text-wrap:pretty">迪化街２０７博物館</div>
+          </div>
+          <div style="flex:none;padding:3px 7px;border-radius:6px;background:#E6EFEB;color:#1F6F5C;font-size:9.5px;font-weight:800;letter-spacing:.04em;white-space:nowrap">MAIN 8</div>
+        </div>
+        <div style="margin-top:10px;padding:9px 10px;border-radius:10px;background:#FBF1DE">
+          <div style="font-size:10.5px;font-weight:800;letter-spacing:.04em;color:#8A5A08">ENDS WHEN IT STARTS</div>
+          <div style="font-size:11.5px;line-height:1.4;color:#8A5A08;margin-top:3px;font-variant-numeric:tabular-nums">Starts and ends 16:10</div>
+          <div style="display:flex;gap:6px;flex-wrap:wrap;margin-top:8px">
+            <div style="height:30px;padding:0 10px;border-radius:9px;background:#14201C;color:#fff;font-size:11.5px;font-weight:700;display:flex;align-items:center;white-space:nowrap">Leave the end open</div>
+          </div>
+        </div>
+      </div>
+    </div>
+
+    <sc-if value="{{ notes }}" hint-placeholder-val="{{ true }}">
+      <div style="margin-top:14px;padding:12px 13px;background:#E6EFEB;border-radius:14px">
+        <div style="font-size:10.5px;font-weight:800;letter-spacing:.06em;color:#1F6F5C">THE CALL</div>
+        <div style="font-size:11.5px;line-height:1.5;color:#1F6F5C;margin-top:5px;text-wrap:pretty">D wins. The existing uppercase label already carries the fact, so the sentence around the name is doing no work. Dropping it puts the place name on its own line in ink at 13/700 — the same run in every script, never wrapped mid-sentence, never needing quotes to be found. Two lines instead of three at 390px.</div>
+      </div>
+    </sc-if>
+
+    <div style="height:8px"></div>
+  </div>
+
+  <div style="flex:none;box-sizing:border-box;height:78px;padding:7px 8px 10px;background:rgba(255,255,255,.92);backdrop-filter:blur(14px);border-top:1px solid #E4E8E5;display:flex;align-items:stretch;gap:2px">
+    <div style="flex:1;border-radius:12px;display:flex;flex-direction:column;align-items:center;justify-content:center;gap:4px;color:#9AA6A1">
+      <svg width="20" height="20" viewBox="0 0 20 20" fill="none"><path d="M10 18s6-5.2 6-10A6 6 0 0 0 4 8c0 4.8 6 10 6 10z" stroke="currentColor" stroke-width="1.7" stroke-linejoin="round"></path><circle cx="10" cy="8" r="2.2" stroke="currentColor" stroke-width="1.7"></circle></svg>
+      <div style="font-size:9.5px;font-weight:700">Map</div>
+    </div>
+    <div style="flex:1;border-radius:12px;background:#F2F3F1;display:flex;flex-direction:column;align-items:center;justify-content:center;gap:4px;color:#14201C">
+      <svg width="20" height="20" viewBox="0 0 20 20" fill="none"><g stroke="currentColor" stroke-width="1.7" stroke-linecap="round"><path d="M3 5.5h14M3 10h14M3 14.5h9"></path></g></svg>
+      <div style="font-size:9.5px;font-weight:800">Plan</div>
+    </div>
+    <div style="flex:1;border-radius:12px;display:flex;flex-direction:column;align-items:center;justify-content:center;gap:4px;color:#9AA6A1">
+      <svg width="20" height="20" viewBox="0 0 20 20" fill="none"><path d="M4.5 6.5h11l-1 10h-9l-1-10z" stroke="currentColor" stroke-width="1.7" stroke-linejoin="round"></path><path d="M7.5 6.5V5a2.5 2.5 0 0 1 5 0v1.5" stroke="currentColor" stroke-width="1.7" stroke-linecap="round"></path></svg>
+      <div style="font-size:9.5px;font-weight:700">Shop</div>
+    </div>
+    <div style="flex:1;border-radius:12px;display:flex;flex-direction:column;align-items:center;justify-content:center;gap:4px;color:#9AA6A1">
+      <svg width="20" height="20" viewBox="0 0 20 20" fill="none"><rect x="3.5" y="6" width="13" height="10.5" rx="2" stroke="currentColor" stroke-width="1.7"></rect><path d="M7.5 6V4.5a1.5 1.5 0 0 1 1.5-1.5h2a1.5 1.5 0 0 1 1.5 1.5V6" stroke="currentColor" stroke-width="1.7" stroke-linecap="round"></path></svg>
+      <div style="font-size:9.5px;font-weight:700">Prep</div>
+    </div>
+    <div style="flex:1;border-radius:12px;display:flex;flex-direction:column;align-items:center;justify-content:center;gap:4px;color:#9AA6A1">
+      <svg width="20" height="20" viewBox="0 0 20 20" fill="none"><path d="M13 3.5l3.5 3.5L7 16.5H3.5V13z" stroke="currentColor" stroke-width="1.7" stroke-linejoin="round"></path></svg>
+      <div style="font-size:9.5px;font-weight:700">Log</div>
+    </div>
+  </div>
+</x-dc>
+<script type="text/x-dc" data-dc-script data-props="{&quot;$preview&quot;:{&quot;width&quot;:390,&quot;height&quot;:844},&quot;lang&quot;:{&quot;editor&quot;:&quot;enum&quot;,&quot;options&quot;:[&quot;en&quot;,&quot;zh&quot;,&quot;ja&quot;],&quot;default&quot;:&quot;zh&quot;,&quot;tsType&quot;:&quot;'en'|'zh'|'ja'&quot;,&quot;section&quot;:&quot;Warning name&quot;},&quot;notes&quot;:{&quot;editor&quot;:&quot;boolean&quot;,&quot;default&quot;:true,&quot;tsType&quot;:&quot;boolean&quot;,&quot;section&quot;:&quot;Presentation&quot;,&quot;label&quot;:&quot;Show A–D annotations&quot;},&quot;enName&quot;:{&quot;editor&quot;:&quot;text&quot;,&quot;default&quot;:&quot;Nishi Market&quot;,&quot;tsType&quot;:&quot;string&quot;,&quot;section&quot;:&quot;Warning name&quot;},&quot;zhName&quot;:{&quot;editor&quot;:&quot;text&quot;,&quot;default&quot;:&quot;西市場&quot;,&quot;tsType&quot;:&quot;string&quot;,&quot;section&quot;:&quot;Warning name&quot;},&quot;jaName&quot;:{&quot;editor&quot;:&quot;text&quot;,&quot;default&quot;:&quot;西マーケット&quot;,&quot;tsType&quot;:&quot;string&quot;,&quot;section&quot;:&quot;Warning name&quot;}}">
+const NAMES = {
+  en: { market: 'Nishi Market', shrine: 'Ashgate Shrine' },
+  zh: { market: '西市場', shrine: '灰門神社' },
+  ja: { market: '西マーケット', shrine: '芦門神社' },
+};
+
+const PILL = 'flex:none;height:30px;padding:0 12px;border-radius:10px;font-size:12px;font-weight:600;display:flex;align-items:center;white-space:nowrap;';
+const OFF = PILL + 'background:#fff;border:1px solid #E7EAE7;color:#6B7A74;';
+const ON = PILL + 'background:#14201C;border:1px solid #14201C;color:#fff;';
+
+class Component extends DCLogic {
+  state = { lang: null };
+
+  pick(lang) { this.setState({ lang }); }
+
+  renderVals() {
+    const lang = this.state.lang || this.props.lang || 'zh';
+    const n = NAMES[lang] || NAMES.zh;
+    return {
+      market: this.props[lang + 'Name'] || n.market,
+      shrine: n.shrine,
+      notes: this.props.notes ?? true,
+      pillEn: lang === 'en' ? ON : OFF,
+      pillZh: lang === 'zh' ? ON : OFF,
+      pillJa: lang === 'ja' ? ON : OFF,
+      setEn: () => this.pick('en'),
+      setZh: () => this.pick('zh'),
+      setJa: () => this.pick('ja'),
+    };
+  }
+}
+</script>
+</body>
+</html>

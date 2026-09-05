@@ -1,0 +1,544 @@
+<!DOCTYPE html>
+<html>
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<script src="./support.js"></script>
+</head>
+<body>
+<x-dc>
+<helmet>
+<meta name="design_doc_mode" content="canvas">
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link href="https://fonts.googleapis.com/css2?family=Public+Sans:wght@400;600;700;800&display=swap" rel="stylesheet">
+<style>
+  body { margin:0; background:#E4E6E2; -webkit-font-smoothing:antialiased; }
+  a { color:#1F6F5C; text-decoration:none; }
+  a:hover { color:#14201C; }
+</style>
+</helmet>
+
+<section style="font-family:'Public Sans',system-ui,sans-serif;color:#14201C;padding:44px 48px 64px;display:flex;flex-direction:column;gap:34px;width:2180px;box-sizing:border-box">
+
+  <div style="display:flex;flex-direction:column;gap:9px;max-width:820px">
+    <div style="font-size:10.5px;font-weight:800;letter-spacing:.06em;color:#98A5A0">TRAVEL PLANNER · P0-1 · DESIGN FOR REVIEW</div>
+    <div style="font-size:34px;font-weight:700;letter-spacing:-.025em;line-height:1.1">Role &amp; copy identity</div>
+    <div style="font-size:13.5px;line-height:1.55;color:#3D4C46;text-wrap:pretty">Enforcement stays; the UI starts telling the truth about it. Every frame 390 × 844, light only, built from existing <b>app.css</b> parts — no new component. Written up in <b>docs/design/p0-1-role-and-copy-identity-design.md</b>.</div>
+  </div>
+
+  <div style="display:flex;gap:20px;flex-wrap:wrap">
+    <div style="background:#E6EFEB;border:1px solid #CFE0D9;border-radius:16px;padding:13px 15px;max-width:330px">
+      <div style="font-size:10.5px;font-weight:800;letter-spacing:.06em;color:#5D8C7C;margin-bottom:5px">THE AXIS</div>
+      <div style="font-size:12.5px;line-height:1.5;color:#14201C">Every string describes <b>whose changes go out</b> — never what someone may do to a trip. Everyone edits their own copy, always.</div>
+    </div>
+    <div style="background:#FBF1DE;border:1px solid #EBD9B4;border-radius:16px;padding:13px 15px;max-width:330px">
+      <div style="font-size:10.5px;font-weight:800;letter-spacing:.06em;color:#8A5A08;margin-bottom:5px">THE RULE</div>
+      <div style="font-size:12.5px;line-height:1.5;color:#14201C">Where a capability does not exist, <b>the control does not exist</b>. No disabled primary, no permission dialog, no toast.</div>
+    </div>
+    <div style="background:#fff;border:1px solid #E7EAE7;border-radius:16px;padding:13px 15px;max-width:330px">
+      <div style="font-size:10.5px;font-weight:800;letter-spacing:.06em;color:#98A5A0;margin-bottom:5px">THE MARKER</div>
+      <div style="font-size:12.5px;line-height:1.5;color:#3D4C46">Identity is <b>a person, not a connection</b>. It must never look like a sixth sync state.</div>
+    </div>
+  </div>
+
+  <div style="height:1px;background:#D8DCD8"></div>
+
+  <div style="display:flex;flex-direction:column;gap:14px">
+    <div style="font-size:15px;font-weight:700">A · Joined-copy marker — three alternatives</div>
+    <div style="font-size:12.5px;line-height:1.5;color:#6B7A74;max-width:900px">Two source facts constrain this: <b>.trip-mark</b> already holds the trip's own code, and <b>.trip-meta</b> is overwritten whenever sync is queued or stuck. Anything on that line shares it with sync status.</div>
+    <div style="display:flex;gap:22px;align-items:flex-start">
+      <sc-for list="{{ markers }}" as="m" hint-placeholder-count="3">
+        <div style="display:flex;flex-direction:column;gap:10px;width:430px">
+          <div style="display:flex;align-items:baseline;gap:9px">
+            <div style="font-size:11px;font-weight:800;letter-spacing:.04em;padding:3px 7px;border-radius:7px;background:{{ m.tagBg }};color:{{ m.tagFg }}">{{ m.tag }}</div>
+            <div style="font-size:13.5px;font-weight:700">{{ m.name }}</div>
+          </div>
+          <div style="background:#F2F3F1;border:1px solid #E7EAE7;border-radius:14px;padding:14px;display:flex;flex-direction:column;gap:11px">
+            {{ m.demo }}
+          </div>
+          <div style="display:flex;flex-direction:column;gap:7px">
+            <sc-for list="{{ m.rows }}" as="r" hint-placeholder-count="7">
+              <div style="display:grid;grid-template-columns:112px 1fr;gap:9px;align-items:start">
+                <div style="font-size:10.5px;font-weight:800;letter-spacing:.04em;color:#B4BEB9;padding-top:1px">{{ r.k }}</div>
+                <div style="font-size:11.5px;line-height:1.45;color:{{ r.fg }};text-wrap:pretty">{{ r.v }}</div>
+              </div>
+            </sc-for>
+          </div>
+        </div>
+      </sc-for>
+    </div>
+    <div style="background:#E6EFEB;border:1px solid #CFE0D9;border-radius:16px;padding:14px 16px;max-width:1360px;display:flex;gap:13px;align-items:flex-start">
+      <div style="font-size:10.5px;font-weight:800;letter-spacing:.06em;color:#5D8C7C;flex:0 0 auto;padding-top:2px">RECOMMENDED · 3</div>
+      <div style="font-size:12.5px;line-height:1.5;color:#14201C;text-wrap:pretty">The only alternative that is script- and length-proof, and the only one that reads as a person rather than a connection. <b>.who-mark</b> is already the app's representation of a human and already handles Han names — 陳美玲 → 陳 rendered correctly in a captured frame. It degrades honestly: on a joined copy with a stuck outbox the sync warning takes the meta line and provenance disappears for the duration. That is the right priority, not a defect. <b>Accepted limitation:</b> no element names the trip on all five tabs, so the marker appears wherever the trip already identifies itself — not omnipresent, because that would need a new bar.</div>
+    </div>
+  </div>
+
+  <div style="height:1px;background:#D8DCD8"></div>
+
+  <div style="display:flex;flex-direction:column;gap:14px">
+    <div style="font-size:15px;font-weight:700">B · The screens</div>
+    <div style="display:flex;gap:26px;align-items:flex-start;flex-wrap:wrap">
+      <sc-for list="{{ frames }}" as="f" hint-placeholder-count="6">
+        <div style="display:flex;flex-direction:column;gap:9px;width:390px">
+          <div style="display:flex;flex-direction:column;gap:3px">
+            <div style="font-size:10.5px;font-weight:800;letter-spacing:.06em;color:#98A5A0">{{ f.eyebrow }}</div>
+            <div style="font-size:14.5px;font-weight:700;line-height:1.25">{{ f.title }}</div>
+            <div style="font-size:11.5px;line-height:1.45;color:#6B7A74;text-wrap:pretty">{{ f.note }}</div>
+          </div>
+          <div style="width:390px;height:844px;background:#F2F3F1;border:1px solid #D8DCD8;border-radius:6px;overflow:hidden;position:relative;flex:0 0 auto">
+            {{ f.body }}
+          </div>
+          <sc-if value="{{ f.callout }}" hint-placeholder-val="{{ true }}">
+            <div style="background:#fff;border:1px solid #E7EAE7;border-radius:12px;padding:11px 12px;font-size:11.5px;line-height:1.5;color:#3D4C46;text-wrap:pretty">{{ f.callout }}</div>
+          </sc-if>
+          <sc-if value="{{ f.hasCopy }}" hint-placeholder-val="{{ true }}">
+            <div style="background:#fff;border:1px solid #E7EAE7;border-radius:12px;padding:12px;display:flex;flex-direction:column;gap:9px">
+              <div style="font-size:10.5px;font-weight:800;letter-spacing:.06em;color:#98A5A0">PROPOSED COPY — EDIT HERE</div>
+              <sc-for list="{{ f.copy }}" as="c" hint-placeholder-count="3">
+                <div style="display:flex;flex-direction:column;gap:2px">
+                  <div style="font-size:10px;font-weight:800;letter-spacing:.04em;color:#B4BEB9">{{ c.slot }}</div>
+                  <div style="font-size:12px;line-height:1.5;color:#14201C;text-wrap:pretty">{{ c.text }}</div>
+                </div>
+              </sc-for>
+            </div>
+          </sc-if>
+        </div>
+      </sc-for>
+    </div>
+  </div>
+
+  <div style="height:1px;background:#D8DCD8"></div>
+
+  <div style="display:flex;flex-direction:column;gap:14px">
+    <div style="font-size:15px;font-weight:700">C · Terminology</div>
+    <div style="font-size:12.5px;line-height:1.5;color:#6B7A74;max-width:900px">Assessed against the product model. <b>The labels are sound; the framing around them is not.</b> Three copy changes and one added line fix the inconsistency — no role is renamed and no role id changes.</div>
+    <div style="background:#fff;border:1px solid #E7EAE7;border-radius:16px;overflow:hidden;max-width:1500px">
+      <div style="display:grid;grid-template-columns:320px 150px 1fr;gap:16px;padding:10px 16px;background:#FAFBFA;border-bottom:1px solid #E7EAE7">
+        <div style="font-size:10.5px;font-weight:800;letter-spacing:.06em;color:#98A5A0">CURRENT STRING</div>
+        <div style="font-size:10.5px;font-weight:800;letter-spacing:.06em;color:#98A5A0">VERDICT</div>
+        <div style="font-size:10.5px;font-weight:800;letter-spacing:.06em;color:#98A5A0">WHY / FINAL WORDING</div>
+      </div>
+      <sc-for list="{{ terms }}" as="t" hint-placeholder-count="9">
+        <div style="display:grid;grid-template-columns:320px 150px 1fr;gap:16px;padding:11px 16px;border-bottom:1px solid #F0F2F0;align-items:start">
+          <div style="display:flex;flex-direction:column;gap:2px">
+            <div style="font-size:12.5px;font-weight:650;color:#14201C">{{ t.s }}</div>
+            <div style="font-size:10.5px;color:#B4BEB9">{{ t.where }}</div>
+          </div>
+          <div style="font-size:10.5px;font-weight:800;letter-spacing:.04em;padding:3px 8px;border-radius:7px;text-align:center;background:{{ t.bg }};color:{{ t.fg }};justify-self:start">{{ t.verdict }}</div>
+          <div style="font-size:11.5px;line-height:1.45;color:#3D4C46;text-wrap:pretty">{{ t.why }}</div>
+        </div>
+      </sc-for>
+    </div>
+  </div>
+
+  <div style="background:#14201C;border-radius:18px;padding:20px 22px;display:flex;flex-direction:column;gap:12px;max-width:1500px">
+    <div style="font-size:10.5px;font-weight:800;letter-spacing:.06em;color:#8FB3A6">RECORDED, NOT SOLVED</div>
+    <div style="display:grid;grid-template-columns:1fr 1fr;gap:16px">
+      <sc-for list="{{ open }}" as="o" hint-placeholder-count="6">
+        <div style="display:flex;gap:10px;align-items:flex-start">
+          <div style="width:5px;height:5px;border-radius:50%;background:{{ o.dot }};flex:0 0 auto;margin-top:6px"></div>
+          <div style="font-size:11.5px;line-height:1.5;color:#C8D6D0;text-wrap:pretty">{{ o.t }}</div>
+        </div>
+      </sc-for>
+    </div>
+  </div>
+
+</section>
+</x-dc>
+<script type="text/x-dc" data-dc-script data-props="{&quot;$preview&quot;:{&quot;width&quot;:2180,&quot;height&quot;:2400}}">
+class Component extends DCLogic {
+  // ---------- shared primitives, literal app.css values ----------
+  whoMark(ch, size) {
+    const s = size || 22;
+    return React.createElement('span', { style: {
+      width: s + 'px', height: s + 'px', borderRadius: '50%', background: '#1F6F5C', color: '#fff',
+      fontSize: (s <= 15 ? 8.5 : s <= 19 ? 10 : 11.5) + 'px', fontWeight: 800,
+      display: 'inline-flex', alignItems: 'center', justifyContent: 'center', flex: '0 0 auto',
+    } }, ch);
+  }
+
+  caret() {
+    return React.createElement('svg', { width: 9, height: 9, viewBox: '0 0 10 10', style: { marginLeft: '4px', flex: '0 0 auto' } },
+      React.createElement('path', { d: 'M2 4l3 3 3-3', stroke: '#98A5A0', strokeWidth: 1.6, fill: 'none', strokeLinecap: 'round' }));
+  }
+
+  syncDot(kind) {
+    const c = { jade: '#1F6F5C', amber: '#C87F0A', red: '#9B4B4B', grey: '#B4BEB9' }[kind || 'jade'];
+    return React.createElement('span', { style: { width: '7px', height: '7px', borderRadius: '50%', background: c, flex: '0 0 auto' } });
+  }
+
+  // .trip-chip, with an optional provenance line
+  tripChip({ from, warn }) {
+    const meta = warn
+      ? React.createElement('div', { style: { fontSize: '10.5px', fontWeight: 650, color: '#8A5A08' } }, warn)
+      : React.createElement('div', { style: { fontSize: '10.5px', fontWeight: 650, color: '#98A5A0', display: 'flex', alignItems: 'center', gap: '5px', minWidth: 0 } },
+          from && from.initial ? this.whoMark(from.initial, 14) : null,
+          React.createElement('span', { style: { overflow: 'hidden', textOverflow: 'ellipsis', whiteSpace: 'nowrap' } },
+            from ? 'from ' + from.name + ' · Day 3 of 6' : 'Day 3 of 6 · Mar 14'));
+
+    return React.createElement('div', { style: {
+      background: '#fff', borderRadius: '14px', padding: '0 11px', height: '44px',
+      display: 'flex', alignItems: 'center', gap: '9px', boxShadow: '0 2px 10px rgba(20,32,28,.08)',
+    } },
+      React.createElement('div', { style: {
+        width: '26px', height: '26px', borderRadius: '9px', background: '#E6EFEB', color: '#1F6F5C',
+        fontSize: '10.5px', fontWeight: 800, display: 'flex', alignItems: 'center', justifyContent: 'center', flex: '0 0 auto',
+      } }, 'MC'),
+      React.createElement('div', { style: { flex: '1 1 auto', minWidth: 0 } },
+        React.createElement('div', { style: { fontSize: '13px', fontWeight: 700, overflow: 'hidden', textOverflow: 'ellipsis', whiteSpace: 'nowrap' } }, 'Meridian City · Group Tour'),
+        meta),
+      this.syncDot(warn ? 'amber' : 'jade'));
+  }
+
+  eyebrow(text, tone) {
+    const fg = tone === 'jade' ? '#5D8C7C' : tone === 'amber' ? '#8A5A08' : '#98A5A0';
+    return React.createElement('div', { style: { fontSize: '10.5px', fontWeight: 800, letterSpacing: '.06em', color: fg, textTransform: 'uppercase' } }, text);
+  }
+
+  pushHead(title, sub, mark) {
+    return React.createElement('div', { style: { background: '#fff', borderBottom: '1px solid #E7EAE7', padding: '16px 16px 12px', display: 'flex', gap: '10px', alignItems: 'center' } },
+      React.createElement('svg', { width: 20, height: 20, viewBox: '0 0 20 20', style: { flex: '0 0 auto' } },
+        React.createElement('path', { d: 'M12.5 4L6.5 10l6 6', stroke: '#14201C', strokeWidth: 1.9, fill: 'none', strokeLinecap: 'round', strokeLinejoin: 'round' })),
+      React.createElement('div', { style: { minWidth: 0 } },
+        React.createElement('div', { style: { fontSize: '17px', fontWeight: 700, letterSpacing: '-.01em' } }, title),
+        React.createElement('div', { style: { fontSize: '11.5px', color: '#6B7A74', display: 'flex', alignItems: 'center', gap: '5px', marginTop: '1px' } },
+          mark ? this.whoMark(mark, 14) : null,
+          React.createElement('span', null, sub))));
+  }
+
+  badge(text, tone) {
+    const map = { bone: ['#F2F3F1', '#6B7A74'], jade: ['#E6EFEB', '#5D8C7C'] };
+    const [bg, fg] = map[tone || 'bone'];
+    return React.createElement('span', { style: {
+      fontSize: '9.5px', fontWeight: 800, letterSpacing: '.04em', textTransform: 'uppercase',
+      background: bg, color: fg, borderRadius: '6px', padding: '3px 6px', flex: '0 0 auto', whiteSpace: 'nowrap',
+    } }, text);
+  }
+
+  chip(text, withCaret) {
+    return React.createElement('span', { style: {
+      fontSize: '10.5px', fontWeight: 650, background: '#F2F3F1', color: '#3D4C46',
+      borderRadius: '8px', padding: '5px 8px', display: 'inline-flex', alignItems: 'center', flex: '0 0 auto', whiteSpace: 'nowrap',
+    } }, text, withCaret ? this.caret() : null);
+  }
+
+  btn(label, kind, opts) {
+    const o = opts || {};
+    const style = {
+      height: '42px', borderRadius: '12px', fontSize: '13px', fontWeight: 700,
+      display: 'flex', alignItems: 'center', justifyContent: 'center', flex: o.grow ? '1 1 auto' : '0 0 auto',
+      padding: '0 16px', boxSizing: 'border-box', width: o.wide ? '100%' : 'auto',
+    };
+    if (kind === 'ink') { style.background = '#14201C'; style.color = '#fff'; }
+    if (kind === 'jade') { style.background = '#1F6F5C'; style.color = '#fff'; }
+    if (kind === 'ghost') { style.background = '#F2F3F1'; style.color = '#14201C'; style.border = '1px solid #E1E5E1'; style.fontWeight = 650; }
+    if (o.disabled) { style.opacity = 0.45; }
+    return React.createElement('div', { style }, label);
+  }
+
+  personRow(p, mode) {
+    // mode: 'owner' -> chip + caret ; 'guest' -> flat badge
+    const right = p.role === 'owner'
+      ? this.badge('OWNER')
+      : (mode === 'owner' ? this.chip(p.label, true) : this.badge(p.label));
+    return React.createElement('div', { style: { display: 'flex', alignItems: 'center', gap: '10px', padding: '11px 12px', borderTop: p.first ? 'none' : '1px solid #F0F2F0' } },
+      this.whoMark(p.initial, 30),
+      React.createElement('div', { style: { flex: '1 1 auto', minWidth: 0 } },
+        React.createElement('div', { style: { fontSize: '13.5px', fontWeight: 650, display: 'flex', alignItems: 'center', gap: '6px' } },
+          React.createElement('span', { style: { overflow: 'hidden', textOverflow: 'ellipsis', whiteSpace: 'nowrap' } }, p.name),
+          p.me ? React.createElement('span', { style: { fontSize: '9.5px', fontWeight: 800, letterSpacing: '.04em', background: '#EFF1EE', color: '#6B7A74', borderRadius: '6px', padding: '2px 5px' } }, 'YOU') : null),
+        React.createElement('div', { style: { fontSize: '11px', color: '#98A5A0', marginTop: '1px' } }, p.sub)),
+      right);
+  }
+
+  hintJade(eyebrowText, body) {
+    return React.createElement('div', { style: { background: '#E6EFEB', border: '1px solid #CFE0D9', borderRadius: '16px', padding: '13px 14px', display: 'flex', flexDirection: 'column', gap: '5px' } },
+      eyebrowText ? this.eyebrow(eyebrowText, 'jade') : null,
+      React.createElement('div', { style: { fontSize: '12.5px', lineHeight: 1.5, color: '#14201C' } }, body));
+  }
+
+  scroll(children) {
+    return React.createElement('div', { style: { padding: '14px 16px 24px', display: 'flex', flexDirection: 'column', gap: '12px' } }, children);
+  }
+
+  // ---------- frames ----------
+  frameShareOffer() {
+    const radio = (on, title, sub) => React.createElement('div', { style: { display: 'flex', gap: '11px', alignItems: 'flex-start', padding: '12px', borderTop: on ? 'none' : '1px solid #F0F2F0' } },
+      React.createElement('span', { style: { width: '16px', height: '16px', borderRadius: '50%', border: on ? '5px solid #1F6F5C' : '1.6px solid #D2D8D3', background: '#fff', boxSizing: 'border-box', flex: '0 0 auto', marginTop: '1px' } }),
+      React.createElement('div', null,
+        React.createElement('div', { style: { fontSize: '13.5px', fontWeight: 650 } }, title),
+        React.createElement('div', { style: { fontSize: '11px', color: '#98A5A0', lineHeight: 1.45, marginTop: '2px' } }, sub)));
+
+    return React.createElement('div', null,
+      this.pushHead('Share this trip', 'Meridian City · Group Tour'),
+      this.scroll([
+        React.createElement('div', { key: 'a' }, this.eyebrow('Who has it')),
+        React.createElement('div', { key: 'b', style: { background: '#fff', borderRadius: '16px', overflow: 'hidden' } },
+          this.personRow({ initial: 'Y', name: 'You', sub: 'Made this trip', role: 'owner', first: true, me: true }, 'owner'),
+          React.createElement('div', { style: { fontSize: '12px', color: '#98A5A0', padding: '10px 12px' } }, 'Nobody else, yet.')),
+        React.createElement('div', { key: 'c', style: { marginTop: '2px' } }, this.eyebrow('Sending updates')),
+        React.createElement('div', { key: 'd', style: { fontSize: '11px', lineHeight: 1.45, color: '#98A5A0' } },
+          'Everyone who joins gets their own copy and can change it however they like. This only decides whose changes go out to everyone else.'),
+        React.createElement('div', { key: 'e', style: { background: '#fff', borderRadius: '16px', overflow: 'hidden' } },
+          radio(true, 'Can send updates', 'Their changes go out to everyone on the trip.'),
+          radio(false, 'Receives updates', 'They get your updates, and change their own copy however they like.')),
+        React.createElement('div', { key: 'f', style: { fontSize: '11px', color: '#98A5A0' } }, 'You can change this per person afterwards.'),
+        React.createElement('div', { key: 'g', style: { marginTop: '2px' } }, this.eyebrow('Link stops working after')),
+        React.createElement('div', { key: 'h', style: { display: 'flex', gap: '7px' } },
+          ['24 hours', '7 days', 'Until the trip ends'].map((t, i) => React.createElement('span', { key: t, style: {
+            height: '32px', borderRadius: '10px', padding: '0 11px', fontSize: '12.5px', fontWeight: 650,
+            display: 'flex', alignItems: 'center', background: i === 1 ? '#14201C' : '#F2F3F1', color: i === 1 ? '#fff' : '#3D4C46',
+          } }, t))),
+      ]));
+  }
+
+  frameShareOwner() {
+    return React.createElement('div', null,
+      this.pushHead('Share this trip', 'Meridian City · Group Tour · 3 people'),
+      this.scroll([
+        React.createElement('div', { key: 'a' }, this.eyebrow('Who has it')),
+        React.createElement('div', { key: 'b', style: { background: '#fff', borderRadius: '16px', overflow: 'hidden' } },
+          this.personRow({ initial: 'Y', name: 'You', sub: 'Made this trip', role: 'owner', first: true, me: true }, 'owner'),
+          this.personRow({ initial: 'A', name: 'Ana', sub: 'Joined 1 Sept', label: 'Can send updates' }, 'owner'),
+          this.personRow({ initial: '陳', name: '陳美玲', sub: 'Joined 2 Sept', label: 'Receives updates' }, 'owner')),
+        React.createElement('div', { key: 'c', style: { border: '1.5px dashed #C9D0CB', borderRadius: '14px', height: '48px', display: 'flex', alignItems: 'center', justifyContent: 'center', fontSize: '13px', fontWeight: 700 } }, '+ Add someone'),
+        React.createElement('div', { key: 'd', style: { fontSize: '11px', lineHeight: 1.45, color: '#98A5A0' } },
+          'Swipe a person left to remove them. They keep the copy of the itinerary they already have, and stop receiving your updates.'),
+        React.createElement('div', { key: 'e', style: { marginTop: '2px' } }, this.eyebrow('Your changes')),
+        React.createElement('div', { key: 'f', style: { background: '#fff', borderRadius: '16px', padding: '14px', display: 'flex', flexDirection: 'column', gap: '10px' } },
+          React.createElement('div', { style: { fontSize: '11px', color: '#B4BEB9', lineHeight: 1.45, fontStyle: 'italic' } }, 'Existing copy from share.js sending() — unchanged by this design, not re-specified here.'),
+          this.btn('Send 3 changes', 'jade', { wide: true })),
+      ]));
+  }
+
+  frameShareGuest() {
+    return React.createElement('div', null,
+      this.pushHead('Share this trip', 'Meridian City · Group Tour · 3 people', 'A'),
+      this.scroll([
+        React.createElement('div', { key: 'a' }, this.eyebrow('Who has it')),
+        React.createElement('div', { key: 'b', style: { background: '#fff', borderRadius: '16px', overflow: 'hidden' } },
+          this.personRow({ initial: 'A', name: 'Ana', sub: 'Made this trip', role: 'owner', first: true }, 'guest'),
+          this.personRow({ initial: 'Y', name: 'You', sub: 'Joined 1 Sept', label: 'Can send updates', me: true }, 'guest'),
+          this.personRow({ initial: '陳', name: '陳美玲', sub: 'Joined 2 Sept', label: 'Receives updates' }, 'guest')),
+        React.createElement('div', { key: 'c' }, this.hintJade(null, 'Ana looks after who is on this trip and sends its updates.')),
+        React.createElement('div', { key: 'e', style: { marginTop: '2px' } }, this.eyebrow('Your changes')),
+        React.createElement('div', { key: 'f', style: { background: '#fff', borderRadius: '16px', padding: '14px', display: 'flex', flexDirection: 'column', gap: '10px' } },
+          React.createElement('div', { style: { fontSize: '11px', color: '#B4BEB9', lineHeight: 1.45, fontStyle: 'italic' } }, 'Existing copy from share.js sending() — unchanged by this design, not re-specified here.'),
+          this.btn('Send 2 changes', 'jade', { wide: true })),
+      ]));
+  }
+
+  frameShareRead() {
+    return React.createElement('div', null,
+      this.pushHead('Share this trip', 'Meridian City · Group Tour · 3 people', 'A'),
+      this.scroll([
+        React.createElement('div', { key: 'a' }, this.eyebrow('Who has it')),
+        React.createElement('div', { key: 'b', style: { background: '#fff', borderRadius: '16px', overflow: 'hidden' } },
+          this.personRow({ initial: 'A', name: 'Ana', sub: 'Made this trip', role: 'owner', first: true }, 'guest'),
+          this.personRow({ initial: 'R', name: 'Ravi', sub: 'Joined 1 Sept', label: 'Can send updates' }, 'guest'),
+          this.personRow({ initial: 'Y', name: 'You', sub: 'Joined 2 Sept', label: 'Receives updates', me: true }, 'guest')),
+        React.createElement('div', { key: 'c' }, this.hintJade(null, 'Ana looks after who is on this trip and sends its updates.')),
+        React.createElement('div', { key: 'd', style: { marginTop: '2px' } }, this.eyebrow('Your changes')),
+        React.createElement('div', { key: 'e' }, this.hintJade('Your changes', 'Everything you change stays on your copy. Ana sends the updates for this trip.')),
+      ]));
+  }
+
+  frameTripsCard() {
+    const card = (opts) => React.createElement('div', { style: { background: '#fff', borderRadius: '15px', border: '1.5px solid ' + (opts.active ? '#CFE0D9' : '#E7EAE7'), padding: '12px', display: 'flex', flexDirection: 'column', gap: '9px' } },
+      React.createElement('div', { style: { display: 'flex', gap: '11px', alignItems: 'center' } },
+        React.createElement('div', { style: { width: '44px', height: '44px', borderRadius: '12px', background: 'repeating-linear-gradient(135deg,#E2E6E2 0 10px,#DADFDA 10px 20px)', flex: '0 0 auto' } }),
+        React.createElement('div', { style: { flex: '1 1 auto', minWidth: 0 } },
+          React.createElement('div', { style: { fontSize: '14px', fontWeight: 700, overflow: 'hidden', textOverflow: 'ellipsis', whiteSpace: 'nowrap' } }, opts.name),
+          React.createElement('div', { style: { fontSize: '11px', color: '#98A5A0', display: 'flex', alignItems: 'center', gap: '5px', marginTop: '2px', minWidth: 0 } },
+            opts.from ? this.whoMark(opts.from.initial, 18) : null,
+            React.createElement('span', { style: { overflow: 'hidden', textOverflow: 'ellipsis', whiteSpace: 'nowrap' } },
+              (opts.from ? 'from ' + opts.from.name + ' · ' : '') + '12 Mar – 17 Mar · 6 days')))),
+      React.createElement('div', { style: { display: 'flex', gap: '6px', flexWrap: 'wrap' } },
+        ['7 stops', '¥2,400 spent', '3 notes'].map((t) => React.createElement('span', { key: t, style: { fontSize: '10.5px', fontWeight: 650, background: '#F2F3F1', color: '#3D4C46', borderRadius: '8px', padding: '4px 7px' } }, t))));
+
+    return React.createElement('div', null,
+      React.createElement('div', { style: { background: '#fff', borderBottom: '1px solid #E7EAE7', padding: '18px 16px 12px' } },
+        React.createElement('div', { style: { fontSize: '24px', fontWeight: 700, letterSpacing: '-.02em' } }, 'My trips'),
+        React.createElement('div', { style: { fontSize: '12px', color: '#98A5A0', marginTop: '1px' } }, '3 trips')),
+      this.scroll([
+        React.createElement('div', { key: 'l', style: { fontSize: '11px', color: '#B4BEB9', lineHeight: 1.45 } }, 'A trip you were given carries the mark of whoever it came from. Your own trips carry nothing.'),
+        React.createElement('div', { key: 'a' }, card({ name: 'Meridian City · Group Tour', from: { initial: 'A', name: 'Ana' }, active: true })),
+        React.createElement('div', { key: 'b' }, card({ name: '台北・大稻埕與迪化街', from: { initial: '陳', name: '陳美玲' } })),
+        React.createElement('div', { key: 'c' }, card({ name: 'Hokkaido, February', from: { initial: 'A', name: 'Alexandra Fitzgerald-Moreau' } })),
+        React.createElement('div', { key: 'd' }, card({ name: 'Lisbon, on my own' })),
+        React.createElement('div', { key: 'e', style: { fontSize: '11px', color: '#B4BEB9', lineHeight: 1.45 } }, 'Third card: a long name truncates and the mark survives. Fourth: your own trip, unmarked.'),
+      ]));
+  }
+
+  frameJoinArrival() {
+    const banner = (tone, title, body) => React.createElement('div', { style: { background: '#E6EFEB', border: '1px solid #CFE0D9', borderRadius: '16px', padding: '13px 14px', display: 'flex', flexDirection: 'column', gap: '5px' } },
+      React.createElement('div', { style: { display: 'flex', alignItems: 'center', gap: '7px' } },
+        this.eyebrow('Your copy', 'jade'),
+        React.createElement('div', { style: { flex: '1 1 auto' } }),
+        React.createElement('span', { style: { fontSize: '11px', color: '#5D8C7C', fontWeight: 650 } }, 'Dismiss')),
+      React.createElement('div', { style: { fontSize: '12.5px', lineHeight: 1.5, color: '#14201C' } }, body),
+      React.createElement('div', { style: { fontSize: '11px', color: '#5D8C7C', display: 'flex', alignItems: 'center', gap: '5px', marginTop: '1px' } },
+        this.whoMark('A', 16), React.createElement('span', null, tone)));
+
+    return React.createElement('div', null,
+      React.createElement('div', { style: { padding: '14px 16px 0' } }, this.tripChip({ from: { initial: 'A', name: 'Ana' } })),
+      this.scroll([
+        React.createElement('div', { key: 'h', style: { fontSize: '11px', color: '#B4BEB9', lineHeight: 1.45 } }, 'Shown once, on the first paint after joining. Branches on the role the link granted.'),
+        React.createElement('div', { key: 'a' }, banner('joined 2 Sept · no updates yet', null, 'This copy is yours. Change anything you like — it stays on this phone.')),
+        React.createElement('div', { key: 'b', style: { fontSize: '11px', fontWeight: 800, letterSpacing: '.06em', color: '#98A5A0', marginTop: '4px' } }, 'IF THE LINK GRANTED SENDING'),
+        React.createElement('div', { key: 'c' }, banner('joined 2 Sept · no updates yet', null, 'This copy is yours. When you want everyone else to have your changes, send an update from Share.')),
+        React.createElement('div', { key: 'd', style: { fontSize: '11px', color: '#B4BEB9', lineHeight: 1.45, marginTop: '4px' } },
+          'Uses .arrived — defined in app.css and currently unused by any screen. Not blocking: the app has two blocking interactions and this is not one of them.'),
+        React.createElement('div', { key: 'e', style: { height: '1px', background: '#E7EAE7', margin: '4px 0' } }),
+        React.createElement('div', { key: 'f', style: { fontSize: '11px', fontWeight: 800, letterSpacing: '.06em', color: '#98A5A0' } }, 'LOG — CORRECTED COPY'),
+        React.createElement('div', { key: 'g', style: { background: '#fff', borderRadius: '16px', padding: '14px' } },
+          React.createElement('div', { style: { fontSize: '11px', color: '#98A5A0', lineHeight: 1.45, textAlign: 'center', maxWidth: '280px', margin: '0 auto' } },
+            'The Log is not part of a shared trip. Nothing here is sent to anyone on this trip, and no update can reach it.')),
+        React.createElement('div', { key: 'i', style: { fontSize: '11px', color: '#B4BEB9', lineHeight: 1.45 } },
+          'Kept, not removed — it says what the marker cannot: that this screen is excluded. The current string pairs a singular name with "they" and needs the owner\u2019s gender; this one needs neither.'),
+      ]),
+    );
+  }
+
+  frameChipStates() {
+    return React.createElement('div', null,
+      React.createElement('div', { style: { background: '#fff', borderBottom: '1px solid #E7EAE7', padding: '18px 16px 12px' } },
+        React.createElement('div', { style: { fontSize: '17px', fontWeight: 700 } }, 'Trip chip — every case'),
+        React.createElement('div', { style: { fontSize: '11.5px', color: '#6B7A74', marginTop: '1px' } }, 'Map only. The meta line is shared with sync.')),
+      this.scroll([
+        ['Your own trip', { }, 'No mark. Absence is the signal.'],
+        ['A copy from Ana', { from: { initial: 'A', name: 'Ana' } }, '14px mark + "from Ana", ahead of the day counter.'],
+        ['A copy from 陳美玲', { from: { initial: '陳', name: '陳美玲' } }, 'initialFor() takes the surname character — verified in a captured frame.'],
+        ['A long name', { from: { initial: 'A', name: 'Alexandra Fitzgerald-Moreau' } }, 'Truncates; the mark and "from" always survive.'],
+        ['A joined copy, queued sync', { from: { initial: 'A', name: 'Ana' }, warn: '3 changes waiting for signal' }, 'Identity yields. The warning wins the line — the right priority, and accepted behaviour.'],
+      ].map(([label, opts, note], i) => React.createElement('div', { key: i, style: { display: 'flex', flexDirection: 'column', gap: '6px' } },
+        React.createElement('div', { style: { fontSize: '11px', fontWeight: 800, letterSpacing: '.04em', color: '#98A5A0' } }, label),
+        this.tripChip(opts),
+        React.createElement('div', { style: { fontSize: '11px', color: '#B4BEB9', lineHeight: 1.45 } }, note)))));
+  }
+
+  renderVals() {
+    const markers = [
+      {
+        tag: '1', tagBg: '#F2F3F1', tagFg: '#6B7A74', name: '"from Ana" as text in the meta line',
+        demo: this.tripChip({ from: { initial: null, name: 'Ana' } }),
+        rows: [
+          { k: 'COMMUNICATES', v: 'Whose copy this is, in words, where the trip is named.', fg: '#3D4C46' },
+          { k: 'APPEARS', v: 'Map only.', fg: '#3D4C46' },
+          { k: 'NOT', v: 'Role, sync state, whether anything is shared outward.', fg: '#6B7A74' },
+          { k: 'CJK', v: 'Works, but 10.5–11.5px is near the floor for Han legibility.', fg: '#3D4C46' },
+          { k: 'LONG NAMES', v: 'Needs truncation, and pushes out the day/date it shares the line with.', fg: '#9B4B4B' },
+          { k: 'CONFUSION', v: 'High. Shares the line sync takes over, two elements from the sync dot — invites reading as a sixth sync state.', fg: '#9B4B4B' },
+          { k: 'OWNER VS JOINED', v: 'Owner sees the ordinary day/date line; absence is the only signal.', fg: '#3D4C46' },
+        ],
+      },
+      {
+        tag: '2', tagBg: '#F2F3F1', tagFg: '#6B7A74', name: 'A badge on the My trips card',
+        demo: React.createElement('div', { style: { display: 'flex', flexDirection: 'column', gap: '8px' } },
+          React.createElement('div', { style: { background: '#fff', borderRadius: '15px', border: '1.5px solid #E7EAE7', padding: '12px', display: 'flex', alignItems: 'center', gap: '10px' } },
+            React.createElement('div', { style: { width: '38px', height: '38px', borderRadius: '11px', background: 'repeating-linear-gradient(135deg,#E2E6E2 0 10px,#DADFDA 10px 20px)' } }),
+            React.createElement('div', { style: { flex: '1 1 auto' } },
+              React.createElement('div', { style: { fontSize: '14px', fontWeight: 700 } }, 'Meridian City'),
+              React.createElement('div', { style: { fontSize: '11px', color: '#98A5A0' } }, '12 Mar – 17 Mar')),
+            this.badge('Shared copy')),
+          React.createElement('div', { style: { background: '#fff', borderRadius: '15px', border: '1.5px solid #E7EAE7', padding: '12px', display: 'flex', alignItems: 'center', gap: '10px' } },
+            React.createElement('div', { style: { width: '38px', height: '38px', borderRadius: '11px', background: 'repeating-linear-gradient(135deg,#E2E6E2 0 10px,#DADFDA 10px 20px)' } }),
+            React.createElement('div', { style: { flex: '1 1 auto' } },
+              React.createElement('div', { style: { fontSize: '14px', fontWeight: 700 } }, '台北・大稻埕'),
+              React.createElement('div', { style: { fontSize: '11px', color: '#98A5A0' } }, '12 Mar – 17 Mar')),
+            this.badge('from 陳美玲'))),
+        rows: [
+          { k: 'COMMUNICATES', v: 'At a glance, that this card is not an original.', fg: '#3D4C46' },
+          { k: 'APPEARS', v: 'My trips only.', fg: '#3D4C46' },
+          { k: 'NOT', v: 'Who it came from, in the "Shared copy" wording. Never role.', fg: '#6B7A74' },
+          { k: 'CJK', v: 'Fails. .badge is 9.5px/800 uppercase — uppercasing does nothing to Han, and 9.5px Han is not legible.', fg: '#9B4B4B' },
+          { k: 'LONG NAMES', v: 'Fails. A badge is a fixed short token.', fg: '#9B4B4B' },
+          { k: 'CONFUSION', v: 'High on the wording. "Shared copy" is one word from implying live sharing — the single misreading the product exists to prevent.', fg: '#9B4B4B' },
+          { k: 'OWNER VS JOINED', v: 'Clean asymmetry, but on one screen only.', fg: '#3D4C46' },
+        ],
+      },
+      {
+        tag: '3 ✓', tagBg: '#E6EFEB', tagFg: '#1F6F5C', name: 'A .who-mark wherever the trip identifies itself',
+        demo: React.createElement('div', { style: { display: 'flex', flexDirection: 'column', gap: '8px' } },
+          this.tripChip({ from: { initial: 'A', name: 'Ana' } }),
+          this.tripChip({ from: { initial: '陳', name: '陳美玲' } }),
+          this.tripChip({ from: { initial: 'A', name: 'Ana' }, warn: '3 changes waiting for signal' })),
+        rows: [
+          { k: 'COMMUNICATES', v: 'This copy came from a person, and which — carried by the mark that is already the app\u2019s representation of a human (.acct, join-from, Share rows).', fg: '#3D4C46' },
+          { k: 'APPEARS', v: 'My trips card · Map trip chip · Trip settings sub · Share · Join · the Review header.', fg: '#3D4C46' },
+          { k: 'NOT', v: 'Role, sync state, live-ness, or anything travelling outward. All correct — those are other jobs.', fg: '#6B7A74' },
+          { k: 'CJK', v: 'Verified working. initialFor() takes the surname character; 陳美玲 → 陳 rendered correctly in a captured frame.', fg: '#1F6F5C' },
+          { k: 'LONG NAMES', v: 'Immune. The mark is one glyph; the adjoining text truncates and the mark survives.', fg: '#1F6F5C' },
+          { k: 'CONFUSION', v: 'Lowest. Visually a person, not a state — distinct from the 26px trip code mark and the 6px sync dot. "from" reads as past tense.', fg: '#1F6F5C' },
+          { k: 'OWNER VS JOINED', v: 'An owner\u2019s own trip never carries one. Joined copies always do, on every surface that names the trip.', fg: '#3D4C46' },
+        ],
+      },
+    ];
+
+    const frames = [
+      { eyebrow: 'A · SHARE', title: 'Offer phase', note: 'Three copy edits. The eyebrow names the axis, an invariant line sits above both options, and the labels are shown unmodified so both read in the third person.', body: this.frameShareOffer(), callout: 'Today the eyebrow reads "They will be able to" and the first radio reads "Send updates" — an imperative against a third-person, produced by stripping "Can ". The labels were never the problem; the framing was.', hasCopy: true, copy: [
+        { slot: 'EYEBROW', text: 'SENDING UPDATES' },
+        { slot: 'INVARIANT LINE', text: 'Everyone who joins gets their own copy and can change it however they like. This only decides whose changes go out to everyone else.' },
+        { slot: 'OPTION A', text: 'Can send updates — Their changes go out to everyone on the trip.' },
+        { slot: 'OPTION B', text: 'Receives updates — They get your updates, and change their own copy however they like.' },
+        { slot: 'FOOTNOTE (EXISTING, KEEP)', text: 'You can change this per person afterwards.' },
+      ] },
+      { eyebrow: 'B · SHARE', title: 'Manage — owner', note: 'Unchanged, plus a caret on the role chip and YOU on your own row.', body: this.frameShareOwner(), callout: 'A control now looks like a control. Tapping still expands the existing .pick-chip row — no new interaction.', hasCopy: true, copy: [
+        { slot: 'ROLE CONTROL', text: 'Can send updates / Receives updates — as a .chip with a caret' },
+        { slot: 'OWN ROW', text: 'YOU — the existing .mine-chip' },
+        { slot: 'OWNER CAPABILITY LINE (CORRECTED)', text: 'Sends updates, and looks after who is on the trip.' },
+      ] },
+      { eyebrow: 'B · SHARE', title: 'Manage — non-owner who can send', note: 'A view that does not exist today: the screen currently renders the owner\u2019s controls to everyone.', body: this.frameShareGuest(), callout: 'Roles become flat .badge — same family as OWNER, no caret, not focusable. Add-someone, the swipe gesture and the whole link section are gone: on a joined copy every control in that section is already inert.', hasCopy: true, copy: [
+        { slot: 'EXPLAINER', text: 'Ana looks after who is on this trip and sends its updates.' },
+        { slot: 'ROLE DISPLAY', text: 'CAN SEND UPDATES / RECEIVES UPDATES — as a flat .badge' },
+      ] },
+      { eyebrow: 'C · SHARE', title: 'Send — a read user', note: 'The dead primary button, resolved.', body: this.frameShareRead(), callout: 'The button is not disabled, it is absent. A permanently disabled primary is a standing accusation with no fix; the app has no permission dialogs and should not gain one. The jade block names who does send instead — the copy is the subject, the person gets a positive verb.', hasCopy: true, copy: [
+        { slot: 'EYEBROW', text: 'YOUR CHANGES' },
+        { slot: 'BODY', text: 'Everything you change stays on your copy. Ana sends the updates for this trip.' },
+        { slot: 'AND NOTHING ELSE', text: 'No sentence draws attention to the absent button. Naming the absence would re-introduce the refusal in words, which is what principle 2 exists to prevent.' },
+      ] },
+      { eyebrow: 'D · CHROME', title: 'My trips — the marker', note: 'Recommended alternative 3, across four real name cases.', body: this.frameTripsCard(), callout: 'Quiet and secondary by construction: an 18px mark and 11px soft text on the line that already carries the dates.' },
+      { eyebrow: 'D · CHROME', title: 'Trip chip — every case', note: 'Including the one that matters most: what happens when sync needs the line.', body: this.frameChipStates(), callout: 'The last case is the design decision. Provenance is secondary, so it yields to a sync warning and returns when the warning clears. The identity stays on My trips and Trip settings throughout.' },
+      { eyebrow: 'E · JOIN / G · LOG', title: 'Identity hand-off', note: 'Where "this is your copy" first becomes explicit after joining — and the one Log correction.', body: this.frameJoinArrival(), callout: 'The Join screen itself is not redesigned. Only the hand-off is established, and it branches on role so the sentence is true for both. Nothing depends on the banner being read: the marker and the Share explainer carry the same idea.', hasCopy: true, copy: [
+        { slot: 'ARRIVAL EYEBROW', text: 'YOUR COPY' },
+        { slot: 'ARRIVAL — RECEIVES UPDATES', text: 'This copy is yours. Change anything you like — it stays on this phone.' },
+        { slot: 'ARRIVAL — CAN SEND UPDATES', text: 'This copy is yours. When you want everyone else to have your changes, send an update from Share.' },
+        { slot: 'MARKER', text: 'from Ana' },
+        { slot: 'LOG (CORRECTED)', text: 'The Log is not part of a shared trip. Nothing here is sent to anyone on this trip, and no update can reach it.' },
+      ] },
+    ];
+
+    const V = {
+      keep: { verdict: 'KEEP', bg: '#E6EFEB', fg: '#1F6F5C' },
+      change: { verdict: 'CHANGE', bg: '#FBF1DE', fg: '#8A5A08' },
+      hide: { verdict: 'NEVER SURFACE', bg: '#F2F3F1', fg: '#6B7A74' },
+    };
+    const terms = [
+      { s: '"Owner" / OWNER', where: 'label, badge', ...V.keep, why: 'Reads as identity, not as a permission level. Correct.' },
+      { s: '"Sends updates, invites people, and deletes the trip"', where: 'ROLES.owner.can', ...V.change, why: 'Points at a capability the user cannot find where it implies — deletion is a swipe on My trips, and Trip settings offers "Empty this trip". → "Sends updates, and looks after who is on the trip."' },
+      { s: 'edit', where: 'role id', ...V.hide, why: 'Keep the id; never show the word. "Edit" is the one term that must not appear — everyone edits.' },
+      { s: '"Can send updates"', where: 'ROLES.edit.label', ...V.keep, why: 'Accurate and on the right axis.' },
+      { s: '"Can send their changes to everyone else on the trip"', where: 'ROLES.edit.can', ...V.keep, why: 'Fine as it stands.' },
+      { s: 'read', where: 'role id', ...V.hide, why: 'Keep the id; never show the word. "Read" implies read-only, which is false.' },
+      { s: '"Receives updates"', where: 'ROLES.read.label', ...V.keep, why: 'Neutral, on the right axis, does not imply read-only.' },
+      { s: '"Gets updates and can do whatever they like to their own copy"', where: 'ROLES.read.can', ...V.keep, why: 'The best string in the set — the only place the invariant is currently stated.' },
+      { s: '"Send updates"', where: 'offer radio', ...V.change, why: 'The real inconsistency. Stripping "Can " leaves an imperative paired against a third-person, and it reads as an instruction to the reader rather than a description of the invitee. → show "Can send updates".' },
+      { s: '"They will be able to"', where: 'offer eyebrow', ...V.change, why: 'Frames the choice as permissions — the exact misreading to prevent. → "SENDING UPDATES", with the invariant line beneath it.' },
+    ];
+
+    const open = [
+      { dot: '#C87F0A', t: 'removePerson() has no owner guard — it only refuses to remove the owner role, so a non-owner can remove people from their own copy\u2019s list. Harmless to others, silently corrupts their local view. Found while designing this; recorded, not fixed. Not binding the gesture is a UI-level mitigation of a data-layer gap.' },
+      { dot: '#C87F0A', t: 'CAN SEND UPDATES as a 9.5px/800 uppercase badge is the tightest type fit introduced here. Needs a look at 390px before implementation.' },
+      { dot: '#98A5A0', t: 'What the sender sees after sending is still unresolved, and still belongs to the send-update decision. This design leaves the post-send state exactly as it is.' },
+      { dot: '#98A5A0', t: 'Should the Review side keys become ANA\u2019S / MINE rather than THEIRS / YOURS? Deliberately unresolved — a diff-model question for P0-4. Flagged so it is not lost.' },
+      { dot: '#98A5A0', t: 'The edit arrival copy names Share as where an update is sent from. Correct today; if sending ever moves, this string moves with it.' },
+      { dot: '#98A5A0', t: 'D-3 untouched: the three-bullet "What they get" card still appears only after a link exists. It would sit naturally beside the new invariant line, but moving it is a separate decision.' },
+    ];
+
+    return { markers, frames, terms, open };
+  }
+}
+</script>
+</body>
+</html>

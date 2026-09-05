@@ -1,0 +1,278 @@
+<!DOCTYPE html>
+<html>
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<script src="./support.js"></script>
+</head>
+<body>
+<x-dc>
+<helmet>
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link href="https://fonts.googleapis.com/css2?family=Public+Sans:wght@400;600;700;800&display=swap" rel="stylesheet">
+<style>
+  body { margin: 0; background: #E4E6E2; -webkit-font-smoothing: antialiased; }
+  a { color: #1F6F5C; text-decoration: none; }
+  a:hover { color: #14201C; }
+</style>
+</helmet>
+
+<div style="font-family:'Public Sans',system-ui,sans-serif;background:#F2F3F1;color:#14201C;padding:40px 44px 60px;width:1200px;box-sizing:border-box;display:flex;flex-direction:column;gap:28px">
+
+  <div style="display:flex;flex-direction:column;gap:9px">
+    <div style="font-size:10.5px;font-weight:800;letter-spacing:.06em;color:#98A5A0">TRAVEL PLANNER · DESIGN PHASE · COVERAGE AUDIT</div>
+    <div style="font-size:36px;font-weight:700;letter-spacing:-.025em;line-height:1.08">Have we designed and confirmed<br>the whole application?</div>
+    <div style="font-size:13.5px;line-height:1.55;color:#3D4C46;max-width:740px;text-wrap:pretty">Verified against <b>main</b> @ tree <b>1d3df5956fb8</b>, 4 Sep 2026 14:15 UTC. Nothing in the application was changed and no screen was redesigned for this pass. Full record in <b>docs/design/ui-ux-design-coverage.md</b>.</div>
+  </div>
+
+  <div style="display:grid;grid-template-columns:repeat(5,1fr);gap:12px">
+    <div style="background:#fff;border:1px solid #E7EAE7;border-radius:16px;padding:16px 14px;display:flex;flex-direction:column;gap:5px">
+      <div style="font-size:36px;font-weight:700;letter-spacing:-.025em;font-variant-numeric:tabular-nums;line-height:1">{{ totals.rows }}</div>
+      <div style="font-size:11px;font-weight:700;color:#6B7A74;line-height:1.35">screens &amp; flows inventoried</div>
+      <div style="font-size:10.5px;color:#B4BEB9;line-height:1.35">19 routes · 6 chrome surfaces</div>
+    </div>
+    <div style="background:#fff;border:1px solid #E7EAE7;border-radius:16px;padding:16px 14px;display:flex;flex-direction:column;gap:5px">
+      <div style="font-size:36px;font-weight:700;letter-spacing:-.025em;font-variant-numeric:tabular-nums;line-height:1;color:#1F6F5C">34</div>
+      <div style="font-size:11px;font-weight:700;color:#6B7A74;line-height:1.35">behaviour observed running</div>
+      <div style="font-size:10.5px;color:#B4BEB9;line-height:1.35">35 read in source only</div>
+    </div>
+    <div style="background:#fff;border:1px solid #E7EAE7;border-radius:16px;padding:16px 14px;display:flex;flex-direction:column;gap:5px">
+      <div style="font-size:36px;font-weight:700;letter-spacing:-.025em;font-variant-numeric:tabular-nums;line-height:1;color:#9B4B4B">0</div>
+      <div style="font-size:11px;font-weight:700;color:#6B7A74;line-height:1.35">UX confirmed by you</div>
+      <div style="font-size:10.5px;color:#B4BEB9;line-height:1.35">9 designed, awaiting sign-off</div>
+    </div>
+    <div style="background:#fff;border:1px solid #E7EAE7;border-radius:16px;padding:16px 14px;display:flex;flex-direction:column;gap:5px">
+      <div style="font-size:36px;font-weight:700;letter-spacing:-.025em;font-variant-numeric:tabular-nums;line-height:1;color:#9B4B4B">0</div>
+      <div style="font-size:11px;font-weight:700;color:#6B7A74;line-height:1.35">visual design confirmed</div>
+      <div style="font-size:10.5px;color:#B4BEB9;line-height:1.35">{{ totals.captured }} have a captured baseline · {{ totals.unverified }} do not</div>
+    </div>
+    <div style="background:#fff;border:1px solid #E7EAE7;border-radius:16px;padding:16px 14px;display:flex;flex-direction:column;gap:5px">
+      <div style="font-size:36px;font-weight:700;letter-spacing:-.025em;font-variant-numeric:tabular-nums;line-height:1;color:#C87F0A">{{ totals.decision }}</div>
+      <div style="font-size:11px;font-weight:700;color:#6B7A74;line-height:1.35">rows needing a decision</div>
+      <div style="font-size:10.5px;color:#B4BEB9;line-height:1.35">7 P0 · 16 P1 · 10 P2</div>
+    </div>
+  </div>
+
+  <div style="background:#FBF1DE;border:1px solid #EBD9B4;border-radius:16px;padding:15px 16px;display:flex;flex-direction:column;gap:6px">
+    <div style="font-size:10.5px;font-weight:800;letter-spacing:.06em;color:#8A5A08">THE HEADLINE</div>
+    <div style="font-size:13.5px;font-weight:650;line-height:1.5;max-width:920px;text-wrap:pretty">Understanding is nearly complete. Confirmation is at zero. The previous audits established what the app <i>does</i>, not what it <i>should</i> do — and existing code is not treated as confirmation. Separately: the existing design documents are one commit stale, and three of their claims were wrong.</div>
+  </div>
+
+  <div style="display:flex;flex-direction:column;gap:12px">
+    <div style="display:flex;align-items:baseline;gap:12px">
+      <div style="font-size:10.5px;font-weight:800;letter-spacing:.06em;color:#98A5A0">COVERAGE BY AREA</div>
+      <div style="display:flex;gap:14px;align-items:center;margin-left:auto">
+        <div style="display:flex;gap:6px;align-items:center"><span style="width:10px;height:10px;border-radius:3px;background:#1F6F5C;display:block"></span><span style="font-size:10.5px;font-weight:650;color:#6B7A74">baseline captured</span></div>
+        <div style="display:flex;gap:6px;align-items:center"><span style="width:10px;height:10px;border-radius:3px;background:#CBD8D2;display:block"></span><span style="font-size:10.5px;font-weight:650;color:#6B7A74">appearance not verified</span></div>
+        <div style="font-size:10.5px;font-weight:650;color:#B4BEB9;padding-left:4px;border-left:1px solid #E7EAE7;padding-left:14px">decisions overlap both — counted separately</div>
+      </div>
+    </div>
+
+    <div style="background:#fff;border:1px solid #E7EAE7;border-radius:16px;overflow:hidden">
+      <div style="display:grid;grid-template-columns:200px 1fr 104px 296px;gap:16px;align-items:center;padding:10px 16px;background:#FAFBFA;border-bottom:1px solid #E7EAE7">
+        <div style="font-size:10.5px;font-weight:800;letter-spacing:.06em;color:#98A5A0">AREA</div>
+        <div style="font-size:10.5px;font-weight:800;letter-spacing:.06em;color:#98A5A0">VISUAL BASELINE</div>
+        <div style="font-size:10.5px;font-weight:800;letter-spacing:.06em;color:#98A5A0">OPEN</div>
+        <div style="font-size:10.5px;font-weight:800;letter-spacing:.06em;color:#98A5A0">WHAT IS OPEN</div>
+      </div>
+      <sc-for list="{{ areas }}" as="a" hint-placeholder-count="12">
+        <div style="display:grid;grid-template-columns:200px 1fr 104px 296px;gap:16px;align-items:center;padding:12px 16px;border-bottom:1px solid #F0F2F0">
+          <div style="display:flex;flex-direction:column;gap:2px">
+            <div style="font-size:13.5px;font-weight:700">{{ a.name }}</div>
+            <div style="font-size:10.5px;color:#B4BEB9;font-variant-numeric:tabular-nums">{{ a.rowLabel }}</div>
+          </div>
+          <div style="display:flex;flex-direction:column;gap:6px">
+            <div style="display:flex;height:9px;border-radius:5px;overflow:hidden;background:#EDEFEC">
+              <div style="background:#1F6F5C;flex:0 0 {{ a.capturedPct }}"></div>
+              <div style="background:#CBD8D2;flex:0 0 {{ a.unverifiedPct }}"></div>
+            </div>
+            <div style="font-size:10.5px;font-weight:650;color:#98A5A0;font-variant-numeric:tabular-nums">{{ a.mix }}</div>
+          </div>
+          <div style="font-size:10.5px;font-weight:700;padding:4px 8px;border-radius:8px;text-align:center;font-variant-numeric:tabular-nums;background:{{ a.decisionBg }};border:1px solid {{ a.decisionBd }};color:{{ a.decisionFg }}">{{ a.decisionLabel }}</div>
+          <div style="font-size:11.5px;line-height:1.45;color:#3D4C46;text-wrap:pretty">{{ a.open }}</div>
+        </div>
+      </sc-for>
+    </div>
+  </div>
+
+  <div style="display:flex;flex-direction:column;gap:12px">
+    <div style="font-size:10.5px;font-weight:800;letter-spacing:.06em;color:#9B4B4B">BASELINE DRIFT — WHAT THE EXISTING DOCS GET WRONG</div>
+    <div style="display:grid;grid-template-columns:repeat(3,1fr);gap:12px">
+      <div style="background:#F8E9E9;border:1px solid #EBD4D4;border-radius:16px;padding:14px;display:flex;flex-direction:column;gap:6px">
+        <div style="font-size:10.5px;font-weight:800;letter-spacing:.06em;color:#9B4B4B">WRONG · 01</div>
+        <div style="font-size:13px;font-weight:700;line-height:1.35">There is no close-trip or delete-trip on Trip settings</div>
+        <div style="font-size:11.5px;line-height:1.5;color:#3D4C46">The last card is <b>START THIS TRIP FRESH</b> → <b>Empty this trip…</b> with an inline rust confirm. Deleting a trip only happens by swiping it on My trips.</div>
+      </div>
+      <div style="background:#F8E9E9;border:1px solid #EBD4D4;border-radius:16px;padding:14px;display:flex;flex-direction:column;gap:6px">
+        <div style="font-size:10.5px;font-weight:800;letter-spacing:.06em;color:#9B4B4B">WRONG · 02</div>
+        <div style="font-size:13px;font-weight:700;line-height:1.35">Android install is not an open question</div>
+        <div style="font-size:11.5px;line-height:1.5;color:#3D4C46">Three Android and maskable icons have now been committed, and <b>manifest.webmanifest</b> is still missing. Intended, and half-done.</div>
+      </div>
+      <div style="background:#F8E9E9;border:1px solid #EBD4D4;border-radius:16px;padding:14px;display:flex;flex-direction:column;gap:6px">
+        <div style="font-size:10.5px;font-weight:800;letter-spacing:.06em;color:#9B4B4B">WRONG · 03</div>
+        <div style="font-size:13px;font-weight:700;line-height:1.35">The sharing round trip is no longer blocked</div>
+        <div style="font-size:11.5px;line-height:1.5;color:#3D4C46">An emulator harness landed — auth on 9099, Firestore on 8080. Join, review and the <b>published/{code}</b> rules can be exercised locally. Unexercised, not blocked.</div>
+      </div>
+    </div>
+    <div style="background:#fff;border:1px solid #E7EAE7;border-radius:16px;padding:15px 16px;display:flex;flex-direction:column;gap:10px">
+      <div style="font-size:10.5px;font-weight:800;letter-spacing:.06em;color:#C87F0A">NEWLY LANDED, NEVER DESIGNED</div>
+      <div style="display:grid;grid-template-columns:repeat(3,1fr);gap:16px">
+        <div style="display:flex;flex-direction:column;gap:4px">
+          <div style="font-size:13px;font-weight:700">Currency comes from the city</div>
+          <div style="font-size:11.5px;line-height:1.5;color:#3D4C46">A new <b>currency.js</b> infers the trip's currency from the reverse-geocoded country of "City or area". Nothing in the UI says the guess happened, and nothing offers to confirm it — yet it sets every money figure in the trip.</div>
+        </div>
+        <div style="display:flex;flex-direction:column;gap:4px">
+          <div style="font-size:13px;font-weight:700">Three failure notices on the wrong screen</div>
+          <div style="font-size:11.5px;line-height:1.5;color:#3D4C46">Offline, not-found and lookup-failed all write <b>trip.locationNotice</b>, shown only as a rust hint on Trip settings. The mistake is made in the New trip modal, and the app then pushes the user to Paste.</div>
+        </div>
+        <div style="display:flex;flex-direction:column;gap:4px">
+          <div style="font-size:13px;font-weight:700">Cross-tab sync</div>
+          <div style="font-size:11.5px;line-height:1.5;color:#3D4C46">A <b>storage</b> listener now refreshes this tab's sync dot and strip when another tab writes the outbox ledger. Never drawn.</div>
+        </div>
+      </div>
+    </div>
+  </div>
+
+  <div style="display:flex;flex-direction:column;gap:12px">
+    <div style="font-size:10.5px;font-weight:800;letter-spacing:.06em;color:#98A5A0">UNRESOLVED DESIGN DECISIONS</div>
+    <div style="display:flex;flex-direction:column;gap:9px">
+      <sc-for list="{{ decisions }}" as="d" hint-placeholder-count="7">
+        <div style="background:#fff;border:1px solid #E7EAE7;border-radius:16px;padding:14px 16px;display:grid;grid-template-columns:52px 1fr 320px;gap:16px;align-items:start">
+          <div style="font-size:11px;font-weight:800;letter-spacing:.04em;padding:4px 0;color:#fff;background:#9B4B4B;border-radius:7px;text-align:center">{{ d.pri }}</div>
+          <div style="display:flex;flex-direction:column;gap:5px">
+            <div style="font-size:14px;font-weight:700;line-height:1.3">{{ d.title }}</div>
+            <div style="font-size:11.5px;line-height:1.5;color:#6B7A74;text-wrap:pretty"><b style="color:#3D4C46">Today:</b> {{ d.today }}</div>
+            <div style="font-size:11.5px;line-height:1.5;color:#6B7A74;text-wrap:pretty"><b style="color:#3D4C46">Why it matters:</b> {{ d.matters }}</div>
+          </div>
+          <div style="background:#E6EFEB;border:1px solid #CFE0D9;border-radius:12px;padding:11px 12px;display:flex;flex-direction:column;gap:4px">
+            <div style="font-size:10.5px;font-weight:800;letter-spacing:.06em;color:#5D8C7C">TO DECIDE</div>
+            <div style="font-size:11.5px;line-height:1.5;color:#14201C;text-wrap:pretty">{{ d.decide }}</div>
+          </div>
+        </div>
+      </sc-for>
+    </div>
+    <div style="font-size:11.5px;line-height:1.5;color:#98A5A0;padding-left:2px">P1 (16 items) and P2 (10 items) are listed in full in <b>docs/design/ui-ux-design-coverage.md</b> §6. Nothing there should be touched while a P0 is open.</div>
+  </div>
+
+  <div style="background:#14201C;border-radius:18px;padding:20px 22px;display:flex;flex-direction:column;gap:14px">
+    <div style="font-size:10.5px;font-weight:800;letter-spacing:.06em;color:#8FB3A6">RECOMMENDED ORDER</div>
+    <div style="display:grid;grid-template-columns:repeat(3,1fr);gap:14px">
+      <sc-for list="{{ order }}" as="o" hint-placeholder-count="6">
+        <div style="display:flex;gap:11px;align-items:flex-start">
+          <div style="font-size:12.5px;font-weight:800;color:#14201C;background:#A8CFC0;width:22px;height:22px;border-radius:7px;display:flex;align-items:center;justify-content:center;flex:0 0 auto;font-variant-numeric:tabular-nums">{{ o.n }}</div>
+          <div style="display:flex;flex-direction:column;gap:3px">
+            <div style="font-size:13px;font-weight:700;color:#fff;line-height:1.35">{{ o.title }}</div>
+            <div style="font-size:11.5px;line-height:1.5;color:#9FB2AA;text-wrap:pretty">{{ o.body }}</div>
+          </div>
+        </div>
+      </sc-for>
+    </div>
+    <div style="border-top:1px solid #3D4C46;padding-top:13px;font-size:12px;line-height:1.5;color:#C8D6D0;text-wrap:pretty"><b style="color:#fff">Stopping here, as asked.</b> Implementation should not begin until steps 1–4 are confirmed. One process note: the existing design documents went stale in a single commit and three of their claims were wrong before anyone noticed — whatever we confirm should record the tree it was confirmed against.</div>
+  </div>
+
+</div>
+</x-dc>
+<script type="text/x-dc" data-dc-script data-props="{&quot;$preview&quot;:{&quot;width&quot;:1200,&quot;height&quot;:2400}}">
+class Component extends DCLogic {
+  renderVals() {
+    // One row = one matrix row in docs/design/ui-ux-design-coverage.md §2.
+    // `captured` and `unverified` partition `rows`; `decision` overlaps both.
+    const areas = [
+      { name: 'Trips & account', captured: 4, unverified: 3, decision: 4, open: 'Removed-from-a-shared-trip; the forced jump to Paste; the email sign-in return.' },
+      { name: 'Global chrome', captured: 3, unverified: 3, decision: 2, open: 'The one strip slot and its four ranked sources; five sync states in a 6px dot.' },
+      { name: 'Map & the day', captured: 3, unverified: 0, decision: 1, open: 'Offline map and failed map are the same grey canvas.' },
+      { name: 'Planning', captured: 4, unverified: 8, decision: 6, open: 'Empty day (two owners), warning strips, free-time lanes, the vacated slot on a day move.' },
+      { name: 'Sub routes', captured: 0, unverified: 2, decision: 2, open: 'The only self-planning surface in the app, entirely unseen. ok/tight semantics, back-by.' },
+      { name: 'Places', captured: 2, unverified: 5, decision: 3, open: 'Four unseen Destination tabs; a place saved with no position; a dead-end stop.' },
+      { name: 'Lists & money', captured: 3, unverified: 2, decision: 2, open: 'The currency guess; the shopping footer when the list is empty. Spend and Prep captured above the fold only.' },
+      { name: 'Log & notes', captured: 2, unverified: 2, decision: 2, open: 'The Log empty state; no explicit save state in the note editor.' },
+      { name: 'Sharing & review', captured: 3, unverified: 7, decision: 5, open: 'Roles with no UI consequence; what the sender sees; conflict; the whole round trip.' },
+      { name: 'Import', captured: 1, unverified: 3, decision: 2, open: 'The paste review pass — machine-guessed values, per-row editing, never rendered.' },
+      { name: 'Offline & sync', captured: 1, unverified: 3, decision: 1, open: 'Draw-an-area, tile download, and the irreversible discard of stuck changes.' },
+      { name: 'Trip settings', captured: 1, unverified: 4, decision: 2, open: 'Everything below the fold; Empty this trip; the location-lookup failure notice.' },
+    ];
+
+    const withMix = areas.map((a) => {
+      const rows = a.captured + a.unverified;
+      return {
+        ...a,
+        rowLabel: `${rows} ${rows === 1 ? 'row' : 'rows'}`,
+        capturedPct: `${(a.captured / rows) * 100}%`,
+        unverifiedPct: `${(a.unverified / rows) * 100}%`,
+        mix: `${a.captured} captured · ${a.unverified} not verified`,
+        decisionLabel: a.decision ? `${a.decision} decision${a.decision === 1 ? '' : 's'}` : 'none open',
+        decisionBg: a.decision ? '#FBF1DE' : '#F2F3F1',
+        decisionBd: a.decision ? '#EBD9B4' : '#E7EAE7',
+        decisionFg: a.decision ? '#8A5A08' : '#B4BEB9',
+      };
+    });
+
+    const sum = (k) => areas.reduce((n, a) => n + a[k], 0);
+    const totals = {
+      rows: sum('captured') + sum('unverified'),
+      captured: sum('captured'),
+      unverified: sum('unverified'),
+      decision: sum('decision'),
+    };
+
+    const decisions = [
+      {
+        pri: 'P0', title: 'A role has no consequence anywhere in the app',
+        today: 'Share offers "Can send updates" vs "Receives updates" as if it were access control. share.js says a role is "about publishing, not permission" — and no screen renders differently for a joined copy. There is no read-only state in the product.',
+        matters: 'It is the whole explanation of the sharing model. Everyone reads "shared" as live sync, and the labels reinforce exactly the wrong reading.',
+        decide: 'Does a joined copy get a visible identity outside Share and the Log promise line — a marker on the trip chip and trip card? And do the role labels become publishing verbs?',
+      },
+      {
+        pri: 'P0', title: 'The currency guess is invisible',
+        today: 'A new trip infers its currency from the reverse-geocoded country of the city typed in. Nothing says the guess happened. When lookup fails, three notices are written — and shown only on Trip settings, which the user is never sent to.',
+        matters: 'It silently sets every money figure in the trip: the shopping estimates, the spend hero, the conversion rate. Newest behaviour in the app, and the only one with no design at all.',
+        decide: 'Does the New trip modal show and confirm the inferred currency? And where does the lookup failure get reported — at the point it is caused, or where it can be fixed?',
+      },
+      {
+        pri: 'P0', title: 'Sign off the four already-designed areas',
+        today: 'Three design sessions produced the three-tier empty-state system, the warning-strip subject line, and the Review redesign. All are drawn, none are approved, and new-feature-design.md §7 carries eight unanswered questions.',
+        matters: 'Nine matrix rows are waiting on these, and every downstream screen inherits the empty-state grammar. Designing anything else first risks contradicting them.',
+        decide: 'Approve or amend each of the three, and answer the eight open questions — especially the Latin-first font stack scope and the tier-3 copy sign-off.',
+      },
+      {
+        pri: 'P0', title: 'Conflict is not detected in Review',
+        today: 'review.js cannot tell "you changed this too" from "you never touched it", because pendingUpdate() has no base copy to compare against. "Keep mine" sometimes silently discards the other person\u2019s work and sometimes costs nothing.',
+        matters: 'It is the one screen where two people\u2019s work meets. Without it the decision the user is being asked to make is not the decision they think they are making.',
+        decide: 'Is conflict marking in scope? If so, can a base-vs-mine comparison be cheaply derived from the last-applied snapshot version?',
+      },
+      {
+        pri: 'P0', title: 'Pending work has no pattern',
+        today: 'Creating, opening, deleting, joining, saving and importing all set a busy string rendered as an amber text line at the top of a scroller — often nowhere near the control that was pressed. Only the tile download has a real progress bar.',
+        matters: 'Switching trips and joining a trip are the two multi-second waits in the app, and both are the first thing a new user does.',
+        decide: 'One shared pending pattern anchored to the control that started it, with the amber note kept for outcomes only — or leave it as it is and accept the inconsistency.',
+      },
+      {
+        pri: 'P0', title: 'The share \u2192 join \u2192 review round trip has never been seen',
+        today: 'The live invite, the sent-update result, the review entries and the update banner are all source-only. Forty-two matrix rows have no verified appearance, and they cluster in exactly the flows a second person triggers.',
+        matters: 'The join screen is the product\u2019s front door — the first thing anyone who is not the owner ever sees — and no one has looked at it.',
+        decide: 'Approve a verification sprint: render the ten unseen surfaces at 390 \u00d7 844 from the emulator harness, no redesign. Then decide what needs designing.',
+      },
+      {
+        pri: 'P0', title: 'The paste review pass',
+        today: 'The highest-risk flow in the app is unrendered: worked/unread/off/done row variants, a per-row editor, amber input.guessed values, a progress bar, and Review-and-save disabled until every row is ticked.',
+        matters: 'It is the mandatory second step of creating a trip, and it is where a machine\u2019s guesses become the user\u2019s itinerary.',
+        decide: 'Render it first, then decide whether "tick every row" is the right gate and what the done state should say.',
+      },
+    ];
+
+    const order = [
+      { n: '1', title: 'Answer the P0 questions', body: 'Roles, conflict, pending pattern, and sign-off on the four designed areas. Four decisions, no drawing. They change what the existing artboards mean.' },
+      { n: '2', title: 'Answer the currency question', body: 'Newest behaviour, touches every money figure, no design at all. Cheapest high-value decision on the list.' },
+      { n: '3', title: 'Verification sprint', body: 'Render the ten unseen surfaces from the emulator harness at 390 \u00d7 844. No redesign. Closes the largest part of the 42-row appearance gap.' },
+      { n: '4', title: 'Design the sharing round trip', body: 'The one workflow where every remaining P0 lands at once — roles, conflict, the sender\u2019s result, and the tier-3 empty state.' },
+      { n: '5', title: 'Then the P1 content', body: 'Destination tabs \u2192 sub route \u2192 the warning-strip slot \u2192 the two confirm-button destructive actions \u2192 long-content and CJK breadth.' },
+      { n: '6', title: 'P2 last, or never', body: 'Most of the recorded inconsistencies are accidental but harmless and should stay that way until a file is being opened anyway. This is not a CSS cleanup.' },
+    ];
+
+    return { areas: withMix, decisions, order, totals };
+  }
+}
+</script>
+</body>
+</html>

@@ -1,0 +1,462 @@
+<!DOCTYPE html>
+<html>
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<script src="./support.js"></script>
+</head>
+<body>
+<x-dc>
+<helmet data-dc-atomics>
+<meta name="design_doc_mode" content="canvas">
+<style>
+@font-face{font-family:'Public Sans';font-style:normal;font-weight:400;font-display:swap;src:url('web/vendor/fonts/public-sans-latin-400-normal.woff2') format('woff2')}
+@font-face{font-family:'Public Sans';font-style:normal;font-weight:600;font-display:swap;src:url('web/vendor/fonts/public-sans-latin-600-normal.woff2') format('woff2')}
+@font-face{font-family:'Public Sans';font-style:normal;font-weight:700;font-display:swap;src:url('web/vendor/fonts/public-sans-latin-700-normal.woff2') format('woff2')}
+@font-face{font-family:'Public Sans';font-style:normal;font-weight:800;font-display:swap;src:url('web/vendor/fonts/public-sans-latin-800-normal.woff2') format('woff2')}
+body{margin:0;background:#E4E6E2;font-family:'Public Sans',system-ui,sans-serif;color:#14201C;-webkit-font-smoothing:antialiased}
+a{color:#1F6F5C}
+a:hover{color:#14201C}
+</style>
+</helmet>
+
+<section style="padding:44px 48px 36px;border-bottom:1px solid rgba(20,32,28,.1)">
+  <div style="max-width:1180px;display:flex;flex-direction:column;gap:14px">
+    <div style="font-size:10.5px;font-weight:800;letter-spacing:.06em;color:#98A5A0">TRAVEL PLANNER · EXISTING UI · VISUAL BASELINE</div>
+    <div style="font-size:34px;font-weight:700;letter-spacing:-.02em;line-height:1.1">What the current app actually looks like</div>
+    <div style="font-size:14px;line-height:1.6;color:#3D4C46;max-width:820px;text-wrap:pretty">Re-captured from the current <code style="font-family:ui-monospace,Menlo,monospace;font-size:12.5px">web/</code> build at <code style="font-family:ui-monospace,Menlo,monospace;font-size:12.5px">main</code> — the same bundle Firebase Hosting serves at travel-planner-3e0d3.web.app. Nothing here is redesigned, re-spaced or re-coloured: every screen is a screenshot, and every specimen in the pattern boards is drawn with the literal values in <code style="font-family:ui-monospace,Menlo,monospace;font-size:12.5px">web/css/app.css</code>. Screens that cannot be reached in a running session are marked SOURCE-ONLY and left un-drawn on purpose.</div>
+    <div style="padding:11px 13px;background:#FBF1DE;border:1px solid #EBD9B4;border-radius:12px;color:#8A5A08;font-size:12px;line-height:1.5;max-width:820px"><b>Baseline refresh, 4 Sep 2026.</b> The app gained real accounts since the first pass: anonymous sign-in is gone, replaced by Google or an emailed link, an account row now sits above the trips list, and sharing is a real Firestore envelope per link code. Every frame below was re-captured against that build; two screens are new to this reference (<b>02 sign-in</b>, <b>20 join — expired link</b>).</div>
+    <div style="display:flex;flex-wrap:wrap;gap:8px;margin-top:4px">
+      <span style="padding:5px 10px;border-radius:8px;background:#E6EFEB;color:#1F6F5C;font-size:11px;font-weight:800;letter-spacing:.04em">20 SCREENS VERIFIED</span>
+      <span style="padding:5px 10px;border-radius:8px;background:#FBF1DE;color:#8A5A08;font-size:11px;font-weight:800;letter-spacing:.04em">5 SOURCE-ONLY</span>
+      <span style="padding:5px 10px;border-radius:8px;background:#fff;border:1px solid #E7EAE7;color:#6B7A74;font-size:11px;font-weight:700">Public Sans 400/600/700/800</span>
+      <span style="padding:5px 10px;border-radius:8px;background:#14201C;color:#fff;font-size:11px;font-weight:800;letter-spacing:.04em">390 × 844 STANDARD FRAME</span>
+    </div>
+  </div>
+</section>
+
+<section style="padding:36px 48px 40px;border-bottom:1px solid rgba(20,32,28,.1)">
+  <div style="font-size:10.5px;font-weight:800;letter-spacing:.06em;color:#98A5A0;margin-bottom:6px">01 · THE RULES THAT ARE ALREADY TRUE</div>
+  <div style="font-size:22px;font-weight:700;letter-spacing:-.01em;margin-bottom:20px">Confirmed measurements and meanings</div>
+  <div style="display:flex;flex-wrap:wrap;gap:12px;max-width:1180px">
+    <div style="width:250px;background:#fff;border:1px solid #E7EAE7;border-radius:16px;padding:14px">
+      <div style="font-size:10.5px;font-weight:800;letter-spacing:.06em;color:#1F6F5C">JADE #1F6F5C</div>
+      <div style="font-size:13.5px;font-weight:650;margin-top:6px;line-height:1.35">The itinerary the agent gave you. Also: saved, confirmed, "this is settled".</div>
+      <div style="font-size:11.5px;color:#6B7A74;margin-top:6px;line-height:1.4">Main-route pins and spine, MAIN badges, Save buttons, progress fill, sync-saved dot, ticked checkbox.</div>
+    </div>
+    <div style="width:250px;background:#fff;border:1px solid #E7EAE7;border-radius:16px;padding:14px">
+      <div style="font-size:10.5px;font-weight:800;letter-spacing:.06em;color:#8A5A08">AMBER #C87F0A</div>
+      <div style="font-size:13.5px;font-weight:650;margin-top:6px;line-height:1.35">Anything you planned yourself, or anything guessed.</div>
+      <div style="font-size:11.5px;color:#6B7A74;margin-top:6px;line-height:1.4">Sub routes and free-time lanes (dashed), Nearby button, warnings, machine-guessed inputs, queued-sync dot.</div>
+    </div>
+    <div style="width:250px;background:#fff;border:1px solid #E7EAE7;border-radius:16px;padding:14px">
+      <div style="font-size:10.5px;font-weight:800;letter-spacing:.06em;color:#14201C">INK #14201C</div>
+      <div style="font-size:13.5px;font-weight:650;margin-top:6px;line-height:1.35">All text, and the surface that means "act now".</div>
+      <div style="font-size:11.5px;color:#6B7A74;margin-top:6px;line-height:1.4">Primary buttons, the Nearby dock, undo bar, spend hero, active tab/pill fill, FAB, the Sign in button.</div>
+    </div>
+    <div style="width:250px;background:#fff;border:1px solid #E7EAE7;border-radius:16px;padding:14px">
+      <div style="font-size:10.5px;font-weight:800;letter-spacing:.06em;color:#9B4B4B">RUST #9B4B4B</div>
+      <div style="font-size:13.5px;font-weight:650;margin-top:6px;line-height:1.35">Destructive, or broken and needing attention.</div>
+      <div style="font-size:11.5px;color:#6B7A74;margin-top:6px;line-height:1.4">Swipe-delete track and bin, in-row confirmation, stuck-changes card, expired-link badge, over-plan chip.</div>
+    </div>
+    <div style="width:250px;background:#fff;border:1px solid #E7EAE7;border-radius:16px;padding:14px">
+      <div style="font-size:10.5px;font-weight:800;letter-spacing:.06em;color:#98A5A0">BONE #F2F3F1 · WHITE</div>
+      <div style="font-size:13.5px;font-weight:650;margin-top:6px;line-height:1.35">Bone is the page; white is every card and header.</div>
+      <div style="font-size:11.5px;color:#6B7A74;margin-top:6px;line-height:1.4">Bone also fills chips at rest and the active tab pill. Nothing else is a background colour.</div>
+    </div>
+    <div style="width:250px;background:#fff;border:1px solid #E7EAE7;border-radius:16px;padding:14px">
+      <div style="font-size:10.5px;font-weight:800;letter-spacing:.06em;color:#98A5A0">GEOMETRY</div>
+      <div style="font-size:11.5px;color:#3D4C46;margin-top:8px;line-height:1.6">Presented in a <b>390 × 844</b> frame (the standard mobile design viewport for this reference) · 520px shell cap, centred · 16px page sides · 14px card padding · 16px card radius (14 on plan cards and the account row, 22 on sheets) · 78px tab bar, inside the viewport · 42px buttons, r12 · inputs r10, 1px #DDE2DE, jade on focus · tabular numerals on every time and money value</div>
+    </div>
+  </div>
+</section>
+
+<section style="padding:36px 48px 44px;border-bottom:1px solid rgba(20,32,28,.1)">
+  <div style="font-size:10.5px;font-weight:800;letter-spacing:.06em;color:#98A5A0;margin-bottom:6px">02 · SCREEN GALLERY — VERIFIED</div>
+  <div style="font-size:22px;font-weight:700;letter-spacing:-.01em;margin-bottom:6px">20 screens, as they render today</div>
+  <div style="font-size:12.5px;color:#6B7A74;margin-bottom:22px;max-width:820px;line-height:1.5">Every screen is presented in the same <b>390 × 844 mobile design frame</b>, at 1:1 pixels and identical scale — the standard reference viewport for this document. The UI itself is untouched: the app was rendered at 390px wide with its real 16px page padding, real type sizes, real card and sheet geometry, and the 78px tab bar inside the 844px viewport. Content that runs past the fold stays scrolled, as on a phone; no frame was made taller and nothing was stretched to fill one. (The 520px `#app` max-width is a web-shell cap, not a design width — at 390 the app is simply below it.) Demo trip: Meridian City · Group Tour, 12–17 Mar 2026, signed out.</div>
+
+  <div style="display:flex;flex-wrap:wrap;gap:26px">
+
+    <div style="width:390px;display:flex;flex-direction:column;gap:9px">
+      <div style="display:flex;align-items:baseline;gap:8px;flex-wrap:wrap"><span style="padding:3px 7px;border-radius:6px;background:#14201C;color:#fff;font-size:10px;font-weight:800;letter-spacing:.04em">01</span><span style="font-size:14px;font-weight:700">Trips home</span><span style="font-size:11.5px;color:#6B7A74">#trips · trips.js</span><span style="padding:3px 7px;border-radius:6px;background:#FBF1DE;color:#8A5A08;font-size:9.5px;font-weight:800;letter-spacing:.04em">CHANGED</span></div>
+      <img src="docs/design/screens/current/01-trips-home.png" alt="Trips home" style="display:block;width:390px;height:844px;border-radius:10px;border:1px solid rgba(20,32,28,.12);box-shadow:0 2px 10px rgba(20,32,28,.08)">
+      <div style="font-size:11.5px;color:#3D4C46;line-height:1.5">Status board, not a list of names. <b>No tab bar</b> — the five tabs belong to a trip. <b>New since the last pass:</b> the `.acct` row (white, r14, 1px #E7EAE7, 10px/12px pad) sits above the list and states the trade rather than demanding a login — "Everything is on this phone" + an ink `Sign in` at h38. Signed in it becomes one quiet line: 30px initial mark, name, email, ghost `Sign out`.</div>
+    </div>
+
+    <div style="width:390px;display:flex;flex-direction:column;gap:9px">
+      <div style="display:flex;align-items:baseline;gap:8px;flex-wrap:wrap"><span style="padding:3px 7px;border-radius:6px;background:#14201C;color:#fff;font-size:10px;font-weight:800;letter-spacing:.04em">02</span><span style="font-size:14px;font-weight:700">Sign in</span><span style="font-size:11.5px;color:#6B7A74">trips.js + parts.js signInPanel()</span><span style="padding:3px 7px;border-radius:6px;background:#E6EFEB;color:#1F6F5C;font-size:9.5px;font-weight:800;letter-spacing:.04em">NEW</span></div>
+      <img src="docs/design/screens/current/02-sign-in.png" alt="Sign in sheet" style="display:block;width:390px;height:844px;border-radius:10px;border:1px solid rgba(20,32,28,.12);box-shadow:0 2px 10px rgba(20,32,28,.08)">
+      <div style="font-size:11.5px;color:#3D4C46;line-height:1.5">The same bottom-docked `.scrim` + `.modal` + `.form` as every other sheet, holding the shared `signInPanel()`. Two ways in and no password: 48px `.sign-btn` rows for `Continue with Google` and `Send me a link`, a name field above them, an eyebrow divider between, and fine print that says why Apple is absent. Once a link is sent the panel swaps to a jade `CHECK YOUR MAIL` state with a ghost "Use a different address".</div>
+    </div>
+
+    <div style="width:390px;display:flex;flex-direction:column;gap:9px">
+      <div style="display:flex;align-items:baseline;gap:8px;flex-wrap:wrap"><span style="padding:3px 7px;border-radius:6px;background:#14201C;color:#fff;font-size:10px;font-weight:800;letter-spacing:.04em">03</span><span style="font-size:14px;font-weight:700">New-trip modal</span><span style="font-size:11.5px;color:#6B7A74">trips.js · the only blocking UI in the app</span></div>
+      <img src="docs/design/screens/current/03-new-trip-modal.png" alt="New trip modal" style="display:block;width:390px;height:844px;border-radius:10px;border:1px solid rgba(20,32,28,.12);box-shadow:0 2px 10px rgba(20,32,28,.08)">
+      <div style="font-size:11.5px;color:#3D4C46;line-height:1.5">`.scrim` rgba(20,32,28,.34) + saturate(.55) over a still-readable list; `.modal` docked 12px from the bottom holding a `.form` (white, <b>1.5px ink border</b>, r16). Jade `Create` + ghost `Cancel` at 96px. Hint explains it goes straight to Paste.</div>
+    </div>
+
+    <div style="width:390px;display:flex;flex-direction:column;gap:9px">
+      <div style="display:flex;align-items:baseline;gap:8px;flex-wrap:wrap"><span style="padding:3px 7px;border-radius:6px;background:#14201C;color:#fff;font-size:10px;font-weight:800;letter-spacing:.04em">04</span><span style="font-size:14px;font-weight:700">Map home</span><span style="font-size:11.5px;color:#6B7A74">#map · map.js</span></div>
+      <img src="docs/design/screens/current/04-map-home.png" alt="Map home" style="display:block;width:390px;height:844px;border-radius:10px;border:1px solid rgba(20,32,28,.12);box-shadow:0 2px 10px rgba(20,32,28,.08)">
+      <div style="font-size:11.5px;color:#3D4C46;line-height:1.5">Leaflet with <b>all map chrome hidden</b> — the route and pins carry the information. Trip chip (h44, r14, 26px jade mark, sync dot) + gear + day pills with the day's weather glyph + legend. Sheet r22 with a 40×4 grab bar; three detents 30/50/82%.</div>
+    </div>
+
+    <div style="width:390px;display:flex;flex-direction:column;gap:9px">
+      <div style="display:flex;align-items:baseline;gap:8px;flex-wrap:wrap"><span style="padding:3px 7px;border-radius:6px;background:#14201C;color:#fff;font-size:10px;font-weight:800;letter-spacing:.04em">05</span><span style="font-size:14px;font-weight:700">Map — stop focused, tiles loaded</span><span style="font-size:11.5px;color:#6B7A74">map.js</span></div>
+      <img src="docs/design/screens/current/05-map-focused.png" alt="Map with a focused stop" style="display:block;width:390px;height:844px;border-radius:10px;border:1px solid rgba(20,32,28,.12);box-shadow:0 2px 10px rgba(20,32,28,.08)">
+      <div style="font-size:11.5px;color:#3D4C46;line-height:1.5">OSM raster tiles; the demo trip's coordinates are real central-Tokyo values, so real streets and Japanese labels sit under the route. Tapping a row tints it jade and rings its pin (`.pin-focus`, 3px jade outline + scale 1.12); opening the place is the <i>pin's</i> job, not the row's. With no tiles the canvas is flat #E9EAE6 — which is also the offline look.</div>
+    </div>
+
+    <div style="width:390px;display:flex;flex-direction:column;gap:9px">
+      <div style="display:flex;align-items:baseline;gap:8px;flex-wrap:wrap"><span style="padding:3px 7px;border-radius:6px;background:#14201C;color:#fff;font-size:10px;font-weight:800;letter-spacing:.04em">06</span><span style="font-size:14px;font-weight:700">Plan — read</span><span style="font-size:11.5px;color:#6B7A74">#plan · plan.js</span></div>
+      <img src="docs/design/screens/current/06-plan-read.png" alt="Plan read mode" style="display:block;width:390px;height:844px;border-radius:10px;border:1px solid rgba(20,32,28,.12);box-shadow:0 2px 10px rgba(20,32,28,.08)">
+      <div style="font-size:11.5px;color:#3D4C46;line-height:1.5">Three columns, always: 56px time gutter (start 12.5/700, derived end 11px faint, duration 10.5px) · 20px spine (11px jade dot + 2px solid line) · white `.plan-card` r14 with a 1px #E7EAE7 border. Provenance sits right: jade `MAIN 1` badge. Jade weather banner on top. Notes appear as a bone `1 note` chip.</div>
+    </div>
+
+    <div style="width:390px;display:flex;flex-direction:column;gap:9px">
+      <div style="display:flex;align-items:baseline;gap:8px;flex-wrap:wrap"><span style="padding:3px 7px;border-radius:6px;background:#14201C;color:#fff;font-size:10px;font-weight:800;letter-spacing:.04em">07</span><span style="font-size:14px;font-weight:700">Plan — edit</span><span style="font-size:11.5px;color:#6B7A74">plan.js · `state.editingPlan`</span></div>
+      <img src="docs/design/screens/current/07-plan-edit.png" alt="Plan edit mode" style="display:block;width:390px;height:844px;border-radius:10px;border:1px solid rgba(20,32,28,.12);box-shadow:0 2px 10px rgba(20,32,28,.08)">
+      <div style="font-size:11.5px;color:#3D4C46;line-height:1.5">Edit is a <b>mode of the screen</b>, not another screen: the header's icon button becomes a <b>jade tick</b>, an amber hint states the rule ("Drag by the handle. Both times are yours to set — the length follows."), each row gains <b>two stacked 60px time inputs</b> with the derived duration beneath, a grip on the left and a rust `✕` where the MAIN badge sat. `+ Add a stop` (dashed) and a ghost `Paste an itinerary` land at the bottom. Leaving Plan clears the mode.</div>
+    </div>
+
+    <div style="width:390px;display:flex;flex-direction:column;gap:9px">
+      <div style="display:flex;align-items:baseline;gap:8px;flex-wrap:wrap"><span style="padding:3px 7px;border-radius:6px;background:#14201C;color:#fff;font-size:10px;font-weight:800;letter-spacing:.04em">08</span><span style="font-size:14px;font-weight:700">Plan — empty day</span><span style="font-size:11.5px;color:#6B7A74">plan.js · emptyDay()</span></div>
+      <img src="docs/design/screens/current/08-plan-empty.png" alt="Plan empty state" style="display:block;width:390px;height:844px;border-radius:10px;border:1px solid rgba(20,32,28,.12);box-shadow:0 2px 10px rgba(20,32,28,.08)">
+      <div style="font-size:11.5px;color:#3D4C46;line-height:1.5">The house empty state: a dashed spine stub above and below, a 15px/700 line ("The day is empty"), 12.5px soft copy that <i>teaches the model</i> ("the gaps between them become free time by themselves"), then a full-width ink primary and a ghost alternative, and a last faint line about map links and the forecast. No illustration, ever.</div>
+    </div>
+
+    <div style="width:390px;display:flex;flex-direction:column;gap:9px">
+      <div style="display:flex;align-items:baseline;gap:8px;flex-wrap:wrap"><span style="padding:3px 7px;border-radius:6px;background:#14201C;color:#fff;font-size:10px;font-weight:800;letter-spacing:.04em">09</span><span style="font-size:14px;font-weight:700">Destination</span><span style="font-size:11.5px;color:#6B7A74">#dest · dest.js</span></div>
+      <img src="docs/design/screens/current/09-destination.png" alt="Destination" style="display:block;width:390px;height:844px;border-radius:10px;border:1px solid rgba(20,32,28,.12);box-shadow:0 2px 10px rgba(20,32,28,.08)">
+      <div style="font-size:11.5px;color:#3D4C46;line-height:1.5">230px hero — a <b>hatched placeholder</b> (135° 10px stripes, #E2E6E2/#DADFDA) labelled "Photo placeholder", with r13 back button, jade `MAIN ROUTE · STOP 1` badge and a white time chip. Name 24px/700. Two maps buttons: ink Google, ghost Apple. Then in-page underline tabs (2px ink) with count bubbles that turn jade when active.</div>
+    </div>
+
+    <div style="width:390px;display:flex;flex-direction:column;gap:9px">
+      <div style="display:flex;align-items:baseline;gap:8px;flex-wrap:wrap"><span style="padding:3px 7px;border-radius:6px;background:#14201C;color:#fff;font-size:10px;font-weight:800;letter-spacing:.04em">10</span><span style="font-size:14px;font-weight:700">Nearby</span><span style="font-size:11.5px;color:#6B7A74">#nearby · nearby.js</span></div>
+      <img src="docs/design/screens/current/10-nearby.png" alt="Nearby" style="display:block;width:390px;height:844px;border-radius:10px;border:1px solid rgba(20,32,28,.12);box-shadow:0 2px 10px rgba(20,32,28,.08)">
+      <div style="font-size:11.5px;color:#3D4C46;line-height:1.5">Category chips (jade when on) over stop-grouped cards. Each card: 56px hatched thumb, name 14/650, then three metric chips — grey `walk 2`, <b>ink `2 min`</b> (the sorted-by value), amber `stay ~20 min`. The ink `.dock` at the bottom always <i>names the loop the `+` will add to</i>, with an amber `Arrange`.</div>
+    </div>
+
+    <div style="width:390px;display:flex;flex-direction:column;gap:9px">
+      <div style="display:flex;align-items:baseline;gap:8px;flex-wrap:wrap"><span style="padding:3px 7px;border-radius:6px;background:#14201C;color:#fff;font-size:10px;font-weight:800;letter-spacing:.04em">11</span><span style="font-size:14px;font-weight:700">Shopping list</span><span style="font-size:11.5px;color:#6B7A74">#shop · shop.js</span></div>
+      <img src="docs/design/screens/current/11-shop.png" alt="Shopping list" style="display:block;width:390px;height:844px;border-radius:10px;border:1px solid rgba(20,32,28,.12);box-shadow:0 2px 10px rgba(20,32,28,.08)">
+      <div style="font-size:11.5px;color:#3D4C46;line-height:1.5">Two chip rows (day, then place) above place groups. Row = 22px checkbox + name/detail + right-aligned `¥5,000` with a 9.5px `est.` caption; payment and category are <b>plain native selects inside the row</b>, not a sub-sheet. Fixed white `.footer-card` r18 carries actual vs estimate, a jade progress bar, and `See the report ›` as jade text.</div>
+    </div>
+
+    <div style="width:390px;display:flex;flex-direction:column;gap:9px">
+      <div style="display:flex;align-items:baseline;gap:8px;flex-wrap:wrap"><span style="padding:3px 7px;border-radius:6px;background:#14201C;color:#fff;font-size:10px;font-weight:800;letter-spacing:.04em">12</span><span style="font-size:14px;font-weight:700">Spend report</span><span style="font-size:11.5px;color:#6B7A74">#spend · spend.js</span></div>
+      <img src="docs/design/screens/current/12-spend.png" alt="Spend report" style="display:block;width:390px;height:844px;border-radius:10px;border:1px solid rgba(20,32,28,.12);box-shadow:0 2px 10px rgba(20,32,28,.08)">
+      <div style="font-size:11.5px;color:#3D4C46;line-height:1.5">The one place with display type: ink hero r16, eyebrow, then 36px/700/-.025em tabular figure, home-currency conversion right-aligned with its rate, and chips — translucent white for facts, jade for `8% under plan` (rust when over). Day bars 140px tall, jade for the selected day and #CBD8D2 otherwise, with `Tap a day to filter everything below.`</div>
+    </div>
+
+    <div style="width:390px;display:flex;flex-direction:column;gap:9px">
+      <div style="display:flex;align-items:baseline;gap:8px;flex-wrap:wrap"><span style="padding:3px 7px;border-radius:6px;background:#14201C;color:#fff;font-size:10px;font-weight:800;letter-spacing:.04em">13</span><span style="font-size:14px;font-weight:700">Trip prep</span><span style="font-size:11.5px;color:#6B7A74">#prep · prep.js</span></div>
+      <img src="docs/design/screens/current/13-prep.png" alt="Trip prep" style="display:block;width:390px;height:844px;border-radius:10px;border:1px solid rgba(20,32,28,.12);box-shadow:0 2px 10px rgba(20,32,28,.08)">
+      <div style="font-size:11.5px;color:#3D4C46;line-height:1.5">Header carries a 7px jade progress bar and `6 of 15 packed` in the sub position. Advice and record are <b>kept visibly separate</b>: `WHAT TO WEAR ON DAY 3` (hatched reference + prose + amber/bone outfit chips) then `WHAT I AM ACTUALLY BRINGING` with an input + jade `Add` and one-tap suggestion chips.</div>
+    </div>
+
+    <div style="width:390px;display:flex;flex-direction:column;gap:9px">
+      <div style="display:flex;align-items:baseline;gap:8px;flex-wrap:wrap"><span style="padding:3px 7px;border-radius:6px;background:#14201C;color:#fff;font-size:10px;font-weight:800;letter-spacing:.04em">14</span><span style="font-size:14px;font-weight:700">Log</span><span style="font-size:11.5px;color:#6B7A74">#log · log.js</span></div>
+      <img src="docs/design/screens/current/14-log.png" alt="Log" style="display:block;width:390px;height:844px;border-radius:10px;border:1px solid rgba(20,32,28,.12);box-shadow:0 2px 10px rgba(20,32,28,.08)">
+      <div style="font-size:11.5px;color:#3D4C46;line-height:1.5">Day cards r16 with `overflow:hidden`. The live day reads `Day 3 · Today · Mar 14` with an <b>amber</b> meta line (`in progress · 1 note · 1 sub route`). Inside: a #FAFBFA place head row (44px time + name + MAIN badge) then the note body, then footer chips that score the day. Ghost `+ Note` per day as well as in the header.</div>
+    </div>
+
+    <div style="width:390px;display:flex;flex-direction:column;gap:9px">
+      <div style="display:flex;align-items:baseline;gap:8px;flex-wrap:wrap"><span style="padding:3px 7px;border-radius:6px;background:#14201C;color:#fff;font-size:10px;font-weight:800;letter-spacing:.04em">15</span><span style="font-size:14px;font-weight:700">Note editor</span><span style="font-size:11.5px;color:#6B7A74">#note · note.js</span></div>
+      <img src="docs/design/screens/current/15-note-editor.png" alt="Note editor" style="display:block;width:390px;height:844px;border-radius:10px;border:1px solid rgba(20,32,28,.12);box-shadow:0 2px 10px rgba(20,32,28,.08)">
+      <div style="font-size:11.5px;color:#3D4C46;line-height:1.5">The app's one full-screen form. `✕` (not a back chevron) + title + jade `Save` in the header — save is <b>never</b> at the bottom here. Fields are labelled with 10.5/800 eyebrows (`TIME`, `NOTE`); the place is a white row with a ghost `Change`; `+ Photos` is a dashed drop zone; the hint under it explains where the note will show up.</div>
+    </div>
+
+    <div style="width:390px;display:flex;flex-direction:column;gap:9px">
+      <div style="display:flex;align-items:baseline;gap:8px;flex-wrap:wrap"><span style="padding:3px 7px;border-radius:6px;background:#14201C;color:#fff;font-size:10px;font-weight:800;letter-spacing:.04em">16</span><span style="font-size:14px;font-weight:700">Trip settings</span><span style="font-size:11.5px;color:#6B7A74">#trip · trip.js</span></div>
+      <img src="docs/design/screens/current/16-trip-settings.png" alt="Trip settings" style="display:block;width:390px;height:844px;border-radius:10px;border:1px solid rgba(20,32,28,.12);box-shadow:0 2px 10px rgba(20,32,28,.08)">
+      <div style="font-size:11.5px;color:#3D4C46;line-height:1.5">Push header (back chevron + 17px title + sub). Grouped blocks under 10.5/800 eyebrows; every field full-width r10; a full-width jade `Save trip` closes the block, with the consequence spelled out in 11.5px soft above it. Below the fold: money, paste, share, export, offline areas, stuck changes, close/delete.</div>
+    </div>
+
+    <div style="width:390px;display:flex;flex-direction:column;gap:9px">
+      <div style="display:flex;align-items:baseline;gap:8px;flex-wrap:wrap"><span style="padding:3px 7px;border-radius:6px;background:#14201C;color:#fff;font-size:10px;font-weight:800;letter-spacing:.04em">17</span><span style="font-size:14px;font-weight:700">Share this trip</span><span style="font-size:11.5px;color:#6B7A74">#share · share.js · no tab bar</span></div>
+      <img src="docs/design/screens/current/17-share.png" alt="Share" style="display:block;width:390px;height:844px;border-radius:10px;border:1px solid rgba(20,32,28,.12);box-shadow:0 2px 10px rgba(20,32,28,.08)">
+      <div style="font-size:11.5px;color:#3D4C46;line-height:1.5">Three eyebrow-led blocks: who has it (30px initial chips, `OWNER` badge), what they may do (custom 16px jade radios), how long the link lives (pill row, `7 days` selected in ink). Closed by a jade explainer card stating the model in plain words: "They get a copy, not a live view." Behind it the link is now a real Firestore envelope under `published/{code}`.</div>
+    </div>
+
+    <div style="width:390px;display:flex;flex-direction:column;gap:9px">
+      <div style="display:flex;align-items:baseline;gap:8px;flex-wrap:wrap"><span style="padding:3px 7px;border-radius:6px;background:#14201C;color:#fff;font-size:10px;font-weight:800;letter-spacing:.04em">18</span><span style="font-size:14px;font-weight:700">Map kept on this phone</span><span style="font-size:11.5px;color:#6B7A74">#areas · areas.js</span></div>
+      <img src="docs/design/screens/current/18-offline-areas.png" alt="Offline map areas" style="display:block;width:390px;height:844px;border-radius:10px;border:1px solid rgba(20,32,28,.12);box-shadow:0 2px 10px rgba(20,32,28,.08)">
+      <div style="font-size:11.5px;color:#3D4C46;line-height:1.5">Empty state + dashed `+ Keep an area`, then the pattern worth copying: an <b>amber caveat that names the problem, lists the affected stops, and offers the exact fix as one ink button</b> ("7 stops are outside every kept area" → `Draw an area around them`). Storage is stated in kB, and deletion is the same swipe as everywhere else.</div>
+    </div>
+
+    <div style="width:390px;display:flex;flex-direction:column;gap:9px">
+      <div style="display:flex;align-items:baseline;gap:8px;flex-wrap:wrap"><span style="padding:3px 7px;border-radius:6px;background:#14201C;color:#fff;font-size:10px;font-weight:800;letter-spacing:.04em">19</span><span style="font-size:14px;font-weight:700">Paste your itinerary</span><span style="font-size:11.5px;color:#6B7A74">#paste · paste.js</span></div>
+      <img src="docs/design/screens/current/19-paste.png" alt="Paste itinerary" style="display:block;width:390px;height:844px;border-radius:10px;border:1px solid rgba(20,32,28,.12);box-shadow:0 2px 10px rgba(20,32,28,.08)">
+      <div style="font-size:11.5px;color:#3D4C46;line-height:1.5">210px monospace textarea (ui-monospace/Menlo, 12px/1.6) with `Example` / `Clear` / a live word count as quiet text buttons. A `WHAT IT LOOKS FOR` card shows the accepted formats <b>including Chinese</b> (`第三天`, `下午3:00`), and the intro states the privacy fact: "It is read on this phone; nothing is sent anywhere."</div>
+    </div>
+
+    <div style="width:390px;display:flex;flex-direction:column;gap:9px">
+      <div style="display:flex;align-items:baseline;gap:8px;flex-wrap:wrap"><span style="padding:3px 7px;border-radius:6px;background:#14201C;color:#fff;font-size:10px;font-weight:800;letter-spacing:.04em">20</span><span style="font-size:14px;font-weight:700">Join — expired link</span><span style="font-size:11.5px;color:#6B7A74">/j/CODE · join.js · no tab bar</span><span style="padding:3px 7px;border-radius:6px;background:#E6EFEB;color:#1F6F5C;font-size:9.5px;font-weight:800;letter-spacing:.04em">NEW</span></div>
+      <img src="docs/design/screens/current/20-join-dead-link.png" alt="Join screen, expired link" style="display:block;width:390px;height:844px;border-radius:10px;border:1px solid rgba(20,32,28,.12);box-shadow:0 2px 10px rgba(20,32,28,.08)">
+      <div style="font-size:11.5px;color:#3D4C46;line-height:1.5">The one screen built as a <i>web page</i>: bone `.join-bar` showing the URL, a rust `THIS LINK HAS EXPIRED` badge, the trip name at 24px/800, an explanation that blames the link rather than the phone, one jade full-width action (`Ask You for a new link`) — and then, unusually, <b>the other endings listed as cards</b> ("You already have this trip", "You are offline"). The live-invite and sign-in phases of this screen remain source-only.</div>
+    </div>
+
+  </div>
+</section>
+
+<section style="padding:36px 48px 44px;border-bottom:1px solid rgba(20,32,28,.1)">
+  <div style="font-size:10.5px;font-weight:800;letter-spacing:.06em;color:#8A5A08;margin-bottom:6px">03 · SOURCE-ONLY — VISUAL NOT VERIFIED</div>
+  <div style="font-size:22px;font-weight:700;letter-spacing:-.01em;margin-bottom:6px">Five screens read, none drawn</div>
+  <div style="font-size:12.5px;color:#6B7A74;margin-bottom:22px;max-width:820px;line-height:1.5">These need a second person, a live share link, a sync failure or a drag gesture to reach, so no screenshot exists. Their structure below comes from the source; <b>their appearance is unverified and nothing here should be treated as a mockup.</b></div>
+  <div style="display:flex;flex-wrap:wrap;gap:16px">
+
+    <div style="width:340px;background:#FFFDF7;border:1.5px solid #EBD9B4;border-radius:16px;padding:14px">
+      <div style="display:flex;align-items:center;justify-content:space-between;gap:8px"><span style="font-size:14px;font-weight:700;color:#8A5A08">Sub route</span><span style="font-size:9.5px;font-weight:800;letter-spacing:.05em;color:#8A5A08;background:#FBF1DE;border:1px solid #EBD9B4;border-radius:6px;padding:3px 7px">NOT VERIFIED</span></div>
+      <div style="font-size:11.5px;color:#6B7A74;margin-top:4px">#sub · sub.js · tab: map</div>
+      <div style="font-size:12px;color:#3D4C46;line-height:1.55;margin-top:9px">Map + a 68%-tall sheet. Translucent `.sub-card` header; loop chips; `.stat` tiles that turn jade (`ok`) or rust (`tight`) on the timing; `.loop-row` list with amber numbered markers and an ink marker for the return leg; a `back-form` for when you must be back. Reached from `Arrange` or a plan lane.</div>
+    </div>
+
+    <div style="width:340px;background:#FFFDF7;border:1.5px solid #EBD9B4;border-radius:16px;padding:14px">
+      <div style="display:flex;align-items:center;justify-content:space-between;gap:8px"><span style="font-size:14px;font-weight:700;color:#8A5A08">Draw an area</span><span style="font-size:9.5px;font-weight:800;letter-spacing:.05em;color:#8A5A08;background:#FBF1DE;border:1px solid #EBD9B4;border-radius:6px;padding:3px 7px">NOT VERIFIED</span></div>
+      <div style="font-size:11.5px;color:#6B7A74;margin-top:4px">#area · area.js · tab: map</div>
+      <div style="font-size:12px;color:#3D4C46;line-height:1.55;margin-top:9px">Map with rgba(20,32,28,.28) shades top and bottom, a 2.5px white box with four 26px round grips, a centred white caption, and a bottom sheet holding detail toggles plus a too-big warning. Requires a real drag to render.</div>
+    </div>
+
+    <div style="width:340px;background:#FFFDF7;border:1.5px solid #EBD9B4;border-radius:16px;padding:14px">
+      <div style="display:flex;align-items:center;justify-content:space-between;gap:8px"><span style="font-size:14px;font-weight:700;color:#8A5A08">Review an update</span><span style="font-size:9.5px;font-weight:800;letter-spacing:.05em;color:#8A5A08;background:#FBF1DE;border:1px solid #EBD9B4;border-radius:6px;padding:3px 7px">NOT VERIFIED</span></div>
+      <div style="font-size:11.5px;color:#6B7A74;margin-top:4px">#review · review.js · tab: plan</div>
+      <div style="font-size:12px;color:#3D4C46;line-height:1.55;margin-top:9px">Push header ("X sent an update", n things to decide). Each change is a `.sides` pair — mine in bone, theirs in jade — with one decision beneath, and a white `.review-foot` for the bulk action. Has a `Nothing to review` variant. Needs a second person's published envelope.</div>
+    </div>
+
+    <div style="width:340px;background:#FFFDF7;border:1.5px solid #EBD9B4;border-radius:16px;padding:14px">
+      <div style="display:flex;align-items:center;justify-content:space-between;gap:8px"><span style="font-size:14px;font-weight:700;color:#8A5A08">Changes on this phone</span><span style="font-size:9.5px;font-weight:800;letter-spacing:.05em;color:#8A5A08;background:#FBF1DE;border:1px solid #EBD9B4;border-radius:6px;padding:3px 7px">NOT VERIFIED</span></div>
+      <div style="font-size:11.5px;color:#6B7A74;margin-top:4px">#stuck · stuck.js · no tab bar</div>
+      <div style="font-size:12px;color:#3D4C46;line-height:1.55;margin-top:9px">Rust `.stuck-why` card explaining why writes are not leaving the phone, the count waiting and how old the oldest is, plus copy-the-data-out and retry. Reached from the red strip. Needs a genuine sync failure.</div>
+    </div>
+
+    <div style="width:340px;background:#FFFDF7;border:1.5px solid #EBD9B4;border-radius:16px;padding:14px">
+      <div style="display:flex;align-items:center;justify-content:space-between;gap:8px"><span style="font-size:14px;font-weight:700;color:#8A5A08">Paste — review pass</span><span style="font-size:9.5px;font-weight:800;letter-spacing:.05em;color:#8A5A08;background:#FBF1DE;border:1px solid #EBD9B4;border-radius:6px;padding:3px 7px">NOT VERIFIED</span></div>
+      <div style="font-size:11.5px;color:#6B7A74;margin-top:4px">#paste (second phase) · paste.js</div>
+      <div style="font-size:12px;color:#3D4C46;line-height:1.55;margin-top:9px">"Check what it read": day groups of `.cand` rows — white (read), #FFFDF7 amber (worked out), dashed grey (unread), jade border (accepted) — each with a tick, a 44px time, and a monospace echo of the raw line. Guessed times render as amber `input.guessed`. Needs a real paste + import.</div>
+    </div>
+
+    <div style="width:340px;background:#F2F3F1;border:1px solid #E7EAE7;border-radius:16px;padding:14px">
+      <div style="display:flex;align-items:center;justify-content:space-between;gap:8px"><span style="font-size:14px;font-weight:700">Join — live invite &amp; sign-in phase</span><span style="font-size:9.5px;font-weight:800;letter-spacing:.05em;color:#6B7A74;background:#fff;border:1px solid #E7EAE7;border-radius:6px;padding:3px 7px">PARTLY VERIFIED</span></div>
+      <div style="font-size:11.5px;color:#6B7A74;margin-top:4px">/j/CODE · join.js</div>
+      <div style="font-size:12px;color:#3D4C46;line-height:1.55;margin-top:9px">The expired-link ending is verified above (frame 20) and the sign-in panel it leads to is the same `signInPanel()` verified in frame 02. What is <b>not</b> verified: the live invite itself — the from-line, the read-only look at Day 1, the three promises, the sticky foot — because it needs a real published envelope from another account.</div>
+    </div>
+
+  </div>
+</section>
+
+<section style="padding:36px 48px 44px;border-bottom:1px solid rgba(20,32,28,.1)">
+  <div style="font-size:10.5px;font-weight:800;letter-spacing:.06em;color:#98A5A0;margin-bottom:6px">04 · PATTERN BOARD — DRAWN WITH THE APP'S OWN VALUES</div>
+  <div style="font-size:22px;font-weight:700;letter-spacing:-.01em;margin-bottom:6px">The parts a new screen should be built from</div>
+  <div style="font-size:12.5px;color:#6B7A74;margin-bottom:22px;max-width:820px;line-height:1.5">Each specimen repeats the literal declarations from <code style="font-family:ui-monospace,Menlo,monospace;font-size:12px">web/css/app.css</code> — no rounding, no cleanup — and every icon is the real inline SVG from <code style="font-family:ui-monospace,Menlo,monospace;font-size:12px">web/js/util.js</code>. The annotation under each one is the rule to follow.</div>
+
+  <div style="display:flex;flex-wrap:wrap;gap:18px;align-items:flex-start">
+
+    <div style="width:300px;background:#F2F3F1;border:1px solid #E7EAE7;border-radius:16px;padding:16px">
+      <div style="font-size:10.5px;font-weight:800;letter-spacing:.06em;color:#98A5A0;margin-bottom:12px">BUTTONS</div>
+      <div style="display:flex;flex-direction:column;gap:8px">
+        <div style="height:42px;border-radius:12px;display:flex;align-items:center;justify-content:center;font-size:13px;font-weight:700;background:#14201C;color:#fff;padding:0 16px">Draw an area around them</div>
+        <div style="height:42px;border-radius:12px;display:flex;align-items:center;justify-content:center;font-size:13px;font-weight:700;background:#1F6F5C;color:#fff;padding:0 16px">Save trip</div>
+        <div style="height:42px;border-radius:12px;display:flex;align-items:center;justify-content:center;font-size:13px;font-weight:650;background:#F2F3F1;color:#14201C;border:1px solid #E1E5E1;padding:0 16px">Paste an itinerary</div>
+        <div style="height:48px;border-radius:14px;border:1.5px dashed #C9D0CB;display:flex;align-items:center;justify-content:center;font-size:13px;font-weight:650;color:#3D4C46">+ Add a stop</div>
+        <div style="width:100%;height:48px;border-radius:12px;border:1px solid #DDE2DE;background:#fff;font-size:13.5px;font-weight:700;color:#14201C;display:flex;align-items:center;justify-content:center;gap:8px">Continue with Google</div>
+        <div style="display:flex;gap:8px">
+          <div style="height:38px;border-radius:12px;display:flex;align-items:center;justify-content:center;font-size:12.5px;font-weight:700;background:#14201C;color:#fff;padding:0 13px">+ New trip</div>
+          <div style="height:38px;border-radius:12px;display:flex;align-items:center;justify-content:center;font-size:12.5px;font-weight:700;background:#FBF1DE;border:1px solid #EBD9B4;color:#8A5A08;padding:0 12px">Nearby</div>
+          <div style="height:42px;border-radius:12px;display:flex;align-items:center;justify-content:center;font-size:13px;font-weight:700;background:#14201C;color:#fff;padding:0 16px;opacity:.45">Disabled</div>
+        </div>
+      </div>
+      <div style="font-size:11px;color:#6B7A74;line-height:1.5;margin-top:12px">h42 r12 13px/700, `.sm` h38 12.5px. Ink = act, jade = save/confirm, ghost = the alternative, dashed = add. `.sign-btn` is the one h48 r12 outline button, used only for the two ways in. Amber-on-amber only for the Nearby affordance. Disabled = opacity .45 + no pointer events. <b>No hover styling exists.</b></div>
+    </div>
+
+    <div style="width:300px;background:#F2F3F1;border:1px solid #E7EAE7;border-radius:16px;padding:16px">
+      <div style="font-size:10.5px;font-weight:800;letter-spacing:.06em;color:#98A5A0;margin-bottom:12px">INPUTS &amp; FORM</div>
+      <div style="background:#fff;border:1.5px solid #14201C;border-radius:16px;padding:14px;display:flex;flex-direction:column;gap:8px">
+        <div style="font-size:12.5px;font-weight:800">Correct this item</div>
+        <div style="font-size:11px;color:#98A5A0">What it is</div>
+        <div style="font-size:13px;color:#14201C;border:1px solid #DDE2DE;border-radius:10px;padding:9px 10px;background:#fff">Kitchen knife</div>
+        <div style="font-size:11px;color:#98A5A0">Bought at</div>
+        <div style="font-size:13px;color:#14201C;border:1px solid #1F6F5C;border-radius:10px;padding:9px 10px;background:#fff;display:flex;justify-content:space-between;align-items:center">Nishi Market <svg width="10" height="6" viewBox="0 0 10 6"><path d="M1 1l4 4 4-4" stroke="#6B7A74" stroke-width="1.6" fill="none" stroke-linecap="round"></path></svg></div>
+        <div style="font-size:13px;color:#8A5A08;border:1.5px solid #C87F0A;border-radius:10px;padding:9px 10px;background:#FFFDF7">13:30 <span style="font-size:11px;font-weight:700">guessed</span></div>
+        <div style="display:flex;gap:8px;margin-top:2px">
+          <div style="flex:1;height:42px;border-radius:12px;background:#1F6F5C;color:#fff;font-size:13px;font-weight:700;display:flex;align-items:center;justify-content:center">Save</div>
+          <div style="width:96px;height:42px;border-radius:12px;background:#F2F3F1;border:1px solid #E1E5E1;font-size:13px;font-weight:650;display:flex;align-items:center;justify-content:center">Cancel</div>
+        </div>
+        <div style="font-size:11px;color:#98A5A0;line-height:1.45">The estimate is what the spend report measures your actual spending against.</div>
+      </div>
+      <div style="font-size:11px;color:#6B7A74;line-height:1.5;margin-top:12px">Form card = white, <b>1.5px ink border</b>, r16, 14px pad, 8px gap. Labels 11px soft above the field. Inputs 13px, r10, 1px #DDE2DE; focus only changes the border to jade — <b>no ring</b>. Amber border + #FFFDF7 = a machine guess. Actions: jade grow + ghost 96px. Hint 11px soft closes the card.</div>
+    </div>
+
+    <div style="width:300px;background:#F2F3F1;border:1px solid #E7EAE7;border-radius:16px;padding:16px">
+      <div style="font-size:10.5px;font-weight:800;letter-spacing:.06em;color:#98A5A0;margin-bottom:12px">PILLS · CHIPS · BADGES</div>
+      <div style="display:flex;flex-wrap:wrap;gap:6px;margin-bottom:10px">
+        <span style="height:32px;padding:0 12px;border-radius:10px;background:#14201C;color:#fff;font-size:12.5px;font-weight:600;display:flex;align-items:center;gap:5px">D3 <span style="font-size:11px;opacity:.75">☁</span></span>
+        <span style="height:32px;padding:0 12px;border-radius:10px;background:#fff;color:#6B7A74;font-size:12.5px;font-weight:600;display:flex;align-items:center;gap:5px">D4 <span style="font-size:11px;opacity:.75">☀</span></span>
+        <span style="height:30px;padding:0 10px;border-radius:9px;background:#E6EFEB;color:#1F6F5C;font-size:11.5px;font-weight:650;display:flex;align-items:center">Food</span>
+        <span style="height:30px;padding:0 10px;border-radius:9px;background:#F2F3F1;color:#6B7A74;font-size:11.5px;font-weight:650;display:flex;align-items:center">Clothing</span>
+      </div>
+      <div style="display:flex;flex-wrap:wrap;gap:6px;margin-bottom:10px">
+        <span style="padding:4px 8px;border-radius:8px;background:#F2F3F1;color:#3D4C46;font-size:10.5px;font-weight:650">7 stops</span>
+        <span style="padding:4px 8px;border-radius:8px;background:#E6EFEB;color:#1F6F5C;font-size:10.5px;font-weight:650">1 note</span>
+        <span style="padding:4px 8px;border-radius:8px;background:#FBF1DE;color:#8A5A08;font-size:10.5px;font-weight:650">stay ~20 min</span>
+        <span style="padding:4px 8px;border-radius:8px;background:#F8E9E9;color:#9B4B4B;font-size:10.5px;font-weight:650">over plan</span>
+        <span style="padding:3px 7px;border-radius:7px;background:#EFF1EE;color:#3D4C46;font-size:10.5px;font-weight:700">walk 2</span>
+        <span style="padding:3px 7px;border-radius:7px;background:#14201C;color:#fff;font-size:10.5px;font-weight:800">2 min</span>
+      </div>
+      <div style="display:flex;flex-wrap:wrap;gap:6px">
+        <span style="padding:3px 7px;border-radius:6px;background:#E6EFEB;color:#1F6F5C;font-size:9.5px;font-weight:800;letter-spacing:.04em">MAIN 1</span>
+        <span style="padding:3px 7px;border-radius:6px;background:#FBF1DE;color:#8A5A08;font-size:9.5px;font-weight:800;letter-spacing:.04em">SUB</span>
+        <span style="padding:3px 7px;border-radius:6px;background:#F8E9E9;color:#9B4B4B;font-size:9.5px;font-weight:800;letter-spacing:.04em">RUST</span>
+        <span style="padding:3px 7px;border-radius:6px;background:#F2F3F1;border:1px solid #E7EAE7;color:#6B7A74;font-size:9.5px;font-weight:800;letter-spacing:.05em">READ ONLY</span>
+      </div>
+      <div style="font-size:11px;color:#6B7A74;line-height:1.5;margin-top:12px">Four families, four jobs: <b>pill</b> h32 r10 = pick a day/mode (ink when on) · <b>cat</b> h30 r9 = filter (jade when on) · <b>chip</b> r8 10.5px = inline metadata · <b>badge</b> r6 9.5/800 = provenance. Keep them distinct; do not merge them.</div>
+    </div>
+
+    <div style="width:300px;background:#F2F3F1;border:1px solid #E7EAE7;border-radius:16px;padding:16px">
+      <div style="font-size:10.5px;font-weight:800;letter-spacing:.06em;color:#98A5A0;margin-bottom:12px">WARNING &amp; BANNERS</div>
+      <div style="display:flex;flex-direction:column;gap:8px">
+        <div style="padding:9px 10px;border-radius:10px;background:#FBF1DE">
+          <div style="font-size:10.5px;font-weight:800;letter-spacing:.04em;color:#8A5A08">TIGHT</div>
+          <div style="font-size:11.5px;line-height:1.4;color:#8A5A08;margin-top:4px">This leaves 5 min to walk 700 m. Move the shrine later, or drop the dessert stop.</div>
+          <div style="display:flex;gap:8px;margin-top:8px">
+            <span style="height:30px;padding:0 10px;border-radius:9px;background:#14201C;border:1px solid #14201C;color:#fff;font-size:11.5px;font-weight:700;display:flex;align-items:center">Move it later</span>
+            <span style="height:30px;padding:0 10px;border-radius:9px;background:#fff;border:1px solid #E1E5E1;color:#3D4C46;font-size:11.5px;font-weight:650;display:flex;align-items:center">Leave it</span>
+          </div>
+        </div>
+        <div style="display:flex;align-items:center;gap:11px;padding:11px 12px;background:#E6EFEB;border-radius:12px">
+          <span style="font-size:17px;line-height:1">☁</span>
+          <div style="flex:1"><div style="font-size:12px;color:#1F6F5C;font-weight:600;line-height:1.4">Day 3: overcast, 16 °C, 20% rain.</div><div style="font-size:10.5px;color:#5D8C7C;margin-top:2px">tap for the hourly forecast</div></div>
+        </div>
+        <div style="padding:10px 12px;background:#FBF1DE;border:1px solid #EBD9B4;border-radius:12px;font-size:12px;font-weight:650;color:#8A5A08;line-height:1.4">Free time here is yours to plan.</div>
+        <div style="padding:8px 11px;border-radius:11px;background:#F8E9E9;color:#9B4B4B;font-size:11.5px;font-weight:650;line-height:1.4">Changes are saved on this phone only.</div>
+      </div>
+      <div style="font-size:11px;color:#6B7A74;line-height:1.5;margin-top:12px">A warning is a <b>strip on the row it concerns</b>, never a toast or a dialog, and it always names the tap that fixes it — first fix ink, alternatives ghost. Jade banners inform, amber warn, rust means broken.</div>
+    </div>
+
+    <div style="width:390px;background:#F2F3F1;border:1px solid #E7EAE7;border-radius:16px;padding:16px">
+      <div style="font-size:10.5px;font-weight:800;letter-spacing:.06em;color:#98A5A0;margin-bottom:12px">DELETE — 5 POSITIONS</div>
+      <div style="display:flex;flex-direction:column;gap:8px">
+        <div style="border-radius:15px;background:#fff;border:1px solid #EDEFEC;padding:11px 12px;font-size:13.5px;font-weight:600">Kōri Dessert Bar</div>
+        <div style="position:relative;overflow:hidden;border-radius:15px;background:#F8E9E9;height:46px">
+          <div style="position:absolute;inset:0 0 0 auto;width:88px;display:flex;flex-direction:column;align-items:flex-end;justify-content:center;gap:3px;padding-right:20px">
+            <div style="width:44px;height:44px;border-radius:12px;background:#9B4B4B;display:flex;align-items:center;justify-content:center"><svg width="15" height="16" viewBox="0 0 15 16" fill="none"><path d="M2 4h11M6 2h3M5.5 4v9M9.5 4v9M3 4l.7 10h7.6L12 4" stroke="#fff" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round"></path></svg></div>
+          </div>
+          <div style="position:relative;z-index:1;background:#fff;height:46px;padding:11px 12px;font-size:13.5px;font-weight:600;transform:translateX(-88px);box-sizing:border-box">Kōri Dessert Bar</div>
+        </div>
+        <div style="position:relative;overflow:hidden;border-radius:15px;background:#9B4B4B;padding:12px 14px;display:flex;align-items:center;gap:10px">
+          <div style="flex:1"><div style="font-size:13.5px;font-weight:700;color:#fff">Delete Kōri Dessert Bar?</div><div style="font-size:11px;color:#F0D6D6;margin-top:2px;line-height:1.3">Day 3 · 16:20</div></div>
+          <span style="height:36px;padding:0 12px;border-radius:11px;background:rgba(255,255,255,.16);color:#fff;font-size:12.5px;font-weight:700;display:flex;align-items:center">Cancel</span>
+          <span style="height:36px;padding:0 12px;border-radius:11px;background:#fff;color:#9B4B4B;font-size:12.5px;font-weight:800;display:flex;align-items:center">Delete</span>
+        </div>
+        <div style="display:flex;align-items:center;gap:12px;padding:13px 14px;background:#14201C;border-radius:16px;font-size:13px;font-weight:650;color:#fff"><span style="flex:1">Kōri Dessert Bar deleted</span><span style="font-size:12.5px;font-weight:800;color:#8FB3A6">Undo</span></div>
+      </div>
+      <div style="font-size:11px;color:#6B7A74;line-height:1.5;margin-top:12px">rest → drag (red fills behind the finger) → <b>latch at 88px</b>, bin 20px in, `DELETE` appears → confirm <b>inside the row</b> (a swipe past 60% jumps here, never straight to delete) → gone, with 6 seconds of undo in one app-wide ink bar above the tab bar. One implementation, `swipeToDelete()`, for every list.</div>
+    </div>
+
+    <div style="width:300px;background:#F2F3F1;border:1px solid #E7EAE7;border-radius:16px;padding:16px">
+      <div style="font-size:10.5px;font-weight:800;letter-spacing:.06em;color:#98A5A0;margin-bottom:12px">LISTS, CARDS &amp; EMPTY</div>
+      <div style="background:#fff;border-radius:16px;overflow:hidden">
+        <div style="padding:12px 14px"><div style="font-size:14px;font-weight:700">Nishi Market</div><div style="font-size:11px;color:#6B7A74;margin-top:2px">Day 3 · today, 13:30–15:45</div></div>
+        <div style="padding:11px 14px;border-top:1px solid #F0F2F0;display:flex;gap:11px;align-items:center">
+          <span style="width:22px;height:22px;border-radius:7px;background:#1F6F5C;border:1.6px solid #1F6F5C;display:flex;align-items:center;justify-content:center"><svg width="11" height="9" viewBox="0 0 11 9"><path d="M1 4.5L4 7.5 10 1" stroke="#fff" stroke-width="2" fill="none" stroke-linecap="round" stroke-linejoin="round"></path></svg></span>
+          <div style="flex:1"><div style="font-size:13.5px;font-weight:600;text-decoration:line-through;color:#9AA6A1">Dried scallop</div><div style="font-size:11px;color:#98A5A0;margin-top:2px">North end · sold per 100 g</div></div>
+          <div style="text-align:right"><div style="font-size:12px;font-weight:700;color:#98A5A0;font-variant-numeric:tabular-nums">¥1,800</div><div style="font-size:9.5px;color:#B4BEB9;margin-top:1px">est.</div></div>
+        </div>
+        <div style="padding:11px 14px;border-top:1px solid #F0F2F0;display:flex;gap:11px;align-items:center">
+          <span style="width:22px;height:22px;border-radius:7px;background:#fff;border:1.6px solid #D2D8D3"></span>
+          <div style="flex:1"><div style="font-size:13.5px;font-weight:600">Kitchen knife</div><div style="font-size:11px;color:#98A5A0;margin-top:2px">Middle aisle, stall 44</div></div>
+          <div style="text-align:right"><div style="font-size:12px;font-weight:700;color:#98A5A0;font-variant-numeric:tabular-nums">¥5,000</div><div style="font-size:9.5px;color:#B4BEB9;margin-top:1px">est.</div></div>
+        </div>
+        <div style="padding:28px 16px;text-align:center;font-size:12.5px;line-height:1.5;color:#98A5A0;border-top:1px solid #F0F2F0">Nothing planned for this day yet.<br>Press the pencil to add a stop, or to paste the itinerary in.</div>
+      </div>
+      <div style="font-size:11px;color:#6B7A74;line-height:1.5;margin-top:12px">`.card-list` r16 + overflow hidden; group head 12/14px; rows 11px/14px separated by a 1px #F0F2F0 hairline — <b>no borders between rows, no shadows inside cards</b>. Done items are struck through in #9AA6A1. Empty = 28px/16px centred soft copy, two lines, no art.</div>
+    </div>
+
+    <div style="width:300px;background:#F2F3F1;border:1px solid #E7EAE7;border-radius:16px;padding:16px">
+      <div style="font-size:10.5px;font-weight:800;letter-spacing:.06em;color:#98A5A0;margin-bottom:12px">ACCOUNT ROW</div>
+      <div style="display:flex;align-items:center;gap:10px;padding:10px 12px;border:1px solid #E7EAE7;border-radius:14px;background:#fff;margin-bottom:8px">
+        <div style="flex:1;min-width:0">
+          <div style="font-size:12.5px;font-weight:700;color:#14201C">Everything is on this phone</div>
+          <div style="font-size:11px;color:#98A5A0;line-height:1.4;margin-top:2px">Sign in and your trips follow you to a new one — and a shared link can reach it.</div>
+        </div>
+        <div style="flex:none;height:38px;padding:0 13px;border-radius:12px;background:#14201C;color:#fff;font-size:12.5px;font-weight:700;display:flex;align-items:center">Sign in</div>
+      </div>
+      <div style="display:flex;align-items:center;gap:10px;padding:10px 12px;border:1px solid #E7EAE7;border-radius:14px;background:#fff">
+        <span style="flex:none;width:30px;height:30px;border-radius:9px;background:#F2F3F1;border:1px solid #E7EAE7;display:grid;place-items:center;font-size:12px;font-weight:800;color:#3D4C46">A</span>
+        <div style="flex:1;min-width:0">
+          <div style="font-size:12.5px;font-weight:700;color:#14201C">Ana Lim</div>
+          <div style="font-size:11px;color:#98A5A0;line-height:1.4;margin-top:2px">ana@example.com</div>
+        </div>
+        <div style="flex:none;height:38px;padding:0 13px;border-radius:12px;background:#F2F3F1;border:1px solid #E1E5E1;color:#14201C;font-size:12.5px;font-weight:650;display:flex;align-items:center">Sign out</div>
+      </div>
+      <div style="font-size:11px;color:#6B7A74;line-height:1.5;margin-top:12px"><b>New pattern.</b> `.acct` — white, r14, 1px #E7EAE7, 10px/12px pad, 14px bottom margin. Signed out it states what signing in buys and never blocks; signed in it is one quiet line with the 30px `.who-mark` initial chip. Nothing below it needs an account to work.</div>
+    </div>
+
+    <div style="width:300px;background:#F2F3F1;border:1px solid #E7EAE7;border-radius:16px;padding:16px">
+      <div style="font-size:10.5px;font-weight:800;letter-spacing:.06em;color:#98A5A0;margin-bottom:12px">SHEET · MODAL · DOCK · TAB BAR</div>
+      <div style="background:#fff;border-radius:22px 22px 0 0;box-shadow:0 -8px 30px rgba(20,32,28,.16);padding:8px 0 12px">
+        <div style="width:40px;height:4px;border-radius:2px;background:#D8DDD9;margin:0 auto 10px"></div>
+        <div style="padding:0 16px;display:flex;align-items:flex-end;justify-content:space-between;gap:10px">
+          <div><div style="font-size:11px;font-weight:700;letter-spacing:.09em;color:#6B7A74">DAY 3 · MAR 14</div><div style="font-size:20px;font-weight:700;letter-spacing:-.01em;margin-top:2px">Old Quarter to Skyline</div></div>
+          <span style="height:38px;padding:0 12px;border-radius:12px;background:#FBF1DE;border:1px solid #EBD9B4;color:#8A5A08;font-size:12.5px;font-weight:700;display:flex;align-items:center">Nearby</span>
+        </div>
+      </div>
+      <div style="margin-top:12px;padding:13px 14px;background:#14201C;border-radius:18px;box-shadow:0 10px 28px rgba(20,32,28,.3);display:flex;align-items:center;gap:12px">
+        <div style="flex:1"><div style="font-size:10.5px;font-weight:800;letter-spacing:.06em;color:#8FB3A6">MARKET AFTERNOON · 3 STOPS</div><div style="font-size:13px;font-weight:650;color:#fff;margin-top:3px;line-height:1.3">Kōri Dessert Bar → Canal Overlook</div></div>
+        <span style="height:38px;padding:0 14px;border-radius:12px;background:#C87F0A;color:#fff;font-size:12.5px;font-weight:700;display:flex;align-items:center">Arrange</span>
+      </div>
+      <div style="margin-top:12px;display:flex;gap:2px;padding:7px 8px 10px;background:#fff;border-top:1px solid #E4E8E5;border-radius:0 0 12px 12px">
+        <div style="flex:1;min-height:46px;border-radius:12px;background:#F2F3F1;color:#14201C;display:flex;flex-direction:column;align-items:center;justify-content:center;gap:3px"><svg width="20" height="20" viewBox="0 0 20 20" fill="none"><path d="M10 18s6-5.2 6-10A6 6 0 0 0 4 8c0 4.8 6 10 6 10z" stroke="#14201C" stroke-width="1.7" stroke-linejoin="round"></path><circle cx="10" cy="8" r="2.2" stroke="#14201C" stroke-width="1.7"></circle></svg><span style="font-size:9.5px;font-weight:700">Map</span></div>
+        <div style="flex:1;min-height:46px;border-radius:12px;color:#9AA6A1;display:flex;flex-direction:column;align-items:center;justify-content:center;gap:3px"><svg width="20" height="20" viewBox="0 0 20 20" fill="none"><g stroke="#9AA6A1" stroke-width="1.7" stroke-linecap="round"><path d="M3 5.5h14M3 10h14M3 14.5h9"></path></g></svg><span style="font-size:9.5px;font-weight:700">Plan</span></div>
+        <div style="flex:1;min-height:46px;border-radius:12px;color:#9AA6A1;display:flex;flex-direction:column;align-items:center;justify-content:center;gap:3px"><svg width="20" height="20" viewBox="0 0 20 20" fill="none"><path d="M4.5 6.5h11l-1 10h-9l-1-10z" stroke="#9AA6A1" stroke-width="1.7" stroke-linejoin="round"></path><path d="M7.5 6.5V5a2.5 2.5 0 0 1 5 0v1.5" stroke="#9AA6A1" stroke-width="1.7" stroke-linecap="round"></path></svg><span style="font-size:9.5px;font-weight:700">Shop</span></div>
+        <div style="flex:1;min-height:46px;border-radius:12px;color:#9AA6A1;display:flex;flex-direction:column;align-items:center;justify-content:center;gap:3px"><svg width="20" height="20" viewBox="0 0 20 20" fill="none"><rect x="3.5" y="6" width="13" height="10.5" rx="2" stroke="#9AA6A1" stroke-width="1.7"></rect><path d="M7.5 6V4.5a1.5 1.5 0 0 1 1.5-1.5h2a1.5 1.5 0 0 1 1.5 1.5V6" stroke="#9AA6A1" stroke-width="1.7" stroke-linecap="round"></path></svg><span style="font-size:9.5px;font-weight:700">Prep</span></div>
+        <div style="flex:1;min-height:46px;border-radius:12px;color:#9AA6A1;display:flex;flex-direction:column;align-items:center;justify-content:center;gap:3px"><svg width="20" height="20" viewBox="0 0 20 20" fill="none"><path d="M13 3.5l3.5 3.5L7 16.5H3.5V13z" stroke="#9AA6A1" stroke-width="1.7" stroke-linejoin="round"></path></svg><span style="font-size:9.5px;font-weight:700">Log</span></div>
+      </div>
+      <div style="font-size:11px;color:#6B7A74;line-height:1.5;margin-top:12px">Sheet r22 top corners, upward shadow, 40×4 grab bar, 3 detents. Modals dock 12px from the bottom — <b>nothing is centred</b>. Docks are ink with a coloured action and always name what they will act on. Tab bar 78px, translucent white + 14px blur, active tab = bone pill; the five icons are the real inline SVGs from <code style="font-family:ui-monospace,Menlo,monospace;font-size:11px">util.js</code>, at #14201C active and #9AA6A1 inactive exactly as `nav.js` paints them.</div>
+    </div>
+
+  </div>
+</section>
+
+<section style="padding:36px 48px 44px;border-bottom:1px solid rgba(20,32,28,.1)">
+  <div style="font-size:10.5px;font-weight:800;letter-spacing:.06em;color:#98A5A0;margin-bottom:6px">05 · TYPE SPECIMEN</div>
+  <div style="font-size:22px;font-weight:700;letter-spacing:-.01em;margin-bottom:22px">Public Sans, at the sizes actually used</div>
+  <div style="display:flex;flex-wrap:wrap;gap:18px;align-items:flex-start">
+    <div style="width:420px;background:#fff;border:1px solid #E7EAE7;border-radius:16px;padding:18px;display:flex;flex-direction:column;gap:14px">
+      <div><div style="font-size:24px;font-weight:700;letter-spacing:-.02em">Shopping list</div><div style="font-size:10.5px;color:#98A5A0;margin-top:3px;font-family:ui-monospace,Menlo,monospace">.screen-title — 24px / 700 / -.02em</div></div>
+      <div><div style="font-size:17px;font-weight:700;letter-spacing:-.01em">Trip settings</div><div style="font-size:10.5px;color:#98A5A0;margin-top:3px;font-family:ui-monospace,Menlo,monospace">.push-title — 17px / 700 / -.01em</div></div>
+      <div><div style="font-size:10.5px;font-weight:800;letter-spacing:.06em;color:#98A5A0">WHAT I AM ACTUALLY BRINGING</div><div style="font-size:10.5px;color:#98A5A0;margin-top:3px;font-family:ui-monospace,Menlo,monospace">.eyebrow — 10.5px / 800 / .06em (jade + amber variants)</div></div>
+      <div><div style="font-size:13.5px;line-height:1.55;color:#3D4C46">16 °C and overcast on this day, so a mid-weight layer works. Flat shoes: the aisles are wet near the fish stalls.</div><div style="font-size:10.5px;color:#98A5A0;margin-top:3px;font-family:ui-monospace,Menlo,monospace">body — 13.5px / 1.55 / #3D4C46</div></div>
+      <div><div style="font-size:14.5px;font-weight:650">Ashgate Shrine</div><div style="font-size:11.5px;color:#6B7A74;margin-top:3px">Covered shoulders. Stamp book ¥500 at the side office.</div><div style="font-size:10.5px;color:#98A5A0;margin-top:3px;font-family:ui-monospace,Menlo,monospace">row title 14.5/650 + note 11.5px muted</div></div>
+      <div><div style="font-size:11px;color:#98A5A0">Where in the shop, or anything to remember</div><div style="font-size:10.5px;color:#98A5A0;margin-top:3px;font-family:ui-monospace,Menlo,monospace">label — 11px / 400 / soft</div></div>
+      <div><div style="font-size:9.5px;color:#B4BEB9;font-weight:600">est.</div><div style="font-size:10.5px;color:#98A5A0;margin-top:3px;font-family:ui-monospace,Menlo,monospace">caption — 9.5–10.5px / faint (the smallest type in the app)</div></div>
+    </div>
+    <div style="width:340px;background:#fff;border:1px solid #E7EAE7;border-radius:16px;padding:18px;display:flex;flex-direction:column;gap:14px">
+      <div><div style="display:flex;gap:10px;align-items:baseline"><span style="font-size:12.5px;font-weight:700;font-variant-numeric:tabular-nums">08:30</span><span style="font-size:11px;font-weight:650;color:#98A5A0;font-variant-numeric:tabular-nums">09:00</span><span style="font-size:10.5px;font-weight:600;color:#98A5A0">30 min</span></div><div style="font-size:10.5px;color:#98A5A0;margin-top:3px;font-family:ui-monospace,Menlo,monospace">time — 12.5/700 start, 11px derived end, 10.5px duration, all tabular</div></div>
+      <div><div style="font-size:36px;font-weight:700;letter-spacing:-.025em;line-height:1;font-variant-numeric:tabular-nums">¥2,400</div><div style="font-size:10.5px;color:#98A5A0;margin-top:5px;font-family:ui-monospace,Menlo,monospace">.spend-big — 36px / 700 / -.025em / tabular</div></div>
+      <div><div style="font-size:20px;font-weight:700;font-variant-numeric:tabular-nums">¥2,400</div><div style="font-size:11.5px;font-weight:600;color:#6B7A74">/ ¥37,100 est.</div><div style="font-size:10.5px;color:#98A5A0;margin-top:3px;font-family:ui-monospace,Menlo,monospace">.spend-v 20px + .spend-est 11.5px muted</div></div>
+      <div><div style="font-family:ui-monospace,Menlo,monospace;font-size:12px;line-height:1.6;color:#3D4C46;background:#fff;border:1px solid #E7EAE7;border-radius:9px;padding:8px 9px">DAY 1 — Thu 12 Mar<br>09:00 Airport pickup…</div><div style="font-size:10.5px;color:#98A5A0;margin-top:5px;font-family:ui-monospace,Menlo,monospace">the one mono use: pasted itinerary text</div></div>
+      <div style="font-size:11px;color:#6B7A74;line-height:1.5">Weights in the source include <b>550 and 650</b>, which are not loaded (400/600/700/800 only) and are synthesised by the browser. Preserved as-is — see the inconsistency list.</div>
+    </div>
+  </div>
+</section>
+
+<section style="padding:36px 48px 56px">
+  <div style="font-size:10.5px;font-weight:800;letter-spacing:.06em;color:#98A5A0;margin-bottom:6px">06 · HOW TO USE THIS</div>
+  <div style="font-size:22px;font-weight:700;letter-spacing:-.01em;margin-bottom:16px">If you build a new screen tomorrow</div>
+  <div style="display:flex;flex-wrap:wrap;gap:12px;max-width:1180px">
+    <div style="width:370px;background:#fff;border:1px solid #E7EAE7;border-radius:16px;padding:14px"><div style="font-size:13px;font-weight:700">Start by copying a screen of the same shape</div><div style="font-size:11.5px;color:#6B7A74;line-height:1.5;margin-top:5px">List → shop.js · push/detail → spend.js · map+sheet → map.js · form → note.js or the `.form` in parts.js. The shell (`.screen` → `.head` → one `.scroll`) is not negotiable.</div></div>
+    <div style="width:370px;background:#fff;border:1px solid #E7EAE7;border-radius:16px;padding:14px"><div style="font-size:13px;font-weight:700">Reuse parts.js before writing anything</div><div style="font-size:11.5px;color:#6B7A74;line-height:1.5;margin-top:5px">backHeader, dayPills, tripChip/syncDot, checkbox, weatherBanner, emptyDay, swipeToDelete, bindDragReorder, draggableSheet, undoBar, the three modal editors — and now signInPanel/mountSignIn for anything that needs an account.</div></div>
+    <div style="width:370px;background:#fff;border:1px solid #E7EAE7;border-radius:16px;padding:14px"><div style="font-size:13px;font-weight:700">Keep the colour meanings</div><div style="font-size:11.5px;color:#6B7A74;line-height:1.5;margin-top:5px">Only `:root` tokens, and only in their existing roles. A new hue would break the one thing the whole app teaches: given vs yours.</div></div>
+    <div style="width:370px;background:#fff;border:1px solid #E7EAE7;border-radius:16px;padding:14px"><div style="font-size:13px;font-weight:700">Never demand an account</div><div style="font-size:11.5px;color:#6B7A74;line-height:1.5;margin-top:5px">Sign-in is offered in exactly two places (the account row and after accepting an invite) and always states what it buys. Everything else works signed out, on this phone.</div></div>
+    <div style="width:370px;background:#fff;border:1px solid #E7EAE7;border-radius:16px;padding:14px"><div style="font-size:13px;font-weight:700">Destruction is swipe → in-row confirm → undo</div><div style="font-size:11.5px;color:#6B7A74;line-height:1.5;margin-top:5px">Never add a centred confirmation dialog. The only blocking interactions in the app are creating a trip and signing in.</div></div>
+    <div style="width:370px;background:#fff;border:1px solid #E7EAE7;border-radius:16px;padding:14px"><div style="font-size:13px;font-weight:700">Write copy like the app does</div><div style="font-size:11.5px;color:#6B7A74;line-height:1.5;margin-top:5px">Plain sentences, second person, state the consequence, no marketing voice, no exclamation marks. Every warning names the tap that fixes it.</div></div>
+    <div style="width:370px;background:#fff;border:1px solid #E7EAE7;border-radius:16px;padding:14px"><div style="font-size:13px;font-weight:700">No new framework, no build step</div><div style="font-size:11.5px;color:#6B7A74;line-height:1.5;margin-top:5px">One file in `web/js/screens/`, one `register()` line in app.js, and — only if unavoidable — a new block at the end of app.css. Existing inconsistencies stay as they are unless approved.</div></div>
+  </div>
+  <div style="margin-top:22px;padding:13px 14px;background:#FFFDF7;border:1.5px solid #EBD9B4;border-radius:16px;color:#8A5A08;max-width:1180px;font-size:12px;line-height:1.55">This board is a <b>baseline record</b>, not a design system to build from generically. Where a value here disagrees with `web/css/app.css`, the stylesheet wins. Frames re-captured 4 Sep 2026 against `main`; if the app has moved again, re-capture before trusting a frame.</div>
+</section>
+
+</x-dc>
+</body>
+</html>

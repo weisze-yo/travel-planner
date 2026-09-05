@@ -1,0 +1,1088 @@
+<!DOCTYPE html>
+<html>
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<script src="./support.js"></script>
+</head>
+<body>
+<x-dc>
+<helmet data-dc-atomics>
+<meta name="design_doc_mode" content="canvas">
+<style>
+@font-face{font-family:'Public Sans';font-style:normal;font-weight:400;font-display:swap;src:url('web/vendor/fonts/public-sans-latin-400-normal.woff2') format('woff2')}
+@font-face{font-family:'Public Sans';font-style:normal;font-weight:600;font-display:swap;src:url('web/vendor/fonts/public-sans-latin-600-normal.woff2') format('woff2')}
+@font-face{font-family:'Public Sans';font-style:normal;font-weight:700;font-display:swap;src:url('web/vendor/fonts/public-sans-latin-700-normal.woff2') format('woff2')}
+@font-face{font-family:'Public Sans';font-style:normal;font-weight:800;font-display:swap;src:url('web/vendor/fonts/public-sans-latin-800-normal.woff2') format('woff2')}
+*{box-sizing:border-box}
+body{margin:0;background:#E4E6E2;font-family:'Public Sans',system-ui,sans-serif;color:#14201C;-webkit-font-smoothing:antialiased}
+a{color:#1F6F5C}
+a:hover{color:#14201C}
+</style>
+</helmet>
+
+<section style="padding:44px 48px 34px;border-bottom:1px solid rgba(20,32,28,.1)">
+  <div style="max-width:1180px;display:flex;flex-direction:column;gap:14px">
+    <div style="font-size:10.5px;font-weight:800;letter-spacing:.06em;color:#98A5A0">TRAVEL PLANNER · NEW FEATURE DESIGN · 4 SEP 2026</div>
+    <div style="font-size:34px;font-weight:700;letter-spacing:-.02em;line-height:1.1">Empty states, warning strips, and the Review screen</div>
+    <div style="font-size:14px;line-height:1.6;color:#3D4C46;max-width:860px;text-wrap:pretty">Three artboards drawn against the existing app, not over it. Every value here is a value already in <code style="font-family:ui-monospace,Menlo,monospace;font-size:12.5px">web/css/app.css</code> — same bone page, same white cards, same four semantic colours, same button ladder, same 16px page sides, same 390 × 844 frame. Nothing existing is redesigned and no new hue, gradient or illustration is introduced. Where a genuinely new decision was needed it is called out as one.</div>
+    <div style="display:flex;flex-wrap:wrap;gap:8px;margin-top:2px">
+      <span style="padding:5px 10px;border-radius:8px;background:#14201C;color:#fff;font-size:11px;font-weight:800;letter-spacing:.04em">390 × 844 · LIGHT ONLY</span>
+      <span style="padding:5px 10px;border-radius:8px;background:#E6EFEB;color:#1F6F5C;font-size:11px;font-weight:800;letter-spacing:.04em">ARTBOARD 1 · EMPTY STATES</span>
+      <span style="padding:5px 10px;border-radius:8px;background:#FBF1DE;color:#8A5A08;font-size:11px;font-weight:800;letter-spacing:.04em">ARTBOARD 2 · WARNING STRIPS</span>
+      <span style="padding:5px 10px;border-radius:8px;background:#F8E9E9;color:#9B4B4B;font-size:11px;font-weight:800;letter-spacing:.04em">ARTBOARD 3 · REVIEW</span>
+      <span style="padding:5px 10px;border-radius:8px;background:#fff;border:1px solid #E7EAE7;color:#6B7A74;font-size:11px;font-weight:700">Full write-up: docs/design/new-feature-design.md</span>
+    </div>
+  </div>
+</section>
+
+<section style="padding:34px 48px 40px;border-bottom:1px solid rgba(20,32,28,.1)">
+  <div style="font-size:10.5px;font-weight:800;letter-spacing:.06em;color:#98A5A0;margin-bottom:6px">00 · BEFORE DRAWING</div>
+  <div style="font-size:22px;font-weight:700;letter-spacing:-.01em;margin-bottom:18px">What each artboard actually has to solve</div>
+  <div style="display:flex;flex-wrap:wrap;gap:14px;max-width:1180px">
+    <div style="width:376px;background:#fff;border:1px solid #E7EAE7;border-radius:16px;padding:15px">
+      <div style="font-size:10.5px;font-weight:800;letter-spacing:.06em;color:#1F6F5C">1 · EMPTY STATES</div>
+      <div style="font-size:13.5px;font-weight:650;margin-top:7px;line-height:1.35">Twelve places are empty for four different reasons. Today they all sound the same.</div>
+      <div style="font-size:11.5px;color:#6B7A74;margin-top:8px;line-height:1.5">The app already has one good instinct — <b>empty copy teaches the data model</b> ("the gaps between them become free time by themselves"). What it does not have is a rule for <i>whose</i> emptiness it is. A day you have not planned, a log that has not happened yet, and a day the trip owner has not filled in are three different situations wearing the same grey sentence and, worse, the same button.</div>
+      <div style="font-size:11.5px;color:#3D4C46;margin-top:9px;line-height:1.5;padding-top:9px;border-top:1px solid #F0F2F0"><b>Decision to make:</b> what carries ownership — the words, or the surface?</div>
+    </div>
+    <div style="width:376px;background:#fff;border:1px solid #E7EAE7;border-radius:16px;padding:15px">
+      <div style="font-size:10.5px;font-weight:800;letter-spacing:.06em;color:#8A5A08">2 · WARNING STRIPS</div>
+      <div style="font-size:13.5px;font-weight:650;margin-top:7px;line-height:1.35">The warning is a generated English sentence with a proper noun dropped into the middle of it.</div>
+      <div style="font-size:11.5px;color:#6B7A74;margin-top:8px;line-height:1.5">Live strings from <code style="font-family:ui-monospace,Menlo,monospace;font-size:11px">store.js</code>: <span style="color:#8A5A08">"Starts 13:45 but sits after Nishi Market at 13:30."</span> and <span style="color:#8A5A08">"Nishi Market runs to 14:30, so these two are on top of each other."</span> Both are fine until the name is 東京都庁舎第一本庁舎展望室. Then the sentence has no capital letters to find the noun by, no spaces to break on, and 11.5px is below the CJK legibility floor.</div>
+      <div style="font-size:11.5px;color:#3D4C46;margin-top:9px;line-height:1.5;padding-top:9px;border-top:1px solid #F0F2F0"><b>Decision to make:</b> keep the name inline in an English clause, or take it out of the grammar altogether.</div>
+    </div>
+    <div style="width:376px;background:#fff;border:1px solid #E7EAE7;border-radius:16px;padding:15px">
+      <div style="font-size:10.5px;font-weight:800;letter-spacing:.06em;color:#9B4B4B">3 · REVIEW</div>
+      <div style="font-size:13.5px;font-weight:650;margin-top:7px;line-height:1.35">The behaviour is right. The screen just does not rank its four questions.</div>
+      <div style="font-size:11.5px;color:#6B7A74;margin-top:8px;line-height:1.5">Today <code style="font-family:ui-monospace,Menlo,monospace;font-size:11px">review.js</code> renders a flat list of identical cards, each with a badge, a title, a two-box <code style="font-family:ui-monospace,Menlo,monospace;font-size:11px">.sides</code> comparison and two buttons. Nothing is grouped, an addition renders an empty "YOURS" box, long values squash into 12px columns roughly 150px wide, and the take-all/keep-all pair scrolls away below five cards.</div>
+      <div style="font-size:11.5px;color:#3D4C46;margin-top:9px;line-height:1.5;padding-top:9px;border-top:1px solid #F0F2F0"><b>Decision to make:</b> visual ranking of <i>what changed → what I have → what they propose → what I decide</i>, with no change to the mutations underneath.</div>
+    </div>
+  </div>
+</section>
+
+<section style="padding:36px 48px 44px;border-bottom:1px solid rgba(20,32,28,.1)">
+  <div style="font-size:10.5px;font-weight:800;letter-spacing:.06em;color:#1F6F5C;margin-bottom:6px">ARTBOARD 1</div>
+  <div style="font-size:26px;font-weight:700;letter-spacing:-.015em;margin-bottom:8px">The empty-state grammar</div>
+  <div style="font-size:13px;color:#3D4C46;max-width:860px;line-height:1.6;margin-bottom:24px;text-wrap:pretty">One system, three tiers, and a single question that sorts every empty place in the app into one of them: <b>whose turn is it?</b> The answer is carried by the <b>surface</b>, not by the wording — because the wording is the first thing that gets rewritten and the last thing anyone reads.</div>
+
+  <div style="display:flex;flex-wrap:wrap;gap:14px;max-width:1180px;margin-bottom:34px">
+    <div style="width:376px;background:#fff;border:1px solid #E7EAE7;border-radius:16px;padding:15px">
+      <div style="display:flex;align-items:center;gap:8px"><span style="width:16px;height:16px;border-radius:5px;border:2px dashed #C9D0CB"></span><div style="font-size:10.5px;font-weight:800;letter-spacing:.06em;color:#14201C">TIER 1 · YOURS TO FILL</div></div>
+      <div style="font-size:12.5px;color:#3D4C46;margin-top:9px;line-height:1.5">The container exists and you are the one who fills it. Nothing has gone wrong; there is simply a next move.</div>
+      <div style="font-size:11.5px;color:#6B7A74;margin-top:9px;line-height:1.55"><b style="color:#14201C">Surface</b> bone page, no card. <b style="color:#14201C">Mark</b> a dashed silhouette of the thing that is missing. <b style="color:#14201C">Copy</b> one 15px line naming what is missing, one 12.5px sentence teaching the model. <b style="color:#14201C">Action</b> one ink primary, at most one ghost alternative.</div>
+      <div style="font-size:11px;color:#98A5A0;margin-top:9px;padding-top:9px;border-top:1px solid #F0F2F0">Trips home · a day of your own trip · shopping list · a place's tabs</div>
+    </div>
+    <div style="width:376px;background:#fff;border:1px solid #E7EAE7;border-radius:16px;padding:15px">
+      <div style="display:flex;align-items:center;gap:8px"><span style="width:16px;height:16px;border-radius:5px;background:#F2F3F1;border:1px solid #E7EAE7"></span><div style="font-size:10.5px;font-weight:800;letter-spacing:.06em;color:#14201C">TIER 2 · FILLS ITSELF</div></div>
+      <div style="font-size:12.5px;color:#3D4C46;margin-top:9px;line-height:1.5">Empty because the trip has not happened yet. Time fills this, not a button. Pushing an action here invents a chore.</div>
+      <div style="font-size:11.5px;color:#6B7A74;margin-top:9px;line-height:1.55"><b style="color:#14201C">Surface</b> the existing inline <code style="font-family:ui-monospace,Menlo,monospace;font-size:11px">.empty</code> block, 28px/16px, centred, 12.5px soft. <b style="color:#14201C">Mark</b> none. <b style="color:#14201C">Copy</b> one sentence, present tense, naming what will fill it. <b style="color:#14201C">Action</b> no ink button. A dashed add only where doing it early is legitimate.</div>
+      <div style="font-size:11px;color:#98A5A0;margin-top:9px;padding-top:9px;border-top:1px solid #F0F2F0">Log before the trip · spend report before anything is bought · a place's must-see list</div>
+    </div>
+    <div style="width:376px;background:#E6EFEB;border:1px solid #CFE0D9;border-radius:16px;padding:15px">
+      <div style="display:flex;align-items:center;gap:8px"><span style="width:16px;height:16px;border-radius:5px;background:#fff;border:1px solid #CFE0D9"></span><div style="font-size:10.5px;font-weight:800;letter-spacing:.06em;color:#1F6F5C">TIER 3 · SOMEBODY ELSE'S SIDE</div></div>
+      <div style="font-size:12.5px;color:#14201C;margin-top:9px;line-height:1.5">Empty because it is the shared copy and the person who keeps it has not filled it in. You cannot finish this, and you are not being told off about it.</div>
+      <div style="font-size:11.5px;color:#5D8C7C;margin-top:9px;line-height:1.55"><b style="color:#1F6F5C">Surface</b> a jade card — jade already means "given to you", and this is the given copy. <b style="color:#1F6F5C">Mark</b> none. <b style="color:#1F6F5C">Copy</b> what you were sent, then when more arrives. <b style="color:#1F6F5C">Action</b> never an ink primary. One ghost, and only for something that is <i>yours</i> to do meanwhile.</div>
+      <div style="font-size:11px;color:#5D8C7C;margin-top:9px;padding-top:9px;border-top:1px solid #CFE0D9">A joined trip before its first update · an unplanned day in someone else's copy</div>
+    </div>
+  </div>
+
+  <div style="display:flex;flex-wrap:wrap;gap:14px;max-width:1180px;margin-bottom:34px">
+    <div style="width:566px;background:#fff;border:1px solid #E7EAE7;border-radius:16px;padding:15px">
+      <div style="font-size:10.5px;font-weight:800;letter-spacing:.06em;color:#98A5A0;margin-bottom:10px">THE SIX QUESTIONS, ANSWERED ONCE</div>
+      <div style="display:flex;flex-direction:column;gap:9px;font-size:11.5px;line-height:1.5;color:#3D4C46">
+        <div style="display:flex;gap:10px"><span style="flex:none;width:150px;font-weight:800;color:#14201C">What is empty?</span><span>Name the missing <i>thing</i>, never the container. "No trips yet", not "This list is empty".</span></div>
+        <div style="display:flex;gap:10px"><span style="flex:none;width:150px;font-weight:800;color:#14201C">Whose emptiness?</span><span>You (tier 1) · the calendar (tier 2) · the person who keeps the shared copy (tier 3).</span></div>
+        <div style="display:flex;gap:10px"><span style="flex:none;width:150px;font-weight:800;color:#14201C">Is an action expected?</span><span>Only in tier 1. Tier 2 waits for a day to happen; tier 3 waits for a person.</span></div>
+        <div style="display:flex;gap:10px"><span style="flex:none;width:150px;font-weight:800;color:#14201C">Should one be offered?</span><span>Only if it can be completed right now with what is already on the phone. Otherwise it is a dead end dressed as help.</span></div>
+        <div style="display:flex;gap:10px"><span style="flex:none;width:150px;font-weight:800;color:#14201C">What action?</span><span>The same action that already exists elsewhere on that screen, with the same label. An empty state never introduces a control.</span></div>
+        <div style="display:flex;gap:10px"><span style="flex:none;width:150px;font-weight:800;color:#14201C">When none?</span><span>Emptiness caused by time, or by another person. Both then get a second sentence saying what will end it.</span></div>
+      </div>
+    </div>
+    <div style="width:566px;background:#fff;border:1px solid #E7EAE7;border-radius:16px;padding:15px">
+      <div style="font-size:10.5px;font-weight:800;letter-spacing:.06em;color:#98A5A0;margin-bottom:10px">COPY RULES · SHARED STATE WITHOUT BLAME</div>
+      <div style="display:flex;flex-direction:column;gap:10px">
+        <div style="padding:10px 11px;border-radius:12px;background:#F8E9E9;border:1px solid #F0DADA">
+          <div style="font-size:9.5px;font-weight:800;letter-spacing:.05em;color:#9B4B4B">DO NOT</div>
+          <div style="font-size:12px;color:#9B4B4B;margin-top:5px;line-height:1.45">"Ana hasn't planned this day yet." · "Waiting for the trip owner." · "No data received."</div>
+          <div style="font-size:11px;color:#9B4B4B;margin-top:6px;line-height:1.45;opacity:.85">A person as the subject of a negative verb reads as a complaint about them. "Received" is machine language.</div>
+        </div>
+        <div style="padding:10px 11px;border-radius:12px;background:#E6EFEB;border:1px solid #CFE0D9">
+          <div style="font-size:9.5px;font-weight:800;letter-spacing:.05em;color:#1F6F5C">DO</div>
+          <div style="font-size:12px;color:#14201C;margin-top:5px;line-height:1.45">"Day 4 is empty in the copy you were sent." · "Anything Ana adds arrives with the next update."</div>
+          <div style="font-size:11px;color:#5D8C7C;margin-top:6px;line-height:1.45">The <b>copy</b> is the subject of the first sentence, so nobody is at fault. The person appears only in the second, attached to a positive verb — what they will do, not what they have not done. Lower-case after the first word, no exclamation, state the consequence: the house voice, unchanged.</div>
+        </div>
+      </div>
+    </div>
+  </div>
+
+  <div style="display:flex;flex-wrap:wrap;gap:28px">
+
+    <div style="width:390px;display:flex;flex-direction:column;gap:9px">
+      <div style="display:flex;align-items:baseline;gap:8px;flex-wrap:wrap"><span style="padding:3px 7px;border-radius:6px;background:#14201C;color:#fff;font-size:10px;font-weight:800;letter-spacing:.04em">1A</span><span style="font-size:14px;font-weight:700">Trips home — a new account</span><span style="padding:3px 7px;border-radius:6px;background:#F2F3F1;border:1px solid #E7EAE7;color:#6B7A74;font-size:9.5px;font-weight:800;letter-spacing:.04em">TIER 1</span></div>
+      <div style="width:390px;height:844px;background:#F2F3F1;border:1px solid rgba(20,32,28,.12);border-radius:12px;overflow:hidden;display:flex;flex-direction:column;box-shadow:0 2px 10px rgba(20,32,28,.08)">
+        <div style="flex:none;background:#fff;border-bottom:1px solid #E7EAE7;padding:22px 16px 12px">
+          <div style="font-size:24px;font-weight:700;letter-spacing:-.02em">My trips</div>
+          <div style="font-size:12px;color:#98A5A0;margin-top:3px">Nothing planned yet</div>
+        </div>
+        <div style="flex:1;overflow:hidden;padding:14px 16px">
+          <div style="display:flex;align-items:center;gap:10px;background:#fff;border:1px solid #E7EAE7;border-radius:14px;padding:10px 12px">
+            <div style="flex:none;width:30px;height:30px;border-radius:50%;background:#E6EFEB;color:#1F6F5C;font-size:12.5px;font-weight:800;display:flex;align-items:center;justify-content:center">W</div>
+            <div style="flex:1;min-width:0">
+              <div style="font-size:12.5px;font-weight:700;color:#14201C">Wei Sze</div>
+              <div style="font-size:11px;color:#98A5A0;margin-top:2px">weisze@example.com</div>
+            </div>
+            <div style="flex:none;height:38px;padding:0 14px;border-radius:12px;background:#F2F3F1;border:1px solid #E1E5E1;color:#14201C;font-size:12.5px;font-weight:650;display:flex;align-items:center">Sign out</div>
+          </div>
+
+          <div style="display:flex;flex-direction:column;align-items:center;gap:9px;text-align:center;padding:64px 8px 0">
+            <div style="width:64px;height:44px;border:2px dashed #C9D0CB;border-radius:14px"></div>
+            <div style="font-size:15px;font-weight:700;margin-top:5px">No trips yet</div>
+            <div style="font-size:12.5px;line-height:1.55;color:#6B7A74;max-width:290px;text-wrap:pretty">A trip is a handful of days with your agent's stops on them. Start one and paste the itinerary in — the shopping list, the log and the free time all hang off that.</div>
+            <div style="width:100%;max-width:290px;display:flex;flex-direction:column;gap:8px;margin-top:14px">
+              <div style="height:42px;border-radius:12px;background:#14201C;color:#fff;font-size:13px;font-weight:700;display:flex;align-items:center;justify-content:center">+ New trip</div>
+              <div style="height:42px;border-radius:12px;background:#F2F3F1;border:1px solid #E1E5E1;color:#14201C;font-size:13px;font-weight:650;display:flex;align-items:center;justify-content:center">I was sent a link</div>
+            </div>
+            <div style="font-size:11px;color:#98A5A0;line-height:1.45;max-width:280px;margin-top:12px">Everything stays on this phone. Being signed in only means a trip follows you to the next one.</div>
+          </div>
+        </div>
+      </div>
+      <div style="font-size:11.5px;color:#3D4C46;line-height:1.5">The only screen in the app with no tab bar, so the empty block owns the whole page and sits at roughly a third of the height rather than dead centre. The dashed rectangle is the silhouette of a trip card — dashed already means "not yet real" everywhere else. Two ways forward because there genuinely are two: start one, or arrive by link. The account row stays put and keeps saying the trade.</div>
+    </div>
+
+    <div style="width:390px;display:flex;flex-direction:column;gap:9px">
+      <div style="display:flex;align-items:baseline;gap:8px;flex-wrap:wrap"><span style="padding:3px 7px;border-radius:6px;background:#14201C;color:#fff;font-size:10px;font-weight:800;letter-spacing:.04em">1B</span><span style="font-size:14px;font-weight:700">A day with nothing planned</span><span style="padding:3px 7px;border-radius:6px;background:#F2F3F1;border:1px solid #E7EAE7;color:#6B7A74;font-size:9.5px;font-weight:800;letter-spacing:.04em">TIER 1</span></div>
+      <div style="width:390px;height:844px;background:#F2F3F1;border:1px solid rgba(20,32,28,.12);border-radius:12px;overflow:hidden;display:flex;flex-direction:column;box-shadow:0 2px 10px rgba(20,32,28,.08)">
+        <div style="flex:none;background:#fff;border-bottom:1px solid #E7EAE7;padding:22px 16px 12px">
+          <div style="display:flex;align-items:flex-start;gap:10px">
+            <div style="flex:1">
+              <div style="font-size:24px;font-weight:700;letter-spacing:-.02em">Day 4</div>
+              <div style="font-size:12px;color:#98A5A0;margin-top:3px">Sun 15 Mar · nothing planned</div>
+            </div>
+            <div style="flex:none;width:40px;height:40px;border-radius:13px;background:#fff;border:1px solid #E7EAE7;box-shadow:0 2px 10px rgba(20,32,28,.07);display:flex;align-items:center;justify-content:center"><svg width="15" height="15" viewBox="0 0 16 16" fill="none"><path d="M11 2.2l2.8 2.8L5.4 13.4H2.6v-2.8z" stroke="#14201C" stroke-width="1.5" stroke-linejoin="round"></path></svg></div>
+          </div>
+          <div style="display:flex;gap:6px;margin-top:12px">
+            <div style="height:32px;padding:0 11px;border-radius:10px;background:#F2F3F1;color:#6B7A74;font-size:12.5px;font-weight:650;display:flex;align-items:center;gap:4px">D1</div>
+            <div style="height:32px;padding:0 11px;border-radius:10px;background:#F2F3F1;color:#6B7A74;font-size:12.5px;font-weight:650;display:flex;align-items:center;gap:4px">D2</div>
+            <div style="height:32px;padding:0 11px;border-radius:10px;background:#F2F3F1;color:#6B7A74;font-size:12.5px;font-weight:650;display:flex;align-items:center;gap:4px">D3</div>
+            <div style="height:32px;padding:0 11px;border-radius:10px;background:#14201C;color:#fff;font-size:12.5px;font-weight:700;display:flex;align-items:center;gap:4px">D4</div>
+            <div style="height:32px;padding:0 11px;border-radius:10px;background:#F2F3F1;color:#6B7A74;font-size:12.5px;font-weight:650;display:flex;align-items:center;gap:4px">D5</div>
+            <div style="height:32px;padding:0 11px;border-radius:10px;background:#F2F3F1;color:#6B7A74;font-size:12.5px;font-weight:650;display:flex;align-items:center;gap:4px">D6</div>
+          </div>
+        </div>
+        <div style="flex:1;overflow:hidden;padding:14px 16px">
+          <div style="display:flex;align-items:center;gap:10px;background:#E6EFEB;border:1px solid #CFE0D9;border-radius:14px;padding:11px 12px">
+            <div style="font-size:18px">☁</div>
+            <div style="flex:1">
+              <div style="font-size:12.5px;font-weight:700;color:#14201C">Cloudy, 18–24 °C</div>
+              <div style="font-size:10.5px;color:#5D8C7C;margin-top:2px">forecast for Sun 15 Mar</div>
+            </div>
+            <div style="color:#5D8C7C;font-size:14px">›</div>
+          </div>
+
+          <div style="display:flex;flex-direction:column;align-items:center;gap:7px;text-align:center;padding:58px 8px 0">
+            <div style="width:0;height:38px;border-left:2px dashed #DCE2DE"></div>
+            <div style="font-size:15px;font-weight:700;margin-top:4px">The day is empty</div>
+            <div style="font-size:12.5px;line-height:1.55;color:#6B7A74;max-width:284px;text-wrap:pretty">Add the stops your agent gave you and the gaps between them become free time by themselves.</div>
+            <div style="width:100%;max-width:290px;display:flex;flex-direction:column;gap:8px;margin-top:14px">
+              <div style="height:42px;border-radius:12px;background:#14201C;color:#fff;font-size:13px;font-weight:700;display:flex;align-items:center;justify-content:center">+ Add a stop</div>
+              <div style="height:42px;border-radius:12px;background:#F2F3F1;border:1px solid #E1E5E1;color:#14201C;font-size:13px;font-weight:650;display:flex;align-items:center;justify-content:center">Paste an itinerary</div>
+            </div>
+          </div>
+        </div>
+        <div style="flex:none;height:78px;display:flex;gap:2px;padding:7px 8px 10px;background:rgba(255,255,255,.94);border-top:1px solid #E4E8E5">
+          <div style="flex:1;border-radius:12px;display:flex;flex-direction:column;align-items:center;justify-content:center;gap:3px"><svg width="20" height="20" viewBox="0 0 20 20" fill="none"><path d="M10 18s6-5.2 6-10A6 6 0 0 0 4 8c0 4.8 6 10 6 10z" stroke="#9AA6A1" stroke-width="1.7" stroke-linejoin="round"></path><circle cx="10" cy="8" r="2.2" stroke="#9AA6A1" stroke-width="1.7"></circle></svg><span style="font-size:9.5px;font-weight:800;color:#9AA6A1">Map</span></div>
+          <div style="flex:1;border-radius:12px;background:#F2F3F1;display:flex;flex-direction:column;align-items:center;justify-content:center;gap:3px"><svg width="20" height="20" viewBox="0 0 20 20" fill="none"><g stroke="#14201C" stroke-width="1.7" stroke-linecap="round"><path d="M3 5.5h14M3 10h14M3 14.5h9"></path></g></svg><span style="font-size:9.5px;font-weight:800;color:#14201C">Plan</span></div>
+          <div style="flex:1;border-radius:12px;display:flex;flex-direction:column;align-items:center;justify-content:center;gap:3px"><svg width="20" height="20" viewBox="0 0 20 20" fill="none"><path d="M4.5 6.5h11l-1 10h-9l-1-10z" stroke="#9AA6A1" stroke-width="1.7" stroke-linejoin="round"></path><path d="M7.5 6.5V5a2.5 2.5 0 0 1 5 0v1.5" stroke="#9AA6A1" stroke-width="1.7" stroke-linecap="round"></path></svg><span style="font-size:9.5px;font-weight:800;color:#9AA6A1">Shop</span></div>
+          <div style="flex:1;border-radius:12px;display:flex;flex-direction:column;align-items:center;justify-content:center;gap:3px"><svg width="20" height="20" viewBox="0 0 20 20" fill="none"><rect x="3.5" y="6" width="13" height="10.5" rx="2" stroke="#9AA6A1" stroke-width="1.7"></rect><path d="M7.5 6V4.5a1.5 1.5 0 0 1 1.5-1.5h2a1.5 1.5 0 0 1 1.5 1.5V6" stroke="#9AA6A1" stroke-width="1.7" stroke-linecap="round"></path></svg><span style="font-size:9.5px;font-weight:800;color:#9AA6A1">Prep</span></div>
+          <div style="flex:1;border-radius:12px;display:flex;flex-direction:column;align-items:center;justify-content:center;gap:3px"><svg width="20" height="20" viewBox="0 0 20 20" fill="none"><path d="M13 3.5l3.5 3.5L7 16.5H3.5V13z" stroke="#9AA6A1" stroke-width="1.7" stroke-linejoin="round"></path></svg><span style="font-size:9.5px;font-weight:800;color:#9AA6A1">Log</span></div>
+        </div>
+      </div>
+      <div style="font-size:11.5px;color:#3D4C46;line-height:1.5">Existing <code style="font-family:ui-monospace,Menlo,monospace;font-size:11px">emptyDay()</code> copy kept verbatim — it is the best sentence in the app. Two changes only: the dashed <code style="font-family:ui-monospace,Menlo,monospace;font-size:11px">.lane-stub</code> becomes the tier-1 mark, and the two actions the copy currently <i>describes</i> ("press the pencil… or paste") become the two buttons that already exist in edit mode. The weather banner stays above it: a day with no stops still has weather, and that is not empty.</div>
+    </div>
+
+    <div style="width:390px;display:flex;flex-direction:column;gap:9px">
+      <div style="display:flex;align-items:baseline;gap:8px;flex-wrap:wrap"><span style="padding:3px 7px;border-radius:6px;background:#14201C;color:#fff;font-size:10px;font-weight:800;letter-spacing:.04em">1F</span><span style="font-size:14px;font-weight:700">The same day, in a joined trip</span><span style="padding:3px 7px;border-radius:6px;background:#E6EFEB;color:#1F6F5C;font-size:9.5px;font-weight:800;letter-spacing:.04em">TIER 3</span></div>
+      <div style="width:390px;height:844px;background:#F2F3F1;border:1px solid rgba(20,32,28,.12);border-radius:12px;overflow:hidden;display:flex;flex-direction:column;box-shadow:0 2px 10px rgba(20,32,28,.08)">
+        <div style="flex:none;background:#fff;border-bottom:1px solid #E7EAE7;padding:22px 16px 12px">
+          <div style="display:flex;align-items:flex-start;gap:10px">
+            <div style="flex:1">
+              <div style="font-size:24px;font-weight:700;letter-spacing:-.02em">Day 4</div>
+              <div style="font-size:12px;color:#98A5A0;margin-top:3px">Sun 15 Mar · nothing planned</div>
+            </div>
+            <div style="flex:none;width:40px;height:40px;border-radius:13px;background:#fff;border:1px solid #E7EAE7;box-shadow:0 2px 10px rgba(20,32,28,.07);display:flex;align-items:center;justify-content:center"><svg width="15" height="15" viewBox="0 0 16 16" fill="none"><path d="M11 2.2l2.8 2.8L5.4 13.4H2.6v-2.8z" stroke="#14201C" stroke-width="1.5" stroke-linejoin="round"></path></svg></div>
+          </div>
+          <div style="display:flex;gap:6px;margin-top:12px">
+            <div style="height:32px;padding:0 11px;border-radius:10px;background:#F2F3F1;color:#6B7A74;font-size:12.5px;font-weight:650;display:flex;align-items:center">D1</div>
+            <div style="height:32px;padding:0 11px;border-radius:10px;background:#F2F3F1;color:#6B7A74;font-size:12.5px;font-weight:650;display:flex;align-items:center">D2</div>
+            <div style="height:32px;padding:0 11px;border-radius:10px;background:#F2F3F1;color:#6B7A74;font-size:12.5px;font-weight:650;display:flex;align-items:center">D3</div>
+            <div style="height:32px;padding:0 11px;border-radius:10px;background:#14201C;color:#fff;font-size:12.5px;font-weight:700;display:flex;align-items:center">D4</div>
+            <div style="height:32px;padding:0 11px;border-radius:10px;background:#F2F3F1;color:#6B7A74;font-size:12.5px;font-weight:650;display:flex;align-items:center">D5</div>
+            <div style="height:32px;padding:0 11px;border-radius:10px;background:#F2F3F1;color:#6B7A74;font-size:12.5px;font-weight:650;display:flex;align-items:center">D6</div>
+          </div>
+        </div>
+        <div style="flex:1;overflow:hidden;padding:14px 16px">
+          <div style="background:#E6EFEB;border:1px solid #CFE0D9;border-radius:16px;padding:14px">
+            <div style="font-size:10.5px;font-weight:800;letter-spacing:.06em;color:#1F6F5C">SHARED WITH YOU</div>
+            <div style="font-size:13.5px;font-weight:700;color:#14201C;margin-top:7px;line-height:1.3">Day 4 is empty in the copy you were sent.</div>
+            <div style="font-size:12px;line-height:1.5;color:#5D8C7C;margin-top:6px;text-wrap:pretty">Ana keeps the itinerary for this trip. Anything she adds arrives with the next update, and nothing changes on your side until you have looked through it.</div>
+            <div style="display:flex;align-items:center;gap:7px;margin-top:11px;padding-top:11px;border-top:1px solid #CFE0D9">
+              <div style="flex:none;width:22px;height:22px;border-radius:50%;background:#fff;border:1px solid #CFE0D9;color:#1F6F5C;font-size:10px;font-weight:800;display:flex;align-items:center;justify-content:center">A</div>
+              <div style="flex:1;font-size:11px;color:#5D8C7C">joined 2 days ago · no updates yet</div>
+            </div>
+          </div>
+
+          <div style="display:flex;flex-direction:column;align-items:center;gap:7px;text-align:center;padding:46px 8px 0">
+            <div style="width:0;height:38px;border-left:2px dashed #E3CFA3"></div>
+            <div style="font-size:13.5px;font-weight:700;color:#8A5A08;margin-top:4px">Your side of the day is yours</div>
+            <div style="font-size:12.5px;line-height:1.55;color:#6B7A74;max-width:284px;text-wrap:pretty">You can put your own free time on an empty day. It stays yours — an update from Ana never overwrites it.</div>
+            <div style="width:100%;max-width:290px;margin-top:13px">
+              <div style="height:42px;border-radius:12px;background:#FFFDF7;border:1.5px solid #E3CFA3;color:#8A5A08;font-size:13px;font-weight:700;display:flex;align-items:center;justify-content:center">+ Plan free time here</div>
+            </div>
+          </div>
+        </div>
+        <div style="flex:none;height:78px;display:flex;gap:2px;padding:7px 8px 10px;background:rgba(255,255,255,.94);border-top:1px solid #E4E8E5">
+          <div style="flex:1;border-radius:12px;display:flex;flex-direction:column;align-items:center;justify-content:center;gap:3px"><svg width="20" height="20" viewBox="0 0 20 20" fill="none"><path d="M10 18s6-5.2 6-10A6 6 0 0 0 4 8c0 4.8 6 10 6 10z" stroke="#9AA6A1" stroke-width="1.7" stroke-linejoin="round"></path><circle cx="10" cy="8" r="2.2" stroke="#9AA6A1" stroke-width="1.7"></circle></svg><span style="font-size:9.5px;font-weight:800;color:#9AA6A1">Map</span></div>
+          <div style="flex:1;border-radius:12px;background:#F2F3F1;display:flex;flex-direction:column;align-items:center;justify-content:center;gap:3px"><svg width="20" height="20" viewBox="0 0 20 20" fill="none"><g stroke="#14201C" stroke-width="1.7" stroke-linecap="round"><path d="M3 5.5h14M3 10h14M3 14.5h9"></path></g></svg><span style="font-size:9.5px;font-weight:800;color:#14201C">Plan</span></div>
+          <div style="flex:1;border-radius:12px;display:flex;flex-direction:column;align-items:center;justify-content:center;gap:3px"><svg width="20" height="20" viewBox="0 0 20 20" fill="none"><path d="M4.5 6.5h11l-1 10h-9l-1-10z" stroke="#9AA6A1" stroke-width="1.7" stroke-linejoin="round"></path><path d="M7.5 6.5V5a2.5 2.5 0 0 1 5 0v1.5" stroke="#9AA6A1" stroke-width="1.7" stroke-linecap="round"></path></svg><span style="font-size:9.5px;font-weight:800;color:#9AA6A1">Shop</span></div>
+          <div style="flex:1;border-radius:12px;display:flex;flex-direction:column;align-items:center;justify-content:center;gap:3px"><svg width="20" height="20" viewBox="0 0 20 20" fill="none"><rect x="3.5" y="6" width="13" height="10.5" rx="2" stroke="#9AA6A1" stroke-width="1.7"></rect><path d="M7.5 6V4.5a1.5 1.5 0 0 1 1.5-1.5h2a1.5 1.5 0 0 1 1.5 1.5V6" stroke="#9AA6A1" stroke-width="1.7" stroke-linecap="round"></path></svg><span style="font-size:9.5px;font-weight:800;color:#9AA6A1">Prep</span></div>
+          <div style="flex:1;border-radius:12px;display:flex;flex-direction:column;align-items:center;justify-content:center;gap:3px"><svg width="20" height="20" viewBox="0 0 20 20" fill="none"><path d="M13 3.5l3.5 3.5L7 16.5H3.5V13z" stroke="#9AA6A1" stroke-width="1.7" stroke-linejoin="round"></path></svg><span style="font-size:9.5px;font-weight:800;color:#9AA6A1">Log</span></div>
+      </div>
+      </div>
+      <div style="font-size:11.5px;color:#3D4C46;line-height:1.5">Deliberately drawn next to <b>1B</b>: same screen, same date, same emptiness — one belongs to you and one does not, and you can tell from across the room without reading a word. The jade card replaces the ink CTA. Below it, the one thing that <i>is</i> yours on a shared day appears in the amber family, in the app's existing self-planned recipe (#FFFDF7 paper, 1.5px dashed #E3CFA3). No ink anywhere on this screen: nothing here is urgent.</div>
+    </div>
+
+    <div style="width:390px;display:flex;flex-direction:column;gap:9px">
+      <div style="display:flex;align-items:baseline;gap:8px;flex-wrap:wrap"><span style="padding:3px 7px;border-radius:6px;background:#14201C;color:#fff;font-size:10px;font-weight:800;letter-spacing:.04em">1C</span><span style="font-size:14px;font-weight:700">An empty Log</span><span style="padding:3px 7px;border-radius:6px;background:#F2F3F1;border:1px solid #E7EAE7;color:#6B7A74;font-size:9.5px;font-weight:800;letter-spacing:.04em">TIER 2</span></div>
+      <div style="width:390px;height:844px;background:#F2F3F1;border:1px solid rgba(20,32,28,.12);border-radius:12px;overflow:hidden;display:flex;flex-direction:column;box-shadow:0 2px 10px rgba(20,32,28,.08)">
+        <div style="flex:none;background:#fff;border-bottom:1px solid #E7EAE7;padding:22px 16px 12px">
+          <div style="display:flex;align-items:flex-start;gap:10px">
+            <div style="flex:1">
+              <div style="font-size:24px;font-weight:700;letter-spacing:-.02em">Log</div>
+              <div style="font-size:12px;color:#98A5A0;margin-top:3px">Meridian City · nothing written yet</div>
+            </div>
+            <div style="flex:none;height:38px;padding:0 13px;border-radius:12px;background:#F2F3F1;border:1px solid #E1E5E1;color:#14201C;font-size:12.5px;font-weight:650;display:flex;align-items:center">+ Note</div>
+          </div>
+        </div>
+        <div style="flex:1;overflow:hidden;padding:14px 16px">
+          <div style="background:#fff;border:1px solid #E7EAE7;border-radius:16px;padding:28px 16px;text-align:center">
+            <div style="font-size:12.5px;line-height:1.55;color:#98A5A0;text-wrap:pretty">The log fills itself as the days happen. Write when something is worth remembering — a note can be one line, and it does not have to be about a place.</div>
+          </div>
+          <div style="font-size:10.5px;font-weight:800;letter-spacing:.06em;color:#98A5A0;margin:16px 0 8px">THE DAYS SO FAR</div>
+          <div style="background:#fff;border:1px solid #E7EAE7;border-radius:16px;overflow:hidden">
+            <div style="padding:13px 14px;display:flex;align-items:center;gap:10px">
+              <div style="flex:1">
+                <div style="font-size:13.5px;font-weight:700">Day 1 · Wed 12 Mar</div>
+                <div style="font-size:11px;color:#B4BEB9;margin-top:3px">4 stops · nothing written</div>
+              </div>
+              <div style="flex:none;height:30px;padding:0 10px;border-radius:9px;background:#F2F3F1;border:1px solid #E1E5E1;color:#14201C;font-size:11.5px;font-weight:650;display:flex;align-items:center">+ Note</div>
+            </div>
+            <div style="height:1px;background:#F0F2F0"></div>
+            <div style="padding:13px 14px;display:flex;align-items:center;gap:10px">
+              <div style="flex:1">
+                <div style="font-size:13.5px;font-weight:700">Day 2 · Thu 13 Mar</div>
+                <div style="font-size:11px;color:#B4BEB9;margin-top:3px">5 stops · nothing written</div>
+              </div>
+              <div style="flex:none;height:30px;padding:0 10px;border-radius:9px;background:#F2F3F1;border:1px solid #E1E5E1;color:#14201C;font-size:11.5px;font-weight:650;display:flex;align-items:center">+ Note</div>
+            </div>
+            <div style="height:1px;background:#F0F2F0"></div>
+            <div style="padding:13px 14px;display:flex;align-items:center;gap:10px">
+              <div style="flex:1">
+                <div style="font-size:13.5px;font-weight:700">Day 3 · Today · Fri 14 Mar</div>
+                <div style="font-size:11px;color:#8A5A08;font-weight:650;margin-top:3px">in progress · 6 stops · nothing written</div>
+              </div>
+              <div style="flex:none;height:30px;padding:0 10px;border-radius:9px;background:#14201C;color:#fff;font-size:11.5px;font-weight:700;display:flex;align-items:center">+ Note</div>
+            </div>
+          </div>
+          <div style="font-size:11px;color:#98A5A0;line-height:1.5;margin-top:12px">Days 4 to 6 have not happened yet.</div>
+        </div>
+        <div style="flex:none;height:78px;display:flex;gap:2px;padding:7px 8px 10px;background:rgba(255,255,255,.94);border-top:1px solid #E4E8E5">
+          <div style="flex:1;border-radius:12px;display:flex;flex-direction:column;align-items:center;justify-content:center;gap:3px"><svg width="20" height="20" viewBox="0 0 20 20" fill="none"><path d="M10 18s6-5.2 6-10A6 6 0 0 0 4 8c0 4.8 6 10 6 10z" stroke="#9AA6A1" stroke-width="1.7" stroke-linejoin="round"></path><circle cx="10" cy="8" r="2.2" stroke="#9AA6A1" stroke-width="1.7"></circle></svg><span style="font-size:9.5px;font-weight:800;color:#9AA6A1">Map</span></div>
+          <div style="flex:1;border-radius:12px;display:flex;flex-direction:column;align-items:center;justify-content:center;gap:3px"><svg width="20" height="20" viewBox="0 0 20 20" fill="none"><g stroke="#9AA6A1" stroke-width="1.7" stroke-linecap="round"><path d="M3 5.5h14M3 10h14M3 14.5h9"></path></g></svg><span style="font-size:9.5px;font-weight:800;color:#9AA6A1">Plan</span></div>
+          <div style="flex:1;border-radius:12px;display:flex;flex-direction:column;align-items:center;justify-content:center;gap:3px"><svg width="20" height="20" viewBox="0 0 20 20" fill="none"><path d="M4.5 6.5h11l-1 10h-9l-1-10z" stroke="#9AA6A1" stroke-width="1.7" stroke-linejoin="round"></path><path d="M7.5 6.5V5a2.5 2.5 0 0 1 5 0v1.5" stroke="#9AA6A1" stroke-width="1.7" stroke-linecap="round"></path></svg><span style="font-size:9.5px;font-weight:800;color:#9AA6A1">Shop</span></div>
+          <div style="flex:1;border-radius:12px;display:flex;flex-direction:column;align-items:center;justify-content:center;gap:3px"><svg width="20" height="20" viewBox="0 0 20 20" fill="none"><rect x="3.5" y="6" width="13" height="10.5" rx="2" stroke="#9AA6A1" stroke-width="1.7"></rect><path d="M7.5 6V4.5a1.5 1.5 0 0 1 1.5-1.5h2a1.5 1.5 0 0 1 1.5 1.5V6" stroke="#9AA6A1" stroke-width="1.7" stroke-linecap="round"></path></svg><span style="font-size:9.5px;font-weight:800;color:#9AA6A1">Prep</span></div>
+          <div style="flex:1;border-radius:12px;background:#F2F3F1;display:flex;flex-direction:column;align-items:center;justify-content:center;gap:3px"><svg width="20" height="20" viewBox="0 0 20 20" fill="none"><path d="M13 3.5l3.5 3.5L7 16.5H3.5V13z" stroke="#14201C" stroke-width="1.7" stroke-linejoin="round"></path></svg><span style="font-size:9.5px;font-weight:800;color:#14201C">Log</span></div>
+        </div>
+      </div>
+      <div style="font-size:11.5px;color:#3D4C46;line-height:1.5">No centred hero, no ink button in the body: a log is not a task. The <code style="font-family:ui-monospace,Menlo,monospace;font-size:11px">.empty</code> block says what will fill it, and then <b>the day scaffold is shown anyway</b> — three real rows that teach the grouping before there is anything to group. The only ink is on today's row, because today is the one day where writing now makes sense. The closing grey line does the work an illustration would have done.</div>
+    </div>
+
+    <div style="width:390px;display:flex;flex-direction:column;gap:9px">
+      <div style="display:flex;align-items:baseline;gap:8px;flex-wrap:wrap"><span style="padding:3px 7px;border-radius:6px;background:#14201C;color:#fff;font-size:10px;font-weight:800;letter-spacing:.04em">1D</span><span style="font-size:14px;font-weight:700">An empty shopping list</span><span style="padding:3px 7px;border-radius:6px;background:#F2F3F1;border:1px solid #E7EAE7;color:#6B7A74;font-size:9.5px;font-weight:800;letter-spacing:.04em">TIER 1</span></div>
+      <div style="width:390px;height:844px;background:#F2F3F1;border:1px solid rgba(20,32,28,.12);border-radius:12px;overflow:hidden;display:flex;flex-direction:column;box-shadow:0 2px 10px rgba(20,32,28,.08)">
+        <div style="flex:none;background:#fff;border-bottom:1px solid #E7EAE7;padding:22px 16px 12px">
+          <div style="display:flex;align-items:flex-start;gap:10px">
+            <div style="flex:1">
+              <div style="font-size:24px;font-weight:700;letter-spacing:-.02em">Shopping list</div>
+              <div style="font-size:12px;color:#98A5A0;margin-top:3px">Nothing on the list</div>
+            </div>
+            <div style="flex:none;height:38px;padding:0 14px;border-radius:12px;background:#14201C;color:#fff;font-size:12.5px;font-weight:700;display:flex;align-items:center">+ Add</div>
+          </div>
+          <div style="display:flex;gap:6px;margin-top:12px;opacity:.45">
+            <div style="height:32px;padding:0 11px;border-radius:10px;background:#F2F3F1;color:#6B7A74;font-size:12.5px;font-weight:650;display:flex;align-items:center">All days</div>
+            <div style="height:32px;padding:0 11px;border-radius:10px;background:#F2F3F1;color:#6B7A74;font-size:12.5px;font-weight:650;display:flex;align-items:center">D3</div>
+            <div style="height:32px;padding:0 11px;border-radius:10px;background:#F2F3F1;color:#6B7A74;font-size:12.5px;font-weight:650;display:flex;align-items:center">D4</div>
+            <div style="height:32px;padding:0 11px;border-radius:10px;background:#F2F3F1;color:#6B7A74;font-size:12.5px;font-weight:650;display:flex;align-items:center">D5</div>
+          </div>
+        </div>
+        <div style="flex:1;overflow:hidden;padding:14px 16px">
+          <div style="display:flex;flex-direction:column;align-items:center;gap:9px;text-align:center;padding:44px 8px 0">
+            <div style="display:flex;gap:6px;align-items:center">
+              <div style="width:22px;height:22px;border-radius:7px;border:2px dashed #C9D0CB"></div>
+              <div style="width:74px;height:10px;border-radius:5px;border:2px dashed #C9D0CB"></div>
+            </div>
+            <div style="font-size:15px;font-weight:700;margin-top:5px">Nothing to buy yet</div>
+            <div style="font-size:12.5px;line-height:1.55;color:#6B7A74;max-width:288px;text-wrap:pretty">Put anything you are looking for on the list, even without a price. Each thing groups itself under the place you expect to find it, and the spend report builds from what you actually pay.</div>
+            <div style="width:100%;max-width:290px;margin-top:14px">
+              <div style="height:42px;border-radius:12px;background:#14201C;color:#fff;font-size:13px;font-weight:700;display:flex;align-items:center;justify-content:center">+ Add something to buy</div>
+            </div>
+            <div style="font-size:11px;color:#98A5A0;line-height:1.45;max-width:280px;margin-top:12px">The report appears once there is something on the list.</div>
+          </div>
+        </div>
+        <div style="flex:none;height:78px;display:flex;gap:2px;padding:7px 8px 10px;background:rgba(255,255,255,.94);border-top:1px solid #E4E8E5">
+          <div style="flex:1;border-radius:12px;display:flex;flex-direction:column;align-items:center;justify-content:center;gap:3px"><svg width="20" height="20" viewBox="0 0 20 20" fill="none"><path d="M10 18s6-5.2 6-10A6 6 0 0 0 4 8c0 4.8 6 10 6 10z" stroke="#9AA6A1" stroke-width="1.7" stroke-linejoin="round"></path><circle cx="10" cy="8" r="2.2" stroke="#9AA6A1" stroke-width="1.7"></circle></svg><span style="font-size:9.5px;font-weight:800;color:#9AA6A1">Map</span></div>
+          <div style="flex:1;border-radius:12px;display:flex;flex-direction:column;align-items:center;justify-content:center;gap:3px"><svg width="20" height="20" viewBox="0 0 20 20" fill="none"><g stroke="#9AA6A1" stroke-width="1.7" stroke-linecap="round"><path d="M3 5.5h14M3 10h14M3 14.5h9"></path></g></svg><span style="font-size:9.5px;font-weight:800;color:#9AA6A1">Plan</span></div>
+          <div style="flex:1;border-radius:12px;background:#F2F3F1;display:flex;flex-direction:column;align-items:center;justify-content:center;gap:3px"><svg width="20" height="20" viewBox="0 0 20 20" fill="none"><path d="M4.5 6.5h11l-1 10h-9l-1-10z" stroke="#14201C" stroke-width="1.7" stroke-linejoin="round"></path><path d="M7.5 6.5V5a2.5 2.5 0 0 1 5 0v1.5" stroke="#14201C" stroke-width="1.7" stroke-linecap="round"></path></svg><span style="font-size:9.5px;font-weight:800;color:#14201C">Shop</span></div>
+          <div style="flex:1;border-radius:12px;display:flex;flex-direction:column;align-items:center;justify-content:center;gap:3px"><svg width="20" height="20" viewBox="0 0 20 20" fill="none"><rect x="3.5" y="6" width="13" height="10.5" rx="2" stroke="#9AA6A1" stroke-width="1.7"></rect><path d="M7.5 6V4.5a1.5 1.5 0 0 1 1.5-1.5h2a1.5 1.5 0 0 1 1.5 1.5V6" stroke="#9AA6A1" stroke-width="1.7" stroke-linecap="round"></path></svg><span style="font-size:9.5px;font-weight:800;color:#9AA6A1">Prep</span></div>
+          <div style="flex:1;border-radius:12px;display:flex;flex-direction:column;align-items:center;justify-content:center;gap:3px"><svg width="20" height="20" viewBox="0 0 20 20" fill="none"><path d="M13 3.5l3.5 3.5L7 16.5H3.5V13z" stroke="#9AA6A1" stroke-width="1.7" stroke-linejoin="round"></path></svg><span style="font-size:9.5px;font-weight:800;color:#9AA6A1">Log</span></div>
+        </div>
+      </div>
+      <div style="font-size:11.5px;color:#3D4C46;line-height:1.5">Filters stay visible at 45% rather than disappearing — the screen keeps its shape, and the user learns the list will be filterable. The dashed mark is a checkbox and a line of text, the silhouette of one item. The footer spend card is <b>removed, not zeroed</b>: "¥0 of ¥0" is a number pretending to be information.</div>
+    </div>
+
+    <div style="width:390px;display:flex;flex-direction:column;gap:9px">
+      <div style="display:flex;align-items:baseline;gap:8px;flex-wrap:wrap"><span style="padding:3px 7px;border-radius:6px;background:#14201C;color:#fff;font-size:10px;font-weight:800;letter-spacing:.04em">1E</span><span style="font-size:14px;font-weight:700">A place with nothing on it</span><span style="padding:3px 7px;border-radius:6px;background:#F2F3F1;border:1px solid #E7EAE7;color:#6B7A74;font-size:9.5px;font-weight:800;letter-spacing:.04em">TIER 1 + 2</span></div>
+      <div style="width:390px;height:844px;background:#F2F3F1;border:1px solid rgba(20,32,28,.12);border-radius:12px;overflow:hidden;display:flex;flex-direction:column;box-shadow:0 2px 10px rgba(20,32,28,.08)">
+        <div style="flex:none;height:230px;position:relative;background:repeating-linear-gradient(135deg,#E2E6E2 0 10px,#DADFDA 10px 20px)">
+          <div style="position:absolute;top:16px;left:16px;width:36px;height:36px;border-radius:12px;background:rgba(255,255,255,.92);display:flex;align-items:center;justify-content:center"><svg width="14" height="14" viewBox="0 0 16 16" fill="none"><path d="M10 3L5 8l5 5" stroke="#14201C" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round"></path></svg></div>
+          <div style="position:absolute;top:22px;right:16px;padding:4px 8px;border-radius:7px;background:rgba(255,255,255,.9);color:#98A5A0;font-size:9.5px;font-weight:700">Photo placeholder</div>
+          <div style="position:absolute;left:16px;bottom:14px;display:flex;align-items:center;gap:8px">
+            <span style="padding:3px 7px;border-radius:6px;background:#E6EFEB;color:#1F6F5C;font-size:9.5px;font-weight:800;letter-spacing:.04em">MAIN ROUTE · STOP 2</span>
+            <span style="font-size:11.5px;font-weight:700;color:#3D4C46;font-variant-numeric:tabular-nums">13:30 – 15:45</span>
+          </div>
+        </div>
+        <div style="flex:1;overflow:hidden;background:#F2F3F1">
+          <div style="background:#fff;padding:14px 16px 0">
+            <div style="font-size:19px;font-weight:700;letter-spacing:-.01em">Ashgate Shrine</div>
+            <div style="font-size:12px;color:#6B7A74;margin-top:3px">Meridian City · added by your agent</div>
+            <div style="display:flex;gap:8px;margin-top:12px">
+              <div style="flex:1;height:38px;border-radius:12px;background:#F2F3F1;border:1px solid #E1E5E1;color:#14201C;font-size:12.5px;font-weight:650;display:flex;align-items:center;justify-content:center">Google Maps</div>
+              <div style="flex:1;height:38px;border-radius:12px;background:#F2F3F1;border:1px solid #E1E5E1;color:#14201C;font-size:12.5px;font-weight:650;display:flex;align-items:center;justify-content:center">Apple Maps</div>
+            </div>
+            <div style="display:flex;gap:16px;margin-top:14px;border-bottom:1px solid #E7EAE7">
+              <div style="padding-bottom:9px;font-size:12.5px;font-weight:700;color:#98A5A0">Info</div>
+              <div style="padding-bottom:9px;border-bottom:2px solid #14201C;margin-bottom:-1px;font-size:12.5px;font-weight:700;color:#14201C;display:flex;align-items:center;gap:5px">Nearby <span style="min-width:15px;height:15px;padding:0 4px;border-radius:8px;background:#E6EFEB;color:#1F6F5C;font-size:9.5px;font-weight:800;display:flex;align-items:center;justify-content:center">0</span></div>
+              <div style="padding-bottom:9px;font-size:12.5px;font-weight:700;color:#98A5A0;display:flex;align-items:center;gap:5px">Must-see <span style="min-width:15px;height:15px;padding:0 4px;border-radius:8px;background:#F2F3F1;color:#98A5A0;font-size:9.5px;font-weight:800;display:flex;align-items:center;justify-content:center">0</span></div>
+              <div style="padding-bottom:9px;font-size:12.5px;font-weight:700;color:#98A5A0;display:flex;align-items:center;gap:5px">Shop <span style="min-width:15px;height:15px;padding:0 4px;border-radius:8px;background:#F2F3F1;color:#98A5A0;font-size:9.5px;font-weight:800;display:flex;align-items:center;justify-content:center">0</span></div>
+              <div style="padding-bottom:9px;font-size:12.5px;font-weight:700;color:#98A5A0;display:flex;align-items:center;gap:5px">Notes <span style="min-width:15px;height:15px;padding:0 4px;border-radius:8px;background:#F2F3F1;color:#98A5A0;font-size:9.5px;font-weight:800;display:flex;align-items:center;justify-content:center">0</span></div>
+            </div>
+          </div>
+          <div style="padding:14px 16px">
+            <div style="background:#fff;border:1px solid #E7EAE7;border-radius:16px;padding:26px 16px;text-align:center">
+              <div style="font-size:12.5px;line-height:1.55;color:#98A5A0;text-wrap:pretty">Nothing saved around this stop yet. Anything you add here shows up on Nearby with its walking time, ready to drop into free time.</div>
+            </div>
+            <div style="height:48px;border-radius:14px;border:1.5px dashed #C9D0CB;color:#14201C;font-size:13px;font-weight:650;display:flex;align-items:center;justify-content:center;margin-top:10px">+ Add a place near here</div>
+
+          </div>
+        </div>
+      </div>
+      <div style="font-size:11.5px;color:#3D4C46;line-height:1.5">A place is never wholly empty — it has a name, a time and a route badge — so this is the one case with <b>no centred hero at all</b>. The tab keeps the app's existing inline block, one sentence that says where the thing you add will show up, and the dashed add that already sits beneath it. Nearby is tier 1: filling it is a real planning move you can make now, so its dashed add is the loudest of the five. The other four tabs follow as 1E2–1E5.</div>
+    </div>
+
+    <div style="width:390px;display:flex;flex-direction:column;gap:9px">
+      <div style="display:flex;align-items:baseline;gap:8px;flex-wrap:wrap"><span style="padding:3px 7px;border-radius:6px;background:#14201C;color:#fff;font-size:10px;font-weight:800;letter-spacing:.04em">1E2</span><span style="font-size:14px;font-weight:700">Place · Info, nothing known</span><span style="padding:3px 7px;border-radius:6px;background:#F2F3F1;border:1px solid #E7EAE7;color:#6B7A74;font-size:9.5px;font-weight:800;letter-spacing:.04em">TIER 2</span></div>
+      <div style="width:390px;height:844px;background:#F2F3F1;border:1px solid rgba(20,32,28,.12);border-radius:12px;overflow:hidden;display:flex;flex-direction:column;box-shadow:0 2px 10px rgba(20,32,28,.08)">
+        <div style="flex:none;height:230px;position:relative;background:repeating-linear-gradient(135deg,#E2E6E2 0 10px,#DADFDA 10px 20px)">
+          <div style="position:absolute;top:16px;left:16px;width:36px;height:36px;border-radius:12px;background:rgba(255,255,255,.92);display:flex;align-items:center;justify-content:center"><svg width="14" height="14" viewBox="0 0 16 16" fill="none"><path d="M10 3L5 8l5 5" stroke="#14201C" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round"></path></svg></div>
+          <div style="position:absolute;top:22px;right:16px;padding:4px 8px;border-radius:7px;background:rgba(255,255,255,.9);color:#98A5A0;font-size:9.5px;font-weight:700">Photo placeholder</div>
+          <div style="position:absolute;left:16px;bottom:14px;display:flex;align-items:center;gap:8px"><span style="padding:3px 7px;border-radius:6px;background:#E6EFEB;color:#1F6F5C;font-size:9.5px;font-weight:800;letter-spacing:.04em">MAIN ROUTE · STOP 2</span><span style="font-size:11.5px;font-weight:700;color:#3D4C46;font-variant-numeric:tabular-nums">13:30 – 15:45</span></div>
+        </div>
+        <div style="flex:1;overflow:hidden;background:#F2F3F1">
+          <div style="background:#fff;padding:14px 16px 0">
+            <div style="font-size:19px;font-weight:700;letter-spacing:-.01em">Ashgate Shrine</div>
+            <div style="font-size:12px;color:#6B7A74;margin-top:3px">Meridian City · added by your agent</div>
+            <div style="display:flex;gap:8px;margin-top:12px">
+              <div style="flex:1;height:38px;border-radius:12px;background:#F2F3F1;border:1px solid #E1E5E1;color:#14201C;font-size:12.5px;font-weight:650;display:flex;align-items:center;justify-content:center">Google Maps</div>
+              <div style="flex:1;height:38px;border-radius:12px;background:#F2F3F1;border:1px solid #E1E5E1;color:#14201C;font-size:12.5px;font-weight:650;display:flex;align-items:center;justify-content:center">Apple Maps</div>
+            </div>
+            <div style="display:flex;gap:16px;margin-top:14px;border-bottom:1px solid #E7EAE7">
+              <div style="padding-bottom:9px;border-bottom:2px solid #14201C;margin-bottom:-1px;font-size:12.5px;font-weight:700;color:#14201C">Info</div>
+              <div style="padding-bottom:9px;font-size:12.5px;font-weight:700;color:#98A5A0;display:flex;align-items:center;gap:5px">Nearby <span style="min-width:15px;height:15px;padding:0 4px;border-radius:8px;background:#F2F3F1;color:#98A5A0;font-size:9.5px;font-weight:800;display:flex;align-items:center;justify-content:center">0</span></div>
+              <div style="padding-bottom:9px;font-size:12.5px;font-weight:700;color:#98A5A0;display:flex;align-items:center;gap:5px">Must-see <span style="min-width:15px;height:15px;padding:0 4px;border-radius:8px;background:#F2F3F1;color:#98A5A0;font-size:9.5px;font-weight:800;display:flex;align-items:center;justify-content:center">0</span></div>
+              <div style="padding-bottom:9px;font-size:12.5px;font-weight:700;color:#98A5A0;display:flex;align-items:center;gap:5px">Shop <span style="min-width:15px;height:15px;padding:0 4px;border-radius:8px;background:#F2F3F1;color:#98A5A0;font-size:9.5px;font-weight:800;display:flex;align-items:center;justify-content:center">0</span></div>
+              <div style="padding-bottom:9px;font-size:12.5px;font-weight:700;color:#98A5A0;display:flex;align-items:center;gap:5px">Notes <span style="min-width:15px;height:15px;padding:0 4px;border-radius:8px;background:#F2F3F1;color:#98A5A0;font-size:9.5px;font-weight:800;display:flex;align-items:center;justify-content:center">0</span></div>
+            </div>
+          </div>
+          <div style="padding:14px 16px">
+            <div style="font-size:10.5px;font-weight:800;letter-spacing:.06em;color:#98A5A0;margin-bottom:8px">NEED TO KNOW</div>
+            <div style="background:#fff;border:1px solid #E7EAE7;border-radius:16px;padding:26px 16px;text-align:center">
+              <div style="font-size:12.5px;line-height:1.55;color:#98A5A0;text-wrap:pretty">Nothing known about this place yet. Opening hours, what it costs and what to bring live here — they arrive with a pasted itinerary, or you can put them in yourself.</div>
+            </div>
+            <div style="height:48px;border-radius:14px;border:1.5px dashed #C9D0CB;color:#14201C;font-size:13px;font-weight:650;display:flex;align-items:center;justify-content:center;margin-top:10px">+ Fill in what to know</div>
+            <div style="font-size:11px;color:#98A5A0;line-height:1.45;margin-top:12px">Anything the itinerary already said about this stop would be sitting here.</div>
+          </div>
+        </div>
+      </div>
+      <div style="font-size:11.5px;color:#3D4C46;line-height:1.5">The only tab whose emptiness is mostly <b>not the user's doing</b> — facts usually arrive with the itinerary — so the eyebrow stays, the sentence names both sources, and the dashed add is offered without insisting. The `NEED TO KNOW` eyebrow is kept above the empty block so the tab still explains what it is for.</div>
+    </div>
+
+    <div style="width:390px;display:flex;flex-direction:column;gap:9px">
+      <div style="display:flex;align-items:baseline;gap:8px;flex-wrap:wrap"><span style="padding:3px 7px;border-radius:6px;background:#14201C;color:#fff;font-size:10px;font-weight:800;letter-spacing:.04em">1E3</span><span style="font-size:14px;font-weight:700">Place · Must-see, no shots</span><span style="padding:3px 7px;border-radius:6px;background:#F2F3F1;border:1px solid #E7EAE7;color:#6B7A74;font-size:9.5px;font-weight:800;letter-spacing:.04em">TIER 2</span></div>
+      <div style="width:390px;height:844px;background:#F2F3F1;border:1px solid rgba(20,32,28,.12);border-radius:12px;overflow:hidden;display:flex;flex-direction:column;box-shadow:0 2px 10px rgba(20,32,28,.08)">
+        <div style="flex:none;height:230px;position:relative;background:repeating-linear-gradient(135deg,#E2E6E2 0 10px,#DADFDA 10px 20px)">
+          <div style="position:absolute;top:16px;left:16px;width:36px;height:36px;border-radius:12px;background:rgba(255,255,255,.92);display:flex;align-items:center;justify-content:center"><svg width="14" height="14" viewBox="0 0 16 16" fill="none"><path d="M10 3L5 8l5 5" stroke="#14201C" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round"></path></svg></div>
+          <div style="position:absolute;top:22px;right:16px;padding:4px 8px;border-radius:7px;background:rgba(255,255,255,.9);color:#98A5A0;font-size:9.5px;font-weight:700">Photo placeholder</div>
+          <div style="position:absolute;left:16px;bottom:14px;display:flex;align-items:center;gap:8px"><span style="padding:3px 7px;border-radius:6px;background:#E6EFEB;color:#1F6F5C;font-size:9.5px;font-weight:800;letter-spacing:.04em">MAIN ROUTE · STOP 2</span><span style="font-size:11.5px;font-weight:700;color:#3D4C46;font-variant-numeric:tabular-nums">13:30 – 15:45</span></div>
+        </div>
+        <div style="flex:1;overflow:hidden;background:#F2F3F1">
+          <div style="background:#fff;padding:14px 16px 0">
+            <div style="font-size:19px;font-weight:700;letter-spacing:-.01em">Ashgate Shrine</div>
+            <div style="font-size:12px;color:#6B7A74;margin-top:3px">Meridian City · added by your agent</div>
+            <div style="display:flex;gap:8px;margin-top:12px">
+              <div style="flex:1;height:38px;border-radius:12px;background:#F2F3F1;border:1px solid #E1E5E1;color:#14201C;font-size:12.5px;font-weight:650;display:flex;align-items:center;justify-content:center">Google Maps</div>
+              <div style="flex:1;height:38px;border-radius:12px;background:#F2F3F1;border:1px solid #E1E5E1;color:#14201C;font-size:12.5px;font-weight:650;display:flex;align-items:center;justify-content:center">Apple Maps</div>
+            </div>
+            <div style="display:flex;gap:16px;margin-top:14px;border-bottom:1px solid #E7EAE7">
+              <div style="padding-bottom:9px;font-size:12.5px;font-weight:700;color:#98A5A0">Info</div>
+              <div style="padding-bottom:9px;font-size:12.5px;font-weight:700;color:#98A5A0;display:flex;align-items:center;gap:5px">Nearby <span style="min-width:15px;height:15px;padding:0 4px;border-radius:8px;background:#F2F3F1;color:#98A5A0;font-size:9.5px;font-weight:800;display:flex;align-items:center;justify-content:center">0</span></div>
+              <div style="padding-bottom:9px;border-bottom:2px solid #14201C;margin-bottom:-1px;font-size:12.5px;font-weight:700;color:#14201C;display:flex;align-items:center;gap:5px">Must-see <span style="min-width:15px;height:15px;padding:0 4px;border-radius:8px;background:#E6EFEB;color:#1F6F5C;font-size:9.5px;font-weight:800;display:flex;align-items:center;justify-content:center">0</span></div>
+              <div style="padding-bottom:9px;font-size:12.5px;font-weight:700;color:#98A5A0;display:flex;align-items:center;gap:5px">Shop <span style="min-width:15px;height:15px;padding:0 4px;border-radius:8px;background:#F2F3F1;color:#98A5A0;font-size:9.5px;font-weight:800;display:flex;align-items:center;justify-content:center">0</span></div>
+              <div style="padding-bottom:9px;font-size:12.5px;font-weight:700;color:#98A5A0;display:flex;align-items:center;gap:5px">Notes <span style="min-width:15px;height:15px;padding:0 4px;border-radius:8px;background:#F2F3F1;color:#98A5A0;font-size:9.5px;font-weight:800;display:flex;align-items:center;justify-content:center">0</span></div>
+            </div>
+          </div>
+          <div style="padding:14px 16px">
+            <div style="background:#fff;border:1px solid #E7EAE7;border-radius:16px;padding:26px 16px;text-align:center">
+              <div style="font-size:12.5px;line-height:1.55;color:#98A5A0;text-wrap:pretty">No shot noted here yet. A shot is a reminder of what to point the camera at when you are standing here — it can wait until the day.</div>
+            </div>
+            <div style="height:48px;border-radius:14px;border:1.5px dashed #C9D0CB;color:#14201C;font-size:13px;font-weight:650;display:flex;align-items:center;justify-content:center;margin-top:10px">+ A shot worth getting here</div>
+            <div style="font-size:11px;color:#98A5A0;line-height:1.45;margin-top:12px">Ticked-off shots show up on the Log's day footer, as `0 of 4 must-see`.</div>
+          </div>
+        </div>
+      </div>
+      <div style="font-size:11.5px;color:#3D4C46;line-height:1.5">Tier 2, and the copy says so out loud — <b>"it can wait until the day"</b>. The dashed add keeps the existing label from `dest.js` but its text drops to `--muted` rather than ink: the affordance is there, the pressure is not. That two-tone dashed button is the only visual difference between a tier-1 and a tier-2 add.</div>
+    </div>
+
+    <div style="width:390px;display:flex;flex-direction:column;gap:9px">
+      <div style="display:flex;align-items:baseline;gap:8px;flex-wrap:wrap"><span style="padding:3px 7px;border-radius:6px;background:#14201C;color:#fff;font-size:10px;font-weight:800;letter-spacing:.04em">1E4</span><span style="font-size:14px;font-weight:700">Place · Shop, nothing to buy</span><span style="padding:3px 7px;border-radius:6px;background:#F2F3F1;border:1px solid #E7EAE7;color:#6B7A74;font-size:9.5px;font-weight:800;letter-spacing:.04em">TIER 1</span></div>
+      <div style="width:390px;height:844px;background:#F2F3F1;border:1px solid rgba(20,32,28,.12);border-radius:12px;overflow:hidden;display:flex;flex-direction:column;box-shadow:0 2px 10px rgba(20,32,28,.08)">
+        <div style="flex:none;height:230px;position:relative;background:repeating-linear-gradient(135deg,#E2E6E2 0 10px,#DADFDA 10px 20px)">
+          <div style="position:absolute;top:16px;left:16px;width:36px;height:36px;border-radius:12px;background:rgba(255,255,255,.92);display:flex;align-items:center;justify-content:center"><svg width="14" height="14" viewBox="0 0 16 16" fill="none"><path d="M10 3L5 8l5 5" stroke="#14201C" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round"></path></svg></div>
+          <div style="position:absolute;top:22px;right:16px;padding:4px 8px;border-radius:7px;background:rgba(255,255,255,.9);color:#98A5A0;font-size:9.5px;font-weight:700">Photo placeholder</div>
+          <div style="position:absolute;left:16px;bottom:14px;display:flex;align-items:center;gap:8px"><span style="padding:3px 7px;border-radius:6px;background:#E6EFEB;color:#1F6F5C;font-size:9.5px;font-weight:800;letter-spacing:.04em">MAIN ROUTE · STOP 2</span><span style="font-size:11.5px;font-weight:700;color:#3D4C46;font-variant-numeric:tabular-nums">13:30 – 15:45</span></div>
+        </div>
+        <div style="flex:1;overflow:hidden;background:#F2F3F1">
+          <div style="background:#fff;padding:14px 16px 0">
+            <div style="font-size:19px;font-weight:700;letter-spacing:-.01em">Nishi Market</div>
+            <div style="font-size:12px;color:#6B7A74;margin-top:3px">Meridian City · added by your agent</div>
+            <div style="display:flex;gap:8px;margin-top:12px">
+              <div style="flex:1;height:38px;border-radius:12px;background:#F2F3F1;border:1px solid #E1E5E1;color:#14201C;font-size:12.5px;font-weight:650;display:flex;align-items:center;justify-content:center">Google Maps</div>
+              <div style="flex:1;height:38px;border-radius:12px;background:#F2F3F1;border:1px solid #E1E5E1;color:#14201C;font-size:12.5px;font-weight:650;display:flex;align-items:center;justify-content:center">Apple Maps</div>
+            </div>
+            <div style="display:flex;gap:16px;margin-top:14px;border-bottom:1px solid #E7EAE7">
+              <div style="padding-bottom:9px;font-size:12.5px;font-weight:700;color:#98A5A0">Info</div>
+              <div style="padding-bottom:9px;font-size:12.5px;font-weight:700;color:#98A5A0;display:flex;align-items:center;gap:5px">Nearby <span style="min-width:15px;height:15px;padding:0 4px;border-radius:8px;background:#F2F3F1;color:#98A5A0;font-size:9.5px;font-weight:800;display:flex;align-items:center;justify-content:center">0</span></div>
+              <div style="padding-bottom:9px;font-size:12.5px;font-weight:700;color:#98A5A0;display:flex;align-items:center;gap:5px">Must-see <span style="min-width:15px;height:15px;padding:0 4px;border-radius:8px;background:#F2F3F1;color:#98A5A0;font-size:9.5px;font-weight:800;display:flex;align-items:center;justify-content:center">0</span></div>
+              <div style="padding-bottom:9px;border-bottom:2px solid #14201C;margin-bottom:-1px;font-size:12.5px;font-weight:700;color:#14201C;display:flex;align-items:center;gap:5px">Shop <span style="min-width:15px;height:15px;padding:0 4px;border-radius:8px;background:#E6EFEB;color:#1F6F5C;font-size:9.5px;font-weight:800;display:flex;align-items:center;justify-content:center">0</span></div>
+              <div style="padding-bottom:9px;font-size:12.5px;font-weight:700;color:#98A5A0;display:flex;align-items:center;gap:5px">Notes <span style="min-width:15px;height:15px;padding:0 4px;border-radius:8px;background:#F2F3F1;color:#98A5A0;font-size:9.5px;font-weight:800;display:flex;align-items:center;justify-content:center">0</span></div>
+            </div>
+          </div>
+          <div style="padding:14px 16px">
+            <div style="background:#fff;border:1px solid #E7EAE7;border-radius:16px;padding:26px 16px;text-align:center">
+              <div style="font-size:12.5px;line-height:1.55;color:#98A5A0;text-wrap:pretty">Nothing on your list for this stop. Anything you add here lands in the shopping list under this place, and what you pay comes back in the report.</div>
+            </div>
+            <div style="height:48px;border-radius:14px;border:1.5px dashed #C9D0CB;color:#14201C;font-size:13px;font-weight:650;display:flex;align-items:center;justify-content:center;margin-top:10px">+ Something to buy here</div>
+          </div>
+        </div>
+      </div>
+      <div style="font-size:11.5px;color:#3D4C46;line-height:1.5">Tier 1, because a market you are visiting in two hours is exactly the moment to write the list. Ink-text dashed add, and a sentence that names <b>both ends of the model</b> — where the item goes, and where the money comes back. Drawn on Nishi Market rather than the shrine, because the case only makes sense on a place you would buy something at.</div>
+    </div>
+
+    <div style="width:390px;display:flex;flex-direction:column;gap:9px">
+      <div style="display:flex;align-items:baseline;gap:8px;flex-wrap:wrap"><span style="padding:3px 7px;border-radius:6px;background:#14201C;color:#fff;font-size:10px;font-weight:800;letter-spacing:.04em">1E5</span><span style="font-size:14px;font-weight:700">Place · Notes, nothing logged</span><span style="padding:3px 7px;border-radius:6px;background:#F2F3F1;border:1px solid #E7EAE7;color:#6B7A74;font-size:9.5px;font-weight:800;letter-spacing:.04em">TIER 2</span></div>
+      <div style="width:390px;height:844px;background:#F2F3F1;border:1px solid rgba(20,32,28,.12);border-radius:12px;overflow:hidden;display:flex;flex-direction:column;box-shadow:0 2px 10px rgba(20,32,28,.08)">
+        <div style="flex:none;height:230px;position:relative;background:repeating-linear-gradient(135deg,#E2E6E2 0 10px,#DADFDA 10px 20px)">
+          <div style="position:absolute;top:16px;left:16px;width:36px;height:36px;border-radius:12px;background:rgba(255,255,255,.92);display:flex;align-items:center;justify-content:center"><svg width="14" height="14" viewBox="0 0 16 16" fill="none"><path d="M10 3L5 8l5 5" stroke="#14201C" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round"></path></svg></div>
+          <div style="position:absolute;top:22px;right:16px;padding:4px 8px;border-radius:7px;background:rgba(255,255,255,.9);color:#98A5A0;font-size:9.5px;font-weight:700">Photo placeholder</div>
+          <div style="position:absolute;left:16px;bottom:14px;display:flex;align-items:center;gap:8px"><span style="padding:3px 7px;border-radius:6px;background:#E6EFEB;color:#1F6F5C;font-size:9.5px;font-weight:800;letter-spacing:.04em">MAIN ROUTE · STOP 2</span><span style="font-size:11.5px;font-weight:700;color:#3D4C46;font-variant-numeric:tabular-nums">13:30 – 15:45</span></div>
+        </div>
+        <div style="flex:1;overflow:hidden;background:#F2F3F1">
+          <div style="background:#fff;padding:14px 16px 0">
+            <div style="font-size:19px;font-weight:700;letter-spacing:-.01em">Ashgate Shrine</div>
+            <div style="font-size:12px;color:#6B7A74;margin-top:3px">Meridian City · added by your agent</div>
+            <div style="display:flex;gap:8px;margin-top:12px">
+              <div style="flex:1;height:38px;border-radius:12px;background:#F2F3F1;border:1px solid #E1E5E1;color:#14201C;font-size:12.5px;font-weight:650;display:flex;align-items:center;justify-content:center">Google Maps</div>
+              <div style="flex:1;height:38px;border-radius:12px;background:#F2F3F1;border:1px solid #E1E5E1;color:#14201C;font-size:12.5px;font-weight:650;display:flex;align-items:center;justify-content:center">Apple Maps</div>
+            </div>
+            <div style="display:flex;gap:16px;margin-top:14px;border-bottom:1px solid #E7EAE7">
+              <div style="padding-bottom:9px;font-size:12.5px;font-weight:700;color:#98A5A0">Info</div>
+              <div style="padding-bottom:9px;font-size:12.5px;font-weight:700;color:#98A5A0;display:flex;align-items:center;gap:5px">Nearby <span style="min-width:15px;height:15px;padding:0 4px;border-radius:8px;background:#F2F3F1;color:#98A5A0;font-size:9.5px;font-weight:800;display:flex;align-items:center;justify-content:center">0</span></div>
+              <div style="padding-bottom:9px;font-size:12.5px;font-weight:700;color:#98A5A0;display:flex;align-items:center;gap:5px">Must-see <span style="min-width:15px;height:15px;padding:0 4px;border-radius:8px;background:#F2F3F1;color:#98A5A0;font-size:9.5px;font-weight:800;display:flex;align-items:center;justify-content:center">0</span></div>
+              <div style="padding-bottom:9px;font-size:12.5px;font-weight:700;color:#98A5A0;display:flex;align-items:center;gap:5px">Shop <span style="min-width:15px;height:15px;padding:0 4px;border-radius:8px;background:#F2F3F1;color:#98A5A0;font-size:9.5px;font-weight:800;display:flex;align-items:center;justify-content:center">0</span></div>
+              <div style="padding-bottom:9px;border-bottom:2px solid #14201C;margin-bottom:-1px;font-size:12.5px;font-weight:700;color:#14201C;display:flex;align-items:center;gap:5px">Notes <span style="min-width:15px;height:15px;padding:0 4px;border-radius:8px;background:#E6EFEB;color:#1F6F5C;font-size:9.5px;font-weight:800;display:flex;align-items:center;justify-content:center">0</span></div>
+            </div>
+          </div>
+          <div style="padding:14px 16px">
+            <div style="background:#fff;border:1px solid #E7EAE7;border-radius:16px;padding:26px 16px;text-align:center">
+              <div style="font-size:12.5px;line-height:1.55;color:#98A5A0;text-wrap:pretty">Nothing logged about this place yet. Notes are written on the day — from here, or from the Log.</div>
+            </div>
+            <div style="height:48px;border-radius:14px;border:1.5px dashed #C9D0CB;color:#14201C;font-size:13px;font-weight:650;display:flex;align-items:center;justify-content:center;margin-top:10px">+ Note about this place</div>
+            <div style="font-size:11px;color:#98A5A0;line-height:1.45;margin-top:12px">A note written here is filed under Day 3, with this place attached.</div>
+          </div>
+        </div>
+      </div>
+      <div style="font-size:11.5px;color:#3D4C46;line-height:1.5">The shortest of the five: two clauses and stop. Tier 2, muted dashed add, and one 11px line that answers the only question this tab raises — where does a note written from a place actually go. Same block, same geometry as 1E2–1E4; <b>only the noun and the destination change</b>, which is the point of drawing the pattern once.</div>
+    </div>
+
+  </div>
+</section>
+
+<section style="padding:36px 48px 44px;border-bottom:1px solid rgba(20,32,28,.1)">
+  <div style="font-size:10.5px;font-weight:800;letter-spacing:.06em;color:#8A5A08;margin-bottom:6px">ARTBOARD 2</div>
+  <div style="font-size:26px;font-weight:700;letter-spacing:-.015em;margin-bottom:8px">Warning strips in three scripts</div>
+  <div style="font-size:13px;color:#3D4C46;max-width:880px;line-height:1.6;margin-bottom:24px;text-wrap:pretty">The strip itself is not in question — amber surface, 10.5/800 label, 11.5px text, a fix button that names the tap, sitting on the row it concerns. What is in question is the <b>sentence</b>: the app generates English prose and injects a place name into the middle of it, and a place name is the one part of this product guaranteed not to be English.</div>
+
+  <sc-if value="{{ showAlternates }}" hint-placeholder-val="{{ true }}">
+  <div style="max-width:1180px;margin-bottom:32px">
+    <div style="font-size:10.5px;font-weight:800;letter-spacing:.06em;color:#98A5A0;margin-bottom:12px">THE TEST BENCH · THREE STRUCTURES × THREE SCRIPTS, AT THE REAL 290px STRIP WIDTH</div>
+    <div style="display:flex;gap:14px;flex-wrap:wrap">
+
+      <div style="width:376px;background:#fff;border:1px solid #E7EAE7;border-radius:16px;padding:14px">
+        <div style="display:flex;align-items:center;gap:7px;margin-bottom:4px"><span style="padding:3px 7px;border-radius:6px;background:#F8E9E9;color:#9B4B4B;font-size:9.5px;font-weight:800;letter-spacing:.04em">REJECTED</span><span style="font-size:13px;font-weight:700">S1 · inline, as built today</span></div>
+        <div style="font-size:11.5px;color:#6B7A74;line-height:1.45;margin-bottom:11px">The name is a noun phrase inside an English clause.</div>
+        <div style="display:flex;flex-direction:column;gap:8px">
+          <div style="width:290px;padding:9px 10px;border-radius:11px;background:#FBF1DE"><div style="font-size:10.5px;font-weight:800;letter-spacing:.04em;color:#8A5A08">OVERLAPS</div><div style="font-size:11.5px;line-height:1.4;color:#8A5A08;margin-top:4px">Ashgate Shrine runs to 14:30, so these two are on top of each other.</div></div>
+          <div style="width:290px;padding:9px 10px;border-radius:11px;background:#FBF1DE"><div style="font-size:10.5px;font-weight:800;letter-spacing:.04em;color:#8A5A08">OVERLAPS</div><div style="font-size:11.5px;line-height:1.4;color:#8A5A08;margin-top:4px;font-family:'Public Sans','PingFang SC','Hiragino Sans','Microsoft YaHei','Noto Sans CJK SC',system-ui,sans-serif">龍山寺 runs to 14:30, so these two are on top of each other.</div></div>
+          <div style="width:290px;padding:9px 10px;border-radius:11px;background:#FBF1DE"><div style="font-size:10.5px;font-weight:800;letter-spacing:.04em;color:#8A5A08">OVERLAPS</div><div style="font-size:11.5px;line-height:1.4;color:#8A5A08;margin-top:4px;font-family:'Public Sans','Hiragino Sans','Hiragino Kaku Gothic ProN','Yu Gothic','Noto Sans CJK JP',system-ui,sans-serif">東京都庁舎第一本庁舎展望室 runs to 14:30, so these two are on top of each other.</div></div>
+        </div>
+        <div style="font-size:11px;color:#9B4B4B;line-height:1.5;margin-top:11px;padding-top:10px;border-top:1px solid #F0F2F0"><b>Fails on three counts.</b> There is no capitalisation in CJK, so the proper noun has nothing to distinguish it from the surrounding words — the eye cannot find <i>which</i> stop is being talked about. The name has no spaces, so the browser breaks inside it, splitting a single word across two lines. And once the name is long the English verb ("runs to") is pushed so far from its subject that the sentence stops parsing.</div>
+      </div>
+
+      <div style="width:376px;background:#fff;border:1px solid #E7EAE7;border-radius:16px;padding:14px">
+        <div style="display:flex;align-items:center;gap:7px;margin-bottom:4px"><span style="padding:3px 7px;border-radius:6px;background:#F8E9E9;color:#9B4B4B;font-size:9.5px;font-weight:800;letter-spacing:.04em">REJECTED</span><span style="font-size:13px;font-weight:700">S2 · inline, name emphasised</span></div>
+        <div style="font-size:11.5px;color:#6B7A74;line-height:1.45;margin-bottom:11px">Same sentence; the name set in 700 ink and protected from breaking.</div>
+        <div style="display:flex;flex-direction:column;gap:8px">
+          <div style="width:290px;padding:9px 10px;border-radius:11px;background:#FBF1DE"><div style="font-size:10.5px;font-weight:800;letter-spacing:.04em;color:#8A5A08">OVERLAPS</div><div style="font-size:11.5px;line-height:1.4;color:#8A5A08;margin-top:4px"><b style="color:#14201C;font-weight:700">Ashgate Shrine</b> runs to 14:30, so these two are on top of each other.</div></div>
+          <div style="width:290px;padding:9px 10px;border-radius:11px;background:#FBF1DE"><div style="font-size:10.5px;font-weight:800;letter-spacing:.04em;color:#8A5A08">OVERLAPS</div><div style="font-size:11.5px;line-height:1.4;color:#8A5A08;margin-top:4px"><b style="color:#14201C;font-weight:700;white-space:nowrap;font-family:'Public Sans','PingFang SC','Hiragino Sans','Microsoft YaHei','Noto Sans CJK SC',system-ui,sans-serif">龍山寺</b> runs to 14:30, so these two are on top of each other.</div></div>
+          <div style="width:290px;padding:9px 10px;border-radius:11px;background:#FBF1DE"><div style="font-size:10.5px;font-weight:800;letter-spacing:.04em;color:#8A5A08">OVERLAPS</div><div style="font-size:11.5px;line-height:1.4;color:#8A5A08;margin-top:4px"><b style="color:#14201C;font-weight:700;white-space:nowrap;font-family:'Public Sans','Hiragino Sans','Hiragino Kaku Gothic ProN','Yu Gothic','Noto Sans CJK JP',system-ui,sans-serif">東京都庁舎第一本庁舎展望室</b> runs to 14:30, so these two are on top of each other.</div></div>
+        </div>
+        <div style="font-size:11px;color:#9B4B4B;line-height:1.5;margin-top:11px;padding-top:10px;border-top:1px solid #F0F2F0"><b>Better, and still wrong.</b> Emphasis solves findability, and <code style="font-family:ui-monospace,Menlo,monospace;font-size:10.5px">white-space:nowrap</code> stops the name splitting — but only by forcing an early line break, so a long name leaves a half-empty line above it (visible in the third strip). Worse, protecting one name makes the strip's height depend on the length of a place name, which is exactly the value nobody controls. Two strips on the same card then have different heights for no reason the user can see.</div>
+      </div>
+
+      <div style="width:376px;background:#fff;border:1.5px solid #14201C;border-radius:16px;padding:14px">
+        <div style="display:flex;align-items:center;gap:7px;margin-bottom:4px"><span style="padding:3px 7px;border-radius:6px;background:#E6EFEB;color:#1F6F5C;font-size:9.5px;font-weight:800;letter-spacing:.04em">CHOSEN</span><span style="font-size:13px;font-weight:700">S3 · the name is lifted out of the grammar</span></div>
+        <div style="font-size:11.5px;color:#6B7A74;line-height:1.45;margin-bottom:11px">A relation word, the name as a value, the time on the right; the sentence underneath refers to it as "it".</div>
+        <div style="display:flex;flex-direction:column;gap:8px">
+          <div style="width:290px;padding:9px 10px;border-radius:11px;background:#FBF1DE">
+            <div style="font-size:10.5px;font-weight:800;letter-spacing:.04em;color:#8A5A08">OVERLAPS</div>
+            <div style="display:flex;align-items:baseline;gap:8px;margin-top:5px"><span style="flex:none;font-size:10px;font-weight:800;letter-spacing:.04em;color:#B99A5E">WITH</span><span style="flex:1;min-width:0;font-size:13px;font-weight:700;line-height:1.3;color:#14201C">Ashgate Shrine</span><span style="flex:none;font-size:11.5px;font-weight:700;color:#8A5A08;font-variant-numeric:tabular-nums">to 14:30</span></div>
+            <div style="font-size:11.5px;line-height:1.4;color:#8A5A08;margin-top:5px">These two are on top of each other.</div>
+          </div>
+          <div style="width:290px;padding:9px 10px;border-radius:11px;background:#FBF1DE">
+            <div style="font-size:10.5px;font-weight:800;letter-spacing:.04em;color:#8A5A08">OVERLAPS</div>
+            <div style="display:flex;align-items:baseline;gap:8px;margin-top:5px"><span style="flex:none;font-size:10px;font-weight:800;letter-spacing:.04em;color:#B99A5E">WITH</span><span style="flex:1;min-width:0;font-size:13px;font-weight:700;line-height:1.35;color:#14201C;font-family:'Public Sans','PingFang SC','Hiragino Sans','Microsoft YaHei','Noto Sans CJK SC',system-ui,sans-serif">龍山寺</span><span style="flex:none;font-size:11.5px;font-weight:700;color:#8A5A08;font-variant-numeric:tabular-nums">to 14:30</span></div>
+            <div style="font-size:11.5px;line-height:1.4;color:#8A5A08;margin-top:5px">These two are on top of each other.</div>
+          </div>
+          <div style="width:290px;padding:9px 10px;border-radius:11px;background:#FBF1DE">
+            <div style="font-size:10.5px;font-weight:800;letter-spacing:.04em;color:#8A5A08">OVERLAPS</div>
+            <div style="display:flex;align-items:baseline;gap:8px;margin-top:5px"><span style="flex:none;font-size:10px;font-weight:800;letter-spacing:.04em;color:#B99A5E">WITH</span><span style="flex:1;min-width:0;font-size:13px;font-weight:700;line-height:1.35;color:#14201C;font-family:'Public Sans','Hiragino Sans','Hiragino Kaku Gothic ProN','Yu Gothic','Noto Sans CJK JP',system-ui,sans-serif;line-break:strict;overflow-wrap:anywhere">東京都庁舎第一本庁舎展望室</span><span style="flex:none;font-size:11.5px;font-weight:700;color:#8A5A08;font-variant-numeric:tabular-nums">to 14:30</span></div>
+            <div style="font-size:11.5px;line-height:1.4;color:#8A5A08;margin-top:5px">These two are on top of each other.</div>
+          </div>
+        </div>
+        <div style="font-size:11px;color:#3D4C46;line-height:1.5;margin-top:11px;padding-top:10px;border-top:1px solid #F0F2F0"><b>Works in all three, and reads better in English too.</b> The name is no longer a word in a sentence — it is a labelled value, and labelled values are script-neutral. The gap between <span style="font-size:10px;font-weight:800;color:#B99A5E">WITH</span> and the name is a flex <code style="font-family:ui-monospace,Menlo,monospace;font-size:10.5px">gap:8px</code>, not a text space, so the Latin/CJK boundary is spaced by layout rather than by a character the browser sizes wrong. The time is its own flex child on the right: always Public Sans, always tabular, never dragged into the CJK run and never wrapped away from the name it belongs to. Long names wrap inside their own column, indented by nothing and aligned with themselves.</div>
+      </div>
+    </div>
+  </div>
+  </sc-if>
+
+  <sc-if value="{{ showSpecs }}" hint-placeholder-val="{{ true }}">
+  <div style="display:flex;flex-wrap:wrap;gap:14px;max-width:1180px;margin-bottom:32px">
+    <div style="width:566px;background:#fff;border:1px solid #E7EAE7;border-radius:16px;padding:15px">
+      <div style="font-size:10.5px;font-weight:800;letter-spacing:.06em;color:#98A5A0;margin-bottom:10px">CJK TYPOGRAPHY FINDINGS</div>
+      <div style="display:flex;flex-direction:column;gap:8px;font-size:11.5px;line-height:1.5;color:#3D4C46">
+        <div><b style="color:#14201C">Public Sans has no CJK glyphs.</b> Every CJK name in this app is already being rendered by whatever the system falls back to. Make that stack explicit rather than accidental: <code style="font-family:ui-monospace,Menlo,monospace;font-size:10.5px">'Public Sans','Hiragino Sans','Hiragino Kaku Gothic ProN','Yu Gothic','PingFang SC','Microsoft YaHei','Noto Sans CJK JP',system-ui</code>. Latin characters keep coming from Public Sans because it is first.</div>
+        <div><b style="color:#14201C">CJK reads larger at the same px, and needs more.</b> A 11.5px Han character is optically bigger than 11.5px Latin but far harder to resolve — the strokes, not the box, are the limit. The name therefore moves to <b>13px</b> and its own line, where it is the only thing at that size. Body copy stays at 11.5px because it is Latin.</div>
+        <div><b style="color:#14201C">Line-height must go up, not stay.</b> CJK glyphs fill their em box, so 1.4 looks cramped. The name line uses <b>1.35</b> on one line and up to 1.45 when it wraps; the Latin sentence keeps the existing 1.4.</div>
+        <div><b style="color:#14201C">Never italicise, never letter-space.</b> There is no true italic in any CJK fallback, so emphasis would be a synthesised skew. Weight and position carry emphasis instead — which is already the app's rule.</div>
+        <div><b style="color:#14201C">Punctuation is the giveaway.</b> A pasted name often carries full-width characters (<span style="font-family:'Public Sans','Hiragino Sans','Noto Sans CJK JP',system-ui">・（）／</span>) with a full em of built-in side bearing. Because the name now sits alone in its column, that padding lands in empty space instead of colliding with an English preposition.</div>
+        <div><b style="color:#14201C">Mixed Latin + CJK is the common case, not the exotic one.</b> "AEON MALL <span style="font-family:'Public Sans','Hiragino Sans','Noto Sans CJK JP',system-ui">幕張新都心</span>" is one name in two scripts; the boundary inside it needs no help, because both halves are in the same 13/700 line.</div>
+      </div>
+    </div>
+    <div style="width:566px;background:#fff;border:1px solid #E7EAE7;border-radius:16px;padding:15px">
+      <div style="font-size:10.5px;font-weight:800;letter-spacing:.06em;color:#98A5A0;margin-bottom:10px">THE STRUCTURE, AND WHAT WRAPS</div>
+      <div style="display:flex;flex-direction:column;gap:9px;font-size:11.5px;line-height:1.5;color:#3D4C46">
+        <div style="display:flex;gap:10px"><span style="flex:none;width:120px;font-weight:800;color:#14201C">line 1 · kind</span><span>10.5/800/.06em amber-fg. Unchanged from today: <code style="font-family:ui-monospace,Menlo,monospace;font-size:10.5px">OVERLAPS</code>, <code style="font-family:ui-monospace,Menlo,monospace;font-size:10.5px">OUT OF ORDER</code>, <code style="font-family:ui-monospace,Menlo,monospace;font-size:10.5px">NO TIME</code>, <code style="font-family:ui-monospace,Menlo,monospace;font-size:10.5px">ENDS WHEN IT STARTS</code>.</span></div>
+        <div style="display:flex;gap:10px"><span style="flex:none;width:120px;font-weight:800;color:#14201C">line 2 · subject</span><span>A flex row, <code style="font-family:ui-monospace,Menlo,monospace;font-size:10.5px">gap:8px</code>, baseline-aligned. Relation word 10/800 in #B99A5E (amber at eyebrow strength) · name 13/700 ink, <code style="font-family:ui-monospace,Menlo,monospace;font-size:10.5px">flex:1;min-width:0</code> · time 11.5/700 amber-fg, <code style="font-family:ui-monospace,Menlo,monospace;font-size:10.5px">flex:none</code>, tabular.</span></div>
+        <div style="display:flex;gap:10px"><span style="flex:none;width:120px;font-weight:800;color:#14201C">line 3 · consequence</span><span>11.5/1.4 amber-fg. Refers to the subject as "it" or "these two" — never repeats the name, so the sentence is short enough never to reach a third line.</span></div>
+        <div style="display:flex;gap:10px"><span style="flex:none;width:120px;font-weight:800;color:#14201C">line 4 · fixes</span><span>Existing <code style="font-family:ui-monospace,Menlo,monospace;font-size:10.5px">.warn-fix</code> row, h30, first one ink-filled. Untouched.</span></div>
+        <div style="display:flex;gap:10px;padding-top:9px;border-top:1px solid #F0F2F0"><span style="flex:none;width:120px;font-weight:800;color:#14201C">wrapping</span><span>The name column is the only thing that wraps, and it wraps within itself: <code style="font-family:ui-monospace,Menlo,monospace;font-size:10.5px">line-break:strict</code> so a CJK line never starts with 。、）; <code style="font-family:ui-monospace,Menlo,monospace;font-size:10.5px">overflow-wrap:anywhere</code> so a 30-character name cannot push the time off the strip. Two lines is the practical cap on a 290px strip; beyond that the strip simply grows, which is correct — a warning must never truncate the thing it is warning about.</span></div>
+        <div style="display:flex;gap:10px"><span style="flex:none;width:120px;font-weight:800;color:#14201C">what did not change</span><span>Surface #FBF1DE, r11, 9/10 padding, position on the row, the fix-names-the-tap rule, and the amber semantic. This is the same component with its middle line restructured — not a new notification.</span></div>
+      </div>
+    </div>
+  </div>
+  </sc-if>
+
+  <div style="display:flex;flex-wrap:wrap;gap:28px">
+
+    <div style="width:390px;display:flex;flex-direction:column;gap:9px">
+      <div style="display:flex;align-items:baseline;gap:8px;flex-wrap:wrap"><span style="padding:3px 7px;border-radius:6px;background:#14201C;color:#fff;font-size:10px;font-weight:800;letter-spacing:.04em">2A</span><span style="font-size:14px;font-weight:700">English names</span><span style="font-size:11.5px;color:#6B7A74">Plan · read mode</span></div>
+      <div style="width:390px;height:844px;background:#F2F3F1;border:1px solid rgba(20,32,28,.12);border-radius:12px;overflow:hidden;display:flex;flex-direction:column;box-shadow:0 2px 10px rgba(20,32,28,.08)">
+        <div style="flex:none;background:#fff;border-bottom:1px solid #E7EAE7;padding:22px 16px 12px">
+          <div style="display:flex;align-items:flex-start;gap:10px">
+            <div style="flex:1">
+              <div style="font-size:24px;font-weight:700;letter-spacing:-.02em">Day 3</div>
+              <div style="font-size:12px;color:#98A5A0;margin-top:3px">Fri 14 Mar · <b style="color:#8A5A08;font-weight:650">2 things to look at</b></div>
+            </div>
+            <div style="flex:none;width:40px;height:40px;border-radius:13px;background:#fff;border:1px solid #E7EAE7;box-shadow:0 2px 10px rgba(20,32,28,.07);display:flex;align-items:center;justify-content:center"><svg width="15" height="15" viewBox="0 0 16 16" fill="none"><path d="M11 2.2l2.8 2.8L5.4 13.4H2.6v-2.8z" stroke="#14201C" stroke-width="1.5" stroke-linejoin="round"></path></svg></div>
+          </div>
+        </div>
+        <div style="flex:1;overflow:hidden;padding:14px 16px">
+
+          <div style="display:flex;gap:0;margin-bottom:2px">
+            <div style="flex:none;width:56px;padding-top:1px"><div style="font-size:12.5px;font-weight:700;font-variant-numeric:tabular-nums">13:30</div><div style="font-size:11px;color:#B4BEB9;font-variant-numeric:tabular-nums;margin-top:1px">14:30</div><div style="font-size:10.5px;color:#B4BEB9;margin-top:1px">1h</div></div>
+            <div style="flex:none;width:20px;display:flex;flex-direction:column;align-items:center;padding-top:4px"><div style="width:11px;height:11px;border-radius:50%;background:#1F6F5C"></div><div style="flex:1;width:2px;background:#1F6F5C;margin-top:3px"></div></div>
+            <div style="flex:1;min-width:0;background:#fff;border:1px solid #E7EAE7;border-radius:14px;padding:12px 13px">
+              <div style="display:flex;gap:8px;align-items:flex-start"><div style="flex:1;font-size:14.5px;font-weight:650;line-height:1.25">Ashgate Shrine</div><span style="flex:none;padding:3px 7px;border-radius:6px;background:#E6EFEB;color:#1F6F5C;font-size:9.5px;font-weight:800;letter-spacing:.04em">MAIN 1</span></div>
+              <div style="display:flex;gap:6px;margin-top:9px"><span style="padding:3px 7px;border-radius:8px;background:#F2F3F1;color:#6B7A74;font-size:10.5px;font-weight:650">1 note</span><span style="padding:3px 7px;border-radius:8px;background:#F2F3F1;color:#6B7A74;font-size:10.5px;font-weight:650">3 nearby</span></div>
+            </div>
+          </div>
+
+          <div style="display:flex;gap:0;margin-bottom:2px">
+            <div style="flex:none;width:56px;padding-top:1px"><div style="font-size:12.5px;font-weight:700;font-variant-numeric:tabular-nums;color:#9B4B4B">13:45</div><div style="font-size:11px;color:#9B4B4B;font-variant-numeric:tabular-nums;margin-top:1px">15:15</div><div style="font-size:10.5px;color:#B4BEB9;margin-top:1px">1h 30</div></div>
+            <div style="flex:none;width:20px;display:flex;flex-direction:column;align-items:center;padding-top:4px"><div style="width:11px;height:11px;border-radius:50%;background:#9B4B4B"></div><div style="flex:1;width:2px;background:#1F6F5C;margin-top:3px"></div></div>
+            <div style="flex:1;min-width:0;background:#fff;border:1px solid #EBD9B4;border-radius:14px;padding:12px 13px">
+              <div style="display:flex;gap:8px;align-items:flex-start"><div style="flex:1;font-size:14.5px;font-weight:650;line-height:1.25">Nishi Market</div><span style="flex:none;padding:3px 7px;border-radius:6px;background:#E6EFEB;color:#1F6F5C;font-size:9.5px;font-weight:800;letter-spacing:.04em">MAIN 2</span></div>
+
+              <div style="margin-top:10px;padding:9px 10px;border-radius:11px;background:#FBF1DE">
+                <div style="font-size:10.5px;font-weight:800;letter-spacing:.04em;color:#8A5A08">OVERLAPS</div>
+                <div style="display:flex;align-items:baseline;gap:8px;margin-top:5px"><span style="flex:none;font-size:10px;font-weight:800;letter-spacing:.04em;color:#B99A5E">WITH</span><span style="flex:1;min-width:0;font-size:13px;font-weight:700;line-height:1.3;color:#14201C">Ashgate Shrine</span><span style="flex:none;font-size:11.5px;font-weight:700;color:#8A5A08;font-variant-numeric:tabular-nums">to 14:30</span></div>
+                <div style="font-size:11.5px;line-height:1.4;color:#8A5A08;margin-top:5px">These two are on top of each other.</div>
+                <div style="display:flex;gap:6px;flex-wrap:wrap;margin-top:8px"><div style="height:30px;padding:0 10px;border-radius:9px;background:#14201C;border:1px solid #14201C;color:#fff;font-size:11.5px;font-weight:700;display:flex;align-items:center;white-space:nowrap">Start 14:30</div></div>
+              </div>
+            </div>
+          </div>
+
+          <div style="display:flex;gap:0">
+            <div style="flex:none;width:56px;padding-top:1px"><div style="font-size:12.5px;font-weight:700;font-variant-numeric:tabular-nums;color:#9B4B4B">13:15</div><div style="font-size:11px;color:#B4BEB9;font-variant-numeric:tabular-nums;margin-top:1px">14:00</div><div style="font-size:10.5px;color:#B4BEB9;margin-top:1px">45m</div></div>
+            <div style="flex:none;width:20px;display:flex;flex-direction:column;align-items:center;padding-top:4px"><div style="width:11px;height:11px;border-radius:50%;background:#9B4B4B"></div></div>
+            <div style="flex:1;min-width:0;background:#fff;border:1px solid #EBD9B4;border-radius:14px;padding:12px 13px">
+              <div style="display:flex;gap:8px;align-items:flex-start"><div style="flex:1;font-size:14.5px;font-weight:650;line-height:1.25">Copper Lane Teahouse</div><span style="flex:none;padding:3px 7px;border-radius:6px;background:#E6EFEB;color:#1F6F5C;font-size:9.5px;font-weight:800;letter-spacing:.04em">MAIN 3</span></div>
+
+              <div style="margin-top:10px;padding:9px 10px;border-radius:11px;background:#FBF1DE">
+                <div style="font-size:10.5px;font-weight:800;letter-spacing:.04em;color:#8A5A08">OUT OF ORDER</div>
+                <div style="display:flex;align-items:baseline;gap:8px;margin-top:5px"><span style="flex:none;font-size:10px;font-weight:800;letter-spacing:.04em;color:#B99A5E">AFTER</span><span style="flex:1;min-width:0;font-size:13px;font-weight:700;line-height:1.3;color:#14201C">Nishi Market</span><span style="flex:none;font-size:11.5px;font-weight:700;color:#8A5A08;font-variant-numeric:tabular-nums">13:45</span></div>
+                <div style="font-size:11.5px;line-height:1.4;color:#8A5A08;margin-top:5px">This one starts earlier, at 13:15.</div>
+                <div style="display:flex;gap:6px;flex-wrap:wrap;margin-top:8px"><div style="height:30px;padding:0 10px;border-radius:9px;background:#14201C;border:1px solid #14201C;color:#fff;font-size:11.5px;font-weight:700;display:flex;align-items:center;white-space:nowrap">Set 15:15 – 16:00</div><div style="height:30px;padding:0 10px;border-radius:9px;background:#fff;border:1px solid #EBD9B4;color:#8A5A08;font-size:11.5px;font-weight:650;display:flex;align-items:center;white-space:nowrap">Move it back</div></div>
+              </div>
+            </div>
+          </div>
+
+        </div>
+        <div style="flex:none;height:78px;display:flex;gap:2px;padding:7px 8px 10px;background:rgba(255,255,255,.94);border-top:1px solid #E4E8E5">
+          <div style="flex:1;border-radius:12px;display:flex;flex-direction:column;align-items:center;justify-content:center;gap:3px"><svg width="20" height="20" viewBox="0 0 20 20" fill="none"><path d="M10 18s6-5.2 6-10A6 6 0 0 0 4 8c0 4.8 6 10 6 10z" stroke="#9AA6A1" stroke-width="1.7" stroke-linejoin="round"></path><circle cx="10" cy="8" r="2.2" stroke="#9AA6A1" stroke-width="1.7"></circle></svg><span style="font-size:9.5px;font-weight:800;color:#9AA6A1">Map</span></div>
+          <div style="flex:1;border-radius:12px;background:#F2F3F1;display:flex;flex-direction:column;align-items:center;justify-content:center;gap:3px"><svg width="20" height="20" viewBox="0 0 20 20" fill="none"><g stroke="#14201C" stroke-width="1.7" stroke-linecap="round"><path d="M3 5.5h14M3 10h14M3 14.5h9"></path></g></svg><span style="font-size:9.5px;font-weight:800;color:#14201C">Plan</span></div>
+          <div style="flex:1;border-radius:12px;display:flex;flex-direction:column;align-items:center;justify-content:center;gap:3px"><svg width="20" height="20" viewBox="0 0 20 20" fill="none"><path d="M4.5 6.5h11l-1 10h-9l-1-10z" stroke="#9AA6A1" stroke-width="1.7" stroke-linejoin="round"></path><path d="M7.5 6.5V5a2.5 2.5 0 0 1 5 0v1.5" stroke="#9AA6A1" stroke-width="1.7" stroke-linecap="round"></path></svg><span style="font-size:9.5px;font-weight:800;color:#9AA6A1">Shop</span></div>
+          <div style="flex:1;border-radius:12px;display:flex;flex-direction:column;align-items:center;justify-content:center;gap:3px"><svg width="20" height="20" viewBox="0 0 20 20" fill="none"><rect x="3.5" y="6" width="13" height="10.5" rx="2" stroke="#9AA6A1" stroke-width="1.7"></rect><path d="M7.5 6V4.5a1.5 1.5 0 0 1 1.5-1.5h2a1.5 1.5 0 0 1 1.5 1.5V6" stroke="#9AA6A1" stroke-width="1.7" stroke-linecap="round"></path></svg><span style="font-size:9.5px;font-weight:800;color:#9AA6A1">Prep</span></div>
+          <div style="flex:1;border-radius:12px;display:flex;flex-direction:column;align-items:center;justify-content:center;gap:3px"><svg width="20" height="20" viewBox="0 0 20 20" fill="none"><path d="M13 3.5l3.5 3.5L7 16.5H3.5V13z" stroke="#9AA6A1" stroke-width="1.7" stroke-linejoin="round"></path></svg><span style="font-size:9.5px;font-weight:800;color:#9AA6A1">Log</span></div>
+        </div>
+      </div>
+      <div style="font-size:11.5px;color:#3D4C46;line-height:1.5">Two strips, two kinds, on the rows they concern. Note the strips are the <b>same height</b> whichever warning they carry, and the flagged rows keep the existing treatment: rust clock, rust dot, amber card border. The consequence sentence never repeats the name, which is what keeps it to one line.</div>
+    </div>
+
+    <div style="width:390px;display:flex;flex-direction:column;gap:9px">
+      <div style="display:flex;align-items:baseline;gap:8px;flex-wrap:wrap"><span style="padding:3px 7px;border-radius:6px;background:#14201C;color:#fff;font-size:10px;font-weight:800;letter-spacing:.04em">2B</span><span style="font-size:14px;font-weight:700">Chinese names</span><span style="font-size:11.5px;color:#6B7A74">same day, same strips</span></div>
+      <div style="width:390px;height:844px;background:#F2F3F1;border:1px solid rgba(20,32,28,.12);border-radius:12px;overflow:hidden;display:flex;flex-direction:column;box-shadow:0 2px 10px rgba(20,32,28,.08);font-family:'Public Sans','PingFang SC','Hiragino Sans','Microsoft YaHei','Noto Sans CJK SC',system-ui,sans-serif">
+        <div style="flex:none;background:#fff;border-bottom:1px solid #E7EAE7;padding:22px 16px 12px">
+          <div style="display:flex;align-items:flex-start;gap:10px">
+            <div style="flex:1">
+              <div style="font-size:24px;font-weight:700;letter-spacing:-.02em;font-family:'Public Sans',system-ui,sans-serif">Day 3</div>
+              <div style="font-size:12px;color:#98A5A0;margin-top:3px;font-family:'Public Sans',system-ui,sans-serif">Fri 14 Mar · <b style="color:#8A5A08;font-weight:650">2 things to look at</b></div>
+            </div>
+            <div style="flex:none;width:40px;height:40px;border-radius:13px;background:#fff;border:1px solid #E7EAE7;box-shadow:0 2px 10px rgba(20,32,28,.07);display:flex;align-items:center;justify-content:center"><svg width="15" height="15" viewBox="0 0 16 16" fill="none"><path d="M11 2.2l2.8 2.8L5.4 13.4H2.6v-2.8z" stroke="#14201C" stroke-width="1.5" stroke-linejoin="round"></path></svg></div>
+          </div>
+        </div>
+        <div style="flex:1;overflow:hidden;padding:14px 16px">
+
+          <div style="display:flex;gap:0;margin-bottom:2px">
+            <div style="flex:none;width:56px;padding-top:1px;font-family:'Public Sans',system-ui,sans-serif"><div style="font-size:12.5px;font-weight:700;font-variant-numeric:tabular-nums">13:30</div><div style="font-size:11px;color:#B4BEB9;font-variant-numeric:tabular-nums;margin-top:1px">14:30</div><div style="font-size:10.5px;color:#B4BEB9;margin-top:1px">1h</div></div>
+            <div style="flex:none;width:20px;display:flex;flex-direction:column;align-items:center;padding-top:4px"><div style="width:11px;height:11px;border-radius:50%;background:#1F6F5C"></div><div style="flex:1;width:2px;background:#1F6F5C;margin-top:3px"></div></div>
+            <div style="flex:1;min-width:0;background:#fff;border:1px solid #E7EAE7;border-radius:14px;padding:12px 13px">
+              <div style="display:flex;gap:8px;align-items:flex-start"><div style="flex:1;font-size:14.5px;font-weight:650;line-height:1.35">龍山寺</div><span style="flex:none;padding:3px 7px;border-radius:6px;background:#E6EFEB;color:#1F6F5C;font-size:9.5px;font-weight:800;letter-spacing:.04em;font-family:'Public Sans',system-ui,sans-serif">MAIN 1</span></div>
+              <div style="display:flex;gap:6px;margin-top:9px;font-family:'Public Sans',system-ui,sans-serif"><span style="padding:3px 7px;border-radius:8px;background:#F2F3F1;color:#6B7A74;font-size:10.5px;font-weight:650">1 note</span><span style="padding:3px 7px;border-radius:8px;background:#F2F3F1;color:#6B7A74;font-size:10.5px;font-weight:650">3 nearby</span></div>
+            </div>
+          </div>
+
+          <div style="display:flex;gap:0;margin-bottom:2px">
+            <div style="flex:none;width:56px;padding-top:1px;font-family:'Public Sans',system-ui,sans-serif"><div style="font-size:12.5px;font-weight:700;font-variant-numeric:tabular-nums;color:#9B4B4B">13:45</div><div style="font-size:11px;color:#9B4B4B;font-variant-numeric:tabular-nums;margin-top:1px">15:15</div><div style="font-size:10.5px;color:#B4BEB9;margin-top:1px">1h 30</div></div>
+            <div style="flex:none;width:20px;display:flex;flex-direction:column;align-items:center;padding-top:4px"><div style="width:11px;height:11px;border-radius:50%;background:#9B4B4B"></div><div style="flex:1;width:2px;background:#1F6F5C;margin-top:3px"></div></div>
+            <div style="flex:1;min-width:0;background:#fff;border:1px solid #EBD9B4;border-radius:14px;padding:12px 13px">
+              <div style="display:flex;gap:8px;align-items:flex-start"><div style="flex:1;font-size:14.5px;font-weight:650;line-height:1.35">西門町商圈</div><span style="flex:none;padding:3px 7px;border-radius:6px;background:#E6EFEB;color:#1F6F5C;font-size:9.5px;font-weight:800;letter-spacing:.04em;font-family:'Public Sans',system-ui,sans-serif">MAIN 2</span></div>
+
+              <div style="margin-top:10px;padding:9px 10px;border-radius:11px;background:#FBF1DE">
+                <div style="font-size:10.5px;font-weight:800;letter-spacing:.04em;color:#8A5A08;font-family:'Public Sans',system-ui,sans-serif">OVERLAPS</div>
+                <div style="display:flex;align-items:baseline;gap:8px;margin-top:5px"><span style="flex:none;font-size:10px;font-weight:800;letter-spacing:.04em;color:#B99A5E;font-family:'Public Sans',system-ui,sans-serif">WITH</span><span style="flex:1;min-width:0;font-size:13px;font-weight:700;line-height:1.35;color:#14201C;line-break:strict;overflow-wrap:anywhere">龍山寺</span><span style="flex:none;font-size:11.5px;font-weight:700;color:#8A5A08;font-variant-numeric:tabular-nums;font-family:'Public Sans',system-ui,sans-serif">to 14:30</span></div>
+                <div style="font-size:11.5px;line-height:1.4;color:#8A5A08;margin-top:5px;font-family:'Public Sans',system-ui,sans-serif">These two are on top of each other.</div>
+                <div style="display:flex;gap:6px;flex-wrap:wrap;margin-top:8px;font-family:'Public Sans',system-ui,sans-serif"><div style="height:30px;padding:0 10px;border-radius:9px;background:#14201C;border:1px solid #14201C;color:#fff;font-size:11.5px;font-weight:700;display:flex;align-items:center;white-space:nowrap">Start 14:30</div></div>
+              </div>
+            </div>
+          </div>
+
+          <div style="display:flex;gap:0">
+            <div style="flex:none;width:56px;padding-top:1px;font-family:'Public Sans',system-ui,sans-serif"><div style="font-size:12.5px;font-weight:700;font-variant-numeric:tabular-nums;color:#9B4B4B">13:15</div><div style="font-size:11px;color:#B4BEB9;font-variant-numeric:tabular-nums;margin-top:1px">14:00</div><div style="font-size:10.5px;color:#B4BEB9;margin-top:1px">45m</div></div>
+            <div style="flex:none;width:20px;display:flex;flex-direction:column;align-items:center;padding-top:4px"><div style="width:11px;height:11px;border-radius:50%;background:#9B4B4B"></div></div>
+            <div style="flex:1;min-width:0;background:#fff;border:1px solid #EBD9B4;border-radius:14px;padding:12px 13px">
+              <div style="display:flex;gap:8px;align-items:flex-start"><div style="flex:1;font-size:14.5px;font-weight:650;line-height:1.35">台北市立美術館</div><span style="flex:none;padding:3px 7px;border-radius:6px;background:#E6EFEB;color:#1F6F5C;font-size:9.5px;font-weight:800;letter-spacing:.04em;font-family:'Public Sans',system-ui,sans-serif">MAIN 3</span></div>
+
+              <div style="margin-top:10px;padding:9px 10px;border-radius:11px;background:#FBF1DE">
+                <div style="font-size:10.5px;font-weight:800;letter-spacing:.04em;color:#8A5A08;font-family:'Public Sans',system-ui,sans-serif">OUT OF ORDER</div>
+                <div style="display:flex;align-items:baseline;gap:8px;margin-top:5px"><span style="flex:none;font-size:10px;font-weight:800;letter-spacing:.04em;color:#B99A5E;font-family:'Public Sans',system-ui,sans-serif">AFTER</span><span style="flex:1;min-width:0;font-size:13px;font-weight:700;line-height:1.35;color:#14201C;line-break:strict;overflow-wrap:anywhere">西門町商圈</span><span style="flex:none;font-size:11.5px;font-weight:700;color:#8A5A08;font-variant-numeric:tabular-nums;font-family:'Public Sans',system-ui,sans-serif">13:45</span></div>
+                <div style="font-size:11.5px;line-height:1.4;color:#8A5A08;margin-top:5px;font-family:'Public Sans',system-ui,sans-serif">This one starts earlier, at 13:15.</div>
+                <div style="display:flex;gap:6px;flex-wrap:wrap;margin-top:8px;font-family:'Public Sans',system-ui,sans-serif"><div style="height:30px;padding:0 10px;border-radius:9px;background:#14201C;border:1px solid #14201C;color:#fff;font-size:11.5px;font-weight:700;display:flex;align-items:center;white-space:nowrap">Set 15:15 – 16:00</div><div style="height:30px;padding:0 10px;border-radius:9px;background:#fff;border:1px solid #EBD9B4;color:#8A5A08;font-size:11.5px;font-weight:650;display:flex;align-items:center;white-space:nowrap">Move it back</div></div>
+              </div>
+            </div>
+          </div>
+
+        </div>
+        <div style="flex:none;height:78px;display:flex;gap:2px;padding:7px 8px 10px;background:rgba(255,255,255,.94);border-top:1px solid #E4E8E5;font-family:'Public Sans',system-ui,sans-serif">
+          <div style="flex:1;border-radius:12px;display:flex;flex-direction:column;align-items:center;justify-content:center;gap:3px"><svg width="20" height="20" viewBox="0 0 20 20" fill="none"><path d="M10 18s6-5.2 6-10A6 6 0 0 0 4 8c0 4.8 6 10 6 10z" stroke="#9AA6A1" stroke-width="1.7" stroke-linejoin="round"></path><circle cx="10" cy="8" r="2.2" stroke="#9AA6A1" stroke-width="1.7"></circle></svg><span style="font-size:9.5px;font-weight:800;color:#9AA6A1">Map</span></div>
+          <div style="flex:1;border-radius:12px;background:#F2F3F1;display:flex;flex-direction:column;align-items:center;justify-content:center;gap:3px"><svg width="20" height="20" viewBox="0 0 20 20" fill="none"><g stroke="#14201C" stroke-width="1.7" stroke-linecap="round"><path d="M3 5.5h14M3 10h14M3 14.5h9"></path></g></svg><span style="font-size:9.5px;font-weight:800;color:#14201C">Plan</span></div>
+          <div style="flex:1;border-radius:12px;display:flex;flex-direction:column;align-items:center;justify-content:center;gap:3px"><svg width="20" height="20" viewBox="0 0 20 20" fill="none"><path d="M4.5 6.5h11l-1 10h-9l-1-10z" stroke="#9AA6A1" stroke-width="1.7" stroke-linejoin="round"></path><path d="M7.5 6.5V5a2.5 2.5 0 0 1 5 0v1.5" stroke="#9AA6A1" stroke-width="1.7" stroke-linecap="round"></path></svg><span style="font-size:9.5px;font-weight:800;color:#9AA6A1">Shop</span></div>
+          <div style="flex:1;border-radius:12px;display:flex;flex-direction:column;align-items:center;justify-content:center;gap:3px"><svg width="20" height="20" viewBox="0 0 20 20" fill="none"><rect x="3.5" y="6" width="13" height="10.5" rx="2" stroke="#9AA6A1" stroke-width="1.7"></rect><path d="M7.5 6V4.5a1.5 1.5 0 0 1 1.5-1.5h2a1.5 1.5 0 0 1 1.5 1.5V6" stroke="#9AA6A1" stroke-width="1.7" stroke-linecap="round"></path></svg><span style="font-size:9.5px;font-weight:800;color:#9AA6A1">Prep</span></div>
+          <div style="flex:1;border-radius:12px;display:flex;flex-direction:column;align-items:center;justify-content:center;gap:3px"><svg width="20" height="20" viewBox="0 0 20 20" fill="none"><path d="M13 3.5l3.5 3.5L7 16.5H3.5V13z" stroke="#9AA6A1" stroke-width="1.7" stroke-linejoin="round"></path></svg><span style="font-size:9.5px;font-weight:800;color:#9AA6A1">Log</span></div>
+        </div>
+      </div>
+      <div style="font-size:11.5px;color:#3D4C46;line-height:1.5">Identical layout, identical strip height, no English word touching a Han character. The stop titles rise from line-height 1.25 to <b>1.35</b> — the one type change CJK forces, and it applies to the plan card too, not only the warning. Times and badges stay in Public Sans by keeping the stack Latin-first.</div>
+    </div>
+
+    <div style="width:390px;display:flex;flex-direction:column;gap:9px">
+      <div style="display:flex;align-items:baseline;gap:8px;flex-wrap:wrap"><span style="padding:3px 7px;border-radius:6px;background:#14201C;color:#fff;font-size:10px;font-weight:800;letter-spacing:.04em">2C</span><span style="font-size:14px;font-weight:700">Japanese names — including the wrap test</span><span style="padding:3px 7px;border-radius:6px;background:#FBF1DE;color:#8A5A08;font-size:9.5px;font-weight:800;letter-spacing:.04em">EDGE CASES</span></div>
+      <div style="width:390px;height:844px;background:#F2F3F1;border:1px solid rgba(20,32,28,.12);border-radius:12px;overflow:hidden;display:flex;flex-direction:column;box-shadow:0 2px 10px rgba(20,32,28,.08);font-family:'Public Sans','Hiragino Sans','Hiragino Kaku Gothic ProN','Yu Gothic','Noto Sans CJK JP',system-ui,sans-serif">
+        <div style="flex:none;background:#fff;border-bottom:1px solid #E7EAE7;padding:22px 16px 12px">
+          <div style="display:flex;align-items:flex-start;gap:10px">
+            <div style="flex:1">
+              <div style="font-size:24px;font-weight:700;letter-spacing:-.02em;font-family:'Public Sans',system-ui,sans-serif">Day 3</div>
+              <div style="font-size:12px;color:#98A5A0;margin-top:3px;font-family:'Public Sans',system-ui,sans-serif">Fri 14 Mar · <b style="color:#8A5A08;font-weight:650">3 things to look at</b></div>
+            </div>
+            <div style="flex:none;width:40px;height:40px;border-radius:13px;background:#fff;border:1px solid #E7EAE7;box-shadow:0 2px 10px rgba(20,32,28,.07);display:flex;align-items:center;justify-content:center"><svg width="15" height="15" viewBox="0 0 16 16" fill="none"><path d="M11 2.2l2.8 2.8L5.4 13.4H2.6v-2.8z" stroke="#14201C" stroke-width="1.5" stroke-linejoin="round"></path></svg></div>
+          </div>
+        </div>
+        <div style="flex:1;overflow:hidden;padding:14px 16px">
+
+          <div style="display:flex;gap:0;margin-bottom:2px">
+            <div style="flex:none;width:56px;padding-top:1px;font-family:'Public Sans',system-ui,sans-serif"><div style="font-size:12.5px;font-weight:700;font-variant-numeric:tabular-nums;color:#9B4B4B">13:45</div><div style="font-size:11px;color:#9B4B4B;font-variant-numeric:tabular-nums;margin-top:1px">15:15</div><div style="font-size:10.5px;color:#B4BEB9;margin-top:1px">1h 30</div></div>
+            <div style="flex:none;width:20px;display:flex;flex-direction:column;align-items:center;padding-top:4px"><div style="width:11px;height:11px;border-radius:50%;background:#9B4B4B"></div><div style="flex:1;width:2px;background:#1F6F5C;margin-top:3px"></div></div>
+            <div style="flex:1;min-width:0;background:#fff;border:1px solid #EBD9B4;border-radius:14px;padding:12px 13px">
+              <div style="display:flex;gap:8px;align-items:flex-start"><div style="flex:1;font-size:14.5px;font-weight:650;line-height:1.35">西市場</div><span style="flex:none;padding:3px 7px;border-radius:6px;background:#E6EFEB;color:#1F6F5C;font-size:9.5px;font-weight:800;letter-spacing:.04em;font-family:'Public Sans',system-ui,sans-serif">MAIN 2</span></div>
+              <div style="margin-top:10px;padding:9px 10px;border-radius:11px;background:#FBF1DE">
+                <div style="font-size:10.5px;font-weight:800;letter-spacing:.04em;color:#8A5A08;font-family:'Public Sans',system-ui,sans-serif">OVERLAPS</div>
+                <div style="display:flex;align-items:baseline;gap:8px;margin-top:5px"><span style="flex:none;font-size:10px;font-weight:800;letter-spacing:.04em;color:#B99A5E;font-family:'Public Sans',system-ui,sans-serif">WITH</span><span style="flex:1;min-width:0;font-size:13px;font-weight:700;line-height:1.35;color:#14201C;line-break:strict;overflow-wrap:anywhere">芦ヶ谷神社</span><span style="flex:none;font-size:11.5px;font-weight:700;color:#8A5A08;font-variant-numeric:tabular-nums;font-family:'Public Sans',system-ui,sans-serif">to 14:30</span></div>
+                <div style="font-size:11.5px;line-height:1.4;color:#8A5A08;margin-top:5px;font-family:'Public Sans',system-ui,sans-serif">These two are on top of each other.</div>
+                <div style="display:flex;gap:6px;flex-wrap:wrap;margin-top:8px;font-family:'Public Sans',system-ui,sans-serif"><div style="height:30px;padding:0 10px;border-radius:9px;background:#14201C;border:1px solid #14201C;color:#fff;font-size:11.5px;font-weight:700;display:flex;align-items:center;white-space:nowrap">Start 14:30</div></div>
+              </div>
+            </div>
+          </div>
+
+          <div style="display:flex;gap:0;margin-bottom:2px">
+            <div style="flex:none;width:56px;padding-top:1px;font-family:'Public Sans',system-ui,sans-serif"><div style="font-size:12.5px;font-weight:700;font-variant-numeric:tabular-nums;color:#9B4B4B">13:15</div><div style="font-size:11px;color:#B4BEB9;font-variant-numeric:tabular-nums;margin-top:1px">14:00</div><div style="font-size:10.5px;color:#B4BEB9;margin-top:1px">45m</div></div>
+            <div style="flex:none;width:20px;display:flex;flex-direction:column;align-items:center;padding-top:4px"><div style="width:11px;height:11px;border-radius:50%;background:#9B4B4B"></div><div style="flex:1;width:2px;background:#1F6F5C;margin-top:3px"></div></div>
+            <div style="flex:1;min-width:0;background:#fff;border:1px solid #EBD9B4;border-radius:14px;padding:12px 13px">
+              <div style="display:flex;gap:8px;align-items:flex-start"><div style="flex:1;font-size:14.5px;font-weight:650;line-height:1.35">AEON MALL 幕張新都心</div><span style="flex:none;padding:3px 7px;border-radius:6px;background:#E6EFEB;color:#1F6F5C;font-size:9.5px;font-weight:800;letter-spacing:.04em;font-family:'Public Sans',system-ui,sans-serif">MAIN 3</span></div>
+              <div style="margin-top:10px;padding:9px 10px;border-radius:11px;background:#FBF1DE">
+                <div style="font-size:10.5px;font-weight:800;letter-spacing:.04em;color:#8A5A08;font-family:'Public Sans',system-ui,sans-serif">OUT OF ORDER</div>
+                <div style="display:flex;align-items:baseline;gap:8px;margin-top:5px"><span style="flex:none;font-size:10px;font-weight:800;letter-spacing:.04em;color:#B99A5E;font-family:'Public Sans',system-ui,sans-serif">AFTER</span><span style="flex:1;min-width:0;font-size:13px;font-weight:700;line-height:1.35;color:#14201C;line-break:strict;overflow-wrap:anywhere">西市場</span><span style="flex:none;font-size:11.5px;font-weight:700;color:#8A5A08;font-variant-numeric:tabular-nums;font-family:'Public Sans',system-ui,sans-serif">13:45</span></div>
+                <div style="font-size:11.5px;line-height:1.4;color:#8A5A08;margin-top:5px;font-family:'Public Sans',system-ui,sans-serif">This one starts earlier, at 13:15.</div>
+                <div style="display:flex;gap:6px;flex-wrap:wrap;margin-top:8px;font-family:'Public Sans',system-ui,sans-serif"><div style="height:30px;padding:0 10px;border-radius:9px;background:#14201C;border:1px solid #14201C;color:#fff;font-size:11.5px;font-weight:700;display:flex;align-items:center;white-space:nowrap">Set 15:15 – 16:00</div><div style="height:30px;padding:0 10px;border-radius:9px;background:#fff;border:1px solid #EBD9B4;color:#8A5A08;font-size:11.5px;font-weight:650;display:flex;align-items:center;white-space:nowrap">Move it back</div></div>
+              </div>
+            </div>
+          </div>
+
+          <div style="display:flex;gap:0">
+            <div style="flex:none;width:56px;padding-top:1px;font-family:'Public Sans',system-ui,sans-serif"><div style="font-size:12.5px;font-weight:700;font-variant-numeric:tabular-nums;color:#9B4B4B">15:00</div><div style="font-size:11px;color:#B4BEB9;font-variant-numeric:tabular-nums;margin-top:1px">16:00</div><div style="font-size:10.5px;color:#B4BEB9;margin-top:1px">1h</div></div>
+            <div style="flex:none;width:20px;display:flex;flex-direction:column;align-items:center;padding-top:4px"><div style="width:11px;height:11px;border-radius:50%;background:#9B4B4B"></div></div>
+            <div style="flex:1;min-width:0;background:#fff;border:1px solid #EBD9B4;border-radius:14px;padding:12px 13px">
+              <div style="display:flex;gap:8px;align-items:flex-start"><div style="flex:1;font-size:14.5px;font-weight:650;line-height:1.35">すみだ水族館</div><span style="flex:none;padding:3px 7px;border-radius:6px;background:#E6EFEB;color:#1F6F5C;font-size:9.5px;font-weight:800;letter-spacing:.04em;font-family:'Public Sans',system-ui,sans-serif">MAIN 4</span></div>
+              <div style="margin-top:10px;padding:9px 10px;border-radius:11px;background:#FBF1DE">
+                <div style="font-size:10.5px;font-weight:800;letter-spacing:.04em;color:#8A5A08;font-family:'Public Sans',system-ui,sans-serif">OVERLAPS</div>
+                <div style="display:flex;align-items:baseline;gap:8px;margin-top:5px"><span style="flex:none;font-size:10px;font-weight:800;letter-spacing:.04em;color:#B99A5E;font-family:'Public Sans',system-ui,sans-serif">WITH</span><span style="flex:1;min-width:0;font-size:13px;font-weight:700;line-height:1.45;color:#14201C;line-break:strict;overflow-wrap:anywhere">東京都庁舎第一本庁舎展望室（北）</span><span style="flex:none;font-size:11.5px;font-weight:700;color:#8A5A08;font-variant-numeric:tabular-nums;font-family:'Public Sans',system-ui,sans-serif">to 15:30</span></div>
+                <div style="font-size:11.5px;line-height:1.4;color:#8A5A08;margin-top:5px;font-family:'Public Sans',system-ui,sans-serif">These two are on top of each other.</div>
+                <div style="display:flex;gap:6px;flex-wrap:wrap;margin-top:8px;font-family:'Public Sans',system-ui,sans-serif"><div style="height:30px;padding:0 10px;border-radius:9px;background:#14201C;border:1px solid #14201C;color:#fff;font-size:11.5px;font-weight:700;display:flex;align-items:center;white-space:nowrap">Start 15:30</div></div>
+              </div>
+            </div>
+          </div>
+
+        </div>
+        <div style="flex:none;height:78px;display:flex;gap:2px;padding:7px 8px 10px;background:rgba(255,255,255,.94);border-top:1px solid #E4E8E5;font-family:'Public Sans',system-ui,sans-serif">
+          <div style="flex:1;border-radius:12px;display:flex;flex-direction:column;align-items:center;justify-content:center;gap:3px"><svg width="20" height="20" viewBox="0 0 20 20" fill="none"><path d="M10 18s6-5.2 6-10A6 6 0 0 0 4 8c0 4.8 6 10 6 10z" stroke="#9AA6A1" stroke-width="1.7" stroke-linejoin="round"></path><circle cx="10" cy="8" r="2.2" stroke="#9AA6A1" stroke-width="1.7"></circle></svg><span style="font-size:9.5px;font-weight:800;color:#9AA6A1">Map</span></div>
+          <div style="flex:1;border-radius:12px;background:#F2F3F1;display:flex;flex-direction:column;align-items:center;justify-content:center;gap:3px"><svg width="20" height="20" viewBox="0 0 20 20" fill="none"><g stroke="#14201C" stroke-width="1.7" stroke-linecap="round"><path d="M3 5.5h14M3 10h14M3 14.5h9"></path></g></svg><span style="font-size:9.5px;font-weight:800;color:#14201C">Plan</span></div>
+          <div style="flex:1;border-radius:12px;display:flex;flex-direction:column;align-items:center;justify-content:center;gap:3px"><svg width="20" height="20" viewBox="0 0 20 20" fill="none"><path d="M4.5 6.5h11l-1 10h-9l-1-10z" stroke="#9AA6A1" stroke-width="1.7" stroke-linejoin="round"></path><path d="M7.5 6.5V5a2.5 2.5 0 0 1 5 0v1.5" stroke="#9AA6A1" stroke-width="1.7" stroke-linecap="round"></path></svg><span style="font-size:9.5px;font-weight:800;color:#9AA6A1">Shop</span></div>
+          <div style="flex:1;border-radius:12px;display:flex;flex-direction:column;align-items:center;justify-content:center;gap:3px"><svg width="20" height="20" viewBox="0 0 20 20" fill="none"><rect x="3.5" y="6" width="13" height="10.5" rx="2" stroke="#9AA6A1" stroke-width="1.7"></rect><path d="M7.5 6V4.5a1.5 1.5 0 0 1 1.5-1.5h2a1.5 1.5 0 0 1 1.5 1.5V6" stroke="#9AA6A1" stroke-width="1.7" stroke-linecap="round"></path></svg><span style="font-size:9.5px;font-weight:800;color:#9AA6A1">Prep</span></div>
+          <div style="flex:1;border-radius:12px;display:flex;flex-direction:column;align-items:center;justify-content:center;gap:3px"><svg width="20" height="20" viewBox="0 0 20 20" fill="none"><path d="M13 3.5l3.5 3.5L7 16.5H3.5V13z" stroke="#9AA6A1" stroke-width="1.7" stroke-linejoin="round"></path></svg><span style="font-size:9.5px;font-weight:800;color:#9AA6A1">Log</span></div>
+        </div>
+      </div>
+      <div style="font-size:11.5px;color:#3D4C46;line-height:1.5">Three edge cases in one screen. <b>Mixed script</b> in the second card's title — Latin and Japanese in one name, both handled by the single Latin-first stack. <b>Full-width punctuation</b> in the third strip: （北） sits at the end of a wrapped name with its own side bearing, hurting nothing because the column is its own. <b>The long name wraps to two lines</b> and the time stays put on the right of the first line; the strip grows by exactly one line and the fix button does not move relative to the text. Nothing is truncated — a warning must never hide the thing it is about.</div>
+    </div>
+
+  </div>
+</section>
+
+<section style="padding:36px 48px 52px">
+  <div style="font-size:10.5px;font-weight:800;letter-spacing:.06em;color:#9B4B4B;margin-bottom:6px">ARTBOARD 3</div>
+  <div style="font-size:26px;font-weight:700;letter-spacing:-.015em;margin-bottom:8px">Review — one row per difference</div>
+  <div style="font-size:13px;color:#3D4C46;max-width:880px;line-height:1.6;margin-bottom:24px;text-wrap:pretty">The behaviour in <code style="font-family:ui-monospace,Menlo,monospace;font-size:12.5px">review.js</code> is unchanged: nothing happens to your day until you press a button on a row, a decided row leaves the list, whatever you skip is not asked again, and take-all / keep-all finish the update either way. What changes is the ranking. The screen has to answer four questions in order — <b>what changed · what do I have · what are they proposing · what am I deciding</b> — and today all four are set at roughly the same weight.</div>
+
+  <sc-if value="{{ showSpecs }}" hint-placeholder-val="{{ true }}">
+  <div style="display:flex;flex-wrap:wrap;gap:14px;max-width:1180px;margin-bottom:32px">
+    <div style="width:566px;background:#fff;border:1px solid #E7EAE7;border-radius:16px;padding:15px">
+      <div style="font-size:10.5px;font-weight:800;letter-spacing:.06em;color:#98A5A0;margin-bottom:11px">THE FOUR QUESTIONS, RANKED BY WEIGHT</div>
+      <div style="display:flex;flex-direction:column;gap:9px;font-size:11.5px;line-height:1.5;color:#3D4C46">
+        <div style="display:flex;gap:10px"><span style="flex:none;width:34px;height:20px;border-radius:6px;background:#14201C;color:#fff;font-size:10px;font-weight:800;display:flex;align-items:center;justify-content:center">1st</span><span><b style="color:#14201C">What changed</b> — the row title, 13.5/700 ink, the heaviest thing on the card. It names the <i>subject</i> (the stop, the item, the day), never the verb.</span></div>
+        <div style="display:flex;gap:10px"><span style="flex:none;width:34px;height:20px;border-radius:6px;background:#3D4C46;color:#fff;font-size:10px;font-weight:800;display:flex;align-items:center;justify-content:center">2nd</span><span><b style="color:#14201C">What kind of change</b> — the existing badge, moved to sit alongside a day eyebrow so a reader can scan the kinds down the left edge: <span style="padding:2px 6px;border-radius:6px;background:#E6EFEB;color:#1F6F5C;font-size:9px;font-weight:800">THEY ADDED</span> <span style="padding:2px 6px;border-radius:6px;background:#FBF1DE;color:#8A5A08;font-size:9px;font-weight:800">THEY CHANGED</span> <span style="padding:2px 6px;border-radius:6px;background:#F8E9E9;color:#9B4B4B;font-size:9px;font-weight:800">THEY REMOVED</span></span></div>
+        <div style="display:flex;gap:10px"><span style="flex:none;width:34px;height:20px;border-radius:6px;background:#6B7A74;color:#fff;font-size:10px;font-weight:800;display:flex;align-items:center;justify-content:center">3rd</span><span><b style="color:#14201C">Yours vs theirs</b> — the existing <code style="font-family:ui-monospace,Menlo,monospace;font-size:10.5px">.sides</code> pair, kept exactly: yours is the quiet box, theirs is jade because jade already means "the copy you were given". <b>Not</b> red-vs-green: nothing here is wrong.</span></div>
+        <div style="display:flex;gap:10px"><span style="flex:none;width:34px;height:20px;border-radius:6px;background:#98A5A0;color:#fff;font-size:10px;font-weight:800;display:flex;align-items:center;justify-content:center">4th</span><span><b style="color:#14201C">The decision</b> — ghost "Keep mine" and jade "Take theirs", h38, equal width. Deliberately the lightest thing on the card: both answers are fine, and the app never pre-selects one.</span></div>
+      </div>
+      <div style="font-size:11px;color:#6B7A74;line-height:1.5;margin-top:11px;padding-top:10px;border-top:1px solid #F0F2F0"><b style="color:#14201C">Why jade for theirs and not amber.</b> Amber means "yours or guessed" everywhere else in the app; using it for the incoming side would invert the product's one hard rule. Jade means given — and an update <i>is</i> the given copy arriving again. The existing <code style="font-family:ui-monospace,Menlo,monospace;font-size:10.5px">.side.theirs</code> already does this; it is kept.</div>
+    </div>
+    <div style="width:566px;background:#fff;border:1px solid #E7EAE7;border-radius:16px;padding:15px">
+      <div style="font-size:10.5px;font-weight:800;letter-spacing:.06em;color:#98A5A0;margin-bottom:11px">WHAT IS NEW, AND WHY</div>
+      <div style="display:flex;flex-direction:column;gap:8px;font-size:11.5px;line-height:1.5;color:#3D4C46">
+        <div><b style="color:#14201C">Grouped by day, under the existing eyebrow.</b> Differences arrive as a flat array; a person reads them as "what happened to Wednesday". Grouping is presentation only — the entries, their ids and their order within a day are untouched.</div>
+        <div><b style="color:#14201C">Progress in the push sub.</b> "5 things · 2 decided" replaces the bare count, so the header does the counting the disappearing rows imply.</div>
+        <div><b style="color:#14201C">An absent side is written, not blank.</b> An addition has no "yours". Today that renders an empty box; here it reads <span style="color:#B4BEB9">not on your day</span> in faint — the box keeps its shape so the two sides still align.</div>
+        <div><b style="color:#14201C">Sides stack when either value is long.</b> Above roughly 60 characters the two boxes go full-width, one above the other, so a sentence is never set in a 150px column. Same boxes, same colours, one axis turned.</div>
+        <div><b style="color:#14201C">A delta chip for times.</b> When both sides are clock values the difference is shown as an amber chip (<span style="padding:2px 6px;border-radius:8px;background:#FBF1DE;color:#8A5A08;font-size:10px;font-weight:650">45 min later</span>) so the reader does not do arithmetic on two 12px numbers.</div>
+        <div><b style="color:#14201C">The bulk actions become a sticky foot.</b> <code style="font-family:ui-monospace,Menlo,monospace;font-size:10.5px">.review-foot</code> already exists in the stylesheet (fixed, 1px top line) and is already what the audit describes; the current screen puts the two buttons inline at the end of the scroll, where five cards hide them.</div>
+        <div><b style="color:#14201C">Explanation moves to the foot's fine print.</b> The three-sentence preamble now sits as one line under the sticky buttons — the same words, out of the way of the first row.</div>
+      </div>
+    </div>
+  </div>
+  </sc-if>
+
+  <div style="display:flex;flex-wrap:wrap;gap:28px">
+
+    <div style="width:390px;display:flex;flex-direction:column;gap:9px">
+      <div style="display:flex;align-items:baseline;gap:8px;flex-wrap:wrap"><span style="padding:3px 7px;border-radius:6px;background:#14201C;color:#fff;font-size:10px;font-weight:800;letter-spacing:.04em">3A</span><span style="font-size:14px;font-weight:700">Review — five differences</span><span style="font-size:11.5px;color:#6B7A74">#review · scrolled to top</span></div>
+      <div style="width:390px;height:844px;background:#F2F3F1;border:1px solid rgba(20,32,28,.12);border-radius:12px;overflow:hidden;display:flex;flex-direction:column;box-shadow:0 2px 10px rgba(20,32,28,.08)">
+        <div style="flex:none;background:#fff;border-bottom:1px solid #E7EAE7;padding:20px 16px 12px;display:flex;align-items:flex-start;gap:10px">
+          <div style="flex:none;width:32px;height:32px;border-radius:10px;display:flex;align-items:center;justify-content:center"><svg width="15" height="15" viewBox="0 0 16 16" fill="none"><path d="M10 3L5 8l5 5" stroke="#14201C" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round"></path></svg></div>
+          <div style="flex:1;min-width:0;padding-top:1px">
+            <div style="font-size:17px;font-weight:700;letter-spacing:-.01em">Ana sent an update</div>
+            <div style="font-size:11.5px;color:#98A5A0;margin-top:2px">5 things · none decided · 20 min ago</div>
+          </div>
+          <div style="flex:none;width:26px;height:26px;border-radius:50%;background:#E6EFEB;color:#1F6F5C;font-size:11px;font-weight:800;display:flex;align-items:center;justify-content:center">A</div>
+        </div>
+
+        <div style="flex:1;overflow:hidden;padding:14px 16px 0">
+          <div style="font-size:10.5px;font-weight:800;letter-spacing:.06em;color:#98A5A0;margin-bottom:8px">DAY 3 · FRI 14 MAR · 3 THINGS</div>
+
+          <div style="background:#fff;border:1px solid #E7EAE7;border-radius:16px;padding:12px 13px;margin-bottom:10px">
+            <div style="display:flex;align-items:center;gap:8px"><span style="padding:3px 7px;border-radius:6px;background:#FBF1DE;color:#8A5A08;font-size:9.5px;font-weight:800;letter-spacing:.04em">THEY CHANGED</span><span style="flex:1;font-size:11px;color:#98A5A0">a time</span></div>
+            <div style="font-size:13.5px;font-weight:700;color:#14201C;line-height:1.25;margin-top:8px">Nishi Market</div>
+            <div style="font-size:11px;color:#98A5A0;margin-top:2px">stop 2 of 6</div>
+            <div style="display:flex;gap:8px;margin-top:10px">
+              <div style="flex:1;min-width:0;background:#FAFBFA;border:1px solid #EDEFEC;border-radius:10px;padding:8px 9px">
+                <div style="font-size:9.5px;font-weight:800;letter-spacing:.05em;color:#98A5A0">YOURS</div>
+                <div style="font-size:12px;line-height:1.4;color:#3D4C46;margin-top:3px;font-variant-numeric:tabular-nums">13:30 – 15:45</div>
+              </div>
+              <div style="flex:1;min-width:0;background:#E6EFEB;border:1px solid #CFE0D9;border-radius:10px;padding:8px 9px">
+                <div style="font-size:9.5px;font-weight:800;letter-spacing:.05em;color:#5D8C7C">THEIRS</div>
+                <div style="font-size:12px;line-height:1.4;color:#1F6F5C;font-weight:650;margin-top:3px;font-variant-numeric:tabular-nums">14:15 – 16:30</div>
+              </div>
+            </div>
+            <div style="display:flex;justify-content:center;margin-top:7px"><span style="padding:2px 8px;border-radius:8px;background:#FBF1DE;color:#8A5A08;font-size:10.5px;font-weight:650">45 min later</span></div>
+            <div style="display:flex;gap:8px;margin-top:10px">
+              <div style="flex:1;height:38px;border-radius:12px;background:#F2F3F1;border:1px solid #E1E5E1;color:#14201C;font-size:12.5px;font-weight:650;display:flex;align-items:center;justify-content:center">Keep mine</div>
+              <div style="flex:1;height:38px;border-radius:12px;background:#1F6F5C;color:#fff;font-size:12.5px;font-weight:700;display:flex;align-items:center;justify-content:center">Take theirs</div>
+            </div>
+          </div>
+
+          <div style="background:#fff;border:1px solid #E7EAE7;border-radius:16px;padding:12px 13px;margin-bottom:10px">
+            <div style="display:flex;align-items:center;gap:8px"><span style="padding:3px 7px;border-radius:6px;background:#E6EFEB;color:#1F6F5C;font-size:9.5px;font-weight:800;letter-spacing:.04em">THEY ADDED</span><span style="flex:1;font-size:11px;color:#98A5A0">a stop</span></div>
+            <div style="font-size:13.5px;font-weight:700;color:#14201C;line-height:1.25;margin-top:8px">Copper Lane Teahouse</div>
+            <div style="font-size:11px;color:#98A5A0;margin-top:2px">would become stop 4, at 16:45</div>
+            <div style="display:flex;gap:8px;margin-top:10px">
+              <div style="flex:1;min-width:0;background:#FAFBFA;border:1px solid #EDEFEC;border-radius:10px;padding:8px 9px">
+                <div style="font-size:9.5px;font-weight:800;letter-spacing:.05em;color:#98A5A0">YOURS</div>
+                <div style="font-size:12px;line-height:1.4;color:#B4BEB9;margin-top:3px">not on your day</div>
+              </div>
+              <div style="flex:1;min-width:0;background:#E6EFEB;border:1px solid #CFE0D9;border-radius:10px;padding:8px 9px">
+                <div style="font-size:9.5px;font-weight:800;letter-spacing:.05em;color:#5D8C7C">THEIRS</div>
+                <div style="font-size:12px;line-height:1.4;color:#1F6F5C;font-weight:650;margin-top:3px;font-variant-numeric:tabular-nums">16:45 – 17:30</div>
+              </div>
+            </div>
+            <div style="display:flex;gap:8px;margin-top:10px">
+              <div style="flex:1;height:38px;border-radius:12px;background:#F2F3F1;border:1px solid #E1E5E1;color:#14201C;font-size:12.5px;font-weight:650;display:flex;align-items:center;justify-content:center">Leave it out</div>
+              <div style="flex:1;height:38px;border-radius:12px;background:#1F6F5C;color:#fff;font-size:12.5px;font-weight:700;display:flex;align-items:center;justify-content:center">Add it</div>
+            </div>
+          </div>
+
+          <div style="background:#fff;border:1px solid #E7EAE7;border-radius:16px;padding:12px 13px">
+            <div style="display:flex;align-items:center;gap:8px"><span style="padding:3px 7px;border-radius:6px;background:#F8E9E9;color:#9B4B4B;font-size:9.5px;font-weight:800;letter-spacing:.04em">THEY REMOVED</span><span style="flex:1;font-size:11px;color:#98A5A0">a stop</span></div>
+            <div style="font-size:13.5px;font-weight:700;color:#14201C;line-height:1.25;margin-top:8px">Harbour Steps</div>
+            <div style="font-size:11px;color:#98A5A0;margin-top:2px">stop 5 · you have 1 note on it</div>
+            <div style="display:flex;gap:8px;margin-top:10px">
+              <div style="flex:1;min-width:0;background:#FAFBFA;border:1px solid #EDEFEC;border-radius:10px;padding:8px 9px">
+                <div style="font-size:9.5px;font-weight:800;letter-spacing:.05em;color:#98A5A0">YOURS</div>
+                <div style="font-size:12px;line-height:1.4;color:#3D4C46;margin-top:3px;font-variant-numeric:tabular-nums">17:00 – 18:00</div>
+              </div>
+              <div style="flex:1;min-width:0;background:#E6EFEB;border:1px solid #CFE0D9;border-radius:10px;padding:8px 9px">
+                <div style="font-size:9.5px;font-weight:800;letter-spacing:.05em;color:#5D8C7C">THEIRS</div>
+                <div style="font-size:12px;line-height:1.4;color:#5D8C7C;margin-top:3px">off the day</div>
+              </div>
+            </div>
+          </div>
+        </div>
+
+        <div style="flex:none;background:#fff;border-top:1px solid #E7EAE7;padding:11px 16px 12px">
+          <div style="display:flex;gap:8px">
+            <div style="flex:1;height:42px;border-radius:12px;background:#F2F3F1;border:1px solid #E1E5E1;color:#14201C;font-size:13px;font-weight:650;display:flex;align-items:center;justify-content:center">Keep all of mine</div>
+            <div style="flex:1;height:42px;border-radius:12px;background:#14201C;color:#fff;font-size:13px;font-weight:700;display:flex;align-items:center;justify-content:center">Take all of theirs</div>
+          </div>
+          <div style="font-size:11px;color:#98A5A0;line-height:1.45;margin-top:8px">Nothing on your day has changed yet. What you have bought, packed or written is not in here at all.</div>
+        </div>
+      </div>
+      <div style="font-size:11.5px;color:#3D4C46;line-height:1.5">Day eyebrow, then cards. The <b>title is the subject</b> — the place, not "Time changed" — because a person scanning this is looking for places they care about. The verb lives in the badge above it and the noun beside it. The third card is scrolled through mid-row, which is the honest way to show a list that runs past the fold. The sticky foot is always reachable; its fine print is the existing preamble, moved.</div>
+    </div>
+
+    <div style="width:390px;display:flex;flex-direction:column;gap:9px">
+      <div style="display:flex;align-items:baseline;gap:8px;flex-wrap:wrap"><span style="padding:3px 7px;border-radius:6px;background:#14201C;color:#fff;font-size:10px;font-weight:800;letter-spacing:.04em">3B</span><span style="font-size:14px;font-weight:700">Review — the hard rows</span><span style="padding:3px 7px;border-radius:6px;background:#FBF1DE;color:#8A5A08;font-size:9.5px;font-weight:800;letter-spacing:.04em">EDGE CASES</span></div>
+      <div style="width:390px;height:844px;background:#F2F3F1;border:1px solid rgba(20,32,28,.12);border-radius:12px;overflow:hidden;display:flex;flex-direction:column;box-shadow:0 2px 10px rgba(20,32,28,.08)">
+        <div style="flex:none;background:#fff;border-bottom:1px solid #E7EAE7;padding:20px 16px 12px;display:flex;align-items:flex-start;gap:10px">
+          <div style="flex:none;width:32px;height:32px;border-radius:10px;display:flex;align-items:center;justify-content:center"><svg width="15" height="15" viewBox="0 0 16 16" fill="none"><path d="M10 3L5 8l5 5" stroke="#14201C" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round"></path></svg></div>
+          <div style="flex:1;min-width:0;padding-top:1px">
+            <div style="font-size:17px;font-weight:700;letter-spacing:-.01em">Ana sent an update</div>
+            <div style="font-size:11.5px;color:#98A5A0;margin-top:2px">5 things · 2 decided · 20 min ago</div>
+          </div>
+          <div style="flex:none;width:26px;height:26px;border-radius:50%;background:#E6EFEB;color:#1F6F5C;font-size:11px;font-weight:800;display:flex;align-items:center;justify-content:center">A</div>
+        </div>
+
+        <div style="flex:1;overflow:hidden;padding:14px 16px 0">
+          <div style="font-size:10.5px;font-weight:800;letter-spacing:.06em;color:#98A5A0;margin-bottom:8px">DAY 4 · SUN 15 MAR · 2 THINGS</div>
+
+          <div style="background:#fff;border:1px solid #E7EAE7;border-radius:16px;padding:12px 13px;margin-bottom:10px">
+            <div style="display:flex;align-items:center;gap:8px"><span style="padding:3px 7px;border-radius:6px;background:#FBF1DE;color:#8A5A08;font-size:9.5px;font-weight:800;letter-spacing:.04em">THEY CHANGED</span><span style="flex:1;font-size:11px;color:#98A5A0">what the stop says</span><span style="padding:3px 7px;border-radius:6px;background:#F8E9E9;color:#9B4B4B;font-size:9px;font-weight:800;letter-spacing:.04em">YOU EDITED THIS TOO</span></div>
+            <div style="font-size:13.5px;font-weight:700;color:#14201C;line-height:1.25;margin-top:8px">東京都庁舎第一本庁舎展望室</div>
+            <div style="font-size:11px;color:#98A5A0;margin-top:2px">stop 1 · the note on the stop</div>
+            <div style="display:flex;flex-direction:column;gap:8px;margin-top:10px">
+              <div style="background:#FAFBFA;border:1px solid #EDEFEC;border-radius:10px;padding:8px 9px">
+                <div style="font-size:9.5px;font-weight:800;letter-spacing:.05em;color:#98A5A0">YOURS · edited 2 days ago</div>
+                <div style="font-size:12px;line-height:1.45;color:#3D4C46;margin-top:3px">Meet the group at the north tower lift, not the south one. Free entry, but the queue after 16:00 was about forty minutes last time.</div>
+              </div>
+              <div style="background:#E6EFEB;border:1px solid #CFE0D9;border-radius:10px;padding:8px 9px">
+                <div style="font-size:9.5px;font-weight:800;letter-spacing:.05em;color:#5D8C7C">THEIRS</div>
+                <div style="font-size:12px;line-height:1.45;color:#1F6F5C;font-weight:650;margin-top:3px">South tower is closed for maintenance all week — the whole group goes up the north side. Bring the printed pass; they are checking at the barrier now.</div>
+              </div>
+            </div>
+            <div style="display:flex;gap:8px;margin-top:10px">
+              <div style="flex:1;height:38px;border-radius:12px;background:#F2F3F1;border:1px solid #E1E5E1;color:#14201C;font-size:12.5px;font-weight:650;display:flex;align-items:center;justify-content:center">Keep mine</div>
+              <div style="flex:1;height:38px;border-radius:12px;background:#1F6F5C;color:#fff;font-size:12.5px;font-weight:700;display:flex;align-items:center;justify-content:center">Take theirs</div>
+            </div>
+          </div>
+
+          <div style="background:#fff;border:1px solid #E7EAE7;border-radius:16px;padding:12px 13px;margin-bottom:10px">
+            <div style="display:flex;align-items:center;gap:8px"><span style="padding:3px 7px;border-radius:6px;background:#FBF1DE;color:#8A5A08;font-size:9.5px;font-weight:800;letter-spacing:.04em">THEY CHANGED</span><span style="flex:1;font-size:11px;color:#98A5A0">the day it is on</span></div>
+            <div style="font-size:13.5px;font-weight:700;color:#14201C;line-height:1.25;margin-top:8px">Riverside Night Market</div>
+            <div style="font-size:11px;color:#98A5A0;margin-top:2px">moves out of this day</div>
+            <div style="display:flex;gap:8px;margin-top:10px">
+              <div style="flex:1;min-width:0;background:#FAFBFA;border:1px solid #EDEFEC;border-radius:10px;padding:8px 9px">
+                <div style="font-size:9.5px;font-weight:800;letter-spacing:.05em;color:#98A5A0">YOURS</div>
+                <div style="font-size:12px;line-height:1.4;color:#3D4C46;margin-top:3px">Day 4 · 19:00</div>
+              </div>
+              <div style="flex:1;min-width:0;background:#E6EFEB;border:1px solid #CFE0D9;border-radius:10px;padding:8px 9px">
+                <div style="font-size:9.5px;font-weight:800;letter-spacing:.05em;color:#5D8C7C">THEIRS</div>
+                <div style="font-size:12px;line-height:1.4;color:#1F6F5C;font-weight:650;margin-top:3px">Day 5 · 19:30</div>
+              </div>
+            </div>
+            <div style="display:flex;gap:8px;margin-top:10px">
+              <div style="flex:1;height:38px;border-radius:12px;background:#F2F3F1;border:1px solid #E1E5E1;color:#14201C;font-size:12.5px;font-weight:650;display:flex;align-items:center;justify-content:center">Keep mine</div>
+              <div style="flex:1;height:38px;border-radius:12px;background:#1F6F5C;color:#fff;font-size:12.5px;font-weight:700;display:flex;align-items:center;justify-content:center">Take theirs</div>
+            </div>
+          </div>
+
+          <div style="font-size:10.5px;font-weight:800;letter-spacing:.06em;color:#98A5A0;margin:16px 0 8px">DAY 5 · MON 16 MAR · 1 THING</div>
+          <div style="background:#fff;border:1px solid #E7EAE7;border-radius:16px;padding:12px 13px">
+            <div style="display:flex;align-items:center;gap:8px"><span style="padding:3px 7px;border-radius:6px;background:#E6EFEB;color:#1F6F5C;font-size:9.5px;font-weight:800;letter-spacing:.04em">THEY ADDED</span><span style="flex:1;font-size:11px;color:#98A5A0">a stop</span></div>
+            <div style="font-size:13.5px;font-weight:700;color:#14201C;line-height:1.25;margin-top:8px">Ferry to Ashgate Island</div>
+          </div>
+        </div>
+
+        <div style="flex:none;background:#fff;border-top:1px solid #E7EAE7;padding:11px 16px 12px">
+          <div style="display:flex;gap:8px">
+            <div style="flex:1;height:42px;border-radius:12px;background:#F2F3F1;border:1px solid #E1E5E1;color:#14201C;font-size:13px;font-weight:650;display:flex;align-items:center;justify-content:center">Keep all of mine</div>
+            <div style="flex:1;height:42px;border-radius:12px;background:#14201C;color:#fff;font-size:13px;font-weight:700;display:flex;align-items:center;justify-content:center">Take all of theirs</div>
+          </div>
+          <div style="font-size:11px;color:#98A5A0;line-height:1.45;margin-top:8px">Either way this update is finished with, and the next one starts from where you leave it.</div>
+        </div>
+      </div>
+      <div style="font-size:11.5px;color:#3D4C46;line-height:1.5">Four hard cases. <b>Long text</b> — the sides stack full-width and the values stay readable at 12/1.45. <b>A CJK title</b> — same 13.5/700, line-height lifted to match artboard 2. <b>A conflict</b> — a rust "YOU EDITED THIS TOO" badge on the right of the badge row, and a timestamp on the YOURS key, so the one row where "keep mine" actually costs something says so. <b>Second day group</b> — a new eyebrow, not a new screen.</div>
+      <div style="font-size:11px;color:#8A5A08;line-height:1.5;background:#FBF1DE;border:1px solid #EBD9B4;border-radius:11px;padding:9px 10px">The conflict badge is the one thing here that needs a product answer: <code style="font-family:ui-monospace,Menlo,monospace;font-size:10.5px">review.js</code> does not currently distinguish "you changed this too" from "you never touched it". Drawn so the decision can be made; safe to ship without it.</div>
+    </div>
+
+    <div style="width:390px;display:flex;flex-direction:column;gap:9px">
+      <div style="display:flex;align-items:baseline;gap:8px;flex-wrap:wrap"><span style="padding:3px 7px;border-radius:6px;background:#14201C;color:#fff;font-size:10px;font-weight:800;letter-spacing:.04em">3C</span><span style="font-size:14px;font-weight:700">Review — finished</span><span style="padding:3px 7px;border-radius:6px;background:#E6EFEB;color:#1F6F5C;font-size:9.5px;font-weight:800;letter-spacing:.04em">COMPLETION</span></div>
+      <div style="width:390px;height:844px;background:#F2F3F1;border:1px solid rgba(20,32,28,.12);border-radius:12px;overflow:hidden;display:flex;flex-direction:column;box-shadow:0 2px 10px rgba(20,32,28,.08)">
+        <div style="flex:none;background:#fff;border-bottom:1px solid #E7EAE7;padding:20px 16px 12px;display:flex;align-items:flex-start;gap:10px">
+          <div style="flex:none;width:32px;height:32px;border-radius:10px;display:flex;align-items:center;justify-content:center"><svg width="15" height="15" viewBox="0 0 16 16" fill="none"><path d="M10 3L5 8l5 5" stroke="#14201C" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round"></path></svg></div>
+          <div style="flex:1;min-width:0;padding-top:1px">
+            <div style="font-size:17px;font-weight:700;letter-spacing:-.01em">Nothing to review</div>
+            <div style="font-size:11.5px;color:#98A5A0;margin-top:2px">Meridian City · Group Tour</div>
+          </div>
+        </div>
+        <div style="flex:1;overflow:hidden;padding:16px">
+          <div style="background:#E6EFEB;border:1px solid #CFE0D9;border-radius:16px;padding:14px">
+            <div style="display:flex;align-items:center;gap:8px">
+              <div style="flex:none;width:22px;height:22px;border-radius:50%;background:#1F6F5C;display:flex;align-items:center;justify-content:center"><svg width="12" height="12" viewBox="0 0 14 14" fill="none"><path d="M3 7.4l2.6 2.6L11 4.4" stroke="#fff" stroke-width="1.9" stroke-linecap="round" stroke-linejoin="round"></path></svg></div>
+              <div style="font-size:10.5px;font-weight:800;letter-spacing:.06em;color:#1F6F5C">UPDATE DEALT WITH</div>
+            </div>
+            <div style="font-size:13.5px;font-weight:700;color:#14201C;margin-top:9px;line-height:1.3">5 things decided — 3 taken, 2 left as yours.</div>
+            <div style="font-size:12px;line-height:1.5;color:#5D8C7C;margin-top:6px">Your copy is yours again until the next update arrives. Anything you took is now indistinguishable from a change you made yourself.</div>
+          </div>
+
+          <div style="font-size:10.5px;font-weight:800;letter-spacing:.06em;color:#98A5A0;margin:18px 0 8px">WHAT CHANGED ON YOUR DAYS</div>
+          <div style="background:#fff;border:1px solid #E7EAE7;border-radius:16px;overflow:hidden">
+            <div style="padding:11px 13px;display:flex;align-items:center;gap:9px">
+              <span style="flex:none;padding:3px 7px;border-radius:6px;background:#E6EFEB;color:#1F6F5C;font-size:9.5px;font-weight:800;letter-spacing:.04em">TAKEN</span>
+              <div style="flex:1;min-width:0"><div style="font-size:12.5px;font-weight:650;color:#14201C">Nishi Market</div><div style="font-size:11px;color:#98A5A0;margin-top:2px;font-variant-numeric:tabular-nums">Day 3 · now 14:15 – 16:30</div></div>
+            </div>
+            <div style="height:1px;background:#F0F2F0"></div>
+            <div style="padding:11px 13px;display:flex;align-items:center;gap:9px">
+              <span style="flex:none;padding:3px 7px;border-radius:6px;background:#E6EFEB;color:#1F6F5C;font-size:9.5px;font-weight:800;letter-spacing:.04em">TAKEN</span>
+              <div style="flex:1;min-width:0"><div style="font-size:12.5px;font-weight:650;color:#14201C">Copper Lane Teahouse</div><div style="font-size:11px;color:#98A5A0;margin-top:2px;font-variant-numeric:tabular-nums">Day 3 · added at 16:45</div></div>
+            </div>
+            <div style="height:1px;background:#F0F2F0"></div>
+            <div style="padding:11px 13px;display:flex;align-items:center;gap:9px">
+              <span style="flex:none;padding:3px 7px;border-radius:6px;background:#F2F3F1;color:#6B7A74;font-size:9.5px;font-weight:800;letter-spacing:.04em">KEPT</span>
+              <div style="flex:1;min-width:0"><div style="font-size:12.5px;font-weight:650;color:#14201C">Harbour Steps</div><div style="font-size:11px;color:#98A5A0;margin-top:2px">Day 3 · still on your day</div></div>
+            </div>
+            <div style="height:1px;background:#F0F2F0"></div>
+            <div style="padding:11px 13px;display:flex;align-items:center;gap:9px">
+              <span style="flex:none;padding:3px 7px;border-radius:6px;background:#F2F3F1;color:#6B7A74;font-size:9.5px;font-weight:800;letter-spacing:.04em">KEPT</span>
+              <div style="flex:1;min-width:0"><div style="font-size:12.5px;font-weight:650;color:#14201C">東京都庁舎第一本庁舎展望室</div><div style="font-size:11px;color:#98A5A0;margin-top:2px">Day 4 · your note stays</div></div>
+            </div>
+            <div style="height:1px;background:#F0F2F0"></div>
+            <div style="padding:11px 13px;display:flex;align-items:center;gap:9px">
+              <span style="flex:none;padding:3px 7px;border-radius:6px;background:#E6EFEB;color:#1F6F5C;font-size:9.5px;font-weight:800;letter-spacing:.04em">TAKEN</span>
+              <div style="flex:1;min-width:0"><div style="font-size:12.5px;font-weight:650;color:#14201C">Ferry to Ashgate Island</div><div style="font-size:11px;color:#98A5A0;margin-top:2px">Day 5 · added</div></div>
+            </div>
+          </div>
+
+          <div style="height:42px;border-radius:12px;background:#1F6F5C;color:#fff;font-size:13px;font-weight:700;display:flex;align-items:center;justify-content:center;margin-top:14px">Back to the day</div>
+          <div style="font-size:11px;color:#98A5A0;line-height:1.45;margin-top:9px">An update appears here when somebody sends one. You will also see it as a banner on the Plan.</div>
+        </div>
+      </div>
+      <div style="font-size:11.5px;color:#3D4C46;line-height:1.5">The existing done copy, given a body. A jade receipt card at the top — jade because the update is now settled, and because "confirmed" is what jade means. Beneath it, <b>the receipt list</b>: every decision with its outcome written as a fact about your day, not as an event log. This is where the disappearing rows come back, once, so the user can check their own work before leaving. The first-visit variant ("Their copy and yours say the same thing") uses the same shell with the receipt list absent.</div>
+    </div>
+
+  </div>
+</section>
+</x-dc>
+<script type="text/x-dc" data-dc-script data-props="{&quot;showAlternates&quot;:{&quot;editor&quot;:&quot;boolean&quot;,&quot;default&quot;:true,&quot;tsType&quot;:&quot;boolean&quot;,&quot;section&quot;:&quot;Board&quot;},&quot;showSpecs&quot;:{&quot;editor&quot;:&quot;boolean&quot;,&quot;default&quot;:true,&quot;tsType&quot;:&quot;boolean&quot;,&quot;section&quot;:&quot;Board&quot;}}">
+class Component extends DCLogic {
+  renderVals() {
+    return {
+      showAlternates: this.props.showAlternates ?? true,
+      showSpecs: this.props.showSpecs ?? true,
+    };
+  }
+}
+</script>
+</body>
+</html>

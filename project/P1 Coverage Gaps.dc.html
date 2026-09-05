@@ -1,0 +1,292 @@
+<!DOCTYPE html>
+<html>
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<script src="./support.js"></script>
+</head>
+<body>
+<x-dc>
+<helmet>
+<meta name="design_doc_mode" content="canvas">
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link href="https://fonts.googleapis.com/css2?family=Public+Sans:wght@400;600;700;800&display=swap" rel="stylesheet">
+<style>
+  body { margin:0; background:#E4E6E2; -webkit-font-smoothing:antialiased; }
+  a { color:#1F6F5C; text-decoration:none; }
+  a:hover { color:#14201C; }
+</style>
+</helmet>
+
+<section style="font-family:'Public Sans',system-ui,sans-serif;color:#14201C;padding:44px 48px 64px;display:flex;flex-direction:column;gap:34px;width:2100px;box-sizing:border-box">
+
+  <div style="display:flex;flex-direction:column;gap:9px;max-width:900px">
+    <div style="font-size:10.5px;font-weight:800;letter-spacing:.06em;color:#98A5A0">TRAVEL PLANNER · P1 · DESIGN FOR REVIEW</div>
+    <div style="font-size:34px;font-weight:700;letter-spacing:-.025em;line-height:1.1">Remaining coverage gaps</div>
+    <div style="font-size:13.5px;line-height:1.55;color:#3D4C46;text-wrap:pretty">Five items chosen from the coverage matrix on one rule: user-facing, undesigned, cheap to specify, and likely to produce inconsistent UX if left. Two of them turned out to need <b>recording, not designing</b>. Canonical spec: <b>docs/design/p1-coverage-gaps-design.md</b> — §7 is the only new copy.</div>
+  </div>
+
+  <div style="height:1px;background:#D8DCD8"></div>
+
+  <div style="font-size:15px;font-weight:700">1 · Tile download — a good flow with no ending</div>
+  <div style="width:1200px;background:#fff;border:1px solid #E7EAE7;border-radius:14px;padding:13px 15px;box-sizing:border-box;font-size:12px;line-height:1.55;color:#3D4C46">
+    <b style="color:#14201C">What this is, and where it happens.</b> A <b>tile</b> is one small square of the map image. Keeping an area offline means downloading every tile that covers it — a few hundred of them — so the map still draws with no signal abroad. It happens on <b>Map ▸ Kept maps ▸ an area ▸ Keep this area on my phone</b>: the user draws or accepts a box, picks a detail level, and taps <b>Keep it</b>. The bar below is that download running, in the area's own screen; the jade receipt lands on <b>Kept maps</b>, which is where the download returns to. Nothing else in the app downloads tiles.
+  </div>
+  <div style="display:flex;gap:26px;align-items:flex-start;flex-wrap:wrap">
+    <div style="display:flex;flex-direction:column;gap:9px;width:390px">
+      <div style="font-size:11px;font-weight:800;letter-spacing:.04em;color:#9B4B4B">TODAY · AN ESTIMATE STATED AS A FACT, AND NO RECEIPT</div>
+      <div style="background:#fff;border:1px solid #E7EAE7;border-radius:16px;padding:13px 14px">
+        <div style="height:7px;border-radius:4px;background:#EDEFEC;overflow:hidden"><i style="display:block;width:55%;height:100%;background:#1F6F5C;border-radius:4px"></i></div>
+        <div style="display:flex;align-items:center;gap:8px;margin-top:8px">
+          <div style="flex:1;font-size:11px;font-weight:700;color:#8A5A08;font-variant-numeric:tabular-nums">12.4 MB of 18 MB · 340 of 620 tiles</div>
+          <div style="height:30px;padding:0 12px;border-radius:10px;border:1px solid #E7EAE7;font-size:12px;font-weight:700;color:#3D4C46;display:flex;align-items:center">Stop</div>
+        </div>
+      </div>
+      <div style="font-size:11.5px;line-height:1.45;color:#9B4B4B;text-wrap:pretty">The total is <b>total × 26 000 bytes</b>, hardcoded. On a dense city the left-hand number can pass the right. On success the screen simply changes; forty seconds of watching leaves no fact behind. And <b>result.failed</b> is subtracted from the tile count and never mentioned — a map with holes, discovered offline.</div>
+    </div>
+    <div style="display:flex;flex-direction:column;gap:9px;width:390px">
+      <div style="font-size:11px;font-weight:800;letter-spacing:.04em;color:#1F6F5C">DESIGNED · THE FULL SCREEN, MID-DOWNLOAD</div>
+      <div style="width:390px;height:844px;background:#F2F3F1;border:1px solid #D8DCD8;border-radius:10px;overflow:hidden;display:flex;flex-direction:column">
+        <div style="flex:1;min-height:0;position:relative;overflow:hidden;background:#E8EAE6">
+          <div style="position:absolute;left:34px;top:96px;right:34px;bottom:300px;border:2px solid #1F6F5C;border-radius:6px;background:rgba(31,111,92,.08)"></div>
+          <div style="position:relative;z-index:2;flex:none;padding:12px 16px 0;display:flex;flex-direction:column;gap:10px">
+            <button style="width:40px;height:40px;flex:none;display:flex;align-items:center;justify-content:center;border-radius:13px;background:#fff;box-shadow:0 2px 10px rgba(20,32,28,.12);border:0;padding:0"><svg width="11" height="18" viewBox="0 0 11 18"><path d="M9 1L2 9l7 8" stroke="#14201C" stroke-width="2.2" fill="none" stroke-linecap="round" stroke-linejoin="round"></path></svg></button>
+            <div style="flex:1;min-width:0;padding:8px 12px;background:#fff;border-radius:13px;box-shadow:0 2px 10px rgba(20,32,28,.12)">
+              <div style="font-size:13.5px;font-weight:700">Keep this area on the phone</div>
+              <div style="font-size:11.5px;color:#6B7A74;margin-top:2px">Drag the corners, or pinch the map</div>
+            </div>
+          </div>
+          <div style="position:absolute;left:0;right:0;bottom:0;z-index:3;background:#fff;border-radius:22px 22px 0 0;box-shadow:0 -8px 30px rgba(20,32,28,.18);padding:16px 16px 20px;display:flex;flex-direction:column;gap:12px">
+            <div style="display:flex;gap:10px;align-items:flex-end">
+              <div style="flex:1;min-width:0">
+                <div style="font-size:10.5px;font-weight:800;letter-spacing:.06em;color:#98A5A0">OLD QUARTER &amp; HARBOURSIDE</div>
+                <div style="font-size:20px;font-weight:700;margin-top:2px">3.2 × 2.4 km</div>
+              </div>
+              <div style="text-align:right;flex:none">
+                <div style="font-size:10.5px;font-weight:800;letter-spacing:.06em;color:#98A5A0">SIZE</div>
+                <div style="font-size:20px;font-weight:700;font-variant-numeric:tabular-nums">18 MB</div>
+              </div>
+            </div>
+            <div>
+              <div style="height:7px;border-radius:4px;background:#EDEFEC;overflow:hidden"><i style="display:block;width:55%;height:100%;background:#1F6F5C;border-radius:4px"></i></div>
+              <div style="display:flex;align-items:center;gap:8px;margin-top:8px">
+                <div style="flex:1;font-size:11px;font-weight:700;color:#8A5A08;font-variant-numeric:tabular-nums">340 of 620 tiles · 12.4 MB so far, about 18 MB</div>
+                <div style="height:30px;padding:0 12px;border-radius:10px;border:1px solid #E7EAE7;font-size:12px;font-weight:700;color:#3D4C46;display:flex;align-items:center">Stop</div>
+              </div>
+            </div>
+            <div style="display:flex;align-items:center;gap:11px">
+              <div style="flex:1"><div style="font-size:12.5px;font-weight:650">Wait for wi-fi</div><div style="font-size:11px;color:#98A5A0;margin-top:2px">On now — it will pause on mobile data</div></div>
+              <div style="width:34px;height:20px;flex:none;border-radius:10px;background:#1F6F5C;display:flex;align-items:center;justify-content:flex-end;padding:0 2px;box-sizing:border-box"><i style="display:block;width:16px;height:16px;border-radius:50%;background:#fff"></i></div>
+            </div>
+            <div>
+              <div style="font-size:10.5px;font-weight:800;letter-spacing:.06em;color:#98A5A0">DETAIL</div>
+              <div style="display:flex;gap:6px;margin-top:8px">
+                <div style="flex:1;padding:9px 11px;border-radius:12px;background:#F2F3F1;border:1.5px solid #14201C;text-align:left"><div style="font-size:12px;font-weight:700">Streets</div><div style="font-size:10.5px;font-weight:650;margin-top:2px;color:#98A5A0">620 tiles · 18 MB</div></div>
+                <div style="flex:1;padding:9px 11px;border-radius:12px;background:#F2F3F1;border:1px solid #E1E5E1;text-align:left"><div style="font-size:12px;font-weight:700">Buildings</div><div style="font-size:10.5px;font-weight:650;margin-top:2px;color:#98A5A0">2 480 tiles · 71 MB</div></div>
+              </div>
+              <div style="font-size:11px;line-height:1.45;color:#98A5A0;margin-top:8px">Covers 5 of the 7 stops that have a position.</div>
+            </div>
+          </div>
+        </div>
+        <div style="flex:none;background:#fff;border-top:1px solid #E4E8E5;display:flex;gap:2px;padding:7px 8px 10px">
+          <div style="flex:1;min-height:46px;border-radius:12px;background:#F2F3F1;display:flex;flex-direction:column;align-items:center;justify-content:center;gap:3px;color:#14201C"><svg width="20" height="20" viewBox="0 0 20 20" fill="none"><path d="M10 18s6-5.2 6-10A6 6 0 0 0 4 8c0 4.8 6 10 6 10z" stroke="#14201C" stroke-width="1.7" stroke-linejoin="round"></path><circle cx="10" cy="8" r="2.2" stroke="#14201C" stroke-width="1.7"></circle></svg><span style="font-size:9.5px;font-weight:700">Map</span></div>
+          <div style="flex:1;min-height:46px;border-radius:12px;display:flex;flex-direction:column;align-items:center;justify-content:center;gap:3px;color:#9AA6A1"><svg width="20" height="20" viewBox="0 0 20 20" fill="none"><g stroke="#9AA6A1" stroke-width="1.7" stroke-linecap="round"><path d="M3 5.5h14M3 10h14M3 14.5h9"></path></g></svg><span style="font-size:9.5px;font-weight:700">Plan</span></div>
+          <div style="flex:1;min-height:46px;border-radius:12px;display:flex;flex-direction:column;align-items:center;justify-content:center;gap:3px;color:#9AA6A1"><svg width="20" height="20" viewBox="0 0 20 20" fill="none"><path d="M4.5 6.5h11l-1 10h-9l-1-10z" stroke="#9AA6A1" stroke-width="1.7" stroke-linejoin="round"></path><path d="M7.5 6.5V5a2.5 2.5 0 0 1 5 0v1.5" stroke="#9AA6A1" stroke-width="1.7" stroke-linecap="round"></path></svg><span style="font-size:9.5px;font-weight:700">Shop</span></div>
+          <div style="flex:1;min-height:46px;border-radius:12px;display:flex;flex-direction:column;align-items:center;justify-content:center;gap:3px;color:#9AA6A1"><svg width="20" height="20" viewBox="0 0 20 20" fill="none"><rect x="3.5" y="6" width="13" height="10.5" rx="2" stroke="#9AA6A1" stroke-width="1.7"></rect><path d="M7.5 6V4.5a1.5 1.5 0 0 1 1.5-1.5h2a1.5 1.5 0 0 1 1.5 1.5V6" stroke="#9AA6A1" stroke-width="1.7" stroke-linecap="round"></path></svg><span style="font-size:9.5px;font-weight:700">Prep</span></div>
+          <div style="flex:1;min-height:46px;border-radius:12px;display:flex;flex-direction:column;align-items:center;justify-content:center;gap:3px;color:#9AA6A1"><svg width="20" height="20" viewBox="0 0 20 20" fill="none"><path d="M13 3.5l3.5 3.5L7 16.5H3.5V13z" stroke="#9AA6A1" stroke-width="1.7" stroke-linejoin="round"></path></svg><span style="font-size:9.5px;font-weight:700">Log</span></div>
+        </div>
+      </div>
+      <div style="width:390px;font-size:11.5px;line-height:1.45;color:#6B7A74;text-wrap:pretty">Screen rebuilt from <b>area.js</b>: there is <b>no push header</b> — a <b>.map-top</b> column (pad 12/16/0, gap 10) floats a 40×40 <b>.iconbtn.filled</b> back button and the white <b>.area-title</b> card over the live map, and everything else sits in the <b>.area-sheet</b> (absolute, r22 top, <b>0 -8px 30px rgba(20,32,28,.18)</b>) with the km × km and <b>SIZE</b> pair at its head. The bar is <b>one row inside that sheet</b> — the box stays visible on the map above it, the wi-fi toggle and the detail chips stay usable, and the tab bar stays put. Nothing is blocked and there is no overlay: the download is a thing happening in a card, not a state the app is trapped in. Tab bar from source — <b>TABS</b> in <b>nav.js</b>, the real glyphs from <b>util.js</b>, and <b>.tab.on</b>'s filled <b>--bone</b> pill from <b>app.css</b>.</div>
+    </div>
+
+    <div style="display:flex;flex-direction:column;gap:9px;width:390px">
+      <div style="font-size:11px;font-weight:800;letter-spacing:.04em;color:#1F6F5C">THE THREE CHANGES, AT SIZE</div>
+      <div style="background:#fff;border:1px solid #E7EAE7;border-radius:16px;padding:13px 14px">
+        <div style="height:7px;border-radius:4px;background:#EDEFEC;overflow:hidden"><i style="display:block;width:55%;height:100%;background:#1F6F5C;border-radius:4px"></i></div>
+        <div style="display:flex;align-items:center;gap:8px;margin-top:8px">
+          <div style="flex:1;font-size:11px;font-weight:700;color:#8A5A08;font-variant-numeric:tabular-nums">340 of 620 tiles · 12.4 MB so far, about 18 MB</div>
+          <div style="height:30px;padding:0 12px;border-radius:10px;border:1px solid #E7EAE7;font-size:12px;font-weight:700;color:#3D4C46;display:flex;align-items:center">Stop</div>
+        </div>
+      </div>
+      <div style="background:#E6EFEB;border:1px solid #CFE0D9;border-radius:16px;padding:12px 13px;font-size:12.5px;line-height:1.5;color:#14201C">Old Quarter &amp; Harbourside is on this phone. 8 MB · 620 tiles · covers 5 of 7 stops.</div>
+      <div style="background:#FBF1DE;border:1px solid #EBD9B4;border-radius:12px;padding:11px 12px;font-size:12px;line-height:1.5;color:#8A5A08">12 tiles did not arrive, so a few corners of this area will be blank offline. Refresh the area on wi-fi to fill them in.</div>
+      <div style="font-size:11.5px;line-height:1.45;color:#6B7A74;text-wrap:pretty">The counter leads with the number that is true and calls the estimate one. The receipt is four facts already computed, in the existing <b>.hint-jade</b> on the screen the download lands on. The caveat appears only when tiles failed, and it names a tap that exists.</div>
+    </div>
+    <div style="width:390px;background:#fff;border:1px solid #E7EAE7;border-radius:16px;padding:15px 16px;box-sizing:border-box">
+      <div style="font-size:13px;font-weight:700;margin-bottom:8px">The one place a determinate bar is right</div>
+      <div style="font-size:12px;line-height:1.5;color:#3D4C46">P0-5 forbids a spinner and P1 Paste removes <b>.progress</b> from the review pass. This is the exception the rule was written around: something really is transferring, the total really is known, and the bar <i>is</i> the pending state. <b>Stop</b> gets no pending state of its own — it is synchronous.</div>
+    </div>
+  </div>
+
+  <div style="height:1px;background:#D8DCD8"></div>
+
+  <div style="font-size:15px;font-weight:700">2 · Changes on this phone — the contradiction, and the rust state nobody has seen</div>
+  <div style="width:1200px;background:#fff;border:1px solid #E7EAE7;border-radius:14px;padding:13px 15px;box-sizing:border-box;font-size:12px;line-height:1.55;color:#3D4C46">
+    <b style="color:#14201C">Where this is.</b> A full-screen sheet, reached one way only: the rust warning strip on the <b>Plan</b> tab that says something could not be sent. Every edit is written to this phone first and queued for the cloud; when the queue stops draining — signed out, refused, offline for days — that strip appears and this sheet explains it. The full screen is on the right; the three cards after it are its own sections, in order.
+  </div>
+  <div style="display:flex;gap:26px;align-items:flex-start;flex-wrap:wrap">
+
+    <div style="display:flex;flex-direction:column;gap:9px;width:390px">
+      <div style="font-size:11px;font-weight:800;letter-spacing:.04em;color:#6B7A74">THE FULL SCREEN · 3 WAITING, REFUSED</div>
+      <div style="width:390px;height:844px;background:#F2F3F1;border:1px solid #D8DCD8;border-radius:10px;overflow:hidden;display:flex;flex-direction:column">
+        <div style="background:#fff;border-bottom:1px solid #E7EAE7;padding:22px 16px 12px;flex:none">
+          <div style="display:flex;align-items:center;justify-content:space-between;gap:10px">
+            <button style="width:32px;height:32px;flex:none;display:flex;align-items:center;justify-content:center;border-radius:10px;background:none;border:0;padding:0"><svg width="16" height="16" viewBox="0 0 16 16"><path d="M2 2l12 12M14 2L2 14" stroke="#14201C" stroke-width="2" stroke-linecap="round"></path></svg></button>
+            <div style="flex:1;min-width:0">
+              <div style="font-size:17px;font-weight:700;letter-spacing:-.01em">Changes on this phone</div>
+              <div style="font-size:11.5px;color:#9B4B4B;margin-top:1px">3 waiting · oldest 1 Sept, 23:05</div>
+            </div>
+          </div>
+        </div>
+        <div style="flex:1;overflow:hidden;padding:14px 16px;display:flex;flex-direction:column;gap:12px">
+          <div style="background:#F8E9E9;border:1px solid #E7CDCD;border-radius:16px;padding:13px 14px">
+            <div style="font-size:12.5px;font-weight:800;color:#9B4B4B">Why they are stuck</div>
+            <div style="font-size:12px;font-weight:650;line-height:1.5;color:#14201C;margin-top:4px">The cloud refused them: not signed in.</div>
+            <div style="height:42px;border-radius:12px;background:#9B4B4B;color:#fff;font-size:13px;font-weight:700;display:flex;align-items:center;justify-content:center;margin-top:11px">Try sending them now</div>
+          </div>
+          <div style="background:#fff;border-radius:16px;overflow:hidden">
+            <div style="padding:12px 14px;font-size:10.5px;font-weight:800;letter-spacing:.06em;color:#98A5A0">WHAT WOULD BE LOST</div>
+            <div style="padding:12px 14px;border-top:1px solid #EFF1EE;display:flex;gap:12px"><div style="flex:1"><div style="font-size:13px;font-weight:650">2 stops</div><div style="font-size:11px;color:#98A5A0;margin-top:2px">Lumen Crossing · Ashgate Shrine</div></div><div style="font-size:11px;font-weight:700;color:#9B4B4B">1–2 Sept</div></div>
+            <div style="padding:12px 14px;border-top:1px solid #EFF1EE;display:flex;gap:12px"><div style="flex:1"><div style="font-size:13px;font-weight:650">1 note</div><div style="font-size:11px;color:#98A5A0;margin-top:2px">edited on this phone</div></div><div style="font-size:11px;font-weight:700;color:#9B4B4B">2 Sept</div></div>
+          </div>
+          <div style="background:#fff;border-radius:16px;padding:13px 14px">
+            <div style="font-size:10.5px;font-weight:800;letter-spacing:.06em;color:#98A5A0">TRIED TO SEND</div>
+            <div style="font-size:12.5px;line-height:1.5;color:#3D4C46;margin-top:6px">Every write is retried when the app is open and whenever signal comes back. 14 attempts so far, all refused with the same reason.</div>
+            <button style="font-size:12px;font-weight:700;color:#9B4B4B;margin-top:10px;background:none;border:0;padding:0;text-align:left">Stop trying to send these…</button>
+          </div>
+        </div>
+              <div style="flex:none;background:#fff;border-top:1px solid #E4E8E5;display:flex;gap:2px;padding:7px 8px 10px">
+          <div style="flex:1;min-height:46px;border-radius:12px;display:flex;flex-direction:column;align-items:center;justify-content:center;gap:3px;color:#9AA6A1"><svg width="20" height="20" viewBox="0 0 20 20" fill="none"><path d="M10 18s6-5.2 6-10A6 6 0 0 0 4 8c0 4.8 6 10 6 10z" stroke="#9AA6A1" stroke-width="1.7" stroke-linejoin="round"></path><circle cx="10" cy="8" r="2.2" stroke="#9AA6A1" stroke-width="1.7"></circle></svg><span style="font-size:9.5px;font-weight:700">Map</span></div>
+          <div style="flex:1;min-height:46px;border-radius:12px;display:flex;flex-direction:column;align-items:center;justify-content:center;gap:3px;color:#9AA6A1"><svg width="20" height="20" viewBox="0 0 20 20" fill="none"><g stroke="#9AA6A1" stroke-width="1.7" stroke-linecap="round"><path d="M3 5.5h14M3 10h14M3 14.5h9"></path></g></svg><span style="font-size:9.5px;font-weight:700">Plan</span></div>
+          <div style="flex:1;min-height:46px;border-radius:12px;display:flex;flex-direction:column;align-items:center;justify-content:center;gap:3px;color:#9AA6A1"><svg width="20" height="20" viewBox="0 0 20 20" fill="none"><path d="M4.5 6.5h11l-1 10h-9l-1-10z" stroke="#9AA6A1" stroke-width="1.7" stroke-linejoin="round"></path><path d="M7.5 6.5V5a2.5 2.5 0 0 1 5 0v1.5" stroke="#9AA6A1" stroke-width="1.7" stroke-linecap="round"></path></svg><span style="font-size:9.5px;font-weight:700">Shop</span></div>
+          <div style="flex:1;min-height:46px;border-radius:12px;display:flex;flex-direction:column;align-items:center;justify-content:center;gap:3px;color:#9AA6A1"><svg width="20" height="20" viewBox="0 0 20 20" fill="none"><rect x="3.5" y="6" width="13" height="10.5" rx="2" stroke="#9AA6A1" stroke-width="1.7"></rect><path d="M7.5 6V4.5a1.5 1.5 0 0 1 1.5-1.5h2a1.5 1.5 0 0 1 1.5 1.5V6" stroke="#9AA6A1" stroke-width="1.7" stroke-linecap="round"></path></svg><span style="font-size:9.5px;font-weight:700">Prep</span></div>
+          <div style="flex:1;min-height:46px;border-radius:12px;display:flex;flex-direction:column;align-items:center;justify-content:center;gap:3px;color:#9AA6A1"><svg width="20" height="20" viewBox="0 0 20 20" fill="none"><path d="M13 3.5l3.5 3.5L7 16.5H3.5V13z" stroke="#9AA6A1" stroke-width="1.7" stroke-linejoin="round"></path></svg><span style="font-size:9.5px;font-weight:700">Log</span></div>
+        </div>
+      </div>
+      <div style="width:390px;font-size:11.5px;line-height:1.45;color:#6B7A74;text-wrap:pretty">Drawn from source — this state cannot be triggered on the local backend, so it has never been captured. The only design changes are the header condition and P0-5's pending placement.</div>
+    </div>
+
+    <div style="display:flex;flex-direction:column;gap:9px;width:390px">
+      <div style="font-size:11px;font-weight:800;letter-spacing:.04em;color:#9B4B4B">TODAY · A HEADER THAT CONTRADICTS ITSELF</div>
+      <div style="background:#fff;border:1px solid #E9D3D3;border-radius:16px;padding:13px 14px">
+        <div style="display:flex;align-items:center;justify-content:space-between;gap:10px"><button style="width:32px;height:32px;flex:none;display:flex;align-items:center;justify-content:center;border-radius:10px;background:none;border:0;padding:0"><svg width="16" height="16" viewBox="0 0 16 16"><path d="M2 2l12 12M14 2L2 14" stroke="#14201C" stroke-width="2" stroke-linecap="round"></path></svg></button><div style="flex:1;min-width:0"><div style="font-size:17px;font-weight:700;letter-spacing:-.01em">Changes on this phone</div><div style="font-size:11.5px;color:#9B4B4B;margin-top:1px">0 waiting · oldest 1 Sept, 23:05</div></div></div>
+      </div>
+      <div style="font-size:11.5px;line-height:1.45;color:#9B4B4B;text-wrap:pretty"><b>pendingOldest()</b> answers from the ledger independently of the count, so the sub can assert an oldest item while claiming nothing is waiting. Two facts, one condition needed.</div>
+      <div style="font-size:11px;font-weight:800;letter-spacing:.04em;color:#1F6F5C;margin-top:6px">DESIGNED · ONE FACT, ONE CONDITION</div>
+      <div style="background:#fff;border:1px solid #E7EAE7;border-radius:16px;padding:13px 14px">
+        <div style="display:flex;align-items:center;justify-content:space-between;gap:10px"><button style="width:32px;height:32px;flex:none;display:flex;align-items:center;justify-content:center;border-radius:10px;background:none;border:0;padding:0"><svg width="16" height="16" viewBox="0 0 16 16"><path d="M2 2l12 12M14 2L2 14" stroke="#14201C" stroke-width="2" stroke-linecap="round"></path></svg></button><div style="flex:1;min-width:0"><div style="font-size:17px;font-weight:700;letter-spacing:-.01em">Changes on this phone</div><div style="font-size:11.5px;color:#6B7A74;margin-top:1px">0 waiting</div></div></div>
+      </div>
+      <div style="background:#fff;border:1px solid #E7EAE7;border-radius:16px;padding:13px 14px">
+        <div style="display:flex;align-items:center;justify-content:space-between;gap:10px"><button style="width:32px;height:32px;flex:none;display:flex;align-items:center;justify-content:center;border-radius:10px;background:none;border:0;padding:0"><svg width="16" height="16" viewBox="0 0 16 16"><path d="M2 2l12 12M14 2L2 14" stroke="#14201C" stroke-width="2" stroke-linecap="round"></path></svg></button><div style="flex:1;min-width:0"><div style="font-size:17px;font-weight:700;letter-spacing:-.01em">Changes on this phone</div><div style="font-size:11.5px;color:#9B4B4B;margin-top:1px">3 waiting · oldest 1 Sept, 23:05</div></div></div>
+      </div>
+    </div>
+
+    <div style="display:flex;flex-direction:column;gap:9px;width:390px">
+      <div style="font-size:11px;font-weight:800;letter-spacing:.04em;color:#1F6F5C">THE SAME SCREEN'S THREE SECTIONS, AT SIZE</div>
+      <div style="width:390px;background:#E6EFEB;border:1px solid #CFE0D9;border-radius:14px;padding:11px 12px;box-sizing:border-box;font-size:11.5px;line-height:1.5;color:#14201C">These are <b>crops of the full screen on the left</b>, not separate surfaces — <b>Why they are stuck</b>, <b>What would be lost</b> and <b>Tried to send</b> are its three cards, in that order, in one scroller. Nothing here appears anywhere else in the app.</div>
+      <div style="width:390px;background:#F2F3F1;border:1px solid #D8DCD8;border-radius:10px;padding:14px 16px;box-sizing:border-box;display:flex;flex-direction:column;gap:12px">
+        <div style="background:#F8E9E9;border:1px solid #E7CDCD;border-radius:16px;padding:13px 14px">
+          <div style="font-size:12.5px;font-weight:800;color:#9B4B4B">Why they are stuck</div>
+          <div style="font-size:12px;font-weight:650;line-height:1.5;color:#14201C;margin-top:4px">The cloud refused them: not signed in.</div>
+          <div style="height:42px;border-radius:12px;background:#9B4B4B;color:#fff;font-size:13px;font-weight:700;display:flex;align-items:center;justify-content:center;margin-top:11px;opacity:.45">Trying…</div>
+        </div>
+        <div style="background:#FBF1DE;border:1px solid #EBD9B4;border-radius:10px;padding:8px 10px;font-size:12px;font-weight:650;color:#8A5A08;line-height:1.45">Still 3 waiting. The cloud refused them: not signed in.</div>
+        <div style="background:#fff;border-radius:16px;overflow:hidden">
+          <div style="padding:12px 14px;font-size:10.5px;font-weight:800;letter-spacing:.06em;color:#98A5A0">WHAT WOULD BE LOST</div>
+          <div style="padding:12px 14px;border-top:1px solid #EFF1EE;display:flex;gap:12px"><div style="flex:1"><div style="font-size:13px;font-weight:650">2 stops</div><div style="font-size:11px;color:#98A5A0;margin-top:2px">Lumen Crossing · Ashgate Shrine</div></div><div style="font-size:11px;font-weight:700;color:#9B4B4B">1–2 Sept</div></div>
+          <div style="padding:12px 14px;border-top:1px solid #EFF1EE;display:flex;gap:12px"><div style="flex:1"><div style="font-size:13px;font-weight:650">1 note</div><div style="font-size:11px;color:#98A5A0;margin-top:2px">edited on this phone</div></div><div style="font-size:11px;font-weight:700;color:#9B4B4B">2 Sept</div></div>
+        </div>
+      </div>
+      <div style="font-size:11.5px;line-height:1.45;color:#6B7A74;text-wrap:pretty">Structurally unverifiable on the local backend, so this is drawn from source and flagged as such. The only design change is P0-5's: <b>Trying…</b> goes on the control, and its <b>outcome</b> stays in the amber note — which is exactly the division of labour P0-5 established.</div>
+    </div>
+
+    <div style="display:flex;flex-direction:column;gap:9px;width:390px">
+      <div style="font-size:11px;font-weight:800;letter-spacing:.04em;color:#1F6F5C">DESIGNED · THE DESTRUCTIVE EXCEPTION, MADE EXPLICIT</div>
+      <div style="background:#fff;border:1px solid #E7EAE7;border-radius:16px;padding:14px;box-sizing:border-box">
+        <div style="font-size:10.5px;font-weight:800;letter-spacing:.06em;color:#98A5A0">TRIED TO SEND</div>
+        <div style="font-size:12.5px;line-height:1.5;color:#3D4C46;margin-top:6px">Every write is retried when the app is open and whenever signal comes back. 14 attempts so far, all refused with the same reason.</div>
+        <div style="font-size:12.5px;font-weight:650;line-height:1.5;color:#9B4B4B;margin-top:12px">This cannot be undone. Those 3 changes stay on this phone and will never be sent — and if you open this trip on another device, its copy would overwrite them.</div>
+        <div style="display:flex;gap:8px;margin-top:10px">
+          <div style="flex:1;height:42px;border-radius:12px;background:#F8E9E9;color:#9B4B4B;font-size:13px;font-weight:700;display:flex;align-items:center;justify-content:center">Yes, stop trying</div>
+          <div style="width:96px;height:42px;border-radius:12px;background:#F2F3F1;border:1px solid #E1E5E1;font-size:13px;font-weight:650;color:#14201C;display:flex;align-items:center;justify-content:center">Cancel</div>
+        </div>
+      </div>
+      <div style="font-size:11.5px;line-height:1.45;color:#6B7A74;text-wrap:pretty">It <b>stays</b> a confirm-button exception to swipe → in-row → undo, and the exception is stated rather than removed: a 6s undo is a worse guarantee for a queue of invisible writes than a sentence that names the consequence. One copy change — the consequence that matters moves out of the third clause. <b>OD-3.</b></div>
+    </div>
+  </div>
+
+  <div style="height:1px;background:#D8DCD8"></div>
+
+  <div style="font-size:15px;font-weight:700">3 · Sub route — the pair that was never triggered, side by side for the first time</div>
+  <div style="display:flex;gap:26px;align-items:flex-start;flex-wrap:wrap">
+    <div style="display:flex;flex-direction:column;gap:9px;width:390px">
+      <div style="font-size:11px;font-weight:800;letter-spacing:.04em;color:#1F6F5C">OK — RECORDED FROM SOURCE, NOT REDESIGNED</div>
+      <div style="background:#fff;border:1px solid #E7EAE7;border-radius:16px;padding:14px 16px">
+        <div style="display:flex;gap:8px">
+          <div style="flex:1;background:#F2F3F1;border-radius:12px;padding:9px 10px"><div style="font-size:9.5px;font-weight:800;letter-spacing:.05em;color:#98A5A0">YOU HAVE</div><div style="font-size:17px;font-weight:700;font-variant-numeric:tabular-nums;margin-top:2px">2h</div></div>
+          <div style="flex:1;background:#F2F3F1;border-radius:12px;padding:9px 10px"><div style="font-size:9.5px;font-weight:800;letter-spacing:.05em;color:#98A5A0">TRAVELLING</div><div style="font-size:17px;font-weight:700;font-variant-numeric:tabular-nums;margin-top:2px">23 min</div></div>
+          <div style="flex:1;background:#E6EFEB;border-radius:12px;padding:9px 10px"><div style="font-size:9.5px;font-weight:800;letter-spacing:.05em;color:#5D8C7C">TO SPEND</div><div style="font-size:17px;font-weight:700;color:#1F6F5C;font-variant-numeric:tabular-nums;margin-top:2px">1h 37m</div></div>
+        </div>
+        <div style="font-size:11.5px;line-height:1.45;color:#6B7A74;margin-top:10px">23 min of that is getting between places, so 1h 37m is yours to spread across 3 stops however you like.</div>
+      </div>
+    </div>
+    <div style="display:flex;flex-direction:column;gap:9px;width:390px">
+      <div style="font-size:11px;font-weight:800;letter-spacing:.04em;color:#9B4B4B">TIGHT — ALSO ALREADY IN THE SOURCE</div>
+      <div style="background:#fff;border:1px solid #E7EAE7;border-radius:16px;padding:14px 16px">
+        <div style="display:flex;gap:8px">
+          <div style="flex:1;background:#F2F3F1;border-radius:12px;padding:9px 10px"><div style="font-size:9.5px;font-weight:800;letter-spacing:.05em;color:#98A5A0">YOU HAVE</div><div style="font-size:17px;font-weight:700;font-variant-numeric:tabular-nums;margin-top:2px">2h</div></div>
+          <div style="flex:1;background:#F2F3F1;border-radius:12px;padding:9px 10px"><div style="font-size:9.5px;font-weight:800;letter-spacing:.05em;color:#98A5A0">TRAVELLING</div><div style="font-size:17px;font-weight:700;font-variant-numeric:tabular-nums;margin-top:2px">41 min</div></div>
+          <div style="flex:1;background:#F8E9E9;border-radius:12px;padding:9px 10px"><div style="font-size:9.5px;font-weight:800;letter-spacing:.05em;color:#9B4B4B">SHORT BY</div><div style="font-size:17px;font-weight:700;color:#9B4B4B;font-variant-numeric:tabular-nums;margin-top:2px">25 min</div></div>
+        </div>
+        <div style="font-size:11.5px;line-height:1.45;color:#9B4B4B;margin-top:10px">4 stops and getting back take 25 min more than the window allows. Drop a stop, shorten a stay, or push be back by later.</div>
+      </div>
+      <div style="font-size:11.5px;line-height:1.45;color:#6B7A74;text-wrap:pretty"><b>RC-5:</b> the coverage matrix lists these as needing a design decision. They are fully specified in <b>sub.js</b> and the tight sentence already names three taps that fix it. Recorded as the visual baseline; nothing is redesigned.</div>
+      <div style="width:390px;background:#F0EAF6;border:1px solid #DCD0E8;border-radius:14px;padding:12px 13px;box-sizing:border-box">
+        <div style="font-size:11px;font-weight:800;letter-spacing:.04em;color:#6B4E8F;margin-bottom:6px">OD-5 · MING: "WHAT DOES SHORT BY MEAN?"</div>
+        <div style="font-size:11.5px;line-height:1.5;color:#14201C">A <b>sub route</b> is a walk you fit inside a gap in the day — leave a stop, visit a few places, be back by a time. The three tiles are that gap's arithmetic: <b>YOU HAVE</b> the whole gap, <b>TRAVELLING</b> is the walking inside it, and the third tile is what is left. When it is positive it is <b>TO SPEND</b>. When it is negative the walk does not fit, and the label today is <b>SHORT BY</b> — meaning <i>you are 25 minutes short of the time this walk needs</i>.</div>
+        <div style="font-size:11.5px;line-height:1.5;color:#3D4C46;margin-top:8px"><b>The question is the finding.</b> The lead read the label and could not tell whether 25 minutes was missing or spare — and this is existing shipped copy, so it is recorded rather than changed. <b>Recommendation: <span style="color:#9B4B4B">OVER BY 25 min</span></b>. The number is the overshoot either way, and "over" is unambiguous against "to spend" in a way that "short" is not. The sentence below it already explains itself and does not change.</div>
+      </div>
+    </div>
+    <div style="display:flex;flex-direction:column;gap:9px;width:390px">
+      <div style="font-size:11px;font-weight:800;letter-spacing:.04em;color:#1F6F5C">DESIGNED · THE TWO PIECES THAT WERE UNSPECIFIED</div>
+      <div style="background:#fff;border:1px solid #E7EAE7;border-radius:16px;padding:14px 16px">
+        <div style="display:flex;gap:11px;align-items:center;padding-bottom:10px"><div style="width:22px;font-size:14px;color:#98A5A0">↳</div><div style="font-size:12.5px;font-weight:650">From Nishi Market</div></div>
+        <div style="display:flex;gap:11px;align-items:center;padding:10px 0;border-top:1px solid #EFF1EE"><div style="width:22px;font-size:12px;font-weight:700;color:#8A5A08">1</div><div style="flex:1"><div style="font-size:12.5px;font-weight:650">Kaede Stationery</div><div style="font-size:11px;color:#98A5A0">6 min walk · 20 min there</div></div></div>
+        <div style="display:flex;gap:11px;align-items:center;padding:10px 0;border-top:1px solid #EFF1EE"><div style="width:22px;font-size:12px;font-weight:700;color:#8A5A08">2</div><div style="flex:1"><div style="font-size:12.5px;font-weight:650">Riverside Outlet</div><div style="font-size:11px;color:#98A5A0">9 min walk · 45 min there</div></div></div>
+        <div style="display:flex;gap:11px;align-items:center;padding-top:10px;border-top:1px solid #E0E4E0"><div style="width:22px;font-size:14px;color:#1F6F5C">↩</div><div><div style="font-size:12.5px;font-weight:650">Back to Nishi Market</div><div style="font-size:11px;font-weight:650;color:#1F6F5C">8 min to get there · be there by 15:45</div></div></div>
+        <div style="height:1px;background:#EDEFEC;margin:14px 0"></div>
+        <div style="display:flex;gap:8px">
+          <label style="flex:1"><span style="font-size:11px;color:#98A5A0">Starts</span><div style="height:36px;border:1px solid #E7EAE7;border-radius:10px;margin-top:4px;display:flex;align-items:center;padding:0 10px;font-size:13px;font-variant-numeric:tabular-nums">13:45</div></label>
+          <label style="flex:1"><span style="font-size:11px;color:#98A5A0">Be back by</span><div style="height:36px;border:1px solid #E7EAE7;border-radius:10px;margin-top:4px;display:flex;align-items:center;padding:0 10px;font-size:13px;color:#B4BEB9">15:45 · the end of the gap</div></label>
+        </div>
+      </div>
+      <div style="font-size:11.5px;line-height:1.45;color:#6B7A74;text-wrap:pretty">The edge markers keep their glyphs and gain the endpoints as names, so the list reads as a walk. <b>loopSchedule</b> already falls back to the lane end when the back-by is empty — the placeholder states that fallback, so an empty field is a stated default and not a hole.</div>
+    </div>
+  </div>
+
+  <div style="height:1px;background:#D8DCD8"></div>
+
+  <div style="font-size:15px;font-weight:700">4 · Two deliberate nothings</div>
+  <div style="display:flex;gap:20px;flex-wrap:wrap">
+    <div style="width:520px;background:#fff;border:1px solid #E7EAE7;border-radius:16px;padding:15px 16px;box-sizing:border-box">
+      <div style="font-size:13px;font-weight:700;margin-bottom:8px">Cross-tab sync gets no announcement</div>
+      <div style="font-size:12px;line-height:1.5;color:#3D4C46">P0-5 R5 — work the user did not start gets no indicator. A second tab is not an event; it is the same person, and the correct outcome is that the two tabs simply agree. <b>One requirement, not a new element:</b> if the other tab clears the outbox while this one shows the rust stuck state, the whole screen re-derives from <b>syncState()</b>, header included — which is what the matrix's "cross-tab sync, never designed" row was actually asking about.</div>
+    </div>
+    <div style="width:520px;background:#fff;border:1px solid #E7EAE7;border-radius:16px;padding:15px 16px;box-sizing:border-box">
+      <div style="font-size:13px;font-weight:700;margin-bottom:8px">The warning strip's rank order, written down at last</div>
+      <div style="font-size:12px;line-height:1.5;color:#3D4C46;margin-bottom:10px">The arbitration is not redesigned; no document had ever stated it.</div>
+      <div style="display:flex;gap:8px;align-items:center;font-size:11.5px;font-weight:700">
+        <span style="padding:5px 9px;border-radius:9px;background:#F8E9E9;color:#9B4B4B">rust stuck</span><span style="color:#B4BEB9">›</span>
+        <span style="padding:5px 9px;border-radius:9px;background:#FBF1DE;color:#8A5A08">outside a kept area</span><span style="color:#B4BEB9">›</span>
+        <span style="padding:5px 9px;border-radius:9px;background:#FBF1DE;color:#8A5A08">queued</span><span style="color:#B4BEB9">›</span>
+        <span style="padding:5px 9px;border-radius:9px;background:#F2F3F1;color:#3D4C46">loop reminder</span>
+      </div>
+      <div style="font-size:11.5px;line-height:1.45;color:#6B7A74;margin-top:10px">The identity marker yields to all four (P0-1 principle 5). The loop reminder is the only dismissible source — the other three are conditions, not messages, and they leave when the condition leaves.</div>
+    </div>
+  </div>
+
+</section>
+</x-dc>
+</body>
+</html>
