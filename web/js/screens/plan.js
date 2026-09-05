@@ -41,6 +41,24 @@ let pending = '';
  * (`p1-destination-tabs-design.md` §6.2, `p1-plan-editing-design.md` §7.3).
  */
 let addError = '';
+/**
+ * N-9 · where a removed stop just went, so the tap has a receipt.
+ * `{ id, name, to }`, screen-local and transient.
+ *
+ * It is held here rather than on the item because `movePlanItemToDay` really
+ * does relocate the row — the card it would print into has left this day by
+ * the time the receipt is due. `movedToDay` on the item stays what it was
+ * (set to null in three places, read by nothing); it is recorded as still
+ * unused rather than pressed into a job it cannot do.
+ */
+let moved = null;
+/**
+ * N-8 · rows whose last time commit could not be read, by id and edge. The
+ * `.edge-derived` slot holds a derived value that is meaningless while a time
+ * is invalid, so it carries the reason instead — replacing a value rather
+ * than adding a line, so no row changes height and nothing below it moves.
+ */
+let badTime = {};
 /** The lane whose "new sub route" sheet is open, if any. */
 let laneSheet = null;
 /** "Later" holds the update banner off until the screen is left. */
@@ -112,7 +130,10 @@ export default {
             <button class="btn ghost mt8" style="width:100%" data-act="paste">Paste an itinerary</button>
           ` : ''}
 
-          ${archived.length ? archive(archived, editing) : ''}
+          <!-- The block also renders for a bare receipt: moving the last
+               archived stop away empties the archived list, and the receipt
+               for that very move would go with it. -->
+          ${archived.length || moved ? archive(archived, editing) : ''}
         </div>
       </section>`;
   },
@@ -123,7 +144,14 @@ export default {
       return;
     }
 
-    delegate(root, '[data-day]', (el) => store.selectDay(Number(el.dataset.day)));
+    delegate(root, '[data-day]', (el) => {
+      // A receipt about day 3 has no business on day 4, and a stale invalid
+      // time from another day would render `not a time` against a row that
+      // never refused anything.
+      moved = null;
+      badTime = {};
+      store.selectDay(Number(el.dataset.day));
+    });
     delegate(root, '[data-act="toggle-edit"]', () => {
       addOpen = false;
       store.setEditingPlan(!state.editingPlan);
@@ -139,10 +167,19 @@ export default {
       store.selectLoop(el.dataset.openLoop);
       go('sub', { loopID: el.dataset.openLoop });
     });
-    delegate(root, '[data-act="remove"]', (el) => store.archivePlanItem(state.selectedDay, el.dataset.id));
-    delegate(root, '[data-act="restore"]', (el) => store.restorePlanItem(state.selectedDay, el.dataset.id));
+    delegate(root, '[data-act="remove"]', (el) => {
+      moved = null;
+      store.archivePlanItem(state.selectedDay, el.dataset.id);
+    });
+    delegate(root, '[data-act="restore"]', (el) => {
+      moved = null;
+      store.restorePlanItem(state.selectedDay, el.dataset.id);
+    });
     delegate(root, '[data-act="move-day"]', (el) => {
-      store.movePlanItemToDay(state.selectedDay, el.dataset.id, Number(el.dataset.to));
+      const to = Number(el.dataset.to);
+      const hit = store.planItem(el.dataset.id);
+      moved = { id: el.dataset.id, name: hit?.item.name || 'That stop', to };
+      store.movePlanItemToDay(state.selectedDay, el.dataset.id, to);
     });
 
     // Both times commit on change (i.e. as focus leaves) so a re-render
@@ -158,8 +195,20 @@ export default {
           return;
         }
         if (parseClock(text) == null) {
+          // The input still reverts — the stored value is the one that was
+          // readable — but the row now says WHY, in the gutter, for this row
+          // only. Not the .amber-note slot at the top of the scroller: that
+          // is for outcomes, and a typo is not an outcome.
           input.value = which === 'end' ? (hit?.item.endTime || '') : (hit?.item.time || '');
+          badTime = { ...badTime, [input.dataset.timeFor]: which };
+          store.setEditingPlan(true);
           return;
+        }
+        // It clears on the next valid commit.
+        if (badTime[input.dataset.timeFor]) {
+          const next = { ...badTime };
+          delete next[input.dataset.timeFor];
+          badTime = next;
         }
         store.setPlanItemWindow(state.selectedDay, input.dataset.timeFor, { [which]: text });
       });
@@ -288,7 +337,8 @@ function stopRow(row, { editing, number, last, issues }) {
                  inputmode="numeric" aria-label="Starts">
           <input class="edge" value="${w.endLabel || '—'}" data-time-for="${item.id}" data-edge="end"
                  inputmode="numeric" aria-label="Ends, or a dash for an open end">
-          <div class="edge-derived">${w.durationLabel}</div>
+          <div class="edge-derived"${badTime[item.id] ? raw(' style="color:var(--danger-fg)"') : ''}>${
+            badTime[item.id] ? 'not a time' : w.durationLabel}</div>
         ` : html`
           <div class="plan-clock${worst ? ' bad' : ''}">${w.startLabel}</div>
           ${w.endLabel ? html`<div class="plan-end${worst ? ' bad' : ''}">${w.endLabel}</div>` : ''}
@@ -667,6 +717,16 @@ function archive(rows, editing) {
   return html`
     <div class="mt18">
       <div class="eyebrow">REMOVED FROM THIS DAY</div>
+      ${moved ? html`
+        <!-- N-9 · the receipt, into .archive-moved — a class app.css has
+             carried since it was written with no JS caller, and this is
+             exactly the string it was defined for. The card the stop was in
+             has genuinely left this day, so the receipt stands where it was
+             until the next repaint. -->
+        <div class="swipe-face archive-card mt8">
+          <div class="archive-name">${moved.name}</div>
+          <div class="archive-moved">Moved to Day ${moved.to}.</div>
+        </div>` : ''}
       ${rows.map((item) => html`
         <div class="swipe-row mt8"${editing ? raw(` data-plan-row="${esc(item.id)}" data-plan-name="${esc(item.name)}"`) : ''}>
           ${editing ? html`

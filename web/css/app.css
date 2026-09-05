@@ -646,7 +646,17 @@ select {
   display: flex; align-items: center; justify-content: center;
 }
 
-.archive-card { margin-top: 8px; padding: 12px 13px; background: var(--dark-card); border-radius: 14px; }
+/* The second half of the Plan's destructive ladder. It is rendered as
+   `class="swipe-face archive-card"`, and `.swipe-face { background: #fff }`
+   is declared LATER at equal specificity — so the dark card lost the cascade
+   and shipped white, with every child colour still light: the name at
+   #E4EBE8 on white measures 1.21:1 where the design intends 7.48:1, and
+   `Add back` is white on rgba(255,255,255,.14). The card was invisible and
+   the archive step of the ladder unusable. Raising the specificity here
+   fixes it without touching `.swipe-face`, which is right for every other
+   row that uses it. */
+.archive-card,
+.swipe-face.archive-card { margin-top: 8px; padding: 12px 13px; background: var(--dark-card); border-radius: 14px; }
 .archive-name { font-size: 13.5px; font-weight: 650; color: #E4EBE8; line-height: 1.25; }
 .archive-was { font-size: 11px; color: #9FB2AA; margin-top: 2px; }
 .archive-btn {

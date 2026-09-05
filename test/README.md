@@ -73,3 +73,15 @@ curl -s "https://identitytoolkit.googleapis.com/v1/projects?key=$KEY"
 curl -s -o /dev/null -w '%{http_code}\n' \
   "https://firestore.googleapis.com/v1/projects/$P/databases/(default)/documents/published/PROBE-ONLY?key=$KEY"
 ```
+
+## One trap worth a standing check
+
+A backtick inside an HTML comment inside an `html` template literal ends the
+template. If the file happens to contain an even number of them the module
+still *parses* — `node --check` and even `vm.SourceTextModule` report it as
+fine — and the screen simply renders wrong at runtime, or throws. This cost
+two debugging rounds in one session. The sweep below fails on it:
+
+```sh
+grep -rn '<!--' web/js/ | grep '`'   # must print nothing
+```
