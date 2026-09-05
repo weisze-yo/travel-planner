@@ -42,7 +42,9 @@ export default {
             <button class="iconbtn" data-act="back" aria-label="Back">${raw(icon.back)}</button>
             <div class="grow">
               <div class="push-title">Trip settings</div>
-              <div class="push-sub">${trip.name}</div>
+              <div class="push-sub">${trip.sharedFrom
+                ? `${trip.name} · from ${trip.sharedFrom.from || 'the owner'}`
+                : trip.name}</div>
             </div>
           </div>
         </div>

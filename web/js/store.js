@@ -988,6 +988,13 @@ export function takeArrivalNotice() {
   return 'Signed in just now — every trip on this phone is in this account.';
 }
 
+/** The arrival banner's state, or null once it has been seen. */
+export const arrival = () => state.trip?.justArrived || null;
+export function dismissArrival() {
+  if (!state.trip?.justArrived) return;
+  putTrip({ ...state.trip, justArrived: null });
+}
+
 /** Opens a trip and remembers it, so a relaunch comes back here. */
 export async function openTrip(tripID) {
   writeActiveTripID(tripID);
@@ -4196,6 +4203,12 @@ export async function joinTrip({ code, role } = {}) {
     mapAreas: [],
     people: [owner, { id: who.id, name: who.name, role: given, joinedAt }],
     sharedFrom: { code: linkCode, version: snapshot.version, from: snapshot.byName || 'the owner' },
+    // P0-1 §9.6 · shown once on the first Plan or Map paint after joinTrip
+    // resolves, dismissed by the banner's own control, and it does not
+    // return. Not a blocking interaction: the app has two and this is not
+    // one of them. If it is missed or dismissed the marker and the Share
+    // explainer still carry the concept, so nothing depends on it being read.
+    justArrived: given === 'read' ? 'read' : 'edit',
     tookVersion: snapshot.version,
   };
 

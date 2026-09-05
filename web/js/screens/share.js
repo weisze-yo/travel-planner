@@ -38,6 +38,10 @@ export default {
     const shared = Boolean(store.shareState()?.on);
     const unsent = store.unsentChanges();
     const sharedFrom = state.trip?.sharedFrom || null;
+    // P0-1 · the role finally reaches a screen. `read` cannot publish, so the
+    // controls that publish are not rendered for them at all.
+    const canSend = store.canPublish();
+    const owns = store.isOwner();
 
     return html`
       <section class="screen">
@@ -58,23 +62,37 @@ export default {
 
           ${sharedFrom ? relationship(store.ownerName(), store.linkHasStopped()) : ''}
 
+          ${canSend ? '' : readSendBlock(store.ownerName())}
+
           <div class="eyebrow">Who has it</div>
           <div class="card-list mb14">
-            ${people.length ? people.map((p) => person(p)) : owner()}
+            ${people.length ? people.map((p) => person(p, owns)) : owner()}
             ${people.length ? '' : html`<div class="f12 soft" style="padding:10px 12px">Nobody else, yet.</div>`}
-            ${shared ? html`
+            ${shared && owns ? html`
               <button class="btn-dashed" data-act="resend">Resend the link</button>` : ''}
           </div>
-          ${people.length > 1 ? html`
+          <!-- §4.3 · the swipe hint describes a gesture a non-owner does not
+               have, so it is the owner's. In its place the non-owner gets the
+               jade explainer that says who does look after the trip. -->
+          ${people.length > 1 && owns ? html`
             <div class="f11 soft lh145 mb18">
               Swipe a person left to remove them, the same as anywhere else. They keep the
               copy of the itinerary they already have, and stop receiving your updates.
             </div>` : ''}
+          ${people.length > 1 && !owns ? html`
+            <div class="hint-jade mb18">
+              ${store.ownerName()} looks after who is on this trip and sends its updates.
+            </div>` : ''}
 
-          ${shared ? sending(unsent) : ''}
+          ${shared && canSend ? sending(unsent) : ''}
 
-          <div class="eyebrow">${link ? 'The link' : 'Make a link'}</div>
-          ${link ? liveLink(link, live) : offer()}
+          <!-- A joined copy has sharedFrom, not link, so every control in
+               the link section is already inert for a non-owner. It is
+               hidden rather than shown dead: P0-1's rule that a control which
+               cannot act should not exist. -->
+          ${owns ? html`
+            <div class="eyebrow">${link ? 'The link' : 'Make a link'}</div>
+            ${link ? liveLink(link, live) : offer()}` : ''}
         </div>
       </section>`;
   },
@@ -213,8 +231,8 @@ function owner() {
     </div>`;
 }
 
-function person(p) {
-  const open = changing === p.id;
+function person(p, owns = true) {
+  const open = changing === p.id && owns;
   const body = html`
     <div class="linkrow">
       <div class="trip-mark">${initialFor(p.name)}</div>
@@ -224,9 +242,21 @@ function person(p) {
           ${p.role === 'owner' ? 'Made this trip' : `Joined ${store.stamp(p.joinedAt)}`}
         </div>
       </div>
+      ${p.id === store.me().id ? html`<span class="mine-chip">YOU</span>` : ''}
+      <!-- The chip-versus-badge decision, and it is not carried by colour:
+           .badge is the provenance family — flat, uppercase, never
+           interactive — and .chip is inline metadata that becomes
+           explicitly interactive by gaining the caret the app already uses
+           for "this opens something". A caret means you can change it, which
+           is legible without reading and survives greyscale. -->
       ${p.role === 'owner'
         ? html`<span class="badge">OWNER</span>`
-        : html`<button class="chip" data-person="${p.id}">${ROLES[p.role]?.label || p.role}</button>`}
+        : (owns
+          ? html`<button class="chip" data-person="${p.id}">
+                   ${ROLES[p.role]?.label || p.role}
+                   <span class="none" style="opacity:.55">${raw(icon.caret)}</span>
+                 </button>`
+          : html`<span class="badge">${(ROLES[p.role]?.label || p.role).toUpperCase()}</span>`)}
     </div>
     ${open ? html`
       <div class="chiprow" style="padding:0 12px 11px">
@@ -235,7 +265,9 @@ function person(p) {
                   data-set-role="${id}" data-person2="${p.id}">${ROLES[id].label}</button>`)}
       </div>` : ''}`;
 
-  if (p.role === 'owner') return body;
+  // Only the owner can take somebody off the trip, so only the owner's rows
+  // are swipeable. A non-owner's row is a display.
+  if (p.role === 'owner' || !owns) return body;
 
   return html`
     <div class="swipe-row" data-remove="${p.id}" data-name="${esc(p.name)}">
@@ -271,6 +303,33 @@ function sending(unsent) {
               data-act="send-update"${unsent.length ? '' : ' disabled'}>
         ${unsent.length ? `Send ${unsent.length} change${unsent.length === 1 ? '' : 's'}` : 'Nothing to send'}
       </button>
+    </div>`;
+}
+
+/**
+ * P0-1 §4.4 — what a `read` user sees where the send button is.
+ *
+ * The button is NOT RENDERED, rather than rendered disabled. A disabled
+ * control still asserts the action is yours and merely unavailable right now,
+ * which is what a disabled `Nothing to send` correctly means for an owner
+ * with nothing to send. For a `read` user the action is not theirs at all, so
+ * a permanently disabled primary would be a standing accusation with no fix.
+ *
+ * Until now `myRole()` reached no screen at all, so a `read` user was shown an
+ * ENABLED send control that silently did nothing — the oldest confirmed gap in
+ * the readiness map, and the exact interaction failure the whole silent-refusal
+ * rule exists to stop.
+ *
+ * And nothing here names the absent button: naming the absence would
+ * re-introduce the refusal in words. It says who does send, and stops.
+ */
+function readSendBlock(ownerName) {
+  return html`
+    <div class="hint-jade mb14">
+      <div class="eyebrow jade">YOUR CHANGES</div>
+      <div class="mt6">
+        Everything you change stays on your copy. ${ownerName} sends the updates for this trip.
+      </div>
     </div>`;
 }
 

@@ -24,7 +24,7 @@ import { html, raw, esc, icon, delegate, parseClock, clock } from '../util.js';
 import * as store from '../store.js';
 import { state } from '../store.js';
 import { go } from '../nav.js';
-import { dayPills, weatherBanner, bindDragReorder, swipeToDelete, emptyShared } from './parts.js';
+import { dayPills, weatherBanner, bindDragReorder, swipeToDelete, emptyShared, arrivalBanner } from './parts.js';
 
 let addOpen = false;
 let form = { name: '', start: '', end: '', kind: 'main' };
@@ -102,6 +102,11 @@ export default {
         </div>
 
         <div class="scroll" style="padding:14px 16px 24px">
+          <!-- Shown once on the first Plan paint after a join, dismissed by
+               its own control, and it does not return. Above the weather,
+               because it is about the trip itself rather than the day. -->
+          ${arrivalBanner()}
+
           ${weatherBanner()}
 
           ${waiting && !later ? updateBanner(waiting) : ''}
@@ -226,6 +231,7 @@ export default {
 
 
     delegate(root, '[data-act="paste"]', () => go('paste'));
+    delegate(root, '[data-act="arrived-close"]', () => store.dismissArrival());
     delegate(root, '[data-new-loop]', (el) => {
       laneSheet = { from: Number(el.dataset.from), to: Number(el.dataset.to), label: el.dataset.label };
       store.selectDay(state.selectedDay);

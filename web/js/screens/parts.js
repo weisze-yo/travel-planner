@@ -21,11 +21,46 @@ export function tripChip() {
       <div class="trip-mark">${trip?.code || '··'}</div>
       <div class="grow">
         <div class="trip-name">${trip?.name || 'Your trip'}</div>
+        <!-- P0-1 §5, alternative 3 · a .who-mark and "from Ana", wherever
+             the trip already identifies itself. It is visually a PERSON — a
+             filled circle with a glyph — not a state, so it does not read as
+             a sixth sync colour two elements from the dot. It yields to a
+             sync warning, deliberately: a stuck outbox is the more urgent
+             fact, and the identity is still on My trips and Trip settings.
+             The mark is aria-hidden because the name is right beside it, so a
+             screen reader announces it once. -->
         <div class="trip-meta${words ? ' warn' : ''}">
-          ${words || `Day ${state.selectedDay} of ${trip?.dayCount || 1} · ${store.day()?.shortDate || ''}`}
+          ${words || html`${trip?.sharedFrom ? html`<span class="who-mark sm" aria-hidden="true">${
+            initialFor(trip.sharedFrom.from || store.ownerName())}</span> from ${
+            trip.sharedFrom.from || store.ownerName()} · ` : ''}Day ${state.selectedDay} of ${
+            trip?.dayCount || 1} · ${store.day()?.shortDate || ''}`}
         </div>
       </div>
       ${syncDot(sync)}
+    </div>`;
+}
+
+/**
+ * The one-time arrival banner, on the first Plan or Map paint after a join.
+ * Uses `.arrived`, which app.css has carried since it was written with no JS
+ * caller. Branched by role, because what "yours" means differs: a `read` copy
+ * simply stays here, an `edit` copy can be sent back.
+ */
+export function arrivalBanner() {
+  const role = store.arrival();
+  if (!role) return '';
+  return html`
+    <div class="arrived">
+      <div class="grow">
+        <div class="arrived-t">YOUR COPY</div>
+        <div class="arrived-s">
+          ${role === 'read'
+            ? 'This copy is yours. Change anything you like — it stays on this phone.'
+            : html`This copy is yours. When you want everyone else to have your changes,
+                   send an update from Share.`}
+        </div>
+      </div>
+      <button class="iconbtn" data-act="arrived-close" aria-label="Dismiss">${raw(icon.close)}</button>
     </div>`;
 }
 

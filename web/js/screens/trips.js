@@ -366,7 +366,8 @@ function runningCard(trip, opening = '') {
           <div class="trip-cover-text">
             <div class="trip-cover-name">${trip.name}</div>
             <div class="trip-cover-meta">
-              ${tripDates(trip)}${card ? ` · ${card.stops} stop${card.stops === 1 ? '' : 's'} today` : ''}
+              ${trip.sharedFrom ? `from ${trip.sharedFrom.from || 'the owner'} · ` : ''}${
+                tripDates(trip)}${card ? ` · ${card.stops} stop${card.stops === 1 ? '' : 's'} today` : ''}
             </div>
           </div>
         </div>
@@ -460,7 +461,9 @@ function plainCard(trip, kind, opening = '') {
           </button>
           <button class="grow" style="text-align:left" data-open-trip="${trip.id}">
             <div class="trip-card-name">${trip.name}</div>
-            <div class="trip-card-meta">${tripDates(trip)}</div>
+            <div class="trip-card-meta">${trip.sharedFrom ? html`<span class="who-mark sm" aria-hidden="true">${
+              initialFor(trip.sharedFrom.from || 'the owner')}</span> from ${
+              trip.sharedFrom.from || 'the owner'} · ` : ''}${tripDates(trip)}</div>
           </button>
           ${kind === 'upcoming'
             ? html`<span class="chip ${gap != null && gap <= 14 ? 'amber' : ''} none">
