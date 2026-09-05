@@ -1,7 +1,8 @@
 // Boot: bring up storage, register screens, show the first one.
 
 import { $ } from './util.js';
-import { boot, closeTrip, openLink, state } from './store.js';
+import * as install from './install.js';
+import { boot, closeTrip, openLink, refreshTrips, state } from './store.js';
 import { readActiveTripID } from './persist.js';
 import { register, start } from './nav.js';
 import * as strip from './strip.js';
@@ -83,6 +84,12 @@ async function main() {
   if ('serviceWorker' in navigator && location.protocol !== 'file:') {
     navigator.serviceWorker.register('sw.js').catch(() => {});
   }
+
+  // OD-8 · counted before anything can ask, and listening from here on. The
+  // line itself is on the trips home and appears from the second launch.
+  install.start();
+  install.countLaunch();
+  install.onChange(() => refreshTrips());
 }
 
 main();

@@ -15,6 +15,7 @@ import { go } from '../nav.js';
 import { swipeToDelete, signInPanel, mountSignIn } from './parts.js';
 import { prepare } from '../photos.js';
 import { initialFor } from '../share.js';
+import * as install from '../install.js';
 
 let addOpen = false;
 let signingIn = false;
@@ -77,6 +78,8 @@ export default {
           ${busy ? html`<div class="amber-note f12 mb12">${busy}</div>` : ''}
 
           ${accountRow()}
+
+          ${installLine()}
 
           ${removedCard()}
 
@@ -150,6 +153,9 @@ export default {
       }
       store.refreshTrips();
     });
+
+    delegate(root, '[data-act="install"]', () => { install.offer(); });
+    delegate(root, '[data-act="install-no"]', () => { install.dismiss(); });
 
     delegate(root, '[data-act="sign-open"]', () => { signingIn = true; store.refreshTrips(); });
     delegate(root, '[data-act="sign-close"]', () => {
@@ -326,6 +332,30 @@ async function makeTrip(root, name, land) {
   nameError = '';
   if (raced) store.noteArrival(raced);
   go(land);
+}
+
+/**
+ * OD-8 · one unobtrusive line, Android only, from the second launch. Not a
+ * prompt and not a banner: it is a line among the other quiet lines on this
+ * screen, and the browser's own install bar is suppressed so the app says
+ * this once, in its own words.
+ *
+ * `install.canOffer()` carries every condition — the browser says it is
+ * installable, it is not the first launch, it has not been dismissed, and the
+ * app is not already running from the home screen — so there is nothing to
+ * decide here. On iOS `beforeinstallprompt` never fires, so this is never
+ * reached, which is the approved behaviour: iOS is not prompted at all.
+ */
+function installLine() {
+  if (!install.canOffer()) return '';
+  return html`
+    <div class="row g8 center mb12">
+      <div class="grow f11 soft lh145">
+        This trip works with no signal. Keep it on your home screen and it opens like an app.
+      </div>
+      <button class="btn sm ghost none" data-act="install">Add it</button>
+      <button class="iconbtn" data-act="install-no" aria-label="Not now">${raw(icon.close)}</button>
+    </div>`;
 }
 
 // -------------------------------------------------------------- the cards
