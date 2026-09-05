@@ -340,3 +340,44 @@ Tapping it replaces the whole Plan with `laneForm` — a full screen, `icon.clos
 | A confirmation on entering or leaving edit mode | **REJECTED** — there is no dirty state (§3) |
 
 **No OPEN DECISION is raised by this document.** Every choice follows from existing behaviour or an approved system.
+
+---
+
+## IMPLEMENTED — `63b9c06` (§7) and `2745799` (§4.3, §6.3), 5 Sep 2026
+
+**Appended only. Nothing above this line was changed.**
+
+**§7 · add a stop** (batch 1). The silent `if (!typed && !placeID) return;` now
+answers in the name field, in rust, with §7.3's `A name, or a map link.`; the
+button is never pre-disabled; pending moved onto the button; and **the form
+stays up** until the work resolves. It also keeps what was typed when the work
+fails, so a retry is one tap rather than a re-type.
+
+**§4.3 · `not a time`** (batch 4). The `.edge-derived` slot carries the reason
+in `--danger-fg`, replacing the derived value rather than adding a line, so no
+row changes height. It clears on the next valid commit, exactly one row
+refuses at a time, and it is not in the `.amber-note` slot — a typo is not an
+outcome. All four asserted.
+
+**§6.3 · `Moved to Day 4.`** (batch 4), into `.archive-moved`, and **M-4
+first**: the archive card rendered white because `.swipe-face { background:
+#fff }` beat `.archive-card` at equal specificity from a later line. Measured
+on what shipped: 1.21:1 on the name. Measured after: **7.48:1**, exactly the
+figure the design intends.
+
+**One thing §6.3 did not anticipate.** `movePlanItemToDay` really relocates the
+row, so by the time the receipt is due the card it would print into has left
+the day. The receipt is therefore held in screen state and stands where the
+card was, and the archive block renders for a bare receipt so that moving the
+*last* archived stop does not take its own receipt with it. It clears on a day
+change.
+
+**`movedToDay` is left exactly as it was** — set to null in three places, read
+by nothing. The map asked for a decision on it when implementing this: it
+cannot do this job, because the item carrying it is no longer on the day that
+needs to display it. Reported as still unused rather than pressed into service.
+
+**D-1 needed no work.** The harness asserts a 13:45 → 09:00 window still
+derives `19h 15m`, that it is not flagged `reversed`, that the "night market,
+not an error" comment is still in place as the record of the decision, and
+that no plausibility check was added.

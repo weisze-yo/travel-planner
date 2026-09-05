@@ -504,3 +504,62 @@ Everything else in this document — `trip.reviewedSnapshot` (N-2), the
 three-way diff, the no-base mode, the eleven cases, the sticky foot and staged
 bulk, `trip.lastReview` and the receipt — is **batch 3** and is not
 implemented by this commit. The diff is still two-way.
+
+---
+
+## IMPLEMENTED — `939d656`, 5 Sep 2026 (the rest of the document)
+
+**Appended only. Nothing above this line was changed.** This supersedes
+nothing in the batch-0 note above it, which recorded §9's CSS alone.
+
+Batch 3 of `transition-audit.md` §6 implemented this document. N-2 first,
+because the row's content, its badges and its bulk eligibility are all
+functions of the base.
+
+`trip.reviewedSnapshot` is written in exactly the two places §2.1 names and
+read the one way §11.1 gives. `diffSnapshot(mine, theirs, base)` takes the
+third argument; with `base == null` it produces the same entries as the
+two-argument form, asserted by running both over one fixture. With a base it
+classifies per §2.2 and drops cases 3, 7 and 8 — on the harness's fixture,
+four questions instead of seven, and the three that go are the user's own
+work. Case 4 gets the conflict badge and §5.3's cost line and nothing else.
+§4.1's rename rule ships: the title is the base name, and the incoming name
+appears exactly once, in the box labelled theirs.
+
+N-3, N-4, N-5, M-2, M-3 and M-13 all ship as written, including the removal of
+`Take all of theirs` and the safety rule that no bulk action may decide a
+case-4 row. `trip.reviewed` replaces `trip.declined`. Review joins the
+app-wide undo bar, the row returns to the list when a decision is undone, and
+the two bulk actions share one undo.
+
+**§7.5 is the finding this fixes and it is verified by reloading the page**:
+the receipt survives navigation *and* a relaunch, where before you could
+decide seven things, leave, come back, and the screen would say nothing had
+ever happened.
+
+**Two bugs of the implementation's own, worth recording because the second is
+a design-level consequence nobody had noticed:**
+
+1. `settle()` read `pendingUpdate()` *after* the decision — but **taking a
+   change makes the difference go away**, since your copy now says what theirs
+   says. So the update could go quiet on the last row and `finishReview` never
+   ran: no base written, no receipt. It now reads the update before the
+   decision and finishes from that.
+
+2. For the same reason the progress count ticked downwards, because a taken
+   row leaves the diff while a kept row stays in it. `total` is now what still
+   differs plus what was taken.
+
+**One deviation from the transition audit's testing note.** §7 of that
+document asks for "byte-identical entries to today" with `base = null`. That
+is not achievable and should not be: §3.3 and §10 change the absent-side
+strings from `not on your copy` / `not on theirs` to `not on your day` /
+`off the day`, which is approved copy. The harness asserts the same *entries*
+— ids and verbs — which is the substantive claim.
+
+**Verified locally:** `test/review-three-way.mjs`, 69 checks at 390 × 844, 0
+page errors, the eleven cases built as three explicit copies of one day and a
+real update staged through the `published/{code}` mirror. **Verified in the
+emulator:** `two-phones.mjs` 65/65 — B's waiting entry comes back
+`titleFrom: "base"`, `stakes: "free"`, `noun: "a different time"`,
+`delta: "30 min earlier"` across two genuinely separate devices.

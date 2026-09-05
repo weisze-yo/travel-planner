@@ -303,3 +303,30 @@ aria-label unchanged) and from the deployed `css/app.css`.
 
 §4's blank-map amber card (N-10, OD-7 = no cause sentence) is **batch 5** and
 is not implemented by this commit.
+
+---
+
+## IMPLEMENTED — `f3f19d0`, 5 Sep 2026 (§4)
+
+**Appended only. Nothing above this line was changed.** The batch-0 note above
+recorded §1.3's hollow dot; this records §4.
+
+The blank-map card ships with the exact copy in §4.2 and nothing else. It is
+amber rather than rust, in the card shape `.map-top` already stacks, reusing
+`outside()`'s own clause so the two versions of this message are the same
+message, and naming the same destination so there is one route to it from both
+states.
+
+**The condition is read from the tile layer itself** — `tileload` /
+`tileerror` — rather than guessed from `navigator.onLine`, because a tile that
+404s or is refused looks identical to no signal from where the user sits.
+
+**OD-7, answered NO, is asserted rather than merely respected**: the harness
+checks the card never claims a cause, with a regex covering the phrasings a
+future implementer would reach for ("no signal", "check your…", "the server",
+"try again later"). The word *offline* appears only in the approved action,
+`Keep an area for offline`.
+
+**Verified locally:** `test/absence-and-status.mjs`, 37 checks at 390 × 844,
+0 page errors, with every tile aborted so the layer only ever fires
+`tileerror`.

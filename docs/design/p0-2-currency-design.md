@@ -313,3 +313,46 @@ No new colour, no new radius, no new control height, no new component, no new CS
 | An ISO currency picker | **REJECTED** (§8E) |
 
 **One OPEN DECISION for the product owner** (in the review pack as **C-1**): *§7.1 — when a trip has no currency, do money figures show a bare number, or should the app refuse to show money at all until one is set?* Bare numbers is the recommendation (a number with no symbol is still true; hiding the shopping estimates punishes the user for a failed lookup). The alternative is defensible only if unlabelled money is considered worse than absent money. Everything else above is a UX/copy call and is made.
+
+---
+
+## IMPLEMENTED — `e81b439`, 5 Sep 2026
+
+**Appended only. Nothing above this line was changed.**
+
+Batch 2 of `transition-audit.md` §6 implemented this document in full.
+
+**Nine sites, not eight.** The readiness map counted seven `|| '¥'` fallbacks
+plus `itemEditor`'s default parameter. The ninth is `util.js`'s
+`money(amount, symbol = '¥')`, which no document named: all 24 callers pass a
+symbol today, so it was dormant, and removing the seven without it would have
+left a trap that silently re-prices a trip in yen the first time a caller
+omits the argument. All nine are gone and `test/currency.mjs` greps the
+deployed source of seven modules for any return.
+
+§4's six states of the derived line ship with the exact copy in §9 and the
+colours §4 specifies, each driven through the real modal with the geocode
+intercepted. **State 3 was new behaviour, as §4 says** — a city that resolves
+to a country with no known currency previously wrote no notice at all. Create
+is never gated (§2.3), asserted mid-lookup and offline. §5's raced-failure
+report now lands on Paste, the screen the app actually moves to; all three
+failure strings previously went to Trip settings, which the app never sends
+anyone to after Create. §6.1's provenance line and §6.2's re-derivation offer
+ship, and the offer never overwrites. §7.1's rule and §7.2's removal of the
+parity conversion ship.
+
+**Verified locally:** 55 checks at 390 × 844, 0 page errors, CJK measured.
+**Verified in the emulator:** `two-phones.mjs` 65/65, including a city the
+geocoder cannot find leaving currency and coordinates unset.
+
+**One defect found while building, not in this document or the map:**
+`updateTrip()` wrote the trip and updated `state.trip` but never touched
+`state.trips`, the array My trips renders from. Editing a trip's name, dates
+or currency left the card behind it stale until an unrelated action refreshed
+the list. It has always been wrong; it matters now because §7.1 makes the
+money chip's *presence* depend on the currency. Fixed in the store, one line.
+
+**Supporting change:** `geocode()` now also returns `city`, `country` and a
+short `place` ("Kyoto, Japan"). Every provenance line in §9 is written against
+that short form; `display_name` is Nominatim's full administrative chain and
+is far too long for a hint under a field.

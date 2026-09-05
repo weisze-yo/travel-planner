@@ -203,3 +203,47 @@ Recorded because the temptation is real and the brief warned against it.
 | A skeleton / overlay / toast / spinner family | **REJECTED** (§5) |
 
 **No OPEN DECISION.** Every choice here follows from the existing vocabulary; none of it is product policy.
+
+---
+
+## IMPLEMENTED — `63b9c06`, 5 Sep 2026
+
+**Appended only. Nothing above this line was changed.**
+
+Batch 1 of `transition-audit.md` §6 implemented this document in full, across
+every async call site in the app. **Zero CSS was added**, as §5 requires.
+
+All sixteen labels in §7 ship, five of them de-interpolated per §6 (the fifth
+is `Sending the link…`, added by `p1-account-and-sign-in-design.md` §4).
+`busy` / `notice` stop carrying pending text entirely (R4) and keep only
+outcomes, refusals and payloads — `test/pending-and-refusals.mjs` greps the
+deployed source of five modules so a `busy = 'Verbing…'` cannot quietly
+return. R7's disabled state is the double-tap prevention, with no timers.
+R11's family rule ships with `pointer-events` alone and no opacity change on
+siblings. R8's three surfaces stay up; Plan's add-a-stop and Nearby's
+add-a-place are the same shape and now do too. R10's three synchronous actions
+get nothing, and the harness asserts `Read it` never becomes `Reading…`.
+
+**Verified locally:** 56 checks at 390 × 844, 0 page errors, real CJK in real
+fields, three stable runs.
+
+**Two corrections to this document, from building it:**
+
+1. **§4's claim that "any button whose pending label is materially longer than
+   its resting label is `width: 100%` or `flex: 1` already — verified true for
+   all fifteen" is FALSE** for the forecast `Refresh` button, which is
+   `.btn.ghost.sm.none` in a row with a `.grow` sibling. Measured: 75px at
+   rest, 167px carrying `Fetching the forecast…`. The canonical label ships as
+   written; the label does not clip and the row still fits 358px, and the
+   geometry is asserted in the harness rather than assumed.
+
+2. **The card-level `Opening…` (#2) cannot be observed on a phone with no
+   account, and is NOT claimed as verified.** `nav.js` paints inside
+   `requestAnimationFrame` and `switchTrip` → `boot` awaits only microtasks,
+   which never yield to the event loop, so the open completes before any frame
+   runs. Measured, not assumed: a `MutationObserver` over the whole body
+   across a real open records zero appearances of the chip, with the Firebase
+   SDK fetch delayed 3s and the CPU throttled 20×. That is §6 working exactly
+   as designed — no minimum display time, no artificial delay — so nothing in
+   `web/` was padded to make a test pass. On a signed-in phone `boot` awaits
+   Firestore over the network and the frame is real.

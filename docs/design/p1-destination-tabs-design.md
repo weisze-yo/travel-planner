@@ -235,3 +235,34 @@ Each names the field in the words that field already uses, so the reader's eye l
 | A validation framework | **REJECTED** — one required field per form, one sentence each (§6.2) |
 
 **No OPEN DECISION is raised by this document.**
+
+---
+
+## IMPLEMENTED — `63b9c06` (§6) and `f3f19d0` (§4), 5 Sep 2026
+
+**Appended only. Nothing above this line was changed.**
+
+**§6 · the silent-refusal rule, app-wide** (batch 1). All four call sites now
+answer in the field, in rust, with the four sentences in §6.3 verbatim, and no
+primary is pre-disabled. `shop.js` gets the same treatment because it opens
+the same `itemEditor` — one editor should not refuse two different ways
+depending on which screen opened it.
+
+**§6.1's count is right and the transition audit's is not.** The audit lists
+`readFactsEditor` alongside the other two; it does **not** return null and is
+not a silent refusal — it keeps every row it is given and drops the empty
+ones, which is its documented behaviour. There are four call sites, not five,
+and the facts editor was not changed.
+
+**§4 · the Shop panel's currency rule** (batch 5). With no currency the money
+clause is omitted from the summary rather than zeroed or yen-labelled, the
+panel carries `Prices have no currency yet. Set it in Trip settings.`, and the
+price label drops its parenthetical rather than rendering `What you expect to
+pay ()` (RC-19).
+
+**§3 needed no work** — the three tier-3 empties landed in `949e04d`, and
+`test/empty-states.mjs` still passes 35/35 including "Shop tab NEVER goes tier
+3, even joined".
+
+**Verified locally:** 56 checks (batch 1) and 37 (batch 5) at 390 × 844, 0
+page errors.

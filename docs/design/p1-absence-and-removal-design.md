@@ -399,3 +399,68 @@ No new colour, no new radius, no new control height, no new component family.
 | Any rust surface on a working joined copy | **REJECTED** — §2.3 and §6.2, twice for the same reason |
 
 **One OPEN DECISION is raised: OD-6** — *may `Empty this trip` delete the shopping list, the packing list and the Log?* Recommendation in the review pack. Everything else above is a UX or copy call and is made.
+
+---
+
+## IMPLEMENTED — `f3f19d0` (§3, §4), `3453aa2` (§2.4, §6), `939d656` (§5), 5 Sep 2026
+
+**Appended only. Nothing above this line was changed.**
+
+**§3 · the stop that has gone.** It gets the screen's own header — so there is
+a back chevron, which there was not — names the subject when the caller passed
+one, and offers a single ghost. Tier 2, as specified.
+
+**§4 · a place with no position**, on all three surfaces: the `.warn` strip
+under Destination's two Maps buttons, the `No position` chip on the Nearby row
+(taken out of the metadata line, on both the Nearby screen and Destination's
+Nearby panel), and the sub route's coverage line. No user-facing string says
+"unlocated" — asserted against the rendered page.
+
+> **§4.2's fix button names a field the app does not have.** It says `Paste a
+> map link` "opens the facts editor at its map-link field". `store.PLACE_FACTS`
+> is Opening hours · Phone · Website · Getting in · Worth knowing, and nothing
+> in the app accepts a pasted link for an *existing* place — `parseMapLink` is
+> only reached through `capturePlace`/`captureStop` when something is first
+> created. The button therefore opens the facts editor, which is where a
+> place's details are corrected, and **it does not yet complete the fix the
+> strip's own rule demands**. Adding a geocoding field to that sheet is real
+> new behaviour and §4.2 says "three sentences, no new component", so this is
+> reported rather than invented. **It is the one item this session leaves
+> genuinely unfinished.**
+
+**§2.4 · the removal detector.** `removedFromTrip()` finally has a caller: the
+exact mirror of `adoptEnvelopeMeta`, on every envelope read, suppressed by
+`removal()` being non-null.
+
+> **One guard §2.4 does not state, and without which the rule is wrong.**
+> `announceJoin` only writes a joiner when the guest is signed in and not
+> anonymous, so a read-only guest who never signs in is **never in `joiners`
+> at all** — and "absent from joiners" therefore read as "removed" for every
+> one of them. The first version fired on every joined copy immediately. The
+> detector now records `listedInShare` the first time it sees itself listed,
+> and only absence *after* that is a removal; it is stored on the trip so a
+> removal that happens while the app is closed is still noticed. Caught by the
+> emulator test, which is the only place it could have been caught.
+
+**§5 · `Empty this trip`, OD-6 = YES.** The corrected confirmation names the
+three private kinds, the card explains what the control does rather than why
+it shipped, the joined-copy line is stated before the tap, and emptying a
+joined copy resets the review base — which is what makes the itinerary
+recoverable instead of permanently stranded as case 7.
+
+**§6 · a refused read, mid-session.** Same block, same jade, one different
+sentence. Only a real answer counts: `watchPublished` gained an `onError` that
+fires on permission-denied / not-found / unauthenticated alone, so being
+offline can never trip it.
+
+> **§6.2 quotes a sentence that does not exist.** It gives the non-owner
+> explainer as "Ana looks after who is on this trip and sends its updates."
+> The block reads "This is your copy of X's trip." followed by an explanation
+> of the second, separate share. The replacement goes into that block, which
+> is the one the section means; the quotation is stale, not a missing feature.
+> (The quoted sentence *does* now exist — it is the non-owner Share explainer
+> added by P0-1 §4.3 in `322098b`.)
+
+**Verified:** `test/absence-and-status.mjs` 37 checks, `test/backend-gated.mjs`
+25 checks, `test/review-three-way.mjs` 69 checks, and — for the detector, end
+to end across two real devices — `test/two-phones.mjs` 65/65.

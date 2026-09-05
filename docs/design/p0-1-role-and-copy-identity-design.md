@@ -315,3 +315,38 @@ The rest of this document — the three roles, the `read` send block that also
 uses `.hint-jade`, the `from Ana` marker on five surfaces, the arrival banner
 and the corrected Log line — is **batch 7 (P0-1 role wiring)** and is not
 implemented by this commit. `myRole()` still reaches no screen.
+
+---
+
+## IMPLEMENTED — `322098b`, 5 Sep 2026 (the rest of the document)
+
+**Appended only. Nothing above this line was changed.** The batch-0 note above
+recorded §8's `.hint-jade` alone; this records the rest.
+
+**The gap this closes is the oldest confirmed one in the readiness map.**
+`myRole()` was exported from `store.js` and called by no screen module, so a
+`read` user reached an enabled `Send n changes`, pressed it, and nothing
+happened — no message, no refusal, no explanation. It shipped that way for as
+long as roles have existed.
+
+§4.4 ships as written: the button is **not rendered** for a `read` user rather
+than rendered disabled, and the `.hint-jade` block stands in its place with
+the approved sentence. Nothing names the absent button, and the harness
+asserts that with a regex for the phrasings someone would reach for later.
+
+§4.3's non-owner view ships in full — badges not chips, no resend, no swipe,
+no link section, the jade explainer — and §4.2's caret and `YOU` chip ship for
+the owner. §5's alternative 3 marker is on all three surfaces that name the
+trip, `aria-hidden` beside the name it duplicates (§11.4), yielding to sync
+warnings (§11.5), and absent from an owner's own trip. The arrival banner uses
+`.arrived`, branches by role, is dismissible and does not return (§9.6).
+
+**§12.1 is mitigated, not fixed.** `removePerson()` still has no owner guard;
+the gesture is simply not bound for a non-owner, which is the UI-level
+mitigation this document already describes. The data-layer gap stands.
+
+**Verified locally:** `test/role-and-identity.mjs`, 40 checks at 390 × 844, 0
+page errors, each role driven through the real screen. §10's CJK cases
+verified through `initialFor()` — 陳美玲 → 陳 and the single-character 李 —
+with the chip's meta line measured at width. **Verified in the emulator:**
+`two-phones.mjs` 65/65, re-run because this changes the sharing screens.

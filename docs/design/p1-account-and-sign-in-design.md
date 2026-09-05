@@ -229,3 +229,32 @@ That last sentence is `landOn()`'s actual behaviour, stated where the wait is.
 | An artboard for this document | **REJECTED** — six near-identical crops of one panel; two states are already captured |
 
 **No OPEN DECISION is raised by this document.**
+
+---
+
+## IMPLEMENTED — `63b9c06` (G-2, G-4) and `3453aa2` (G-1), 5 Sep 2026
+
+**Appended only. Nothing above this line was changed.**
+
+**G-2 and G-4** (batch 1). `state.signInNotice` carried pending, a user error
+and seven Firebase deployment failures in one string, in one amber box. Split
+as §5 requires: pending goes on the two `.sign-btn`s, the address refusal goes
+beside the email field in rust, and the note slot keeps only failures. §4's
+`Sending the link…` ships de-interpolated — the fifth such label, added to
+P0-5's list rather than kept as a local exception. `Use a different address`
+correctly gets nothing (R10).
+
+**G-1 · the return leg is announced at last** (batch 6). `restoreAccount()`
+computed a notice, `store.js` stored it on `state.session`, and nothing read
+it — the one flow whose whole point is that it finishes on a later launch was
+the one flow with no arrival. It is now one substituted sub-line on the
+account row, consumed on first read so it shows once, with no dismiss control,
+and an error code is deliberately not put there: a failure of an action the
+user started goes where failures go.
+
+**Verified locally:** the sign-in split in `test/pending-and-refusals.mjs`
+(56 checks); the return leg in `test/backend-gated.mjs` (25 checks), including
+that it is consumed once and that an error code never reaches the row.
+
+**§3's non-owner Share view and §12.1** are recorded against
+`p0-1-role-and-copy-identity-design.md`, implemented in `322098b`.
