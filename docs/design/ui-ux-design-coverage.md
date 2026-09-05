@@ -1,395 +1,328 @@
 # UI/UX Design Coverage — Travel Planner
 
-**Date:** 4 Sep 2026 (verified 14:15 UTC; visual baseline extended by the P0-6 verification sprint, 15:0x UTC — see `verification-sprint-p0-6.md`)
-**Baseline:** `weisze-yo/travel-planner` @ `main`, tree **`1d3df5956fb8`** — re-verified against the live repository for this pass.
-**⚠ The existing design documents are one commit stale.** They describe tree `4698f0e4a8b8`; `main` has moved. Six source files changed, one new module landed, and **three statements in the existing docs are now wrong**. See §0.2 before trusting any earlier claim.
-**Purpose:** answer one question — *have we intentionally designed and confirmed the UI and UX for every important feature, screen, state and interaction in the existing application?*
-**Not** a redesign. Nothing in `web/**` was changed. No new artboards were drawn for this pass.
+**Date:** 5 Sep 2026 · rewritten in full after the final broad design batch · **§0.3, §2 appearance/behaviour columns, §4.3 and §5 updated by the implementation-readiness audit (5/6 Sep).**
+**Baseline:** the working tree in this project (`web/**`, `firebase/**`), read this session. Every source claim below was re-verified against it; no application code was changed.
+**Purpose:** answer one question — *have we intentionally designed, and has the product owner confirmed, the UI and UX for every important feature, screen, state and interaction in this application?*
+**And to be a reliable map of remaining design risk** — which is why §1's vocabulary distinguishes *designed* from *confirmed* from *seen*.
 
-**Read with:** `existing-ui-audit.md` (behaviour + values) · `existing-ui-visual-reference.md` (the design language) · `new-feature-design.md` (three areas already designed, unconfirmed) · `multilingual-warning-strip-design.md` (one area already designed, unconfirmed) · `screens/current/*.png` (20 frames, 390 × 844).
+**Read with:** `final-implementation-readiness-review.md` (**start there**) · `implementation-readiness-map.md` (the implementation contract) · `overnight-final-design-review-pack.md` · `cross-flow-consistency-audit.md` (the eight contradictions and eleven ambiguities) · `p2-triage.md` · the thirteen canonical design documents listed in §5 · `screens/current/*.png` (20 frames), `screens/verify/*.png` (16 frames) and **`docs/design/screens/final/*.png` (28 frames, the readiness audit)** — all 390 × 844.
 
-**Source-of-truth order:** the running app → `web/js/**` + `web/css/app.css` → the captured frames → the prose in these docs.
-
----
-
-## 0. Headline
-
-| | Count |
-|---|---|
-| Meaningful screens/flows inventoried | **69** (19 routes + 6 global chrome surfaces, decomposed into flows) |
-| Behaviour **observed running** (UNDERSTOOD or PARTIAL) | **48** of 69 |
-| Behaviour **read in source only**, never observed | **21** of 69 |
-| **UX confirmed by you** | **0** |
-| **Visual design confirmed by you** | **0** |
-| Rows with a *captured visual baseline* (not the same as confirmed) | **41** of 69 |
-| Rows with **no verified appearance at all** | **28** of 69 |
-| Rows already **designed and awaiting sign-off** (the four design sessions) | **9** |
-| Rows carrying a **DESIGN DECISION REQUIRED** flag | **37** (40 distinct decisions: 7 P0 · 22 P1 · 11 P2) |
-
-### 0.1 How these are counted
-
-One row = one screen or flow. Every figure above is a count of §2 matrix rows, and the two visual figures partition them: **41 captured + 28 not verified = 69**. "Decision required" is *not* a third slice of that axis — a row can have a captured frame and still need a decision (Map home, the shopping footer, the note editor), which is why the 32 overlaps both columns.
-
-Three rows are new in this pass — trip-currency derivation, the location-lookup failure states, cross-tab sync — all newly landed behaviour that no design document covers.
-
-Two caveats the counts hide: Spend and Prep are captured **above the fold only**, and Trip delete is captured **at rest only**, not mid-gesture. Both are counted as captured.
-
-The two numbers that matter: **understanding is nearly complete, confirmation is at zero.** Nothing in this product has ever been explicitly signed off — the audit established what the app *does*, not what it *should* do. Per your instruction, existing code is not treated as confirmation.
+**Source-of-truth order:** the running app → `web/js/**` + `web/css/app.css` → the captured frames → the prose in these documents.
 
 ---
 
-## 0.2 Baseline drift — verified against `main` @ `1d3df5956fb8`
+## 0. Headline — every figure derived from the §2 rows
 
-Checked file-by-file against the local read-only copy (tree `4698f0e4a8b8`). **`app.css`, `index.html`, `sw.js` and 18 of the 20 screen modules are byte-identical** — the design language has not moved. What did:
-
-| File | Δ | What it is |
+| | Count | of |
 |---|---|---|
-| `web/js/currency.js` | **new**, 3,935 B | Keyless ISO 3166-1 → ISO 4217 country/currency table + symbol map |
-| `web/js/store.js` | +4,536 B | A new trip's currency is now **derived from the city typed into "City or area"**, via the reverse-geocoded country (`store.js` ~736). Three new failure notices |
-| `web/js/net.js` | +143 B | Returns `countryCode` from the Nominatim result |
-| `web/js/screens/trip.js` | +158 B | The "City or area" field takes a **rust warning hint** (`trip.locationNotice`) |
-| `web/js/persist.js` | +3,703 B | Storage/sharing work |
-| `web/js/sync.js` | +1,478 B | `reload()` — re-reads the outbox ledger on demand |
-| `web/js/app.js` | +313 B | A `storage` event listener: **another tab writing the ledger now refreshes this tab's sync dot and strip** |
-| `web/js/share.js` | +491 B | Sharing internals |
-| `web/js/screens/map.js` | −58 B | Trim, no visible change found |
-| `web/icons/` | **+3 files** | `icon-192`, `icon-512`, `icon-maskable-512` — **Android install icons** |
-| `firebase.emulators.json`, `test/` | **new** | Auth + Firestore emulator config and `firebase-tools` |
+| Meaningful screens/flows inventoried | **71** rows | — |
+| **Design CONFIRMED** by the product owner | **56** | 71 |
+| **UNDERSTOOD — not yet explicitly confirmed** | **14** | 71 |
+| **DESIGN DECISION REQUIRED** | **1** | 71 |
+| Behaviour **observed running** | **47** | 71 |
+| Behaviour **read in source only** | **23** | 71 |
+| Behaviour **not built at all** | **1** | 71 |
+| Appearance **CAPTURED** at 390 × 844 | **39** | 71 |
+| Appearance **VISUAL NOT VERIFIED** | **32** | 71 |
+| Rows carrying an **open decision** | **4** | 71 |
 
-### Three statements in the existing docs are now wrong
+**Arithmetic, so it is checkable:** 56 + 14 + 1 = 71 · 47 + 23 + 1 = 71 · 39 + 32 = 71. The subtotals at the head of each §2 block cover **rows, design status and appearance**; the behaviour figures are counted across the whole matrix (27 rows are marked `SOURCE-ONLY` and one `NOT BUILT`).
 
-1. **"Trip settings … close/delete trip"** (audit §3 row 12, §4, and the visual reference's screen list). **There is no close-trip and no delete-trip on Trip settings.** The last card is `START THIS TRIP FRESH` → `Empty this trip…`, which expands to an **inline rust confirm** ("This cannot be undone." / `Yes, empty the trip` / `Cancel`) and calls `clearTripContent()`. Deleting a trip happens only by swiping it on My trips. The audit's P1 framing of "the two most destructive actions in the app are unseen" was based on a feature that does not exist.
-2. **"`manifest.webmanifest` is referenced but absent → is Android install even in scope?"** Still absent — but three Android/maskable icons have now been committed. Android install is evidently **intended and half-done**, which turns an open question into a straightforward gap.
-3. **"Blocked on a second account / a real device"** (audit §17.5, visual reference §6). An **emulator harness now exists** (`firebase.emulators.json` with auth on 9099 and Firestore on 8080, `singleProjectMode`, plus `firebase-tools` in `test/`). The share → join → review round trip, the `published/{code}` rules and the local→account migration are **no longer blocked** — they are simply unexercised.
+**Design completeness: 56 of 71 rows = 79% confirmed, 99% either confirmed or understood, 1 row (1.4%) awaiting a decision before it can be designed.**
 
-### Newly landed behaviour that no design document covers
+> **A `CONFIRMED` row means the product owner approved the design. It does not mean the code matches it.** The readiness audit found three approved surfaces whose implementation contradicts the approved design, two of them on one screen — all three on rows that were already `CONFIRMED`, and one of them on a row that was already `CAPTURED`. The design column and the implementation are two different questions; `implementation-readiness-map.md` §3 answers the second.
 
-- **Currency now comes from the city.** Type "Kyoto" into a new trip and the trip prices in ¥/JPY. Nothing in the UI says this happened, and nothing offers to confirm it.
-- **Three new failure notices**, all written to `trip.locationNotice` at creation time:
-  - `Offline, so "X" could not be located — fix it from Trip settings once you have a signal.`
-  - `Could not find "X" — the map centre and currency are not set. Fix it from Trip settings.`
-  - `Could not look up "X" — the map centre and currency are not set. Fix it from Trip settings.`
-  **All three are only visible on Trip settings**, as a rust hint under one field. The mistake is made in the New trip modal, and the app immediately pushes the user to Paste an itinerary — so the notice sits on a screen they have no reason to open. Three copy strings that tell the user to go somewhere else are the app's only account of a silent failure that affects every money figure in the trip.
-- **Cross-tab sync.** Two tabs of the app now agree about what is queued. Never designed, never drawn.
-- **A second confirm-button destructive action.** `Empty this trip` joins `discardPending()` in using an inline confirm with an explicit "cannot be undone", against the app's stated single destructive pattern (swipe → in-row confirm → 6s undo). Two exceptions is no longer an exception.
+### 0.3 What the implementation-readiness audit changed (5/6 Sep)
 
-**Verification limit:** the deployed app at `travel-planner-3e0d3.web.app` was reached and its boot document matches `web/index.html`, which is byte-identical between the two trees — so the deployed build is treated as `main`. The 20 captured frames still match their source files (18 of 20 screen modules unchanged; `map.js`'s trim produced no visible difference, `trip.js`'s change is below the captured fold).
+**No row changed design status, and no approved decision was reopened.** What moved is appearance and behaviour, from the verification pass in §4.3 items 1–3 — 16 new frames at 390 × 844 in `docs/design/screens/final/`, driven through the real app in `web/verify.html`.
+
+| Row | Was | Now | Why |
+|---|---|---|---|
+| §F · Destination's other four panels | SOURCE-ONLY · VISUAL NOT VERIFIED | **OBSERVED · CAPTURED** (f04–f08) | all five panels opened and seen populated, below the fold |
+| §L · Below the fold | SOURCE-ONLY · VISUAL NOT VERIFIED | **OBSERVED · CAPTURED** (f11–f12) | scrolled end to end |
+| §L · `Empty this trip` | SOURCE-ONLY · VISUAL NOT VERIFIED | **OBSERVED · CAPTURED** (f13–f14) | confirm armed and read; the destructive commit was not run |
+| §D · Archive card | SOURCE-ONLY · VISUAL NOT VERIFIED | **OBSERVED · CAPTURED** (f19) | seen — **and it renders white-on-white.** The row's design is still confirmed; its implementation is finding M-4 |
+| §K · Changes on this phone | CAPTURED (v15, jade only) | **VISUAL NOT VERIFIED** | the jade receipt captured in v15 is the *undefined* `.hint-jade` rendering as 16px body text (f20), not the designed jade card. A frame of the wrong thing is not verification |
+
+**Also seen, without changing a row's score:** Trip prep and Spend below the fold (f23–f24 — Spend's day bars and category stack are unexercised by the demo's single purchase, so the *structure* is verified and the populated chart is not) · the Shopping list below the fold (f25) · the Plan's edit mode end to end (f15–f18) · **the first real long-text and CJK evidence** on the Plan and Destination (f26–f28 — both wrap cleanly, nothing clips).
+
+**Two suspected defects were measured and dismissed** rather than reported: the hero's `Photo placeholder` chip and the sub-route lane's time column both wrap in the capture renderer and **not** in a real browser (measured `scrollWidth === clientWidth`, single-line heights). Recorded because a capture artifact reported as a defect costs an implementer a day.
+
+### 0.1 What changed this pass, and why the numbers moved so far
+
+**Confirmation went from 0 to 56.** Every previous version of this document recorded *"UX confirmed: 0 · Visual confirmed: 0"* — nothing in the product had ever been signed off. The product owner has now approved the P0 baseline (P0-1 … P0-5), the three P1 batch documents, and the recommendations attached to them. Rows covered by an approved canonical document are therefore **CONFIRMED**, and the five new documents written this session bring the rest.
+
+**Two rows were added:** *install / first run on a phone* (§B) and *a refused read, mid-session* (§I). Both are real user-facing surfaces that no previous pass inventoried.
+
+**The appearance figures are not comparable with the previous pass** (41 of 69 → 36 of 71). The row set changed, and this pass scores a row `CAPTURED` **only when a frame shows the state the row describes** — so "captured at rest" no longer counts for a row about a mid-gesture state, and "captured above the fold" no longer counts for a row whose content is below it. The stricter rule is the point: the appearance column exists to say what has actually been seen.
+
+### 0.2 Nine claims in earlier versions of this document were wrong
+
+All nine were found by reading source this session, and all nine are corrected in a canonical document rather than silently here. **This is the single most useful output of the batch** — a matrix that misdescribes the app sends design effort at problems that do not exist and hides the ones that do.
+
+| # | The claim | The truth | Corrected in |
+|---|---|---|---|
+| 1 | "Removed from a shared trip" is designed nowhere | **Fully built** — and two of its three sentences contradict the store | `p1-absence-and-removal-design.md` §2 (RC-6) |
+| 2 | A place with no location "silently drops out of the map" | **Not silent** — the Plan card carries a standing amber chip and the add outcome names three taps | same, §4 (RC-7) |
+| 3 | "Delete a stop — swipe → in-row confirm → undo" on a live row | **A live stop cannot be swiped.** `✕` archives; only an archived row can be swiped | `p1-plan-editing-design.md` §6 (RC-9) |
+| 4 | The archive card is a P2 cosmetic, "collapsed archived stops" | **Half the app's destructive model**, and the reason the Plan needs no delete confirmation | same, §6 (RC-10) |
+| 5 | "The vacated slot" when a stop moves is an open question | **Not a decision** — lanes are derived from gaps, so the slot becomes free time by itself | same, §6.3 (RC-11) |
+| 6 | Plan's empty day needs the tier-1 treatment approved | **Already implemented**, dashed stubs and all | same, §9 (RC-12) |
+| 7 | "Five sync states in a **6px** dot, **no label**" | **8px**; all five carry an `aria-label`; **two carry a visible sentence** | `p1-status-visibility-design.md` §1 (RC-14/15) |
+| 8 | The warning strip's rank order | **Wrong in an approved document and in `remind.js`'s own comment.** The red loop reminder outranks stuck | same, §2 (RC-16) |
+| 9 | Destination's four tab bodies are "four screens, a batch of their own" | **One screen, five panels, all built.** They needed three approved systems applied, not a design | `p1-destination-tabs-design.md` §1 (RC-18) |
+
+Plus **two count corrections**: seven `|| '¥'` fallbacks are actually **eight** (RC-19), and P0-5's canonical pending-label list of sixteen is actually **eighteen** (X-4).
 
 ---
 
-## 1. Status vocabulary
+## 1. Status vocabulary — used exactly
 
-**Existing UI understood?**
+**Design status** — the column that matters:
 
 | Value | Means |
 |---|---|
-| `UNDERSTOOD` | Behaviour read in source **and** observed running |
-| `PARTIAL` | Some states observed, others only read |
-| `SOURCE-ONLY` | Read in source, never observed — needs a second account, a real drag, or a real sync failure |
+| `CONFIRMED` | A canonical design document covers this row **and the product owner has approved it.** The document is named in the row. |
+| `UNDERSTOOD — NOT YET EXPLICITLY CONFIRMED` | Behaviour is known and nothing about it is undecided, but **no design document covers it and nobody has signed it off.** Existing code is **not** treated as confirmation. |
+| `DESIGN DECISION REQUIRED` | A real product or UX question stands here, and it must be answered before the row can be designed. |
+| `IMPLEMENTATION-ONLY / LEGACY` | Exists, works, looks accidental, and is deliberately being left alone. |
+| `OUT OF SCOPE` | Deliberately excluded. |
 
-**UX confirmed? / Visual design confirmed?**
+**Behaviour:** `OBSERVED` (read in source **and** seen running, in whole or part) · `SOURCE-ONLY` (**behaviour not verified** — needs a second account, a real gesture, or a real failure) · `NOT BUILT`.
 
-| Value | Means |
+**Appearance:** `CAPTURED` (a 390 × 844 frame exists **of the state this row describes**) · `VISUAL NOT VERIFIED`.
+
+---
+
+## 2. Design coverage matrix — 71 rows
+
+### A · Trips & account — 7 rows · 6 confirmed · 1 understood · 4 captured
+
+| Screen/Flow | Design status | Behaviour | Appearance | Open decision | Pri |
+|---|---|---|---|---|---|
+| My trips — populated (running cover card · groups · stat chips · `Opening…`) | UNDERSTOOD | OBSERVED | CAPTURED (01) | — | P2 |
+| My trips — empty (signed out / signed in) | CONFIRMED — P0-3 §1, frame 1A + §1.3 | OBSERVED | VISUAL NOT VERIFIED | — | — |
+| New trip → paste hand-off (modal · the derived currency line · `Creating…`) | CONFIRMED — P0-2 §3–5 · P0-5 · silent refusal in dest-tabs §6 | OBSERVED | CAPTURED (03) | **Yes** — is the forced jump to Paste right? | P1 |
+| Account row · sign-in sheet · `CHECK YOUR MAIL` · the email return leg · `Signing out…` | CONFIRMED — `p1-account-and-sign-in-design.md` | OBSERVED | CAPTURED (01, 02) | — | P1 |
+| Trip cover picker | CONFIRMED — `p2-triage.md` §B.1 | SOURCE-ONLY | VISUAL NOT VERIFIED | — | P2 |
+| Delete a trip (swipe → latch → in-row confirm → 6s undo) | CONFIRMED — the destructive pattern, audit §8 | OBSERVED | CAPTURED (01, at rest) | — | — |
+| **Removed from a shared trip** (`.gone-card` · kept list · `Keep my side`) | CONFIRMED — absence §2 · **RC-6** | SOURCE-ONLY — **unreachable, IF-9** | VISUAL NOT VERIFIED | — | P1 |
+
+### B · Global chrome — 7 rows · 5 confirmed · 1 understood · 1 decision · 3 captured
+
+| Screen/Flow | Design status | Behaviour | Appearance | Open decision | Pri |
+|---|---|---|---|---|---|
+| Boot (bone cover + `MC` · `.boot-error`) | UNDERSTOOD | OBSERVED (cover) | CAPTURED (cover only) | — | P2 |
+| Tab bar (present / absent / borrowed parent tab) | CONFIRMED — recorded from `nav.js`, P1 review pack §6b | OBSERVED | CAPTURED | — | — |
+| Warning strip — one slot, **five ranked slots**, four sources | CONFIRMED — status-vis §2 · coverage-gaps §5 · **RC-16** | SOURCE-ONLY | VISUAL NOT VERIFIED | — | P1 |
+| Undo bar (one app-wide bar, 6s, nine callers) | CONFIRMED — status-vis §3 | SOURCE-ONLY | VISUAL NOT VERIFIED | — | P1 |
+| Cross-tab sync (`storage` listener) | CONFIRMED — coverage-gaps §4, **a deliberate nothing** | SOURCE-ONLY | VISUAL NOT VERIFIED | — | P2 |
+| Trip chip + sync dot (five states) | CONFIRMED — status-vis §1 · **RC-14/15** | OBSERVED | CAPTURED (rest state) | — | P1 |
+| **Install / first run on a phone** | **DESIGN DECISION REQUIRED** | **NOT BUILT** — icons committed, manifest absent | VISUAL NOT VERIFIED | **Yes — OD-8** | P2 |
+
+### C · Map & the day — 3 rows · 1 confirmed · 2 understood · 3 captured
+
+| Screen/Flow | Design status | Behaviour | Appearance | Open decision | Pri |
+|---|---|---|---|---|---|
+| Map home (tiles · **blank map** · pin focus · `.stranded` · legend) | CONFIRMED — status-vis §4 · **RC-17** | OBSERVED | CAPTURED (04, 05) | **Yes — OD-7**, should a blank map say why? | P1 |
+| Day switching (pills + weather glyph) | UNDERSTOOD | OBSERVED | CAPTURED | — | — |
+| Map sheet (3 detents · stop rows · Nearby) | UNDERSTOOD | OBSERVED | CAPTURED | — | — |
+
+### D · Planning — 12 rows · 12 confirmed · 5 captured
+
+| Screen/Flow | Design status | Behaviour | Appearance | Open decision | Pri |
+|---|---|---|---|---|---|
+| Plan — read (timeline · spine · derived length · `n things to look at`) | CONFIRMED — plan-editing | OBSERVED | CAPTURED (06) | — | — |
+| Plan — edit mode (jade pencil · two `.edge` inputs · `✕` · grips) | CONFIRMED — plan-editing §3 | OBSERVED | CAPTURED (07, f15–f18) | — | — |
+| Plan — empty day | CONFIRMED — plan-editing §9 · **RC-12, already implemented** | OBSERVED | CAPTURED (08) | — | — |
+| Plan — empty day, **joined trip** | CONFIRMED — P0-3 §1.5 / S-4 (no action) | SOURCE-ONLY | VISUAL NOT VERIFIED | — | P1 |
+| Add a stop (inline form · refuses out loud · pending on the button) | CONFIRMED — plan-editing §7 | OBSERVED | VISUAL NOT VERIFIED | — | P1 |
+| Edit a stop — the two times, commit on `change`, **`not a time`** | CONFIRMED — plan-editing §4 | OBSERVED | CAPTURED (07) | — | P1 |
+| Delete a stop — **the two-stage ladder** (`✕` → archive → swipe → undo) | CONFIRMED — plan-editing §6 · **RC-9** | OBSERVED — **stage 2 does not work**: map M-5 | VISUAL NOT VERIFIED (mid-gesture) | — | P1 |
+| Reorder stops (grip drag · `.dragging` / `.drop-into`) | CONFIRMED — plan-editing §5 | SOURCE-ONLY | VISUAL NOT VERIFIED | — | P1 |
+| Move a stop to another day (`MOVE TO` · `Moved to Day 4.`) | CONFIRMED — plan-editing §6.3 · **RC-11** | SOURCE-ONLY | VISUAL NOT VERIFIED — the `MOVE TO` chips are in f19; the `Moved to Day 4.` receipt is not built | — | P1 |
+| Warnings on a row (fact-first strip, four kinds) | CONFIRMED — P0-3 §2 | OBSERVED | VISUAL NOT VERIFIED (live) | — | P1 |
+| Free-time lanes → new sub route (lane · `+` · the lane form) | CONFIRMED — plan-editing §8 · **RC-13** | OBSERVED | VISUAL NOT VERIFIED | — | P1 |
+| Archive card (`REMOVED FROM THIS DAY`, dark) | CONFIRMED — plan-editing §6 · **RC-10** | OBSERVED | **CAPTURED (f19)** — and it renders **white-on-white**: map M-4 | — | P1 |
+
+### E · Sub routes — 2 rows · 2 confirmed · 1 captured
+
+| Screen/Flow | Design status | Behaviour | Appearance | Open decision | Pri |
+|---|---|---|---|---|---|
+| Sub route — arrange (3 stat tiles · `ok`/`tight` · the coverage line) | CONFIRMED — coverage-gaps §3 · absence §4.2 | OBSERVED | CAPTURED (v11, partial) | — | P1 |
+| Sub route — edit · edge markers · back-by form | CONFIRMED — coverage-gaps §3 | SOURCE-ONLY | VISUAL NOT VERIFIED | — | P1 |
+
+### F · Places — 7 rows · 6 confirmed · 1 understood · 3 captured
+
+| Screen/Flow | Design status | Behaviour | Appearance | Open decision | Pri |
+|---|---|---|---|---|---|
+| Destination — Info (`NEED TO KNOW`, filled and empty) | CONFIRMED — dest-tabs §1, §3 | OBSERVED | CAPTURED (09) | — | — |
+| Destination — the other four panels (Nearby / Must-see / Shop / Notes) | CONFIRMED — dest-tabs · **RC-18: built, not unwritten** | **OBSERVED** | **CAPTURED (f04–f08)** | — | P1 |
+| Destination — the stop that has gone | CONFIRMED — absence §3 | SOURCE-ONLY | VISUAL NOT VERIFIED | — | P1 |
+| Facts / shot / item editors + **the silent-refusal rule** | CONFIRMED — dest-tabs §5, §6 | OBSERVED | VISUAL NOT VERIFIED | — | P1 |
+| Nearby — populated (grouped · chips · sort) | UNDERSTOOD | OBSERVED | CAPTURED (10) | — | — |
+| Nearby — three empty variants | CONFIRMED — P0-3 §1 (tier 2) | SOURCE-ONLY | VISUAL NOT VERIFIED | — | P1 |
+| Add a place · **a place with no position** | CONFIRMED — absence §4 · **RC-7** | SOURCE-ONLY | VISUAL NOT VERIFIED | — | P1 |
+
+### G · Lists & money — 5 rows · 3 confirmed · 2 understood · 3 captured
+
+| Screen/Flow | Design status | Behaviour | Appearance | Open decision | Pri |
+|---|---|---|---|---|---|
+| Shopping list (populated · empty · filters · footer spend card) | CONFIRMED — P0-3 §1 · P0-2 §7.1 | OBSERVED | CAPTURED (11) | — | P1 |
+| Add / correct an item (`itemEditor` · swipe-delete) | CONFIRMED — dest-tabs §5–6 | OBSERVED | VISUAL NOT VERIFIED | — | P2 |
+| Currency from the city (inferred · unknown · corrected · joined) | CONFIRMED — P0-2 | SOURCE-ONLY | VISUAL NOT VERIFIED | — | — |
+| **Spend report** (hero · day bars · category stack · accuracy · two empties) | **UNDERSTOOD — NOT YET EXPLICITLY CONFIRMED** | OBSERVED | CAPTURED (12, f23) — the demo's one purchase leaves the day bars and category stack unexercised | — | P1 |
+| **Trip prep** (progress · what-to-wear · packing rows · filter) | **UNDERSTOOD — NOT YET EXPLICITLY CONFIRMED** | OBSERVED | CAPTURED (13, f24) | — | P1 |
+
+### H · Log & notes — 4 rows · 2 confirmed · 2 understood · 2 captured
+
+| Screen/Flow | Design status | Behaviour | Appearance | Open decision | Pri |
+|---|---|---|---|---|---|
+| Log — populated (day cards · place heads · photo strips · `.recap`) | **UNDERSTOOD — NOT YET EXPLICITLY CONFIRMED** | OBSERVED | CAPTURED (14) | — | P1 |
+| Log — empty | CONFIRMED — P0-3 §1, frame 1C | SOURCE-ONLY | VISUAL NOT VERIFIED | — | P1 |
+| Log on a shared trip (the corrected promise line) | CONFIRMED — P0-1 §7 | SOURCE-ONLY | VISUAL NOT VERIFIED | — | P1 |
+| **Note editor** (new · edit · place picker · photo attach · photo failed · delete) | **UNDERSTOOD — NOT YET EXPLICITLY CONFIRMED** | OBSERVED | CAPTURED (15, new only) | — | P1 |
+
+### I · Sharing, joining, receiving — 11 rows · 9 confirmed · 2 understood · 8 captured
+
+| Screen/Flow | Design status | Behaviour | Appearance | Open decision | Pri |
+|---|---|---|---|---|---|
+| Share — offer phase (`What they get` first · the role choice in the sharing moment) | CONFIRMED — P0-1 §4.1 · share-flow §3 (B-11, B-12) | OBSERVED | CAPTURED (17, v01) | — | — |
+| Share — manage (owner and **non-owner**) | CONFIRMED — P0-1 §4.2–4.3 · share-flow §3.2–3.3 | OBSERVED | CAPTURED (v03) | — | — |
+| Send an update · **the sent state** | CONFIRMED — share-flow §3.4 (B-4) · P0-1 §4.4 | OBSERVED | CAPTURED (v02) | — | — |
+| The link itself (live · off · expired · opens · revoke · **role changeable**) | CONFIRMED — share-flow §3.2 (OD-1 approved) | SOURCE-ONLY | VISUAL NOT VERIFIED | — | P1 |
+| Join — live invite (link bar · inviter · grant line · preview · four promises · foot) | CONFIRMED — share-flow §4 | OBSERVED | CAPTURED (v10) | — | — |
+| Join — sign-in phase | CONFIRMED — `p1-account-and-sign-in-design.md` | OBSERVED | CAPTURED (02, panel only) | — | P1 |
+| Join — already joined | UNDERSTOOD (IF-4 recorded) | SOURCE-ONLY | VISUAL NOT VERIFIED | — | P1 |
+| Join — dead link (expired · off · missing · offline) | UNDERSTOOD | OBSERVED | CAPTURED (20, expired) | — | — |
+| Receiving an update — the banner, and `Later` collapsing | CONFIRMED — share-flow §6.2 (B-1) | OBSERVED | CAPTURED (v04) | — | — |
+| Review an update (three-way · stacked row · undo · sticky foot · receipt) | CONFIRMED — P0-4 · bulk-actions refinement | OBSERVED | CAPTURED (v05–v09) | — | — |
+| **A refused read, mid-session** | CONFIRMED — absence §6 | SOURCE-ONLY | VISUAL NOT VERIFIED | — | P1 |
+
+### J · Import — 4 rows · 3 confirmed · 1 understood · 2 captured
+
+| Screen/Flow | Design status | Behaviour | Appearance | Open decision | Pri |
+|---|---|---|---|---|---|
+| Paste — input (`WHAT IT LOOKS FOR`, incl. `第三天`) | CONFIRMED — paste §1 | OBSERVED | CAPTURED (19, v12) | — | — |
+| Paste — review rows (**the gate inverted**, one ladder, one glyph, three validators) | CONFIRMED — paste §2–4 (OD-2 approved) | OBSERVED | CAPTURED (v13) | — | — |
+| Paste — ready → saving → done → **failure** | CONFIRMED — paste §8 | SOURCE-ONLY | VISUAL NOT VERIFIED | — | P1 |
+| Trip file import (JSON) | UNDERSTOOD — receipt **deferred**, `p2-triage.md` §B.4 | SOURCE-ONLY | VISUAL NOT VERIFIED | — | P2 |
+
+### K · Offline & sync — 4 rows · 4 confirmed · 2 captured
+
+| Screen/Flow | Design status | Behaviour | Appearance | Open decision | Pri |
+|---|---|---|---|---|---|
+| Map kept on this phone (cards · **the jade receipt** · storage line · swipe) | CONFIRMED — coverage-gaps §1.1 | OBSERVED | CAPTURED (18) | — | — |
+| Draw an area (shades · box + grips · note card · size) | CONFIRMED — `p2-triage.md` §B.2 (two defects designed out) | OBSERVED | CAPTURED (v14) | — | P2 |
+| Tile download (bar · honest estimate · `Stop` · failed-tile caveat) | CONFIRMED — coverage-gaps §1 | SOURCE-ONLY | VISUAL NOT VERIFIED | — | P1 |
+| Changes on this phone (jade · **rust stuck** · retry · `discardPending`) | CONFIRMED — coverage-gaps §2 (OD-3 approved) | OBSERVED | **VISUAL NOT VERIFIED** — v15's jade is the undefined `.hint-jade` (f20), not the designed card | — | P1 |
+
+### L · Trip settings — 5 rows · 3 confirmed · 2 understood · 3 captured
+
+| Screen/Flow | Design status | Behaviour | Appearance | Open decision | Pri |
+|---|---|---|---|---|---|
+| Above the fold (`THE TRIP` · **MONEY + provenance** · weather source) | CONFIRMED — P0-2 §6 | OBSERVED | CAPTURED (16, f09–f10) — MONEY's three-across row misaligns at 390: map M-12 | — | — |
+| Below the fold (forecast · offline · paste · export JSON · share) | **UNDERSTOOD — NOT YET EXPLICITLY CONFIRMED** | **OBSERVED** | **CAPTURED (f11–f12)** | — | P1 |
+| **Empty this trip** (the second confirm exception · the joined-copy base) | CONFIRMED — absence §5 | **OBSERVED** (confirm armed; commit not run) | **CAPTURED (f13–f14)** — the confirm still carries the pre-correction copy: map M-11 | **Yes — OD-6**, may it delete the Log? | P1 |
+| Location lookup failed (four rewritten notices) | CONFIRMED — P0-2 §9 | SOURCE-ONLY | VISUAL NOT VERIFIED | — | — |
+| No trip open (fallback render) | UNDERSTOOD — `p2-triage.md` §A | SOURCE-ONLY | VISUAL NOT VERIFIED | — | P2 |
+
+---
+
+## 3. Cross-cutting concerns — not rows, designed once
+
+Excluded from the 71 deliberately: each is a rule that applies across rows, and counting them would double-count the rows they govern.
+
+| Concern | Status |
 |---|---|
-| `NOT CONFIRMED` | Understood, never explicitly confirmed by you |
-| `DESIGNED — AWAITING SIGN-OFF` | A design session produced a treatment; you have not approved it |
-| `DECISION REQUIRED` | There is a real question here; see §3 |
-| `CAPTURED` | A 390 × 844 frame of the current appearance exists |
-| `NOT VERIFIED` | No frame, no observation — appearance unknown |
-| `LEGACY` | Implementation-only; exists but looks accidental |
-| `OUT OF SCOPE` | Deliberately excluded |
+| **Pending / loading** | CONFIRMED — P0-5, eleven rules, **eighteen** labels (X-4), zero CSS |
+| **Destructive actions** | CONFIRMED — swipe → in-row confirm → 6s undo, with **the confirm-button test** and exactly two exceptions (audit §8) |
+| **Undo** | CONFIRMED — one app-wide bar; the label names the thing (status-vis §3) |
+| **Empty states** | CONFIRMED — three tiers, the shared-kinds limit, and the first real application in dest-tabs §3 |
+| **Warning strips** | CONFIRMED — fact-first, four kinds, three slots, two invariants; one presentational reuse outside `dayIssues()` (audit §7) |
+| **Shared / joined identity** | CONFIRMED — P0-1, five surfaces, the marker yields to sync warnings |
+| **Currency** | CONFIRMED — P0-2; **seven** `\|\| '¥'` fallbacks plus one `symbol = '¥'` default parameter = **eight sites** (RC-19, reworded X-10) |
+| **A form that refuses** | CONFIRMED — dest-tabs §6, canonical app-wide, four call sites |
+| **Navigation return** | CONFIRMED — **PR-2**: a return lands on the thing the action was about (audit §9) |
+| **The app never invents** | CONFIRMED — **PR-1**: no stock photo, no avatar, no placeholder person, no approximate position (audit §2) |
+| **Long content & CJK** | CONFIRMED — S-2 (Latin-first on `body`), plus the per-surface cases in every document's self-audit |
+| **Focus / keyboard** | IMPLEMENTATION-ONLY / LEGACY — `input:focus` only; extending it is one rule, scheduled not designed (`p2-triage.md` §A) |
+| **Reduced motion** | IMPLEMENTATION-ONLY / LEGACY — partial; P0-5 R3 means the surface only shrinks (`p2-triage.md` §D) |
+| **Permission / access failure** | CONFIRMED — absence §6 (mid-session) + the existing dead-link endings (cold open) |
+| **RTL** | OUT OF SCOPE — no claim made (P0-3 §2.3) |
+| **Responsive** | OUT OF SCOPE — one mobile layout, 520px cap |
+| **Dark mode** | OUT OF SCOPE — `color-scheme: light` |
 
 ---
 
-## 2. Design coverage matrix
+## 4. Remaining design risk, ranked
 
-### A. Trips & account
+**This is the section to read if you read only one.** Risk is *what an implementer could still get wrong*, not what is unpainted.
 
-| Area | Screen/Flow | States that exist or should | UI understood? | UX confirmed? | Visual confirmed? | Needs decision? | Pri |
-|---|---|---|---|---|---|---|---|
-| Trips | My trips — populated | running-trip cover card · coming-up group · `FINISHED` group · stat chips · footer hint · `Opening…` busy line | UNDERSTOOD | NOT CONFIRMED | CAPTURED (01) | No | — |
-| Trips | My trips — empty | first-use signed-out · first-use signed-in (different copy) | UNDERSTOOD | DESIGNED — AWAITING SIGN-OFF (`new-feature-design` 1A) | NOT VERIFIED | **Yes** — approve tier-1 full-page treatment | P0 |
-| Trips | New trip → paste hand-off | blocking scrim + bottom modal · validation (name required, silent) · `Creating…` · auto-jump to Paste | UNDERSTOOD | NOT CONFIRMED | CAPTURED (03) | **Yes** — is the forced jump to Paste right? | P1 |
-| Trips | Account row + sign-in | signed out · signed in · sign-in sheet · `CHECK YOUR MAIL` · email round-trip return · `Signing out…` | PARTIAL | NOT CONFIRMED | CAPTURED (01, 02) | **Yes** — the email return path is unrendered | P1 |
-| Trips | Trip cover picker | photos-from-log · tints · "open this trip first" refusal · `Shrinking it…` · photo-failed | SOURCE-ONLY | NOT CONFIRMED | NOT VERIFIED | No | P2 |
-| Trips | Delete a trip | swipe → latch → in-row confirm → 6s undo · `Deleting…` | UNDERSTOOD | NOT CONFIRMED | CAPTURED (partial, 01) | No | — |
-| Trips | Removed from a shared trip | `.gone-card` · "keep my side as its own trip" | SOURCE-ONLY | DECISION REQUIRED | NOT VERIFIED | **Yes** — when does this fire, and what survives? | P1 |
+### 4.1 Must be settled before implementation — 4 items
 
-### B. Global chrome
-
-| Area | Screen/Flow | States | UI understood? | UX confirmed? | Visual confirmed? | Needs decision? | Pri |
-|---|---|---|---|---|---|---|---|
-| Chrome | Boot | bone cover + `MC` mark · `.boot-error` rust card | PARTIAL | NOT CONFIRMED | CAPTURED (cover only) | No | P2 |
-| Chrome | Tab bar | present inside a trip · **absent** on trips/join/stuck/share · borrowed parent tab on push screens | UNDERSTOOD | NOT CONFIRMED | CAPTURED | No | — |
-| Chrome | Warning strip (one slot, four sources) | empty (most of the day) · loop reminder (+ estimated fine print, dismiss) · queued · stuck (red) · outside-kept-area | SOURCE-ONLY | DECISION REQUIRED | NOT VERIFIED | **Yes** — the ranking, and "said once" dismissal | P1 |
-| Chrome | Undo bar | one app-wide ink bar, 6s, any deletion | SOURCE-ONLY | NOT CONFIRMED | NOT VERIFIED | No | P1 |
-| Chrome | Cross-tab sync | a `storage` listener refreshes this tab's dot and strip when another tab writes the ledger | SOURCE-ONLY | NOT CONFIRMED | NOT VERIFIED | No | P2 |
-| Chrome | Trip chip + sync dot | saving (ring) · saved (jade) · queued (amber) · stuck (red) · local-only (grey) | PARTIAL | DECISION REQUIRED | CAPTURED (rest state) | **Yes** — five states in a 6px dot, no label | P1 |
-
-### C. Map & the day
-
-| Area | Screen/Flow | States | UI understood? | UX confirmed? | Visual confirmed? | Needs decision? | Pri |
-|---|---|---|---|---|---|---|---|
-| Map | Map home | tiles loaded · **no tiles (grey `#E9EAE6`)** · pin focus · `.stranded` banner · legend | UNDERSTOOD | DECISION REQUIRED | CAPTURED (04, 05) | **Yes** — offline map and failed map look identical | P1 |
-| Map | Day switching | day pills w/ weather glyph · past/current/future day · empty day | UNDERSTOOD | NOT CONFIRMED | CAPTURED | No | — |
-| Map | Map sheet | 3 detents (30/50/82%) remembered per session · stop rows · `No stops yet` · Nearby | UNDERSTOOD | NOT CONFIRMED | CAPTURED (04) | No | — |
-
-### D. Planning (Plan)
-
-| Area | Screen/Flow | States | UI understood? | UX confirmed? | Visual confirmed? | Needs decision? | Pri |
-|---|---|---|---|---|---|---|---|
-| Plan | Plan — read | timeline · derived end/duration · weather banner · `n things to look at` | UNDERSTOOD | NOT CONFIRMED | CAPTURED (06) | No | — |
-| Plan | Plan — edit mode | pencil turns jade in place · times become inputs · badges become rust `✕` · grips appear | UNDERSTOOD | NOT CONFIRMED | CAPTURED (07) | No | — |
-| Plan | Plan — empty day | weather still shown · `emptyDay()` copy · two implied actions | UNDERSTOOD | DESIGNED — AWAITING SIGN-OFF (1B) | CAPTURED (08) | **Yes** — approve the tier-1 in-screen block | P0 |
-| Plan | Plan — empty day, **joined trip** | same day, someone else's copy | SOURCE-ONLY | DESIGNED — AWAITING SIGN-OFF (1F) | NOT VERIFIED | **Yes** — approve the tier-3 jade card / no-ink rule | P0 |
-| Plan | Add a stop | inline add in edit mode · guessed values | PARTIAL | NOT CONFIRMED | NOT VERIFIED | No | P1 |
-| Plan | Edit a stop | inline time/name commit on `change`, not keystroke | UNDERSTOOD | DECISION REQUIRED | CAPTURED (07) | **Yes** — commit-on-blur is invisible; no save affordance | P1 |
-| Plan | Delete a stop | swipe → latch 88px → in-row confirm → undo | UNDERSTOOD | NOT CONFIRMED | NOT VERIFIED (mid-gesture) | No | P1 |
-| Plan | Reorder stops | grip drag · `.dragging` / `.drop-into` | SOURCE-ONLY | NOT CONFIRMED | NOT VERIFIED | No | P1 |
-| Plan | Move a stop to another day | picker · consequence for the day it leaves | SOURCE-ONLY | DECISION REQUIRED | NOT VERIFIED | **Yes** — what does the vacated slot do? | P1 |
-| Plan | Warnings on a row | `OUT OF ORDER` · `OVERLAPS` · named fix (first ink, alternatives ghost) | PARTIAL | DESIGNED — AWAITING SIGN-OFF (`multilingual-warning-strip`) | NOT VERIFIED (live) | **Yes** — approve structure D + Latin-first stack | P0 |
-| Plan | Free-time lanes → new sub route | lane stub · `+` · lane sheet · no-positioned-stops fallback copy | PARTIAL | DECISION REQUIRED | NOT VERIFIED | **Yes** — can a loop exist on a day with no stops? | P1 |
-| Plan | Archive card | dark `.dark-card`, collapsed archived stops | SOURCE-ONLY | NOT CONFIRMED | NOT VERIFIED | No | P2 |
-
-### E. Sub routes
-
-| Area | Screen/Flow | States | UI understood? | UX confirmed? | Visual confirmed? | Needs decision? | Pri |
-|---|---|---|---|---|---|---|---|
-| Sub | Sub route — arrange | translucent header · amber pins + ink slack pin · three stat tiles (`YOU HAVE` / `TRAVELLING` / `TO SPEND`) · **`.loop-row` list still below the default detent** | PARTIAL | DECISION REQUIRED | CAPTURED (v11, partial) | **Yes** — `ok`/`tight` variants were not triggered; the row list needs a real drag | P1 |
-| Sub | Sub route — edit / back-by | reorder · drop a stop · back-by form · switch loop | SOURCE-ONLY | DECISION REQUIRED | NOT VERIFIED | **Yes** — what does missing the back-by time do? | P1 |
-
-### F. Places
-
-| Area | Screen/Flow | States | UI understood? | UX confirmed? | Visual confirmed? | Needs decision? | Pri |
-|---|---|---|---|---|---|---|---|
-| Dest | Destination — Info | hatched hero · maps buttons · underline tabs w/ counts · `NEED TO KNOW` filled · **`NEED TO KNOW` empty** | UNDERSTOOD | NOT CONFIRMED | CAPTURED (09) | No | — |
-| Dest | Destination — other four tabs | Nearby / Must-see / Shop / Notes — each with its own empty state | SOURCE-ONLY | DESIGNED (empties only, 1E) | NOT VERIFIED | **Yes** — four unseen tab bodies behind a seen tab row | P1 |
-| Dest | Destination — stop gone | "This stop is no longer on your plan." — a bare `.empty`, no way back | SOURCE-ONLY | DECISION REQUIRED | NOT VERIFIED | **Yes** — a dead end with no action | P1 |
-| Dest | Facts editor / shot editor / item editor | scrim + bottom modal + `.form`, three variants | PARTIAL | NOT CONFIRMED | NOT VERIFIED | No | P1 |
-| Nearby | Nearby — populated | grouped-by-stop (day scope) · single-anchor scope · category chips · sort menu | UNDERSTOOD | NOT CONFIRMED | CAPTURED (10) | No | — |
-| Nearby | Nearby — three empty variants | nothing around the day · nothing around this stop · nothing in this category | SOURCE-ONLY | DESIGNED — AWAITING SIGN-OFF (tier 2) | NOT VERIFIED | No | P1 |
-| Nearby | Add a place | found · **saved without a location** (drops off map + route) · dock naming the loop | SOURCE-ONLY | DECISION REQUIRED | NOT VERIFIED | **Yes** — a place that silently cannot be routed | P1 |
-
-### G. Lists & money
-
-| Area | Screen/Flow | States | UI understood? | UX confirmed? | Visual confirmed? | Needs decision? | Pri |
-|---|---|---|---|---|---|---|---|
-| Shop | Shopping list | populated · empty · day/place filters · ticked + paid input · footer spend card | UNDERSTOOD | DESIGNED (empty only, 1D) | CAPTURED (11) | **Yes** — approve "remove the footer, don't zero it" | P1 |
-| Shop | Add / correct an item | add form · `itemEditor` modal · swipe-delete | PARTIAL | NOT CONFIRMED | NOT VERIFIED | No | P2 |
-| Money | Currency from the city | derived from the reverse-geocoded country at trip creation · derived-and-silent · not-derived · manual override on Trip settings | SOURCE-ONLY | DECISION REQUIRED | NOT VERIFIED | **Yes** — a guess that sets every money figure, never shown as a guess | **P0** |
-| Spend | Spend report | ink hero · day bars + tap-to-filter · category stack · accuracy tracks · purchase list · two empties | PARTIAL | NOT CONFIRMED | CAPTURED (12, above fold) | No | P1 |
-| Prep | Trip prep | progress · what-to-wear · what-I-am-bringing · packing rows w/ where-chips · category filter | PARTIAL | NOT CONFIRMED | CAPTURED (13, above fold) | No | P1 |
-
-### H. Log & notes
-
-| Area | Screen/Flow | States | UI understood? | UX confirmed? | Visual confirmed? | Needs decision? | Pri |
-|---|---|---|---|---|---|---|---|
-| Log | Log — populated | day cards · amber in-progress day · place head rows · photo strips · footer chips · `.recap` | UNDERSTOOD | NOT CONFIRMED | CAPTURED (14) | No | — |
-| Log | Log — empty | its own full-screen variant (no day cards at all) | SOURCE-ONLY | DESIGNED — AWAITING SIGN-OFF (1C, proposes showing the day scaffold) | NOT VERIFIED | **Yes** — scaffold-anyway vs today's bare sentence | P1 |
-| Log | Log on a shared trip | the "never shared" promise line, naming the other travellers | SOURCE-ONLY | NOT CONFIRMED | NOT VERIFIED | No | P1 |
-| Note | Note editor | new · edit existing · place picker · time · photo attach · **photo failed** · inline-storage notice · delete | PARTIAL | NOT CONFIRMED | CAPTURED (15, new only) | **Yes** — no explicit save state; `Save` is always live | P1 |
-
-### I. Sharing, joining, receiving
-
-| Area | Screen/Flow | States | UI understood? | UX confirmed? | Visual confirmed? | Needs decision? | Pri |
-|---|---|---|---|---|---|---|---|
-| Share | Share — before a link exists | role radios · expiry chips · jade explainer | UNDERSTOOD | NOT CONFIRMED | CAPTURED (17) | No | — |
-| Share | Share — after (manage) | offer phase · linked ("What they get" 3 bullets + `Nothing to send`) · people list w/ `OWNER` badge · per-person role chip · CJK initial | UNDERSTOOD | DECISION REQUIRED | CAPTURED (v01–v03) | **Yes** — the role model is **enforced in the store and unrepresented in the UI**: a `read` user gets an enabled `Send n changes` that silently no-ops | **P0** |
-| Share | Send an update | `Send n changes` (jade) · `Nothing to send` (ghost, disabled) · **no sent state** · no `canPublish()` check on the button | UNDERSTOOD | DECISION REQUIRED | CAPTURED (v02) | **Yes** — what does the sender see after sending, and does a `read` role see the button at all? | **P0** |
-| Share | The link itself | live · switched off · expired · opened-n-times · revoke | SOURCE-ONLY | NOT CONFIRMED | NOT VERIFIED | No | P1 |
-| Join | Join — live invite | from-line · big name · preview card of **the selected day, not Day 1** · **four** promises · sticky foot (still below fold) | UNDERSTOOD | DECISION REQUIRED | CAPTURED (v10) | **Yes** — which day the preview shows (D-4); + 3 recorded layout defects | P1 |
-| Join | Join — sign-in phase | shared `signInPanel()` · local-trips migration copy | PARTIAL | NOT CONFIRMED | CAPTURED (02, panel only) | No | P1 |
-| Join | Join — already joined | "Open this trip", deliberately not an error | SOURCE-ONLY | NOT CONFIRMED | NOT VERIFIED | No | P1 |
-| Join | Join — dead link | expired · switched off · missing · **offline** · + "the other endings" cards | PARTIAL | NOT CONFIRMED | CAPTURED (20, expired) | No | — |
-| Plan | Receiving an update | `.moved` banner on Plan · ink `See what changed` + **ghost `Later`** (undocumented) | UNDERSTOOD | DECISION REQUIRED | CAPTURED (v04) | **Yes** — is one banner on one screen enough, and what does `Later` do (D-1)? | P1 |
-| Review | Review an update | entries as `.sides` (**every value wraps at 390px**) · rename adopts **their** title · added-row asymmetry · bulk actions ~2 screens below fold · **receipt is ephemeral, decisions have no undo** · CJK held up | UNDERSTOOD | DESIGNED — AWAITING SIGN-OFF (3A/3B/3C) | CAPTURED (v05–v09) | **Yes** — approve the redesign; decide conflict, undo + receipt (D-2), rename framing (D-5) | **P0** |
-
-### J. Import
-
-| Area | Screen/Flow | States | UI understood? | UX confirmed? | Visual confirmed? | Needs decision? | Pri |
-|---|---|---|---|---|---|---|---|
-| Paste | Paste — input | intro · mono textarea · Example / Clear / word count · `WHAT IT LOOKS FOR` (incl. `第三天`, `下午3:00`) · nothing-pasted error | UNDERSTOOD | NOT CONFIRMED | CAPTURED (19) | No | — |
-| Paste | Paste — review rows | day groups + `FROM THE TEXT` badge · rows naming each guess in amber · **up to ten controls in one row** (`Keep 1h`/`Set the end time`/`No end time` + `MOVE TO` D1–D6 + `and the rest below it`) · tick-every-row gate | UNDERSTOOD | DECISION REQUIRED | CAPTURED (v13) | **Yes** — the gate is far heavier than documented (D-6) | **P0** |
-| Paste | Ready to save → done | `nothing written yet` summary · `TWO THINGS IT DID NOT DO` (unlocated stops) · `Adding them to the trip…` · result | SOURCE-ONLY | DECISION REQUIRED | NOT VERIFIED | **Yes** — what does "done" look like, and where does it land? | P1 |
-| Paste | Trip file import (JSON) | `Reading x…` · ok · rejected with reason · `Making x…` → new trip | SOURCE-ONLY | NOT CONFIRMED | NOT VERIFIED | No | P2 |
-
-### K. Offline & sync
-
-| Area | Screen/Flow | States | UI understood? | UX confirmed? | Visual confirmed? | Needs decision? | Pri |
-|---|---|---|---|---|---|---|---|
-| Offline | Map kept on this phone | empty · populated cards · **amber uncovered caveat** · storage line · swipe-remove · refresh | UNDERSTOOD | NOT CONFIRMED | CAPTURED (18) | No | — |
-| Offline | Draw an area | dimmed shades · white box + 4 grips · `.area-note` · size + MB estimate. **Note card overlaps its own top-left grip; attribution sits inside the shade** | UNDERSTOOD | NOT CONFIRMED | CAPTURED (v14) | No — 2 P2 defects recorded | P2 |
-| Offline | Tile download | progress bar · bytes/tiles counter · `Stop` · failed-with-reason · wait-for-wifi | SOURCE-ONLY | NOT CONFIRMED | NOT VERIFIED | No | P1 |
-| Sync | Changes on this phone | **jade nothing-waiting captured** (incl. `Save a copy`/`Share`); header can read "0 waiting · oldest 1 Sept" — self-contradictory. Rust `.stuck-why` **structurally unverifiable on the local backend** | PARTIAL | DECISION REQUIRED | CAPTURED (v15, jade only) | **Yes** — `discardPending()` is irreversible and breaks the app's one destructive pattern | P1 |
-
-### L. Trip settings
-
-| Area | Screen/Flow | States | UI understood? | UX confirmed? | Visual confirmed? | Needs decision? | Pri |
-|---|---|---|---|---|---|---|---|
-| Settings | Trip settings — above the fold | `THE TRIP` form · `Saving…` notice · MONEY (symbol/codes/rate source) · weather source | UNDERSTOOD | NOT CONFIRMED | CAPTURED (16) | No | — |
-| Settings | Trip settings — below the fold | FORECAST · offline block · paste · **export JSON** · share · `START THIS TRIP FRESH` w/ counts | SOURCE-ONLY | NOT CONFIRMED | NOT VERIFIED | No — corrected: there is no close/delete trip here | P1 |
-| Settings | Empty this trip | `Empty this trip…` → inline rust confirm → `clearTripContent()`, **irreversible**, no undo | SOURCE-ONLY | DECISION REQUIRED | NOT VERIFIED | **Yes** — second confirm-button destructive action | P1 |
-| Settings | Location lookup failed | three `locationNotice` strings (offline / not found / lookup failed), shown **only** as a rust hint on Trip settings | SOURCE-ONLY | DECISION REQUIRED | NOT VERIFIED | **Yes** — failure is invisible where it is caused | **P0** |
-| Settings | No trip open | fallback render | SOURCE-ONLY | NOT CONFIRMED | NOT VERIFIED | No | P2 |
-
-### Cross-cutting states (not screens, but they must be designed once)
-
-| Concern | Where it appears | Status | Needs decision? | Pri |
-|---|---|---|---|---|
-| **Pending / loading** | `busy` string in trips, paste, area, join; `notice = 'Saving…'` in trip settings; real progress bar only in Draw-an-area | LEGACY — an amber text line at the top of a scroller, often far from the control pressed | **Yes** — one pattern, or leave as-is | **P0** |
-| **Long content & CJK** | plan-card titles, day headers, sub-route names, trip names, `areaSpan`, note text, Review values | Designed for **warnings only**; unaddressed everywhere else | **Yes** — scope the Latin-first stack to names or to `body` | P1 |
-| **Shared / read-only** | nowhere — roles govern publishing, not permission; no screen renders a read-only state | DECISION REQUIRED | **Yes** — does a joined copy have any visible identity? | **P0** |
-| **Permission / access** | Firestore rules only (`published/{code}`: get-by-code, list denied) | OUT OF SCOPE for UI, but the *failure* of a rule has no screen | **Yes** — what does a refused read look like? | P1 |
-| **Focus / keyboard** | inputs only; no visible focus on any button, pill, tab or swipe row | LEGACY | No — accept or schedule | P2 |
-| **Reduced motion** | honoured for swipe + sync ring; ignored for sheet settle, pin focus, boot fade | LEGACY | No | P2 |
-| **Responsive** | one mobile layout, 520px cap, one cosmetic breakpoint at 560px | OUT OF SCOPE (confirmed intent) | No | — |
-| **Dark mode** | `color-scheme: light`, no `prefers-color-scheme` rule | OUT OF SCOPE | No | — |
-
----
-
-## 3. Design gaps, grouped
-
-### A. UX decisions
-
-1. **Roles have no consequence.** `share.js` says a role is "about publishing, not permission" — yet the Share screen offers "Can send updates" vs "Receives updates" as if it were access control, and no screen anywhere renders differently for a joined copy. Does a joined trip get a visible identity?
-2. **What the sender sees after Send an update.** There is a jade `Send n changes` button and no sent state, no delivery indication, no "3 people have it".
-3. **Conflict.** `review.js` cannot distinguish "you changed this too" from "you never touched it", so "keep mine" sometimes silently discards work and sometimes costs nothing.
-4. **Settled rows disappear.** A decided Review entry is removed from the list, which contradicts "undo, not confirm".
-5. **The vacated slot** when a stop moves to another day: does the day close up, or keep the gap as free time?
-6. **A place saved without a location** silently drops out of the map and the walking route, explained once in a notice that then goes away.
-7. **A stop that no longer exists** shows a bare sentence with no way back.
-8. **Discarding stuck changes** is irreversible and uses a confirm button — the only destructive action in the app that is not swipe → in-row → undo.
-9. **The forced jump to Paste** after creating a trip: there is no "I'll do this later" that isn't the back gesture.
-10. **A refused read** (expired envelope, revoked link, rules denial) mid-session has no screen; only the cold-open join path has dead-link states.
-11. **The currency guess is invisible.** A new trip's currency is inferred from the city; the trip then prices everything in it, and nothing ever says so or offers to confirm it.
-12. **The location-lookup failure is reported on the wrong screen.** It happens in the New trip modal and is told only to Trip settings — which the app does not send the user to.
-13. **[v] A `read` role sees an enabled `Send n changes` button that silently does nothing** — `publishUpdate()` returns null without `canPublish()`, and the button has no such check. A non-owner's role-chip change is likewise discarded. See `verification-sprint-p0-6.md` §4.
-14. **[v] Review decisions cannot be undone and leave no receipt** (D-2) — `takeChange`/`keepMine` write immediately with no undo bar, and the "n changes dealt with" line is module-level state reset on navigation.
-15. **[v] `Later` on the update banner is undocumented** (D-1).
-16. **[v] The join preview shows the selected day, not Day 1** (D-4).
-17. **[v] A renamed stop's Review card is titled with *their* name** (D-5), framing the change as settled before you decide.
-18. **[v] The paste review row carries up to ten controls** (D-6), eight rows deep, behind a tick-every-row gate.
-19. **[v] The "What they get" card appears only after a link exists** (D-3) — the clearest statement of the copy model is hidden from the person deciding whether to share.
-20. **Two destructive actions now use a confirm button** (`Empty this trip`, `discardPending`) against the app's single stated pattern. Are these deliberate exceptions for the irreversible cases, or should they be brought into the swipe/undo pattern?
-
-### B. Visual decisions
-
-11. **Five sync states in one 6px dot**, no label, in a 44px chip.
-12. **Offline map and failed map are the same grey canvas** (`#E9EAE6`); only the Map screen carries the `.stranded` banner.
-13. **Long content and CJK** beyond warnings — the four-line plan card, the wrapped day header, the sub-route name in a 150px column.
-14. **Twenty-two rows have no verified appearance**, concentrated in exactly the flows a second person triggers.
-15. **`.review-foot` exists in `app.css` and is unused** — Review's bulk actions currently sit at the end of the scroll, below five cards.
-
-### C. Interaction decisions
-
-16. **Commit-on-`change`** for inline plan edits (a consequence of the whole-node repaint) — no save affordance, no dirty state.
-17. **The mid-gesture swipe states** (latch at 88px, in-row confirm, decisive-swipe shortcut) have never been captured, only read.
-18. **Drag-reorder** and **grip-resize on the draw-area box** are entirely unverified.
-19. **The warning strip slot** arbitrates four sources by rank, shows one at a time, and dismisses "said once, back only if the walk gets 10 minutes longer". Never reviewed.
-20. **Sheet detents remembered per session** — helpful or disorienting on return?
-
-### D. Content / copy decisions
-
-21. **Sign-off on the tier-3 sentences** — the only place the product names another person ("Day 4 is empty in the copy you were sent").
-22. **Relation-word vocabulary** for warnings (`WITH`, `AFTER` today) — fixed set, or per-issue?
-23. **Role labels** on Share, which currently read as permissions.
-24. **Empty-state copy across twelve places**, proposed as three tiers, unapproved.
-25. **The `Nothing to send` disabled label** — accurate, and slightly accusatory.
-
----
-
-## 4. Existing inconsistencies — classified (audit §12)
-
-Per Step 8: only the meaningful ones are carried forward.
-
-| # | Inconsistency | Verdict |
+| # | Item | Why it blocks |
 |---|---|---|
-| 1 | Duplicate rule blocks in `app.css` (cascade order decides the winner) | **Accidental but harmless** — until someone edits the losing block |
-| 2 | Font weights 550/650 used, not loaded | **Accidental but harmless** — synthesised; visually stable |
-| 3 | Half-pixel type scale, ~20 body sizes | **Intentional** in effect — the density *is* the design language |
-| 4 | Four label families + ~10 one-off chips | **Intentional** — the visual reference argues each family has a distinct job. Do not merge |
-| 5 | 14 radii for "a card" | **Accidental but harmless** |
-| 6 | Six-plus control heights | **Accidental but harmless** |
-| 7 | Danger colour hardcoded beside its token | **Accidental but harmless** |
-| 8 | ~20 recurring un-tokenised colours | **Accidental but harmless** |
-| 9 | Two "amber paper" recipes | **Intentional** — `#FBF1DE` banner vs `#FFFDF7` paper are different objects |
-| 10 | Focus only on inputs | **UX-impacting** — accessibility. Schedule, don't fix in passing |
-| 11 | Partial `prefers-reduced-motion` | **UX-impacting**, low blast radius |
-| 12 | Two dividers for one job | **Accidental but harmless** |
-| 13 | One deliberate `!important` | **Intentional** |
-| 14 | `manifest.webmanifest` referenced, absent | **UX-impacting, and now clearly unfinished** — three Android/maskable icons have been committed, so install is intended. Write the manifest |
-| 15 | Inline `style=` overrides in screen modules | **Accidental but harmless** — a symptom of #6, not a problem itself |
-| 16 | Malformed attributes on the Plan sub-route row | **Accidental but harmless** to users; breaks DOM tooling. Record, fix when that file is next opened |
+| 1 | **OD-6** — may `Empty this trip` delete the shopping list, packing list and Log? | The confirm now names the consequence; whether the *capability* should exist is a product call, and the answer changes what `clearTripContent()` does. |
+| 2 | **The forced jump to Paste** after creating a trip (§A row 3) | Existing behaviour, never decided. Every currency string in P0-2 §5 works either way, so it is not a blocker for P0-2 — but it is the first thing a new user experiences. |
+| 3 | **`.hint-jade` is undefined in `app.css`** (IF-10) | Two screens reference it and two approved specs assume it. One rule, first in the CSS queue, not last. |
+| 4 | **`removedFromTrip()` has no caller** (IF-9) | `.gone-card`'s corrected copy is unreachable until a detector exists. The rule is specified; the trigger is not built. |
+| 5 | **One new design ambiguity, found by verification** | An **end time before the start** (demo Day 3: `13:45` → `09:00`) yields a derived length of `19h 15m`. `parseClock` accepts both values, so `not a time` never fires — the approved design covers *unparseable* input, not an *inverted window*. **One line of design, not a pass:** rejection, overnight window, or a warning-strip case (`ENDS WHEN IT STARTS` is the cheapest precedent). |
 
-Nothing here is being standardised. This is not a CSS cleanup.
+**Everything else the readiness audit found is an implementation defect, not a design gap** — sixteen of them, classified and ordered in `implementation-readiness-map.md` §3 and §6. Three are on approved surfaces whose code contradicts the approved design (M-4, M-5, M-8); none of them changes a design decision.
 
----
+### 4.2 Safe to defer — the honest list
 
-## 5. Visual verification against the current build
-
-The 20 frames in `docs/design/screens/current/` were re-captured on 4 Sep 2026 against tree `4698f0e4a8b8` and match the current source. No drift was found in this pass; the documentation is current baseline.
-
-Still unrendered, and why:
-
-| Surface | Blocked on |
+| Item | Why deferring is safe |
 |---|---|
-**Verified 4 Sep 2026 by the P0-6 sprint** (16 frames, `docs/design/screens/verify/`): Share offer · Share linked · Share manage · Plan update banner · Review entries ×3 · Review bulk actions · Review after deciding · Join live invite · Sub route (partial) · Paste input · Paste review pass · Draw an area · Changes on this phone (jade only) · Trips home on the local backend.
+| **OD-7** — should a blank map say *why*? | Recommendation is no; the designed card works either way. |
+| **OD-8** — install / first run | A whole flow, and it needs scope input before design. Nothing else depends on it. |
+| **Spend report and Trip prep** (§G rows 4–5) | **The largest un-reviewed surface left**: two full screens, understood, captured above the fold only, never design-reviewed. Nothing about them is *undecided* — the currency rule and the empty-state tiers both apply — so they are a review pass, not a design pass. |
+| **Log — populated** and **the Note editor** | Same shape: understood, captured, never reviewed. The note editor's "no explicit save state" is the app-wide commit-on-`change` pattern, not a local gap. |
+| **Trip settings below the fold** | Unrendered, not undecided. |
+| **Trip file import's receipt** | Revisit when Paste's `done` screen exists, or there will be two receipts. |
+| **`manifest.webmanifest`** | A chore with no design content. |
+| **Everything in `p2-triage.md` §D and §E** | 17 items, each either intentional or invisible to users. |
 
-Still unrendered, and why:
+### 4.3 Verification, not design — the cheapest remaining unit of work
 
-| Currency-from-city + its 3 failure notices | Nothing — never designed at all |
-| Trip settings below the fold, `Empty this trip` confirm | Nothing — just unrendered |
-| Rust `.stuck-why` waiting state | **Structurally needs a configured-but-unreachable Firestore** — `sync.track()` queues nothing on the local backend |
-| Real Firestore writes, rules enforcement, Google popup, emailed-link return, true two-device propagation | A running emulator (needs a shell process) |
-| Sub route `.loop-row` list, edge markers, back-by form | A real drag — `draggableSheet` overrides programmatic detents |
-| Tile download progress, Paste `Ready to save`/`done`, sticky feet on Join and Share | Below the fold; a real scroll or a taller capture |
-| Review — entries | An actual received update |
-| Send-an-update result | Two accounts |
-| Sub route | A day with a loop and a real drag |
-| Paste — review pass | A pasted itinerary driven through to the row editor |
-| Draw an area + tile download | A real capture at real sizes |
-| Changes on this phone | A real sync failure with a non-empty outbox |
-| Mid-gesture swipe, drag-reorder | Frame-accurate gesture capture |
+Ordered by cost. **None of it is design, and all of it reduces the 32 `VISUAL NOT VERIFIED` rows.** Items 1–3 were **done in the readiness audit (5/6 Sep)** — see §0.3.
 
-All of these are renderable from fabricated state without touching application code. **And as of this pass the sharing round trip is no longer even blocked on a second account** — `firebase.emulators.json` provides auth and Firestore emulators, so join, review and the `published/{code}` rules can be exercised locally. That is the cheapest next unit of work, and it is *verification*, not design.
+1. ~~**Destination's five populated panels**~~ — **DONE** (f01–f08). All five seen populated and below the fold. Found: `tab` never resets (map M-8), the `|| '¥'` fallback live on the Shop panel (M-9), and four bare `.empty` one-liners where three tier-3 empties belong (M-10).
+2. ~~**Trip settings below the fold · `Empty this trip`**~~ — **DONE** (f09–f14). Found: the MONEY row misaligns at 390 (M-12) and the confirm still carries the pre-correction copy (M-11). **The cover picker and the trip-file path remain unverified.**
+3. ~~**The Plan's edit-mode states**~~ — **DONE** (f15–f19), the highest-value item in the whole list. Found: the archive card renders **white-on-white** (M-4) and the archived / lane swipe-delete is a **no-op** because of escaped attribute markup (M-5). **A real drag and a mid-gesture swipe remain unverified** — both need a pointer gesture, not a tap.
+4. **The rust stuck state** — **structurally needs a configured-but-unreachable Firestore.** `sync.track()` queues nothing on the localStorage backend. Still the hardest thing to see in the product.
+5. **The sharing round trip on the emulator** — `firebase.emulators.json` exists; this is no longer blocked on a second account, only on a shell process. *(Closes the `published/{code}` rules, real propagation, `opens`, and the removal detector's trigger.)*
+6. **The emailed-link return leg** — needs a real auth backend. Still blocked.
+7. **Newly on this list:** the three Destination editors and the four silent-refusal call sites (one tap each, no backend) · Nearby's three empty variants (needs an emptied trip) · Spend's day bars and category stack (needs more than one purchase in the demo data).
 
 ---
 
-## 6. Prioritised unresolved design decisions
+## 5. The canonical documents — which one is current for what
 
-Full write-ups (where · current behaviour · why uncertain · why it matters · recommended direction · what must be decided) are in the chat report accompanying this document and summarised here.
+An implementer reads **one** document per surface. Where two overlap, the later one wins and says so.
 
-**P0 — blocks understanding of the product or affects major workflows**
-
-| # | Decision |
+| Document | Canonical for |
 |---|---|
-| P0-1 | Sign off (or amend) the three designed areas: the three-tier empty-state system, the warning-strip subject line, and the Review redesign — plus the 8 open questions in `new-feature-design.md` §7 |
-| P0-2 | Does a joined copy have a visible identity anywhere outside Share and the Log's promise line? |
-| P0-3 | Is conflict detection in scope for Review, or is silent take/keep acceptable? |
-| P0-4 | One pattern for pending work, or keep the amber `busy` line |
-| P0-5 | Establish the appearance of the share → join → review round trip (verification, not redesign) |
-| P0-6 | The paste review pass — the highest-risk unrendered flow |
-| P0-7 | **New.** The city → currency inference and its three failure notices: does the user ever see the guess, and where is the failure reported? |
+`p0-1-role-and-copy-identity-design.md` | roles, the joined-copy marker, the arrival banner, the `read` send block. **Its §4.1 offer-phase *placement* is superseded by share-flow §3 (B-11); its copy is not** (X-6) |
+`p0-2-currency-design.md` | currency inference, the derived line, provenance, the no-currency rules. **Eight fallbacks, not seven** (RC-19) |
+`p0-3-system-sign-off.md` | the *status* of the four early systems; empty-state tiers; the fact-first warning strip |
+`p0-4-review-design.md` | Review, end to end. Extended (not changed) by the bulk-actions refinement and share-flow §6 |
+`p0-5-pending-work-design.md` | pending and outcomes. **Eighteen labels, not sixteen** (X-4) |
+`p1-share-join-review-flow-design.md` | the whole Share → Join → Review round trip and its seams |
+`p1-paste-review-design.md` | Paste, input to done |
+`p1-review-bulk-actions-refinement.md` | Review's staged foot and the `finishReview` sequencing |
+`p1-coverage-gaps-design.md` | tile download · stuck changes · sub route · cross-tab sync. **Its §5 rank order is superseded by status-vis §2** (RC-16) |
+`p1-absence-and-removal-design.md` | removal · the stop that has gone · no position · `Empty this trip` · a refused read |
+`p1-plan-editing-design.md` | the Plan's eight interactions, the two-stage destructive ladder |
+`p1-account-and-sign-in-design.md` | the account row, the sheet, the return leg, sign-out |
+`p1-status-visibility-design.md` | the sync dot, the strip's order, the undo bar, the blank map |
+`p1-destination-tabs-design.md` | Destination's five panels, the three editors, **the silent-refusal rule** |
+`p2-triage.md` | every P2 item's class, and the three small specs inside it |
+`cross-flow-consistency-audit.md` | the eight contradictions, two synthesised principles, eleven ambiguities |
+`implementation-readiness-map.md` | **the implementation contract** — what is approved, what exists, what must change, what must not be touched, the technical findings and the dependency order |
+`final-implementation-readiness-review.md` | **the readiness verdict** and the four open decisions. Read it before anything else |
 
-**P1 — important inconsistency or missing state**
+**Superseded in whole or part, do not implement from:** `new-feature-design.md` §3 (the warning strip — superseded in full) and §4.5 (stacked sides are the default) · `existing-ui-audit.md`'s Trip-settings close/delete claim · `verification-sprint-p0-6.md` §1.8's join-preview mechanism (RC-1) · every claim in §0.2 above · **`p1-plan-editing-design.md` §6's claim that the archive card is already dark (X-11)** · **`p1-destination-tabs-design.md` §2's claim that the panel selection resets on a screen change (X-12)** · **the phrase "eight `\|\| '¥'` fallbacks" wherever it appears — there are seven, plus one `symbol = '¥'` default parameter, making eight *sites* (X-10)**.
 
-Destination's four unseen tab bodies · sub route (`ok`/`tight`, back-by) · the warning-strip slot and its dismissal · Nearby's unlocated place · the stop-no-longer-on-your-plan dead end · stuck-changes discard · Trip settings below the fold (close/delete trip) · the sync dot's five states · offline-vs-failed map · long content & CJK breadth · the vacated slot on a day move · commit-on-blur editing · the Log empty state (scaffold vs sentence) · the shopping footer card · sign-in email return · removed-from-a-shared-trip.
-
-**P2 — minor refinement**
-
-Focus rings · partial reduced motion · radius/height/type normalisation · the missing manifest · the malformed sub-route attributes · duplicate CSS blocks · trip cover picker · trip-file import · archive card · boot error.
-
----
-
-## 7. Recommended order
-
-1. **Answer P0-1 through P0-4** (four decisions, no drawing). They change what the already-drawn artboards mean.
-2. **Answer P0-7** (currency inference) — it is the newest behaviour, it touches every money figure, and it has no design at all.
-3. **Verification sprint (P0-5, P0-6):** render the 10 unseen surfaces from fabricated state (or the emulator harness), 390 × 844, no redesign. This closes the largest part of the 42-row appearance gap and turns `SOURCE-ONLY` into `UNDERSTOOD`.
-4. **Design the sharing round trip properly** — it is the one workflow where every remaining P0 lands at once.
-5. **Then the P1 content**, in this order: Destination tabs → sub route → warning-strip slot → the two confirm-button destructive actions → long-content/CJK breadth.
-6. **P2 last, or never** — most of §4 is "accidental but harmless" and should stay that way until a file is being opened anyway.
-
-Implementation should not begin until items 1–4 are confirmed. Items 5–6 can proceed in parallel with implementation of the confirmed areas.
-
-**One process note.** The existing design documents went stale in a single commit, and three of their claims were wrong before anyone noticed. Whatever we confirm should record the tree it was confirmed against, so the next pass can tell a confirmed decision from an expired one.
+**One process rule, restated because it has been broken repeatedly:** the markdown is canonical and an artboard illustrates it. Any string on an artboard that is not in a design document's copy section is drift, and is a bug in the artboard rather than a decision.

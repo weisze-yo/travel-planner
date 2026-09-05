@@ -1,0 +1,213 @@
+<!DOCTYPE html>
+<html>
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<script src="./support.js"></script>
+</head>
+<body>
+<x-dc>
+<helmet>
+<meta name="design_doc_mode" content="canvas">
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link href="https://fonts.googleapis.com/css2?family=Public+Sans:wght@400;600;700;800&display=swap" rel="stylesheet">
+<style>
+  body { margin:0; background:#E4E6E2; -webkit-font-smoothing:antialiased; }
+  a { color:#1F6F5C; text-decoration:none; }
+  a:hover { color:#14201C; }
+</style>
+</helmet>
+
+<section style="font-family:'Public Sans',system-ui,sans-serif;color:#14201C;padding:44px 48px 64px;display:flex;flex-direction:column;gap:34px;width:1900px;box-sizing:border-box">
+
+  <div style="display:flex;flex-direction:column;gap:9px;max-width:920px">
+    <div style="font-size:10.5px;font-weight:800;letter-spacing:.06em;color:#98A5A0">TRAVEL PLANNER · P1 · DESIGN FOR REVIEW</div>
+    <div style="font-size:34px;font-weight:700;letter-spacing:-.025em;line-height:1.1">Status visibility</div>
+    <div style="font-size:13.5px;line-height:1.55;color:#3D4C46;text-wrap:pretty">The one area in this batch where the argument is about eight pixels, so the frames <i>are</i> the deliverable. The P1 “five states in a 6px dot, no label” decision <b>mostly dissolves on contact with source</b> — and what is left of it is one real problem and one rule of CSS. Canonical spec: <b>docs/design/p1-status-visibility-design.md</b> — §8 is the only source of copy.</div>
+  </div>
+
+  <div style="height:1px;background:#D8DCD8"></div>
+
+  <!-- ===================== A -->
+  <div style="display:flex;flex-direction:column;gap:16px">
+    <div style="display:flex;align-items:baseline;gap:10px;flex-wrap:wrap">
+      <span style="padding:3px 7px;border-radius:6px;background:#14201C;color:#fff;font-size:10px;font-weight:800;letter-spacing:.04em">A</span>
+      <span style="font-size:19px;font-weight:700;letter-spacing:-.015em">The five sync states, at real size, for the first time</span>
+      <span style="font-size:11.5px;color:#6B7A74">parts.js tripChip / syncDot · sync.js syncState · 390px crops of <b>.map-top</b></span>
+    </div>
+
+    <div style="display:flex;gap:34px;align-items:flex-start;flex-wrap:wrap">
+
+      <div style="display:flex;flex-direction:column;gap:12px;width:390px">
+        <div style="font-size:11px;font-weight:800;letter-spacing:.05em;color:#98A5A0">SAVED · JADE · NO WORDS</div>
+        <div style="height:44px;display:flex;align-items:center;gap:9px;padding:0 12px;background:#fff;border-radius:14px;box-shadow:0 2px 10px rgba(20,32,28,.12)">
+          <div style="width:26px;height:26px;flex:none;border-radius:8px;background:#1F6F5C;color:#fff;font-size:11px;font-weight:700;display:flex;align-items:center;justify-content:center">MC</div>
+          <div style="flex:1;min-width:0"><div style="font-size:13px;font-weight:600;line-height:1.15;white-space:nowrap;overflow:hidden;text-overflow:ellipsis">Meridian City</div><div style="font-size:11px;color:#6B7A74;line-height:1.3">Day 3 of 6 · 14 Mar</div></div>
+          <span style="width:8px;height:8px;border-radius:50%;flex:none;background:#1F6F5C"></span>
+        </div>
+
+        <div style="font-size:11px;font-weight:800;letter-spacing:.05em;color:#98A5A0">SAVING · 10px RING · NO WORDS</div>
+        <div style="height:44px;display:flex;align-items:center;gap:9px;padding:0 12px;background:#fff;border-radius:14px;box-shadow:0 2px 10px rgba(20,32,28,.12)">
+          <div style="width:26px;height:26px;flex:none;border-radius:8px;background:#1F6F5C;color:#fff;font-size:11px;font-weight:700;display:flex;align-items:center;justify-content:center">MC</div>
+          <div style="flex:1;min-width:0"><div style="font-size:13px;font-weight:600;line-height:1.15">Meridian City</div><div style="font-size:11px;color:#6B7A74;line-height:1.3">Day 3 of 6 · 14 Mar</div></div>
+          <span style="width:10px;height:10px;border-radius:50%;flex:none;border:2px solid #C9D0CB;border-top-color:#1F6F5C;box-sizing:border-box"></span>
+        </div>
+
+        <div style="font-size:11px;font-weight:800;letter-spacing:.05em;color:#8A5A08">QUEUED · AMBER · <span style="color:#1F6F5C">AND A SENTENCE</span></div>
+        <div style="height:44px;display:flex;align-items:center;gap:9px;padding:0 12px;background:#fff;border-radius:14px;box-shadow:0 2px 10px rgba(20,32,28,.12)">
+          <div style="width:26px;height:26px;flex:none;border-radius:8px;background:#1F6F5C;color:#fff;font-size:11px;font-weight:700;display:flex;align-items:center;justify-content:center">MC</div>
+          <div style="flex:1;min-width:0"><div style="font-size:13px;font-weight:600;line-height:1.15">Meridian City</div><div style="font-size:11px;color:#8A5A08;font-weight:650;line-height:1.3">3 changes waiting for signal</div></div>
+          <span style="width:8px;height:8px;border-radius:50%;flex:none;background:#C87F0A"></span>
+        </div>
+
+        <div style="font-size:11px;font-weight:800;letter-spacing:.05em;color:#9B4B4B">STUCK · RUST DOT, <span style="color:#8A5A08">AMBER SENTENCE</span> — SEE IF-31</div>
+        <div style="height:44px;display:flex;align-items:center;gap:9px;padding:0 12px;background:#fff;border-radius:14px;box-shadow:0 2px 10px rgba(20,32,28,.12)">
+          <div style="width:26px;height:26px;flex:none;border-radius:8px;background:#1F6F5C;color:#fff;font-size:11px;font-weight:700;display:flex;align-items:center;justify-content:center">MC</div>
+          <div style="flex:1;min-width:0"><div style="font-size:13px;font-weight:600;line-height:1.15">Meridian City</div><div style="font-size:11px;color:#8A5A08;font-weight:650;line-height:1.3">3 changes have been stuck for 2 days</div></div>
+          <span style="width:8px;height:8px;border-radius:50%;flex:none;background:#9B4B4B"></span>
+        </div>
+      </div>
+
+      <div style="display:flex;flex-direction:column;gap:12px;width:390px">
+        <div style="font-size:11px;font-weight:800;letter-spacing:.05em;color:#9B4B4B">LOCAL, TODAY — GREY FILL, INDISTINGUISHABLE BY SHAPE</div>
+        <div style="height:44px;display:flex;align-items:center;gap:9px;padding:0 12px;background:#fff;border-radius:14px;box-shadow:0 2px 10px rgba(20,32,28,.12)">
+          <div style="width:26px;height:26px;flex:none;border-radius:8px;background:#1F6F5C;color:#fff;font-size:11px;font-weight:700;display:flex;align-items:center;justify-content:center">MC</div>
+          <div style="flex:1;min-width:0"><div style="font-size:13px;font-weight:600;line-height:1.15">Meridian City</div><div style="font-size:11px;color:#6B7A74;line-height:1.3">Day 3 of 6 · 14 Mar</div></div>
+          <span style="width:8px;height:8px;border-radius:50%;flex:none;background:#B4BEB9"></span>
+        </div>
+
+        <div style="font-size:11px;font-weight:800;letter-spacing:.05em;color:#1F6F5C">LOCAL, DESIGNED — HOLLOW: THERE IS NOWHERE FOR IT TO GO</div>
+        <div style="height:44px;display:flex;align-items:center;gap:9px;padding:0 12px;background:#fff;border-radius:14px;box-shadow:0 2px 10px rgba(20,32,28,.12)">
+          <div style="width:26px;height:26px;flex:none;border-radius:8px;background:#1F6F5C;color:#fff;font-size:11px;font-weight:700;display:flex;align-items:center;justify-content:center">MC</div>
+          <div style="flex:1;min-width:0"><div style="font-size:13px;font-weight:600;line-height:1.15">Meridian City</div><div style="font-size:11px;color:#6B7A74;line-height:1.3">Day 3 of 6 · 14 Mar</div></div>
+          <span style="width:8px;height:8px;border-radius:50%;flex:none;background:transparent;box-shadow:inset 0 0 0 1.5px #B4BEB9"></span>
+        </div>
+
+        <div style="display:flex;gap:10px;align-items:center;padding:12px 13px;background:#F2F3F1;border-radius:14px;margin-top:2px">
+          <span style="width:8px;height:8px;border-radius:50%;flex:none;background:#1F6F5C"></span>
+          <span style="font-size:11.5px;color:#3D4C46">saved — everything reached the cloud</span>
+        </div>
+        <div style="display:flex;gap:10px;align-items:center;padding:12px 13px;background:#F2F3F1;border-radius:14px">
+          <span style="width:8px;height:8px;border-radius:50%;flex:none;background:transparent;box-shadow:inset 0 0 0 1.5px #B4BEB9"></span>
+          <span style="font-size:11.5px;color:#3D4C46">local — <b>nothing has ever left this phone, and nothing will</b></span>
+        </div>
+        <div style="background:#FBF1DE;border:1px solid #EBD9B4;border-radius:14px;padding:11px 12px;font-size:11.5px;line-height:1.5;color:#8A5A08;text-wrap:pretty"><b>The chip itself is drawn from source, corrected in review.</b> <b>.trip-chip</b> is a <b>fixed height: 44px</b> with <b>padding: 0 12px</b> and <b>gap: 9px</b> — not a padded box that grows — and <b>.trip-mark</b> is <b>jade-filled with white 11px/700 text</b>, not a bone chip. I had drawn both from memory. <b>The trip's mark is jade; the person's mark (.who-mark) is bone.</b> They are different components. The fixed height is also a real constraint: a worded sync state that wrapped to two lines would overflow rather than grow (IF-32). Corrected in a second round: <b>.sync-ring</b>'s border is <b>2px #C9D0CB</b> with a jade top edge (I had <b>--jade-bd</b>), and the two map pins below are <b>.map-pin</b> — 32px jade, 13px/700, <b>0 2px 8px rgba(20,32,28,.35)</b>. I had drawn them at 28px/12px/800 with no shadow, which is <b>.map-pin.sub-num</b>, the <i>amber sub-route</i> pin: a component drawn from another component's memory.</div>
+        <div style="font-size:11.5px;line-height:1.5;color:#6B7A74;text-wrap:pretty">Two states, opposite meanings, both silent, distinguished today <b>by hue alone at 8px</b> on the most permanent chrome in the app. And they are not equally important: <b>local</b> is the state in which the whole sharing model is unavailable — no link can be created, no update can arrive, the trip dies with the phone. An unfilled dot differs by <b>shape as well as hue</b>, so it survives greyscale; it differs from the 10px animated ring by size, stroke and motion.</div>
+      </div>
+
+      <div style="width:392px;display:flex;flex-direction:column;gap:12px">
+        <div style="background:#F8E9E9;border:1px solid #F0DADA;border-radius:16px;padding:15px 16px">
+          <div style="font-size:13px;font-weight:700;color:#9B4B4B">RC-14 / RC-15 — four wrong claims</div>
+          <div style="font-size:11.5px;line-height:1.55;color:#9B4B4B;margin-top:7px;text-wrap:pretty">The matrix says <i>“five sync states in one <b>6px</b> dot, <b>no label</b>, in a <b>44px chip</b>”</i>. Source: the dot is <b>8px</b> and the ring is <b>10px</b>; <b>all five</b> carry an <b>aria-label</b>; <b>two of the five</b> carry a visible sentence in <b>.trip-meta.warn</b>; and <b>.trip-chip</b> is <b>flex: 1</b> sizing to two lines, not a 44px control.</div>
+        </div>
+        <div style="background:#fff;border:1px solid #E7EAE7;border-radius:16px;padding:15px 16px">
+          <div style="font-size:13px;font-weight:700">Why the other two stay silent</div>
+          <div style="font-size:11.5px;line-height:1.55;color:#3D4C46;margin-top:7px;text-wrap:pretty">A warning always names the tap that fixes it — <b>and its contrapositive does most of the work here: where there is no tap, it is not a warning.</b> <b>saving</b> is a ring that resolves in a moment. <b>saved</b> is the resting state of a working app, and a permanent “everything is fine” line is the definition of noise. <b>sync.js</b>'s own header already says so: <i>“then a solid green dot and no words. This is most of the time.”</i></div>
+        </div>
+        <div style="background:#fff;border:1px solid #E7EAE7;border-radius:16px;padding:15px 16px">
+          <div style="font-size:13px;font-weight:700">Rejected, with reasons</div>
+          <div style="font-size:11.5px;line-height:1.55;color:#3D4C46;margin-top:7px;text-wrap:pretty">A <b>fifth colour</b> — the palette has four semantics and grey is not one of them. A <b>label under the dot</b> — permanent, Map-only, duplicating the aria-label. A <b>numeral in the dot</b> — <b>queued</b> already has a sentence. A <b>bigger dot</b> — it sits over a live map and 8px is a deliberate quietness. Also rejected: wiring <b>saving</b>'s computed <b>line: 'Saving…'</b> into the chip (P0-5 R3 — one animated vocabulary, and pending must never enter this chip).</div>
+        </div>
+        <div style="background:#E6EFEB;border:1px solid #CFE0D9;border-radius:16px;padding:15px 16px">
+          <div style="font-size:13px;font-weight:700;color:#1F6F5C">The words that <i>are</i> warranted already exist</div>
+          <div style="font-size:11.5px;line-height:1.55;color:#5D8C7C;margin-top:7px;text-wrap:pretty">When the app <b>is</b> configured and still cannot reach the cloud, <b>state.stranded</b> is true and Map draws the rust <b>.stranded</b> card with <b>strandedReason()</b> — three branches, each naming its own cause. <b>That</b> is the case with a fix, and it has a sentence. The dot is not asked to carry it.</div>
+        </div>
+      </div>
+    </div>
+  </div>
+
+  <div style="height:1px;background:#D8DCD8"></div>
+
+  <!-- ===================== B + C -->
+  <div style="display:flex;flex-direction:column;gap:16px">
+    <div style="display:flex;align-items:baseline;gap:10px;flex-wrap:wrap">
+      <span style="padding:3px 7px;border-radius:6px;background:#14201C;color:#fff;font-size:10px;font-weight:800;letter-spacing:.04em">B · C</span>
+      <span style="font-size:19px;font-weight:700;letter-spacing:-.015em">The strip's rank order · the blank map · the undo bar</span>
+      <span style="font-size:11.5px;color:#6B7A74">remind.js strip() · strip.js outside() · parts.js undoBar()</span>
+    </div>
+
+    <div style="display:flex;gap:34px;align-items:flex-start;flex-wrap:wrap">
+
+      <div style="width:392px;display:flex;flex-direction:column;gap:12px">
+        <div style="background:#F8E9E9;border:1px solid #F0DADA;border-radius:16px;padding:15px 16px">
+          <div style="font-size:13px;font-weight:700;color:#9B4B4B">X-3 / RC-16 — three orderings existed</div>
+          <div style="font-size:11.5px;line-height:1.55;color:#9B4B4B;margin-top:9px">An approved document: <b>stuck › outside › queued › reminder</b></div>
+          <div style="font-size:11.5px;line-height:1.55;color:#9B4B4B;margin-top:4px"><b>remind.js</b>'s own header comment: <b>reminder › outside › stuck</b></div>
+          <div style="font-size:11.5px;line-height:1.55;color:#9B4B4B;margin-top:4px">Its code, five lines down: <b>red reminder › stuck › amber reminder › outside › queued</b></div>
+          <div style="font-size:11.5px;line-height:1.55;color:#9B4B4B;margin-top:9px;text-wrap:pretty">The <b>loop reminder is split by tone</b>, and its red half outranks everything including stuck. Both prose versions have it last or absent. <b>The code is right and both are corrected</b> — an implementer reordering the code to match an approved document would have demoted the only time-bound, unrecoverable warning in the app.</div>
+        </div>
+        <div style="background:#fff;border:1px solid #E7EAE7;border-radius:16px;padding:15px 16px">
+          <div style="font-size:11px;font-weight:800;letter-spacing:.05em;color:#1F6F5C;margin-bottom:10px">CANONICAL — FIVE SLOTS, ONE AT A TIME</div>
+          <div style="display:flex;flex-direction:column;gap:7px">
+            <div style="display:flex;gap:9px;align-items:baseline"><span style="width:16px;flex:none;font-size:11px;font-weight:800;color:#9B4B4B">1</span><span style="font-size:12px;color:#14201C;line-height:1.4">a loop reminder you will miss <span style="color:#9B4B4B;font-weight:700">· red</span></span></div>
+            <div style="display:flex;gap:9px;align-items:baseline"><span style="width:16px;flex:none;font-size:11px;font-weight:800;color:#9B4B4B">2</span><span style="font-size:12px;color:#14201C;line-height:1.4">changes that cannot be sent <span style="color:#9B4B4B;font-weight:700">· rust</span></span></div>
+            <div style="display:flex;gap:9px;align-items:baseline"><span style="width:16px;flex:none;font-size:11px;font-weight:800;color:#8A5A08">3</span><span style="font-size:12px;color:#14201C;line-height:1.4">a loop reminder getting tight <span style="color:#8A5A08;font-weight:700">· amber</span></span></div>
+            <div style="display:flex;gap:9px;align-items:baseline"><span style="width:16px;flex:none;font-size:11px;font-weight:800;color:#8A5A08">4</span><span style="font-size:12px;color:#14201C;line-height:1.4">outside a kept area <span style="color:#8A5A08;font-weight:700">· amber</span></span></div>
+            <div style="display:flex;gap:9px;align-items:baseline"><span style="width:16px;flex:none;font-size:11px;font-weight:800;color:#8A5A08">5</span><span style="font-size:12px;color:#14201C;line-height:1.4">changes waiting for signal <span style="color:#8A5A08;font-weight:700">· amber</span></span></div>
+          </div>
+          <div style="font-size:11.5px;line-height:1.55;color:#3D4C46;margin-top:11px;text-wrap:pretty"><b>And it is the right order</b>, which is why it is kept rather than renegotiated: 1 is time-bound and unrecoverable — a coach leaves whether or not the outbox drains. 2 is a standing risk to work already done. 3 is the same clock, further away. 4 and 5 are both “something is missing and the plan still works”. <b>The identity marker yields to all five</b> (P0-1 principle 5), and <b>only the loop reminder is dismissible</b> — returning when the walk gets 10 minutes longer.</div>
+        </div>
+        <div style="background:#FBF1DE;border:1px solid #EBD9B4;border-radius:16px;padding:15px 16px">
+          <div style="font-size:13px;font-weight:700;color:#8A5A08">X-7 — the queued strip has no action, and keeps it that way</div>
+          <div style="font-size:11.5px;line-height:1.55;color:#8A5A08;margin-top:7px;text-wrap:pretty">Its body already says why: <i>“Everything you have typed is already on the phone. This is only about the copy in the cloud, and it clears itself the moment signal returns.”</i> There is no tap because there is no action, and the sentence spends its whole length saying so. A <b>Try sending them now</b> here would be a button whose honest label is “wait faster”. Recorded as a <b>knowing exception</b> with the rule it satisfies instead: <b>a condition with no fix states that it needs none, in the same breath, and takes no action button.</b> The second such exception in the product; the first is the <b>read</b> user's send block.</div>
+        </div>
+      </div>
+
+      <div style="display:flex;flex-direction:column;gap:9px;width:390px">
+        <div style="font-size:11px;font-weight:800;letter-spacing:.05em;color:#1F6F5C">C · THE BLANK MAP, WITH NO KEPT AREAS — NEW</div>
+        <div style="width:390px;height:420px;background:#E9EAE6;border-radius:10px;border:1px solid rgba(20,32,28,.12);padding:12px;box-sizing:border-box;display:flex;flex-direction:column;gap:9px;position:relative;overflow:hidden">
+          <div style="height:44px;display:flex;align-items:center;gap:9px;padding:0 12px;background:#fff;border-radius:14px;box-shadow:0 2px 10px rgba(20,32,28,.12)">
+            <div style="width:26px;height:26px;flex:none;border-radius:8px;background:#1F6F5C;color:#fff;font-size:11px;font-weight:700;display:flex;align-items:center;justify-content:center">MC</div>
+            <div style="flex:1;min-width:0"><div style="font-size:13px;font-weight:600;line-height:1.15">Meridian City</div><div style="font-size:11px;color:#6B7A74;line-height:1.3">Day 3 of 6 · 14 Mar</div></div>
+            <span style="width:8px;height:8px;border-radius:50%;flex:none;background:#C87F0A"></span>
+          </div>
+          <div style="display:flex;gap:6px">
+            <div style="height:32px;padding:0 12px;border-radius:10px;background:#fff;color:#6B7A74;font-size:12.5px;font-weight:600;display:flex;align-items:center;gap:5px">D1</div>
+            <div style="height:32px;padding:0 12px;border-radius:10px;background:#14201C;color:#fff;font-size:12.5px;font-weight:600;display:flex;align-items:center;gap:5px">D3</div>
+            <div style="height:32px;padding:0 12px;border-radius:10px;background:#fff;color:#6B7A74;font-size:12.5px;font-weight:600;display:flex;align-items:center;gap:5px">D4</div>
+          </div>
+          <div style="padding:8px 11px;border-radius:11px;background:#FBF1DE;color:#8A5A08;box-shadow:0 2px 10px rgba(20,32,28,.1)">
+            <div style="font-size:10.5px;font-weight:800;letter-spacing:.06em">NO MAP PICTURE</div>
+            <div style="font-size:11.5px;font-weight:650;line-height:1.4;margin-top:3px">Distances, order and walking times are all worked out on the phone. Only the streets are missing.</div>
+            <div style="margin-top:8px;display:inline-flex;height:30px;padding:0 10px;border-radius:9px;background:#14201C;color:#fff;font-size:11.5px;font-weight:700;align-items:center">Keep an area for offline</div>
+          </div>
+          <div style="position:absolute;left:calc(50% - 16px);top:250px;width:32px;height:32px;border-radius:50%;background:#1F6F5C;color:#fff;font-size:13px;font-weight:700;display:flex;align-items:center;justify-content:center;box-shadow:0 2px 8px rgba(20,32,28,.35)">1</div>
+          <div style="position:absolute;left:calc(50% + 44px);top:310px;width:32px;height:32px;border-radius:50%;background:#1F6F5C;color:#fff;font-size:13px;font-weight:700;display:flex;align-items:center;justify-content:center;box-shadow:0 2px 8px rgba(20,32,28,.35)">2</div>
+        </div>
+        <div style="font-size:11.5px;line-height:1.45;color:#6B7A74;text-wrap:pretty"><b>RC-17.</b> <b>.stranded</b> is about the <b>backend</b>, not tiles, and its three sentences are all about saving — so it never explains a blank map. The strip's <b>outside()</b> already covers the common case (<i>“No map here, but the plan still works”</i> + <b>Keep this area too</b>), but its <b>first line</b> is <b>if (!store.mapAreas().length) return null</b> — so the gap is exactly one condition: <b>no kept areas and no tiles</b>, which is the state a first-time user offline is most likely to be in. <b>Amber, not rust</b>: the plan works and the missing thing is a picture. The sentence reuses <b>outside()</b>'s clause so the two versions of this message are the same message.</div>
+      </div>
+
+      <div style="display:flex;flex-direction:column;gap:9px;width:390px">
+        <div style="font-size:11px;font-weight:800;letter-spacing:.05em;color:#98A5A0">THE UNDO BAR — RECORDED, NOT REDESIGNED</div>
+        <div style="width:390px;background:#F2F3F1;border-radius:10px;border:1px solid rgba(20,32,28,.12);padding:0 12px 8px;box-sizing:border-box;padding-top:14px">
+          <div style="display:flex;align-items:center;gap:12px;padding:13px 14px;background:#14201C;border-radius:16px;box-shadow:0 8px 24px rgba(20,32,28,.24)">
+            <div style="flex:1;font-size:13px;font-weight:650;color:#fff">Removed Skyline Deck</div>
+            <div style="flex:none;font-size:12.5px;font-weight:800;color:#8FB3A6">Undo</div>
+          </div>
+        </div>
+        <div style="font-size:11.5px;line-height:1.45;color:#6B7A74;text-wrap:pretty">One app-wide bar in a global slot, six seconds, nine callers. <b>Three states stated, none redesigned:</b> a second deletion inside six seconds <b>replaces</b> the first (one bar, one label, the most recent thing — a stacked bar would make it a list); navigating away <b>keeps</b> it, because the six seconds belong to the deletion and not to the screen; and offline it is unchanged — the deletion is queued like any other edit and the undo queues the opposite.</div>
+        <div style="background:#E6EFEB;border:1px solid #CFE0D9;border-radius:16px;padding:15px 16px">
+          <div style="font-size:13px;font-weight:700;color:#1F6F5C">One addition, and it is a rule</div>
+          <div style="font-size:11.5px;line-height:1.55;color:#5D8C7C;margin-top:7px;text-wrap:pretty"><b>The label always names the thing, never the act alone.</b> Written down because the bar is app-wide, it <b>survives a screen change</b>, and the next person to call <b>rememberUndo</b> has no document to check. A bar reading <b>Deleted</b> is unusable once you have left the list it came from. Existing labels obey it; so do P0-4's four.</div>
+        </div>
+        <div style="background:#fff;border:1px solid #E7EAE7;border-radius:16px;padding:15px 16px">
+          <div style="font-size:13px;font-weight:700">The bar never covers the tab bar</div>
+          <div style="font-size:11.5px;line-height:1.55;color:#3D4C46;margin-top:7px;text-wrap:pretty"><b>.undo-slot</b> is <b>flex: none</b> in the app column above <b>#tabbar</b>, so it <b>pushes content up rather than overlaying it</b> — which is why the slot has its own <b>0 12px 8px</b> padding and bone background. Nothing is ever hidden behind it. Verified this session.</div>
+        </div>
+      </div>
+    </div>
+  </div>
+
+  <div style="height:1px;background:#D8DCD8"></div>
+
+  <div style="display:flex;gap:14px;flex-wrap:wrap;max-width:1600px">
+    <div style="width:390px;background:#fff;border:1px solid #E7EAE7;border-radius:16px;padding:15px 16px"><div style="font-size:13px;font-weight:700">Net new CSS: one property</div><div style="font-size:11.5px;line-height:1.55;color:#3D4C46;margin-top:7px"><b>.sync-dot.grey</b> becomes <b>background: transparent</b> with <b>inset 0 0 0 1.5px var(--faint)</b>. <b>syncDot()</b> does not change — the class name still describes the state, not the colour. The blank-map card composes from <b>.amber-note</b> + <b>.warn-fix.first</b>, so it needs nothing new either.</div></div>
+    <div style="width:390px;background:#fff;border:1px solid #E7EAE7;border-radius:16px;padding:15px 16px"><div style="font-size:13px;font-weight:700">Every string here is in §8</div><div style="font-size:11.5px;line-height:1.55;color:#3D4C46;margin-top:7px">Two states' sentences are existing copy; the five aria-labels are unchanged; the strip's order is documentation, not copy. The only new strings on this board are the blank map's three lines.</div></div>
+    <div style="width:390px;background:#fff;border:1px solid #E7EAE7;border-radius:16px;padding:15px 16px"><div style="font-size:13px;font-weight:700">The one area with no module state</div><div style="font-size:11.5px;line-height:1.55;color:#3D4C46;margin-top:7px">Every state on this board is derived — <b>syncState()</b>, <b>strip.js</b>'s one-minute tick, <b>state.undo</b> — so all of it survives a screen change and none of it can go stale. Recorded because it is the reason none of it needed a “navigating away” design.</div></div>
+  </div>
+
+</section>
+</x-dc>
+</body>
+</html>

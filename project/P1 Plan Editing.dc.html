@@ -1,0 +1,271 @@
+<!DOCTYPE html>
+<html>
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<script src="./support.js"></script>
+</head>
+<body>
+<x-dc>
+<helmet>
+<meta name="design_doc_mode" content="canvas">
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link href="https://fonts.googleapis.com/css2?family=Public+Sans:wght@400;600;700;800&display=swap" rel="stylesheet">
+<style>
+  body { margin:0; background:#E4E6E2; -webkit-font-smoothing:antialiased; }
+  a { color:#1F6F5C; text-decoration:none; }
+  a:hover { color:#14201C; }
+</style>
+</helmet>
+
+<section style="font-family:'Public Sans',system-ui,sans-serif;color:#14201C;padding:44px 48px 64px;display:flex;flex-direction:column;gap:34px;width:2160px;box-sizing:border-box">
+
+  <div style="display:flex;flex-direction:column;gap:9px;max-width:920px">
+    <div style="font-size:10.5px;font-weight:800;letter-spacing:.06em;color:#98A5A0">TRAVEL PLANNER · P1 · DESIGN FOR REVIEW</div>
+    <div style="font-size:34px;font-weight:700;letter-spacing:-.025em;line-height:1.1">Editing the day</div>
+    <div style="font-size:13.5px;line-height:1.55;color:#3D4C46;text-wrap:pretty">The app's most-used screen and its least documented interaction set. Most of it is already designed and one part of it is better than any document says — so the <b>four corrections come first</b> and the additions are five specifications. Canonical spec: <b>docs/design/p1-plan-editing-design.md</b> — §10 is the only source of copy.</div>
+  </div>
+
+  <div style="height:1px;background:#D8DCD8"></div>
+
+  <!-- ============================= A -->
+  <div style="display:flex;flex-direction:column;gap:16px">
+    <div style="display:flex;align-items:baseline;gap:10px;flex-wrap:wrap">
+      <span style="padding:3px 7px;border-radius:6px;background:#14201C;color:#fff;font-size:10px;font-weight:800;letter-spacing:.04em">A</span>
+      <span style="font-size:19px;font-weight:700;letter-spacing:-.015em">Edit mode, in place</span>
+      <span style="font-size:11.5px;color:#6B7A74">full frame, 390 × 844 · Plan tab · no forecast, so no weather banner</span>
+    </div>
+
+    <div style="display:flex;gap:34px;align-items:flex-start;flex-wrap:wrap">
+
+      <div style="display:flex;flex-direction:column;gap:9px">
+        <div style="width:390px;height:844px;background:#F2F3F1;border-radius:10px;border:1px solid rgba(20,32,28,.12);box-shadow:0 2px 10px rgba(20,32,28,.08);display:flex;flex-direction:column;overflow:hidden;box-sizing:border-box">
+
+          <div style="flex:none;padding:14px 16px 12px;background:#fff;border-bottom:1px solid #E7EAE7">
+            <div style="display:flex;align-items:flex-end;justify-content:space-between;gap:10px">
+              <div style="flex:1;min-width:0">
+                <div style="font-size:24px;font-weight:700;letter-spacing:-.02em">Day 3</div>
+                <div style="font-size:12px;color:#6B7A74;margin-top:2px">Sat 14 Mar · <b style="color:#8A5A08;font-weight:650">1 thing to look at</b></div>
+              </div>
+              <div style="width:40px;height:40px;flex:none;border-radius:13px;background:#1F6F5C;box-shadow:0 2px 10px rgba(20,32,28,.12);display:flex;align-items:center;justify-content:center"><svg width="15" height="12.3" viewBox="0 0 11 9"><path d="M1 4.5L4 7.5 10 1" stroke="#fff" stroke-width="2" fill="none" stroke-linecap="round" stroke-linejoin="round"></path></svg></div>
+            </div>
+            <div style="display:flex;gap:6px;margin-top:10px">
+              <div style="height:30px;padding:0 10px;border-radius:10px;background:#F2F3F1;color:#3D4C46;font-size:11.5px;font-weight:650;display:flex;align-items:center;gap:3px">D1</div>
+              <div style="height:30px;padding:0 10px;border-radius:10px;background:#F2F3F1;color:#3D4C46;font-size:11.5px;font-weight:650;display:flex;align-items:center;gap:3px">D2</div>
+              <div style="height:30px;padding:0 10px;border-radius:10px;background:#14201C;color:#fff;font-size:11.5px;font-weight:650;display:flex;align-items:center;gap:3px">D3</div>
+              <div style="height:30px;padding:0 10px;border-radius:10px;background:#F2F3F1;color:#3D4C46;font-size:11.5px;font-weight:650;display:flex;align-items:center;gap:3px">D4</div>
+              <div style="height:30px;padding:0 10px;border-radius:10px;background:#F2F3F1;color:#3D4C46;font-size:11.5px;font-weight:650;display:flex;align-items:center;gap:3px">D5</div>
+              <div style="height:30px;padding:0 10px;border-radius:10px;background:#F2F3F1;color:#3D4C46;font-size:11.5px;font-weight:650;display:flex;align-items:center;gap:3px">D6</div>
+            </div>
+          </div>
+
+          <div style="flex:1;padding:14px 16px 10px;overflow:hidden">
+            <div style="padding:8px 12px;background:#FBF1DE;border:1px solid #EBD9B4;border-radius:12px;font-size:12px;font-weight:650;color:#8A5A08;line-height:1.4">Drag by the handle. Both times are yours to set — the length follows, and ✕ takes a stop off the day without deleting it.</div>
+            <div style="font-size:11px;color:#98A5A0;line-height:1.45;margin-top:5px">24-hour or am/pm — 13:30, 9.15am. Leave the end as — for an open end.</div>
+
+            <div style="margin-top:10px">
+              <!-- row 1 -->
+              <div style="display:flex;gap:9px">
+                <div style="width:26px;flex:none;display:flex;align-items:center;justify-content:center"><svg width="16" height="12" viewBox="0 0 16 12"><g stroke="#98A5A0" stroke-width="2" stroke-linecap="round"><path d="M2 2h12M2 6h12M2 10h12"></path></g></svg></div>
+                <div style="width:60px;flex:none;padding-top:10px;display:flex;flex-direction:column;gap:3px;align-items:center">
+                  <div style="width:60px;padding:5px 3px;font-size:11.5px;font-weight:700;text-align:center;border:1px solid #DDE2DE;border-radius:9px;background:#fff">09:15</div>
+                  <div style="width:60px;padding:5px 3px;font-size:11.5px;font-weight:700;text-align:center;border:1px solid #DDE2DE;border-radius:9px;background:#fff">10:00</div>
+                  <div style="font-size:10px;font-weight:700;color:#B4BEB9;text-align:center">45 min</div>
+                </div>
+                <div style="width:20px;flex:none;display:flex;flex-direction:column;align-items:center"><div style="width:11px;height:11px;border-radius:50%;background:#1F6F5C;margin-top:14px;flex:none"></div><div style="flex:1;width:0;border-left:2px solid #DCE2DE"></div></div>
+                <div style="flex:1;min-width:0;margin-bottom:8px;padding:12px 13px;background:#fff;border:1px solid #E7EAE7;border-radius:14px">
+                  <div style="display:flex;gap:8px;align-items:flex-start">
+                    <div style="flex:1;min-width:0"><div style="font-size:14.5px;font-weight:650;line-height:1.25">Lumen Crossing</div><div style="font-size:11.5px;color:#6B7A74;margin-top:3px;line-height:1.35">Harbour side</div></div>
+                    <div style="width:26px;height:26px;flex:none;border-radius:9px;background:#F8E9E9;color:#9B4B4B;font-size:13px;font-weight:800;display:flex;align-items:center;justify-content:center">✕</div>
+                  </div>
+                </div>
+              </div>
+              <!-- row 2, flagged -->
+              <div style="display:flex;gap:9px">
+                <div style="width:26px;flex:none;display:flex;align-items:center;justify-content:center"><svg width="16" height="12" viewBox="0 0 16 12"><g stroke="#98A5A0" stroke-width="2" stroke-linecap="round"><path d="M2 2h12M2 6h12M2 10h12"></path></g></svg></div>
+                <div style="width:60px;flex:none;padding-top:10px;display:flex;flex-direction:column;gap:3px;align-items:center">
+                  <div style="width:60px;padding:5px 3px;font-size:11.5px;font-weight:700;text-align:center;border:1px solid #DDE2DE;border-radius:9px;background:#fff">09:45</div>
+                  <div style="width:60px;padding:5px 3px;font-size:11.5px;font-weight:700;text-align:center;border:1px solid #DDE2DE;border-radius:9px;background:#fff">10:30</div>
+                  <div style="font-size:10px;font-weight:700;color:#B4BEB9;text-align:center">45 min</div>
+                </div>
+                <div style="width:20px;flex:none;display:flex;flex-direction:column;align-items:center"><div style="width:11px;height:11px;border-radius:50%;background:#C87F0A;margin-top:14px;flex:none"></div><div style="flex:1;width:0;border-left:2px solid #DCE2DE"></div></div>
+                <div style="flex:1;min-width:0;margin-bottom:8px;padding:12px 13px;background:#fff;border:1.5px solid #EBD9B4;border-radius:14px">
+                  <div style="display:flex;gap:8px;align-items:flex-start">
+                    <div style="flex:1;min-width:0"><div style="font-size:14.5px;font-weight:650;line-height:1.25">Ashgate Shrine</div><div style="font-size:11.5px;color:#6B7A74;margin-top:3px;line-height:1.35">Shoulders covered</div></div>
+                    <div style="width:26px;height:26px;flex:none;border-radius:9px;background:#F8E9E9;color:#9B4B4B;font-size:13px;font-weight:800;display:flex;align-items:center;justify-content:center">✕</div>
+                  </div>
+                  <div style="margin-top:10px;padding:9px 10px;border-radius:10px;background:#FBF1DE">
+                    <div style="font-size:10.5px;font-weight:800;letter-spacing:.06em;color:#8A5A08">OVERLAPS</div>
+                    <div style="font-size:13px;font-weight:700;color:#14201C;line-height:1.3;margin-top:4px">Lumen Crossing</div>
+                    <div style="font-size:11.5px;line-height:1.4;color:#8A5A08;margin-top:2px">Runs to 10:00 · this starts 09:45</div>
+                    <div style="display:flex;gap:6px;flex-wrap:wrap;margin-top:8px">
+                      <div style="height:30px;padding:0 10px;border-radius:9px;background:#14201C;border:1px solid #14201C;color:#fff;font-size:11.5px;font-weight:700;display:flex;align-items:center">Start 10:00</div>
+                    </div>
+                  </div>
+                </div>
+              </div>
+              <!-- lane -->
+              <div style="display:flex;gap:9px">
+                <div style="width:26px;flex:none"></div>
+                <div style="width:60px;flex:none"></div>
+                <div style="width:20px;flex:none;display:flex;flex-direction:column;align-items:center"><div style="flex:1;width:0;border-left:2px dashed #EBD9B4"></div></div>
+                <div style="flex:1;min-width:0">
+                  <div style="height:38px;width:100%;border:1.5px dashed #E3CFA3;border-radius:12px;background:#FFFDF7;color:#8A5A08;font-size:12px;font-weight:700;display:flex;align-items:center;justify-content:center;margin-bottom:6px">+ Sub route here · 13:45 – 15:45</div>
+                </div>
+              </div>
+            </div>
+
+            <div style="height:44px;width:100%;border:1.5px dashed #C9D0CB;border-radius:14px;color:#3D4C46;font-size:13px;font-weight:650;display:flex;align-items:center;justify-content:center;margin-top:6px">+ Add a stop</div>
+            <div style="height:40px;width:100%;border-radius:12px;background:#F2F3F1;border:1px solid #E1E5E1;color:#14201C;font-size:13px;font-weight:650;display:flex;align-items:center;justify-content:center;margin-top:6px">Paste an itinerary</div>
+
+            <div style="margin-top:10px">
+              <div style="font-size:10.5px;font-weight:800;letter-spacing:.06em;color:#98A5A0">REMOVED FROM THIS DAY</div>
+              <div style="margin-top:8px;padding:12px 13px;background:#3D4C46;border-radius:14px">
+                <div style="display:flex;gap:8px;align-items:flex-start">
+                  <div style="flex:1"><div style="font-size:13.5px;font-weight:650;color:#E4EBE8;line-height:1.25">Skyline Deck</div><div style="font-size:11px;color:#9FB2AA;margin-top:2px">was 16:00 · tap to open</div></div>
+                  <div style="flex:none;height:28px;padding:0 10px;border-radius:9px;background:rgba(255,255,255,.14);color:#E4EBE8;font-size:11.5px;font-weight:700;display:flex;align-items:center;white-space:nowrap">Add back</div>
+                </div>
+                <div style="display:flex;gap:6px;align-items:center;margin-top:8px;flex-wrap:wrap">
+                  <span style="font-size:10.5px;font-weight:800;color:#9FB2AA;white-space:nowrap">MOVE TO</span>
+                  <span style="height:26px;padding:0 8px;border-radius:8px;background:rgba(255,255,255,.14);color:#E4EBE8;font-size:11px;font-weight:700;display:flex;align-items:center">D1</span>
+                  <span style="height:26px;padding:0 8px;border-radius:8px;background:rgba(255,255,255,.14);color:#E4EBE8;font-size:11px;font-weight:700;display:flex;align-items:center">D2</span>
+                  <span style="height:26px;padding:0 8px;border-radius:8px;background:rgba(255,255,255,.14);color:#E4EBE8;font-size:11px;font-weight:700;display:flex;align-items:center">D4</span>
+                  <span style="height:26px;padding:0 8px;border-radius:8px;background:rgba(255,255,255,.14);color:#E4EBE8;font-size:11px;font-weight:700;display:flex;align-items:center">D5</span>
+                  <span style="height:26px;padding:0 8px;border-radius:8px;background:rgba(255,255,255,.14);color:#E4EBE8;font-size:11px;font-weight:700;display:flex;align-items:center">D6</span>
+                </div>
+              </div>
+            </div>
+          </div>
+
+          <div style="flex:none;background:#fff;border-top:1px solid #E4E8E5;display:flex;gap:2px;padding:7px 8px 10px">
+            <div style="flex:1;min-height:46px;border-radius:12px;display:flex;flex-direction:column;align-items:center;justify-content:center;gap:3px;color:#9AA6A1"><svg width="20" height="20" viewBox="0 0 20 20" fill="none"><path d="M10 18s6-5.2 6-10A6 6 0 0 0 4 8c0 4.8 6 10 6 10z" stroke="#9AA6A1" stroke-width="1.7" stroke-linejoin="round"></path><circle cx="10" cy="8" r="2.2" stroke="#9AA6A1" stroke-width="1.7"></circle></svg><span style="font-size:9.5px;font-weight:700">Map</span></div>
+            <div style="flex:1;min-height:46px;border-radius:12px;background:#F2F3F1;display:flex;flex-direction:column;align-items:center;justify-content:center;gap:3px;color:#14201C"><svg width="20" height="20" viewBox="0 0 20 20" fill="none"><g stroke="#14201C" stroke-width="1.7" stroke-linecap="round"><path d="M3 5.5h14M3 10h14M3 14.5h9"></path></g></svg><span style="font-size:9.5px;font-weight:700">Plan</span></div>
+            <div style="flex:1;min-height:46px;border-radius:12px;display:flex;flex-direction:column;align-items:center;justify-content:center;gap:3px;color:#9AA6A1"><svg width="20" height="20" viewBox="0 0 20 20" fill="none"><path d="M4.5 6.5h11l-1 10h-9l-1-10z" stroke="#9AA6A1" stroke-width="1.7" stroke-linejoin="round"></path><path d="M7.5 6.5V5a2.5 2.5 0 0 1 5 0v1.5" stroke="#9AA6A1" stroke-width="1.7" stroke-linecap="round"></path></svg><span style="font-size:9.5px;font-weight:700">Shop</span></div>
+            <div style="flex:1;min-height:46px;border-radius:12px;display:flex;flex-direction:column;align-items:center;justify-content:center;gap:3px;color:#9AA6A1"><svg width="20" height="20" viewBox="0 0 20 20" fill="none"><rect x="3.5" y="6" width="13" height="10.5" rx="2" stroke="#9AA6A1" stroke-width="1.7"></rect><path d="M7.5 6V4.5a1.5 1.5 0 0 1 1.5-1.5h2a1.5 1.5 0 0 1 1.5 1.5V6" stroke="#9AA6A1" stroke-width="1.7" stroke-linecap="round"></path></svg><span style="font-size:9.5px;font-weight:700">Prep</span></div>
+            <div style="flex:1;min-height:46px;border-radius:12px;display:flex;flex-direction:column;align-items:center;justify-content:center;gap:3px;color:#9AA6A1"><svg width="20" height="20" viewBox="0 0 20 20" fill="none"><path d="M13 3.5l3.5 3.5L7 16.5H3.5V13z" stroke="#9AA6A1" stroke-width="1.7" stroke-linejoin="round"></path></svg><span style="font-size:9.5px;font-weight:700">Log</span></div>
+          </div>
+        </div>
+        <div style="width:390px;font-size:11.5px;line-height:1.45;color:#6B7A74;text-wrap:pretty">Everything drawn here exists: the pencil is an <b>.iconbtn.filled</b> 40×40 r13 whose background goes <b>--jade</b> inline and whose glyph becomes <b>icon.tick('#fff', 15)</b>; the gutter widens 56 → 60px and holds two <b>.edge</b> inputs (60px, pad 5·3, 11.5/700, tabular, r9) over the 10px/700 <b>--faint</b> derived length; <b>.plan-name</b> is <b>14.5px/650</b>; <b>.plan-remove</b> is a 26px r9 <b>--danger-bg</b> ✕. <b>Two additions only</b> — the clause about ✕ in the hint, and the 11px line naming the accepted time formats. The warning strip is drawn in the approved <b>fact-first</b> structure (label · name line · fact line · fixes), which is a designed change: source labels this kind <b>OVERLAPS</b> and carries a single sentence. Its <b>one</b> fix is real and verbatim — <b>dayIssues()</b> offers exactly one for an overlap, <b>Start 10:00</b> (<b>act: 'retime'</b>, the running stop's end), and there is no second chip. Stop names, times and counts on this board are illustrative data; the strings are §10's.</div>
+      </div>
+
+      <div style="width:392px;display:flex;flex-direction:column;gap:12px">
+        <div style="background:#F8E9E9;border:1px solid #F0DADA;border-radius:16px;padding:15px 16px">
+          <div style="font-size:13px;font-weight:700;color:#9B4B4B">RC-9 — a live stop cannot be swiped</div>
+          <div style="font-size:11.5px;line-height:1.55;color:#9B4B4B;margin-top:7px;text-wrap:pretty">The coverage matrix has <i>“Delete a stop — swipe → latch → in-row confirm → undo”</i>. <b>swipeToDelete</b> is bound to <b>[data-plan-row]</b>, and <b>stopRow()</b> sets <b>data-row-id</b>. Only <b>archive()</b> sets <b>data-plan-row</b>, and only in edit mode. So that row describes stage <b>2</b> and attributes it to stage <b>1</b>'s control — and <b>✕</b> calls <b>archivePlanItem</b>, not delete.</div>
+        </div>
+        <div style="background:#E6EFEB;border:1px solid #CFE0D9;border-radius:16px;padding:15px 16px">
+          <div style="font-size:13px;font-weight:700;color:#1F6F5C">RC-10 — the archive is not a P2 cosmetic</div>
+          <div style="font-size:11.5px;line-height:1.55;color:#5D8C7C;margin-top:7px;text-wrap:pretty">It is the reversible first stage of the app's best destructive model: <b>✕ → archive</b> (row stays on screen, openable, with <b>Add back</b> on it) → <b>swipe → in-row confirm → 6s undo</b> for the irreversible one. Nothing collapses. It is also <i>why</i> the Plan needs no delete confirmation on a live row.</div>
+        </div>
+        <div style="background:#fff;border:1px solid #E7EAE7;border-radius:16px;padding:15px 16px">
+          <div style="font-size:13px;font-weight:700">RC-11 — the vacated slot is not a decision</div>
+          <div style="font-size:11.5px;line-height:1.55;color:#3D4C46;margin-top:7px;text-wrap:pretty">Lanes are <b>derived</b> from gaps between stops of at least 45 minutes. Remove the 14:00 stop and the gap becomes one dashed amber lane offering <b>+ Sub route here</b>. “Close up” and “keep the gap as free time” are the same behaviour seen from either end. One consequence worth keeping: removing a stop <b>adds</b> a row in edit mode, and that row is where the freed time went.</div>
+        </div>
+        <div style="background:#fff;border:1px solid #E7EAE7;border-radius:16px;padding:15px 16px">
+          <div style="font-size:13px;font-weight:700">RC-12 — the empty day is already tier 1</div>
+          <div style="font-size:11.5px;line-height:1.55;color:#3D4C46;margin-top:7px;text-wrap:pretty"><b>plan.js</b> has its own <b>emptyDay()</b>: two <b>.lane-stub</b> dashes, a 15px/700 line, a 280px-capped teaching paragraph, one ink and one ghost action, a closing hint. That <i>is</i> the tier-1 treatment. <b>parts.js</b>'s <b>.empty</b> twin belongs to the <b>Map sheet</b>. Frame 1B's sign-off is a confirmation, not a change.</div>
+        </div>
+        <div style="background:#fff;border:1px solid #E7EAE7;border-radius:16px;padding:15px 16px">
+          <div style="font-size:13px;font-weight:700">The principle this screen adds</div>
+          <div style="font-size:11.5px;line-height:1.55;color:#3D4C46;margin-top:7px;text-wrap:pretty"><b>Edit mode is a mode, and everything destructive lives inside it.</b> Outside the pencil, nothing on this screen can change or destroy anything — the ✕, the grips, the inputs, the chips, <b>Add back</b>, both swipes and both add buttons are all gated on <b>state.editingPlan</b>. Two consequences: no confirmation on entering or leaving (there is no dirty state), and the destructive ladder is two-stage by construction.</div>
+        </div>
+      </div>
+    </div>
+  </div>
+
+  <div style="height:1px;background:#D8DCD8"></div>
+
+  <!-- ============================= B + C + D -->
+  <div style="display:flex;flex-direction:column;gap:16px">
+    <div style="display:flex;align-items:baseline;gap:10px;flex-wrap:wrap">
+      <span style="padding:3px 7px;border-radius:6px;background:#14201C;color:#fff;font-size:10px;font-weight:800;letter-spacing:.04em">B · C · D</span>
+      <span style="font-size:19px;font-weight:700;letter-spacing:-.015em">The rejected time · the receipt · adding a stop</span>
+      <span style="font-size:11.5px;color:#6B7A74">390px crops</span>
+    </div>
+
+    <div style="display:flex;gap:34px;align-items:flex-start;flex-wrap:wrap">
+
+      <div style="display:flex;flex-direction:column;gap:9px;width:390px">
+        <div style="font-size:11px;font-weight:800;letter-spacing:.05em;color:#1F6F5C">B · A REJECTED TIME — THE ONLY NEW ROW STATE</div>
+        <div style="width:390px;background:#F2F3F1;border-radius:10px;border:1px solid rgba(20,32,28,.12);padding:14px 16px;box-sizing:border-box">
+          <div style="display:flex;gap:9px">
+            <div style="width:26px;flex:none;display:flex;align-items:center;justify-content:center"><svg width="16" height="12" viewBox="0 0 16 12"><g stroke="#98A5A0" stroke-width="2" stroke-linecap="round"><path d="M2 2h12M2 6h12M2 10h12"></path></g></svg></div>
+            <div style="width:60px;flex:none;padding-top:10px;display:flex;flex-direction:column;gap:3px;align-items:center">
+              <div style="width:60px;padding:5px 3px;font-size:11.5px;font-weight:700;text-align:center;border:1px solid #DDE2DE;border-radius:9px;background:#fff">09:15</div>
+              <div style="width:60px;padding:5px 3px;font-size:11.5px;font-weight:700;text-align:center;border:1px solid #DDE2DE;border-radius:9px;background:#fff">10:00</div>
+              <div style="font-size:10px;font-weight:700;color:#9B4B4B;text-align:center">not a time</div>
+            </div>
+            <div style="width:20px;flex:none;display:flex;flex-direction:column;align-items:center"><div style="width:11px;height:11px;border-radius:50%;background:#1F6F5C;margin-top:14px;flex:none"></div><div style="flex:1;width:0;border-left:2px solid #DCE2DE"></div></div>
+            <div style="flex:1;min-width:0;padding:12px 13px;background:#fff;border:1px solid #E7EAE7;border-radius:14px">
+              <div style="font-size:14.5px;font-weight:650;line-height:1.25">Lumen Crossing</div><div style="font-size:11.5px;color:#6B7A74;margin-top:3px;line-height:1.35">Harbour side</div>
+            </div>
+          </div>
+        </div>
+        <div style="font-size:11.5px;line-height:1.45;color:#6B7A74;text-wrap:pretty">Today an unparseable value is <b>silently reverted</b> — indistinguishable from a silent accept, on a screen whose parser accepts <b>9.15am</b> and <b>13:30</b> and never says so. The reason goes in the <b>.edge-derived</b> slot, in <b>--danger-fg</b>, <b>replacing</b> a derived value that is meaningless while a time is invalid — so <b>no row changes height and nothing below it moves</b>. That is why it is here and not in the <b>.amber-note</b> at the top of the scroller, which P0-5 reserves for outcomes. Two short words because 10px in a 60px column is what there is; measured, it fits one line.</div>
+      </div>
+
+      <div style="display:flex;flex-direction:column;gap:9px;width:390px">
+        <div style="font-size:11px;font-weight:800;letter-spacing:.05em;color:#1F6F5C">C · THE MOVE RECEIPT, AND THE COUNT LINE</div>
+        <div style="width:390px;background:#F2F3F1;border-radius:10px;border:1px solid rgba(20,32,28,.12);padding:14px 16px;box-sizing:border-box;display:flex;flex-direction:column;gap:12px">
+          <div>
+            <div style="font-size:10px;font-weight:800;letter-spacing:.05em;color:#98A5A0;margin-bottom:6px">AFTER TAPPING D4, IN EDIT MODE</div>
+            <div style="padding:12px 13px;background:#3D4C46;border-radius:14px">
+              <div style="display:flex;gap:8px;align-items:flex-start">
+                <div style="flex:1"><div style="font-size:13.5px;font-weight:650;color:#E4EBE8;line-height:1.25">Skyline Deck</div><div style="font-size:11px;color:#9FB2AA;margin-top:2px">was 16:00 · tap to open</div></div>
+                <div style="flex:none;height:28px;padding:0 10px;border-radius:9px;background:rgba(255,255,255,.14);color:#E4EBE8;font-size:11.5px;font-weight:700;display:flex;align-items:center;white-space:nowrap">Add back</div>
+              </div>
+              <div style="font-size:11px;font-weight:650;color:#A8CFC0;margin-top:8px">Moved to Day 4.</div>
+            </div>
+          </div>
+          <div>
+            <div style="font-size:10px;font-weight:800;letter-spacing:.05em;color:#98A5A0;margin-bottom:6px">OUTSIDE EDIT MODE — THE WAY BACK IS NAMED</div>
+            <div style="display:flex;align-items:baseline;gap:8px;flex-wrap:wrap">
+              <span style="font-size:10.5px;font-weight:800;letter-spacing:.06em;color:#98A5A0">REMOVED FROM THIS DAY</span>
+              <span style="font-size:11px;color:#98A5A0">3 kept here · press the pencil to put one back</span>
+            </div>
+          </div>
+        </div>
+        <div style="font-size:11.5px;line-height:1.45;color:#6B7A74;text-wrap:pretty"><b>.archive-moved</b> (11px/650 <b>#A8CFC0</b>) is <b>already defined in app.css and used by no screen</b> — a class waiting for exactly this receipt (IF-15). It replaces the <b>MOVE TO</b> row for that item until the next repaint. The count line exists because outside edit mode the archived rows are visible and their controls are not, so a user who removed three stops and tapped the tick sees a dark section they can no longer act on. On trips over six days the chips become the two neighbours plus <b>Another day…</b> — Paste's answer, reused rather than reinvented.</div>
+      </div>
+
+      <div style="display:flex;flex-direction:column;gap:9px;width:390px">
+        <div style="font-size:11px;font-weight:800;letter-spacing:.05em;color:#1F6F5C">D · ADD A STOP — REFUSES OUT LOUD, PENDING ON THE BUTTON</div>
+        <div style="width:390px;background:#F2F3F1;border-radius:10px;border:1px solid rgba(20,32,28,.12);padding:14px 16px;box-sizing:border-box;display:flex;flex-direction:column;gap:12px">
+          <div style="background:#fff;border:1.5px solid #14201C;border-radius:18px;padding:14px;display:flex;flex-direction:column;gap:8px">
+            <div style="font-size:12.5px;font-weight:800">Add a stop</div>
+            <div style="width:100%;box-sizing:border-box;font-size:13px;color:#98A5A0;border:1px solid #DDE2DE;border-radius:10px;padding:9px 10px;background:#fff">Name, or paste a Google / Apple Maps link</div>
+            <div style="font-size:11px;color:#9B4B4B;line-height:1.45">A name, or a map link.</div>
+            <div style="display:flex;gap:8px;align-items:flex-end">
+              <div><div style="font-size:11px;color:#98A5A0">Starts</div><div style="width:82px;font-size:13px;border:1px solid #DDE2DE;border-radius:10px;padding:9px 10px;background:#fff;margin-top:2px">09:00</div></div>
+              <div><div style="font-size:11px;color:#98A5A0">Ends</div><div style="width:82px;font-size:13px;color:#98A5A0;border:1px solid #DDE2DE;border-radius:10px;padding:9px 10px;background:#fff;margin-top:2px">—</div></div>
+              <div style="flex:1;height:42px;border-radius:12px;background:#1F6F5C;color:#fff;font-size:13px;font-weight:700;display:flex;align-items:center;justify-content:center">Add</div>
+            </div>
+          </div>
+          <div style="background:#fff;border:1.5px solid #14201C;border-radius:18px;padding:14px;display:flex;flex-direction:column;gap:8px">
+            <div style="font-size:12.5px;font-weight:800">Add a stop</div>
+            <div style="width:100%;box-sizing:border-box;font-size:13px;border:1px solid #DDE2DE;border-radius:10px;padding:9px 10px;background:#fff">Kanda Stall Row</div>
+            <div style="display:flex;gap:8px;align-items:flex-end">
+              <div><div style="font-size:11px;color:#98A5A0">Starts</div><div style="width:82px;font-size:13px;border:1px solid #DDE2DE;border-radius:10px;padding:9px 10px;background:#fff;margin-top:2px">13:00</div></div>
+              <div><div style="font-size:11px;color:#98A5A0">Ends</div><div style="width:82px;font-size:13px;color:#98A5A0;border:1px solid #DDE2DE;border-radius:10px;padding:9px 10px;background:#fff;margin-top:2px">—</div></div>
+              <div style="flex:1;height:42px;border-radius:12px;background:#1F6F5C;color:#fff;font-size:13px;font-weight:700;display:flex;align-items:center;justify-content:center;opacity:.45">Adding…</div>
+            </div>
+          </div>
+        </div>
+        <div style="font-size:11.5px;line-height:1.45;color:#6B7A74;text-wrap:pretty">Today <b>Add</b> with nothing typed does nothing at all — one of <b>four</b> silent refusals in the app (New trip, add-a-stop, the item editor, the shot editor). The rule is canonical in <b>p1-destination-tabs-design.md</b> §6: <b>the message goes in the field's own hint, in rust, and the button is never pre-disabled.</b> Pending moves onto the button per P0-5, and the <b>form stays up</b> until <b>captureStop</b> resolves — a fourth surface of the same shape as Create, Join and the Paste save.</div>
+      </div>
+    </div>
+  </div>
+
+  <div style="height:1px;background:#D8DCD8"></div>
+
+  <div style="display:flex;gap:14px;flex-wrap:wrap;max-width:1600px">
+    <div style="width:390px;background:#fff;border:1px solid #E7EAE7;border-radius:16px;padding:15px 16px"><div style="font-size:13px;font-weight:700">Every string here is in §10</div><div style="font-size:11.5px;line-height:1.55;color:#3D4C46;margin-top:7px">The markdown is canonical and this board illustrates it. Any string on this board that is not in <b>p1-plan-editing-design.md</b> §10 is a bug in the board, not a decision.</div></div>
+    <div style="width:390px;background:#fff;border:1px solid #E7EAE7;border-radius:16px;padding:15px 16px"><div style="font-size:13px;font-weight:700">New CSS: none</div><div style="font-size:11.5px;line-height:1.55;color:#3D4C46;margin-top:7px"><b>.archive-moved</b> already exists; <b>.warn</b>, <b>.edge-derived</b>, <b>.amber-note</b> and the rust field hint are all in use elsewhere. The two documented CSS additions for this screen belong to the approved warning strip (<b>.warn-name</b>, <b>.warn-fact</b>) and are not new here.</div></div>
+    <div style="width:390px;background:#fff;border:1px solid #E7EAE7;border-radius:16px;padding:15px 16px"><div style="font-size:13px;font-weight:700">Three rejections, stated</div><div style="font-size:11.5px;line-height:1.55;color:#3D4C46;margin-top:7px"><b>Staged edits with a save step</b> — the app commits on <b>change</b> everywhere. <b>Arrow buttons for reordering</b> — the alternative is named instead: a stop out of order is usually a stop with the wrong time, and the times are keyboard-reachable inputs. <b>A confirmation on entering or leaving edit mode</b> — there is no dirty state to protect.</div></div>
+  </div>
+
+</section>
+</x-dc>
+</body>
+</html>

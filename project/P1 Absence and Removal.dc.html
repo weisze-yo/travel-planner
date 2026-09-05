@@ -1,0 +1,340 @@
+<!DOCTYPE html>
+<html>
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<script src="./support.js"></script>
+</head>
+<body>
+<x-dc>
+<helmet>
+<meta name="design_doc_mode" content="canvas">
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link href="https://fonts.googleapis.com/css2?family=Public+Sans:wght@400;600;700;800&display=swap" rel="stylesheet">
+<style>
+  body { margin:0; background:#E4E6E2; -webkit-font-smoothing:antialiased; }
+  a { color:#1F6F5C; text-decoration:none; }
+  a:hover { color:#14201C; }
+</style>
+</helmet>
+
+<section style="font-family:'Public Sans',system-ui,sans-serif;color:#14201C;padding:44px 48px 64px;display:flex;flex-direction:column;gap:34px;width:2160px;box-sizing:border-box">
+
+  <div style="display:flex;flex-direction:column;gap:9px;max-width:920px">
+    <div style="font-size:10.5px;font-weight:800;letter-spacing:.06em;color:#98A5A0">TRAVEL PLANNER · P1 · DESIGN FOR REVIEW</div>
+    <div style="font-size:34px;font-weight:700;letter-spacing:-.025em;line-height:1.1">Absence and removal</div>
+    <div style="font-size:13.5px;line-height:1.55;color:#3D4C46;text-wrap:pretty">Five surfaces where something the user was looking at stops existing, or never had what it needs. Four of them were already built; the work was <b>two false sentences</b>, one dead end, one scoped exception and one missing line. Canonical spec: <b>docs/design/p1-absence-and-removal-design.md</b> — §9 is the only source of copy.</div>
+  </div>
+
+  <div style="height:1px;background:#D8DCD8"></div>
+
+  <!-- ================================================ A -->
+  <div style="display:flex;flex-direction:column;gap:16px">
+    <div style="display:flex;align-items:baseline;gap:10px;flex-wrap:wrap">
+      <span style="padding:3px 7px;border-radius:6px;background:#14201C;color:#fff;font-size:10px;font-weight:800;letter-spacing:.04em">A</span>
+      <span style="font-size:19px;font-weight:700;letter-spacing:-.015em">Removed from a shared trip</span>
+      <span style="font-size:11.5px;color:#6B7A74">My trips, above the list · trips.js removedCard() · <b>built already</b> — RC-6</span>
+    </div>
+
+    <div style="display:flex;gap:34px;align-items:flex-start;flex-wrap:wrap">
+
+      <!-- today -->
+      <div style="display:flex;flex-direction:column;gap:9px;width:390px">
+        <div style="font-size:11px;font-weight:800;letter-spacing:.05em;color:#9B4B4B">TODAY — THREE CLAIMS, TWO FALSE</div>
+        <div style="width:390px;background:#E4E6E2;border-radius:10px;border:1px solid rgba(20,32,28,.12);padding:14px 16px;box-sizing:border-box">
+          <div style="font-size:10.5px;font-weight:800;letter-spacing:.06em;color:#9B4B4B;margin-bottom:8px">NO LONGER SHARED WITH YOU</div>
+          <div style="border:1px solid #F8E9E9;background:#F8E9E9;border-radius:14px;padding:13px 14px;margin-bottom:14px">
+            <div style="font-size:14px;font-weight:800;color:#14201C">Meridian City</div>
+            <div style="font-size:11.5px;color:#9B4B4B;line-height:1.5;margin-top:5px">Ana removed you on 3 Sept. <span style="background:#F3D3D3">The schedule and the places have gone from this phone</span> — you’ll no longer see changes to them.</div>
+          </div>
+          <div style="font-size:10.5px;font-weight:800;letter-spacing:.06em;color:#98A5A0;margin-bottom:8px">STILL YOURS, UNTOUCHED</div>
+          <div style="background:#fff;border-radius:16px;padding:12px 13px;margin-bottom:14px">
+            <div style="display:flex;gap:8px;font-size:12px;color:#3D4C46;line-height:1.45;margin-bottom:7px"><span style="flex:none;width:7px;height:7px;border-radius:50%;background:#1F6F5C;margin-top:6px"></span><span style="flex:1"><span style="background:#DCEAE3">The whole itinerary — 7 stops and the places around them</span></span></div>
+            <div style="display:flex;gap:8px;font-size:12px;color:#3D4C46;line-height:1.45"><span style="flex:none;width:7px;height:7px;border-radius:50%;background:#1F6F5C;margin-top:6px"></span><span style="flex:1">Your shopping list, all 12 items and what you bought</span></div>
+          </div>
+          <div style="font-size:11px;color:#98A5A0;line-height:1.45">Keeping it makes a trip only you can see, with the dates, your lists and your Log. <span style="background:#F3D3D3">The stops don’t come with it.</span></div>
+        </div>
+        <div style="font-size:11.5px;line-height:1.5;color:#6B7A74;text-wrap:pretty">Read against <b>store.js</b>: <b>removedFromTrip()</b> writes <b>removed</b> and clears <b>people</b>, <b>link</b>, <b>share</b>. <b>It deletes nothing.</b> <b>keepMySide()</b> deletes nothing either. So the rust card and the closing line are both false, the kept list is true — and Share manage tells the <i>owner</i> the true version: <i>“They keep the copy of the itinerary they already have, and stop receiving your updates.”</i></div>
+      </div>
+
+      <!-- designed -->
+      <div style="display:flex;flex-direction:column;gap:9px;width:390px">
+        <div style="font-size:11px;font-weight:800;letter-spacing:.05em;color:#1F6F5C">DESIGNED — TWO SENTENCES CORRECTED</div>
+        <div style="width:390px;background:#E4E6E2;border-radius:10px;border:1px solid rgba(20,32,28,.12);padding:14px 16px;box-sizing:border-box">
+          <div style="font-size:10.5px;font-weight:800;letter-spacing:.06em;color:#9B4B4B;margin-bottom:8px">NO LONGER SHARED WITH YOU</div>
+          <div style="border:1px solid #F8E9E9;background:#F8E9E9;border-radius:14px;padding:13px 14px;margin-bottom:14px">
+            <div style="font-size:14px;font-weight:800;color:#14201C">Meridian City</div>
+            <div style="font-size:11.5px;color:#9B4B4B;line-height:1.5;margin-top:5px">Ana removed you on 3 Sept. Their updates stop here; everything on this phone stays exactly as it is.</div>
+          </div>
+          <div style="font-size:10.5px;font-weight:800;letter-spacing:.06em;color:#98A5A0;margin-bottom:8px">STILL YOURS, UNTOUCHED</div>
+          <div style="background:#fff;border-radius:16px;padding:12px 13px;margin-bottom:14px">
+            <div style="display:flex;gap:8px;font-size:12px;color:#3D4C46;line-height:1.45;margin-bottom:7px"><span style="flex:none;width:7px;height:7px;border-radius:50%;background:#1F6F5C;margin-top:6px"></span><span style="flex:1">The whole itinerary — 7 stops and the places around them</span></div>
+            <div style="display:flex;gap:8px;font-size:12px;color:#3D4C46;line-height:1.45;margin-bottom:7px"><span style="flex:none;width:7px;height:7px;border-radius:50%;background:#1F6F5C;margin-top:6px"></span><span style="flex:1">Your shopping list, all 12 items and what you bought</span></div>
+            <div style="display:flex;gap:8px;font-size:12px;color:#3D4C46;line-height:1.45;margin-bottom:7px"><span style="flex:none;width:7px;height:7px;border-radius:50%;background:#1F6F5C;margin-top:6px"></span><span style="flex:1">Your Log — 9 notes and 14 photos</span></div>
+            <div style="display:flex;gap:8px;font-size:12px;color:#3D4C46;line-height:1.45"><span style="flex:none;width:7px;height:7px;border-radius:50%;background:#1F6F5C;margin-top:6px"></span><span style="flex:1">Your packing list, which was never shared</span></div>
+          </div>
+          <div style="display:flex;gap:8px;margin-bottom:8px">
+            <div style="flex:1;height:42px;border-radius:12px;background:#1F6F5C;color:#fff;font-size:13px;font-weight:700;display:flex;align-items:center;justify-content:center">Keep my side as its own trip</div>
+            <div style="width:104px;height:42px;border-radius:12px;background:#F2F3F1;border:1px solid #E1E5E1;color:#14201C;font-size:13px;font-weight:650;display:flex;align-items:center;justify-content:center">Message Ana</div>
+          </div>
+          <div style="font-size:11px;color:#98A5A0;line-height:1.45">Keeping it makes a trip only you can see. Everything above comes with it — it simply stops being a shared copy.</div>
+        </div>
+        <div style="font-size:11.5px;line-height:1.5;color:#6B7A74;text-wrap:pretty">The <b>layout, the controls and the kept list are unchanged</b>; only the two highlighted sentences move. The rust surface is kept — rust here means <i>this has been done to you</i>, and the reassurance is the card beneath it. Both new sentences are on the sending axis (P0-1 principle 1): what ends is <i>receiving updates</i>, not <i>having a trip</i>. The <b>.acct</b> account row sits above this block, unchanged, and is not drawn.</div>
+      </div>
+
+      <div style="width:392px;display:flex;flex-direction:column;gap:12px">
+        <div style="background:#fff;border:1px solid #E7EAE7;border-radius:16px;padding:15px 16px">
+          <div style="font-size:13px;font-weight:700">Why this is the worst copy failure in the baseline</div>
+          <div style="font-size:11.5px;line-height:1.55;color:#3D4C46;margin-top:7px;text-wrap:pretty">P0-1's product model is <i>everyone edits their own copy, always</i>. This screen told the one person whose confidence it costs the opposite — while the owner's own screen told the truth, and the kept list two centimetres below contradicted it. Recorded as <b>X-1</b> in the consistency audit.</div>
+        </div>
+        <div style="background:#FBF1DE;border:1px solid #EBD9B4;border-radius:16px;padding:15px 16px">
+          <div style="font-size:13px;font-weight:700;color:#8A5A08">The screen is unreachable today</div>
+          <div style="font-size:11.5px;line-height:1.55;color:#8A5A08;margin-top:7px;text-wrap:pretty"><b>removedFromTrip()</b> is exported and <b>called by nothing</b> in <b>web/js/**</b> (IF-9). So <b>.gone-card</b>, <b>keptAfterRemoval()</b> and <b>keepMySide()</b> have never rendered. The detection rule is specified in §2.4 — this phone's id absent from the envelope's <b>joiners</b> while <b>sharedFrom</b> is set, written once — and it is the only behavioural addition in the document.</div>
+        </div>
+        <div style="background:#fff;border:1px solid #E7EAE7;border-radius:16px;padding:15px 16px">
+          <div style="font-size:13px;font-weight:700">Zero counts are omitted, not zeroed</div>
+          <div style="font-size:11.5px;line-height:1.55;color:#3D4C46;margin-top:7px;text-wrap:pretty">A removal on an empty trip would otherwise read <i>“Your Log — 0 notes”</i>. Rows with a zero count are dropped, and if all four are zero the whole block goes with its eyebrow — the approved empty-state rule <i>do not zero a summary</i>. The rust card and both buttons stay.</div>
+        </div>
+      </div>
+    </div>
+  </div>
+
+  <div style="height:1px;background:#D8DCD8"></div>
+
+  <!-- ================================================ B -->
+  <div style="display:flex;flex-direction:column;gap:16px">
+    <div style="display:flex;align-items:baseline;gap:10px;flex-wrap:wrap">
+      <span style="padding:3px 7px;border-radius:6px;background:#14201C;color:#fff;font-size:10px;font-weight:800;letter-spacing:.04em">B</span>
+      <span style="font-size:19px;font-weight:700;letter-spacing:-.015em">The stop that has gone</span>
+      <span style="font-size:11.5px;color:#6B7A74">dest.js, the no-subject branch · a push screen with no header · full frame, 390 × 844</span>
+    </div>
+
+    <div style="display:flex;gap:34px;align-items:flex-start;flex-wrap:wrap">
+
+      <!-- today -->
+      <div style="display:flex;flex-direction:column;gap:9px">
+        <div style="font-size:11px;font-weight:800;letter-spacing:.05em;color:#9B4B4B">TODAY</div>
+        <div style="width:390px;height:844px;background:#F2F3F1;border-radius:10px;border:1px solid rgba(20,32,28,.12);box-shadow:0 2px 10px rgba(20,32,28,.08);display:flex;flex-direction:column;overflow:hidden;box-sizing:border-box">
+          <div style="flex:1;display:flex;align-items:flex-start;justify-content:center;padding-top:14px">
+            <div style="padding:28px 16px;text-align:center;font-size:12.5px;line-height:1.5;color:#98A5A0">This stop is no longer on your plan.</div>
+          </div>
+          <div style="flex:none;background:#fff;border-top:1px solid #E4E8E5;display:flex;gap:2px;padding:7px 8px 10px">
+            <div style="flex:1;min-height:46px;border-radius:12px;background:#F2F3F1;display:flex;flex-direction:column;align-items:center;justify-content:center;gap:3px;color:#14201C"><svg width="20" height="20" viewBox="0 0 20 20" fill="none"><path d="M10 18s6-5.2 6-10A6 6 0 0 0 4 8c0 4.8 6 10 6 10z" stroke="#14201C" stroke-width="1.7" stroke-linejoin="round"></path><circle cx="10" cy="8" r="2.2" stroke="#14201C" stroke-width="1.7"></circle></svg><span style="font-size:9.5px;font-weight:700">Map</span></div>
+            <div style="flex:1;min-height:46px;border-radius:12px;display:flex;flex-direction:column;align-items:center;justify-content:center;gap:3px;color:#9AA6A1"><svg width="20" height="20" viewBox="0 0 20 20" fill="none"><g stroke="#9AA6A1" stroke-width="1.7" stroke-linecap="round"><path d="M3 5.5h14M3 10h14M3 14.5h9"></path></g></svg><span style="font-size:9.5px;font-weight:700">Plan</span></div>
+            <div style="flex:1;min-height:46px;border-radius:12px;display:flex;flex-direction:column;align-items:center;justify-content:center;gap:3px;color:#9AA6A1"><svg width="20" height="20" viewBox="0 0 20 20" fill="none"><path d="M4.5 6.5h11l-1 10h-9l-1-10z" stroke="#9AA6A1" stroke-width="1.7" stroke-linejoin="round"></path><path d="M7.5 6.5V5a2.5 2.5 0 0 1 5 0v1.5" stroke="#9AA6A1" stroke-width="1.7" stroke-linecap="round"></path></svg><span style="font-size:9.5px;font-weight:700">Shop</span></div>
+            <div style="flex:1;min-height:46px;border-radius:12px;display:flex;flex-direction:column;align-items:center;justify-content:center;gap:3px;color:#9AA6A1"><svg width="20" height="20" viewBox="0 0 20 20" fill="none"><rect x="3.5" y="6" width="13" height="10.5" rx="2" stroke="#9AA6A1" stroke-width="1.7"></rect><path d="M7.5 6V4.5a1.5 1.5 0 0 1 1.5-1.5h2a1.5 1.5 0 0 1 1.5 1.5V6" stroke="#9AA6A1" stroke-width="1.7" stroke-linecap="round"></path></svg><span style="font-size:9.5px;font-weight:700">Prep</span></div>
+            <div style="flex:1;min-height:46px;border-radius:12px;display:flex;flex-direction:column;align-items:center;justify-content:center;gap:3px;color:#9AA6A1"><svg width="20" height="20" viewBox="0 0 20 20" fill="none"><path d="M13 3.5l3.5 3.5L7 16.5H3.5V13z" stroke="#9AA6A1" stroke-width="1.7" stroke-linejoin="round"></path></svg><span style="font-size:9.5px;font-weight:700">Log</span></div>
+          </div>
+        </div>
+        <div style="width:390px;font-size:11.5px;line-height:1.45;color:#6B7A74;text-wrap:pretty">One <b>.empty</b> sentence (pad 28·16, centred, 12.5px/1.5 <b>--soft</b>) on a <b>.screen</b> with <b>no .head</b> — so there is no back chevron, because Destination's back control lives in <b>.hero-back</b> inside the hero, which this branch does not render. The tab bar <i>is</i> there (<b>dest.js</b> sets <b>tab: 'map'</b>, no <b>chrome: false</b>), so the audit's “dead end with no action” is half right: the only way out changes tab.</div>
+      </div>
+
+      <!-- designed -->
+      <div style="display:flex;flex-direction:column;gap:9px">
+        <div style="font-size:11px;font-weight:800;letter-spacing:.05em;color:#1F6F5C">DESIGNED</div>
+        <div style="width:390px;height:844px;background:#F2F3F1;border-radius:10px;border:1px solid rgba(20,32,28,.12);box-shadow:0 2px 10px rgba(20,32,28,.08);display:flex;flex-direction:column;overflow:hidden;box-sizing:border-box">
+          <div style="flex:none;padding:14px 16px 12px;background:#fff;border-bottom:1px solid #E7EAE7">
+            <div style="display:flex;align-items:center;gap:10px">
+              <div style="width:32px;height:32px;flex:none;border-radius:10px;display:flex;align-items:center;justify-content:center"><svg width="11" height="18" viewBox="0 0 11 18"><path d="M9 1L2 9l7 8" stroke="#14201C" stroke-width="2.2" fill="none" stroke-linecap="round" stroke-linejoin="round"></path></svg></div>
+              <div style="flex:1;min-width:0">
+                <div style="font-size:17px;font-weight:700;letter-spacing:-.01em">That stop has gone</div>
+                <div style="font-size:11.5px;color:#6B7A74;margin-top:1px">Meridian City</div>
+              </div>
+            </div>
+          </div>
+          <div style="flex:1;padding:14px 16px 24px;display:flex;flex-direction:column">
+            <div style="padding:28px 16px;text-align:center;font-size:12.5px;line-height:1.5;color:#98A5A0">Nishi Market is not on this trip any more.<br>It was removed from the plan. Everything else on the trip is untouched.</div>
+            <div style="height:42px;border-radius:12px;background:#F2F3F1;border:1px solid #E1E5E1;color:#14201C;font-size:13px;font-weight:650;display:flex;align-items:center;justify-content:center;margin:0 auto;padding:0 16px">Back to the day</div>
+          </div>
+          <div style="flex:none;background:#fff;border-top:1px solid #E4E8E5;display:flex;gap:2px;padding:7px 8px 10px">
+            <div style="flex:1;min-height:46px;border-radius:12px;background:#F2F3F1;display:flex;flex-direction:column;align-items:center;justify-content:center;gap:3px;color:#14201C"><svg width="20" height="20" viewBox="0 0 20 20" fill="none"><path d="M10 18s6-5.2 6-10A6 6 0 0 0 4 8c0 4.8 6 10 6 10z" stroke="#14201C" stroke-width="1.7" stroke-linejoin="round"></path><circle cx="10" cy="8" r="2.2" stroke="#14201C" stroke-width="1.7"></circle></svg><span style="font-size:9.5px;font-weight:700">Map</span></div>
+            <div style="flex:1;min-height:46px;border-radius:12px;display:flex;flex-direction:column;align-items:center;justify-content:center;gap:3px;color:#9AA6A1"><svg width="20" height="20" viewBox="0 0 20 20" fill="none"><g stroke="#9AA6A1" stroke-width="1.7" stroke-linecap="round"><path d="M3 5.5h14M3 10h14M3 14.5h9"></path></g></svg><span style="font-size:9.5px;font-weight:700">Plan</span></div>
+            <div style="flex:1;min-height:46px;border-radius:12px;display:flex;flex-direction:column;align-items:center;justify-content:center;gap:3px;color:#9AA6A1"><svg width="20" height="20" viewBox="0 0 20 20" fill="none"><path d="M4.5 6.5h11l-1 10h-9l-1-10z" stroke="#9AA6A1" stroke-width="1.7" stroke-linejoin="round"></path><path d="M7.5 6.5V5a2.5 2.5 0 0 1 5 0v1.5" stroke="#9AA6A1" stroke-width="1.7" stroke-linecap="round"></path></svg><span style="font-size:9.5px;font-weight:700">Shop</span></div>
+            <div style="flex:1;min-height:46px;border-radius:12px;display:flex;flex-direction:column;align-items:center;justify-content:center;gap:3px;color:#9AA6A1"><svg width="20" height="20" viewBox="0 0 20 20" fill="none"><rect x="3.5" y="6" width="13" height="10.5" rx="2" stroke="#9AA6A1" stroke-width="1.7"></rect><path d="M7.5 6V4.5a1.5 1.5 0 0 1 1.5-1.5h2a1.5 1.5 0 0 1 1.5 1.5V6" stroke="#9AA6A1" stroke-width="1.7" stroke-linecap="round"></path></svg><span style="font-size:9.5px;font-weight:700">Prep</span></div>
+            <div style="flex:1;min-height:46px;border-radius:12px;display:flex;flex-direction:column;align-items:center;justify-content:center;gap:3px;color:#9AA6A1"><svg width="20" height="20" viewBox="0 0 20 20" fill="none"><path d="M13 3.5l3.5 3.5L7 16.5H3.5V13z" stroke="#9AA6A1" stroke-width="1.7" stroke-linejoin="round"></path></svg><span style="font-size:9.5px;font-weight:700">Log</span></div>
+          </div>
+        </div>
+        <div style="width:390px;font-size:11.5px;line-height:1.45;color:#6B7A74;text-wrap:pretty">The screen's own <b>backHeader</b> — the same push chrome as every other push screen, so <b>icon.back</b> (11×18, stroke 2.2) is where it is on all of them. The body names the subject <b>when the caller passed a name</b> and reads <i>“That stop is not on this trip any more.”</i> when it did not. <b>One ghost action, not an ink primary</b>: this is a recovery, not the user's next intention. Still tier 2 — the cause is a stale reference, not incompleteness and not another person's copy.</div>
+      </div>
+
+      <div style="width:392px;display:flex;flex-direction:column;gap:12px">
+        <div style="background:#fff;border:1px solid #E7EAE7;border-radius:16px;padding:15px 16px">
+          <div style="font-size:13px;font-weight:700">Three ways to reach it</div>
+          <div style="font-size:11.5px;line-height:1.55;color:#3D4C46;margin-top:7px;text-wrap:pretty">A Nearby row for a place deleted on another phone · a Review <b>Take theirs</b> that removed the stop you had open · a stale <b>itemID</b> in a restored screen stack after <b>deletePlanItem</b>. The second is the one that matters: it is reachable by the app's own design.</div>
+        </div>
+        <div style="background:#fff;border:1px solid #E7EAE7;border-radius:16px;padding:15px 16px">
+          <div style="font-size:13px;font-weight:700">Why it does not close itself</div>
+          <div style="font-size:11.5px;line-height:1.55;color:#3D4C46;margin-top:7px;text-wrap:pretty">A screen that removes itself while you are reading it is the same failure as <b>Later</b> removing the door to Review: the app deciding for the user what they were doing. One sentence and one tap is cheaper than a jump nobody asked for.</div>
+        </div>
+        <div style="background:#fff;border:1px solid #E7EAE7;border-radius:16px;padding:15px 16px">
+          <div style="font-size:13px;font-weight:700">Second action, rejected</div>
+          <div style="font-size:11.5px;line-height:1.55;color:#3D4C46;margin-top:7px;text-wrap:pretty">A <i>“Find it again”</i> has nothing to find — P0-5's rule that a control which cannot act should not exist. Reached from Nearby the ghost reads <b>Back to the places</b> instead, because that is where <b>back()</b> goes.</div>
+        </div>
+      </div>
+    </div>
+  </div>
+
+  <div style="height:1px;background:#D8DCD8"></div>
+
+  <!-- ================================================ C -->
+  <div style="display:flex;flex-direction:column;gap:16px">
+    <div style="display:flex;align-items:baseline;gap:10px;flex-wrap:wrap">
+      <span style="padding:3px 7px;border-radius:6px;background:#14201C;color:#fff;font-size:10px;font-weight:800;letter-spacing:.04em">C</span>
+      <span style="font-size:19px;font-weight:700;letter-spacing:-.015em">A place with no position</span>
+      <span style="font-size:11.5px;color:#6B7A74">three 390px crops · <b>not silent today</b> — RC-7</span>
+    </div>
+
+    <div style="display:flex;gap:34px;align-items:flex-start;flex-wrap:wrap">
+
+      <div style="display:flex;flex-direction:column;gap:9px;width:390px">
+        <div style="font-size:11px;font-weight:800;letter-spacing:.05em;color:#1F6F5C">1 · DESTINATION — NEW</div>
+        <div style="width:390px;background:#F2F3F1;border-radius:10px;border:1px solid rgba(20,32,28,.12);padding:14px 16px;box-sizing:border-box">
+          <div style="display:flex;gap:8px">
+            <div style="flex:1;height:42px;border-radius:12px;background:#14201C;color:#fff;font-size:13px;font-weight:700;display:flex;align-items:center;justify-content:center">Google Maps</div>
+            <div style="flex:1;height:42px;border-radius:12px;background:#F2F3F1;border:1px solid #E1E5E1;color:#14201C;font-size:13px;font-weight:650;display:flex;align-items:center;justify-content:center">Apple Maps</div>
+          </div>
+          <div style="margin-top:10px;padding:9px 10px;border-radius:10px;background:#FBF1DE">
+            <div style="font-size:10.5px;font-weight:800;letter-spacing:.06em;color:#8A5A08">NO POSITION</div>
+            <div style="font-size:11.5px;line-height:1.4;color:#8A5A08;margin-top:4px">The map cannot place this one, so it is off the route too.</div>
+            <div style="margin-top:8px;display:flex;gap:6px;flex-wrap:wrap">
+              <div style="height:30px;padding:0 10px;border-radius:9px;background:#14201C;border:1px solid #14201C;color:#fff;font-size:11.5px;font-weight:700;display:flex;align-items:center;white-space:nowrap">Paste a map link</div>
+            </div>
+          </div>
+        </div>
+        <div style="font-size:11.5px;line-height:1.45;color:#6B7A74;text-wrap:pretty">The existing row-warning strip (<b>.warn</b> mt10, pad 9·10, r10, <b>--amber-bg</b>), directly under the two controls it is about — a position is exactly what would make those two buttons work. <b>A presentational reuse of <code>.warn</code>, not a fifth <code>dayIssues()</code> kind</b>: that function answers “what is wrong with this row relative to the day”; this is a property of the place. And it correctly has <b>no name line</b> — there is no other party, and the strip's rule is that a slot is omitted, never substituted.</div>
+      </div>
+
+      <div style="display:flex;flex-direction:column;gap:9px;width:390px">
+        <div style="font-size:11px;font-weight:800;letter-spacing:.05em;color:#1F6F5C">2 · NEARBY — RELABELLED</div>
+        <div style="width:390px;background:#F2F3F1;border-radius:10px;border:1px solid rgba(20,32,28,.12);padding:14px 16px;box-sizing:border-box;display:flex;flex-direction:column;gap:10px">
+          <div style="font-size:10px;font-weight:800;letter-spacing:.05em;color:#9B4B4B">TODAY</div>
+          <div style="display:flex;gap:11px;padding:11px;background:#fff;border-radius:15px;border:1px solid #EDEFEC">
+            <div style="width:56px;height:56px;flex:none;border-radius:11px;background:repeating-linear-gradient(135deg,#E2E6E2 0 7px,#DADFDA 7px 14px)"></div>
+            <div style="flex:1;min-width:0">
+              <div style="display:flex;gap:6px;align-items:baseline"><div style="font-size:14px;font-weight:650;line-height:1.2;flex:1;min-width:0">Kanda Stall Row</div><span style="font-size:11px;color:#98A5A0;font-weight:700;flex:none">¥¥</span></div>
+              <div style="font-size:11px;color:#6B7A74;margin-top:2px">Food · 8 min away<span style="background:#F3D3D3"> · no location</span></div>
+            </div>
+            <div style="width:34px;height:34px;flex:none;align-self:center;border-radius:11px;background:#F2F3F1;color:#3D4C46;display:flex;align-items:center;justify-content:center;font-size:15px">+</div>
+          </div>
+          <div style="font-size:10px;font-weight:800;letter-spacing:.05em;color:#1F6F5C">DESIGNED</div>
+          <div style="display:flex;gap:11px;padding:11px;background:#fff;border-radius:15px;border:1px solid #EDEFEC">
+            <div style="width:56px;height:56px;flex:none;border-radius:11px;background:repeating-linear-gradient(135deg,#E2E6E2 0 7px,#DADFDA 7px 14px)"></div>
+            <div style="flex:1;min-width:0">
+              <div style="display:flex;gap:6px;align-items:baseline"><div style="font-size:14px;font-weight:650;line-height:1.2;flex:1;min-width:0">Kanda Stall Row</div><span style="font-size:11px;color:#98A5A0;font-weight:700;flex:none">¥¥</span></div>
+              <div style="font-size:11px;color:#6B7A74;margin-top:2px">Food · 8 min away</div>
+              <div style="display:flex;gap:6px;margin-top:6px"><span style="padding:4px 8px;border-radius:8px;background:#FBF1DE;color:#8A5A08;font-size:10.5px;font-weight:700;white-space:nowrap">No position</span></div>
+            </div>
+            <div style="width:34px;height:34px;flex:none;align-self:center;border-radius:11px;background:#F2F3F1;color:#3D4C46;display:flex;align-items:center;justify-content:center;font-size:15px">+</div>
+          </div>
+        </div>
+        <div style="font-size:11.5px;line-height:1.45;color:#6B7A74;text-wrap:pretty"><b>· no location</b> comes out of the 11px <b>--muted</b> metadata line — where it is not a warning and names no tap — and becomes the same <b>.chip.amber</b> the Plan card already carries. Shorter than the Plan's <b>No position · add a link</b>, because a Nearby card has no room for the clause and is one tap from the screen that fixes it.</div>
+      </div>
+
+      <div style="width:392px;display:flex;flex-direction:column;gap:12px">
+        <div style="background:#fff;border:1px solid #E7EAE7;border-radius:16px;padding:15px 16px">
+          <div style="font-size:11px;font-weight:800;letter-spacing:.05em;color:#1F6F5C;margin-bottom:8px">3 · SUB ROUTE — NEW LINE</div>
+          <div style="display:flex;gap:8px;margin-bottom:10px">
+            <div style="flex:1;background:#F2F3F1;border-radius:12px;padding:9px 11px"><div style="font-size:10px;font-weight:800;letter-spacing:.04em;color:#98A5A0">YOU HAVE</div><div style="font-size:15px;font-weight:700;margin-top:2px">2h</div></div>
+            <div style="flex:1;background:#F2F3F1;border-radius:12px;padding:9px 11px"><div style="font-size:10px;font-weight:800;letter-spacing:.04em;color:#98A5A0">TRAVELLING</div><div style="font-size:15px;font-weight:700;margin-top:2px">23 min</div></div>
+            <div style="flex:1;background:#E6EFEB;border-radius:12px;padding:9px 11px"><div style="font-size:10px;font-weight:800;letter-spacing:.04em;color:#1F6F5C">TO SPEND</div><div style="font-size:15px;font-weight:700;margin-top:2px;color:#1F6F5C">1h 37m</div></div>
+          </div>
+          <div style="font-size:11px;line-height:1.45;color:#98A5A0">1 of 4 places has no position, so it is not in the walk.</div>
+          <div style="font-size:11.5px;line-height:1.5;color:#6B7A74;margin-top:10px;text-wrap:pretty"><b>Not amber.</b> Nothing is wrong with the loop and the tiles above it are correct for what they measure — this is a caveat about coverage, and it takes the same quiet treatment as the tile download's failed-tile caveat. Shown only when the count is non-zero.</div>
+        </div>
+        <div style="background:#FBF1DE;border:1px solid #EBD9B4;border-radius:16px;padding:15px 16px">
+          <div style="font-size:13px;font-weight:700;color:#8A5A08">RC-7 — “silently” was wrong</div>
+          <div style="font-size:11.5px;line-height:1.55;color:#8A5A08;margin-top:7px;text-wrap:pretty">The coverage matrix says a place with no location <i>“silently drops out of the map and the walking route”</i>. In source the Plan card already carries a standing <b>.chip.amber</b> reading <b>No position · add a link</b>, and the add outcome is a full sentence naming three taps. The real gaps were narrower: Destination said nothing, a place's marker was metadata rather than a warning, and the sub route omitted it from the walk without saying so.</div>
+        </div>
+      </div>
+    </div>
+  </div>
+
+  <div style="height:1px;background:#D8DCD8"></div>
+
+  <!-- ================================================ D + E -->
+  <div style="display:flex;flex-direction:column;gap:16px">
+    <div style="display:flex;align-items:baseline;gap:10px;flex-wrap:wrap">
+      <span style="padding:3px 7px;border-radius:6px;background:#14201C;color:#fff;font-size:10px;font-weight:800;letter-spacing:.04em">D · E</span>
+      <span style="font-size:19px;font-weight:700;letter-spacing:-.015em">Empty this trip · and a link that has stopped working</span>
+      <span style="font-size:11.5px;color:#6B7A74">Trip settings, last card · Share, non-owner view</span>
+    </div>
+
+    <div style="display:flex;gap:34px;align-items:flex-start;flex-wrap:wrap">
+
+      <div style="display:flex;flex-direction:column;gap:9px;width:390px">
+        <div style="font-size:11px;font-weight:800;letter-spacing:.05em;color:#1F6F5C">D · AT REST, ON A JOINED COPY</div>
+        <div style="width:390px;background:#F2F3F1;border-radius:10px;border:1px solid rgba(20,32,28,.12);padding:14px 16px;box-sizing:border-box">
+          <div style="background:#fff;border-radius:16px;padding:14px">
+            <div style="font-size:10.5px;font-weight:800;letter-spacing:.06em;color:#9B4B4B">START THIS TRIP FRESH</div>
+            <div style="font-size:12.5px;color:#6B7A74;line-height:1.45;margin-top:6px">Empties this trip and keeps its settings — the dates, the currency and the map centre stay. Use it when you are ready to put your own itinerary in, or to clear the demo the app ships with.</div>
+            <div style="display:flex;gap:6px;flex-wrap:wrap;margin-top:10px">
+              <span style="padding:4px 8px;border-radius:8px;background:#F2F3F1;color:#3D4C46;font-size:10.5px;font-weight:700">7 stops</span>
+              <span style="padding:4px 8px;border-radius:8px;background:#F2F3F1;color:#3D4C46;font-size:10.5px;font-weight:700">11 places</span>
+              <span style="padding:4px 8px;border-radius:8px;background:#F2F3F1;color:#3D4C46;font-size:10.5px;font-weight:700">12 shopping</span>
+              <span style="padding:4px 8px;border-radius:8px;background:#F2F3F1;color:#3D4C46;font-size:10.5px;font-weight:700">8 packing</span>
+              <span style="padding:4px 8px;border-radius:8px;background:#F2F3F1;color:#3D4C46;font-size:10.5px;font-weight:700">9 notes</span>
+            </div>
+            <div style="font-size:11px;color:#98A5A0;line-height:1.45;margin-top:8px">This is Ana’s copy. Emptying it does not leave the trip — the next update she sends will offer everything back.</div>
+            <div style="height:42px;width:100%;border-radius:12px;background:#F2F3F1;border:1px solid #E1E5E1;color:#14201C;font-size:13px;font-weight:650;display:flex;align-items:center;justify-content:center;margin-top:12px">Empty this trip…</div>
+          </div>
+        </div>
+        <div style="font-size:11.5px;line-height:1.45;color:#6B7A74;text-wrap:pretty">The card's explanation now describes <b>what the control does</b>, with the demo as a second clause where it is still true. The joined-copy line is shown only when <b>trip.sharedFrom</b> is set.</div>
+      </div>
+
+      <div style="display:flex;flex-direction:column;gap:9px;width:390px">
+        <div style="font-size:11px;font-weight:800;letter-spacing:.05em;color:#1F6F5C">D · CONFIRMING</div>
+        <div style="width:390px;background:#F2F3F1;border-radius:10px;border:1px solid rgba(20,32,28,.12);padding:14px 16px;box-sizing:border-box">
+          <div style="background:#fff;border-radius:16px;padding:14px">
+            <div style="font-size:10.5px;font-weight:800;letter-spacing:.06em;color:#9B4B4B">START THIS TRIP FRESH</div>
+            <div style="display:flex;gap:6px;flex-wrap:wrap;margin-top:10px">
+              <span style="padding:4px 8px;border-radius:8px;background:#F2F3F1;color:#3D4C46;font-size:10.5px;font-weight:700">7 stops</span>
+              <span style="padding:4px 8px;border-radius:8px;background:#F2F3F1;color:#3D4C46;font-size:10.5px;font-weight:700">11 places</span>
+              <span style="padding:4px 8px;border-radius:8px;background:#F2F3F1;color:#3D4C46;font-size:10.5px;font-weight:700">12 shopping</span>
+              <span style="padding:4px 8px;border-radius:8px;background:#F2F3F1;color:#3D4C46;font-size:10.5px;font-weight:700">8 packing</span>
+              <span style="padding:4px 8px;border-radius:8px;background:#F2F3F1;color:#3D4C46;font-size:10.5px;font-weight:700">9 notes</span>
+            </div>
+            <div style="margin-top:12px;display:flex;flex-direction:column;gap:8px">
+              <div style="font-size:12.5px;font-weight:650;color:#9B4B4B;line-height:1.45">This cannot be undone. Everything listed above goes, including your shopping list, your packing list and your Log.</div>
+              <div style="display:flex;gap:8px">
+                <div style="flex:1;height:42px;border-radius:12px;background:#F8E9E9;color:#9B4B4B;font-size:13px;font-weight:700;display:flex;align-items:center;justify-content:center">Yes, empty the trip</div>
+                <div style="width:96px;height:42px;border-radius:12px;background:#F2F3F1;border:1px solid #E1E5E1;color:#14201C;font-size:13px;font-weight:650;display:flex;align-items:center;justify-content:center">Cancel</div>
+              </div>
+            </div>
+          </div>
+        </div>
+        <div style="font-size:11.5px;line-height:1.45;color:#6B7A74;text-wrap:pretty">The confirm names the <b>three private kinds</b>, because they are the surprise: four approved strings promise the shopping list, the packing list and the Log are never in a snapshot and no update can reach them — all true, and one ghost button deletes them. <b>No count is interpolated</b>: the chips above carry the numbers, and a chip row plus a sentence stating the same five numbers is the four-surfaces problem inside one card.</div>
+      </div>
+
+      <div style="width:392px;display:flex;flex-direction:column;gap:12px">
+        <div style="background:#F8E9E9;border:1px solid #F0DADA;border-radius:16px;padding:15px 16px">
+          <div style="font-size:13px;font-weight:700;color:#9B4B4B">X-2 — two correct designs meeting badly</div>
+          <div style="font-size:11.5px;line-height:1.55;color:#9B4B4B;margin-top:7px;text-wrap:pretty">Under P0-4's retained base, emptying a joined copy leaves the base holding every stop while yours holds none. Every stop is then <b>case 7 — “I removed it”</b> — and case 7 never reaches the screen. The next update offers <b>nothing</b>, and the itinerary is unrecoverable by any route in the app. <b>Resolution:</b> emptying also clears <b>reviewedSnapshot</b>, which enters P0-4's already-approved <b>no-base mode</b> — every row offered, badged <b>THEY SENT</b>. No new state, no new mode, no new copy.</div>
+        </div>
+        <div style="background:#fff;border:1px solid #E7EAE7;border-radius:16px;padding:15px 16px">
+          <div style="font-size:11px;font-weight:800;letter-spacing:.05em;color:#1F6F5C;margin-bottom:9px">E · SHARE, NON-OWNER</div>
+          <div style="background:#E6EFEB;border:1px solid #CFE0D9;border-radius:16px;padding:14px">
+            <div style="font-size:12.5px;line-height:1.5;color:#5D8C7C">Ana’s link has stopped working, so no more updates can arrive. Everything on this phone stays as it is.</div>
+          </div>
+          <div style="font-size:11.5px;line-height:1.5;color:#6B7A74;margin-top:10px;text-wrap:pretty">Replaces the non-owner explainer's sentence (<i>“Ana looks after who is on this trip and sends its updates”</i>) while it applies — because that sentence is no longer true. <b>Jade, not rust:</b> nothing failed on this phone and nothing is lost. And nothing else changes — no banner, no chip, no strip. There is no tap that fixes it, so by the house rule it is not a warning; it is a fact, available where the question is asked. The condition is the <b>last envelope read that got an answer</b>, never a transient offline.</div>
+        </div>
+        <div style="background:#fff;border:1px solid #E7EAE7;border-radius:16px;padding:15px 16px">
+          <div style="font-size:13px;font-weight:700">The confirm-button test</div>
+          <div style="font-size:11.5px;line-height:1.55;color:#3D4C46;margin-top:7px;text-wrap:pretty">A confirm button is permitted only where <b>both</b> are true: the thing destroyed cannot be reconstructed by the user, and <b>there is no row to swipe</b>. Exactly two actions pass — <b>discardPending</b> and <b>Empty this trip</b>. Everything else in the app is swipe → in-row confirm → 6s undo. <b>OD-6</b> asks the one question this design cannot answer for you: may this control delete the Log at all?</div>
+        </div>
+      </div>
+    </div>
+  </div>
+
+  <div style="height:1px;background:#D8DCD8"></div>
+
+  <div style="display:flex;gap:14px;flex-wrap:wrap;max-width:1600px">
+    <div style="width:390px;background:#fff;border:1px solid #E7EAE7;border-radius:16px;padding:15px 16px"><div style="font-size:13px;font-weight:700">Every string here is in §9</div><div style="font-size:11.5px;line-height:1.55;color:#3D4C46;margin-top:7px">The markdown is canonical and this board illustrates it. Any string on this board that is not in <b>p1-absence-and-removal-design.md</b> §9 is a bug in the board, not a decision.</div></div>
+    <div style="width:390px;background:#fff;border:1px solid #E7EAE7;border-radius:16px;padding:15px 16px"><div style="font-size:13px;font-weight:700">New CSS: none</div><div style="font-size:11.5px;line-height:1.55;color:#3D4C46;margin-top:7px">Every element above is <b>.gone-card</b>, <b>.kept-line</b>, <b>.dot</b>, <b>backHeader</b>, <b>.empty</b>, <b>.btn.ghost</b>, <b>.warn</b> + <b>.warn-fix</b>, <b>.chip.amber</b> or the jade explainer block. Separately: <b>.hint-jade</b> is referenced by two screens and <b>is not defined in app.css</b> (IF-10) — a pre-existing repair, not an addition.</div></div>
+    <div style="width:390px;background:#fff;border:1px solid #E7EAE7;border-radius:16px;padding:15px 16px"><div style="font-size:13px;font-weight:700">Four of these five were built</div><div style="font-size:11.5px;line-height:1.55;color:#3D4C46;margin-top:7px">Removal, the stop-gone branch, the unlocated markers and <b>Empty this trip</b> all exist in source. Two documents called the first <i>“designed nowhere”</i> and one called the third <i>“silent”</i>. The batch's most useful output was reading them.</div></div>
+  </div>
+
+</section>
+</x-dc>
+</body>
+</html>
