@@ -121,12 +121,24 @@ export async function geocode(query, { latitude, longitude } = {}) {
   const results = await get(url);
   const hit = Array.isArray(results) ? results[0] : null;
   if (!hit) return null;
+  const a = hit.address || {};
+  const town = a.city || a.town || a.village || a.municipality || a.county || a.state || null;
   return {
     latitude: Number(hit.lat),
     longitude: Number(hit.lon),
     label: hit.display_name,
+    /**
+     * "Kyoto, Japan" — the short, human form every currency provenance line
+     * in p0-2-currency-design.md §9 is written against. `display_name` is
+     * Nominatim's full administrative chain ("Kyoto, Kyoto Prefecture,
+     * Japan, ..."), which is too long for a form hint under a field.
+     */
+    place: [town, a.country].filter(Boolean).join(', ') || hit.display_name,
+    /** The town alone, for copy of the form "Kyoto is in Japan." */
+    city: town,
+    country: a.country || null,
     // ISO 3166-1 alpha-2, lowercase — enough to look up a currency by.
-    countryCode: hit.address?.country_code || null,
+    countryCode: a.country_code || null,
   };
 }
 

@@ -556,7 +556,7 @@ export function draggableSheet(sheet, { key = 'sheet', onOpen = null } = {}) {
  * than four different places, and it is the same sheet on the trip's list
  * and on a place's Shop tab, because it is the same correction.
  */
-export function itemEditor(item, { symbol = '¥', error = '' } = {}) {
+export function itemEditor(item, { symbol = '', error = '' } = {}) {
   if (!item) return '';
   const places = store.shoppingPlaceChoices();
   return html`
@@ -574,7 +574,10 @@ export function itemEditor(item, { symbol = '¥', error = '' } = {}) {
         <input id="edit-detail" value="${esc(item.detail || '')}" placeholder="Middle aisle, stall 44">
         <div class="row g8">
           <div class="grow">
-            <label class="f11 soft block">What you expect to pay (${esc(symbol)})</label>
+            <!-- RC-19: with no currency the parenthetical would read
+                 "What you expect to pay ()". It is dropped, not filled with a
+                 symbol the trip does not have. -->
+            <label class="f11 soft block">What you expect to pay${symbol ? html` (${esc(symbol)})` : ''}</label>
             <input id="edit-estimate" type="number" inputmode="numeric" min="0"
                    value="${item.estimate ?? ''}" placeholder="—">
           </div>

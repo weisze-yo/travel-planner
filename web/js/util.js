@@ -105,7 +105,18 @@ export function boundedNumber(value, max = 1e9) {
 }
 
 /** "¥5,000" */
-export function money(amount, symbol = '¥') {
+/**
+ * A money value, with the trip's symbol in front of it — or with nothing in
+ * front of it when the trip has no currency yet.
+ *
+ * The default is deliberately EMPTY. It used to be '¥', which meant a caller
+ * that forgot to pass a symbol silently priced the trip in yen; nothing in
+ * the app exercises that path today, so it would have reintroduced the very
+ * defect the seven `|| '¥'` fallbacks were removed for, and it would have
+ * done it quietly. No currency, no symbol — the bare number, tabular
+ * (p0-2-currency-design.md §7.1).
+ */
+export function money(amount, symbol = '') {
   return symbol + Math.round(boundedNumber(amount, 1e12)).toLocaleString('en-US');
 }
 

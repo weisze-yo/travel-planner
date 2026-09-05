@@ -57,6 +57,11 @@ export default {
   tab: 'plan',
 
   render() {
+    // §5: when the city lookup raced Create and lost, the failure is reported
+    // on the screen the app actually moves to — here — in the note slot this
+    // screen already has. Read once, then gone.
+    const carried = store.takeArrival();
+    if (carried) busy = carried;
     if (phase === 'done') return doneView();
     if (phase === 'summary') return summaryView();
     if (phase === 'review') return openRow ? rowView() : reviewView();

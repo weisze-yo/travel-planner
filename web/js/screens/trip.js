@@ -23,6 +23,7 @@ export default {
 
   render() {
     const trip = state.trip;
+    const offer = store.currencyOffer(trip);
     if (!trip) return html`<section class="screen"><div class="empty">No trip loaded.</div></section>`;
 
     const weather = store.weatherStatus();
@@ -55,8 +56,11 @@ export default {
             <div class="col g10 mt10">
               ${field('trip-name', 'Name', trip.name)}
               ${field('trip-place', 'City or area', trip.locationName || '',
-                trip.locationNotice || 'Used to centre the map and to look up places you add',
-                'text', '', Boolean(trip.locationNotice))}
+                trip.currencySettled
+                  || trip.locationNotice
+                  || 'Used to centre the map and to look up places you add',
+                'text', '',
+                trip.currencySettled ? 'jade' : Boolean(trip.locationNotice))}
               <div class="row g8">
                 ${field('trip-start', 'First day', (trip.startDate || '').slice(0, 10), '', 'date')}
                 ${field('trip-days', 'Days', trip.dayCount, '', 'number')}
@@ -79,6 +83,23 @@ export default {
                 ${field('cur-code', 'Spending in', trip.currencyCode || '', '', 'text', 'JPY')}
                 ${field('home-code', 'Your currency', trip.homeCurrencyCode || '', '', 'text', 'MYR')}
               </div>
+              <!-- §6.1: where the money came from. A symbol alone is
+                   ambiguous — $ is USD, ARS and MXN; ¥ is JPY and CNY — so
+                   the line always names the place as well. -->
+              <div class="f11 soft lh145">${store.currencyProvenance(trip)}</div>
+              ${offer ? html`
+                <!-- §6.2: an OFFER, never an overwrite. Money the user typed
+                     is theirs; re-deriving over it would be the store making
+                     a product decision on their behalf. Dismissed by changing
+                     nothing. -->
+                <div class="row g8 wrap center">
+                  <div class="grow f12 w650 lh145" style="color:var(--amber-fg)">
+                    ${offer.city} is in ${offer.country}. Price this trip in ${offer.symbol} ${offer.code}?
+                  </div>
+                  <button class="btn sm ink none" data-act="use-currency"${
+                    pending === 'use-currency' ? raw(' disabled aria-busy="true"') : ''}>${
+                    pending === 'use-currency' ? 'Saving…' : html`Use ${offer.symbol} ${offer.code}`}</button>
+                </div>` : ''}
               ${field('home-rate', 'Rate', trip.homeCurrencyRate, store.rateLine(), 'number')}
               <div class="row g8">
                 <button class="btn ghost grow" data-act="save-money"${
@@ -243,6 +264,16 @@ export default {
       nudge();
     });
 
+    delegate(root, '[data-act="use-currency"]', async () => {
+      if (pending) return;
+      pending = 'use-currency';
+      nudge();
+      await store.useOfferedCurrency();
+      pending = '';
+      notice = 'Currency saved.';
+      nudge();
+    });
+
     delegate(root, '[data-act="refresh-rate"]', async () => {
       if (pending) return;
       pending = 'rate';
@@ -281,12 +312,21 @@ function nudge() {
   store.selectDay(state.selectedDay);
 }
 
+/**
+ * `warn` takes three values, not two: false (the standing soft hint), true
+ * (rust — something the user asked for did not happen), and 'jade' (settled —
+ * it happened, and this is what it did). p0-2-currency-design.md §6.2 needs
+ * the third for the city field the moment a re-geocode adopts a currency.
+ */
 function field(id, label, value, hint = '', type = 'text', placeholder = '', warn = false) {
+  const tone = warn === 'jade'
+    ? ';color:var(--jade)'
+    : (warn ? ';color:var(--danger-fg)' : '');
   return html`
     <label class="grow" style="display:block">
       <span class="f11 w800 soft" style="letter-spacing:.06em;text-transform:uppercase">${label}</span>
       <input id="${id}" type="${type}" value="${value ?? ''}" placeholder="${placeholder}"
              class="mt4" style="width:100%">
-      ${hint ? html`<span class="f11${warn ? '' : ' soft'} lh145" style="display:block;margin-top:3px${warn ? ';color:var(--danger-fg)' : ''}">${hint}</span>` : ''}
+      ${hint ? html`<span class="f11${warn ? '' : ' soft'} lh145" style="display:block;margin-top:3px${tone}">${hint}</span>` : ''}
     </label>`;
 }

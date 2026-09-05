@@ -28,7 +28,7 @@ export default {
   render() {
     const groups = store.shoppingGroups();
     const totals = store.spendTotals();
-    const symbol = state.trip?.currencySymbol || '¥';
+    const symbol = state.trip?.currencySymbol || '';
 
     return html`
       <section class="screen">
@@ -87,11 +87,23 @@ export default {
                   <span class="spend-est">/ ${money(totals.planned, symbol)} est.</span>
                 </div>
               </div>
-              <div class="right none">
-                <div class="eyebrow">≈ ${state.trip?.homeCurrencyCode || 'RM'}</div>
-                <div class="spend-rm">${totals.homeLabel}</div>
-              </div>
+              <!-- §7.2: with no rate there is no conversion. The old
+                   "homeCurrencyRate or 1" converted at parity and presented
+                   the same number twice under two different currencies, which
+                   is a summary zeroed rather than removed. rateLine() on Trip
+                   settings already names the fix, and Fetch is there. -->
+              ${state.trip?.homeCurrencyRate ? html`
+                <div class="right none">
+                  <div class="eyebrow">≈ ${state.trip?.homeCurrencyCode || 'RM'}</div>
+                  <div class="spend-rm">${totals.homeLabel}</div>
+                </div>` : ''}
             </div>
+            ${!symbol ? html`
+              <!-- One of exactly two places that SUMMARISE money, so one of
+                   exactly two that explain a bare number (§7.1). -->
+              <div class="f11 w650 lh145 mt6" style="color:var(--amber-fg)">
+                Prices have no currency yet. Set it in Trip settings.
+              </div>` : ''}
             <div class="progress mt8"><i style="width:${totals.percent}%"></i></div>
             <div class="row g8 center mt6">
               <div class="grow f11 w650 soft">${totals.bought} of ${totals.total} bought</div>

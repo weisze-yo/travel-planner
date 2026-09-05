@@ -33,6 +33,12 @@ let pending = '';
  * slot is for outcomes, and a missing name is not an outcome.
  */
 let nameError = '';
+/**
+ * What the city field's lookup has answered, as one of the six states in
+ * p0-2-currency-design.md §4. Null until the field commits. It is a
+ * disclosure, never a gate: Create is enabled in every one of the six.
+ */
+let guess = null;
 /** The trip whose cover is being chosen, if any. */
 let covering = null;
 
@@ -161,11 +167,11 @@ export default {
     });
 
     delegate(root, '[data-act="add-toggle"]', () => {
-      addOpen = !addOpen; nameError = ''; store.refreshTrips();
+      addOpen = !addOpen; nameError = ''; guess = null; store.refreshTrips();
     });
     delegate(root, '[data-act="add-cancel"]', () => {
       if (pending) return;
-      addOpen = false; nameError = ''; store.refreshTrips();
+      addOpen = false; nameError = ''; guess = null; store.refreshTrips();
     });
 
     delegate(root, '[data-act="add-save"]', async () => {
@@ -186,14 +192,41 @@ export default {
       // left, which is the furthest a message gets from the button pressed.
       pending = 'create';
       store.refreshTrips();
+      await makeTrip(root, name, 'paste');
+    });
 
-      const start = root.querySelector('#new-trip-start')?.value || null;
-      const days = root.querySelector('#new-trip-days')?.value;
-      const place = root.querySelector('#new-trip-place')?.value.trim();
-      await store.createTrip({ name, startDate: start, dayCount: days, locationName: place });
-      pending = '';
-      addOpen = false;
-      go('paste');
+    // OD-9. The same create, landing on the trip instead of on Paste.
+    delegate(root, '[data-act="add-save-later"]', async () => {
+      if (pending) return;
+      const name = root.querySelector('#new-trip-name')?.value.trim();
+      if (!name) {
+        nameError = 'A name for the trip — anything you will recognise.';
+        store.refreshTrips();
+        root.querySelector('#new-trip-name')?.focus();
+        return;
+      }
+      nameError = '';
+      pending = 'create';
+      store.refreshTrips();
+      await makeTrip(root, name, 'map');
+    });
+
+    // The lookup is fired by the city field's `change` — the app's universal
+    // commit event — not by Create, so the answer is on screen BEFORE the
+    // decision, on the screen where the mistake was made (§2.2). It never
+    // gates Create: every one of the six states leaves the button enabled.
+    root.querySelector('#new-trip-place')?.addEventListener('change', async (event) => {
+      const city = event.target.value.trim();
+      if (!city) { guess = null; store.refreshTrips(); return; }
+      guess = { state: 'looking', city };
+      store.refreshTrips();
+      const answer = await store.previewCurrency(city);
+      // The field may have moved on while this was in flight; a stale answer
+      // must not overwrite a newer question.
+      if (root.querySelector('#new-trip-place')?.value.trim() === city) {
+        guess = answer;
+        store.refreshTrips();
+      }
     });
 
     delegate(root, '[data-open-trip]', async (el) => {
@@ -256,6 +289,36 @@ function accountRow() {
     </div>`;
 }
 
+/**
+ * Create, from either control. §5: Create is never gated on the currency and
+ * the modal stays up until `createTrip` resolves, rather than being torn down
+ * over a wait that has an outcome.
+ *
+ * When the lookup raced Create and lost, the failure is carried to the screen
+ * the app actually moves to. Today all three failure strings were written to
+ * a screen nobody is ever sent to, so a wrong city was silent.
+ */
+async function makeTrip(root, name, land) {
+  const place = root.querySelector('#new-trip-place')?.value.trim();
+  await store.createTrip({
+    name,
+    startDate: root.querySelector('#new-trip-start')?.value || null,
+    dayCount: root.querySelector('#new-trip-days')?.value,
+    locationName: place,
+  });
+  const raced = place && !state.trip?.currencyCode && guess?.state !== 'notfound'
+    && guess?.state !== 'nocurrency' && guess?.state !== 'offline'
+    ? `${place} was not found, so this trip has no map centre and no currency. `
+      + 'Both are on Trip settings.'
+    : '';
+  pending = '';
+  addOpen = false;
+  guess = null;
+  nameError = '';
+  if (raced) store.noteArrival(raced);
+  go(land);
+}
+
 // -------------------------------------------------------------- the cards
 
 /**
@@ -277,7 +340,7 @@ function runningCard(trip, opening = '') {
   const mine = opening === trip.id;
   const card = store.runningCard(trip);
   const n = card?.dayNumber ?? store.tripCurrentDay(trip);
-  const symbol = trip.currencySymbol || '¥';
+  const symbol = trip.currencySymbol || '';
 
   return html`
     <div class="swipe-row mt8" data-trip-row="${trip.id}" data-trip-name="${trip.name}">
@@ -314,7 +377,9 @@ function runningCard(trip, opening = '') {
             <div class="grow"><span class="chip amber none">Opening…</span></div>` : html`
             <div class="grow f115 w650 muted">
               ${card
-                ? `${card.buying} to buy today · ${money(card.spent, symbol)} spent so far`
+                ? (symbol
+                  ? `${card.buying} to buy today · ${money(card.spent, symbol)} spent so far`
+                  : `${card.buying} to buy today`)
                 : 'Open it to see today'}
             </div>
             <div class="f12 w700" style="color:var(--jade)">Open ›</div>`}
@@ -370,7 +435,7 @@ function plainCard(trip, kind, opening = '') {
   const ready = kind === 'upcoming' ? store.tripReadiness(trip) : null;
   const recap = kind === 'finished' ? store.tripRecap(trip) : null;
   const tint = store.coverTint(trip);
-  const symbol = trip.currencySymbol || '¥';
+  const symbol = trip.currencySymbol || '';
 
   return html`
     <div class="swipe-row mt8" data-trip-row="${trip.id}" data-trip-name="${trip.name}">
@@ -407,13 +472,13 @@ function plainCard(trip, kind, opening = '') {
             <span class="chip ${ready.prep && ready.packed === ready.prep ? 'jade' : ''}">
               ${ready.prep ? `${ready.packed} of ${ready.prep} packed` : 'nothing on the packing list'}
             </span>
-            ${ready.planned ? html`<span class="chip">${money(ready.planned, symbol)} planned</span>` : ''}
+            ${ready.planned && symbol ? html`<span class="chip">${money(ready.planned, symbol)} planned</span>` : ''}
           </div>` : ''}
 
         ${!mine && recap ? html`
           <div class="row g6 wrap mt11">
             <span class="chip">${recap.stops} stops</span>
-            <span class="chip">${money(recap.spent, symbol)} spent</span>
+            ${symbol ? html`<span class="chip">${money(recap.spent, symbol)} spent</span>` : ''}
             <span class="chip">${recap.notes} note${recap.notes === 1 ? '' : 's'}</span>
           </div>` : ''}
 
@@ -566,6 +631,7 @@ function tripDates(trip) {
 }
 
 function addForm() {
+  const line = store.currencyGuessLine(guess);
   return html`
     <div class="form">
       <div class="form-title">New trip</div>
@@ -573,6 +639,17 @@ function addForm() {
       ${nameError ? html`
         <div class="f11 lh145" style="color:var(--danger-fg);margin-top:-4px">${nameError}</div>` : ''}
       <input id="new-trip-place" placeholder="City or area (centres the map)">
+      <!-- The derived line, in the slot the form hint already occupies: it is
+           derived from the field above and changes when that field changes,
+           so it is that field's own consequence. No new field, no new
+           control, no second modal step (§3). Amber for a success because it
+           is a GUESS — a silent correct guess and a silent wrong guess look
+           identical, which is the reason the line exists at all. Rust for the
+           two failures, because something the user asked for did not
+           happen. -->
+      <div class="f11 lh145" style="margin-top:-4px${
+        line.tone === 'amber' ? ';color:var(--amber-fg)'
+          : (line.tone === 'rust' ? ';color:var(--danger-fg)' : ';color:var(--soft)')}">${line.text}</div>
       <div class="row g8">
         <input id="new-trip-start" type="date" class="grow">
         <input id="new-trip-days" type="number" value="5" min="1" max="60" style="width:88px" aria-label="Days">
@@ -587,6 +664,13 @@ function addForm() {
         <button class="btn ghost" style="width:96px${
           pending === 'create' ? ';pointer-events:none' : ''}" data-act="add-cancel">Cancel</button>
       </div>
+      <!-- OD-9, answered "add the choice" on 5 Sep 2026 (review §13.1).
+           ONE ghost, this exact label, landing on the trip just created per
+           PR-2. Paste is still the default path and Create is still the
+           primary; this is the way out that used to be the back gesture
+           alone. -->
+      <button class="btn ghost" style="width:100%" data-act="add-save-later"${
+        pending === 'create' ? raw(' disabled') : ''}>I'll do this later</button>
       <div class="form-hint">
         It goes straight to pasting the itinerary in, which is the fastest way from an empty
         trip to a usable one. You can skip that and add stops one at a time instead.

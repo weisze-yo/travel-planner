@@ -773,6 +773,10 @@ export async function createTrip({ name, startDate, dayCount, locationName }) {
     // the city above, or stay unset until they do.
     currencySymbol: '',
     currencyCode: '',
+    /** Where the money came from: 'derived' | 'user' | 'joined' | ''. §6.1. */
+    currencyFrom: '',
+    /** The place a derived currency was derived from, for the same line. */
+    currencyPlace: '',
     homeCurrencyRate: null,
     rateSource: '',
     rateUpdatedAt: null,
@@ -783,7 +787,12 @@ export async function createTrip({ name, startDate, dayCount, locationName }) {
 
   if (place) {
     if (!online()) {
-      trip.locationNotice = `Offline, so "${place}" could not be located — fix it from Trip settings once you have a signal.`;
+      // All four of these drop "Fix it from Trip settings." — the only screen
+      // that renders `locationNotice` IS Trip settings, so the old strings
+      // told the reader to go where they already were
+      // (p0-2-currency-design.md §9).
+      trip.locationNotice = `No signal when this trip was made, so "${place}" was never looked up. `
+        + 'The map centre and the currency are not set.';
     } else {
       try {
         const hit = await geocode(place);
@@ -791,9 +800,21 @@ export async function createTrip({ name, startDate, dayCount, locationName }) {
           trip.latitude = hit.latitude;
           trip.longitude = hit.longitude;
           const currency = currencyForCountry(hit.countryCode);
+          if (!currency) {
+            // State 3 (§4): the city IS on the map, and no currency is known
+            // for its country. That is a different outcome from "not found"
+            // and from "no signal", and until now it was the only one of the
+            // four that said nothing at all.
+            trip.locationNotice = `${hit.place || place} is on the map, but no currency is known for it. `
+              + 'Set one below.';
+          }
           if (currency) {
             trip.currencySymbol = currency.symbol;
             trip.currencyCode = currency.code;
+            // Where the money came from, so Trip settings can say so without
+            // guessing (§6.1). 'derived' | 'user' | 'joined' | ''.
+            trip.currencyFrom = 'derived';
+            trip.currencyPlace = hit.place || place;
             try {
               const rate = await fetchRate(currency.code, trip.homeCurrencyCode);
               if (rate) {
@@ -804,10 +825,12 @@ export async function createTrip({ name, startDate, dayCount, locationName }) {
             } catch { /* the rate can be fetched later from Trip settings */ }
           }
         } else {
-          trip.locationNotice = `Could not find "${place}" — the map centre and currency are not set. Fix it from Trip settings.`;
+          trip.locationNotice = `Nothing was found for "${place}". `
+            + 'The map centre and the currency are not set.';
         }
       } catch {
-        trip.locationNotice = `Could not look up "${place}" — the map centre and currency are not set. Fix it from Trip settings.`;
+        trip.locationNotice = `"${place}" could not be looked up. `
+          + 'The map centre and the currency are not set.';
       }
     }
   }
@@ -821,6 +844,125 @@ export async function createTrip({ name, startDate, dayCount, locationName }) {
   notify();
   return id;
 }
+
+/**
+ * Where this trip's money came from, in one sentence, for Trip settings'
+ * MONEY card (p0-2-currency-design.md §6.1). Four cases, and the empty one
+ * is the reason the whole design exists: a trip with no currency says so,
+ * rather than showing prices in a yen it was never priced in.
+ */
+export function currencyProvenance(trip = state.trip) {
+  if (!trip?.currencySymbol && !trip?.currencyCode) {
+    return 'Not set — prices show without a symbol until this is filled in.';
+  }
+  if (trip.currencyFrom === 'joined') return 'From the copy you joined.';
+  if (trip.currencyFrom === 'derived' && trip.currencyPlace) {
+    return `From ${trip.currencyPlace} — the city above.`;
+  }
+  return 'You set this.';
+}
+
+/** The standing re-derivation offer, or null. Never applied automatically. */
+export function currencyOffer(trip = state.trip) {
+  const offer = trip?.currencyOffer;
+  if (!offer || !offer.code) return null;
+  if (offer.code === trip.currencyCode) return null;
+  return offer;
+}
+
+/** Taking the offer is the user's act, so it is recorded as theirs. */
+export async function useOfferedCurrency() {
+  const offer = currencyOffer();
+  if (!offer) return;
+  await updateTrip({
+    currencySymbol: offer.symbol,
+    currencyCode: offer.code,
+    currencyOffer: null,
+    currencyFrom: 'derived',
+    currencyPlace: offer.place,
+  });
+}
+
+/** Whether this trip has a currency at all — the one test §7.1 turns on. */
+export const hasCurrency = (trip = state.trip) => Boolean(trip?.currencySymbol);
+
+/**
+ * Look a city up BEFORE a trip exists, so the New-trip modal can disclose the
+ * currency it is about to guess (p0-2-currency-design.md §2, §4). Returns one
+ * of the six states the derived line renders; it never writes anything and it
+ * never gates Create.
+ *
+ * The lookup is fired by the city field's `change` — the app's universal
+ * commit event — rather than by Create, so the answer is on screen before the
+ * decision, on the screen where the mistake was made.
+ */
+export async function previewCurrency(place) {
+  const city = String(place || '').trim();
+  if (!city) return { state: 'idle' };
+  if (!online()) return { state: 'offline', city };
+  try {
+    const hit = await geocode(city);
+    if (!hit) return { state: 'notfound', city };
+    const currency = currencyForCountry(hit.countryCode);
+    if (!currency) return { state: 'nocurrency', city, place: hit.place || city };
+    return {
+      state: 'resolved',
+      city,
+      place: hit.place || city,
+      symbol: currency.symbol,
+      code: currency.code,
+    };
+  } catch {
+    return { state: 'notfound', city };
+  }
+}
+
+/** The exact sentence for each of the six states. §9 is canonical for these. */
+export function currencyGuessLine(guess) {
+  if (!guess || guess.state === 'idle') {
+    return { text: 'Used to centre the map and to look up places you add', tone: 'soft' };
+  }
+  if (guess.state === 'looking') {
+    return { text: `Looking up ${guess.city}…`, tone: 'amber' };
+  }
+  if (guess.state === 'resolved') {
+    return { text: `Prices in ${guess.symbol} ${guess.code} — from ${guess.place}`, tone: 'amber' };
+  }
+  if (guess.state === 'nocurrency') {
+    return {
+      text: `${guess.place} — no currency known for it, so prices stay unset. `
+        + 'Set one in Trip settings.',
+      tone: 'amber',
+    };
+  }
+  if (guess.state === 'notfound') {
+    return {
+      text: `Nothing found for "${guess.city}" — the map centre and the currency stay unset. `
+        + 'Try another spelling, or set both in Trip settings.',
+      tone: 'rust',
+    };
+  }
+  return {
+    text: `No signal, so "${guess.city}" was not looked up. The trip is made anyway — `
+      + 'set the currency in Trip settings, or fix the city there once you have a signal.',
+    tone: 'rust',
+  };
+}
+
+/**
+ * One sentence, handed from the screen that caused it to the screen the app
+ * moves to next, and consumed on first read.
+ *
+ * This exists for exactly one case (p0-2-currency-design.md §5): the city
+ * lookup raced Create and lost, so the modal never got to report the failure.
+ * Today all three failure strings are written to Trip settings, a screen the
+ * app never sends anyone to after Create, which is why a mistyped city has
+ * always been silent. It is NOT a toast system and NOT a second arrival
+ * banner: one string, one slot that already exists, read once.
+ */
+let handover = '';
+export const noteArrival = (line) => { handover = line || ''; };
+export const takeArrival = () => { const line = handover; handover = ''; return line; };
 
 /** Opens a trip and remembers it, so a relaunch comes back here. */
 export async function openTrip(tripID) {
@@ -1898,7 +2040,7 @@ export function dayNoteSummary(n) {
 
   const chips = [];
   if (dayShots.length) chips.push({ label: `${got} of ${dayShots.length} must-see ✓`, tone: 'jade' });
-  if (spent) chips.push({ label: `${money(spent, state.trip?.currencySymbol || '¥')} spent`, tone: '' });
+  if (spent) chips.push({ label: `${money(spent, state.trip?.currencySymbol || '')} spent`, tone: '' });
   if (loops.length) chips.push({ label: `${walked} of ${loops.length} sub route${loops.length === 1 ? '' : 's'} walked`, tone: '' });
 
   const today = n === state.trip?.currentDay;
@@ -3158,6 +3300,19 @@ export async function updateTrip(patch) {
   const next = { ...state.trip, ...patch };
   const datesChanged = patch.startDate !== undefined || patch.dayCount !== undefined;
 
+  // Money the user typed is theirs. Anything that arrives here carrying a
+  // symbol or a code the user has edited is marked as such, so Trip settings'
+  // provenance line can say "You set this." rather than keep crediting a city
+  // (p0-2-currency-design.md §6.1).
+  // ...unless the caller states the provenance itself, which is how taking
+  // the re-derivation offer stays credited to the city rather than being
+  // relabelled "You set this." the moment it lands.
+  if (patch.currencyFrom === undefined
+      && (patch.currencySymbol !== undefined || patch.currencyCode !== undefined)) {
+    next.currencyFrom = 'user';
+    next.currencyPlace = '';
+  }
+
   if (patch.locationName && patch.locationName !== state.trip.locationName && online()) {
     try {
       const hit = await geocode(patch.locationName);
@@ -3167,6 +3322,40 @@ export async function updateTrip(patch) {
         // A location that resolves now retires whatever notice createTrip
         // may have left about not being able to place the trip.
         next.locationNotice = '';
+
+        // §6.2, two branches, and the difference between them is the whole
+        // point: the currency is NEVER overwritten.
+        const currency = currencyForCountry(hit.countryCode);
+        if (currency && !next.currencySymbol && !next.currencyCode) {
+          // Unset — adopt it, and say so in the field's own hint. Jade,
+          // because it is settled now rather than guessed at.
+          next.currencySymbol = currency.symbol;
+          next.currencyCode = currency.code;
+          next.currencyFrom = 'derived';
+          next.currencyPlace = hit.place || patch.locationName;
+          next.currencySettled = `${hit.place || patch.locationName} — prices set to `
+            + `${currency.symbol} ${currency.code}.`;
+          next.currencyOffer = null;
+        } else if (currency && currency.code !== next.currencyCode) {
+          // Already set, and the new country disagrees. Offer; do not act.
+          // Re-deriving over money the user typed is the store making a
+          // product decision on their behalf.
+          next.currencyOffer = {
+            symbol: currency.symbol,
+            code: currency.code,
+            city: hit.city || patch.locationName,
+            country: hit.country || hit.place || patch.locationName,
+            place: hit.place || patch.locationName,
+          };
+          next.currencySettled = '';
+        } else {
+          // They already agree — nothing to offer and nothing to say.
+          next.currencyOffer = null;
+          next.currencySettled = '';
+        }
+        // The rate is deliberately NOT fetched here: adopting a currency
+        // leaves homeCurrencyRate alone, rateLine() already tells the truth
+        // about an unset rate, and Fetch is the control that exists for it.
       }
     } catch {
       // Keep the old coordinates; the map still works.
@@ -3183,6 +3372,15 @@ export async function updateTrip(patch) {
   }
 
   putTrip(next);
+  // Keep the trips list in step with the trip that just changed. `state.trips`
+  // is what My trips renders from and it was only ever rebuilt by
+  // refreshTrips(), so an edit here — a rename, a date, and now the currency —
+  // left the card behind it showing the old value until something else on My
+  // trips happened to refresh it. That was always wrong; it matters now
+  // because §7.1 makes the money chip's PRESENCE depend on the currency, so a
+  // stale row would keep showing a price in a currency the trip no longer has.
+  const at = state.trips.findIndex((t) => t.id === next.id);
+  if (at >= 0) state.trips = state.trips.map((t) => (t.id === next.id ? next : t));
   if (datesChanged) refreshWeather({ force: true }).catch(() => {});
 }
 
@@ -3855,6 +4053,8 @@ export async function joinTrip({ code, role } = {}) {
     latitude: snapshot.latitude ?? null,
     longitude: snapshot.longitude ?? null,
     currencySymbol: snapshot.currencySymbol || '',
+    currencyFrom: snapshot.currencySymbol ? 'joined' : '',
+    currencyPlace: '',
     currencyCode: snapshot.currencyCode || '',
     homeCurrencyRate: snapshot.homeCurrencyRate ?? null,
     // A notice about some other trip's city not being found has nothing to

@@ -19,7 +19,7 @@ export default {
   tab: 'shop',
 
   render() {
-    const symbol = state.trip?.currencySymbol || '¥';
+    const symbol = state.trip?.currencySymbol || '';
     const only = state.spendDay;
     const days = store.spendByDay();
     const totals = store.spendTotals({ all: true });
@@ -61,13 +61,17 @@ export default {
                 </div>
                 <div class="spend-big">${money(spent, symbol)}</div>
               </div>
-              <div class="right none">
-                <div class="f11 w800" style="color:#8FB3A6">≈ ${state.trip?.homeCurrencyCode || 'RM'}</div>
-                <div class="f17 w700 tnum">
-                  ${Math.round(spent / (state.trip?.homeCurrencyRate || 1)).toLocaleString('en-US')}
-                </div>
-                <div class="f10 mt2" style="color:#8FB3A6">at ${state.trip?.homeCurrencyRate || 1}</div>
-              </div>
+              <!-- §7.2: no rate, no conversion row. It used to divide by 1
+                   and print the same figure again beside a currency code it
+                   had never been converted into. -->
+              ${state.trip?.homeCurrencyRate ? html`
+                <div class="right none">
+                  <div class="f11 w800" style="color:#8FB3A6">≈ ${state.trip?.homeCurrencyCode || 'RM'}</div>
+                  <div class="f17 w700 tnum">
+                    ${Math.round(spent / state.trip.homeCurrencyRate).toLocaleString('en-US')}
+                  </div>
+                  <div class="f10 mt2" style="color:#8FB3A6">at ${state.trip.homeCurrencyRate}</div>
+                </div>` : ''}
             </div>
             <div class="row g6 wrap mt14">
               ${!only ? html`<span class="hero-chip">${money(perDay, symbol)} a day</span>` : ''}
@@ -78,6 +82,15 @@ export default {
                 </span>` : ''}
             </div>
           </div>
+
+          ${!symbol ? html`
+            <!-- §7.1: one of exactly two places that SUMMARISE money, so one
+                 of exactly two that explain a bare number. Under the ink
+                 hero, not inside it — --amber-fg is a light-surface colour
+                 and this design adds none. -->
+            <div class="f11 w650 lh145 mt10" style="color:var(--amber-fg)">
+              Prices have no currency yet. Set it in Trip settings.
+            </div>` : ''}
 
           ${dayChart(days, symbol)}
 

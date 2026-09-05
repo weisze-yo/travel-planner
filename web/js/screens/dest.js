@@ -413,7 +413,7 @@ function shotsPanel(it, shots) {
 }
 
 function shopPanel(it, items) {
-  const symbol = state.trip?.currencySymbol || '¥';
+  const symbol = state.trip?.currencySymbol || '';
   const spent = items.filter((i) => i.bought)
     .reduce((sum, i) => sum + (i.paidAmount ?? i.estimate ?? 0), 0);
   return html`
@@ -508,7 +508,7 @@ function logPanel(it, notes) {
 /** Whichever sheet is open, over the panels. */
 function sheetMarkup(it, shopHere, shots) {
   if (!sheet) return '';
-  const symbol = state.trip?.currencySymbol || '¥';
+  const symbol = state.trip?.currencySymbol || '';
   if (sheet.kind === 'item') {
     const item = sheet.id
       ? shopHere.find((i) => i.id === sheet.id)
