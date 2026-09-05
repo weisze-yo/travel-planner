@@ -3,6 +3,7 @@
 import { html, raw, icon, delegate, esc } from '../util.js';
 import * as store from '../store.js';
 import { state } from '../store.js';
+import { initialFor } from '../share.js';
 
 /**
  * The trip bar, with the sync dot in it. A hollow ring while a write is in
@@ -55,6 +56,40 @@ export function emptyDay(weather) {
     <div class="empty">
       Nothing planned for this day yet.${weather ? ` Forecast: ${weather.icon} ${weather.high} °C.` : ''}<br>
       Press the pencil to add a stop, or to paste the itinerary in.
+    </div>`;
+}
+
+/**
+ * Tier 3 of the empty-state system: somebody else's side. Used wherever an
+ * empty container's cause is `store.isSharedEmptyKind()` — the copy you were
+ * handed has this empty, not you. Never ink; at most one ghost/amber action,
+ * and only for something that is yours to do meanwhile (§2.4.5).
+ *
+ * The third cause of emptiness — nothing has arrived at all yet — gets the
+ * join context line instead of the two body sentences; both read off
+ * `store.sharedEmptyContext()` rather than being decided here, so a screen
+ * cannot silently demote a tier-3 surface to tier 1 by guessing wrong.
+ */
+export function emptyShared({ title, action = null }) {
+  const ctx = store.sharedEmptyContext();
+  if (!ctx) return '';
+  return html`
+    <div class="empty-shared">
+      <div class="eyebrow jade">SHARED WITH YOU</div>
+      <div class="empty-shared-t">${title}</div>
+      ${ctx.justJoined ? html`
+        <div class="empty-shared-ctx">
+          <span class="who-mark sm" aria-hidden="true">${initialFor(ctx.ownerName)}</span>
+          <span class="grow">joined ${ctx.joinedAgo} · no updates yet</span>
+        </div>` : html`
+        <div class="empty-shared-b">
+          Anything ${ctx.ownerName} adds arrives with the next update. Nothing changes on your
+          side until you have looked through it.
+        </div>`}
+      ${action ? html`
+        <button class="btn amber mt10" data-act="${action.act}"${action.attrs ? raw(` ${action.attrs}`) : ''}>
+          ${action.label}
+        </button>` : ''}
     </div>`;
 }
 

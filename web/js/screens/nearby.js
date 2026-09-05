@@ -7,7 +7,7 @@ import { html, raw, icon, delegate } from '../util.js';
 import * as store from '../store.js';
 import { state } from '../store.js';
 import { go, back } from '../nav.js';
-import { backHeader, swipeToDelete } from './parts.js';
+import { backHeader, swipeToDelete, emptyShared } from './parts.js';
 import { MODE_ICONS, MODE_LABELS, CATEGORY_LABELS } from '../data.js';
 
 let sortOpen = false;
@@ -32,6 +32,7 @@ export default {
     const anchorID = params.anchorID || store.subRoute()?.anchorPlanItemID || null;
     const groups = dayScope ? store.placesByStopForDay() : [];
     const places = dayScope ? [] : store.nearbyPlaces(anchorID);
+    const anchorShared = !places.length && state.nearbyCategory === 'all' && store.isSharedEmptyKind('places');
     const dayTotal = groups.reduce((n, g) => n + g.places.length, 0);
     const loop = store.activeLoop();
     const loops = store.subRoutesFor();
@@ -88,21 +89,25 @@ export default {
                 </span>
               </div>
               ${group.places.map((p) => card(p))}
-            </div>`) : html`
+            </div>`) : (store.isSharedEmptyKind('places') ? emptyShared({
+              title: "Nothing saved around today's stops in the copy you were sent.",
+            }) : html`
             <div class="empty">
               Nothing saved around today's stops yet.<br>
               Open a stop and use <b>+ Add a place</b> to start a list for it.
-            </div>`) : ''}
+            </div>`)) : ''}
 
-          ${dayScope ? '' : (places.length ? places.map((p) => card(p)) : html`
+          ${dayScope ? '' : (places.length ? places.map((p) => card(p)) : (anchorShared
+            ? emptyShared({ title: `Nothing saved around ${anchorName} in the copy you were sent.` })
+            : html`
             <div class="empty">
               ${state.nearbyCategory === 'all'
                 ? `Nothing saved around ${anchorName} yet.`
                 : 'Nothing in this category here.'}<br>
               Add a place below and it shows up on the map.
-            </div>`)}
+            </div>`))}
 
-          ${dayScope ? '' : html`
+          ${dayScope || anchorShared ? '' : html`
             ${addOpen ? addForm() : ''}
             <button class="btn-dashed" style="height:46px" data-act="add-open">+ Add a place</button>`}
         </div>

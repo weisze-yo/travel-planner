@@ -144,26 +144,55 @@ function noteRow(note, group) {
     </div>`;
 }
 
-/** One sentence and one button — no day cards before there is anything in them. */
+/**
+ * Tier 2 — the Log fills itself; no ink except on today's own row. Frame 1C:
+ * one sentence and one button, then the days so far, shown anyway, teaching
+ * the grouping before there is anything to group.
+ */
 function emptyLog() {
+  const { soFar, remaining } = store.logEmptyScaffold();
   return html`
     <section class="screen">
       <div class="head">
-        <div class="screen-title">Log</div>
-        <div class="screen-sub">${state.trip?.name?.split(' · ')[0] || 'This trip'} · no notes yet</div>
+        <div class="head-row">
+          <div class="grow">
+            <div class="screen-title">Log</div>
+            <div class="screen-sub">${state.trip?.name?.split(' · ')[0] || 'This trip'} · no notes yet</div>
+          </div>
+          <button class="btn sm ink" data-act="new">+ Note</button>
+        </div>
       </div>
-      <div class="scroll col center" style="padding:12px 16px 24px;justify-content:center;gap:18px">
-        <div class="f135 lh16 center-text" style="color:#8A948F;max-width:250px;text-align:center">
-          Fills itself in as you write. Nothing to see until there is a first note.
+      <div class="scroll" style="padding:14px 16px 24px">
+        <div class="empty">
+          The log fills itself as the days happen. Write when something is worth remembering —
+          a note can be one line, and it does not have to be about a place.
         </div>
-        <button class="btn ink" style="padding:0 20px" data-act="new">+ Note</button>
-        <div class="f11 soft lh145" style="max-width:250px;text-align:center">
-          The day, the place and the time are chosen inside the note. This line goes with the
-          first one you write.
-        </div>
+
+        ${soFar.length ? html`
+          <div class="eyebrow mt16 mb8">THE DAYS SO FAR</div>
+          <div class="card-list">
+            ${soFar.map((d, at) => html`
+              <div class="day-card-head"${at ? ' style="border-top:1px solid var(--line-3)"' : ''}>
+                <div class="grow">
+                  <div class="log-day">Day ${d.dayNumber}${d.live ? ' · Today' : ''}${d.dateLabel ? ` · ${d.dateLabel}` : ''}</div>
+                  <div class="log-meta${d.live ? ' live' : ''}">
+                    ${d.live ? 'in progress · ' : ''}${d.stops} stop${d.stops === 1 ? '' : 's'} · nothing written
+                  </div>
+                </div>
+                <button class="btn ${d.live ? 'ink' : 'ghost'} sm" data-add-to-day="${d.dayNumber}">+ Note</button>
+              </div>`)}
+          </div>
+          ${remaining > 0 ? html`
+            <div class="f11 soft lh145 mt12">
+              Day${remaining === 1 ? '' : 's'} ${soFar[soFar.length - 1].dayNumber + 1}
+              ${remaining > 1 ? `to ${soFar[soFar.length - 1].dayNumber + remaining}` : ''}
+              ${remaining === 1 ? 'has' : 'have'} not happened yet.
+            </div>` : ''}
+        ` : ''}
+
         <!-- The promise belongs here most of all: this is the screen where
              someone decides whether to write the honest version. -->
-        ${privacyLine()}
+        <div class="mt14">${privacyLine()}</div>
       </div>
     </section>`;
 }

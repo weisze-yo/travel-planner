@@ -1159,7 +1159,6 @@ select {
   letter-spacing: .04em;
   color: var(--amber-fg);
 }
-.warn-text { font-size: 11.5px; line-height: 1.4; color: var(--amber-fg); margin-top: 4px; }
 .warn-fix {
   height: 30px;
   padding: 0 10px;
@@ -2184,3 +2183,64 @@ input.guessed { border: 1.5px solid var(--amber); background: #FFFDF7; color: va
 .acct-sub { font-size: 11px; color: var(--soft); line-height: 1.4; margin-top: 2px; }
 .acct .who-mark { flex: none; }
 .acct .btn.sm { flex: none; }
+
+/* ============================================================ item 02 ===
+   The three-tier empty-state system (new-feature-design.md §2, reconciled
+   in p0-3-system-sign-off.md §1). Every empty place in the app sorts into
+   one of three surfaces by a single question: can the person looking at
+   this finish it right now?
+   ========================================================================== */
+
+/* Tier 1 — yours to fill: a centred block, a dashed silhouette of the
+   missing thing, one ink action at most. No card, no colour on the mark. */
+.empty-t1 { display: flex; flex-direction: column; align-items: center; gap: 7px; padding: 26px 10px; text-align: center; }
+.empty-t1-title { font-size: 15px; font-weight: 700; }
+.empty-t1-body { font-size: 12.5px; line-height: 1.55; color: var(--muted); max-width: 290px; }
+.empty-t1-hint { font-size: 11px; color: var(--soft); line-height: 1.45; max-width: 290px; margin-top: 6px; }
+.empty-t1-mark { width: 132px; height: 84px; border-radius: 14px; border: 2px dashed #DCE2DE; }
+.empty-t1-mark-row { width: 100%; height: 46px; border-radius: 12px; border: 1.6px dashed #DCE2DE; }
+
+/* Tier 3 — somebody else's side: jade, because jade already means "given to
+   you"; never ink, since the empty state never asks you to fix someone
+   else's half of the trip. */
+.empty-shared { background: var(--jade-bg); border: 1px solid var(--jade-bd); border-radius: 16px; padding: 14px; }
+.empty-shared-t { font-size: 13.5px; font-weight: 700; color: var(--ink); line-height: 1.3; margin-top: 7px; }
+.empty-shared-b { font-size: 12px; line-height: 1.5; color: var(--jade-fg); margin-top: 6px; max-width: 290px; }
+.empty-shared-ctx { display: flex; align-items: center; gap: 8px; margin-top: 9px; }
+.empty-shared-ctx .grow { font-size: 11px; color: var(--jade-fg); }
+.who-mark.sm { width: 22px; height: 22px; border-radius: 50%; font-size: 10px; background: #fff; border-color: var(--jade-bd); color: var(--jade); }
+
+/* The amber "self-planned" action — yours, inside someone else's side. Same
+   recipe as the sub-route card (`#FFFDF7` / dashed `#E3CFA3`), never ink. */
+.btn.amber { background: #FFFDF7; border: 1.5px solid #E3CFA3; color: var(--amber-fg); }
+.lane-add.shared { height: 38px; border-color: #E3CFA3; background: #FFFDF7; color: var(--amber-fg); }
+
+/* ============================================================ item 12 ===
+   The multilingual warning strip (multilingual-warning-strip-design.md,
+   "fact-first"). Three slots — relation label, the other party's name on
+   its own line, a `·`-joined fact line — so a name in any script never has
+   to sit inside a built English sentence. The name may wrap to as many
+   lines as it needs; nothing here is ever truncated, because a warning
+   must not hide the thing it warns about.
+   ========================================================================== */
+.warn-name {
+  font-size: 13px;
+  font-weight: 700;
+  color: var(--ink);
+  line-height: 1.35;
+  margin-top: 4px;
+  text-wrap: pretty;
+  line-break: strict;
+  overflow-wrap: anywhere;
+}
+.warn-fact { font-size: 11.5px; line-height: 1.4; color: var(--amber-fg); margin-top: 4px; font-variant-numeric: tabular-nums; }
+
+/* S-2: Latin-first, and declared on `body` rather than only on names. Public
+   Sans has no CJK glyphs, so every CJK string in the app was already
+   rendering from an accidental system fallback; this makes that
+   deliberate, and keeps digits/times/badges on Public Sans because the
+   stack stays Latin-first. */
+body {
+  font-family: 'Public Sans', 'Hiragino Sans', 'Hiragino Kaku Gothic ProN', 'Yu Gothic',
+    'PingFang SC', 'Microsoft YaHei', 'Noto Sans CJK JP', system-ui, -apple-system, sans-serif;
+}

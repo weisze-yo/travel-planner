@@ -1103,25 +1103,30 @@ export function dayIssues(n = state.selectedDay) {
       add(item.id, {
         kind: 'reversed',
         label: 'ENDS WHEN IT STARTS',
-        text: `Starts and ends at ${w.startLabel}.`,
+        fact: `Starts and ends ${w.startLabel}`,
         fixes: [{ act: 'clear-end', label: 'Leave the end open' }],
       });
     }
   }
 
-  // Out of order: the list says one thing and the clock another.
+  // Out of order: the list says one thing and the clock another. There is no
+  // English sentence here on purpose — the fact-first strip (item 12) keeps
+  // the relation as a label, the other stop's name on its own line, and the
+  // two times as a `·`-joined fact, so a name in any script never has to sit
+  // inside a built sentence.
   let previous = null;
   for (const item of items) {
     const at = parseClock(item.time);
     if (at == null) {
-      add(item.id, { kind: 'notime', label: 'NO TIME', text: 'This stop has no start time.', fixes: [] });
+      add(item.id, { kind: 'notime', label: 'NO TIME', fact: 'No start time yet.', fixes: [] });
       continue;
     }
     if (previous && at < previous.at) {
       add(item.id, {
         kind: 'order',
-        label: 'OUT OF ORDER',
-        text: `Starts ${clock(at)} but sits after ${previous.name} at ${clock(previous.at)}.`,
+        label: 'LISTED AFTER',
+        name: previous.name,
+        fact: `Starts ${clock(previous.at)} · this stop ${clock(at)}`,
         // The earliest time this stop could start and still be in order: the
         // one above it ends then. A stop above with an open end has only its
         // start to go on, which is still better than offering nothing.
@@ -1158,7 +1163,8 @@ export function dayIssues(n = state.selectedDay) {
       add(row.item.id, {
         kind: 'overlap',
         label: 'OVERLAPS',
-        text: `${runningName} runs to ${clock(runningEnd)}, so these two are on top of each other.`,
+        name: runningName,
+        fact: `Runs to ${clock(runningEnd)} · this starts ${clock(row.window.start)}`,
         fixes: [{
           act: 'retime',
           label: `Start ${clock(runningEnd)}`,
@@ -1910,6 +1916,26 @@ export function dayNoteSummary(n) {
 export function dayNoteGroups() {
   const days = [...new Set(state.log.map((e) => e.dayNumber))].sort((a, b) => b - a);
   return days.map((n) => ({ ...dayNoteSummary(n), groups: noteGroupsForDay(n) }));
+}
+
+/**
+ * The day-by-day scaffold shown behind an empty Log (frame 1C): the days so
+ * far, each with its real stop count, teaching the grouping before there is
+ * anything to group. Tier 2 — no ink except on today's own row.
+ */
+export function logEmptyScaffold() {
+  const dayCount = state.trip?.dayCount || 1;
+  const today = Math.min(Math.max(state.trip?.currentDay || 1, 1), dayCount);
+  const soFar = [];
+  for (let n = 1; n <= today; n++) {
+    soFar.push({
+      dayNumber: n,
+      dateLabel: day(n)?.shortDate || '',
+      stops: activeItems(day(n)).length,
+      live: n === state.trip?.currentDay,
+    });
+  }
+  return { soFar, remaining: dayCount - today };
 }
 
 /** Times already written at this place today, so the composer can offer them. */
@@ -3896,6 +3922,49 @@ export function pendingUpdate() {
     entries,
     line: share.summarise(entries),
   };
+}
+
+/**
+ * The empty-state system's own source test (p0-3-system-sign-off.md §1.2):
+ * an empty container is tier 3 — given, not yours to fill — only when the
+ * trip itself is a joined copy *and* the kind that is empty is one of the
+ * three that actually travel in a snapshot. The four private kinds
+ * (`shopping`, `prep`, `log`, `outfits`) are never in a snapshot at all, so
+ * they can never be tier 3, even on a joined trip.
+ */
+export function isSharedEmptyKind(kind) {
+  return Boolean(state.trip?.sharedFrom) && share.SHARED_KINDS.includes(kind);
+}
+
+/**
+ * Framing for a tier-3 empty container: who it came from, and whether this
+ * is the third cause of emptiness — nothing has arrived at all yet, rather
+ * than "the copy you were sent has this empty" — which is what turns on the
+ * closing context line instead of the two body sentences.
+ */
+export function sharedEmptyContext() {
+  const from = state.trip?.sharedFrom;
+  if (!from) return null;
+  const justJoined = state.trip.tookVersion === from.version && !pendingUpdate();
+  const mine = (state.trip.people || []).find((p) => p.id === me().id);
+  return {
+    ownerName: from.from || ownerName(),
+    justJoined,
+    joinedAgo: mine?.joinedAt ? daysAgoLabel(mine.joinedAt) : 'recently',
+  };
+}
+
+/** "2 days ago", for the tier-3 context line. Never a bare date — the point
+ * is how long it has been quiet, not which calendar day it was. */
+function daysAgoLabel(iso) {
+  const at = new Date(iso);
+  if (Number.isNaN(at.getTime())) return 'recently';
+  const days = Math.max(0, Math.floor((Date.now() - at.getTime()) / 86_400_000));
+  if (days === 0) return 'today';
+  if (days === 1) return 'yesterday';
+  if (days < 14) return `${days} days ago`;
+  const weeks = Math.floor(days / 7);
+  return `${weeks} week${weeks === 1 ? '' : 's'} ago`;
 }
 
 /** This phone's copy, in the shape a snapshot is in, so the two can be diffed. */

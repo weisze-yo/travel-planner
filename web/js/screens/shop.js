@@ -36,7 +36,7 @@ export default {
           </div>
         </div>
 
-        <div class="head" style="padding-top:0;border-bottom:1px solid var(--line)">
+        <div class="head" style="padding-top:0;border-bottom:1px solid var(--line)${groups.length ? '' : ';opacity:.45'}">
           <div class="chiprow">
             <button class="cat${state.shopDay === 'all' ? ' on' : ''}" data-day-filter="all">All days</button>
             ${store.shopDayOptions().map((n) => html`
@@ -53,34 +53,45 @@ export default {
           </div>
         </div>
 
-        <div class="scroll" style="padding:12px 16px 250px">
+        <div class="scroll" style="padding:12px 16px ${groups.length ? '250px' : '24px'}">
           ${addOpen ? addForm() : ''}
           ${groups.length ? groups.map((group) => groupCard(group, symbol)) : html`
-            <div class="empty">Nothing on the list yet. Press + Add for anything you want to buy.</div>`}
+            <div class="empty-t1">
+              <div class="empty-t1-mark-row"></div>
+              <div class="empty-t1-title">Nothing on the list yet</div>
+              <div class="empty-t1-body">
+                Add anything you want to buy, priced or not — the estimate is what your spend
+                gets measured against later.
+              </div>
+              <div class="col g8 mt14" style="width:100%">
+                <button class="btn ink" data-act="add-toggle">+ Add</button>
+              </div>
+            </div>`}
         </div>
 
         ${editing ? itemEditor(state.shopping.find((i) => i.id === editing), { symbol }) : ''}
 
-        <button class="footer-card" data-act="report" aria-label="Open the spend report">
-          <div class="row end between g10">
-            <div class="grow">
-              <div class="eyebrow">ACTUAL SPEND</div>
-              <div class="spend-v">
-                ${money(totals.spent, symbol)}
-                <span class="spend-est">/ ${money(totals.planned, symbol)} est.</span>
+        ${groups.length ? html`
+          <button class="footer-card" data-act="report" aria-label="Open the spend report">
+            <div class="row end between g10">
+              <div class="grow">
+                <div class="eyebrow">ACTUAL SPEND</div>
+                <div class="spend-v">
+                  ${money(totals.spent, symbol)}
+                  <span class="spend-est">/ ${money(totals.planned, symbol)} est.</span>
+                </div>
+              </div>
+              <div class="right none">
+                <div class="eyebrow">≈ ${state.trip?.homeCurrencyCode || 'RM'}</div>
+                <div class="spend-rm">${totals.homeLabel}</div>
               </div>
             </div>
-            <div class="right none">
-              <div class="eyebrow">≈ ${state.trip?.homeCurrencyCode || 'RM'}</div>
-              <div class="spend-rm">${totals.homeLabel}</div>
+            <div class="progress mt8"><i style="width:${totals.percent}%"></i></div>
+            <div class="row g8 center mt6">
+              <div class="grow f11 w650 soft">${totals.bought} of ${totals.total} bought</div>
+              <div class="f11 w700" style="color:var(--jade)">See the report ›</div>
             </div>
-          </div>
-          <div class="progress mt8"><i style="width:${totals.percent}%"></i></div>
-          <div class="row g8 center mt6">
-            <div class="grow f11 w650 soft">${totals.bought} of ${totals.total} bought</div>
-            <div class="f11 w700" style="color:var(--jade)">See the report ›</div>
-          </div>
-        </button>
+          </button>` : ''}
       </section>`;
   },
 

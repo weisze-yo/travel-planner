@@ -8,7 +8,7 @@ import { state } from '../store.js';
 import { go, back } from '../nav.js';
 import { prepare } from '../photos.js';
 import {
-  backHeader, mapsLinks, swipeToDelete,
+  backHeader, mapsLinks, swipeToDelete, emptyShared,
   itemEditor, readItemEditor, shotEditor, readShotEditor, factsEditor, readFactsEditor,
 } from './parts.js';
 
@@ -263,6 +263,12 @@ function panel(which, it, { shopHere, shots, places, notes }) {
 
 function infoPanel(it) {
   if (!it.essentials.length) {
+    if (store.isSharedEmptyKind('places')) {
+      return emptyShared({
+        title: `Nothing filled in for ${it.name} in the copy you were sent.`,
+        action: { act: 'edit-facts', label: 'Write what you know' },
+      });
+    }
     return html`
       <div class="card pad">
         <div class="eyebrow">NEED TO KNOW</div>
@@ -270,7 +276,7 @@ function infoPanel(it) {
           Nothing here yet. Pasting a map link fills in whatever OpenStreetMap has — hours,
           phone, website — and the rest is yours to type.
         </div>
-        <button class="btn ghost wide mt12" data-act="edit-facts">Write what to remember</button>
+        <button class="btn-dashed mt12" data-act="edit-facts">Write what to remember</button>
       </div>`;
   }
   return html`
@@ -290,6 +296,7 @@ function infoPanel(it) {
 function nearbyPanel(it, places) {
   const loop = store.activeLoop();
   const schedule = store.loopSchedule(loop);
+  const shared = !places.length && store.isSharedEmptyKind('places');
   return html`
     ${places.length ? html`
       <div class="col g8">
@@ -317,12 +324,14 @@ function nearbyPanel(it, places) {
             </div>`;
         })}
       </div>
-    ` : html`
-      <div class="empty">Nothing saved around this stop yet.</div>`}
+    ` : (shared
+      ? emptyShared({ title: `Nothing saved around ${it.name} in the copy you were sent.` })
+      : html`<div class="empty">Nothing saved around this stop yet.</div>`)}
 
-    <button class="btn-dashed mt10" data-act="all-nearby">
-      ${places.length ? 'Manage places for this stop' : '+ Add a place here'}
-    </button>
+    ${shared ? '' : html`
+      <button class="btn-dashed mt10" data-act="all-nearby">
+        ${places.length ? 'Manage places for this stop' : '+ Add a place here'}
+      </button>`}
 
     ${schedule.stops.length ? html`
       <div class="dock-note">
@@ -344,6 +353,7 @@ function nearbyPanel(it, places) {
  * the only part of it you actually use while standing there.
  */
 function shotsPanel(it, shots) {
+  const shared = !shots.length && store.isSharedEmptyKind('mustSee');
   return html`
     ${shots.length ? html`
       <div class="col g12">
@@ -375,10 +385,11 @@ function shotsPanel(it, shots) {
             </div>
           </div>`)}
       </div>
-    ` : html`
-      <div class="empty">No must-see spots noted for this stop yet.</div>`}
+    ` : (shared
+      ? emptyShared({ title: `No must-see spots noted for ${it.name} in the copy you were sent.` })
+      : html`<div class="empty">No must-see spots noted for this stop yet.</div>`)}
 
-    <button class="btn-dashed mt12" data-act="add-shot">+ A shot worth getting here</button>`;
+    ${shared ? '' : html`<button class="btn-dashed mt12" data-act="add-shot">+ A shot worth getting here</button>`}`;
 }
 
 function shopPanel(it, items) {

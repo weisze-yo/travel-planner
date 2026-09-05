@@ -24,7 +24,7 @@ import { html, raw, esc, icon, delegate, parseClock, clock } from '../util.js';
 import * as store from '../store.js';
 import { state } from '../store.js';
 import { go } from '../nav.js';
-import { dayPills, weatherBanner, bindDragReorder, swipeToDelete } from './parts.js';
+import { dayPills, weatherBanner, bindDragReorder, swipeToDelete, emptyShared } from './parts.js';
 
 let addOpen = false;
 let form = { name: '', start: '', end: '', kind: 'main' };
@@ -91,7 +91,7 @@ export default {
                     issues: issues.get(row.item.id) || [],
                   })
                 : laneRow(row, { editing, last: index === rows.length - 1 })))}
-            </div>` : emptyDay()}
+            </div>` : (store.isSharedEmptyKind('days') ? sharedEmptyDay(day) : emptyDay())}
 
           ${editing ? html`
             ${notice ? html`<div class="amber-note f12 mt8">${notice}</div>` : ''}
@@ -270,7 +270,8 @@ function stopRow(row, { editing, number, last, issues }) {
         ${issues.map((issue, at) => html`
           <div class="warn">
             <div class="warn-label">${issue.label}</div>
-            <div class="warn-text">${issue.text}</div>
+            ${issue.name ? html`<div class="warn-name">${issue.name}</div>` : ''}
+            <div class="warn-fact">${issue.fact}</div>
             ${issue.fixes.length ? html`
               <div class="row g6 wrap mt8">
                 ${issue.fixes.map((fix, fi) => html`
@@ -342,7 +343,15 @@ function laneRow(lane, { editing, last }) {
   // An empty lane outside edit mode is just a gap in the day, and drawing a
   // dashed "+ Sub route here" button in every one of them turned the Plan
   // into a form. Adding is an edit; it lives behind the pencil.
-  if (!editing && !lane.loops.length) return '';
+  //
+  // The one exception: a joined trip's own free time is yours to plan even
+  // when you are not editing the agent's route, so it keeps a single amber
+  // action — the "yours, inside theirs" case (§2.3). `dayTimeline()` only
+  // ever produces a lane row here when the gap already clears
+  // MIN_LANE_MINUTES, so there is nothing further to check.
+  if (!editing && !lane.loops.length) {
+    return store.isSharedEmptyKind('subRoutes') ? sharedLaneRow(lane, last) : '';
+  }
 
   return html`
     <div class="plan-row">
@@ -362,6 +371,27 @@ function laneRow(lane, { editing, last }) {
               ? '+ Another sub route here'
               : `+ Sub route here · ${clock(lane.from)} – ${clock(lane.to)}`}
           </button>` : ''}
+      </div>
+    </div>`;
+}
+
+/** Tier 3's one legitimate action: your own free time, in a lane the agent's
+ * itinerary left open. Reuses the same `data-new-loop` handler edit mode
+ * uses — no new control, just the amber "self-planned" recipe instead of
+ * the neutral dashed one, and reachable without opening the pencil. */
+function sharedLaneRow(lane, last) {
+  return html`
+    <div class="plan-row">
+      <div class="plan-gutter">
+        <div class="lane-span">${store.duration(lane.to - lane.from).toUpperCase()}</div>
+      </div>
+      <div class="plan-spine">
+        <div class="plan-line sub${last ? ' short' : ''}"></div>
+      </div>
+      <div class="grow">
+        <button class="lane-add shared" data-new-loop="1" data-from="${lane.from}" data-to="${lane.to}" data-label="${lane.label}">
+          + Plan free time here
+        </button>
       </div>
     </div>`;
 }
@@ -516,6 +546,19 @@ function emptyDay() {
         OpenStreetMap has them.${wx ? ` Forecast: ${wx.icon} ${wx.high} °C.` : ''}
       </div>
       <div class="lane-stub mt6"></div>
+    </div>`;
+}
+
+/**
+ * Tier 3: the same empty day, in a joined trip. Frame 1F, drawn deliberately
+ * beside 1B — same screen, same date, same emptiness, different owner. A
+ * stopless day never gets an action (S-4): `dayTimeline()` only ever builds
+ * a lane between stops, so there is nothing here yet to hang free time on.
+ */
+function sharedEmptyDay(day) {
+  return html`
+    <div class="mt18">
+      ${emptyShared({ title: `Day ${day?.dayNumber ?? ''} is empty in the copy you were sent.` })}
     </div>`;
 }
 

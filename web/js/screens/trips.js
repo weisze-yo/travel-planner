@@ -72,12 +72,19 @@ export default {
             <div class="f11 soft lh145 mt14">
               Swipe a trip left to delete it. A finished trip stays until you do.
             </div>` : html`
-            <div class="empty">
-              ${store.signedIn()
-                ? html`Nothing in this account yet.<br>
-                    Press <b>+ New trip</b>, or open a link somebody has shared with you.`
-                : html`No trips yet.<br>
-                    Press <b>+ New trip</b> and give it a name and dates.`}
+            <div class="empty-t1 mt8">
+              <div class="empty-t1-mark"></div>
+              <div class="empty-t1-title">No trips yet</div>
+              <div class="empty-t1-body">
+                A trip needs a name and dates to start. Everything else — the itinerary, the
+                lists, the map — follows once it exists.
+              </div>
+              <div class="col g8 mt14" style="width:100%">
+                <button class="btn ink" data-act="add-toggle">+ New trip</button>
+              </div>
+              <div class="empty-t1-hint">
+                A trip somebody shares with you arrives by opening their link.
+              </div>
             </div>`}
         </div>
 
@@ -294,7 +301,8 @@ function removedCard() {
 
     <div class="row g8 mb8">
       <button class="btn jade grow" data-act="keep-side">Keep my side as its own trip</button>
-      <button class="btn ghost none" style="width:104px" data-act="message-owner"
+      <button class="btn ghost none" style="max-width:150px;overflow:hidden;text-overflow:ellipsis;padding:0 12px"
+              data-act="message-owner"
               data-trip="${state.trip?.name || ''}">Message ${String(gone.by).split(' ')[0]}</button>
     </div>
     <div class="f11 soft lh145 mb18">
