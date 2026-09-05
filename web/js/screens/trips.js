@@ -276,12 +276,21 @@ function accountRow() {
         <button class="btn sm ink" data-act="sign-open">Sign in</button>
       </div>`;
   }
+  // N-7 · G-1's whole fix: one substituted sub-line on a row that is already
+  // rendering. No banner, no overlay, no strip — the account row is where the
+  // account speaks, and the app's one arrival banner belongs to joining a
+  // trip. No dismiss control either: it is not a message, it is the row
+  // telling the truth about a change that just happened, and the next paint
+  // replaces it.
+  const arrived = store.takeArrivalNotice();
   return html`
     <div class="acct">
       <span class="who-mark">${initialFor(store.me().name)}</span>
       <div class="grow">
         <div class="acct-name">${store.me().name}</div>
-        <div class="acct-sub">${who.email || (who.provider === 'google' ? 'Google account' : 'Signed in')}</div>
+        <div class="acct-sub">${arrived
+          || who.email
+          || (who.provider === 'google' ? 'Google account' : 'Signed in')}</div>
       </div>
       <button class="btn sm ghost" data-act="sign-out"${
         pending === 'signout' ? raw(' disabled aria-busy="true"') : ''}>${

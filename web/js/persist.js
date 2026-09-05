@@ -424,14 +424,26 @@ export async function pushPublished(code, envelope) {
  * The other side's copy of the envelope, as it changes. This is what makes
  * "there is an update waiting" arrive on its own instead of on a refresh.
  */
-export async function watchPublished(code, handler) {
+/**
+ * `onError` is called only when the cloud actually ANSWERED and said no — a
+ * permission denial, a document that is gone. It is deliberately not called
+ * for a transient failure, because being offline is not a link ending, and
+ * the sync dot and the strip already own connectivity
+ * (`p1-absence-and-removal-design.md` §6.2: "the last read that actually got
+ * an answer", not the last attempt).
+ */
+export async function watchPublished(code, handler, onError = () => {}) {
   if (!code) return () => {};
   const fb = await firebase().catch(() => null);
   if (!fb) return () => {};
   return fb.dbMod.onSnapshot(
     publishedDoc(fb, code),
     (snap) => handler(snap.exists() ? snap.data() : null),
-    (error) => console.warn('[travel-planner] cannot watch the shared link', error),
+    (error) => {
+      console.warn('[travel-planner] cannot watch the shared link', error);
+      const code2 = String(error?.code || error?.message || '');
+      if (/permission-denied|insufficient|not-found|unauthenticated/i.test(code2)) onError(error);
+    },
   );
 }
 

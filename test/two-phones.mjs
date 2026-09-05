@@ -481,6 +481,54 @@ check('and neither of them blames the network',
   !/could not be reached/i.test(refusals.rulesRefused.reason + refusals.notSignedIn));
 check('a phone with no cloud at all has nothing stuck', refusals.unconfigured.kind === 'local', refusals.unconfigured.kind);
 
+// N-6 · the removal detector, on the real path. `removedFromTrip()` was
+// exported with no caller anywhere in web/js/**, so removal was detected
+// nowhere and the .gone-card was unreachable. The detector is the mirror of
+// the joiner fold: it fires when this phone's id is absent from the
+// envelope's `joiners` while `sharedFrom` is set. Here that happens for real —
+// the OWNER republishes the envelope without the guest, through the same
+// `pushPublished` the app uses, and the GUEST's own watch notices it.
+console.log('\n=== PHONE B is taken off the trip ===');
+{
+  const before = await B.page.evaluate(() => Boolean(window.__store.removal()));
+  check('B has not been removed yet', before === false);
+
+  const bID = await B.page.evaluate(() => window.__store.me().id);
+  const rewritten = await A.page.evaluate(async (guestID) => {
+    const code = window.__store.state.trip.link.code;
+    const envelope = await window.__persist.fetchPublished(code);
+    if (!envelope) return { ok: false, why: 'no envelope' };
+    const joiners = { ...(envelope.joiners || {}) };
+    const had = Object.values(joiners).some((j) => j?.id === guestID);
+    for (const [k, v] of Object.entries(joiners)) if (v?.id === guestID) delete joiners[k];
+    await window.__persist.pushPublished(code, { ...envelope, joiners });
+    return { ok: true, had, left: Object.keys(joiners).length };
+  }, bID);
+  check('the owner really had the guest in the envelope, and drops them', rewritten.ok && rewritten.had,
+    JSON.stringify(rewritten));
+
+  // B's watch is a live onSnapshot, so this is a poll on B's own state.
+  let noticed = false;
+  for (let i = 0; i < 60 && !noticed; i += 1) {
+    noticed = await B.page.evaluate(() => Boolean(window.__store.removal()));
+    if (!noticed) await B.page.waitForTimeout(250);
+  }
+  check('B notices being removed, through its own envelope watch', noticed);
+
+  if (noticed) {
+    const card = await B.page.evaluate(async () => {
+      window.__nav.go('trips');
+      await new Promise((r) => setTimeout(r, 700));
+      const el = document.querySelector('.gone-card');
+      return el ? el.textContent.replace(/\s+/g, ' ').trim() : null;
+    });
+    check('and the .gone-card it makes reachable really renders', Boolean(card), (card || '').slice(0, 80));
+    const stamp = await B.page.evaluate(() => window.__store.removal());
+    check('the removal is written once, with who and when', Boolean(stamp?.by && stamp?.at),
+      JSON.stringify(stamp));
+  }
+}
+
 console.log('\n=== nothing private ever crossed ===');
 const finalPriv = await B.page.evaluate(() => {
   const s = window.__store.state;

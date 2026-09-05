@@ -964,6 +964,30 @@ let handover = '';
 export const noteArrival = (line) => { handover = line || ''; };
 export const takeArrival = () => { const line = handover; handover = ''; return line; };
 
+/**
+ * N-7 · the emailed-link return leg, read at last.
+ *
+ * `restoreAccount()` completes the link during boot and computes a notice —
+ * `'email'`, `'redirect'`, or an error code — which `store.js` stores on
+ * `state.session` and, until now, NOTHING read. The one flow whose entire
+ * point is that it finishes on a later launch was the one flow with no
+ * arrival: you tap a link in your mail, the app opens, you are signed in, and
+ * no screen says so.
+ *
+ * It is CONSUMED on first read, so the row says it once and then goes back to
+ * the ordinary sub-line. An error code is deliberately not returned here: a
+ * failure of an action the user started belongs where failures go, which is
+ * `state.signInNotice` and the sign-in sheet, not the account row.
+ */
+export function takeArrivalNotice() {
+  const notice = state.session?.notice;
+  if (notice !== 'email' && notice !== 'redirect') return '';
+  // Both legs are the same event from the user's side: a sign-in they started
+  // somewhere else has just finished here.
+  state.session = { ...state.session, notice: '' };
+  return 'Signed in just now — every trip on this phone is in this account.';
+}
+
 /** Opens a trip and remembers it, so a relaunch comes back here. */
 export async function openTrip(tripID) {
   writeActiveTripID(tripID);
@@ -3834,6 +3858,9 @@ async function watchEnvelope(code) {
   if (!code) return;
 
   const stop = await watchPublished(code, (envelope) => {
+    // A read that got an answer clears any standing "the link has stopped"
+    // state: it plainly has not.
+    if (linkRefused === code) { linkRefused = ''; notify(); }
     if (!envelope) return;
     // Who has joined and how many times the link has opened only ever grow,
     // so they are taken regardless of whether the snapshot itself is a stale
@@ -3841,17 +3868,40 @@ async function watchEnvelope(code) {
     // from this phone would carry forward a joiners list that has fallen
     // behind and wipe out someone who joined moments ago.
     adoptEnvelopeMeta(code, envelope);
+    noticeRemoval(code, envelope);
     const seen = envelopeOf(mirror(code));
     // Ours is newer and still queued: keep it rather than going backwards.
     if (seen && (seen.version || 0) > (envelope.version || 0)) return;
     const moved = !seen || (envelope.version || 0) > (seen.version || 0);
     keepMirror(code, envelope);
     if (moved) notify();
+  }, () => {
+    if (linkRefused === code) return;
+    linkRefused = code;
+    notify();
   });
 
   // Another trip was opened while this was resolving.
   if (token !== watching) stop();
   else unwatchEnvelope = stop;
+}
+
+/**
+ * N-13 · the code whose envelope the cloud has refused this session.
+ *
+ * On a joined copy whose envelope is revoked, expired or rules-denied, the
+ * app simply stopped receiving updates and said nothing, forever — nothing is
+ * broken, the copy works, which is the whole model, but the user was left
+ * believing updates would still arrive.
+ *
+ * Only a real answer sets it: `watchPublished` filters transient failures out
+ * before calling back, because offline is not a link ending.
+ */
+let linkRefused = '';
+export function linkHasStopped() {
+  const from = state.trip?.sharedFrom;
+  if (!from) return false;
+  return linkRefused === from.code;
 }
 
 /**
@@ -3865,6 +3915,53 @@ async function watchEnvelope(code) {
  * joined *their* copy are a different, later question this file does not
  * answer.
  */
+/**
+ * N-6 · the removal detector. `removedFromTrip()` has been exported with no
+ * caller anywhere in `web/js/**`, so removal was detected nowhere and the
+ * `.gone-card` was unreachable.
+ *
+ * The rule the design states, rather than a mechanism it does not:
+ *
+ *   > A removal is noticed only when the app next reads the envelope, and it
+ *   > is never noticed twice.
+ *
+ * So this is the exact mirror of `adoptEnvelopeMeta` — that folds joiners IN
+ * on every envelope read; this notices this phone's own id being absent from
+ * them. `removal()` being non-null is what suppresses re-detection, which is
+ * why nothing here needs a flag of its own.
+ *
+ * Three guards, and each one is a way this could fire wrongly:
+ *   · only on a joined copy (`sharedFrom`), never on the owner's own trip;
+ *   · never twice, because `removal()` already answers;
+ *   · and never on an envelope that simply has no joiners map — a snapshot
+ *     published before joiners existed, or one that failed to load, must not
+ *     read as "everyone was removed".
+ */
+function noticeRemoval(code, envelope) {
+  const from = state.trip?.sharedFrom;
+  if (!from || from.code !== code) return;
+  if (state.trip.removed) return;
+  const joiners = envelope?.joiners;
+  if (!joiners || typeof joiners !== 'object') return;
+  const mine = me().id;
+  if (!mine) return;
+
+  if (Object.values(joiners).some((j) => j?.id === mine)) {
+    // Seen once, remembered on the trip. Without this the test below would
+    // fire on a phone that was NEVER in `joiners` — and that is the common
+    // case, not an edge one: `announceJoin` only writes a joiner when the
+    // guest is signed in and not anonymous, so a read-only guest who never
+    // signs in is never listed at all. You cannot be removed from something
+    // you were never on. It is stored rather than held in memory so that a
+    // removal that happens while the app is closed is still noticed on the
+    // next read.
+    if (!state.trip.listedInShare) putTrip({ ...state.trip, listedInShare: true });
+    return;
+  }
+  if (!state.trip.listedInShare) return;
+  removedFromTrip({ by: from.from || envelope.byName || 'The owner', on: new Date().toISOString() });
+}
+
 function adoptEnvelopeMeta(code, envelope) {
   const before = envelopeOf(mirror(code));
   if (before) {

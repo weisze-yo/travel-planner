@@ -56,7 +56,7 @@ export default {
         <div class="scroll" style="padding:14px 16px 28px">
           ${notice ? html`<div class="amber-note mb12">${notice}</div>` : ''}
 
-          ${sharedFrom ? relationship(store.ownerName()) : ''}
+          ${sharedFrom ? relationship(store.ownerName(), store.linkHasStopped()) : ''}
 
           <div class="eyebrow">Who has it</div>
           <div class="card-list mb14">
@@ -177,13 +177,24 @@ export default {
  * with no sign that "Create the link" here starts a second, disconnected
  * share rooted at this phone's fork rather than at the trip itself.
  */
-function relationship(ownerName) {
+function relationship(ownerName, stopped = false) {
   return html`
     <div class="card mb14" style="padding:12px 13px;background:var(--jade-bg);border-color:var(--jade-bd)">
       <div class="f12 w650" style="color:var(--jade)">This is your copy of ${ownerName}’s trip.</div>
+      <!-- N-13 · same block, same jade, one different sentence. JADE, not
+           rust: nothing has failed on this phone and nothing is lost — the
+           copy is complete and working, and rust would be the second time the
+           app told a user their working trip was damaged. There is no tap
+           that fixes it, so by the house rule it is not a warning: it is a
+           fact, available where the question is asked, and nowhere else. No
+           banner on the Plan, no chip, no strip. -->
       <div class="f11 lh145 mt5" style="color:var(--jade-fg)">
-        What you publish below is a second, separate share — of your copy, not ${ownerName}’s. Anyone who
-        joins through it gets what you have right now, not a live view of ${ownerName}’s trip.
+        ${stopped
+          ? html`${ownerName}’s link has stopped working, so no more updates can arrive.
+                 Everything on this phone stays as it is.`
+          : html`What you publish below is a second, separate share — of your copy, not ${ownerName}’s.
+                 Anyone who joins through it gets what you have right now, not a live view of
+                 ${ownerName}’s trip.`}
       </div>
     </div>`;
 }
