@@ -479,3 +479,28 @@ No new colour, no new radius, no new control height, no new component family.
 | Staged decisions with an `Apply` step | **REJECTED** (§5.1) |
 
 **No OPEN DECISION is raised here beyond S-3.** Three-way is a product decision, and it is being *recommended* rather than left open because the brief already asked for a three-way model if it gives materially more truthful UX — §1.1 is that evidence, and the storage pattern it needs already exists on the sending side.
+
+---
+
+## IMPLEMENTED — `7c8bb6e`, 5 Sep 2026 (partial: §9's new CSS only)
+
+**Appended only. Nothing above this line was changed.**
+
+Batch 0 of `transition-audit.md` §6 appended **the whole of the new CSS this
+document asks for** (§3.2, §9, and item 9 of the implementer's list):
+`.side.stacked` and `.review-group` in `web/css/app.css`. `.side.stacked` puts
+each value box in a full-width column — measured 318px instead of 155px at
+390 × 844 — with the 8px gap kept; `.review-group` carries the day eyebrow's
+14px spacing.
+
+Both are **inert until batch 3's markup opts in**. `.sides` is used by
+`review.js` alone, so the `flex-wrap` that makes stacking possible changes
+nothing that renders today; `test/css-additions.mjs` asserts that a row
+*without* `.stacked` still lays out side by side, so the no-regression claim
+is measured rather than assumed. A long CJK value in a stacked box was
+measured with `scrollWidth` vs `clientWidth` and does not overflow.
+
+Everything else in this document — `trip.reviewedSnapshot` (N-2), the
+three-way diff, the no-base mode, the eleven cases, the sticky foot and staged
+bulk, `trip.lastReview` and the receipt — is **batch 3** and is not
+implemented by this commit. The diff is still two-way.

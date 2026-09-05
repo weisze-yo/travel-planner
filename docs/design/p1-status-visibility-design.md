@@ -282,3 +282,24 @@ Amber because the plan works and the missing thing is a picture; the action is t
 | Wiring `saving`'s `line` into the chip | **REJECTED** — P0-5 R3, and IF-26 |
 
 **One OPEN DECISION is raised: OD-7** — *should a blank map try to say why it is blank?* Recommendation: no. Everything else above is a UX call and is made.
+
+---
+
+## IMPLEMENTED — `7c8bb6e`, 5 Sep 2026 (partial: §1.3's hollow dot only)
+
+**Appended only. Nothing above this line was changed.**
+
+Batch 0 of `transition-audit.md` §6 implemented **§1.3** in `web/css/app.css`:
+`.sync-dot.grey` is now `background: transparent` with a `1.5px` inset
+`--faint` ring. One rule, one property pair. No fifth colour, no label under
+the dot, no numeral in it, and `syncDot()` in `parts.js` is untouched — all
+five `aria-label`s are byte-identical, which the harness asserts. `saved` and
+`local` now differ in shape as well as hue, so the pair survives greyscale.
+
+Verified by computed style through the app's own `syncDot()` at 390 × 844
+(`test/css-additions.mjs`, 6 checks: transparent centre, 1.5px `rgb(180,190,185)`
+inset ring, still 8px and round, `saved` still solid jade with no ring, the
+aria-label unchanged) and from the deployed `css/app.css`.
+
+§4's blank-map amber card (N-10, OD-7 = no cause sentence) is **batch 5** and
+is not implemented by this commit.

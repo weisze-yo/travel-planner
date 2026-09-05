@@ -296,3 +296,22 @@ Nothing new. Values are literal from `app.css`.
 5. **Should the Review side keys become `ANA'S` / `MINE`?** Deliberately unresolved — it is a diff-model question for P0-4. Flagged so it is not lost.
 6. **D-3 — CLOSED, 5 Sep 2026,** in `p1-share-join-review-flow-design.md` §3.1: the "What they get" card moves to the offer phase, above the role radios, and the separate jade explainer merges into it. That document also adds the non-owner Share view's missing gate (a joined copy renders the *offer* phase today, because `share` is null — IF-6), the link-role control (F-3) and the post-send state left open in §12.2 here. Nothing in this document changed. Original note follows.
    **D-3 was untouched:** the three-bullet "What they get" card still appears only after a link exists. It would sit naturally beside the new invariant line, but moving it is a separate decision.
+
+---
+
+## IMPLEMENTED — `7c8bb6e`, 5 Sep 2026 (partial: §8's `.hint-jade` only)
+
+**Appended only. Nothing above this line was changed.**
+
+Batch 0 of `transition-audit.md` §6 defined **`.hint-jade`** in `web/css/app.css`
+to §8's specification exactly: `--jade-bg`, 1px `--jade-bd`, r16, 14px pad,
+body 12.5px/1.5 in `--jade-fg`. The class had been referenced by `areas.js`
+and `stuck.js` since they were written and defined nowhere, so both rendered
+as inherited 16px body text — larger than the copy around them. Verified by
+computed style in a real render at 390 × 844 (`test/css-additions.mjs`, 9
+`.hint-jade` checks) and from the deployed `css/app.css`.
+
+The rest of this document — the three roles, the `read` send block that also
+uses `.hint-jade`, the `from Ana` marker on five surfaces, the arrival banner
+and the corrected Log line — is **batch 7 (P0-1 role wiring)** and is not
+implemented by this commit. `myRole()` still reaches no screen.
