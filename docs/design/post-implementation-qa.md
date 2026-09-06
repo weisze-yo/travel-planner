@@ -247,7 +247,7 @@ one.
 | **Classification** | **missing implementation** *(re-classified 6 Sep — it was first recorded as a possible design ambiguity)* |
 | **Canonical source** | `p1-absence-and-removal-design.md` §4.2 · `p1-paste-review-design.md` §10 · `p1-destination-tabs-design.md` §9 · `store.js` `importItinerary` header comment |
 | **Recommended action** | Give the facts editor its map-link row, bound to the `sourceLink` field every place already carries, resolved through the existing `resolvePlaceInput()`. No new component. |
-| **Status** | See the IMPLEMENTED note appended to `p1-absence-and-removal-design.md` for the outcome — implemented in `d76fc82`, 6 Sep 2026. |
+| **Status** | See the IMPLEMENTED note appended to `p1-absence-and-removal-design.md` for the outcome — implemented in `5e2c8a4`, 6 Sep 2026. |
 
 **Notes.** It was first reported as possibly needing a product decision. On
 re-reading the canonical documents that was wrong, and the correction is worth

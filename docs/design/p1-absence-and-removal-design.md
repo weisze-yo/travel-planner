@@ -467,7 +467,7 @@ to end across two real devices — `test/two-phones.mjs` 65/65.
 
 ---
 
-## IMPLEMENTED — §4.2's map-link field, `d76fc82`, 6 Sep 2026
+## IMPLEMENTED — §4.2's map-link field, `5e2c8a4`, 6 Sep 2026
 
 **Appended only. Nothing above this line was changed.** This closes the one
 item the note above recorded as unfinished.
