@@ -192,7 +192,18 @@ export const MUST_SEE = [
 // `outfitAdvice()` in store.js — not a fixed sentence about this market.
 export const OUTFIT_PICKS = ['Rust coat', 'Cream knit', 'Flat shoes', 'Shawl'];
 
-export const PREP_CATEGORIES = ['Documents', 'Outfits', 'Carry-on', 'Electronics'];
+/**
+ * The fallback packing groups, used for a trip whose own `prepCategories` is
+ * unset — `store.prepGroups()` reads `trip.prepCategories` first and only
+ * falls back to this. The last two exist because a company trip assigns photo
+ * and video missions and lives out of a coach day-bag, and neither fits the
+ * four generic groups. A trip may carry groups beyond these: `prepGroups()`
+ * builds from the items it actually has and appends anything missing, so an
+ * unlisted group still renders rather than vanishing.
+ */
+export const PREP_CATEGORIES = [
+  'Documents', 'Outfits', 'Carry-on', 'Electronics', 'Photo missions', 'Day bag',
+];
 
 export const PREP = [
   { id: 'p1', category: 'Documents', categoryOrder: 0, order: 0, name: 'Passport + 2 copies', why: '', packed: true, packedIn: 'notPacked' },
@@ -285,3 +296,132 @@ export const BADGES = {
   ifTime: 'IF TIME',
   lastChance: 'LAST CHANCE',
 };
+
+// ---------------------------------------------------------------------------
+// The additive record schema.
+//
+// Everything below names fields rather than holding content. A researched trip
+// carries far more per record than the demo above does — a Japanese name, how
+// far the fact was verified, where it came from, structured opening hours — and
+// none of it had a home in either client.
+//
+// Adding them is safe because nothing in the round trip filters keys:
+// `persist.js` reads with `d.data()` and writes the whole row with `setDoc`,
+// and every mutator in `store.js` spreads the record it is editing rather than
+// rebuilding it. An unknown key therefore survives load, render, edit and save
+// untouched. That is what makes these additive rather than a migration.
+//
+// They are declared here, next to the enums the screens already import, so the
+// importer and the data-integrity script have one place to agree with. Nothing
+// here is trip content: no record, name, coordinate or price belongs in this
+// file (the backend snapshot is the source of truth — see the top of
+// `store.js`, which only ever seeds from `data.js` for TRIP_ID).
+// ---------------------------------------------------------------------------
+
+/**
+ * When a place is worth going to. 84 of the researched records are open only
+ * at night or before dawn, so a pool sorted without this reads as if a 05:20
+ * footbath were a mid-afternoon option.
+ */
+export const TIME_WINDOWS = ['day', 'night', 'dawn', '24h'];
+
+/**
+ * How far a fact was actually chased. `high` means an operator or an official
+ * source said it directly. Anything lower must carry a `confidenceNote`
+ * saying what is uncertain, so the doubt travels with the fact.
+ */
+export const CONFIDENCE_LEVELS = ['high', 'medium', 'low'];
+
+/**
+ * Whether a coordinate was confirmed or inferred. Worth recording because two
+ * coordinates in this dataset were once marked verified and were wrong — one
+ * by 260 km, one by 2.4 km. `approximate` is an honest answer; a confident
+ * wrong pin is not.
+ */
+export const COORD_PRECISION = ['verified', 'approximate'];
+
+/**
+ * The five lines of a stop summary, in the order they are written and shown.
+ * `snack` is separate from `eat` on purpose: on a tour where every meal is
+ * already booked, "what can I buy and eat standing up in twenty minutes" is a
+ * different question from "where is dinner", and it is the one a traveller
+ * actually has.
+ *
+ * A line is never blank. Where there is nothing, the line says so in a
+ * sentence — render that sentence, not an empty cell, a dash or "N/A".
+ */
+export const STOP_SUMMARY_LINES = ['do', 'eat', 'snack', 'buy', 'see'];
+
+/** Keys of a structured `hours` block. `null` for a day means closed that day. */
+export const HOURS_DAYS = ['mon', 'tue', 'wed', 'thu', 'fri', 'sat', 'sun'];
+
+/**
+ * Fields added to `places`, `mustSee` and `shopping` records.
+ *
+ * `nameJp` is the one that changes what the app can do rather than what it
+ * knows: it is often the only reliable way to find a venue, on a map or in a
+ * shop window, and the romanisations are not dependable — 和楽足湯 is read
+ * *Warashiyu*, not the character-by-character "Waraku Ashiyu".
+ */
+export const RECORD_FIELDS = [
+  'nameJp',        // the venue's real name, as it is written on the door
+  'timeWindow',    // one of TIME_WINDOWS
+  'confidence',    // one of CONFIDENCE_LEVELS
+  'confidenceNote', // required whenever confidence is not 'high'
+  'coordPrecision', // one of COORD_PRECISION
+  'source',        // the URL the fact came from
+  'coordFix',      // why a coordinate was moved, when one was
+  'nameNote',      // why a reading is what it is, when it surprises
+  'retired',       // superseded, but kept: still true, no longer scheduled
+  'retiredReason',
+  'retiredReplacedBy',
+];
+
+/**
+ * Fields added to a `PlanItem` (a stop).
+ *
+ * `stopSummary` is the five lines above, keyed by STOP_SUMMARY_LINES, plus
+ * `correctedFromSeed` — the list of corrections made to the original prose.
+ * That list stays inspectable: it is how a wrong fact gets caught the next
+ * time, and hiding it would waste the only record of what changed and why.
+ *
+ * The hours fields are kept structured rather than flattened into
+ * `essentials` because a closing-day check cannot be run on a sentence. They
+ * are also projected into `essentials: [EssentialRow]` for display, so the
+ * Info panel keeps working unchanged.
+ */
+export const PLAN_ITEM_FIELDS = [
+  'stopSummary',
+  'hours',          // { mon: [['09:00','17:00']], tue: null, ... }
+  'closedNote',
+  'lastAdmission',
+  'seasonFrom',
+  'seasonTo',
+  'groupRate',
+  'phone',
+  'website',
+  'removedFromDay', // the manifest for a stop the agent removed
+];
+
+/** Fields added to a `TripDay`. `sun` drives every photo-timing decision. */
+export const TRIP_DAY_FIELDS = ['dateISO', 'sun', 'outfitPhoto', 'outfitPractical', 'removedStops'];
+
+/**
+ * Fields added to a `SubRoute`. Ours carry per-step arrive/stay/walk detail
+ * that the flat shape has nowhere to put.
+ */
+export const SUB_ROUTE_FIELDS = ['title', 'steps', 'note', 'totalWalkMinutes'];
+
+/**
+ * The two `category` fields are different enums that share exactly one value.
+ *
+ *   Place.category         food · cosme · cloth · shopping · sight · rest
+ *   ShoppingItem.category  food · clothing · souvenir · beauty · other
+ *
+ * `food` being the only overlap is what makes crossing them silent: a place
+ * category written onto a shopping item is simply not in SHOP_CATEGORIES, so
+ * the item disappears from the shop filter with no error. Kept here as two
+ * separately named lists so a check can assert each field against its own.
+ */
+export const PLACE_CATEGORY_IDS = Object.keys(CATEGORY_LABELS);
+export const SHOP_CATEGORY_IDS = SHOP_CATEGORIES.map((c) => c.id);
