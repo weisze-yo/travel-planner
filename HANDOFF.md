@@ -1,7 +1,16 @@
-# Handoff — Travel Planner, after round eight
+# Handoff — Travel Planner, after round nine
 
-Written 4 Sept 2026. Read this first if you are picking the work up in a new
-session.
+Written 4 Sept 2026, rewritten 6 Sept 2026 when round nine closed. Read this
+first if you are picking the work up in a new session.
+
+**Current state: implemented, deployed and in production** at
+<https://travel-planner-3e0d3.web.app>. Round nine — the
+design-implementation milestone — is CLOSED; see the round-nine section at the
+bottom of this file, which is the authoritative account of where the work
+stands, and `docs/design/transition-audit.md` §10 for the batch-by-batch
+close-out. The current phase is post-implementation QA intake
+(`docs/design/post-implementation-qa.md`), and nothing in that backlog has
+been implemented.
 
 ---
 
@@ -48,11 +57,15 @@ for(const f of walk('js')){ try{ new vm.SourceTextModule(fs.readFileSync(f,'utf8
 
 ### The browser harnesses
 
-There are five as of round eight (91 checks), each a standalone script that
-prints a PASS/FAIL list. They are
-the regression suite; run them all after any change that touches shared code.
-They are **not committed** — they live in the session scratchpad. If you are
-starting fresh, write new ones rather than hunting for these; the pattern is:
+There are sixteen as of round nine (485 checks), each a standalone script that
+prints a PASS/FAIL list. They are the regression suite; run them all after any
+change that touches shared code.
+
+**They are committed — they live in `test/`.** Do not write new ones before
+looking there. The per-harness breakdown is in the round-nine section below and
+in `docs/design/transition-audit.md` §10.2, and `test/README.md`,
+`test/COVERAGE.md` and `test/REPORT.md` carry the running notes. The pattern
+they all follow is:
 
 ```js
 import pw from '/opt/node22/lib/node_modules/playwright/index.js';
@@ -85,26 +98,35 @@ Three traps that have each cost an hour:
    `import('/js/store.js')` is a second, freshly booted copy of the store
    rather than the app's. Poll with `page.evaluate` in a loop instead.
 
-Round eight added two more pieces of rigging, both worth rebuilding rather than
-skipping, because without them Firebase can only be eyeballed:
+### Testing Firebase for real
 
-- **The rules run for real.** `npm i firebase-tools @firebase/rules-unit-testing
-  firebase` in the scratchpad, then `firebase --project demo-travel
-  emulators:exec --only firestore "node test.mjs"`. The emulator jar downloads
-  once. Twenty-six assertions live there and they are the only proof the rules
-  say what the comments claim. Ignore the emulator's "evaluation error" log
-  lines on deny paths: it evaluates once before loading the document and once
-  after, and the first pass cannot see `resource.data`.
-- **A fake Firebase SDK**, served in place of every
-  `gstatic.com/firebasejs/*` module by `ctx.route`, backed by a tiny HTTP
-  document store so **two browser contexts can share one envelope**. That is
-  the only way to test the thing item 31 is about. Two traps in writing one:
-  give it Firestore's latency compensation (a poll must not hand back a value
-  older than a write the app has just made, and a read that *straddles* a write
-  must be thrown away), or you will chase a phantom race in the app for an hour;
-  and serve the app so `/j/CODE` returns `index.html`, the way Hosting's rewrite
-  does — `http-server` will not do that and pointing its `--proxy` at itself
-  loops.
+Firebase can only be eyeballed without rigging, so there is rigging, and by
+round nine it is **committed rather than living in a scratchpad**:
+
+- **`test/two-phones.mjs`** — two browser contexts with nothing in common,
+  between them the real Firebase SDK, the real Auth emulator and the real
+  Firestore emulator running this repo's `firebase/firestore.rules`. 65/65 at
+  round nine. It is also the proof the rules say what their comments claim:
+  one account cannot read another's trip, checked by Google's own engine
+  rather than a re-implementation.
+- **`test/refused-rules.mjs`** — swap in a deny-all ruleset and check the app
+  says so in words that name the fix instead of blaming the network. It
+  restores `firebase/firestore.rules` byte-identical when it is done.
+- **`test/setup.sh`** vendors the pinned SDK into `web/vendor/firebase-local/`
+  (gitignored) and installs `firebase-tools` under `test/`; **`test/serve.mjs`**
+  serves `web/` on :8123 with Hosting's rewrite, so `/j/CODE` returns
+  `index.html`. `http-server` will not do that rewrite and pointing its
+  `--proxy` at itself loops. `test/README.md` has the three-terminal recipe.
+
+Two things from round eight that the committed rigging replaced, recorded so
+nobody rebuilds them: the fake Firebase SDK served over `ctx.route` (the real
+SDK against real emulators is better in every way), and a separate
+26-assertion `@firebase/rules-unit-testing` script, which was **never
+committed** — `two-phones.mjs` covers the rules end to end instead. If you do
+want isolated per-rule assertions, that script is worth rewriting; when you
+run one, ignore the emulator's "evaluation error" log lines on deny paths, as
+it evaluates once before loading the document and once after, and the first
+pass cannot see `resource.data`.
 
 ## The shape of the code
 
@@ -322,9 +344,9 @@ rounds in this round alone:
 > the screen renders wrong or throws `html(...).x is not a function` at
 > runtime, a long way from the comment that caused it. It bit four times.
 
-Everything in "The browser harnesses" above still holds — the harnesses are
-now committed rather than living in a scratchpad, which is the one thing that
-section gets wrong.
+Everything in "The browser harnesses" and "Testing Firebase for real" above
+holds; both were rewritten when this milestone closed, so the counts and the
+`test/` paths there are the current ones.
 
 Two environment facts worth knowing before you waste an hour:
 
