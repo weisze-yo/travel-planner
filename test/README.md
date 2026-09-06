@@ -25,7 +25,7 @@ node test/serve.mjs    # web/ on :8123, with Hosting's rewrite so /j/CODE works
 node test/two-phones.mjs
 ```
 
-29 checks. It prints each as it goes and exits non-zero on any failure.
+65 checks. It prints each as it goes and exits non-zero on any failure.
 
 ## What it covers
 
