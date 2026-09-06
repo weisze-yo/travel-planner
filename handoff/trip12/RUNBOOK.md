@@ -265,14 +265,28 @@ with no gate in front of it. Say the word and it can be written, with the same g
 
 ---
 
-## Exact commit
+## Which code this depends on
 
-These instructions depend on the code at:
+A runbook cannot name its own commit — stamping one in produces a hash the file's own commit then
+invalidates. So verify by content instead, which is what actually matters:
+
+```sh
+git checkout claude/inspiring-newton-uzu0mt
+git pull origin claude/inspiring-newton-uzu0mt
+git log --oneline -4
+```
+
+The four most recent subjects on this branch should be, newest first:
 
 ```
-branch  claude/inspiring-newton-uzu0mt
-commit  018dc4caafb5fd9bf9950f446c935af1e5c1e622
+Drop the Ginza chip, prove archive/restore, and write the import runbook
+Phase 2A/2B: the import gate, a real dry run, and a backup
+Phase 1: let the web client hold the researched record shape
+Add Trip 12 handoff documents and research bundle
 ```
 
-`git log -1 --oneline` after step 1 must show that commit. If it shows something newer, this runbook
-may be out of date — re-read the dry-run expectations in step 3 against what the newer code prints.
+If your tip is **newer** than the first of those, this runbook may be out of date — the dry run in
+step 3 is the real check, so compare its output against the expected numbers there before going on.
+
+The substantive verification is step 3. Those figures come from the merge, and if the code changed
+in any way that matters they will move.
