@@ -497,3 +497,60 @@ Browser version:
 **Do not try to fix anything.** Just report what you saw. If a test cannot be
 run at all — no Android device, no second device for Test 3 — say so and it
 will be recorded as untested rather than passed.
+
+---
+---
+
+# RESULTS — recorded 6 Sep 2026
+
+**Run by the product owner against production commit `5e2c8a4`** (the last
+commit that changes the app; `4f20bbe` on top of it is documentation only).
+
+| # | Test | Result |
+|---|---|---|
+| **1** | Real Android install | **PASS** |
+| **2** | iOS Safari never shows the Android line | **PASS** |
+| **3** | iOS VoiceOver on a read-only Share screen | **DEFERRED — not required for this milestone's scope** |
+
+## Test 1 — PASS
+
+The install line does not appear on a first launch, appears on a second, is
+one quiet line rather than a banner, does not prompt on its own, and Chrome's
+install dialog opens only from a tap on **Add it**. OD-8 ships at exactly the
+approved scope.
+
+## Test 2 — PASS
+
+No install line, no **Add it** button and no install prompt appears in iOS
+Safari across repeated launches. `beforeinstallprompt` never fires there, so
+"Android only" holds without the code ever naming a platform — which is how it
+was built and now how it has been observed.
+
+## Test 3 — DEFERRED
+
+**Deferred by the product owner, 6 Sep 2026, as not required for this
+milestone's scope. It is not a failure and it is not a blocker.**
+
+**Nothing about the accessibility implementation changes because of this
+deferral.** The `read` send block, the `aria-hidden` on the `.who-mark`, the
+`aria-busy` on every pending control and the five sync `aria-label`s all stay
+exactly as they are. They are approved behaviour that costs nothing and
+affects no normal product flow; a deferred *test* is not a reason to remove a
+shipped *implementation*.
+
+**What is verified without it**, and it is most of the claim:
+
+- 40 automated checks in `test/role-and-identity.mjs` confirm that a `read`
+  user is served no send control at all — not a disabled one, none — and that
+  the jade block naming who does send is what stands in its place. That is
+  asserted on the real rendered DOM, so a screen reader has nothing to
+  announce because there is nothing there.
+- 9 checks in `test/accessibility.mjs` drive real Tab/Enter/Escape keys and
+  read the browser's own computed accessibility tree.
+- The `.who-mark` is asserted `aria-hidden`, so a name is announced once.
+
+**What remains unverified, stated plainly so it is not mistaken for done:** no
+real screen reader has been run over the read-only Share screen. The automated
+checks prove the control is absent from the DOM; they do not prove how iOS
+VoiceOver narrates the screen around it. If that assurance is wanted later,
+Part A of Test 3 above is written and ready and needs two devices.

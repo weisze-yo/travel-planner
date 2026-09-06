@@ -281,3 +281,89 @@ session.
 | Item 31, Firebase | Done. There was no screen: it was rules, auth and a console. |
 | Item 30, trip files | Two buttons and a card, both already built. |
 | Item 16, accessibility | It is testing with a screen reader, not drawing. |
+
+---
+
+# Round nine — the design-implementation milestone, CLOSED 6 Sep 2026
+
+**Production commit: `4f20bbe`** (last app-code commit `5e2c8a4`).
+**If you are picking this up fresh, read `docs/design/transition-audit.md` §10
+first** — it is the close-out and it lists every batch, every commit and
+everything deliberately left open.
+
+## What happened
+
+The approved UX/UI design package was implemented in nine batches. Each one:
+built → tested → full regression → committed → pushed to `main` → deploy
+watched to green on **both** the Hosting and Firestore-rules steps → verified
+against the deployed build. Nothing was left half-done between batches.
+
+The headline fixes, if you only read one paragraph: **Review became a
+three-way diff**, so it stops offering to undo your own edits — a stop you
+added is no longer presented as one they removed. **A `read` user is no longer
+shown a send button that silently does nothing**, which was the oldest
+confirmed gap. **The Plan's archive card rendered white on white** at 1.21:1
+and is now the 7.48:1 the design intended. **A trip with no currency stopped
+pretending to be priced in yen.**
+
+## The test suite is the regression suite, and it is committed
+
+Sixteen browser harnesses in `test/`, 485 checks, plus `two-phones.mjs` at
+65/65 against real Auth and Firestore emulators. Run them all after any change
+to shared code. Counts and the per-harness breakdown are in the audit's §10.2.
+
+**Run `node --experimental-vm-modules test/guard.mjs` first, every time.** It
+does the module-parse sweep AND catches the one trap that cost two debugging
+rounds in this round alone:
+
+> **A backtick inside an HTML comment inside an `html` template literal ends
+> the template.** With an even number of them in one file the module still
+> PARSES — `node --check` and `vm.SourceTextModule` both say it is fine — and
+> the screen renders wrong or throws `html(...).x is not a function` at
+> runtime, a long way from the comment that caused it. It bit four times.
+
+Everything in "The browser harnesses" above still holds — the harnesses are
+now committed rather than living in a scratchpad, which is the one thing that
+section gets wrong.
+
+Two environment facts worth knowing before you waste an hour:
+
+- **Chromium cannot reach the internet through the session relay** —
+  `ERR_CONNECTION_RESET` on every proxy configuration, while `curl` works
+  fine. To verify a deploy, pull the deployed files with `curl`, serve them
+  locally, and drive those. Label that **VERIFIED FROM DEPLOYED SOURCE**, not
+  "verified in production" — they are not the same claim.
+- **Some states cannot be observed on a phone with no account**, because
+  `nav.js` paints inside `requestAnimationFrame` while `boot()` awaits only
+  microtasks, which never yield to the event loop. Where a pending frame was
+  genuinely needed, the NETWORK the app really uses was slowed through
+  `page.route` — never the app. P0-5 §6 forbids padding a wait to make it
+  visible, and that rule was kept.
+
+## What is open, and what is not
+
+**Not open, and not to be reopened:** OD-6, OD-7, OD-8, OD-9 and D-1 are
+answered and built; the eleven earlier decisions and the rejection list in
+`implementation-readiness-map.md` §5 stand.
+
+**Open, both deliberate and neither blocking:** `removePerson()` still has no
+owner guard (mitigated in the UI by not binding the gesture for a non-owner),
+and the card-level `Opening…` state cannot render without an account, which is
+correct behaviour rather than a defect.
+
+**Manual tests:** the Android install and the iOS Safari negative both PASS.
+The iOS VoiceOver test on a read-only Share screen is **DEFERRED** by the
+product owner as out of scope for this milestone. **Do not remove or change
+any accessibility code because of that deferral** — a deferred test is not a
+deferred implementation, and the `read` send block, the `aria-hidden` marker,
+`aria-busy` and the five sync `aria-label`s all stay.
+
+## The next phase is NOT this one
+
+New UI/UX discrepancies found by using the running app go into
+`docs/design/post-implementation-qa.md` — an intake and classification
+backlog, with a reporting template and a rule that matters: **a screenshot is
+evidence of what the app does, not authorisation to change what it should
+do.** Compare against the canonical documents first; if they settle it, it is
+a defect and it is fixed; if they do not, it is a question for the product
+owner. Nothing in that backlog has been implemented.

@@ -169,3 +169,88 @@ Per batch: tests green → commit → push → wait for the run → confirm **bo
 All five decisions are recorded (§5). No batch is gated. The regression suite is green at `4233c9a`: 35 + 34 + 11 + 9 + 9 + 5 checks, zero page errors, every module parsing. `two-phones.mjs` (60 recorded at `d6c12ff`) and `refused-rules.mjs` need the Firebase emulators and were not re-run in this session — treat that count as recorded, not re-verified, and run them before any batch that touches sharing, the snapshot path or the rules.
 
 The implementation session stops only for a genuinely **new** product ambiguity that the canonical documents cannot settle. The five above are settled.
+
+---
+
+## 10. MILESTONE CLOSED — 6 Sep 2026
+
+**Appended only. Nothing above this line was changed.** §6's roadmap is
+complete: all nine batches built, tested, pushed to `main`, deployed and
+verified against the deployed build.
+
+| Batch | Scope | Commit |
+|---|---|---|
+| 0 | `.hint-jade` · `.sync-dot.grey` hollow · `.side.stacked` + `.review-group` | `7c8bb6e` |
+| 1 | P0-5's eleven rules · M-6 · M-7 · M-14 · the four silent refusals | `63b9c06` |
+| 2 | Currency — **nine** sites · six derived-line states · provenance · the offer · the OD-9 ghost | `e81b439` |
+| 3 | N-2 base first · three-way diff · N-3 · N-4 · M-2 · M-3 · N-5 · M-13 · M-11 (OD-6) | `f3a5f31` |
+| 4 | M-4 (7.48:1, measured) → N-9 · N-8 | `2745799` |
+| 5 | N-10 (OD-7) · N-11 ×3 · N-12 · M-9 · M-12 · M-16 | `f3f19d0` |
+| 6 | N-7 · N-6 detector · N-13 | `3453aa2` |
+| 7 | P0-1 role wiring — the oldest confirmed gap | `322098b` |
+| 8 | The Android install line, the line alone (OD-8) | `4243c33` |
+| QA-0 | §4.2's map-link field — the one item batch 5 left unfinished | `5e2c8a4` |
+
+**Every deploy run green on BOTH the Hosting step and the Firestore-rules
+step** — runs 28 to 37.
+
+**Nothing in §6 remains buildable.** M-5, M-8, M-10, D-1 and N-15 needed no
+work, exactly as §2 and §5 said.
+
+### 10.1 Manual tests — the three automation could not do
+
+Run by the product owner, 6 Sep 2026, against `5e2c8a4`. Full instructions and
+results in `docs/manual-testing-guide.md`.
+
+| Test | Result |
+|---|---|
+| Real Android install | **PASS** |
+| iOS Safari never shows the Android line | **PASS** |
+| iOS VoiceOver on a read-only Share screen | **DEFERRED — not required for this milestone's scope** |
+
+The VoiceOver deferral is a decision about a *test*, not about the
+implementation. **No accessibility code is removed or changed because of it.**
+The `read` send block, the `aria-hidden` marker, `aria-busy` on every pending
+control and the five sync `aria-label`s all stand. 40 automated checks confirm
+a `read` user is served no send control in the DOM at all; what is unverified
+is only how a real screen reader narrates the surrounding screen.
+
+### 10.2 Final counts, at `4f20bbe`
+
+Sixteen local harnesses, all committed:
+
+```
+empty-states 35 · warning-strip 34 · plan-delete 11 · swipe-delete 9
+accessibility 9 · contrast 5/5 · css-additions 25 · pending-and-refusals 56
+currency 55 · review-three-way 69 · plan-editing 31 · absence-and-status 37
+backend-gated 25 · role-and-identity 40 · install-line 22 · map-link 27
+                                            ── 485 checks, 0 failures
+two-phones (real Auth + Firestore emulators, this repo's rules)  65/65
+refused-rules  correct behaviour; repo rules restored byte-identical
+guard.mjs  37 modules parse · 0 backticks in HTML comments
+```
+
+`two-phones` rose from its recorded 60 to 65: the removal detector is now
+verified end to end across two genuinely separate devices.
+
+### 10.3 What is deliberately still open
+
+Neither is a defect and neither blocks anything.
+
+1. **`removePerson()` has no owner guard** (`p0-1-…` §12.1). Mitigated in the
+   UI by not binding the gesture for a non-owner; the data-layer gap stands
+   and is recorded, not fixed.
+2. **The card-level `Opening…` state cannot render on a phone with no
+   account.** Measured, not assumed. That is P0-5 §6 working as designed — no
+   minimum display time, no artificial delay — so nothing was padded to make
+   it observable.
+
+### 10.4 The next phase is separate
+
+New UI/UX discrepancies found by looking at the running app go to
+`post-implementation-qa.md`, which is an intake and classification backlog and
+is **not** part of this milestone. Nothing in it has been implemented. Its
+rules stand: a screenshot is evidence rather than authorisation; the canonical
+documents decide; where they do not, the product owner does; and the settled
+decisions listed in §5 and in `implementation-readiness-map.md` §5 are not
+reopened by a QA report.
