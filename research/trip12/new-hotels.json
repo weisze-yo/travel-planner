@@ -1,0 +1,1162 @@
+{
+ "batch": "new-hotels-0904",
+ "removedFromDay": {
+  "Hotel Kameya, Naruko Onsen": {
+   "reason": "Superseded on the 4 Sep 2026 app screenshots; Night 2 is now Ooedo Onsen Monogatari Naruko Onsen Kounkaku, at 字車湯17 — the same aza as Kameya at 車湯54-6.",
+   "replacedBy": "Ooedo Onsen Monogatari Naruko Onsen Kounkaku",
+   "removedOn": "2026-09-04",
+   "keepBecause": "The GSI geocoder resolves 車湯17 and 車湯54-6 to the IDENTICAL point, so every leg in the retired Naruko town cluster transfers to the new hotel unchanged and must not be re-walked. This batch adds only the on-property records plus one consolidated station-footbath record.",
+   "importAs": "Removed from this Day"
+  },
+  "Okuiizaka Anabara Onsen Yoshikawaya": {
+   "reason": "Superseded on the 4 Sep 2026 app screenshots. Night 3 moved prefecture, Iizaka Onsen in Fukushima to Zao in Miyagi, and the transfer from Zao Fox Village fell from ~1h5m/~45 km to ~30 min/~18 km with check-in pulled from 17:45 to 17:15.",
+   "replacedBy": "Mercure Miyagi Zao Resort & Spa",
+   "removedOn": "2026-09-04",
+   "keepBecause": "Nothing in the Iizaka/Anabara cluster transfers — this is the only one of the three moves where the surroundings had to be researched from scratch. The Fukushima findings stay viewable for a later trip on the old routing.",
+   "importAs": "Removed from this Day"
+  },
+  "Ooedo Onsen Monogatari Premium Kinugawa Kanko Hotel": {
+   "reason": "Superseded on the 4 Sep 2026 app screenshots. Night 4 is now Kinugawa Onsen Hana no Yado Matsuya, 1.3 km north at 日光市藤原19, beside Kinugawa-Koen Station rather than in the town centre.",
+   "replacedBy": "Kinugawa Onsen Hana no Yado Matsuya",
+   "removedOn": "2026-09-04",
+   "keepBecause": "Still Kinugawa Onsen, so the town-level research survives, but the position change rewrites the legs: Takimi Bridge falls from 17 minutes to about 5, Fureai Bridge rises from 2 to about 18, and the nearest public bath closed for good in March 2024. The retired six-sitting buffet analysis and the Mission 2 lobby pin are void — see notes-new-hotels.md.",
+   "importAs": "Removed from this Day"
+  }
+ },
+ "places": [
+  {
+   "anchorStop": "Ooedo Onsen Monogatari Naruko Onsen Kounkaku",
+   "confidenceNote": "Hours come from the operator's day-trip page and the Yahoo Travel facility table, not from a floor plan; the 6F/annexe 1F split and the spring names are from onsen1.org. The GSI geocoder resolves 車湯17番地 and the superseded Kameya's 車湯54-6 to the IDENTICAL point, so this is the 車湯 aza-level position, not the building.",
+   "id": "n2kk-kuroyu",
+   "name": "Kuro-yu bath floor, main building 6F",
+   "nameJp": "黒湯（本館6階大浴場・露天風呂）",
+   "category": "rest",
+   "priceTier": "¥",
+   "stayMinutes": 55,
+   "legs": [
+    {
+     "mode": "walk",
+     "minutes": 2
+    }
+   ],
+   "note": "The dark 黒湯 water, ナトリウム硫酸塩・炭酸水素塩泉, in the main building's 6th-floor bath with its own rotenburo. Guest hours 15:00–24:00 and 05:00–10:00, so it is open when the coach lands at 18:30 and again before the 07:30 breakfast. Day visitors are confined to this 6F bath, so it is the busy one at 19:00. Tattoos are barred unless covered.",
+   "latitude": 38.748074,
+   "longitude": 140.726532,
+   "coordPrecision": "approximate",
+   "timeWindow": "night",
+   "confidence": "medium",
+   "source": "https://www.ooedoonsen.jp/kounkaku/day_trip/"
+  },
+  {
+   "anchorStop": "Ooedo Onsen Monogatari Naruko Onsen Kounkaku",
+   "confidenceNote": "The two-water split and the floors are from onsen1.org; the spring names are the Yahoo Travel figures. The GSI geocoder resolves 車湯17番地 and the superseded Kameya's 車湯54-6 to the IDENTICAL point, so this is the 車湯 aza-level position, not the building.",
+   "id": "n2kk-shirayu",
+   "name": "Shira-yu bath floor, annexe 1F",
+   "nameJp": "白湯（別館1階大浴場・露天風呂）",
+   "category": "rest",
+   "priceTier": "¥",
+   "stayMinutes": 50,
+   "legs": [
+    {
+     "mode": "walk",
+     "minutes": 3
+    }
+   ],
+   "note": "The milky 白湯, ナトリウム炭酸水素塩・硫酸塩・塩化物泉, in the annexe on the 1st floor — the quieter of the two because day-trip bathers are restricted to the 6F 黒湯. Same guest hours, 15:00–24:00 and 05:00–10:00. Naruko holds 9 of Japan's 11 recognised spring types and this property alone gives you two of them, so do both: one tonight, one at 05:30.",
+   "latitude": 38.748074,
+   "longitude": 140.726532,
+   "coordPrecision": "approximate",
+   "timeWindow": "dawn",
+   "confidence": "medium",
+   "source": "https://www.onsen1.org/narukoonsen/kounkaku.html"
+  },
+  {
+   "anchorStop": "Ooedo Onsen Monogatari Naruko Onsen Kounkaku",
+   "confidenceNote": "No page publishes the in-house dinner service times or sittings for staying guests; 17:00–21:30 is the day-trip dinner window and the buffet-versus-kaiseki question is unresolved between the operator's own material and JTB's meal field.",
+   "id": "n2kk-buffet",
+   "name": "2F buffet restaurant — dinner",
+   "nameJp": "2階バイキングレストラン（夕食）",
+   "category": "food",
+   "priceTier": "¥¥",
+   "stayMinutes": 90,
+   "legs": [
+    {
+     "mode": "walk",
+     "minutes": 2
+    }
+   ],
+   "note": "Ooedo's グルメバイキング on the 2nd floor; the operator's own day-use page prices a ディナーバイキング against a 17:00–21:30 service window, and its line on local tuna is 「地元産生まぐろが食べ放題」. THE ITINERARY SAYS KAISEKI AT 19:00 — JTB's meal field for this property does print 和食会席 for dinner, so a group kaiseki in a banquet room is a real product here. Have the agent confirm which one is booked.",
+   "latitude": 38.748074,
+   "longitude": 140.726532,
+   "coordPrecision": "approximate",
+   "timeWindow": "night",
+   "confidence": "medium",
+   "source": "https://www.ooedoonsen.jp/kounkaku/day_trip/"
+  },
+  {
+   "anchorStop": "Ooedo Onsen Monogatari Naruko Onsen Kounkaku",
+   "confidenceNote": "Breakfast is confirmed as バイキング（和食） by JTB's meal field but no source gives an opening time; JTB's booking page prints only a garbled 「朝9時からの利用可能（応相談）」 line. The GSI geocoder resolves 車湯17番地 and the superseded Kameya's 車湯54-6 to the IDENTICAL point, so this is the 車湯 aza-level position, not the building.",
+   "id": "n2kk-breakfast",
+   "name": "2F buffet restaurant — breakfast",
+   "nameJp": "2階バイキングレストラン（朝食）",
+   "category": "food",
+   "priceTier": "¥¥",
+   "stayMinutes": 40,
+   "legs": [
+    {
+     "mode": "walk",
+     "minutes": 2
+    }
+   ],
+   "note": "Breakfast is a Japanese buffet in the same 2F room. NO CHANNEL PUBLISHES THE BREAKFAST SERVICE TIME for this property — the itinerary's 07:30 sitting against an 08:30 coach is the one hours check on Night 2 that cannot be verified from published material, so ask at check-in. The 05:00 bath opening is early enough to bathe first either way.",
+   "latitude": 38.748074,
+   "longitude": 140.726532,
+   "coordPrecision": "approximate",
+   "timeWindow": "dawn",
+   "confidence": "medium",
+   "source": "https://www.jtb.co.jp/kokunai-hotel/htl/2402017/restaurant/"
+  },
+  {
+   "anchorStop": "Ooedo Onsen Monogatari Naruko Onsen Kounkaku",
+   "confidenceNote": "Directly contradictory sources — JTB says in-room, onsen1.org says chosen at the lobby — and the operator's own facility page is JavaScript-rendered and returns no content to a fetch.",
+   "id": "n2kk-yukata",
+   "name": "Lobby yukata corner",
+   "nameJp": "ロビー浴衣コーナー",
+   "category": "cloth",
+   "priceTier": "¥",
+   "stayMinutes": 15,
+   "legs": [
+    {
+     "mode": "walk",
+     "minutes": 1
+    }
+   ],
+   "note": "SOURCES DISAGREE and it matters for the 18:30/19:00 turnaround: JTB's amenity field says 「浴衣：客室に用意あり」 — already in the room — while onsen1.org describes yukata in several sizes and patterns being CHOSEN AT THE LOBBY, which is the Ooedo group's house style. If it is a lobby corner, 35 people sizing yukata is the slow step, not the walk to the restaurant. Settle it at check-in.",
+   "latitude": 38.748074,
+   "longitude": 140.726532,
+   "coordPrecision": "approximate",
+   "timeWindow": "night",
+   "confidence": "medium",
+   "source": "https://www.onsen1.org/narukoonsen/kounkaku.html"
+  },
+  {
+   "anchorStop": "Ooedo Onsen Monogatari Naruko Onsen Kounkaku",
+   "confidenceNote": "The 15:00–20:30 hours are JTB's figure for this property; no page publishes the shop's stock list, so the product range is inferred from Naruko's crafts.",
+   "id": "n2kk-shop",
+   "name": "Lobby shop",
+   "nameJp": "売店",
+   "category": "shopping",
+   "priceTier": "¥¥",
+   "stayMinutes": 20,
+   "legs": [
+    {
+     "mode": "walk",
+     "minutes": 1
+    }
+   ],
+   "note": "Published hours 15:00–20:30, so it is open across the whole arrival-and-dinner evening and SHUT before the 08:30 coach — buy tonight, not tomorrow. Naruko kokeshi and Osaki food gifts are the local range. Note two taxes are taken at the front desk, not billed to the agent: the Miyagi accommodation tax of ¥300 a night from 13 Jan 2026, plus bathing tax.",
+   "latitude": 38.748074,
+   "longitude": 140.726532,
+   "coordPrecision": "approximate",
+   "timeWindow": "night",
+   "confidence": "medium",
+   "source": "https://www.jtb.co.jp/kokunai-hotel/htl/2402017/"
+  },
+  {
+   "anchorStop": "Ooedo Onsen Monogatari Naruko Onsen Kounkaku",
+   "confidenceNote": "The facility list including the magic show is the Hankyu Travel listing; no source publishes opening hours or a show time for any of them.",
+   "id": "n2kk-play",
+   "name": "Karaoke rooms and game corner",
+   "nameJp": "カラオケルーム・ゲームコーナー",
+   "category": "rest",
+   "priceTier": "¥",
+   "stayMinutes": 60,
+   "legs": [
+    {
+     "mode": "walk",
+     "minutes": 2
+    }
+   ],
+   "note": "Karaoke rooms, free board-game lending (go, shogi, othello, cards, uno), massage chairs and an in-house magic show — the Ooedo group's standard evening. This matters on Night 2 because the bath town is 13–17 minutes' walk down the gorge and its shops shut early, so after a 19:00 dinner the building is the evening. No hours are published for any of it.",
+   "latitude": 38.748074,
+   "longitude": 140.726532,
+   "coordPrecision": "approximate",
+   "timeWindow": "night",
+   "confidence": "medium",
+   "source": "https://www.hankyu-travel.com/kokunai/facility/detail/htl12304.php"
+  },
+  {
+   "anchorStop": "Ooedo Onsen Monogatari Naruko Onsen Kounkaku",
+   "confidenceNote": "The 85-space breakdown with 10 large-bus bays is JTB's; two other channels give ~140 total spaces without a breakdown. The GSI geocoder resolves 車湯17番地 and the superseded Kameya's 車湯54-6 to the IDENTICAL point, so this is the 車湯 aza-level position, not the building.",
+   "id": "n2kk-coach",
+   "name": "Front car park and coach bay",
+   "nameJp": "玄関前・駐車場（大型バス可）",
+   "category": "rest",
+   "priceTier": "¥",
+   "stayMinutes": 5,
+   "legs": [
+    {
+     "mode": "walk",
+     "minutes": 1
+    }
+   ],
+   "note": "A 45-SEAT COACH IS FINE HERE. JTB's access page breaks the outdoor lot down as 「85台（乗用車60台、マイクロバス15台、大型バス10台）」, free, no booking — ten dedicated large-bus bays. Yahoo Travel and Hankyu both print ~140 spaces instead, so the total is disputed but the large-bus provision is explicit. Fix the 08:30 pick-up at the front door.",
+   "latitude": 38.748074,
+   "longitude": 140.726532,
+   "coordPrecision": "approximate",
+   "timeWindow": "24h",
+   "confidence": "medium",
+   "source": "https://www.jtb.co.jp/kokunai-hotel/htl/2402017/access/"
+  },
+  {
+   "anchorStop": "Ooedo Onsen Monogatari Naruko Onsen Kounkaku",
+   "confidenceNote": "Position and free all-hours status are carried from the verified seed record against Kameya; the 15-minute leg is onsen1.org's 950 m / 15 min figure for Kounkaku rather than a routed walk.",
+   "id": "n2kk-footbath",
+   "name": "Naruko Onsen Station footbaths",
+   "nameJp": "ぽっぽの足湯・ゆめぐり広場足湯",
+   "category": "rest",
+   "priceTier": "¥",
+   "stayMinutes": 20,
+   "legs": [
+    {
+     "mode": "walk",
+     "minutes": 15
+    }
+   ],
+   "note": "Two free unstaffed footbaths at JR Naruko Onsen Station, about 950 m downhill — the only Naruko things open before the 08:30 coach. THE LEGS TRANSFER UNCHANGED from the superseded Kameya research: both hotels sit in 車湯 and the geocoder resolves them to the same point, so the whole retired Naruko town cluster still applies from this door. Carry a towel.",
+   "latitude": 38.742847,
+   "longitude": 140.715912,
+   "coordPrecision": "verified",
+   "timeWindow": "24h",
+   "confidence": "medium",
+   "source": "https://www.onsen1.org/narukoonsen/kounkaku.html"
+  },
+  {
+   "anchorStop": "Mercure Miyagi Zao Resort & Spa",
+   "confidenceNote": "The Zao Town Tourism Association's own map pin for the hotel; the GSI geocoder resolves the aza address 鬼石原1番地 to 38.138, 140.5537 instead, about 900 m away.",
+   "id": "n3mz-fudo",
+   "name": "Fudo-no-Yu open-air onsen bath",
+   "nameJp": "温泉露天風呂「遠刈田温泉 不動の湯」",
+   "category": "rest",
+   "priceTier": "¥",
+   "stayMinutes": 50,
+   "legs": [
+    {
+     "mode": "walk",
+     "minutes": 3
+    }
+   ],
+   "note": "The hotel's named open-air bath, with a hinoki cypress tub run 「かけ流し」 and a stone tub beside it, on Togatta Onsen water. Guest hours 「6:00～10:00（最終入場9:30)／15:00～23:00（最終入場22:30）」. Both windows fit the itinerary: soak between the 17:15 check-in and 18:00 dinner, or from 06:00 before the 07:00 breakfast and 08:00 coach.",
+   "latitude": 38.13185,
+   "longitude": 140.56068,
+   "coordPrecision": "verified",
+   "timeWindow": "night",
+   "confidence": "medium",
+   "source": "https://mercure-miyagizao-resortandspa.jp/spa/"
+  },
+  {
+   "anchorStop": "Mercure Miyagi Zao Resort & Spa",
+   "confidenceNote": "Hours and the towel and tattoo rules are the hotel's own; the spring analysis and the 循環ろ過式・加水 note are JTB's bath page. The Zao Town Tourism Association's own map pin for the hotel; the GSI geocoder resolves the aza address 鬼石原1番地 to 38.138, 140.5537 instead, about 900 m away.",
+   "id": "n3mz-daiyoku",
+   "name": "The two large baths and the 1F sauna",
+   "nameJp": "大浴場2ヶ所・サウナ（1階）",
+   "category": "rest",
+   "priceTier": "¥",
+   "stayMinutes": 45,
+   "legs": [
+    {
+     "mode": "walk",
+     "minutes": 3
+    }
+   ],
+   "note": "Two indoor 大浴場 plus a free sauna, all 06:00–10:00 and 15:00–23:00, last entry 30 minutes before. Spring is 炭酸水素塩泉・塩化物泉・ナトリウム硫酸塩, run 循環ろ過式・加水 — filtered and diluted, not source-fed. TAKE YOUR OWN TOWEL: the hotel's own FAQ answers the towel question with 「お部屋からお持ちください」. Tattoos need cover stickers, ¥200 at the desk.",
+   "latitude": 38.13185,
+   "longitude": 140.56068,
+   "coordPrecision": "verified",
+   "timeWindow": "dawn",
+   "confidence": "medium",
+   "source": "https://mercure-miyagizao-resortandspa.jp/faq/"
+  },
+  {
+   "anchorStop": "Mercure Miyagi Zao Resort & Spa",
+   "confidenceNote": null,
+   "id": "n3mz-locavore-dinner",
+   "name": "Locavore 2F — dinner buffet",
+   "nameJp": "ロカボール（2階）夕食ビュッフェ",
+   "category": "food",
+   "priceTier": "¥¥¥",
+   "stayMinutes": 90,
+   "legs": [
+    {
+     "mode": "walk",
+     "minutes": 2
+    }
+   ],
+   "note": "268 seats on the 2nd floor. Dinner is 「17:30～21:00（最終入場20:30）」 — the 18:00 sitting is inside it. THE ITINERARY CALLS IT KAISEKI AND IT IS A BUFFET: gyutan carved to order, zunda mochi, dashi with sasa-kamaboko, atsuage tofu. ¥8,000 a head if bought separately. Yukata and slippers are expressly allowed: 「浴衣・スリッパでご利用いただけます」.",
+   "latitude": 38.13185,
+   "longitude": 140.56068,
+   "coordPrecision": "verified",
+   "timeWindow": "night",
+   "confidence": "high",
+   "source": "https://mercure-miyagizao-resortandspa.jp/restaurant/"
+  },
+  {
+   "anchorStop": "Mercure Miyagi Zao Resort & Spa",
+   "confidenceNote": null,
+   "id": "n3mz-locavore-bfast",
+   "name": "Locavore 2F — breakfast buffet",
+   "nameJp": "ロカボール（2階）朝食ビュッフェ",
+   "category": "food",
+   "priceTier": "¥¥¥",
+   "stayMinutes": 45,
+   "legs": [
+    {
+     "mode": "walk",
+     "minutes": 2
+    }
+   ],
+   "note": "Breakfast is 「7:00～9:30（最終入場9:00）」 — it OPENS EXACTLY ON the itinerary's 07:00 breakfast, with a 08:00 departure. That is the tightest fit of the three nights and it works, but only if the group is at the door at 07:00, not drifting in. Pancakes made to order with a choice of toppings is the one thing worth queueing for.",
+   "latitude": 38.13185,
+   "longitude": 140.56068,
+   "coordPrecision": "verified",
+   "timeWindow": "dawn",
+   "confidence": "high",
+   "source": "https://mercure-miyagizao-resortandspa.jp/restaurant/"
+  },
+  {
+   "anchorStop": "Mercure Miyagi Zao Resort & Spa",
+   "confidenceNote": "Session names and the 14:30–17:30 window are the Yahoo Travel facility table; the hotel's own all-inclusive page names the drinks but publishes no hours. The Zao Town Tourism Association's own map pin for the hotel; the GSI geocoder resolves the aza address 鬼石原1番地 to 38.138, 140.5537 instead, about 900 m away.",
+   "id": "n3mz-lounge-eve",
+   "name": "Lounge — Raku-gu Evening Social",
+   "nameJp": "ラウンジ「樂遇（らぐ）」イブニングソーシャル",
+   "category": "rest",
+   "priceTier": "¥",
+   "stayMinutes": 25,
+   "legs": [
+    {
+     "mode": "walk",
+     "minutes": 2
+    }
+   ],
+   "note": "The afternoon lounge session runs 14:30–17:30 with sparkling wine, beer, coffee, tea and herb water free to all-inclusive guests, and Zao cheese with crackers is what reviewers single out. THE GROUP LANDS AT 17:15, so this leaves fifteen minutes — either go straight in or write it off and take the Night Cap session instead.",
+   "latitude": 38.13185,
+   "longitude": 140.56068,
+   "coordPrecision": "verified",
+   "timeWindow": "day",
+   "confidence": "medium",
+   "source": "https://travel.yahoo.co.jp/00003172/other/"
+  },
+  {
+   "anchorStop": "Mercure Miyagi Zao Resort & Spa",
+   "confidenceNote": "The 20:00–22:00 window and the session name are the Yahoo Travel facility table, not the hotel's own page. The Zao Town Tourism Association's own map pin for the hotel; the GSI geocoder resolves the aza address 鬼石原1番地 to 38.138, 140.5537 instead, about 900 m away.",
+   "id": "n3mz-lounge-night",
+   "name": "Lounge — Chotto Night Cap",
+   "nameJp": "ラウンジ「鳥渡（ちょっと）」ナイトキャップ",
+   "category": "rest",
+   "priceTier": "¥",
+   "stayMinutes": 60,
+   "legs": [
+    {
+     "mode": "walk",
+     "minutes": 2
+    }
+   ],
+   "note": "The second lounge session, 20:00–22:00, and the one that actually fits Night 3: dinner from 18:00, bath, then this. It is also the only sociable room left after the shop closes at 21:00. Nothing outside the building is open — the nearest convenience store is a 20-minute walk by the hotel's own reckoning and Togatta's bath town is further still.",
+   "latitude": 38.13185,
+   "longitude": 140.56068,
+   "coordPrecision": "verified",
+   "timeWindow": "night",
+   "confidence": "medium",
+   "source": "https://travel.yahoo.co.jp/00003172/other/"
+  },
+  {
+   "anchorStop": "Mercure Miyagi Zao Resort & Spa",
+   "confidenceNote": "Hours are the hotel's own facilities page; the stock description is a guest review and no product list or prices are published. The Zao Town Tourism Association's own map pin for the hotel; the GSI geocoder resolves the aza address 鬼石原1番地 to 38.138, 140.5537 instead, about 900 m away.",
+   "id": "n3mz-shop",
+   "name": "1F shop",
+   "nameJp": "ショップ（1階）",
+   "category": "shopping",
+   "priceTier": "¥¥",
+   "stayMinutes": 25,
+   "legs": [
+    {
+     "mode": "walk",
+     "minutes": 2
+    }
+   ],
+   "note": "Hours 「8:00～11:00／16:30～21:00」 — the split matters: it is open from 17:15 arrival to 21:00 tonight, and again from 08:00, which is exactly when the coach leaves. So buy tonight. A JTB reviewer calls it 「一階の土産物屋が広くて明るくて品揃えも豊富」 — the biggest and best-stocked shop of the three new hotels.",
+   "latitude": 38.13185,
+   "longitude": 140.56068,
+   "coordPrecision": "verified",
+   "timeWindow": "night",
+   "confidence": "medium",
+   "source": "https://mercure-miyagizao-resortandspa.jp/facilities/"
+  },
+  {
+   "anchorStop": "Mercure Miyagi Zao Resort & Spa",
+   "confidenceNote": "The two sources disagree: Yahoo prints a continuous 18 Jul–23 Sep season at 14:00–21:00, the hotel's activities page prints a Friday/Saturday-only September day-pool list plus a night-pool season to 23 Sep. The Zao Town Tourism Association's own map pin for the hotel; the GSI geocoder resolves the aza address 鬼石原1番地 to 38.138, 140.5537 instead, about 900 m away.",
+   "id": "n3mz-pool",
+   "name": "Indoor 25 m pool",
+   "nameJp": "屋内プール",
+   "category": "rest",
+   "priceTier": "¥",
+   "stayMinutes": 60,
+   "legs": [
+    {
+     "mode": "walk",
+     "minutes": 3
+    }
+   ],
+   "note": "A 25 m pool plus a children's shallow pool. CHECK AT THE DESK: Yahoo Travel gives the 2026 season as 18 Jul–23 Sep, 14:00–21:00, last entry 20:30, which covers Thu 10 Sep — but the hotel's own activities page lists September DAY-pool days only as 4, 5, 11, 12 and 18–23, all Fridays or Saturdays, and 10 Sep is a Thursday. Pack a swimsuit only if confirmed.",
+   "latitude": 38.13185,
+   "longitude": 140.56068,
+   "coordPrecision": "verified",
+   "timeWindow": "night",
+   "confidence": "medium",
+   "source": "https://mercure-miyagizao-resortandspa.jp/activities/"
+  },
+  {
+   "anchorStop": "Mercure Miyagi Zao Resort & Spa",
+   "confidenceNote": "The Zao Town Tourism Association's own map pin for the hotel; the GSI geocoder resolves the aza address 鬼石原1番地 to 38.138, 140.5537 instead, about 900 m away.",
+   "id": "n3mz-play",
+   "name": "1F play corner — table tennis, games, kids",
+   "nameJp": "卓球・ゲームコーナー・キッズコーナー（1階）",
+   "category": "rest",
+   "priceTier": "¥",
+   "stayMinutes": 45,
+   "legs": [
+    {
+     "mode": "walk",
+     "minutes": 2
+    }
+   ],
+   "note": "Table tennis 07:00–23:00, game corner 09:00–23:00, kids corner 07:00–23:00, all on the 1st floor, and a 24-hour coin laundry beside them — the one chance on this trip to wash four days of humid Tohoku shirts overnight. Water servers on floors 5 to 11, round the clock, which is how you fill bottles for the 08:00 coach.",
+   "latitude": 38.13185,
+   "longitude": 140.56068,
+   "coordPrecision": "verified",
+   "timeWindow": "night",
+   "confidence": "medium",
+   "source": "https://mercure-miyagizao-resortandspa.jp/facilities/"
+  },
+  {
+   "anchorStop": "Mercure Miyagi Zao Resort & Spa",
+   "confidenceNote": "The lawned courtyard and the dog-run hours are published, but no source describes the courtyard's lighting or sightlines, so the stargazing claim is inferred from the site's isolation. The Zao Town Tourism Association's own map pin for the hotel; the GSI geocoder resolves the aza address 鬼石原1番地 to 38.138, 140.5537 instead, about 900 m away.",
+   "id": "n3mz-courtyard",
+   "name": "Courtyard lawn and dog run",
+   "nameJp": "中庭（芝生）・ドッグラン",
+   "category": "sight",
+   "priceTier": "¥",
+   "stayMinutes": 25,
+   "legs": [
+    {
+     "mode": "walk",
+     "minutes": 3
+    }
+   ],
+   "note": "The Zao Town tourism association's line for the site is 「芝生が生い茂る中庭」 — a big lawned courtyard, with a dog run open 09:00 to sunset. On a clear 20°C night on the Zao plateau this is the dark-sky spot of the whole eight days: no bath town, no arcade, no street lighting anywhere near. Sunset on 10 Sep is about 17:50, so it is dark by 18:30.",
+   "latitude": 38.13185,
+   "longitude": 140.56068,
+   "coordPrecision": "verified",
+   "timeWindow": "night",
+   "confidence": "medium",
+   "source": "https://www.zao-machi.com/stay_hotspring/357.html"
+  },
+  {
+   "anchorStop": "Mercure Miyagi Zao Resort & Spa",
+   "confidenceNote": "Deliberately carries no coordinate: the FAQ does not name the branch, and neither Seven-Eleven I could locate in Zao Town — 遠刈田温泉仲町 and 大字円田 — is within 20 minutes' walk of either candidate hotel position, so the walk may be longer.",
+   "id": "n3mz-seveneleven",
+   "name": "Seven-Eleven, the nearest shop off the property",
+   "nameJp": "セブン-イレブン（ホテルより徒歩約20分）",
+   "category": "food",
+   "priceTier": "¥",
+   "stayMinutes": 20,
+   "legs": [
+    {
+     "mode": "walk",
+     "minutes": 20
+    }
+   ],
+   "note": "The hotel's own FAQ answers the convenience-store question with 「当ホテルから車で約5分（徒歩約20分）の所にセブン-イレブンがあります」 — the ONLY off-property thing the operator itself calls walkable. The nearest drugstore is 15 minutes by car, i.e. not walkable. In typhoon month this is where an umbrella and bottled water come from.",
+   "coordPrecision": "approximate",
+   "timeWindow": "24h",
+   "confidence": "medium",
+   "source": "https://mercure-miyagizao-resortandspa.jp/faq/"
+  },
+  {
+   "anchorStop": "Mercure Miyagi Zao Resort & Spa",
+   "confidenceNote": "The Zao Town Tourism Association's own map pin for the hotel; the GSI geocoder resolves the aza address 鬼石原1番地 to 38.138, 140.5537 instead, about 900 m away.",
+   "id": "n3mz-coach",
+   "name": "Front approach and coach bay",
+   "nameJp": "玄関前・駐車場（270台無料）",
+   "category": "rest",
+   "priceTier": "¥",
+   "stayMinutes": 5,
+   "legs": [
+    {
+     "mode": "walk",
+     "minutes": 1
+    }
+   ],
+   "note": "A 45-SEAT COACH IS FINE HERE. The hotel publishes 「無料でご利用いただけます。（収容台数270台）」 and the Zao Town tourism association adds that the free lot takes large vehicles and EVs. The approach is the Shiraishi IC road, ~17 km and ~30 minutes, not the Echo Line pass. Fix the 08:00 pick-up here; group bookings go to mercure.miyagizao@drhm.jp.",
+   "latitude": 38.13185,
+   "longitude": 140.56068,
+   "coordPrecision": "verified",
+   "timeWindow": "24h",
+   "confidence": "medium",
+   "source": "https://mercure-miyagizao-resortandspa.jp/faq/"
+  },
+  {
+   "anchorStop": "Kinugawa Onsen Hana no Yado Matsuya",
+   "confidenceNote": "The 5F front desk, the lounge name 花かんざし, the library, the Yumeji dolls and the 14:00–17:00 drink corner are all from two independent stay reports; no floor area or seat count is published anywhere, so 35 people standing is untested.",
+   "id": "n4mt-lobby",
+   "name": "5F front desk and Hana-kanzashi lounge — MISSION 2",
+   "nameJp": "5階フロント・ラウンジ「花かんざし」",
+   "category": "sight",
+   "priceTier": "¥",
+   "stayMinutes": 35,
+   "legs": [
+    {
+     "mode": "walk",
+     "minutes": 1
+    }
+   ],
+   "note": "MISSION 2 MOVES HERE. The hotel is built down the slope, so you enter at the TOP and the front desk is on the 5th floor, with a lounge beside it looking out over the Kinugawa gorge, a library, Takehisa Yumeji paintings and 夢二人形 dolls, and a drink corner running 14:00–17:00. Yumeji paintings are in the lifts too. The 5F shop is the same lap of the room.",
+   "latitude": 36.840755,
+   "longitude": 139.721939,
+   "coordPrecision": "verified",
+   "timeWindow": "night",
+   "confidence": "medium",
+   "source": "https://plaza.rakuten.co.jp/keptkun/diary/202411190000/"
+  },
+  {
+   "anchorStop": "Kinugawa Onsen Hana no Yado Matsuya",
+   "confidenceNote": "In-room yukata is an amenity-table entry rather than an operator statement, and one channel prints 浴衣 as not supplied; the 45-set ¥3,300 rental is Jalan's line only and the hotel's own site is unreachable to confirm either.",
+   "id": "n4mt-yukata",
+   "name": "In-room yukata, and the 45-set colour-yukata rental",
+   "nameJp": "客室の大人浴衣／浴衣レンタル45セット",
+   "category": "cloth",
+   "priceTier": "¥¥",
+   "stayMinutes": 15,
+   "legs": [
+    {
+     "mode": "walk",
+     "minutes": 2
+    }
+   ],
+   "note": "MISSION 2 SURVIVES. Yukoyuko's room-amenity list carries 大人浴衣 and 子供浴衣 — the yukata are IN THE ROOM, not on a front-desk rack, so the Ooedo hotel's 35-people-queueing-at-the-desk bottleneck is gone. Jalan additionally lists 「浴衣レンタル（客室フロア45セット、3,300円）」: 45 sets on the guest-room floor at ¥3,300, enough for 35 matching colour yukata.",
+   "latitude": 36.840755,
+   "longitude": 139.721939,
+   "coordPrecision": "verified",
+   "timeWindow": "night",
+   "confidence": "medium",
+   "source": "https://www.yukoyuko.net/0972"
+  },
+  {
+   "anchorStop": "Kinugawa Onsen Hana no Yado Matsuya",
+   "confidenceNote": "Kaiseki is confirmed by four independent channels; the three selectable start times are onsen1.org's and the 19:00 last seating is Rakuten's, neither from a page the hotel controls, because matsuya.co.jp refuses automated fetching.",
+   "id": "n4mt-dinner",
+   "name": "4F dining room — kaiseki dinner",
+   "nameJp": "4階お食事処（和食会席）",
+   "category": "food",
+   "priceTier": "¥¥¥",
+   "stayMinutes": 100,
+   "legs": [
+    {
+     "mode": "walk",
+     "minutes": 2
+    }
+   ],
+   "note": "NOT A BUFFET. Dinner is 和食会席 served to the table on the 4th floor, in private 個室 for smaller parties, with a beef-sukiyaki upgrade on some plans. Starts are CHOSEN, not assigned: 「午後6時からまたは午後6時30分から、午後7時から」 — 18:00, 18:30 or 19:00, last seating 19:00. The itinerary's 18:30 Hotel Buffet is wrong on format, right on time.",
+   "latitude": 36.840755,
+   "longitude": 139.721939,
+   "coordPrecision": "verified",
+   "timeWindow": "night",
+   "confidence": "medium",
+   "source": "https://www.onsen1.org/kinugawaonsen/matsuya.html"
+  },
+  {
+   "anchorStop": "Kinugawa Onsen Hana no Yado Matsuya",
+   "confidenceNote": "The three selectable start times are onsen1.org's; the format is confirmed by OZmall, JTB and Rakuten, but no operator page could be reached to verify.",
+   "id": "n4mt-breakfast",
+   "name": "Breakfast — Japanese set meal",
+   "nameJp": "朝食（和食膳）",
+   "category": "food",
+   "priceTier": "¥¥",
+   "stayMinutes": 45,
+   "legs": [
+    {
+     "mode": "walk",
+     "minutes": 2
+    }
+   ],
+   "note": "A 和食膳 served at the table, again in a private room rather than off a buffet line, and again with the start CHOSEN: 「午前7時からまたは午前7時30分から、午前8時から」. The itinerary's 07:30 breakfast against an 08:30 coach sits in the middle of that, so this is the one Day 5 morning with genuine slack — take the 07:00 slot and the baths open at 05:00.",
+   "latitude": 36.840755,
+   "longitude": 139.721939,
+   "coordPrecision": "verified",
+   "timeWindow": "dawn",
+   "confidence": "medium",
+   "source": "https://www.onsen1.org/kinugawaonsen/matsuya.html"
+  },
+  {
+   "anchorStop": "Kinugawa Onsen Hana no Yado Matsuya",
+   "confidenceNote": "Channels disagree on the morning end — onsen1.org says the 大浴場 closes at 09:00, Yahoo Travel says 10:00 — and on the water, Rakuten calling it 源泉かけ流し while yukoyuko prints 配湯, piped in. Bath names are yukoyuko's.",
+   "id": "n4mt-baths",
+   "name": "Matsu-no-Yu and Takimi-no-Yu, with the gorge rock rotenburo",
+   "nameJp": "大浴場「松の湯・滝見の湯」・岩造り露天風呂",
+   "category": "rest",
+   "priceTier": "¥",
+   "stayMinutes": 50,
+   "legs": [
+    {
+     "mode": "walk",
+     "minutes": 2
+    }
+   ],
+   "note": "Two gender-separated baths named 松の湯 and 滝見の湯: a high-ceilinged wood-and-stone indoor bath with glass onto the Kinugawa, and a rock rotenburo right on the gorge. アルカリ性単純温泉, pH 8.7. 大浴場 15:00–24:00 and from 05:00; the ROTENBURO SHUTS AT 22:00, which is the one to get to first after a 19:00 kaiseki. Sauna. Bathing tax ¥150 per adult at the desk.",
+   "latitude": 36.840755,
+   "longitude": 139.721939,
+   "coordPrecision": "verified",
+   "timeWindow": "night",
+   "confidence": "medium",
+   "source": "https://travel.yahoo.co.jp/00001123/"
+  },
+  {
+   "anchorStop": "Kinugawa Onsen Hana no Yado Matsuya",
+   "confidenceNote": "Three different prices across four channels — ¥3,300, ¥2,800 and free — and the hours come from onsen1.org rather than the hotel.",
+   "id": "n4mt-kashikiri",
+   "name": "Private bath, 1F",
+   "nameJp": "貸切風呂（1階）",
+   "category": "rest",
+   "priceTier": "¥¥",
+   "stayMinutes": 45,
+   "legs": [
+    {
+     "mode": "walk",
+     "minutes": 2
+    }
+   ],
+   "note": "One cypress private bath on the ground floor, 15:00–24:00, booked by telephone from the room. Two channels price it at ¥3,300 tax included for 45 minutes; a 2024 stay report says ¥2,800 and one booking channel prints it as free, so the fee is unsettled — ask at check-in. This is the answer for anyone in the group who will not use a communal bath.",
+   "latitude": 36.840755,
+   "longitude": 139.721939,
+   "coordPrecision": "verified",
+   "timeWindow": "night",
+   "confidence": "medium",
+   "source": "https://travel.yahoo.co.jp/00001123/"
+  },
+  {
+   "anchorStop": "Kinugawa Onsen Hana no Yado Matsuya",
+   "confidenceNote": "The split hours are yukoyuko's; JTB prints a single 07:00–21:00 instead. The Yumeji stock is a stay report, and no price list is published.",
+   "id": "n4mt-shop",
+   "name": "Hanagoyomi souvenir shop, 5F",
+   "nameJp": "お土産処「花ごよみ」（5階ロビー階）",
+   "category": "shopping",
+   "priceTier": "¥¥",
+   "stayMinutes": 25,
+   "legs": [
+    {
+     "mode": "walk",
+     "minutes": 1
+    }
+   ],
+   "note": "Named 花ごよみ, on the 5F lobby floor. Hours 07:00–10:00 and 15:30–21:00 — OPEN BEFORE THE 08:30 COACH, the only one of the three new hotels' shops that is. A stay report says it is stocked with Takehisa Yumeji merchandise: 「竹久夢二の作品にまつわるお土産品が多く置かれてました」. There is a frozen-food corner by the lounge too, which does not fly.",
+   "latitude": 36.840755,
+   "longitude": 139.721939,
+   "coordPrecision": "verified",
+   "timeWindow": "night",
+   "confidence": "medium",
+   "source": "https://www.yukoyuko.net/0972"
+  },
+  {
+   "anchorStop": "Kinugawa Onsen Hana no Yado Matsuya",
+   "confidenceNote": "The bar exists per two guest reviews and one booking channel's facility list; no source publishes its hours, cover or prices.",
+   "id": "n4mt-haikara",
+   "name": "Club Haikara-san — bar and karaoke",
+   "nameJp": "酒処「クラブはいからさん」",
+   "category": "rest",
+   "priceTier": "¥¥",
+   "stayMinutes": 75,
+   "legs": [
+    {
+     "mode": "walk",
+     "minutes": 2
+    }
+   ],
+   "note": "A guest's own description: 「ハイカラさんという夜の時間帯にやってるラウンジです。カラオケとバーがあり」 — an in-house night lounge with a bar and karaoke. It matters because Kinugawa has nothing open after 20:00 and the new position is at the resort's north end, 1.2 km from the town centre. Paid, not in the package. No published hours.",
+   "latitude": 36.840755,
+   "longitude": 139.721939,
+   "coordPrecision": "verified",
+   "timeWindow": "night",
+   "confidence": "medium",
+   "source": "https://www.ikyu.com/00001123/review/"
+  },
+  {
+   "anchorStop": "Kinugawa Onsen Hana no Yado Matsuya",
+   "confidenceNote": null,
+   "id": "n4mt-coach",
+   "name": "Front entrance, the steep driveway and coach bay",
+   "nameJp": "玄関前・急坂の進入路・バス駐車場",
+   "category": "rest",
+   "priceTier": "¥",
+   "stayMinutes": 5,
+   "legs": [
+    {
+     "mode": "walk",
+     "minutes": 1
+    }
+   ],
+   "note": "A 45-SEAT COACH IS EXPLICITLY CATERED FOR: JTB's access page prints the outdoor lot as 「18台（バス8台、マイクロバス10台）」, free, no booking — eight large-bus bays. THE CATCH is the approach: the lot is down a short steep drop off Route 121 and the hotel itself warns 「急な坂道をおりてくるので車高の低い車は御相談下さい」. Warn the driver before the 18:20 arrival.",
+   "latitude": 36.840755,
+   "longitude": 139.721939,
+   "coordPrecision": "verified",
+   "timeWindow": "24h",
+   "confidence": "high",
+   "source": "https://www.jtb.co.jp/kokunai-hotel/htl/3310021/access/"
+  },
+  {
+   "anchorStop": "Kinugawa Onsen Hana no Yado Matsuya",
+   "confidenceNote": null,
+   "id": "n4mt-koenstation",
+   "name": "Kinugawa-Koen Station plaza",
+   "nameJp": "東武鬼怒川線 鬼怒川公園駅",
+   "category": "sight",
+   "priceTier": "¥",
+   "stayMinutes": 20,
+   "legs": [
+    {
+     "mode": "walk",
+     "minutes": 4
+    }
+   ],
+   "note": "240 m from the door and 「歩いて5分もあれば到着します」 — the new hotel is at the NORTH end of the resort by Kinugawa-Koen, not the main Kinugawa-Onsen station. The hotel even has its own named bus stop, 花の宿松や前, ten minutes by Tobu dial bus from Kinugawa-Onsen Station; a taxi between the two is about ¥1,010. An unstaffed dawn platform, free to stand on.",
+   "latitude": 36.8415622,
+   "longitude": 139.7228694,
+   "coordPrecision": "verified",
+   "timeWindow": "24h",
+   "confidence": "high",
+   "source": "https://msearch.gsi.go.jp/address-search/AddressSearch?q=%E9%AC%BC%E6%80%92%E5%B7%9D%E5%85%AC%E5%9C%92%E9%A7%85"
+  },
+  {
+   "anchorStop": "Kinugawa Onsen Hana no Yado Matsuya",
+   "confidenceNote": "The closure and the shared banchi are from Nikko City's own page; the coordinate is the hotel's address point standing in for the adjacent site, which is not separately published.",
+   "id": "n4mt-iwaburo",
+   "name": "Kinugawa Koen Iwaburo public bath — PERMANENTLY CLOSED",
+   "nameJp": "鬼怒川公園岩風呂（2024年3月31日閉館）",
+   "category": "rest",
+   "priceTier": "¥",
+   "stayMinutes": 5,
+   "legs": [
+    {
+     "mode": "walk",
+     "minutes": 4
+    }
+   ],
+   "note": "DO NOT WALK THERE. Nikko City's own page: 「施設の老朽化による利用者の安全確保のため、令和6年3月31日（日曜日）をもって閉館しました」 — shut for good on 31 March 2024, and the Nikko tourism site now tags it 【閉館】. Its address was 日光市藤原19番地, the SAME banchi as the hotel. So the nearest public bath to Night 4's door no longer exists; the hotel's own is it.",
+   "latitude": 36.840755,
+   "longitude": 139.721939,
+   "coordPrecision": "approximate",
+   "timeWindow": "day",
+   "confidence": "medium",
+   "source": "https://www.city.nikko.lg.jp/soshiki/6/1026/8/1039.html"
+  },
+  {
+   "anchorStop": "Kinugawa Onsen Hana no Yado Matsuya",
+   "confidenceNote": "Bridge coordinate and the ruins are carried from the verified retired record; the five-minute leg is computed from that coordinate against the hotel's GSI address point, not a routed footpath, and the riverside route is not confirmed.",
+   "id": "n4mt-takimibashi",
+   "name": "Takimi Bridge and the derelict hotels",
+   "nameJp": "滝見橋・廃墟ホテル群",
+   "category": "sight",
+   "priceTier": "¥",
+   "stayMinutes": 30,
+   "legs": [
+    {
+     "mode": "walk",
+     "minutes": 5
+    }
+   ],
+   "note": "THE NEW POSITION CHANGES THIS COMPLETELY. From the superseded hotel this suspension bridge over the derelict riverside hotels was 1.3 km and a 17-minute walk; from Matsuya it is about 290 m — five minutes, so it goes from a coach stop to a genuine dawn walk before the 08:30 departure. The deck is wooden, unlit and it sways: daylight only, and sunrise on 12 Sep is about 05:20.",
+   "latitude": 36.8384482,
+   "longitude": 139.7204465,
+   "coordPrecision": "verified",
+   "timeWindow": "dawn",
+   "confidence": "medium",
+   "source": "https://www.ooedoonsen.jp/kinugawa-kanko/sightseeing/"
+  }
+ ],
+ "mustSee": [
+  {
+   "id": "n2kk-ms-forecourt",
+   "anchorStop": "Ooedo Onsen Monogatari Naruko Onsen Kounkaku",
+   "title": "Kounkaku front car park — the arrival and departure group frame",
+   "nameJp": "幸雲閣 玄関前駐車場",
+   "tag": "DAY 2 · NIGHT 2",
+   "summary": "Night 2 lands at 18:30, well after the 17:54 sunset, in a gorge town with no street lighting worth the name — so the only group frame at this hotel is the lit entrance itself. It doubles as the 08:30 muster point, and the lot is flat, free and rated for ten large buses, so the coach can sit in shot rather than being hidden.",
+   "whereToFind": "Stand on the flat of the FREE OUTDOOR CAR PARK in front of the entrance, 15 to 20 metres back from the doors, with the group facing the building so the lit entrance and the hotel name board are BEHIND them and the coach's flank fills the left third. Shoot from the car-park side, not from the doorway — from inside, the glass throws the interior lights straight back at the lens. Three rows, back row on the kerb if there is one. Same position works for the 08:30 departure shot, when the light is flat and coming down the gorge from the east.",
+   "latitude": 38.748074,
+   "longitude": 140.726532,
+   "coordPrecision": "approximate",
+   "confidence": "medium",
+   "confidenceNote": "The free flat outdoor lot with 10 large-bus bays and the 18:30 arrival are confirmed, but no source publishes the entrance's geometry, canopy or lighting, so the standing distance is a judgement. The GSI geocoder resolves 車湯17番地 and the superseded Kameya's 車湯54-6 to the IDENTICAL point, so this is the 車湯 aza-level position, not the building.",
+   "source": "https://www.jtb.co.jp/kokunai-hotel/htl/2402017/access/"
+  },
+  {
+   "id": "n3mz-ms-courtyard",
+   "anchorStop": "Mercure Miyagi Zao Resort & Spa",
+   "title": "The Mercure courtyard lawn under a Zao night sky",
+   "nameJp": "メルキュール宮城蔵王 中庭の芝生",
+   "tag": "DAY 3 · NIGHT 3",
+   "summary": "The prefecture move bought one thing the Fukushima ryokan could never offer: real dark sky. This is a 312-room resort standing alone on the Zao plateau — no bath street, no arcade, no lit shopping lane, the nearest convenience store a 20-minute walk. The Zao Town tourism association's own phrase for the site is 「芝生が生い茂る中庭」.",
+   "whereToFind": "Walk out into the middle of the LAWNED COURTYARD, put the hotel's lit facade BEHIND the group and shoot away from it, so the building lights rake across faces from behind instead of flaring the frame. For the mountains instead, stand at the FAR END OF THE FRONT CAR PARK at 06:00 and face WEST-SOUTH-WEST: the Zao massif is on that side of Togatta, so at first light the peaks catch the sun while you are still in shade — the classic alpenglow direction, and the only mountain frame the group gets before the 08:00 coach. Sunset on 10 Sep is about 17:50.",
+   "latitude": 38.13185,
+   "longitude": 140.56068,
+   "coordPrecision": "verified",
+   "confidence": "medium",
+   "confidenceNote": "The lawned courtyard, the 270-space lot and the isolation are all published, but no source gives a viewpoint, a sightline or the courtyard's lighting, so both standing positions are inferred from the site's geography. The Zao Town Tourism Association's own map pin for the hotel; the GSI geocoder resolves the aza address 鬼石原1番地 to 38.138, 140.5537 instead, about 900 m away.",
+   "source": "https://www.zao-machi.com/stay_hotspring/357.html"
+  },
+  {
+   "id": "n4mt-ms-mission2",
+   "anchorStop": "Kinugawa Onsen Hana no Yado Matsuya",
+   "title": "MISSION 2 rehoused — the 5F lounge, Hana-kanzashi",
+   "nameJp": "5階ラウンジ「花かんざし」（ミッション2）",
+   "tag": "DAY 4 · MISSION 2",
+   "summary": "Mission 2 — all ~35 in hotel-provided yukata at dinner time — was pinned to a hotel that is no longer on the itinerary. It transfers here and it gets EASIER in one respect and harder in another: the yukata are in the rooms rather than on a front-desk rack, so the queue disappears, but this is a 47-room ryokan and its lobby is a fraction of the 172-room hotel's. The backdrop is better: Taisho-era Takehisa Yumeji paintings and dolls, a library, and a wall of glass onto the Kinugawa gorge.",
+   "whereToFind": "You enter at the TOP of the building: the front desk and the lounge 花かんざし are both on the 5TH FLOOR. Stand the group along the GORGE-SIDE GLASS WALL of the lounge, facing INTO the room, so the Yumeji paintings and the dolls cabinet are the backdrop and the black window is behind the camera, never behind the faces — at 18:30 in September that glass is dead black and it will silhouette all 35. Three rows, alternate the yukata colours along each row, obi knots to the front, left lapel over right on everyone, hotel slippers on. Lock white balance around 3000–3200K for the warm ryokan lighting rather than leaving it on auto. IF THE LOUNGE WILL NOT HOLD 35, ask at check-in for the banquet room or the 4F dining floor instead — no floor area is published for any of them, so this has to be settled on arrival, not at 19:30.",
+   "latitude": 36.840755,
+   "longitude": 139.721939,
+   "coordPrecision": "verified",
+   "confidence": "medium",
+   "confidenceNote": "The 5F front desk, the lounge name, the Yumeji collection and the gorge outlook come from two independent stay reports; NOTHING published gives the lounge's floor area or seat count, so whether it takes 35 standing is unverified.",
+   "source": "https://plaza.rakuten.co.jp/keptkun/diary/202411190000/"
+  },
+  {
+   "id": "n4mt-ms-takimi",
+   "anchorStop": "Kinugawa Onsen Hana no Yado Matsuya",
+   "title": "Takimi Bridge, now five minutes from the door",
+   "nameJp": "滝見橋",
+   "tag": "DAY 4",
+   "summary": "The suspension bridge over Kinugawa's derelict cliff-side hotels was a 17-minute walk from the superseded hotel and a coach stop on the way out. From Matsuya it is about 290 m, which turns it into the one real dawn walk of Night 4 — the ruins stacked on the east cliff seen in a single sweep.",
+   "whereToFind": "Leave by the front door, up the steep drive to Route 121, and go SOUTH about 300 m; the bridge is off the highway on the river side. Stand at MID-DECK and shoot along the bridge line so the cables converge, with the derelict hotels stacked up the far cliff on the frame's right. The deck is wooden, unlit and it moves, so this is a daylight or dawn frame only — sunrise on Sat 12 Sep is about 05:20 and the coach leaves at 08:30, so 05:45–06:30 has it empty. No autumn colour: Kinugawa's gorge turns from late October.",
+   "latitude": 36.8384482,
+   "longitude": 139.7204465,
+   "coordPrecision": "verified",
+   "confidence": "medium",
+   "confidenceNote": "The bridge, the ruins and its coordinate are carried from the verified retired record; the 300 m route via Route 121 is derived from the two coordinates and the hotel's own note that the drive climbs steeply to the highway, not from a mapped footpath.",
+   "source": "https://www.ooedoonsen.jp/kinugawa-kanko/sightseeing/"
+  }
+ ],
+ "shopping": [
+  {
+   "id": "n2kk-sh-kokeshi",
+   "anchorStop": "Ooedo Onsen Monogatari Naruko Onsen Kounkaku",
+   "name": "Naruko kokeshi",
+   "nameJp": "鳴子こけし",
+   "placeLabel": "Kounkaku lobby shop, 15:00–20:30 — or Sakurai Kokeshi-ten on Yumoto street, which only opens after the 08:30 coach",
+   "estimate": 2640,
+   "note": "Naruko's kokeshi are the ones whose head squeaks when you turn it, because head and body are turned separately on the lathe. Mini pieces about ¥2,640, a small ejiko about ¥3,300. SURVIVES THE FLIGHT: solid wood, no shelf life — but wrap it. Buy it in the hotel shop tonight, because the shop shuts at 20:30 and the town's kokeshi workshops open at 09:30 or 10:00, after the coach has gone.",
+   "latitude": 38.748074,
+   "longitude": 140.726532,
+   "coordPrecision": "approximate",
+   "confidence": "medium",
+   "confidenceNote": "Prices are carried from the verified Sakurai retail research in the Day 2 batch; no page publishes what the Kounkaku shop actually stocks or at what price.",
+   "source": "https://www.jtb.co.jp/kokunai-hotel/htl/2402017/"
+  },
+  {
+   "id": "n2kk-sh-kuridango",
+   "anchorStop": "Ooedo Onsen Monogatari Naruko Onsen Kounkaku",
+   "name": "Kuri-dango, Mochidokoro Fukase",
+   "nameJp": "餅処 深瀬 くりだんご",
+   "placeLabel": "Mochidokoro Fukase, Naruko Onsen — 09:00–17:00, irregular closing days, about 14 min on foot from the hotel",
+   "estimate": 400,
+   "note": "¥400 for two: a whole syrup-steeped chestnut inside mochi under sweet walnut-miso sauce, the same recipe for a century. DOES NOT FLY — fresh mochi, eat the same day, and it will not survive to Malaysia. TIMING CLASH UNCHANGED by the hotel swap: it opens at 09:00 and the coach leaves at 08:30, so this is a guide-negotiated stop on the way out of town.",
+   "latitude": 38.7433,
+   "longitude": 140.7176,
+   "coordPrecision": "verified",
+   "confidence": "medium",
+   "confidenceNote": "Carried from the Day 2 batch's Fukase research against the superseded hotel; the hours and price were not re-sourced from a page the shop controls, and the walk is unchanged only because both hotels share the 車湯 address point.",
+   "source": "https://www.onsen1.org/narukoonsen/kounkaku.html"
+  },
+  {
+   "id": "n3mz-sh-kokeshi",
+   "anchorStop": "Mercure Miyagi Zao Resort & Spa",
+   "name": "Togatta kokeshi",
+   "nameJp": "遠刈田こけし",
+   "placeLabel": "Mercure 1F shop, 08:00–11:00 and 16:30–21:00",
+   "estimate": 3000,
+   "note": "Togatta is one of the classic kokeshi strains in its own right — a broad painted chrysanthemum on the crown and a slim body, distinct from Naruko's squeaking head — so someone who bought a kokeshi at Naruko on Wednesday is buying a genuinely different object here, not a duplicate. SURVIVES THE FLIGHT: turned wood, nothing perishable. Buy tonight; the shop's morning window opens at 08:00, exactly when the coach leaves.",
+   "latitude": 38.13185,
+   "longitude": 140.56068,
+   "coordPrecision": "verified",
+   "confidence": "medium",
+   "confidenceNote": "The shop and its hours are published and a guest review calls the range broad, but no stock list or price is published — the ¥3,000 is an order-of-magnitude estimate for a mid-size traditional piece, not a quoted price.",
+   "source": "https://mercure-miyagizao-resortandspa.jp/facilities/"
+  },
+  {
+   "id": "n3mz-sh-cheese",
+   "anchorStop": "Mercure Miyagi Zao Resort & Spa",
+   "name": "Zao cream cheese and aged Gouda",
+   "nameJp": "蔵王クリームチーズ・熟成ゴーダ",
+   "placeLabel": "Mercure 1F shop, 16:30–21:00 — made at Zao Rakuno Center, 蔵王町遠刈田温泉字七日原251-4",
+   "estimate": 648,
+   "note": "The area's signature: cream cheese and aged Gouda about ¥648 each from Zao Rakuno Center, plus Molk, a whey drink, 200 ml about ¥324. DOES NOT FLY — chilled dairy, and it is a Thursday with four days of coach still to run. Taste it in the lounge, where reviewers say Zao cheese and crackers are the free snack, and buy a shelf-stable gift instead.",
+   "latitude": 38.13185,
+   "longitude": 140.56068,
+   "coordPrecision": "verified",
+   "confidence": "medium",
+   "confidenceNote": "Prices are the factory's own retail figures via Rurubu; whether the hotel's 1F shop stocks these exact lines at these prices is not published, and the factory itself is 09:00–17:00 so the group can never reach it.",
+   "source": "https://rurubu.jp/andmore/spot/80003709"
+  },
+  {
+   "id": "n3mz-sh-gyutan",
+   "anchorStop": "Mercure Miyagi Zao Resort & Spa",
+   "name": "Vacuum-packed Sendai gyutan",
+   "nameJp": "仙台牛たん（レトルト・真空パック）",
+   "placeLabel": "Mercure 1F shop, 16:30–21:00",
+   "estimate": 1800,
+   "note": "Gyutan carved to order is the buffet's signature dish, and the ambient vacuum-packed or retort version is the one Miyagi food gift that FLIES: shelf-stable, sealed, no cold chain. Check it is the ambient pack and not the chilled or frozen one before you pay — the frozen packs in these shops look near-identical and will not clear a nine-hour flight.",
+   "latitude": 38.13185,
+   "longitude": 140.56068,
+   "coordPrecision": "verified",
+   "confidence": "medium",
+   "confidenceNote": "Gyutan is confirmed as the restaurant's signature by the hotel's own dining page, but no page lists the shop's products or prices; ¥1,800 is a typical Miyagi retail figure, not a quote.",
+   "source": "https://mercure-miyagizao-resortandspa.jp/restaurant/"
+  },
+  {
+   "id": "n4mt-sh-yumeji",
+   "anchorStop": "Kinugawa Onsen Hana no Yado Matsuya",
+   "name": "Takehisa Yumeji goods, Hanagoyomi",
+   "nameJp": "竹久夢二グッズ・お土産処「花ごよみ」",
+   "placeLabel": "Hanagoyomi, 5F lobby floor — 07:00–10:00 and 15:30–21:00",
+   "estimate": 1200,
+   "note": "The distinctive buy of the whole trip and it is only here: the hotel is themed on Taisho-era illustrator Takehisa Yumeji, and a stay report says the lobby shop is full of Yumeji merchandise — 「竹久夢二の作品にまつわるお土産品が多く置かれてました」. Flat printed goods, postcards, tenugui and the like, so they FLY perfectly and pack flat. And this shop opens at 07:00, before the 08:30 coach.",
+   "latitude": 36.840755,
+   "longitude": 139.721939,
+   "coordPrecision": "verified",
+   "confidence": "medium",
+   "confidenceNote": "The Yumeji stock is a stay report and the split hours are yukoyuko's, with JTB printing a single 07:00–21:00; no product or price list is published, so ¥1,200 is an estimate for a postcard-to-tenugui range.",
+   "source": "https://www.yukoyuko.net/0972"
+  },
+  {
+   "id": "n4mt-sh-yuba",
+   "anchorStop": "Kinugawa Onsen Hana no Yado Matsuya",
+   "name": "Dried Nikko yuba",
+   "nameJp": "日光ゆば（乾燥）",
+   "placeLabel": "Hanagoyomi, 5F lobby floor — 07:00–10:00 and 15:30–21:00",
+   "estimate": 800,
+   "note": "Nikko's own speciality and the version that travels: DRIED yuba is light, ambient and keeps for months, where the fresh sheets do not last the coach. Take the dried packs, not the chilled tub. There is a FROZEN-FOOD CORNER by the 5F lounge as well — say plainly to the group that nothing out of it can be taken home.",
+   "latitude": 36.840755,
+   "longitude": 139.721939,
+   "coordPrecision": "verified",
+   "confidence": "medium",
+   "confidenceNote": "Carried from the Day 4 batch's dried-yuba research against the superseded hotel's shop; the ¥800 is a typical Nikko retail figure and this shop's stock list is not published.",
+   "source": "https://www.yukoyuko.net/0972"
+  },
+  {
+   "id": "n4mt-sh-tochiotome",
+   "anchorStop": "Kinugawa Onsen Hana no Yado Matsuya",
+   "name": "Tochiotome strawberry sweets",
+   "nameJp": "とちおとめ苺のお菓子",
+   "placeLabel": "Hanagoyomi, 5F lobby floor, or Kinugawa-Koen Station kiosk",
+   "estimate": 700,
+   "note": "Tochigi is Japan's strawberry prefecture and Tochiotome is its variety; the baked and freeze-dried sweets made from it are ambient, boxed and individually wrapped, so they FLY and they divide neatly among colleagues back at ViTrox. Avoid the fresh fruit and the chilled cream versions — September is out of season for the berry anyway.",
+   "latitude": 36.840755,
+   "longitude": 139.721939,
+   "coordPrecision": "verified",
+   "confidence": "medium",
+   "confidenceNote": "Carried from the Day 4 batch's Tochigi shopping research; no page publishes this shop's stock, so availability at Hanagoyomi specifically is unverified and the ¥700 is a typical boxed-confectionery price.",
+   "source": "https://www.yukoyuko.net/0972"
+  }
+ ],
+ "essentials": {
+  "Ooedo Onsen Monogatari Naruko Onsen Kounkaku": {
+   "hours": {
+    "mon": [
+     [
+      "00:00",
+      "23:59"
+     ]
+    ],
+    "tue": [
+     [
+      "00:00",
+      "23:59"
+     ]
+    ],
+    "wed": [
+     [
+      "00:00",
+      "23:59"
+     ]
+    ],
+    "thu": [
+     [
+      "00:00",
+      "23:59"
+     ]
+    ],
+    "fri": [
+     [
+      "00:00",
+      "23:59"
+     ]
+    ],
+    "sat": [
+     [
+      "00:00",
+      "23:59"
+     ]
+    ],
+    "sun": [
+     [
+      "00:00",
+      "23:59"
+     ]
+    ]
+   },
+   "closedNote": "Open year round; reception staffed round the clock but CHECK-IN IS PUBLISHED AS 15:00–19:00 and check-out 11:00. The group arrives 18:30 — inside the window with 41 minutes to spare, the most comfortable of the three new hotels. Baths 15:00–24:00 and 05:00–10:00. Shop 15:00–20:30. Day visitors bathe 07:00–10:00 and 15:00–24:00, last reception 22:00, and are confined to the 6F 黒湯 — so the 6F bath is the crowded one at 19:00. 百畳露天風呂 has closed. Room count is disputed: 104 (JTB), 116 (Yahoo, Hankyu). All rooms non-smoking.",
+   "lastAdmission": "19:00",
+   "seasonFrom": null,
+   "seasonTo": null,
+   "groupRate": null,
+   "phone": "0229-83-2329",
+   "phoneNote": "The property line per Hankyu Travel. Yahoo Travel prints 050-3615-3456; JTB gives 0120-022-268 for the station pick-up only. Use it to settle two things before arrival: whether dinner is the buffet or a group kaiseki, and what time breakfast opens, because no channel publishes a breakfast time for this property.",
+   "website": "https://www.ooedoonsen.jp/kounkaku/",
+   "tickets": "Night 2 of eight, dinner and breakfast in the package. TWO CHARGES ARE TAKEN AT THE FRONT DESK and are not in the tour price: the Miyagi prefectural accommodation tax, 「2026年1月13日宿泊より…1泊につき300円をフロントで申し受けます（大人・小人共）」, plus bathing tax separately. FORMAT CONFLICT: the itinerary says 19:00 Kaiseki, the operator's product is a gourmet buffet with a 17:00–21:30 day-use window, but JTB's meal field for this property does print 和食会席 for dinner and バイキング（和食） for breakfast — a group kaiseki is a real option here, so confirm which is booked. Tattoos: 「入れ墨・タトゥーがある場合は大浴場利用不可（指定カバーシール有料で対応可）」.",
+   "transport": "〒989-6821 宮城県大崎市鳴子温泉字車湯17. From Matsushima, 66 km and about 1h30, arriving 18:30. A 45-SEAT COACH IS FINE: JTB prints the free outdoor lot as 「85台（乗用車60台、マイクロバス15台、大型バス10台）」, no reservation, though Yahoo and Hankyu print ~140 spaces instead. By rail it is Kogota → Rikuu East line 45 min to Naruko Onsen, then about 15 minutes on foot or 5 by taxi; the hotel's own pick-up takes a 「送迎協力金（片道1回100円）」. NOTHING CHANGES ABOUT THE TOWN: this hotel and the superseded Kameya are both in 字車湯 and the GSI geocoder resolves 車湯17 and 車湯54-6 to the identical point, so the entire retired Naruko cluster — Taki-no-Yu, Waseda Sajiki-yu, the shrine stairway, the two station footbaths, Fukase, Sakurai Kokeshi — keeps its 13-to-17-minute legs from this door.",
+   "confidence": "medium",
+   "confidenceNote": "Two facts a group needs are unpublished anywhere: the breakfast opening time and the dinner sitting arrangement. Room count, total parking and the telephone number each differ between channels, and the operator's own site is JavaScript-rendered so only its day-use page could be read.",
+   "source": "https://www.jtb.co.jp/kokunai-hotel/htl/2402017/access/"
+  },
+  "Mercure Miyagi Zao Resort & Spa": {
+   "hours": {
+    "mon": [
+     [
+      "00:00",
+      "23:59"
+     ]
+    ],
+    "tue": [
+     [
+      "00:00",
+      "23:59"
+     ]
+    ],
+    "wed": [
+     [
+      "00:00",
+      "23:59"
+     ]
+    ],
+    "thu": [
+     [
+      "00:00",
+      "23:59"
+     ]
+    ],
+    "fri": [
+     [
+      "00:00",
+      "23:59"
+     ]
+    ],
+    "sat": [
+     [
+      "00:00",
+      "23:59"
+     ]
+    ],
+    "sun": [
+     [
+      "00:00",
+      "23:59"
+     ]
+    ]
+   },
+   "closedNote": "Open year round, 312 rooms, all at least 36 m2, capacity about 800; rebranded from Active Resorts Miyagi Zao in April 2024. Check-in 15:00, check-out 11:00; early check-in and late check-out are paid and need advance arrangement. NO LATEST CHECK-IN IS PUBLISHED ON ANY CHANNEL, which is the one gap here — the 17:15 arrival is early enough that it is very unlikely to matter. Baths and sauna 06:00–10:00 and 15:00–23:00, last entry 30 min before. Locavore 2F: dinner 17:30–21:00 last entry 20:30, breakfast 07:00–09:30 last entry 09:00. Shop 1F 08:00–11:00 and 16:30–21:00. Lounge 14:30–17:30 and 20:00–22:00. Table tennis and kids corner 07:00–23:00, game corner 09:00–23:00, coin laundry 24 h. No day-use bathing. Indoor pool season 18 Jul–23 Sep.",
+   "lastAdmission": null,
+   "seasonFrom": "07-18",
+   "seasonTo": "09-23",
+   "groupRate": "No published group rate. The hotel routes group business to dedicated addresses: mercure.miyagizao@drhm.jp for domestic and mercure.miyagizao.inbound@drhm.jp for inbound — use the inbound one. The free Sendai shuttle is capped at 20 seats a departure and needs booking by 16:00 three days ahead, so it is no use to 35 people.",
+   "phone": "0224-34-3600",
+   "phoneNote": "The property line; 03-6830-3926 is the reservations centre and 0224-34-3177 the fax. Ring the property about two things: whether the 18:00 meal is the Locavore buffet or a separate group kaiseki, and whether the indoor pool actually runs on Thursday 10 September.",
+   "website": "https://mercure-miyagizao-resortandspa.jp/",
+   "tickets": "Night 3, dinner and breakfast in the package under an all-inclusive scheme that also covers lounge drinks and appetisers, the baths and in-house activities; lunch is not served and some drinks and activities are extra. Bought separately, dinner is ¥8,000 and breakfast ¥3,200 an adult. FORMAT CONFLICT: the itinerary says 18:00 Kaiseki; Locavore is a BUFFET and the hotel publishes no kaiseki. NO SITTINGS ARE PUBLISHED, but reviewers warn the peak hour jams — 「1番いい時間帯は混んで席、取り台の料理に手が伸ばせなかった」 — and one guest counted 800 fellow diners against 268 seats, so 35 people arriving unbooked at 18:00 is a real risk. Yukata and slippers are allowed in the restaurant. Tattoos: 「原則お断り…8cm×10cmのカバーシール2枚を貼って隠せる場合のみ」, stickers ¥200 at the front desk. Miyagi accommodation tax and bathing tax apply.",
+   "transport": "〒989-0916 宮城県刈田郡蔵王町遠刈田温泉字鬼石原1番地1. From Zao Fox Village the revised transfer is about 30 minutes and 18 km, arriving 17:15 — this hotel really is minutes from the foxes, which is the whole point of the change. A 45-SEAT COACH IS FINE: 「無料でご利用いただけます。（収容台数270台）」 and the Zao Town tourism association notes the free lot takes large vehicles. The approach is the Shiraishi IC road, ~17 km / ~30 min, or Murata IC ~16 km / ~30 min — NOT the Zao Echo Line pass, so no mountain hairpins. Day 4 leaves 08:00 for a ~2 h, ~130 km run to Goshikinuma. THE PROPERTY IS ISOLATED: the hotel's own FAQ puts the nearest convenience store at 「車で約5分（徒歩約20分）」 and a drugstore 15 minutes by car; Togatta Onsen's bath street is about 2.6 km, beyond a 30-minute walk, and Zao Rakuno Center's cheese factory is 09:00–17:00, shut before arrival and after departure. Plan the evening indoors.",
+   "confidence": "medium",
+   "confidenceNote": "No channel publishes a latest check-in time, and the indoor pool's September operating days are contradicted between the hotel's own activities page and the Yahoo Travel listing. The hotel's coordinate is the Zao Town tourism association's map pin; GSI puts the aza address about 900 m away.",
+   "source": "https://mercure-miyagizao-resortandspa.jp/faq/"
+  },
+  "Kinugawa Onsen Hana no Yado Matsuya": {
+   "hours": {
+    "mon": [
+     [
+      "00:00",
+      "23:59"
+     ]
+    ],
+    "tue": [
+     [
+      "00:00",
+      "23:59"
+     ]
+    ],
+    "wed": [
+     [
+      "00:00",
+      "23:59"
+     ]
+    ],
+    "thu": [
+     [
+      "00:00",
+      "23:59"
+     ]
+    ],
+    "fri": [
+     [
+      "00:00",
+      "23:59"
+     ]
+    ],
+    "sat": [
+     [
+      "00:00",
+      "23:59"
+     ]
+    ],
+    "sun": [
+     [
+      "00:00",
+      "23:59"
+     ]
+    ]
+   },
+   "closedNote": "Open year round, 47 rooms (42 Japanese, 5 Japanese-Western; yukoyuko prints 58 and Jalan 42 — disputed), all non-smoking with a 5F smoking area. THE CHECK-IN WINDOW IS THE PROBLEM: four channels print four different closing times — 「15:00～18:00」 (Furunavi, and Rakuten as 'latest 18:00'), 「15:00～18:30」 (yukoyuko), 「15:00～19:00」 (Yahoo Travel) and a 22:00 last check-in (OZmall). THE GROUP ARRIVES 18:20, which is AFTER the published cut-off on two of them. Check-out 10:00, group leaves 08:30. 大浴場 15:00–24:00 and from 05:00 (closing 09:00 or 10:00, disputed); rotenburo to 22:00; private bath 15:00–24:00. Shop 07:00–10:00 and 15:30–21:00.",
+   "lastAdmission": "18:00",
+   "seasonFrom": null,
+   "seasonTo": null,
+   "groupRate": "No published group rate and no published banquet-hall capacity. Jalan's facility list includes 宴会場 and conference rooms and reviewers report dinner and breakfast in 個室 private rooms, so a 47-room ryokan can clearly seat a party — but for 35 people the room assignment and the Mission 2 photo position both have to be agreed with the hotel in advance, not discovered at 18:20.",
+   "phone": "0288-77-1221",
+   "phoneNote": "The property line per Yahoo Travel. Ring it from the road on Day 4 about three things: that an 18:20 arrival is accepted against a published 18:00–19:00 cut-off; which of the 18:00 / 18:30 / 19:00 kaiseki starts the group is on; and permission and a room for the Mission 2 yukata photograph.",
+   "website": "https://matsuya.co.jp/",
+   "tickets": "Night 4. THE ITINERARY IS WRONG ON FORMAT: it prints 18:30 Hotel Buffet, and this hotel serves NO BUFFET AT ALL. Dinner is 和食会席 plated to the table, in private rooms, on the 4th floor, with the start CHOSEN from 「午後6時からまたは午後6時30分から、午後7時から」 — 18:00, 18:30 or 19:00, last seating 19:00. Breakfast is a 和食膳, also chosen from 「午前7時からまたは午前7時30分から、午前8時から」, so the 07:30 breakfast against an 08:30 coach is comfortable. Kaiseki actually suits a group better than a buffet — everyone is seated and served at once, no scrum at the serving line — but 10 minutes from an 18:20 check-in to an 18:30 sitting, in yukata, for 35 people, is not achievable: ask for the 19:00 start. Minced food or rice porridge can be substituted. Bathing tax ¥150 per adult. No tattoo policy is published.",
+   "transport": "〒321-2521 栃木県日光市藤原19 (the address is also printed as 鬼怒川温泉藤原19); GSI resolves 日光市藤原19番地 to 36.840755, 139.721939. From Ouchi-juku, about 1h40 and 80 km, arriving 18:20. A 45-SEAT COACH IS EXPLICITLY CATERED FOR: JTB prints the free outdoor lot as 「18台（バス8台、マイクロバス10台）」, no reservation — eight large-bus bays. BUT WARN THE DRIVER: the lot is down a short steep drop off Route 121 and the hotel's own note is 「急な坂道をおりてくるので車高の低い車は御相談下さい」. Rail is Tobu Kinugawa line to 鬼怒川公園駅, then 「徒歩約３分」 — 240 m — or from Kinugawa-Onsen Station a Tobu dial bus about 10 minutes to the hotel's own stop 花の宿松や前, or a taxi about ¥1,010. THE NEW POSITION MOVES THE TOWN RESEARCH: this hotel is 1.3 km NORTH of the superseded one, at the resort's far end. Takimi Bridge drops from a 17-minute walk to about 5; Fureai Bridge rises from 2 minutes to roughly 18; and the nearest public bath, Kinugawa Koen Iwaburo at the same banchi, CLOSED FOR GOOD on 31 March 2024.",
+   "confidence": "medium",
+   "confidenceNote": "matsuya.co.jp refuses automated fetching from this sandbox — the proxy denies the connection outright — so every figure here is from a booking channel or a stay report, never the operator. The latest check-in, the room count and the private-bath fee each differ across channels, and no lounge or banquet capacity is published anywhere, which is exactly what Mission 2 needs.",
+   "source": "https://www.jtb.co.jp/kokunai-hotel/htl/3310021/access/"
+  }
+ },
+ "outfitByStop": {
+  "Ooedo Onsen Monogatari Naruko Onsen Kounkaku": {
+   "photo": "You land at 18:30, well after the 17:54 sunset, into a gorge town with no useful street lighting, so there is no daylight frame at all on Night 2 — every picture is either a lit interior or steam against black. Steam only reads BACKLIT: find a lamp or a lit window behind it and shoot towards the light. Dark clothes vanish entirely against a night exterior; a light mid-tone is what separates a face from the background. The group frame is the front car park with the lit entrance behind you, and if the yukata turn out to come off a lobby rack rather than out of the wardrobe, pull DIFFERENT colours and alternate them along each row — 35 people in one print reads as a flat block. The real Naruko photograph is tomorrow at 05:45–06:30 from two-thirds up the shrine stairway, looking back over the steaming tin roofs, and that walk is unchanged by the hotel swap. Say it plainly: NO AUTUMN COLOUR — Naruko-kyo turns in late October.",
+   "practical": "27°/18° at about 200 m in a gorge, humid, peak typhoon month: a light layer for the evening and something genuinely waterproof, not a fashion jacket. Yukata and the hotel's slippers are correct dress everywhere indoors, so change once at 18:30 and stay changed — but if the yukata are chosen at a lobby corner rather than laid out in the room, that is the slow step before a 19:00 dinner, not the walk to the restaurant. Do BOTH waters: the 黒湯 on the main building's 6th floor and the 白湯 in the annexe, one tonight and one from 05:00, because Naruko holds nine of Japan's eleven spring types and this is the only night you get two of them. Sulphurous onsen water blackens silver: rings, chains and watches off before you get in. Tattoos are barred from the large baths unless covered with the hotel's paid sticker. Anyone walking down to Taki-no-Yu or Waseda Sajiki-yu is 13–17 minutes each way down and back up the gorge — a 40-minute round trip after dinner, decided before dinner, and Taki-no-Yu sells neither soap nor towel. Two taxes are collected at the desk in cash: ¥300 Miyagi accommodation tax plus bathing tax."
+  },
+  "Mercure Miyagi Zao Resort & Spa": {
+   "photo": "The prefecture move is a real gain here. Sunset on 10 Sep is about 17:50 and you arrive at 17:15, so there are roughly thirty minutes of dusk — the only outdoor light of the night, and it is worth using on the courtyard lawn before dinner rather than after. Indoors, Locavore and the lounges are warm tungsten on timber: warm mid-tones flatter, pure white goes grey-green, so lock white balance around 3000–3200K rather than leaving it on auto. The frame nobody else on this trip will have is the courtyard at full dark: no bath street, no arcade, no street lamps for two kilometres in any direction, so on a clear night the sky actually shows. And at 06:00, from the far end of the front car park facing west-south-west, the Zao massif catches first light while you are still in shade. Yukata and slippers are allowed in the restaurant, which means the whole group reads as one set in every indoor photograph tonight — the only night on the itinerary where that is true without asking anyone's permission.",
+   "practical": "24°/20° on the Zao plateau is the coolest evening of the eight days and the smallest day-night spread — it will not get cold, but it will not be Naruko's 27° either, so one long-sleeve layer for the courtyard and nothing more. A free-size yukata IS in the room — 「フリーサイズのお浴衣をお部屋にご用意しています」 — with XS and LL exchangeable at the front desk, so ask at check-in if you are at either end rather than fighting it at 19:00. TAKE YOUR TOWEL TO THE BATH: the hotel's own answer is 「お部屋からお持ちください」, and the men's changing room supplies none. Baths run 06:00–10:00 and 15:00–23:00, last entry 30 minutes before, so the sequence that works is bath at 17:20, buffet at 18:00, Night Cap lounge at 20:00. Tattoos need the ¥200 cover stickers from the desk and two 8×10 cm sheets must actually hide it. The water is 循環ろ過式・加水, filtered and diluted, so it is gentler on silver than Naruko's sulphur. Nothing is walkable: the nearest convenience store is the hotel's own 20-minute estimate away on an unlit road with no pavement, so buy water and an umbrella BEFORE you leave Zao Fox Village. Breakfast opens at 07:00 for an 08:00 coach — be at the door, not in the lift."
+  },
+  "Kinugawa Onsen Hana no Yado Matsuya": {
+   "photo": "MISSION 2, and the wardrobe advice is almost the inverse of the daytime kind: the hotel supplies the yukata, so nobody's own clothes are in the frame. Contrast has to come from arrangement — alternate the colours along each row, obi knots to the front, left lapel over right on everyone, hotel slippers on. The backdrop is the best of the three new hotels: a 5th-floor lounge hung with Taisho-era Takehisa Yumeji paintings, a dolls cabinet and a library, warm ryokan lighting at roughly 3000–3200K, and a glass wall onto the Kinugawa gorge. Stand the group ALONG that glass facing INTO the room, never in front of it: at 18:30 in September the window is dead black and it will silhouette all 35 faces. Get the hotel's agreement on the room at check-in, because nothing published says a 47-room ryokan's lounge holds 35 standing, and have the banquet room or the 4F dining floor as the fallback. Outdoors, the frame is Takimi Bridge at 05:45–06:30 — now five minutes from the door instead of seventeen — and there is NO autumn colour: Kinugawa's gorge turns from late October.",
+   "practical": "The single most useful fact about Night 4 is that THE YUKATA ARE IN THE ROOM, not on a rack at the front desk — the queue that would have swallowed the old hotel's check-in does not exist here. But ten minutes from an 18:20 arrival to an 18:30 sitting still is not enough for 35 people plus a group photograph, and dinner is kaiseki plated to the table rather than a buffet you can drift into: ask for the 19:00 start, which the hotel offers, and run the evening as keys, rooms, yukata, photo, dinner. Wear something you can change out of in five minutes. 27°/19° and humid, typhoon month — one light layer, real rain cover. The rotenburo on the gorge shuts at 22:00 while the indoor baths run to 24:00, so take the open-air one first. The water is alkaline simple, pH 8.7, which is kind to skin and to silver. There is NO public bath to walk to any more: Kinugawa Koen Iwaburo, at the same address number, closed permanently on 31 March 2024. The 5F shop is the only one of the three that opens before the coach, at 07:00. And the coach comes down a short steep drive off Route 121 — tell the driver before he takes it."
+  }
+ }
+}

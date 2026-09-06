@@ -1,0 +1,1178 @@
+{
+ "batch": "day3-ginzan",
+ "places": [
+  {
+   "id": "5d4bd6e6d80f",
+   "anchorStop": "Ginzan Onsen Street",
+   "name": "Shirogane Bridge",
+   "nameJp": "白銀橋",
+   "category": "sight",
+   "priceTier": "¥",
+   "stayMinutes": 20,
+   "legs": [
+    {
+     "mode": "walk",
+     "minutes": 1
+    }
+   ],
+   "note": "THE SUB-GROUP BANNER PHOTO SPOT: the designated viewpoint at the street entrance and the only level ground wide enough for 35 people plus a 240x100 cm banner, because the street beyond is 4-5 m wide with the river down the middle. The official site notes a rest area, Nemaru-za, on the onsen side of the bridge. Free, open, no gate.",
+   "latitude": 38.57038,
+   "longitude": 140.530397,
+   "coordPrecision": "verified",
+   "timeWindow": "24h",
+   "confidence": "high",
+   "confidenceNote": null,
+   "source": "https://www.ginzanonsen.jp/ginzan/walk.html"
+  },
+  {
+   "id": "843768da18f4",
+   "anchorStop": "Ginzan Onsen Street",
+   "name": "Nogawa Toufuya (standing-eat namaage)",
+   "nameJp": "野川とうふや 立ち食い生あげ",
+   "category": "food",
+   "priceTier": "¥",
+   "stayMinutes": 10,
+   "legs": [
+    {
+     "mode": "walk",
+     "minutes": 3
+    }
+   ],
+   "note": "Ginzan Shinbata 427, tel 0237-28-2494. Priced menu: namaage (thick fried tofu) 250 yen, standing-eat tofu 210 yen, tofu-ten 250 yen. Cash only. CORRECTION: it opens 08:30, not 07:30, and closes when the handmade batch sells out. Yamagata Prefecture's own page lists it as closed MONDAYS and lists only a 160 yen cotton-tofu pack; Thursday is unaffected either way.",
+   "latitude": 38.570556,
+   "longitude": 140.531111,
+   "coordPrecision": "verified",
+   "timeWindow": "day",
+   "confidence": "medium",
+   "confidenceNote": "The 250 yen namaage price and the 08:30 opening come from Rurubu's listing; the prefectural tourism page gives a different product line and a Monday closing day, and the shop has no site of its own to settle it.",
+   "source": "https://rurubu.jp/andmore/spot/80004814"
+  },
+  {
+   "id": "b6bc7c68ba16",
+   "anchorStop": "Ginzan Onsen Street",
+   "name": "Kashidokoro Meiyu-an",
+   "nameJp": "菓子処 めいゆう庵",
+   "category": "food",
+   "priceTier": "¥",
+   "stayMinutes": 15,
+   "legs": [
+    {
+     "mode": "walk",
+     "minutes": 1
+    }
+   ],
+   "note": "Confirmed on the maker's own site: Ginzan Shinbata 438-2, tel 0237-28-2588, 08:00-17:30 with seasonal variation, and the only closing is the afternoon of 31 December. It states plainly that Haikara-san no Curry Pan is sold here, which is where the relocating original shop's line went. Karinto-manju is fried to order at the counter.",
+   "latitude": 38.571009,
+   "longitude": 140.530397,
+   "coordPrecision": "approximate",
+   "timeWindow": "day",
+   "confidence": "high",
+   "confidenceNote": "Hours, phone and product line are from the operator's own page; the coordinate is the seed's street-level estimate, as no geocoder resolves individual Ginzan Shinbata building numbers.",
+   "source": "https://www.meiyuu.com/view/page/ginzan-meiyu"
+  },
+  {
+   "id": "6dc22610c311",
+   "anchorStop": "Ginzan Onsen Street",
+   "name": "Notoya Ryokan",
+   "nameJp": "能登屋旅館",
+   "category": "sight",
+   "priceTier": "¥",
+   "stayMinutes": 10,
+   "legs": [
+    {
+     "mode": "walk",
+     "minutes": 4
+    }
+   ],
+   "note": "The building on every Ginzan postcard: four storeys of kote-e plasterwork with a rooftop lookout tower. Free to photograph from the opposite bank, which is the only place the whole facade fits. In September the timber reads almost black against solid green hillside, so a group standing in front of it disappears unless they are in white, cream or pale blue.",
+   "latitude": 38.570724,
+   "longitude": 140.530865,
+   "coordPrecision": "verified",
+   "timeWindow": "day",
+   "confidence": "high",
+   "confidenceNote": null,
+   "source": "https://www.ginzanonsen.jp/ginzan/walk.html"
+  },
+  {
+   "id": "cb93fee33c10",
+   "anchorStop": "Ginzan Onsen Street",
+   "name": "Shirogane Falls",
+   "nameJp": "白銀の滝",
+   "category": "sight",
+   "priceTier": "¥",
+   "stayMinutes": 25,
+   "legs": [
+    {
+     "mode": "walk",
+     "minutes": 8
+    }
+   ],
+   "note": "Free, unstaffed, at the top of the street in Shirogane Park: 22 m, splitting in two, with a deck close enough to feel the spray. The operator's own walking guide prices the round trip as the Takimi course, about 0.8 km and 20 minutes. Enmeiji Jizo and a Fudo shrine sit beside the path. The path stays damp in September heat, so the footing is slick, not muddy.",
+   "latitude": 38.572292,
+   "longitude": 140.532444,
+   "coordPrecision": "verified",
+   "timeWindow": "day",
+   "confidence": "high",
+   "confidenceNote": null,
+   "source": "https://www.ginzanonsen.jp/ginzan/walk.html"
+  },
+  {
+   "id": "70e89c03f9e4",
+   "anchorStop": "Ginzan Onsen Street",
+   "name": "Warashiyu (和楽足湯) footbath",
+   "nameJp": "和楽足湯",
+   "category": "rest",
+   "priceTier": "¥",
+   "stayMinutes": 20,
+   "legs": [
+    {
+     "mode": "walk",
+     "minutes": 1
+    }
+   ],
+   "note": "Obanazawa City confirms 06:00-22:00 and free, fed straight from the source, on the river at the street entrance beside Shirogane Bridge. Everyone sits, nobody undresses, and it is the natural regroup point for 35 people before the coach transfer. Bring a small towel: none is provided and there is nowhere on the street to buy one.",
+   "latitude": 38.571189,
+   "longitude": 140.531747,
+   "coordPrecision": "approximate",
+   "timeWindow": "24h",
+   "confidence": "high",
+   "confidenceNote": "Hours and price are from Obanazawa City's official page; the coordinate is the seed's street-level estimate.",
+   "source": "https://www.city.obanazawa.yamagata.jp/kanko/kankochi/1346",
+   "nameNote": "和楽足湯 is read わらしゆ — romanised WARASHIYU, a compression pun. 'Waraku Ashiyu' is the naive character-by-character reading and is wrong; Obanazawa City prints the furigana."
+  },
+  {
+   "id": "3bc02245859e",
+   "anchorStop": "Ginzan Onsen Street",
+   "name": "Taisho Roman-kan coach lot",
+   "nameJp": "大正ろまん館",
+   "category": "rest",
+   "priceTier": "¥",
+   "stayMinutes": 30,
+   "legs": [
+    {
+     "mode": "bus",
+     "minutes": 10
+    }
+   ],
+   "note": "Obanazawa's tourism association gives the day-visitor lot as 100 car spaces, free, 08:30-17:30; the venue's own page gives the building as 10 coach bays plus 100 cars. No vehicle of any size enters the onsen street, coaches included, so this is where a chartered coach waits. Tel 0237-53-6727. Building and shop 09:00-17:30.",
+   "latitude": 38.560833,
+   "longitude": 140.520278,
+   "coordPrecision": "verified",
+   "timeWindow": "day",
+   "confidence": "high",
+   "confidenceNote": null,
+   "source": "https://obanazawa-kankou.jp/ginzan-onsen/"
+  },
+  {
+   "id": "d3ginzanentry1",
+   "anchorStop": "Ginzan Onsen Street",
+   "name": "Ginzan Onsen street entrance and shuttle stop",
+   "nameJp": "銀山温泉街入口・シャトルバス停",
+   "category": "rest",
+   "priceTier": "¥",
+   "stayMinutes": 10,
+   "legs": [
+    {
+     "mode": "walk",
+     "minutes": 1
+    }
+   ],
+   "note": "The drop-and-regroup point: the head of the 400 m car-free street, the shared car park, the footbath and the tourist information office (0237-28-3933) are all within 100 m of each other here. Also the stop for the year-round on-demand shuttle to Taisho Roman-kan, 500 yen all day, last outbound from Roman-kan 17:00 and last back from Ginzan 18:00.",
+   "latitude": 38.57004167,
+   "longitude": 140.530925,
+   "coordPrecision": "verified",
+   "timeWindow": "24h",
+   "confidence": "high",
+   "confidenceNote": null,
+   "source": "https://msearch.gsi.go.jp/address-search/AddressSearch?q=%E9%8A%80%E5%B1%B1%E6%B8%A9%E6%B3%89"
+  },
+  {
+   "id": "d3ginzansoba1",
+   "anchorStop": "Ginzan Onsen Street",
+   "name": "Izunohana (soba and sake)",
+   "nameJp": "伊豆の華",
+   "category": "food",
+   "priceTier": "¥¥",
+   "stayMinutes": 45,
+   "legs": [
+    {
+     "mode": "walk",
+     "minutes": 4
+    }
+   ],
+   "note": "The street's own soba house and the one place on it serving the exact dish the app promises at 12:00: tempura soba. Ginzan Shinbata 440, tel 0237-28-2036, 11:00-18:00 with last order 17:30, CLOSED WEDNESDAYS so open on Thursday. Local toichi soba; ita-soba comes usu-mori about 400 g or atsu-mori about 600 g. It opens at 11:00, so only the last 30 minutes of the stop reach it.",
+   "latitude": 38.57004167,
+   "longitude": 140.530925,
+   "coordPrecision": "approximate",
+   "timeWindow": "day",
+   "confidence": "high",
+   "confidenceNote": "Address, hours, closing day and menu are from the restaurant's own site; the coordinate is the official geocode of Ginzan Onsen standing in for the building, which no geocoder resolves.",
+   "source": "https://www.izunohana.com/lunch.html"
+  },
+  {
+   "id": "d3ginzansake1",
+   "anchorStop": "Ginzan Onsen Street",
+   "name": "Yagihashi Shoten (Yamagata sake)",
+   "nameJp": "八木橋商店",
+   "category": "shopping",
+   "priceTier": "¥¥",
+   "stayMinutes": 15,
+   "legs": [
+    {
+     "mode": "walk",
+     "minutes": 4
+    }
+   ],
+   "note": "Ginzan Shinbata 448, tel 0237-28-2035, 08:30-18:00, no regular closing day. Red-stained pillars either side of the door. CORRECTION: tastings start at 300 yen, not 500 - sake, umeshu and liqueurs - and Ginzan Onsen local sake runs 450-1,890 yen a bottle, direct from Yamagata breweries and wineries.",
+   "latitude": 38.57004167,
+   "longitude": 140.530925,
+   "coordPrecision": "approximate",
+   "timeWindow": "day",
+   "confidence": "high",
+   "confidenceNote": "Hours, phone and prices are from Rurubu cross-checked against the official Ginzan shop directory's phone number; the coordinate is the official Ginzan Onsen geocode standing in for the building.",
+   "source": "https://rurubu.jp/andmore/spot/80004816"
+  },
+  {
+   "id": "d3ginzanmine1",
+   "anchorStop": "Ginzan Onsen Street",
+   "name": "Ginko-do mine tunnel, Nobesawa Silver Mine site",
+   "nameJp": "延沢銀山遺跡 銀鉱洞",
+   "category": "sight",
+   "priceTier": "¥",
+   "stayMinutes": 35,
+   "legs": [
+    {
+     "mode": "walk",
+     "minutes": 15
+    }
+   ],
+   "note": "The thing the name Ginzan actually refers to, and almost nobody on a two-hour stop walks to it: a lit, walkable 17th-century silver working, free, open sunrise to sunset, 15 minutes on foot past the falls. Closed only from first snow to the spring yama-biraki, so it is open on 10 September. Cool and wet inside, which is welcome at 29C, but the approach is the least even ground on the day.",
+   "latitude": 38.57004167,
+   "longitude": 140.530925,
+   "coordPrecision": "approximate",
+   "timeWindow": "day",
+   "confidence": "medium",
+   "confidenceNote": "Access, season, hours and the free entry are from Obanazawa City's page, but no official source gives the tunnel mouth's coordinate, so this is the Ginzan Onsen geocode 15 minutes short of it.",
+   "source": "https://www.city.obanazawa.yamagata.jp/kanko/kankochi/1346"
+  },
+  {
+   "id": "d3ginzanshiro1",
+   "anchorStop": "Ginzan Onsen Street",
+   "name": "Shirogane (smoked dishes, sake, cafe)",
+   "nameJp": "しろがね",
+   "category": "food",
+   "priceTier": "¥¥",
+   "stayMinutes": 30,
+   "legs": [
+    {
+     "mode": "walk",
+     "minutes": 6
+    }
+   ],
+   "note": "Opened 2022 at the far end of the street just before the waterfall path, tel 0237-48-8558, and listed on the official Ginzan shop directory as a smoked-food, local-sake and cafe-menu house. Useful as the far-end waypoint: it is the last thing before the falls, so it is where a group splits between those walking on and those stopping.",
+   "latitude": 38.57004167,
+   "longitude": 140.530925,
+   "coordPrecision": "approximate",
+   "timeWindow": "day",
+   "confidence": "medium",
+   "confidenceNote": "The official Ginzan shop directory gives the name, phone and character but no hours, closing day or prices, and the coordinate is the Ginzan Onsen geocode rather than the building.",
+   "source": "https://www.ginzanonsen.jp/store/"
+  },
+  {
+   "id": "d3ginzanaira1",
+   "anchorStop": "Ginzan Onsen Street",
+   "name": "Airasugena souvenir shop",
+   "nameJp": "あいらすげーな",
+   "category": "shopping",
+   "priceTier": "¥¥",
+   "stayMinutes": 10,
+   "legs": [
+    {
+     "mode": "walk",
+     "minutes": 1
+    }
+   ],
+   "note": "On the official shop directory as the shop at the entrance by Shirogane Bridge, tel 080-7816-8795. Its position is the point: with 35 people on a 2-hour stop, the souvenir stop that works is the one you pass on the way back to the coach, not one 300 m up a 4 m street.",
+   "latitude": 38.57004167,
+   "longitude": 140.530925,
+   "coordPrecision": "approximate",
+   "timeWindow": "day",
+   "confidence": "medium",
+   "confidenceNote": "The official directory gives name, phone and position by the bridge but no hours or prices, and the coordinate is the Ginzan Onsen geocode.",
+   "source": "https://www.ginzanonsen.jp/store/"
+  },
+  {
+   "id": "d3ginzanlunch1",
+   "anchorStop": "Ginzan Onsen Street",
+   "name": "Taisho Roman-kan restaurant (tempura soba)",
+   "nameJp": "大正ろまん館 お食事処",
+   "category": "food",
+   "priceTier": "¥¥",
+   "stayMinutes": 60,
+   "legs": [
+    {
+     "mode": "bus",
+     "minutes": 10
+    }
+   ],
+   "note": "The likeliest home of the app's 12:00 Tempura Soba Set: the only sit-down restaurant at the coach lot, 11:00 to last order 15:00. Tempura mori-soba and tempura kake-soba 1,800 yen, ita-soba 1,400, nishin-soba 1,200, chuka-soba 900; group set meals 2,100-3,000 yen. A produce stand sits at the door - but Obanazawa's famous watermelon ships late July to mid-August and is finished by 10 September.",
+   "latitude": 38.560833,
+   "longitude": 140.520278,
+   "coordPrecision": "approximate",
+   "timeWindow": "day",
+   "confidence": "high",
+   "confidenceNote": "Menu, prices and restaurant hours are from the venue's own site; the coordinate is the Taisho Roman-kan building already verified in the seed, and the assumption that the 12:00 lunch is served here is inference, not app-confirmed.",
+   "source": "https://www.ginzan-taishoromankan.jp/"
+  },
+  {
+   "id": "a69599a57993",
+   "anchorStop": "Zao Fox Village",
+   "name": "Upper free-roam path",
+   "nameJp": "放牧場 上の遊歩道",
+   "category": "sight",
+   "priceTier": "¥¥",
+   "stayMinutes": 45,
+   "legs": [
+    {
+     "mode": "walk",
+     "minutes": 5
+    }
+   ],
+   "note": "Walk it twice, high then low: the foxes move with the sun and the gradient lets you shoot down at eye level without crouching, which the operator forbids because time spent at fox eye level makes them gather and turn aggressive. Gravel and dirt on a slope. At 15:10-16:30 the sun is WSW and low, so the hollow below is side-lit and the path itself is the only shade.",
+   "latitude": 38.041273,
+   "longitude": 140.530611,
+   "coordPrecision": "verified",
+   "timeWindow": "day",
+   "confidence": "high",
+   "confidenceNote": null,
+   "source": "https://discoversendai.travel/places/zao-fox-village/"
+  },
+  {
+   "id": "a2c0560682ba",
+   "anchorStop": "Zao Fox Village",
+   "name": "The hollow, seen from above",
+   "nameJp": "キツネの溜まり場",
+   "category": "sight",
+   "priceTier": "¥¥",
+   "stayMinutes": 25,
+   "legs": [
+    {
+     "mode": "walk",
+     "minutes": 7
+    }
+   ],
+   "note": "Dozens of foxes lying out in the afternoon sun, shot down into from the upper path. SEASONALITY: September is moulting, so the animals are thin and patchy, nothing like the thick winter coats in every photograph of this place - say so before anyone is disappointed. The smell is strong in 29C heat and it gets into fabric.",
+   "latitude": 38.040278,
+   "longitude": 140.531004,
+   "coordPrecision": "approximate",
+   "timeWindow": "day",
+   "confidence": "medium",
+   "confidenceNote": "The hollow is described on the operator's own site but has no published coordinate; this is the seed's estimate inside the enclosure footprint.",
+   "source": "https://zao-fox-village.com/"
+  },
+  {
+   "id": "d3zaogate1",
+   "anchorStop": "Zao Fox Village",
+   "name": "Reception and ticket window",
+   "nameJp": "宮城蔵王キツネ村 受付",
+   "category": "rest",
+   "priceTier": "¥¥",
+   "stayMinutes": 15,
+   "legs": [
+    {
+     "mode": "walk",
+     "minutes": 2
+    }
+   ],
+   "note": "1,500 yen for middle school and up, free below, CASH ONLY - only the shop takes cards. Tel 0224-24-8812, Fukuoka Yatsumiya aza Kawarako 11-3, Shiroishi, at about 590 m altitude. 750 parking spaces. The operator's own hours are 09:00-16:30 with LAST ADMISSION 16:00, which is the whole conflict with a 16:40 departure. This is where the rules briefing for 35 people has to happen.",
+   "latitude": 38.040829,
+   "longitude": 140.53036,
+   "coordPrecision": "approximate",
+   "timeWindow": "day",
+   "confidence": "high",
+   "confidenceNote": "Hours, fee and phone are from the operator's own page; the coordinate is the map point the official Tohoku tourism site embeds for the venue, not an address geocode - Japan's official geocoder resolves the address only to the wrong sub-district.",
+   "source": "https://zao-fox-village.com/"
+  },
+  {
+   "id": "d3zaohug1",
+   "anchorStop": "Zao Fox Village",
+   "name": "Fox holding area (not available at 15:10)",
+   "nameJp": "キツネ抱っこ体験エリア",
+   "category": "sight",
+   "priceTier": "¥¥",
+   "stayMinutes": 10,
+   "legs": [
+    {
+     "mode": "walk",
+     "minutes": 4
+    }
+   ],
+   "note": "Say this on the coach: the fox-holding experience runs TWICE A DAY, at 11:00 and 14:00, about 5 minutes, 1,000 yen cash, and the group arrives at 15:10 - so it is not on the table today. Photography is prohibited in this area, and staff will take a photo on your own phone. Walk the group past it rather than letting 35 people queue at a closed counter.",
+   "latitude": 38.040829,
+   "longitude": 140.53036,
+   "coordPrecision": "approximate",
+   "timeWindow": "day",
+   "confidence": "medium",
+   "confidenceNote": "The 11:00 and 14:00 sessions and the 1,000 yen cash price come from a detailed Japanese visitor guide; the operator's own notice page for this is unreachable from this sandbox, so confirm the times by phone before briefing the group.",
+   "source": "https://www.5ing-myway.com/miyagi-fox-village/"
+  },
+  {
+   "id": "d3zaofeed1",
+   "anchorStop": "Zao Fox Village",
+   "name": "Elevated feeding platform",
+   "nameJp": "エサやり高台",
+   "category": "sight",
+   "priceTier": "¥¥",
+   "stayMinutes": 15,
+   "legs": [
+    {
+     "mode": "walk",
+     "minutes": 6
+    }
+   ],
+   "note": "The one place feeding is allowed: you stand above the enclosure and throw the treats down. The operator's reason for the rule is worth repeating to the group - feeding anywhere else teaches the foxes to jump at people. It is also the best frame of the day for anyone who wants foxes looking up at the camera rather than away from it.",
+   "latitude": 38.040829,
+   "longitude": 140.53036,
+   "coordPrecision": "approximate",
+   "timeWindow": "day",
+   "confidence": "medium",
+   "confidenceNote": "The designated-feeding-area rule and the elevated platform are on official tourism pages, but the price of the fox food and the platform's coordinate are not published anywhere official.",
+   "source": "https://discoversendai.travel/places/zao-fox-village/"
+  },
+  {
+   "id": "d3zaosmall1",
+   "anchorStop": "Zao Fox Village",
+   "name": "Small-animal section",
+   "nameJp": "小動物エリア",
+   "category": "rest",
+   "priceTier": "¥¥",
+   "stayMinutes": 10,
+   "legs": [
+    {
+     "mode": "walk",
+     "minutes": 5
+    }
+   ],
+   "note": "Rabbits, miniature horses, goats and guinea pigs, outside the free-roam enclosure - the answer for anyone in the group who will not walk among loose foxes but does not want to sit in the coach for 80 minutes. Photography is prohibited here as it is at the caged foxes, the enclosure entrance, the holding area and inside the shop.",
+   "latitude": 38.040829,
+   "longitude": 140.53036,
+   "coordPrecision": "approximate",
+   "timeWindow": "day",
+   "confidence": "medium",
+   "confidenceNote": "The animals are listed in the venue's Wikipedia article and the photography ban is from a detailed Japanese visitor guide; the section's exact position on the site is not published.",
+   "source": "https://en.wikipedia.org/wiki/Miyagi_Zao_Fox_Village"
+  },
+  {
+   "id": "f5a65ed2fa48",
+   "anchorStop": "Okuiizaka Anabara Onsen Yoshikawaya",
+   "name": "Saruami-no-Yu & Kamoshika-no-Yu",
+   "nameJp": "露天風呂 さるあみの湯・かもしかの湯",
+   "category": "rest",
+   "priceTier": "¥",
+   "stayMinutes": 45,
+   "legs": [
+    {
+     "mode": "walk",
+     "minutes": 2
+    }
+   ],
+   "note": "Both on 1F, both 14:00 to midnight and again 05:00-10:00, and the men's and women's sides swap between evening and morning - so soak tonight AND before the 07:00 breakfast and you get all four. Saruami is the rock bath over the river; Kamoshika is source-fed and looks at the opposite cliff. Included in the stay.",
+   "latitude": 37.845364,
+   "longitude": 140.436554,
+   "coordPrecision": "verified",
+   "timeWindow": "night",
+   "confidence": "high",
+   "confidenceNote": null,
+   "source": "https://yosikawaya.com/onsen/",
+   "retired": true,
+   "retiredReason": "Superseded on the 4 Sep 2026 app screenshots. Night 3 moved PREFECTURE — from Iizaka Onsen, Fukushima to Zao, Miyagi — and the coach transfer after Zao Fox Village dropped from ~1h 5m/~45 km to ~30 min/~18 km, with check-in pulled from 17:45 to 17:15.",
+   "retiredReplacedBy": "Mercure Miyagi Zao Resort & Spa"
+  },
+  {
+   "id": "95f9f32d67eb",
+   "anchorStop": "Okuiizaka Anabara Onsen Yoshikawaya",
+   "name": "Fukushima beef ceramic-plate grill",
+   "nameJp": "福島牛陶板焼き",
+   "category": "food",
+   "priceTier": "¥¥¥",
+   "stayMinutes": 90,
+   "legs": [
+    {
+     "mode": "walk",
+     "minutes": 1
+    }
+   ],
+   "note": "The centre of the 18:00 kaiseki: Fukushima beef on a hot ceramic plate with a fruit-based sauce. 18:00 is the house's standard dinner seating, not a concession to the group, and check-in officially closes at 18:00 - so a coach delayed by September weather arrives into check-in and dinner at the same moment.",
+   "latitude": 37.845364,
+   "longitude": 140.436554,
+   "coordPrecision": "verified",
+   "timeWindow": "night",
+   "confidence": "medium",
+   "confidenceNote": "The 18:00 dinner time and the address coordinate are from the hotel's own site, but the specific ceramic-plate beef dish comes from the agent's itinerary rather than a published menu for 10 September.",
+   "source": "https://yosikawaya.com/stay/",
+   "retired": true,
+   "retiredReason": "Superseded on the 4 Sep 2026 app screenshots. Night 3 moved PREFECTURE — from Iizaka Onsen, Fukushima to Zao, Miyagi — and the coach transfer after Zao Fox Village dropped from ~1h 5m/~45 km to ~30 min/~18 km, with check-in pulled from 17:45 to 17:15.",
+   "retiredReplacedBy": "Mercure Miyagi Zao Resort & Spa"
+  },
+  {
+   "id": "834cb646605c",
+   "anchorStop": "Okuiizaka Anabara Onsen Yoshikawaya",
+   "name": "Gyoza no Terui, Iizaka branch",
+   "nameJp": "餃子の照井 飯坂本店",
+   "category": "food",
+   "priceTier": "¥¥",
+   "stayMinutes": 60,
+   "legs": [
+    {
+     "mode": "walk",
+     "minutes": 30
+    }
+   ],
+   "note": "Iizakamachi Nishikicho 1-21, tel 024-542-4447, 17:00-21:00 or until the gyoza run out, CLOSED WEDNESDAYS so open tonight, 15 parking spaces. Enban gyoza is a whole pan-shaped disc flipped onto the plate. Realistically a 5-minute taxi each way, not the 30-minute river walk: the hotel shuttle stops at 18:00, so book both taxis before dinner.",
+   "latitude": 37.832935,
+   "longitude": 140.452881,
+   "coordPrecision": "verified",
+   "timeWindow": "night",
+   "confidence": "high",
+   "confidenceNote": "Coordinate is the official geocode of Iizakamachi Nishikicho block 1, which is the shop's own block; hours, phone and closing day are from the restaurant's own site.",
+   "source": "https://www.gyouza-terui.com/iizaka/",
+   "retired": true,
+   "retiredReason": "Superseded on the 4 Sep 2026 app screenshots. Night 3 moved PREFECTURE — from Iizaka Onsen, Fukushima to Zao, Miyagi — and the coach transfer after Zao Fox Village dropped from ~1h 5m/~45 km to ~30 min/~18 km, with check-in pulled from 17:45 to 17:15.",
+   "retiredReplacedBy": "Mercure Miyagi Zao Resort & Spa"
+  },
+  {
+   "id": "9b69412c0e19",
+   "anchorStop": "Okuiizaka Anabara Onsen Yoshikawaya",
+   "name": "Totsuna-bashi, floodlit",
+   "nameJp": "十綱橋",
+   "category": "sight",
+   "priceTier": "¥",
+   "stayMinutes": 20,
+   "legs": [
+    {
+     "mode": "walk",
+     "minutes": 35
+    }
+   ],
+   "note": "A 51.7 m steel arch of 1915, floodlit nightly since 2009, free and open at any hour, spanning the Surikami gorge by Iizaka Onsen Station. The best photograph in the area and it still works in rain. 2.7 km from the hotel, so a taxi: the shuttle stops at 18:00 and there is no lit footpath most of the way.",
+   "latitude": 37.830667,
+   "longitude": 140.455111,
+   "coordPrecision": "verified",
+   "timeWindow": "24h",
+   "confidence": "high",
+   "confidenceNote": null,
+   "source": "https://www.f-kankou.jp/spot/33024",
+   "retired": true,
+   "retiredReason": "Superseded on the 4 Sep 2026 app screenshots. Night 3 moved PREFECTURE — from Iizaka Onsen, Fukushima to Zao, Miyagi — and the coach transfer after Zao Fox Village dropped from ~1h 5m/~45 km to ~30 min/~18 km, with check-in pulled from 17:45 to 17:15.",
+   "retiredReplacedBy": "Mercure Miyagi Zao Resort & Spa"
+  },
+  {
+   "id": "81f119796db4",
+   "anchorStop": "Okuiizaka Anabara Onsen Yoshikawaya",
+   "name": "Sabako-yu",
+   "nameJp": "鯖湖湯",
+   "category": "rest",
+   "priceTier": "¥",
+   "stayMinutes": 40,
+   "legs": [
+    {
+     "mode": "walk",
+     "minutes": 32
+    }
+   ],
+   "note": "Iizaka's icon, 400 yen, 06:00-21:00 with last entry 20:40, closed Mondays so open tonight. Caption it honestly: long called Japan's oldest wooden bathhouse, but today's hut is a faithful 1993 rebuild in the Meiji form. The water arrives at 50-70C and defeats most first-timers - Harai-yu by the bridge has both a hot and a warm tub and is the better first bath.",
+   "latitude": 37.8321039,
+   "longitude": 140.4526126,
+   "coordPrecision": "verified",
+   "timeWindow": "night",
+   "confidence": "high",
+   "confidenceNote": null,
+   "source": "https://iizaka.com/spa/",
+   "retired": true,
+   "retiredReason": "Superseded on the 4 Sep 2026 app screenshots. Night 3 moved PREFECTURE — from Iizaka Onsen, Fukushima to Zao, Miyagi — and the coach transfer after Zao Fox Village dropped from ~1h 5m/~45 km to ~30 min/~18 km, with check-in pulled from 17:45 to 17:15.",
+   "retiredReplacedBy": "Mercure Miyagi Zao Resort & Spa"
+  },
+  {
+   "id": "d3yoshbath1",
+   "anchorStop": "Okuiizaka Anabara Onsen Yoshikawaya",
+   "name": "Toji-no-Yu & Benten-no-Yu indoor baths",
+   "nameJp": "大浴場 藤太の湯・弁天の湯",
+   "category": "rest",
+   "priceTier": "¥",
+   "stayMinutes": 40,
+   "legs": [
+    {
+     "mode": "walk",
+     "minutes": 2
+    }
+   ],
+   "note": "NEW: the two large indoor baths on 1F, easily missed because the hotel markets the open-airs. Same hours, 14:00 to midnight and 05:00-10:00, same evening/morning gender swap. Toji-no-Yu is the panoramic one; Benten-no-Yu has both a stone and a hinoki tub. Between these and the two rotenburo the property is Fukushima's largest bath complex, and it is all included.",
+   "latitude": 37.845364,
+   "longitude": 140.436554,
+   "coordPrecision": "verified",
+   "timeWindow": "night",
+   "confidence": "high",
+   "confidenceNote": null,
+   "source": "https://yosikawaya.com/onsen/",
+   "retired": true,
+   "retiredReason": "Superseded on the 4 Sep 2026 app screenshots. Night 3 moved PREFECTURE — from Iizaka Onsen, Fukushima to Zao, Miyagi — and the coach transfer after Zao Fox Village dropped from ~1h 5m/~45 km to ~30 min/~18 km, with check-in pulled from 17:45 to 17:15.",
+   "retiredReplacedBy": "Mercure Miyagi Zao Resort & Spa"
+  },
+  {
+   "id": "d3yoshkashi1",
+   "anchorStop": "Okuiizaka Anabara Onsen Yoshikawaya",
+   "name": "Yuno private bath (barrier-free)",
+   "nameJp": "貸切風呂 湯野〜YUNO〜",
+   "category": "rest",
+   "priceTier": "¥¥",
+   "stayMinutes": 45,
+   "legs": [
+    {
+     "mode": "walk",
+     "minutes": 2
+    }
+   ],
+   "note": "NEW and the answer for anyone in a 35-person group who will not undress in a shared bath: a reservable private bath with an indoor and an outdoor section, wheelchair accessible, 06:00-23:00 in hourly slots. Book it at check-in - 17:45 leaves the 19:00-22:00 slots and every 06:00-07:00 slot before the 08:30 coach.",
+   "latitude": 37.845364,
+   "longitude": 140.436554,
+   "coordPrecision": "verified",
+   "timeWindow": "night",
+   "confidence": "high",
+   "confidenceNote": "Hours, the hourly booking and the barrier-free layout are on the hotel's own bath page; the hire charge is not published there.",
+   "source": "https://yosikawaya.com/onsen/",
+   "retired": true,
+   "retiredReason": "Superseded on the 4 Sep 2026 app screenshots. Night 3 moved PREFECTURE — from Iizaka Onsen, Fukushima to Zao, Miyagi — and the coach transfer after Zao Fox Village dropped from ~1h 5m/~45 km to ~30 min/~18 km, with check-in pulled from 17:45 to 17:15.",
+   "retiredReplacedBy": "Mercure Miyagi Zao Resort & Spa"
+  },
+  {
+   "id": "d3yoshlounge1",
+   "anchorStop": "Okuiizaka Anabara Onsen Yoshikawaya",
+   "name": "Book lounge Fukurou",
+   "nameJp": "ブックラウンジ「ふくろう」",
+   "category": "rest",
+   "priceTier": "¥",
+   "stayMinutes": 60,
+   "legs": [
+    {
+     "mode": "walk",
+     "minutes": 2
+    }
+   ],
+   "note": "4,000 manga titles, and the hotel's own site gives the hours as 15:00-23:00 AND 07:00-10:00 - the morning session is the part the briefing misses, and it covers the gap between the 07:00 breakfast and the 08:30 coach. Anabara has no lit street and no shopping arcade, so after an 18:00 dinner the hotel genuinely is the evening.",
+   "latitude": 37.845364,
+   "longitude": 140.436554,
+   "coordPrecision": "verified",
+   "timeWindow": "night",
+   "confidence": "high",
+   "confidenceNote": null,
+   "source": "https://yosikawaya.com/",
+   "retired": true,
+   "retiredReason": "Superseded on the 4 Sep 2026 app screenshots. Night 3 moved PREFECTURE — from Iizaka Onsen, Fukushima to Zao, Miyagi — and the coach transfer after Zao Fox Village dropped from ~1h 5m/~45 km to ~30 min/~18 km, with check-in pulled from 17:45 to 17:15.",
+   "retiredReplacedBy": "Mercure Miyagi Zao Resort & Spa"
+  },
+  {
+   "id": "d3yoshshop1",
+   "anchorStop": "Okuiizaka Anabara Onsen Yoshikawaya",
+   "name": "Yoshikawaya 3F souvenir shop",
+   "nameJp": "吉川屋 3階売店",
+   "category": "shopping",
+   "priceTier": "¥¥",
+   "stayMinutes": 20,
+   "legs": [
+    {
+     "mode": "walk",
+     "minutes": 2
+    }
+   ],
+   "note": "NEW, and it removes a taxi from the plan: the hotel's own 3F shop stocks the Iizaka radium eggs, akabeko, Kitakata ramen, gyutan and cherry sweets. Nobody needs to go to Iizaka to buy the local souvenir - which matters when check-in is 17:45, dinner is 18:00 and the shuttle has already stopped.",
+   "latitude": 37.845364,
+   "longitude": 140.436554,
+   "coordPrecision": "verified",
+   "timeWindow": "night",
+   "confidence": "medium",
+   "confidenceNote": "The hotel's own page lists the shop, its floor and what it stocks, but publishes neither its opening hours nor any prices.",
+   "source": "https://yosikawaya.com/stay/",
+   "retired": true,
+   "retiredReason": "Superseded on the 4 Sep 2026 app screenshots. Night 3 moved PREFECTURE — from Iizaka Onsen, Fukushima to Zao, Miyagi — and the coach transfer after Zao Fox Village dropped from ~1h 5m/~45 km to ~30 min/~18 km, with check-in pulled from 17:45 to 17:15.",
+   "retiredReplacedBy": "Mercure Miyagi Zao Resort & Spa"
+  }
+ ],
+ "mustSee": [
+  {
+   "id": "1af5a2af298f",
+   "anchorStop": "Ginzan Onsen Street",
+   "title": "Shirogane Bridge — THE sub-group banner photo spot",
+   "nameJp": "白銀橋",
+   "tag": "DAY 3",
+   "summary": "Mission 1. The designated viewpoint at the street entrance and the only level ground wide enough for 35 people plus a 240x100 cm banner, because the street beyond is 4-5 m wide with the river down the middle. Two rows of 17-18 along the deck, banner at hip height across the front row.",
+   "whereToFind": "Group ON the bridge deck, two rows of 17-18 along its length, facing UP-street (SSE, towards the falls). Photographer stands on the right bank about 8-10 m UP-STREAM of the bridge, shooting back NNW down-street. That puts the 09:35 sun (SE, az 133 deg, alt 47 deg) over the photographer's left shoulder, so faces and the banner are frontally lit and the banner text reads. Banner-holders kneel at the ends to keep the top edge level. SECOND FRAME, not the first: swap ends, photographer on the entrance apron shooting SSE up-street for the postcard double row of ryokan with Notoya's tower on the right - but the sun is then 20 deg off the street axis in front of the camera, so the group is back-lit and the banner goes dark without fill flash. Take the lit-banner frame first: by 11:00 the day-trip coaches make this bridge the worst choke point on the street.",
+   "latitude": 38.57038,
+   "longitude": 140.530397,
+   "coordPrecision": "verified",
+   "confidence": "high",
+   "confidenceNote": null,
+   "source": "https://www.ginzanonsen.jp/ginzan/walk.html"
+  },
+  {
+   "id": "600e8bb20bfb",
+   "anchorStop": "Ginzan Onsen Street",
+   "title": "Shirogane Falls deck",
+   "nameJp": "白銀の滝",
+   "tag": "DAY 3",
+   "summary": "The wet-weather and crowded-bridge fallback: a 22 m fall splitting in two, near-empty at 10:00, close enough to feel the spray. The official Takimi course prices the round trip at about 0.8 km and 20 minutes. Tight platform, so plan two rows and a tighter crop than the bridge allows.",
+   "whereToFind": "On the viewing deck at the foot of the fall, group backs to the water with the fall filling the frame behind them, photographer with their back to the approach path. The deck is narrow, so this is two rows of 17-18 shoulder to shoulder and a banner folded to about 180 cm, not the full 240. The gorge here is shaded until late morning while the sky above is bright, so meter for faces and let the sky go - and keep the lens hood on, because the spray reaches the deck. Slick wet timber and stone: nobody stands on the outer edge.",
+   "latitude": 38.572292,
+   "longitude": 140.532444,
+   "coordPrecision": "verified",
+   "confidence": "high",
+   "confidenceNote": null,
+   "source": "https://www.ginzanonsen.jp/ginzan/walk.html"
+  },
+  {
+   "id": "8887ca393b23",
+   "anchorStop": "Ginzan Onsen Street",
+   "title": "Notoya Ryokan facade",
+   "nameJp": "能登屋旅館",
+   "tag": "DAY 3",
+   "summary": "The building on every Ginzan postcard: four storeys of kote-e plasterwork relief with a rooftop lookout tower. Shoot from the opposite bank, the only place the whole facade fits. Best 09:45-10:15, once the banner frame is safely taken.",
+   "whereToFind": "Stand on the LEFT bank walkway directly opposite the building, back against the shopfronts, and shoot across the river - the street is 4-5 m wide, so that is the full working distance and a phone's wide lens is the right tool. For the tower to clear the roofline, frame vertically. With the sun SE and high, the river-facing facade is side-lit and the deep balcony recesses go black; the plasterwork reads best if you wait for the moment the sun is off the lower storeys. No group shot here: there is no room for 35 people and it blocks the street.",
+   "latitude": 38.570724,
+   "longitude": 140.530865,
+   "coordPrecision": "verified",
+   "confidence": "high",
+   "confidenceNote": null,
+   "source": "https://www.ginzanonsen.jp/ginzan/walk.html"
+  },
+  {
+   "id": "6cd36c968da1",
+   "anchorStop": "Zao Fox Village",
+   "title": "Zao Fox Village — upper path",
+   "nameJp": "蔵王キツネ村 上の遊歩道",
+   "tag": "DAY 3",
+   "summary": "The gradient is the whole point: from the upper path you shoot DOWN into the hollow where the foxes lie out, getting eye-level frames without crouching, which the operator forbids because time at fox eye level makes them gather and turn aggressive. Best in the first 30 minutes, 15:10-15:40.",
+   "whereToFind": "On the upper path at the point where it runs along the rim of the hollow, feet on the path, elbows braced on your own knees while STANDING - never kneeling, never sitting. Shoot downhill across the slope, not along it, so the sun at WSW alt 31 deg rakes across the animals instead of straight into the lens. Keep walking between frames: the rule the staff actually enforce is that you do not stop and settle. Nothing dangling from wrist or bag, and no food or drink in your hands. Photography is prohibited at the enclosure entrance, at the caged and resting foxes, in the holding area, in the small-animal section and inside the shop.",
+   "latitude": 38.041273,
+   "longitude": 140.530611,
+   "coordPrecision": "verified",
+   "confidence": "high",
+   "confidenceNote": null,
+   "source": "https://discoversendai.travel/places/zao-fox-village/"
+  },
+  {
+   "id": "d3mustsee01",
+   "anchorStop": "Ginzan Onsen Street",
+   "title": "Street-entrance apron by Warashiyu (和楽足湯) — banner fallback",
+   "nameJp": "銀山温泉街入口 和楽足湯前",
+   "tag": "DAY 3",
+   "summary": "The insurance policy for Mission 1. Shirogane Bridge is the only wide flat ground ON the street, and at 09:30 it is also the single point every arriving coach party crosses. If it is occupied, the other flat open ground is the apron at the street entrance where the footbath, the information office and the shuttle stop sit together. NAME: 和楽足湯 is read わらしゆ — romanised WARASHIYU, a compression pun. 'Warashiyu (和楽足湯)' is the naive character-by-character reading and is wrong; Obanazawa City prints the furigana.",
+   "whereToFind": "On the apron between Warashiyu (和楽足湯) and the head of the street, group in two rows with their backs to the street so the timber shopfronts and the green hillside close the frame, photographer backed up towards the car park. Sun SE and high, so it lands frontally on the group here too and the banner reads. It is a working access point - the shuttle pulls in and the footbath is in use from 06:00 - so this is a two-minute frame, taken and cleared, not a staging area.",
+   "latitude": 38.57004167,
+   "longitude": 140.530925,
+   "coordPrecision": "verified",
+   "confidence": "medium",
+   "confidenceNote": "The coordinate is the official geocode of Ginzan Onsen and the footbath, information office and shuttle stop are all confirmed here, but no official plan gives the apron's usable width, so whether 35 people plus a 240 cm banner actually fit is unverified.",
+   "source": "https://www.city.obanazawa.yamagata.jp/kanko/kankochi/1346"
+  }
+ ],
+ "shopping": [
+  {
+   "id": "f3d29551b6bd",
+   "anchorStop": "Ginzan Onsen Street",
+   "name": "Karinto-manju (Meiyu-an)",
+   "nameJp": "かりんとう饅頭",
+   "placeLabel": "Kashidokoro Meiyu-an, beside Shirogane Bridge, Ginzan Onsen Street (08:00-17:30)",
+   "estimate": 900,
+   "note": "CORRECTION: the maker's own shop now lists 6 for 900 yen, 10 for 1,470, 12 for 1,760, 16 for 2,330 - the 790 yen box in the app is stale. And it is NOT shelf-stable: the boxed product is frozen, 90 days at -18C and only 3 days once thawed, so it will not survive five more days on a coach and a flight to Malaysia. Buy it warm from the counter and eat it here.",
+   "latitude": 38.571009,
+   "longitude": 140.530397,
+   "coordPrecision": "approximate",
+   "confidence": "high",
+   "confidenceNote": "Prices and the frozen 90-day shelf life are from the maker's own online shop; the counter price at the Ginzan shop itself is not published, and the coordinate is the seed's street-level estimate.",
+   "source": "https://www.meiyuu.com/view/item/000000000012"
+  },
+  {
+   "id": "06a9959f36e3",
+   "anchorStop": "Ginzan Onsen Street",
+   "name": "Yagihashi Shoten — Yamagata jizake",
+   "nameJp": "八木橋商店 地酒",
+   "placeLabel": "Yagihashi Shoten, Ginzan Shinbata 448, Ginzan Onsen Street (08:30-18:00, no closing day)",
+   "estimate": 1200,
+   "note": "CORRECTION: tasting starts at 300 yen, not 500 - sake, umeshu and liqueurs - and Ginzan Onsen local sake runs 450-1,890 yen a bottle, direct from Yamagata breweries. Survives the flight, but only in checked baggage: a bottle is over the 100 ml cabin limit, and 25 kg is the allowance for five more days of shopping. Buy it on day 3 only if it goes straight into the case.",
+   "latitude": 38.57004167,
+   "longitude": 140.530925,
+   "coordPrecision": "approximate",
+   "confidence": "high",
+   "confidenceNote": "Hours, phone and the 300 yen tasting and 450-1,890 yen bottle range are from Rurubu cross-checked against the official Ginzan shop directory; the 1,200 yen estimate is a mid-range bottle, and the coordinate is the Ginzan Onsen geocode.",
+   "source": "https://rurubu.jp/andmore/spot/80004816"
+  },
+  {
+   "id": "6ef4a37e031c",
+   "anchorStop": "Zao Fox Village",
+   "name": "Entrance shop fox goods",
+   "nameJp": "宮城蔵王キツネ村 売店",
+   "placeLabel": "Zao Fox Village entrance shop, by reception",
+   "estimate": 1000,
+   "note": "The shop is the only counter here that takes cards - the 1,500 yen admission is cash. Plush foxes and keyrings are the group buy and they fly home fine. Two warnings: the shop also stocks REAL FUR, which some colleagues will not want to be handed, and photography inside is prohibited. It shuts with the park at 16:30, so shop before the last circuit, not after.",
+   "latitude": 38.040829,
+   "longitude": 140.53036,
+   "coordPrecision": "approximate",
+   "confidence": "medium",
+   "confidenceNote": "The card acceptance, the cash-only admission and the photography ban are sourced, but no price list is published for this shop - the 1,000 yen figure is a per-person budgeting allowance, not a quoted price.",
+   "source": "https://www.5ing-myway.com/miyagi-fox-village/"
+  },
+  {
+   "id": "f37a89859d00",
+   "anchorStop": "Okuiizaka Anabara Onsen Yoshikawaya",
+   "name": "Aberu Shoten radium eggs",
+   "nameJp": "阿部留商店 ラヂウム玉子",
+   "placeLabel": "Aberu Shoten, Iizakamachi Yuno aza Hashimoto 5, two minutes from Iizaka Onsen Station (08:00-19:00)",
+   "estimate": 980,
+   "note": "980 yen for a 10-egg box of the red kind, from the maker's own shop, tel 024-542-2680. A Taisho-era accident: eggs left in the spring came out with the white still runny, and a doctor's remark about radium in the water named them. DO NOT FLY THESE HOME: 2 weeks shelf life, cool-shipped in summer, and a soft-set egg is not something to carry through Narita. Eat them here or buy them at the hotel's own 3F shop.",
+   "latitude": 37.8297,
+   "longitude": 140.456131,
+   "coordPrecision": "verified",
+   "confidence": "high",
+   "confidenceNote": "Coordinate is the official geocode of the shop's own address, Iizakamachi Yuno Hashimoto 5; the closed-Tuesdays claim in the briefing is NOT stated on the shop's own site.",
+   "source": "https://abetome.com/item/",
+   "retired": true,
+   "retiredReason": "Superseded on the 4 Sep 2026 app screenshots. Night 3 moved PREFECTURE — from Iizaka Onsen, Fukushima to Zao, Miyagi — and the coach transfer after Zao Fox Village dropped from ~1h 5m/~45 km to ~30 min/~18 km, with check-in pulled from 17:45 to 17:15.",
+   "retiredReplacedBy": "Mercure Miyagi Zao Resort & Spa"
+  },
+  {
+   "id": "d3shopcurry1",
+   "anchorStop": "Ginzan Onsen Street",
+   "name": "Haikara-san no Curry Pan",
+   "nameJp": "はいからさんのカリーパン",
+   "placeLabel": "Kashidokoro Meiyu-an, beside Shirogane Bridge — the original shop closed to relocate",
+   "estimate": 250,
+   "note": "Ginzan's famous curry bread, and the reason people walk past Meiyu-an's window without finding it: the original Haikara-san shop closed to relocate and the maker's own site confirms the line is now sold at Meiyu-an, 08:00-17:30. Eaten hot on the spot in the first hour of the stop. Does not travel - not to the coach, let alone to Malaysia.",
+   "latitude": 38.571009,
+   "longitude": 140.530397,
+   "coordPrecision": "approximate",
+   "confidence": "medium",
+   "confidenceNote": "Meiyu-an's own page confirms it stocks the curry pan but publishes no price, so the 250 yen is the widely reported figure rather than a quoted one.",
+   "source": "https://www.meiyuu.com/view/page/ginzan-meiyu"
+  },
+  {
+   "id": "d3shophotel1",
+   "anchorStop": "Okuiizaka Anabara Onsen Yoshikawaya",
+   "name": "Radium eggs and akabeko at the hotel shop",
+   "nameJp": "吉川屋 3階売店 ラヂウム玉子・赤べこ",
+   "placeLabel": "Yoshikawaya 3F souvenir shop, in the hotel",
+   "estimate": 1000,
+   "note": "The practical Fukushima souvenir stop for this trip: the hotel's own 3F shop stocks the Iizaka radium eggs, akabeko, Kitakata ramen, gyutan and cherry sweets. Check-in is 17:45 and dinner 18:00, the shuttle has stopped and Anabara has no shopping street - so this is the only shop anyone will actually reach. Akabeko and the dry goods fly home; the eggs do not.",
+   "latitude": 37.845364,
+   "longitude": 140.436554,
+   "coordPrecision": "verified",
+   "confidence": "medium",
+   "confidenceNote": "The hotel's own page lists the shop and its stock but no prices or hours - 1,000 yen is a per-person allowance benchmarked on Aberu Shoten's 980 yen ten-egg box.",
+   "source": "https://yosikawaya.com/stay/",
+   "retired": true,
+   "retiredReason": "Superseded on the 4 Sep 2026 app screenshots. Night 3 moved PREFECTURE — from Iizaka Onsen, Fukushima to Zao, Miyagi — and the coach transfer after Zao Fox Village dropped from ~1h 5m/~45 km to ~30 min/~18 km, with check-in pulled from 17:45 to 17:15.",
+   "retiredReplacedBy": "Mercure Miyagi Zao Resort & Spa"
+  }
+ ],
+ "essentials": {
+  "Ginzan Onsen Street": {
+   "hours": {
+    "mon": [
+     [
+      "00:00",
+      "23:59"
+     ]
+    ],
+    "tue": [
+     [
+      "00:00",
+      "23:59"
+     ]
+    ],
+    "wed": [
+     [
+      "00:00",
+      "23:59"
+     ]
+    ],
+    "thu": [
+     [
+      "00:00",
+      "23:59"
+     ]
+    ],
+    "fri": [
+     [
+      "00:00",
+      "23:59"
+     ]
+    ],
+    "sat": [
+     [
+      "00:00",
+      "23:59"
+     ]
+    ],
+    "sun": [
+     [
+      "00:00",
+      "23:59"
+     ]
+    ]
+   },
+   "closedNote": "The street itself is a public road, car-free, open at any hour and free. The shops are not: Meiyu-an 08:00-17:30 (closed only 31 Dec pm), Yagihashi Shoten 08:30-18:00 (no closing day), Nogawa Toufuya from 08:30 until the handmade batch sells out, Izunohana 11:00-18:00 CLOSED WEDNESDAYS, Warashiyu (和楽足湯) 06:00-22:00 free. At 09:30-11:30 on a Thursday everything on this list is open.",
+   "lastAdmission": null,
+   "seasonFrom": null,
+   "seasonTo": null,
+   "groupRate": "Official Ginzan street guide: 2 hours, 7,000 yen per guide, booked through Obanazawa City Tourism and Products Association on 0237-23-4567 at least two weeks ahead. Two hours is exactly this stop's length.",
+   "phone": "0237-28-3933",
+   "phoneNote": "Ginzan Onsen tourist information office. For the guided walk, group arrangements and coach questions the number is Obanazawa City Tourism and Products Association, 0237-23-4567, 09:00-17:00. Taisho Roman-kan itself is 0237-53-6727.",
+   "website": "https://www.ginzanonsen.jp/",
+   "tickets": "No admission anywhere. The street, Shirogane Bridge, Warashiyu (和楽足湯) footbath, Shirogane Falls and the Ginko-do mine tunnel are all free. Carry cash: Nogawa Toufuya is cash only and the street's stalls are small-note businesses. SEASONALITY - September Ginzan is a wall of deep green, dark timber and grey-green river. No snow, no autumn colour, no illumination in the photographs anyone has seen of this place.",
+   "transport": "No vehicle of any size enters the onsen street, coaches included, so the coach waits at Taisho Roman-kan (10 coach bays plus 100 cars, lot 08:30-17:30, building 09:00-17:30) or the shared car park at the street entrance. A year-round on-demand shuttle links the two: 500 yen all day, first out from Roman-kan 09:00, last out 17:00, last back from Ginzan 18:00, operated by Ginzanso on 080-9283-2268. Separately, the winter mycar-regulation park-and-ride ENDED 1 March 2026 with no 2026-27 period announced - see notes3.md.",
+   "confidence": "high",
+   "confidenceNote": null,
+   "source": "https://obanazawa-kankou.jp/ginzan-onsen/"
+  },
+  "Zao Fox Village": {
+   "hours": {
+    "mon": [
+     [
+      "09:00",
+      "16:30"
+     ]
+    ],
+    "tue": [
+     [
+      "09:00",
+      "16:30"
+     ]
+    ],
+    "wed": null,
+    "thu": [
+     [
+      "09:00",
+      "16:30"
+     ]
+    ],
+    "fri": [
+     [
+      "09:00",
+      "16:30"
+     ]
+    ],
+    "sat": [
+     [
+      "09:00",
+      "16:30"
+     ]
+    ],
+    "sun": [
+     [
+      "09:00",
+      "16:30"
+     ]
+    ]
+   },
+   "closedNote": "Closed every WEDNESDAY, with the operator's stated exceptions: February, August, the May holiday run and Wednesdays that fall on or beside a national holiday. Thursday 10 September 2026 is a normal open day - confirmed. CONFLICT: the operator's own page gives summer hours 09:00-16:30 with last admission 16:00, but the app schedules 15:10-16:40, so the printed plan overruns closing by 10 minutes and the real stop is 80 minutes, not 90. Winter hours are 09:00-16:00, last admission 15:30.",
+   "lastAdmission": "16:00",
+   "seasonFrom": "03-16",
+   "seasonTo": "11-30",
+   "groupRate": "No group rate is published. Flat 1,500 yen for middle school and up, free below, CASH ONLY - for 35 people that is 52,500 yen in notes, and the only counter here that takes cards is the shop. No reservation is required or accepted.",
+   "phone": "0224-24-8812",
+   "phoneNote": "The operator's own number, on both the venue site and Shiroishi City's tourism pages. Worth one call before the trip to confirm the 16:30 close and the 16:00 last admission against the coach's 15:10 arrival.",
+   "website": "http://zao-fox-village.com/",
+   "tickets": "1,500 yen adult (middle school and up), free for elementary school and below, cash at the window. One adult must accompany each child of elementary age or below. No pets. The fox-holding experience runs only at 11:00 and 14:00 at 1,000 yen cash, so it is unavailable to a group arriving at 15:10.",
+   "transport": "Fukuoka Yatsumiya aza Kawarako 11-3, Shiroishi, Miyagi, at about 590 m altitude - 130 km and about 2h10 from Ginzan per the app. 750 parking spaces on site. About 25 minutes by taxi from JR Shiroishi or Shiroishi-Zao; the Castle-kun community bus runs TUESDAYS AND FRIDAYS ONLY, so there is no public bus on a Thursday and the coach is the only way in and out.",
+   "confidence": "medium",
+   "confidenceNote": "Hours, last admission, fee, closing day and phone are from the operator's own page cross-checked against the Zao Town tourism association; the exact summer/winter switch dates of 16 March and 30 November come from secondary listings, as the operator publishes the two hour sets without dates.",
+   "source": "https://zao-fox-village.com/"
+  },
+  "Okuiizaka Anabara Onsen Yoshikawaya": {
+   "hours": {
+    "mon": [
+     [
+      "00:00",
+      "23:59"
+     ]
+    ],
+    "tue": [
+     [
+      "00:00",
+      "23:59"
+     ]
+    ],
+    "wed": [
+     [
+      "00:00",
+      "23:59"
+     ]
+    ],
+    "thu": [
+     [
+      "00:00",
+      "23:59"
+     ]
+    ],
+    "fri": [
+     [
+      "00:00",
+      "23:59"
+     ]
+    ],
+    "sat": [
+     [
+      "00:00",
+      "23:59"
+     ]
+    ],
+    "sun": [
+     [
+      "00:00",
+      "23:59"
+     ]
+    ]
+   },
+   "closedNote": "Reception is staffed around the clock but CHECK-IN OFFICIALLY RUNS 15:00-18:00 and the hotel asks to be telephoned if you will be later. The app's 17:45 arrival leaves 15 minutes in that window before an 18:00 dinner, so a coach delayed by September weather arrives into check-in and the kaiseki at the same time - tell the hotel from the road. Baths 14:00-24:00 and 05:00-10:00, gender-swapped; book lounge 15:00-23:00 and 07:00-10:00; private bath 06:00-23:00.",
+   "lastAdmission": "18:00",
+   "seasonFrom": null,
+   "seasonTo": null,
+   "groupRate": "Purpose-built for groups: a 529 sq m convention hall divisible in three (450 theatre, 240-400 at round tables), the 320-mat Tenshou banquet hall (450 dining), the 88-mat Hagoromo hall (100 dining) and six 16-20 mat Hana-no-Sho private rooms at 15-24 people each. Screens, projectors, microphones and three karaoke rooms. 35 people sit comfortably in Hagoromo or across two Hana-no-Sho rooms. Rates only by phone.",
+   "phone": "024-542-2226",
+   "phoneNote": "The hotel's own line, answered 09:00-18:00 - which closes exactly as the group arrives, so any call about a late coach has to be made from the road before 18:00.",
+   "website": "https://yosikawaya.com/",
+   "tickets": "Check-in 15:00-18:00, check-out 10:00. Dinner 18:00, breakfast 07:00 - note the app prints breakfast at 07:30, half an hour after the house time, and the coach leaves at 08:30. Full name is Kamuromi-no-Sato Anabara Onsen Takumi-no-Kokoro Yoshikawaya.",
+   "transport": "960-0282 Fukushima-shi, Iizakamachi Yuno aza Shinyu 6. 150 parking spaces, free. About 5 minutes to Iizaka Onsen Station: scheduled pick-ups from the station at 14:50 and 15:15, on-call after that, but PICK-UPS STOP AT 18:00; the return runs 07:30-11:00 every 30 minutes by reservation. Anabara is NOT Iizaka Onsen - it is a six-ryokan pocket 2 km upstream with one public bath and no shopping street. That bath, Tennoji Anabara-yu, is 230 m east: per Fukushima City it is 13:00-21:00 on Thursday and 06:00-13:00 on Friday, closed Wednesdays, 400 yen for age 12 and over, last entry 20 minutes before closing, tel 024-542-0400.",
+   "confidence": "high",
+   "confidenceNote": null,
+   "source": "https://yosikawaya.com/access/"
+  }
+ },
+ "subRoutes": [
+  {
+   "id": "d3sub1",
+   "anchorStop": "Ginzan Onsen Street",
+   "title": "Banner first, then the falls, then regroup at the footbath",
+   "startMinutes": 570,
+   "deadlineMinutes": 685,
+   "placeIDs": [
+    "5d4bd6e6d80f",
+    "6dc22610c311",
+    "cb93fee33c10",
+    "843768da18f4",
+    "70e89c03f9e4"
+   ],
+   "steps": [
+    {
+     "placeID": "5d4bd6e6d80f",
+     "label": "Shirogane Bridge — Mission 1 banner photo",
+     "arrive": "09:30",
+     "stayMinutes": 20,
+     "walkMinutesToNext": 3
+    },
+    {
+     "placeID": "6dc22610c311",
+     "label": "Notoya Ryokan from the opposite bank",
+     "arrive": "09:53",
+     "stayMinutes": 12,
+     "walkMinutesToNext": 5
+    },
+    {
+     "placeID": "cb93fee33c10",
+     "label": "Shirogane Falls deck — the fallback frame",
+     "arrive": "10:10",
+     "stayMinutes": 25,
+     "walkMinutesToNext": 6
+    },
+    {
+     "placeID": "843768da18f4",
+     "label": "Nogawa Toufuya — namaage, 250 yen, cash",
+     "arrive": "10:41",
+     "stayMinutes": 12,
+     "walkMinutesToNext": 4
+    },
+    {
+     "placeID": "70e89c03f9e4",
+     "label": "Warashiyu footbath — regroup and headcount",
+     "arrive": "10:57",
+     "stayMinutes": 25,
+     "walkMinutesToNext": 1
+    }
+   ],
+   "walkMinutes": 19,
+   "note": "The order is the whole trick. The banner frame is taken in the first 20 minutes while Shirogane Bridge is at its quietest; by 11:00 the day-trip coaches make it the worst choke point on the street. Deadline is 11:25, not 12:00: the app's 2-hour tour ends 11:30 and lunch at 12:00 is a coach transfer away.",
+   "confidence": "high",
+   "confidenceNote": null,
+   "source": "https://www.ginzanonsen.jp/ginzan/walk.html"
+  },
+  {
+   "id": "d3sub2",
+   "anchorStop": "Ginzan Onsen Street",
+   "title": "The mine-tunnel variant, for the fast walkers",
+   "startMinutes": 585,
+   "deadlineMinutes": 685,
+   "placeIDs": [
+    "d3ginzanentry1",
+    "cb93fee33c10",
+    "d3ginzanmine1",
+    "70e89c03f9e4"
+   ],
+   "steps": [
+    {
+     "placeID": "d3ginzanentry1",
+     "label": "Street entrance — split off after the banner photo",
+     "arrive": "09:45",
+     "stayMinutes": 0,
+     "walkMinutesToNext": 8
+    },
+    {
+     "placeID": "cb93fee33c10",
+     "label": "Shirogane Falls — pass through, do not linger",
+     "arrive": "09:53",
+     "stayMinutes": 7,
+     "walkMinutesToNext": 8
+    },
+    {
+     "placeID": "d3ginzanmine1",
+     "label": "Ginko-do mine tunnel — lit, free, open in September",
+     "arrive": "10:08",
+     "stayMinutes": 25,
+     "walkMinutesToNext": 15
+    },
+    {
+     "placeID": "70e89c03f9e4",
+     "label": "Warashiyu footbath — regroup with everyone else",
+     "arrive": "10:48",
+     "stayMinutes": 30,
+     "walkMinutesToNext": 1
+    }
+   ],
+   "walkMinutes": 31,
+   "note": "The official Ginko-do direct course is 1.4 km and about 60 minutes, which fits a 2-hour stop with room to spare - and it is the one part of Ginzan that explains the name. Only for the sure-footed: the approach past the falls is the least even ground of the day and stays damp. Everyone still meets the coach at 11:25.",
+   "confidence": "medium",
+   "confidenceNote": "The 1.4 km / 60 minute course and the 15-minute walk from the street are official, but the tunnel-mouth coordinate is not published and the intermediate timings here are built from those two figures rather than measured.",
+   "source": "https://www.city.obanazawa.yamagata.jp/kanko/kankochi/1346"
+  }
+ ],
+ "outfitByStop": {
+  "Ginzan Onsen Street": {
+   "photo": "This is the frame the whole trip gets judged on, so dress for the backdrop, not the weather. September Ginzan is deep green foliage, near-black weathered timber and a grey-green river: GREEN, BEIGE, BROWN, OLIVE AND BLACK all sink into it and a person wearing them reads as a gap in the row. What lifts off it is white, cream, pale blue and any clear mid-tone - plain colours, not prints, because 35 people in patterns is noise at 10 m. Coordinate one thing with the photographer: the front row must not match the banner, or the banner stops reading against the people holding it. At 09:35 the sun is SE at 47 degrees and Ginzan's street runs on 153 degrees, almost exactly down the axis - so the lit-banner frame is shot down-street with the sun behind the camera, and the postcard up-street frame is back-lit and needs fill flash. Sunglasses off, caps off: at 47 degrees a brim puts the whole face in shadow.",
+   "practical": "Hot and humid, 29C, and it is peak typhoon month - carry the thin rain shell rather than an umbrella, because the street is 4-5 m wide and 35 umbrellas will not pass each other on it. The 400 m street is flat, car-free and cobbled-uneven; the five minutes on to Shirogane Falls stays damp year-round and the deck gets spray, so closed shoes with grip, not sandals. Cash in a pocket you can reach one-handed: Nogawa Toufuya is cash only and the stalls are small-note businesses. No public toilets on the street itself worth queuing 35 people for - use Taisho Roman-kan before the shuttle. Bring a small towel for the footbath; none is provided and nothing on the street sells one."
+  },
+  "Zao Fox Village": {
+   "photo": "The backdrop is dirt, gravel and dry autumn-brown grass on a slope, with the low WSW sun at 31 degrees raking across it at 15:10 - warm, contrasty light with long shadows, and the foxes themselves are ginger against brown. So earth tones are the one thing NOT to wear here: brown, tan, rust and khaki put you in the same register as the animals and the ground. White or a clear cool mid-tone separates. Frame from the upper path shooting downhill so you get eye level without crouching - crouching is forbidden and it is the rule staff actually enforce. Photography is prohibited at the enclosure entrance, at the caged and resting foxes, in the holding area, in the small-animal section and inside the shop, so put the phone away before those gates rather than after. SEASONALITY: September is moulting, the coats are thin and patchy, and nothing will look like the winter photographs.",
+   "practical": "The strictest venue rules of the whole trip, and they are enforced. REMOVE EVERYTHING THAT DANGLES before the gate - bag charms, lanyards, wrist straps, camera straps, hood cords, loose scarf ends: the foxes grab at anything hanging and the operator's own rule is that they break and bury whatever they find on the ground, so a phone on a wrist strap is a phone in a hole. Nothing edible in your hands - food anywhere but the feeding platform teaches them to jump at people. Never crouch, kneel or sit to fox level. Do not reach out to a roaming fox; they bite, and children have been bitten here. Long trousers and closed shoes with grip for gravel and dirt on a slope, at 590 m so a few degrees cooler than the valley but still humid. The smell is strong in the heat and it gets into fabric - do not wear tomorrow's shirt, and expect to change before the 18:00 kaiseki. 1,500 yen in cash per person at the window."
+  },
+  "Okuiizaka Anabara Onsen Yoshikawaya": {
+   "photo": "Almost nothing here is photographable and that is worth saying out loud: the best view on the property is the Surikami gorge from the open-air baths, and you cannot take a phone in. What is left indoors is warm low tungsten on dark timber and tatami, which flatters warm mid-tones and turns pure white grey-green - so this is the yukata frame, taken in the lounge or on the corridor by the river windows, not a colour-contrast problem. If anyone wants the one real photograph of the area, it is Totsuna-bashi: a 51.7 m steel arch of 1915 floodlit nightly since 2009, 2.7 km away by taxi, and it works in rain. Sunset is 17:54, so the group is arriving into dusk and there is no daylight frame at the hotel at all.",
+   "practical": "You arrive at 17:45 for an 18:00 dinner, so the whole evening turns on one decision made on the coach: bath first or eat first. Yukata and tabi are in the room and are correct dress everywhere inside, including the lounge and the shop - so change once and stay changed. The two riverside open-airs and the two indoor baths swap sides between evening and morning, so soak tonight AND before the 07:00 breakfast and you get all four; small towel in, big towel stays. Anabara has no lit street outside the door, no shopping arcade and the shuttle stops at 18:00 - anyone going to Iizaka for the gyoza or the lit bridge needs both taxis booked before they sit down to dinner. Tennoji Anabara-yu, 230 m east, wants 400 yen in coins and your own towel, and the water is genuinely hot. For the 08:30 coach: 05:00 baths, 07:00 breakfast, and the book lounge reopens at 07:00 for whoever is ready early."
+  }
+ },
+ "removedFromDay": {
+  "Okuiizaka Anabara Onsen Yoshikawaya": {
+   "reason": "Superseded on the 4 Sep 2026 app screenshots. Night 3 moved PREFECTURE — from Iizaka Onsen, Fukushima to Zao, Miyagi — and the coach transfer after Zao Fox Village dropped from ~1h 5m/~45 km to ~30 min/~18 km, with check-in pulled from 17:45 to 17:15.",
+   "replacedBy": "Mercure Miyagi Zao Resort & Spa",
+   "removedOn": "2026-09-04",
+   "keepBecause": "This is the single biggest research loss of the revision: the whole Iizaka Onsen cluster is now off-itinerary — Sabako-yu, Totsuna-bashi, Gyoza no Terui, Aberu Shoten's radium eggs, Tennoji Anabara-yu, Kyu-Horikiri-tei, Harai-yu. Every finding stays viewable because the group may still pass through Fukushima, and because a later trip on the old routing would need it.",
+   "importAs": "Removed from this Day"
+  }
+ }
+}

@@ -1,0 +1,397 @@
+{
+ "batch": "day1-haneda",
+ "places": [
+  {
+   "id": "7a02f4d6a73b",
+   "anchorStop": "Haneda Airport — Terminal 3",
+   "name": "Edo Koji, 4F–5F",
+   "nameJp": "江戸小路",
+   "category": "sight",
+   "priceTier": "¥",
+   "stayMinutes": 15,
+   "legs": [
+    {
+     "mode": "walk",
+     "minutes": 6
+    }
+   ],
+   "note": "Mock-Edo street of wooden shopfronts and paper lanterns spanning 4F–5F; the street itself is public and walkable at any hour, which is the point at 22:30 — the sushi, yakitori and oden counters along it are shut by then. Six minutes up from 2F arrivals by escalator.",
+   "latitude": 35.5487,
+   "longitude": 139.7692,
+   "coordPrecision": "verified",
+   "timeWindow": "24h",
+   "confidence": "medium",
+   "confidenceNote": "TIAT's official Edo Koji page confirms the location and character but publishes no hours; the individual shops closing around 22:00 is from tenant listings, not the operator's own page.",
+   "source": "https://www.tiat.co.jp/terminal/edo_koji.html"
+  },
+  {
+   "id": "55e8d4c12bc0",
+   "anchorStop": "Haneda Airport — Terminal 3",
+   "name": "Air LAWSON (T3, 1F Entrance Plaza)",
+   "nameJp": "エア ローソン 羽田空港第3ターミナル店",
+   "category": "food",
+   "priceTier": "¥",
+   "stayMinutes": 10,
+   "legs": [
+    {
+     "mode": "walk",
+     "minutes": 5
+    }
+   ],
+   "note": "CORRECTION to the seed, which had this as a basement konbini: T3 has no B1 convenience store. The 24-hour one is Air LAWSON on 1F in the Entrance Plaza, landside, before security — one floor down from 2F arrivals. Hot food, onigiri, drinks, and the reliable 22:30 answer for anyone off a 7h15 flight.",
+   "latitude": 35.5493,
+   "longitude": 139.7695,
+   "coordPrecision": "approximate",
+   "timeWindow": "24h",
+   "confidence": "high",
+   "confidenceNote": null,
+   "source": "https://tokyo-haneda.com/en/shop_and_dine/detail/tenant_00216.html"
+  },
+  {
+   "id": "df0acf7dc420",
+   "anchorStop": "Haneda Airport — Terminal 3",
+   "name": "Electronic Customs Declaration gates",
+   "nameJp": "電子申告ゲート",
+   "category": "sight",
+   "priceTier": "¥",
+   "stayMinutes": 5,
+   "legs": [
+    {
+     "mode": "walk",
+     "minutes": 3
+    }
+   ],
+   "note": "Have the Visit Japan Web QR open BEFORE the hall — one code now covers immigration and the customs declaration, and these gates read it. With 35 people the difference between everyone ready and half the group digging for phones is roughly fifteen minutes at 22:15.",
+   "latitude": 35.548664,
+   "longitude": 139.770216,
+   "coordPrecision": "approximate",
+   "timeWindow": "24h",
+   "confidence": "medium",
+   "confidenceNote": "The e-gates exist at Haneda T3 arrivals, but no official page publishes their position on the 2F floorplan, so the coordinate is a floor-level guess inside the terminal footprint.",
+   "source": "https://tokyo-haneda.com/en/"
+  },
+  {
+   "id": "8928b51f8fcc",
+   "anchorStop": "Hotel Metropolitan Tokyo Haneda",
+   "name": "THE ROOFTOP",
+   "nameJp": "THE ROOFTOP",
+   "category": "sight",
+   "priceTier": "¥",
+   "stayMinutes": 25,
+   "legs": [
+    {
+     "mode": "walk",
+     "minutes": 2
+    }
+   ],
+   "note": "Officially confirmed: roof floor, open 24 hours, guests only with a card key, 360° over Terminal 3 and the runways, Skytree, Tokyo Tower, the Rainbow Bridge and Mt Fuji. TWO RULES the operator prints: closed in rain or bad weather, and TRIPODS AND STEPLADDERS ARE PROHIBITED — which matters for the Mission 5 videographer.",
+   "latitude": 35.549298,
+   "longitude": 139.754715,
+   "coordPrecision": "verified",
+   "timeWindow": "24h",
+   "confidence": "high",
+   "confidenceNote": null,
+   "source": "https://haneda.metropolitan.jp/facility/"
+  },
+  {
+   "id": "df8d1412618a",
+   "anchorStop": "Hotel Metropolitan Tokyo Haneda",
+   "name": "il CIELO HANEDA (breakfast)",
+   "nameJp": "レストラン イル チェーロ 羽田",
+   "category": "food",
+   "priceTier": "¥¥",
+   "stayMinutes": 40,
+   "legs": [
+    {
+     "mode": "walk",
+     "minutes": 2
+    }
+   ],
+   "note": "5F. Official hours 06:00, last entry 09:30, closes 10:00; ¥2,750 per adult at the walk-in rate though the group breakfast is in the package. Opening at 06:00 means the 07:30 sitting can be pulled forward if you want a pre-08:30 window for the footbath or the torii.",
+   "latitude": 35.549298,
+   "longitude": 139.754715,
+   "coordPrecision": "verified",
+   "timeWindow": "day",
+   "confidence": "high",
+   "confidenceNote": null,
+   "source": "https://haneda.metropolitan.jp/stay/breakfast/"
+  },
+  {
+   "id": "971383114439",
+   "anchorStop": "Hotel Metropolitan Tokyo Haneda",
+   "name": "Ashiyu Sky Deck footbath",
+   "nameJp": "足湯スカイデッキ",
+   "category": "rest",
+   "priceTier": "¥",
+   "stayMinutes": 30,
+   "legs": [
+    {
+     "mode": "walk",
+     "minutes": 5
+    }
+   ],
+   "note": "Official HICity hours 05:30–23:30, free, on the Zone E rooftop — an open-air footbath with a fence-free view straight down Haneda's B runway. Towels are sold on site rather than provided. A 23:00 arrival leaves about 25 minutes, so anyone who wants it goes straight there instead of waiting for room keys.",
+   "latitude": 35.547727,
+   "longitude": 139.756819,
+   "coordPrecision": "verified",
+   "timeWindow": "night",
+   "confidence": "high",
+   "confidenceNote": null,
+   "source": "https://haneda-innovation-city.com/facility/"
+  },
+  {
+   "id": "20dbdac555d5",
+   "anchorStop": "Hotel Metropolitan Tokyo Haneda",
+   "name": "Matsuya HICity",
+   "nameJp": "松屋 羽田イノベーションシティ店",
+   "category": "food",
+   "priceTier": "¥",
+   "stayMinutes": 20,
+   "legs": [
+    {
+     "mode": "walk",
+     "minutes": 3
+    }
+   ],
+   "note": "Zone B 2F, 24 hours, ordered from a ticket machine — the only round-the-clock hot food on the site. Not halal, and beef and pork, so it is a fallback for whoever is still hungry rather than anything you put to the whole group.",
+   "latitude": 35.5487,
+   "longitude": 139.7551,
+   "coordPrecision": "verified",
+   "timeWindow": "24h",
+   "confidence": "high",
+   "confidenceNote": null,
+   "source": "https://haneda-innovation-city.com/facility/"
+  },
+  {
+   "id": "052699865bda",
+   "anchorStop": "Hotel Metropolitan Tokyo Haneda",
+   "name": "Haneda Grand Torii",
+   "nameJp": "羽田の大鳥居",
+   "category": "sight",
+   "priceTier": "¥",
+   "stayMinutes": 20,
+   "legs": [
+    {
+     "mode": "walk",
+     "minutes": 5
+    }
+   ],
+   "note": "A 1929 concrete torii standing alone on the riverside promenade — the only surviving structure of the shrine cleared to build the airfield, its plaque reading 平和, peace. Open air, no gate, no fee, any hour. Sunrise on 8 Sep is 05:18, so a 06:00–06:30 walk has low sun straight up the Tama river behind it.",
+   "latitude": 35.547968,
+   "longitude": 139.753554,
+   "coordPrecision": "verified",
+   "timeWindow": "dawn",
+   "confidence": "high",
+   "confidenceNote": null,
+   "source": "https://msearch.gsi.go.jp/address-search/AddressSearch?q=東京都大田区羽田空港1-1-4"
+  },
+  {
+   "id": "d1a01hicity01",
+   "anchorStop": "Hotel Metropolitan Tokyo Haneda",
+   "name": "Hotel coin laundry + currency exchange machine",
+   "nameJp": "コインランドリー・外貨両替機",
+   "category": "rest",
+   "priceTier": "¥",
+   "stayMinutes": 15,
+   "legs": [
+    {
+     "mode": "walk",
+     "minutes": 2
+    }
+   ],
+   "note": "NEW. Two things worth knowing on night 1 of eight: a coin laundry on 6F at ¥300–600 a load, open with the 24-hour gym, and a currency exchange MACHINE on 5F. Night 1 is the cheapest laundry opportunity of the trip and the machine covers anyone who landed without yen at 22:00 when the counters are shut.",
+   "latitude": 35.549298,
+   "longitude": 139.754715,
+   "coordPrecision": "verified",
+   "timeWindow": "24h",
+   "confidence": "high",
+   "confidenceNote": null,
+   "source": "https://haneda.metropolitan.jp/facility/"
+  }
+ ],
+ "mustSee": [
+  {
+   "id": "727543e24044",
+   "anchorStop": "Hotel Metropolitan Tokyo Haneda",
+   "title": "THE ROOFTOP, Hotel Metropolitan Haneda",
+   "nameJp": "THE ROOFTOP",
+   "tag": "DAY 1",
+   "summary": "The one thing that still works whatever time the coach gets in: a 24-hour roof deck over Terminal 3 and the runways, with Skytree, Tokyo Tower and the Rainbow Bridge on the skyline and aircraft landing lights on approach all night.",
+   "whereToFind": "Roof floor, reached by the guest lift with your card key. Stand at the NORTH-EAST rail: that puts Terminal 3 and the runway thresholds in front of you and the Tokyo skyline over your left shoulder. Aircraft on final approach come in from your right. Closed in rain, and no tripods or stepladders — brace the phone on the rail instead.",
+   "latitude": 35.549298,
+   "longitude": 139.754715,
+   "coordPrecision": "verified",
+   "confidence": "high",
+   "confidenceNote": null,
+   "source": "https://haneda.metropolitan.jp/facility/"
+  },
+  {
+   "id": "480f5e27bf81",
+   "anchorStop": "Hotel Metropolitan Tokyo Haneda",
+   "title": "Ashiyu Sky Deck footbath",
+   "nameJp": "足湯スカイデッキ",
+   "tag": "DAY 1",
+   "summary": "A free open-air rooftop footbath with an unobstructed, fence-free view down Haneda's B runway — feet in hot water, aircraft rotating off the runway in front of you. The single most memorable thing within walking distance of night 1.",
+   "whereToFind": "Zone E rooftop, five minutes on foot from the hotel lobby. Sit on the FAR SIDE of the bath — the edge away from the building — so the runway is ahead of you and there is no fence in the frame. Open 05:30–23:30, so realistically 23:05–23:30 tonight or from 05:30 tomorrow. Towels are sold on site, not provided.",
+   "latitude": 35.547727,
+   "longitude": 139.756819,
+   "coordPrecision": "verified",
+   "confidence": "high",
+   "confidenceNote": null,
+   "source": "https://haneda-innovation-city.com/facility/"
+  }
+ ],
+ "shopping": [
+  {
+   "id": "3c8742142322",
+   "anchorStop": "Hotel Metropolitan Tokyo Haneda",
+   "name": "Daily Yamazaki in-store bakery items",
+   "nameJp": "デイリーヤマザキ 羽田イノベーションシティ店",
+   "placeLabel": "Daily Yamazaki, HICity Zone A — one minute from the hotel lobby",
+   "estimate": 250,
+   "note": "Official hours are weekdays 07:00–23:00 (weekends 09:00–17:00), so on Tuesday 8 Sep a 23:00 arrival gives roughly a fifteen-minute window, not an open one — say so on the coach before anyone unpacks. Bakery items run about ¥150–350. Nothing here survives to Malaysia; this is tonight's supper and tomorrow's coach snack.",
+   "latitude": 35.549327,
+   "longitude": 139.754877,
+   "coordPrecision": "verified",
+   "confidence": "high",
+   "confidenceNote": null,
+   "source": "https://haneda-innovation-city.com/facility/"
+  }
+ ],
+ "essentials": {
+  "Haneda Airport — Terminal 3": {
+   "hours": {
+    "mon": [
+     [
+      "00:00",
+      "23:59"
+     ]
+    ],
+    "tue": [
+     [
+      "00:00",
+      "23:59"
+     ]
+    ],
+    "wed": [
+     [
+      "00:00",
+      "23:59"
+     ]
+    ],
+    "thu": [
+     [
+      "00:00",
+      "23:59"
+     ]
+    ],
+    "fri": [
+     [
+      "00:00",
+      "23:59"
+     ]
+    ],
+    "sat": [
+     [
+      "00:00",
+      "23:59"
+     ]
+    ],
+    "sun": [
+     [
+      "00:00",
+      "23:59"
+     ]
+    ]
+   },
+   "closedNote": "Terminal building open 24 hours year-round. The shops are not: Edo Koji's restaurants shut around 22:00, the 3F airside Seven-Eleven runs 07:00–21:00 and the 2F departures one 06:00–23:30. Air LAWSON on 1F Entrance Plaza is the only 24-hour store, landside.",
+   "lastAdmission": null,
+   "seasonFrom": null,
+   "seasonTo": null,
+   "groupRate": null,
+   "phone": "03-5757-8111",
+   "phoneNote": "Haneda Airport general information, 24 hours year-round, automated voice menu. There is no separate Terminal 3 or international-flights number.",
+   "website": "https://tokyo-haneda.com/en/",
+   "tickets": "Not applicable — arrivals only. SQ634 lands 21:55; the group clears the Electronic Customs Declaration gates on 2F with Visit Japan Web QR codes.",
+   "transport": "Coach to Hotel Metropolitan Haneda, about 1.3 km, roughly 5 minutes per the app. Terminal 3 is confirmed as Haneda's international terminal and Singapore Airlines operates there, but the APP ITSELF PRINTS NO TERMINAL NUMBER — T3 remains an inference.",
+   "confidence": "high",
+   "source": "https://tokyo-haneda.com/text/telinfo/index.html"
+  },
+  "Hotel Metropolitan Tokyo Haneda": {
+   "hours": {
+    "mon": [
+     [
+      "00:00",
+      "23:59"
+     ]
+    ],
+    "tue": [
+     [
+      "00:00",
+      "23:59"
+     ]
+    ],
+    "wed": [
+     [
+      "00:00",
+      "23:59"
+     ]
+    ],
+    "thu": [
+     [
+      "00:00",
+      "23:59"
+     ]
+    ],
+    "fri": [
+     [
+      "00:00",
+      "23:59"
+     ]
+    ],
+    "sat": [
+     [
+      "00:00",
+      "23:59"
+     ]
+    ],
+    "sun": [
+     [
+      "00:00",
+      "23:59"
+     ]
+    ]
+   },
+   "closedNote": "Reception 24 hours. The street entrance is locked overnight, so late walkers need their card key to get back in.",
+   "lastAdmission": null,
+   "seasonFrom": null,
+   "seasonTo": null,
+   "groupRate": null,
+   "phone": "03-3747-1101",
+   "phoneNote": "Official hotel number, published as +81-3-3747-1101. Unchanged by the rename.",
+   "website": "https://haneda.hotel-metropolitan.com/",
+   "tickets": "Official check-in 15:00, check-out 11:00 (JR Hotel Members to noon on some plans). The app prints no check-in time for night 1; the group arrives about 22:50–23:15, well after 15:00, so there is no conflict. Breakfast at il CIELO HANEDA on 5F, 06:00 with last entry 09:30.",
+   "transport": "HANEDA INNOVATION CITY ZONE A 1-1-4, Haneda Airport, Ota-ku, Tokyo. One minute on foot from the HICity gate of Tenkubashi Station, on both the Tokyo Monorail and the Keikyu Airport Line — one rail stop from Terminal 3. BOOK THE COACH BOTH WAYS: the hotel's own free shuttle is airport-bound only and the HICity airport loop runs 11:00–18:00, so there is no scheduled way IN from T3 at 22:30.",
+   "confidence": "high",
+   "source": "https://haneda.hotel-metropolitan.com/stay/guide/"
+  }
+ },
+ "subRoutes": [],
+ "outfitByStop": {
+  "Haneda Airport — Terminal 3": {
+   "photo": "Nothing here is a mission shot — Trip 12 does not shoot the airport reel, that is Trips 1–10. If anyone does take a group frame in arrivals, the backdrop is cool-white LED on dark glass at 22:15: mid-tone solids read, black disappears into the glass and pure white blows out under the LED. Plain colours over prints, since 35 people in patterns is visual noise at any distance.",
+   "practical": "You land off 7h15 in a cabin held near 23°C into a terminal at about 26°C and 80% humidity — a light long-sleeve you can take off beats a jacket you must carry. Slip-on shoes: two security screenings behind you and a long walk to baggage ahead. Have the Visit Japan Web QR already open, not buried in a folder."
+  },
+  "Hotel Metropolitan Tokyo Haneda": {
+   "photo": "Both night-1 frames are shot in the dark against runway lights and blue-black sky, and neither has any light on your face. Anything dark vanishes completely — wear a light mid-tone or one warm colour and you separate from the background. On THE ROOFTOP tripods and stepladders are banned, so brace on the rail and stand still; a phone's night mode smears any movement. At the footbath the frame is your feet, the water and the runway, so it is the shoes-off shot — bare feet, trousers you can roll.",
+   "practical": "Arriving near 23:00 it is still about 25°C but properly windy off the bay on both rooftops, and the footbath deck is fully exposed. Card key in your pocket before you leave the room — the street entrance locks overnight. Bring ¥500 in coins for a footbath towel, and if you are doing laundry this is the cheapest chance in eight days at ¥300–600 on 6F."
+  }
+ },
+ "renamedStops": {
+  "Hotel Metropolitan Haneda": {
+   "renamedTo": "Hotel Metropolitan Tokyo Haneda",
+   "reason": "The 4 Sep 2026 app screenshots print 'Hotel Metropolitan Tokyo Haneda / Similar Class'. Same property — HOTEL METROPOLITAN TOKYO HANEDA is JR East's official English name, at the same Haneda Innovation City Zone A address. Not a hotel change.",
+   "officialSite": "https://haneda.hotel-metropolitan.com/"
+  }
+ }
+}

@@ -1,0 +1,285 @@
+{
+ "batch": "topup-tsukuba-shinjuku",
+ "places": [
+  {
+   "id": "tpts01roku",
+   "anchorStop": "Hotel Nikko Tsukuba",
+   "name": "Izakaya ROKU, BiVi Tsukuba 3F",
+   "nameJp": "魚が旨い焼き鳥屋 六",
+   "category": "food",
+   "priceTier": "¥¥",
+   "stayMinutes": 90,
+   "legs": [
+    {
+     "mode": "walk",
+     "minutes": 3
+    }
+   ],
+   "latitude": 36.081648,
+   "longitude": 140.112738,
+   "coordPrecision": "verified",
+   "timeWindow": "night",
+   "note": "吾妻1-8-10 BiViつくば3F, 3 min. VERIFIED on BiVi's own floor guide: 16:00–24:00, 無休, and Hot Pepper adds 料理L.O. 23:00 / drink L.O. 23:30 — Saturday 12 Sep is a normal day and the 18:30–23:00 window fits whole. 45 seats, max party 45, 貸切 from 24, ¥4,000–5,000 a head. FOR 35 it is a full buy-out, not a walk-in; same-day online booking cuts off 19:00.",
+   "confidence": "high",
+   "confidenceNote": "Hours confirmed twice (BiVi's official 3F floor guide and Hot Pepper). The seat count, the 45-person maximum and the 24-person charter minimum are Hot Pepper's figures, not the shop's own page.",
+   "source": "https://www.e-bivi.com/tsukuba/shop/floor.jsp?fid=3f"
+  },
+  {
+   "id": "tpts02tatsuro",
+   "anchorStop": "Hotel Nikko Tsukuba",
+   "name": "Ramen Tatsuro",
+   "nameJp": "ラーメン龍郎",
+   "category": "food",
+   "priceTier": "¥",
+   "stayMinutes": 40,
+   "legs": [
+    {
+     "mode": "walk",
+     "minutes": 13
+    }
+   ],
+   "latitude": 36.089272,
+   "longitude": 140.110931,
+   "coordPrecision": "approximate",
+   "timeWindow": "night",
+   "note": "吾妻3-8-1 吾妻ハイツ105, 029-859-3311 — a jiro-inspired shop 13 min due north, 725 m from Tsukuba Station. Hours 11:30–14:30 and 17:30–22:00, closed only over New Year, so Saturday 12 Sep is normal. FOR 35: SIXTEEN SEATS. Two or three people can go; a group cannot. 22:00 is the close, not a last order, so leave the hotel by about 21:15 to be sure of a bowl.",
+   "confidence": "medium",
+   "confidenceNote": "The shop has no website. Hours and closing days agree across Hot Pepper and Ibanavi and the 16-seat count is Hot Pepper's, but nothing here was read from the operator's own page. Coordinate is the GSI 吾妻三丁目8番 block point, not the building.",
+   "source": "https://www.hotpepper.jp/strJ000962301/"
+  },
+  {
+   "id": "tpts03garari",
+   "anchorStop": "Hotel Nikko Tsukuba",
+   "name": "Aoyama Garari Tsukuba, tonarie Q't 3F",
+   "nameJp": "青山がらり つくば店",
+   "category": "food",
+   "priceTier": "¥¥",
+   "stayMinutes": 120,
+   "legs": [
+    {
+     "mode": "walk",
+     "minutes": 4
+    }
+   ],
+   "latitude": 36.082012,
+   "longitude": 140.111302,
+   "coordPrecision": "verified",
+   "timeWindow": "night",
+   "note": "吾妻1-6-1 トナリエつくばスクエアQ't 3F, 029-851-1615. THEIR 21:00 LAST ORDER IS WRONG: the operator prints 11:00–23:00, 料理L.O. 22:00, drink L.O. 22:30 (Hot Pepper says 21:45), 年中無休 — Saturday is normal. FOR 35 THIS IS THE ONE: 65 seats, up to 40 on one floor, 貸切 from 26, dinner ~¥3,000 or a 宴会 course with nomihodai from ¥5,000. Tonarie warns of irregular 時短営業 — ring first.",
+   "confidence": "high",
+   "confidenceNote": "Hours and 年中無休 agree between the chain operator's own store page and Tonarie's official floor guide; only the food last order differs between them (22:00) and Hot Pepper (21:45). Capacity and charter minimum are Hot Pepper's.",
+   "source": "https://rush-forward.jp/galali/tsukuba/"
+  },
+  {
+   "id": "tpts04lawson",
+   "anchorStop": "Hotel Nikko Tsukuba",
+   "name": "Lawson Tsukuba Station Bus Terminal (BiVi 2F)",
+   "nameJp": "ローソン つくば駅バスターミナル店",
+   "category": "food",
+   "priceTier": "¥",
+   "stayMinutes": 15,
+   "legs": [
+    {
+     "mode": "walk",
+     "minutes": 3
+    }
+   ],
+   "latitude": 36.081648,
+   "longitude": 140.112738,
+   "coordPrecision": "verified",
+   "timeWindow": "24h",
+   "note": "VERIFIED, and the real name is ローソン つくば駅バスターミナル店, not 'Lawson BiVi'. BiVi 2F, 吾妻1-8-10, 029-855-5530, and BiVi's own shop page prints 24時間営業 / 休業日：なし. This is the second round-the-clock konbini within 3 min of the hotel alongside FamilyMart Q't — it is the one on the BiVi side, so it pairs with an evening at ROKU upstairs and stays open after the group gets back at 23:00.",
+   "confidence": "high",
+   "confidenceNote": null,
+   "source": "https://www.e-bivi.com/tsukuba/shop/index.jsp?bf=1&fmt=1&shopid=9005"
+  },
+  {
+   "id": "tpts05expshop",
+   "anchorStop": "Hotel Nikko Tsukuba",
+   "name": "Science Museum Shop, Tsukuba Expo Center",
+   "nameJp": "サイエンスミュージアムショップ（つくばエキスポセンター）",
+   "category": "shopping",
+   "priceTier": "¥",
+   "stayMinutes": 20,
+   "legs": [
+    {
+     "mode": "walk",
+     "minutes": 8
+    }
+   ],
+   "latitude": 36.08667,
+   "longitude": 140.11053,
+   "coordPrecision": "verified",
+   "timeWindow": "day",
+   "note": "DOES NOT FIT — recorded so nobody plans it. 吾妻2-9, museum 09:50–17:00, last admission 16:30, closed Mondays. The group reaches the hotel 18:00 Saturday and leaves 08:30 Sunday, so it is shut at both ends. Stock is 宇宙食, science and space goods, Cosmo Hoshimaru originals and a Medaleaf medal press — no JAXA rocket line advertised. Admission ¥600/¥300, not the ¥500 in our forecourt notes.",
+   "confidence": "medium",
+   "confidenceNote": "Museum hours, closing day and admission are from the operator's own pages, but nothing published says whether the shop sits inside or outside the ticket gate, and it prints no hours of its own. Coordinate reuses our verified Expo Center point.",
+   "source": "https://www.expocenter.or.jp/shop/"
+  },
+  {
+   "id": "a3f5d387ccd7",
+   "anchorStop": "Hotel Nikko Tsukuba",
+   "name": "Tsukuba no Yoi Shina (Tsukuba Station B1)",
+   "nameJp": "つくばの良い品",
+   "category": "shopping",
+   "priceTier": "¥",
+   "stayMinutes": 20,
+   "legs": [
+    {
+     "mode": "walk",
+     "minutes": 4
+    }
+   ],
+   "latitude": 36.08253,
+   "longitude": 140.11106,
+   "coordPrecision": "approximate",
+   "timeWindow": "night",
+   "note": "CORRECTION. Address confirmed 吾妻2-128, inside the TX Tsukuba station box; 08:00–20:00, 無休. Saturday gives only 90 usable minutes, 18:30–20:00, plus an 08:00–08:30 sliver before Sunday's coach. Published range is Hojo rice, fukure-mikan goods, research-institute items and seasonal produce from ~45 makers — HOSHI-IMO AND NATTO SWEETS ARE NOT IN IT; use Ropia on Tonarie CREO 1F.",
+   "confidence": "medium",
+   "confidenceNote": "The 08:00–20:00 / 無休 opening is now confirmed by a second source (Rurubu) as well as the seed, but neither is the shop's own page. Coordinate is the GSI つくば駅 point, i.e. the station box rather than the B1 unit.",
+   "source": "https://rurubu.jp/andmore/spot/80006195"
+  },
+  {
+   "id": "5e98a1595579",
+   "anchorStop": "Shinjuku Granbell Hotel",
+   "name": "Shinjuku Kabuki Hall / Kabuki Yokocho",
+   "nameJp": "新宿カブキhall〜歌舞伎横丁",
+   "category": "food",
+   "priceTier": "¥",
+   "stayMinutes": 75,
+   "legs": [
+    {
+     "mode": "walk",
+     "minutes": 8
+    }
+   ],
+   "latitude": 35.6959,
+   "longitude": 139.70065,
+   "coordPrecision": "verified",
+   "timeWindow": "24h",
+   "note": "CORRECTION — the Sunday question is settled. 歌舞伎町一丁目29番1, Tokyu Kabukicho Tower 2F. The tower's own floor guide prints 6:00–翌5:00 with NO day-of-week split and the venue adds 年中無休, so Sunday 13 Sep runs to 05:00 Monday. Ten areas, ~1,300 seats: eight regional 食祭 plus 韓国食祭 and KABUKI CAFE. Kiosk prices, no seating charge. FOR 35 still the only Kabukicho room that absorbs the group unbooked.",
+   "confidence": "medium",
+   "confidenceNote": "Two official pages disagree on the envelope: the tower's floor guide says 6:00–翌5:00, the venue's own site says 24時間営業. Neither publishes Sunday-specific hours or per-stall last orders, and the tower notes some 食祭 areas keep a 開店準備時間, so a single stall can be shut inside the envelope.",
+   "source": "https://www.tokyu-kabukicho-tower.jp/floorguide/detail/?scd=000018"
+  },
+  {
+   "id": "tpsj01torikizoku",
+   "anchorStop": "Shinjuku Granbell Hotel",
+   "name": "Torikizoku Shinjuku Kabukicho",
+   "nameJp": "鳥貴族 新宿歌舞伎町店",
+   "category": "food",
+   "priceTier": "¥",
+   "stayMinutes": 90,
+   "legs": [
+    {
+     "mode": "walk",
+     "minutes": 7
+    }
+   ],
+   "latitude": 35.69442,
+   "longitude": 139.70158,
+   "coordPrecision": "approximate",
+   "timeWindow": "night",
+   "note": "PRICE IS STALE: the flat price is ¥390 tax-in, not ¥370 — ¥370 ran from 1 May 2024 and was replaced by ¥390 on 1 May 2025. 歌舞伎町1-17-12 6F, 050-3647-3726. Sunday 13:00–04:00 (Mon–Fri 15:00–04:00), shut only 31 Dec–1 Jan, so the 04:00 close IS true Sunday night. FOR 35: 100 seats but NO 貸切 and net booking ended 2022 — phone ahead, or split across the two nearby branches.",
+   "confidence": "high",
+   "confidenceNote": "Hours, address, phone and seat mix are from Torikizoku's own store locator; the ¥390 date is from a price-history tracker that also confirms no chain-wide rise announced as of May 2026. Coordinate is derived from the verified point for the adjoining building in the same 歌舞伎町1-17 block, since GSI resolves Kabukicho only to the district centroid.",
+   "source": "https://en.map.torikizoku.co.jp/detail/299/"
+  },
+  {
+   "id": "tpsj02ichiran",
+   "anchorStop": "Shinjuku Granbell Hotel",
+   "name": "Ichiran Shinjuku Kabukicho",
+   "nameJp": "一蘭 新宿歌舞伎町店",
+   "category": "food",
+   "priceTier": "¥¥",
+   "stayMinutes": 40,
+   "legs": [
+    {
+     "mode": "walk",
+     "minutes": 7
+    }
+   ],
+   "latitude": 35.694394,
+   "longitude": 139.701561,
+   "coordPrecision": "verified",
+   "timeWindow": "24h",
+   "note": "VERIFIED on all three counts. 歌舞伎町1-17-10, 050-3733-3393, 24 hours, no closing days — Sunday into Monday included. The operator prints the late-night window as 22:00–06:00, so most of our 19:00–23:30 slot is inside it: the classic bowl ~¥980 goes to ~¥1,080, kaedama ¥210 to ¥230. FOR 35: TWENTY-FIVE COUNTER BOOTHS, NO TABLES — a trickle or a queue, never one sitting.",
+   "confidence": "high",
+   "confidenceNote": "Hours, address, booth count and the 22:00–06:00 surcharge window are from Ichiran's own store page. The ¥980/¥1,080 and ¥210/¥230 figures are the chain's standard prices from a price-tracking site, not read off this branch's menu.",
+   "source": "https://en.ichiran.com/shop/tokyo/kabukicho/"
+  },
+  {
+   "id": "tpsj03megadonki",
+   "anchorStop": "Shibuya Scramble Crossing",
+   "name": "MEGA Don Quijote Shibuya Honten",
+   "nameJp": "MEGAドン・キホーテ渋谷本店",
+   "category": "shopping",
+   "priceTier": "¥¥",
+   "stayMinutes": 45,
+   "legs": [
+    {
+     "mode": "walk",
+     "minutes": 5
+    }
+   ],
+   "latitude": 35.660339,
+   "longitude": 139.697739,
+   "coordPrecision": "verified",
+   "timeWindow": "24h",
+   "note": "〒150-0042 渋谷区宇田川町28-6, 0570-076-311. 24時間営業 and 定休日なし CONFIRMED on Don Quijote's own store page, 免税対応. THEIR 3 MINUTES IS OPTIMISTIC: 260 m straight, but the walk climbs Center-gai and doglegs onto Inokashira-dori — ~400 m and 5 min, slower in the 15:30 Sunday crowd. Treat it as the daytime buy; tax-free stays at-the-till until 1 Nov 2026. Annex 渋谷別館 a minute further.",
+   "confidence": "high",
+   "confidenceNote": null,
+   "source": "https://www.donki.com/store/shop_detail.php?shop_id=442"
+  },
+  {
+   "id": "d6w30shin01",
+   "anchorStop": "Shinjuku Granbell Hotel",
+   "name": "Omoide Yokocho",
+   "nameJp": "思い出横丁",
+   "category": "food",
+   "priceTier": "¥¥",
+   "stayMinutes": 45,
+   "legs": [
+    {
+     "mode": "walk",
+     "minutes": 11
+    }
+   ],
+   "latitude": 35.692661,
+   "longitude": 139.699646,
+   "coordPrecision": "verified",
+   "timeWindow": "night",
+   "note": "CORRECTION — the 'atmosphere before 22:00' line is wrong. The alley's flagship 岐阜屋 (西新宿1-2-1) prints Sun–Thu 09:00–01:00, Fri–Sat 09:00–02:00, no closing days, so on Sunday 13 Sep the lane trades to 01:00 Monday and the whole 19:00–23:30 window works. About 80 shops, 60 of them food; NO alley-wide hours published. FOR 35: 岐阜屋's 55 seats is the only big room, the rest six to ten stools.",
+   "confidence": "high",
+   "confidenceNote": null,
+   "source": "https://shinjuku-omoide.com/shop/gifuya"
+  }
+ ],
+ "shopping": [
+  {
+   "id": "cf7c63b3e943",
+   "anchorStop": "Shinjuku Granbell Hotel",
+   "name": "Don Quijote Shinjuku Kabukicho",
+   "nameJp": "ドン・キホーテ 新宿歌舞伎町店",
+   "placeLabel": "Don Quijote Shinjuku Kabukicho, 歌舞伎町1-16-5 — 8 min from the hotel, 24 hours",
+   "estimate": 5500,
+   "note": "CORRECTION — OUR SOURCE URL WAS WRONG. donki.com shop_id=195 is MEGAドン・キホーテ西帯広店 in Hokkaido; the Kabukicho store is shop_id=29. On that correct page: 〒160-0021 歌舞伎町1-16-5, 0570-010-411, 24時間営業, 定休日なし, 免税対応 — so the 24-hour claim holds for Sunday night. The walk is 8 min, not the 6 the Trip 1 map claims. Coordinate now confirmed at 35.69379/139.70174 from the tax-free directory's map link, which matches the seed's estimate. ¥5,500 in one transaction plus a passport at the till; tax-free stays at-the-till until 1 Nov 2026. Buy chocolate last.",
+   "latitude": 35.69379,
+   "longitude": 139.701744,
+   "coordPrecision": "verified",
+   "confidence": "high",
+   "confidenceNote": null,
+   "source": "https://www.donki.com/store/shop_detail.php?shop_id=29"
+  }
+ ],
+ "appliesAfter": {
+  "order": "Import this batch LAST, after every day*-*.json, new-hotels.json and expand-*.json.",
+  "why": "It carries corrections that deliberately REUSE existing record ids, verified against a third-party trip map (slm37102/tohoku-trip-map, a different trip on different dates). Last write wins, so applying this batch earlier would let the older value overwrite the corrected one.",
+  "correctsExistingIds": [
+   "5e98a1595579",
+   "a3f5d387ccd7",
+   "cf7c63b3e943",
+   "d6w30shin01"
+  ]
+ }
+}

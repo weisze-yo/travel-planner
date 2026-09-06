@@ -1,0 +1,387 @@
+{
+ "batch": "topup-misc",
+ "places": [
+  {
+   "id": "tmisc-abe-matsu",
+   "anchorStop": "Matsushima Bay Cruise — Nioumaru course",
+   "name": "Abe Kamaboko Matsushima Teramachi",
+   "nameJp": "阿部蒲鉾店 松島寺町店",
+   "category": "food",
+   "priceTier": "¥",
+   "stayMinutes": 15,
+   "legs": [
+    {
+     "mode": "walk",
+     "minutes": 3
+    }
+   ],
+   "note": "NEW, and NOT the Sendai shop we already hold: this is Abe's own Matsushima branch at 松島町内58, 9:00–18:00, ~15 free parking spaces. THE REASON TO KEEP IT: 手焼き笹かま体験 is 1枚300円税込, about 10 minutes, and 「予約は不要です」 — no booking. Matsukama up the road makes parties of 10+ pre-book, so for 35 people this is the grill you can actually walk into. Arrive 30 min before closing at the latest.",
+   "latitude": 38.370247,
+   "longitude": 141.060349,
+   "coordPrecision": "approximate",
+   "timeWindow": "day",
+   "confidence": "medium",
+   "confidenceNote": "Address, the ¥300 price, the 10 minutes and the no-booking rule are from Abe Kamaboko's own store page; the 9:00–18:00 hours are from Miyagi Navi, not the operator, and the operator publishes no closing day. The coordinate is GSI's geocode of 松島町内58番地, a block-level fix, so it is good to roughly 50 m.",
+   "source": "https://www.abekama.co.jp/store"
+  },
+  {
+   "id": "tmisc-hakkaisan",
+   "anchorStop": "Kinugawa Onsen Hana no Yado Matsuya",
+   "name": "Ramen-Izakaya Hakkaisan",
+   "nameJp": "ラーメン居酒屋 八海山",
+   "category": "food",
+   "priceTier": "¥",
+   "stayMinutes": 60,
+   "legs": [
+    {
+     "mode": "walk",
+     "minutes": 4
+    },
+    {
+     "mode": "train",
+     "minutes": 4
+    },
+    {
+     "mode": "walk",
+     "minutes": 4
+    }
+   ],
+   "note": "Real, and by Kinugawa-ONSEN station — 2 to 5 minutes' walk, 大原1403-11, 0288-76-8500. That is the wrong station for us: our hotel sits at Kinugawa-KOEN, one stop north, so it is 2.0 km away, not walking distance. Take the Tobu Kinugawa line one stop. Hours found at last: 11:00–15:00 and 18:00–翌2:00, CLOSED MONDAYS — Fri 11 Sep is fine, and the late block covers after-kaiseki. Known for たろう餃子.",
+   "latitude": 36.823879,
+   "longitude": 139.714966,
+   "coordPrecision": "approximate",
+   "timeWindow": "night",
+   "confidence": "medium",
+   "confidenceNote": "The shop has no site of its own. Address and the station proximity agree across Hot Pepper and 4travel, but the hours and the Monday closure rest on ONE aggregator (iko-yo) and are uncorroborated — Hot Pepper, 4travel, Yahoo Loco, gnavi, ramendb and cookdoor all publish no hours at all. Ring 0288-76-8500 before walking anyone to the train. Coordinate is GSI on 大原1403番地, block level.",
+   "source": "https://iko-yo.net/facilities/76758"
+  },
+  {
+   "id": "tmisc-sacchan",
+   "anchorStop": "Kinugawa Onsen Hana no Yado Matsuya",
+   "name": "Izakaya Sacchan",
+   "nameJp": "居酒屋 さっちゃん",
+   "category": "food",
+   "priceTier": "¥¥¥",
+   "stayMinutes": 90,
+   "legs": [
+    {
+     "mode": "walk",
+     "minutes": 4
+    },
+    {
+     "mode": "train",
+     "minutes": 4
+    },
+    {
+     "mode": "walk",
+     "minutes": 10
+    }
+   ],
+   "note": "CORRECTED DISTANCE: 3.3 km from our hotel, not the 25 minutes on foot that was measured from the superseded one — the hotel moved 1.3 km north on 4 Sep. It is 808 m from Kinugawa-Onsen station, so it is a one-stop train plus a walk. 大原731-25, 0288-77-1783, Mon–Sat 17:30–23:00, CLOSED SUNDAYS; Fri 11 Sep is open. Budget ¥3,000–4,000 a head, so this is a night out, not a nightcap.",
+   "latitude": 36.813065,
+   "longitude": 139.708435,
+   "coordPrecision": "approximate",
+   "timeWindow": "night",
+   "confidence": "medium",
+   "confidenceNote": "Address, phone, hours, Sunday closure and the 808 m are Tabelog's listing, not an operator page — the shop publishes nothing itself. The coordinate is GSI on 大原731番地, block level. Check the last northbound Tobu local back to Kinugawa-Koen before ordering a second round; a taxi from Kinugawa-Onsen to the hotel is about ¥1,010.",
+   "source": "https://tabelog.com/en/tochigi/A0903/A090303/9005418/"
+  },
+  {
+   "id": "tmisc-lawson-taki",
+   "anchorStop": "Kinugawa Onsen Hana no Yado Matsuya",
+   "name": "Lawson Kinugawa-Taki",
+   "nameJp": "ローソン 鬼怒川滝店",
+   "category": "shopping",
+   "priceTier": "¥",
+   "stayMinutes": 10,
+   "legs": [
+    {
+     "mode": "walk",
+     "minutes": 20
+    }
+   ],
+   "note": "24 HOURS IS NOW CONFIRMED, not assumed: Nikko City's own AED register lists this store as 「24時間」「全日」. 鬼怒川温泉滝590番地1, 0288-76-3847. CORRECTED DISTANCE: 1.24 km straight line WSW of our hotel — about 1.5 km and 20 minutes on the road — NOT the 330 m north that was measured from the superseded hotel. There is no konbini within 500 m of Hana no Yado Matsuya.",
+   "latitude": 36.834751,
+   "longitude": 139.710266,
+   "coordPrecision": "approximate",
+   "timeWindow": "24h",
+   "confidence": "high",
+   "confidenceNote": null,
+   "source": "https://www.city.nikko.lg.jp/bosai_anzen/kyubyo/aed/5521.html"
+  },
+  {
+   "id": "tmisc-sukiya-tomisato",
+   "anchorStop": "International Resort Hotel Yurakujo",
+   "name": "Sukiya Tomisato",
+   "nameJp": "すき家 富里店",
+   "category": "food",
+   "priceTier": "¥",
+   "stayMinutes": 25,
+   "legs": [
+    {
+     "mode": "walk",
+     "minutes": 26
+    }
+   ],
+   "note": "NOT 24 hours, and the operator says so: 「4:00～翌3:00」 with 「AM3:00～AM4:00の間、休業いたします」 — it shuts for one hour a night. 七栄439-1, free parking. 1.75 km WSW of the hotel, close to the claimed 1.9 km. The walk leg is arithmetic: this is rural unlit road with no continuous footpath, so it is a taxi after dark, and the hotel's lobby 7-Eleven solves most of what anyone actually wants.",
+   "latitude": 35.738029,
+   "longitude": 140.326645,
+   "coordPrecision": "approximate",
+   "timeWindow": "24h",
+   "confidence": "high",
+   "confidenceNote": null,
+   "source": "https://maps.sukiya.jp/jp/detail/335.html"
+  },
+  {
+   "id": "tmisc-ishii-jimbocho",
+   "anchorStop": "Tsukiji Outer Market",
+   "name": "Ishii Sports Tozan Honten, Jimbocho",
+   "nameJp": "石井スポーツ 登山本店",
+   "category": "shopping",
+   "priceTier": "¥¥",
+   "stayMinutes": 30,
+   "legs": [
+    {
+     "mode": "walk",
+     "minutes": 4
+    },
+    {
+     "mode": "train",
+     "minutes": 15
+    },
+    {
+     "mode": "walk",
+     "minutes": 3
+    }
+   ],
+   "note": "BE PLAIN: this does NOT fit the itinerary. The Tsukiji slot is 10:50–11:50 and the round trip is 44 min in transit, leaving about 15 min in the shop with no margin — and Day 7 has no other gap. The real window is the free evening of Sun 13 Sep from Shinjuku Granbell: Toei Shinjuku line, Shinjuku to Jimbocho direct, 10 min, ¥220, shop open to 20:30. Hours and address are the operator's own.",
+   "latitude": 35.696281,
+   "longitude": 139.759399,
+   "coordPrecision": "verified",
+   "timeWindow": "day",
+   "confidence": "high",
+   "confidenceNote": null,
+   "source": "https://www.ishii-sports.com/shop/honten/"
+  },
+  {
+   "id": "70e89c03f9e4",
+   "anchorStop": "Ginzan Onsen Street",
+   "name": "Warashiyu footbath (和楽足湯)",
+   "nameJp": "和楽足湯（わらしゆ）",
+   "category": "rest",
+   "priceTier": "¥",
+   "stayMinutes": 20,
+   "legs": [
+    {
+     "mode": "walk",
+     "minutes": 1
+    }
+   ],
+   "note": "NAMING CORRECTED, same footbath: Obanazawa City prints it as 「和楽足湯(わらしゆ)」, so the kanji we held is right but the reading is WARASHIYU, not 'Warashiyu (和楽足湯)' — 足湯 is folded into the pun rather than read separately. Use 和楽足湯 in Japanese and Warashiyu in English. Unchanged: 06:00–22:00, free, source-fed, on the river at the street entrance by Shirogane Bridge. Bring your own towel.",
+   "latitude": 38.571189,
+   "longitude": 140.531747,
+   "coordPrecision": "approximate",
+   "timeWindow": "24h",
+   "confidence": "high",
+   "confidenceNote": null,
+   "source": "https://www.city.obanazawa.yamagata.jp/kanko/kankochi/1346"
+  },
+  {
+   "id": "e5bb2ba00c92",
+   "anchorStop": "Matsushima Fish Market",
+   "name": "Yakigaki House (annex, not 2F)",
+   "nameJp": "別館 焼がきハウス",
+   "category": "food",
+   "priceTier": "¥¥¥",
+   "stayMinutes": 45,
+   "legs": [
+    {
+     "mode": "walk",
+     "minutes": 2
+    }
+   ],
+   "note": "TWO THINGS ADDED FOR A GROUP OF 35, both the operator's own words. 「※お席のご予約は承っておりません」 — SEATS CANNOT BE BOOKED, so 35 people arriving at 13:18 queue as walk-ins for a 45-minute sitting inside a 60-minute stop. And 「牡蠣の育成の状況により、時期が異なる場合もございます」 — phone first, because 9 Sep is outside the Nov–Mar season. Otherwise unchanged: annex not 2F, weekdays 10:00–15:00, ¥3,500 / ¥4,000.",
+   "latitude": 38.372082,
+   "longitude": 141.063568,
+   "coordPrecision": "verified",
+   "timeWindow": "day",
+   "confidence": "high",
+   "confidenceNote": null,
+   "source": "https://www.sakana-ichiba.co.jp/eat/house/"
+  },
+  {
+   "id": "1c6a9c9d2a24",
+   "anchorStop": "International Resort Hotel Yurakujo",
+   "name": "7-Eleven inside the hotel lobby",
+   "nameJp": "セブン-イレブン（ホテル本館ロビー階）",
+   "category": "shopping",
+   "priceTier": "¥",
+   "stayMinutes": 10,
+   "legs": [
+    {
+     "mode": "walk",
+     "minutes": 1
+    }
+   ],
+   "note": "POSITION NOW CONFIRMED AT SOURCE, and it kills the 'about 80 m from the door' claim: the hotel's own facility page says 「ロビー階には、食料品や日用雑貨などを取り揃えているコンビニエンスストア「セブンイレブン」や、リラクゼーションサロン「魔法の森」がございます」. It is INSIDE the main building on the lobby floor — an indoor walk, not 80 m across the grounds. Hours are still unpublished: confirm at check-in.",
+   "latitude": 35.74406,
+   "longitude": 140.34459,
+   "coordPrecision": "approximate",
+   "timeWindow": "night",
+   "confidence": "medium",
+   "confidenceNote": "The lobby-floor position is now the operator's own. Hours are still published nowhere, and the coordinate is the hotel's pin rather than the store's, so it stays approximate. Note the access page omits the store entirely — only the facility page carries it.",
+   "source": "https://chi-hotelsresorts.com/facility/"
+  },
+  {
+   "id": "fa666ecac0f8",
+   "anchorStop": "Shisui Premium Outlets",
+   "name": "Information Center",
+   "nameJp": "インフォメーションセンター",
+   "category": "sight",
+   "priceTier": "¥",
+   "stayMinutes": 10,
+   "legs": [
+    {
+     "mode": "walk",
+     "minutes": 3
+    }
+   ],
+   "note": "COORDINATE CORRECTED BY 2.4 km. The old pin sat on the 酒々井町 town centroid, 2.42 km WNW of the mall; five independent sources put the site at 35.714 / 140.294. Position unchanged: the operator's service page puts the desk 「フードコート前」, in front of the food court, with the lounge and the ¥400–1,000 lockers behind it. Wheelchair loan and lost-child point. Make this the single hard regroup for 220 units.",
+   "latitude": 35.713812,
+   "longitude": 140.294023,
+   "coordPrecision": "approximate",
+   "timeWindow": "day",
+   "confidence": "high",
+   "confidenceNote": null,
+   "source": "https://maruchiba.jp/spot/detail_12507.html"
+  },
+  {
+   "id": "d7ss08",
+   "anchorStop": "Shisui Premium Outlets",
+   "name": "Car and coach park",
+   "nameJp": "駐車場",
+   "category": "rest",
+   "priceTier": "¥",
+   "stayMinutes": 5,
+   "legs": [
+    {
+     "mode": "walk",
+     "minutes": 3
+    }
+   ],
+   "note": "THIS IS THE PIN THE DRIVER USES, so it is the one that had to be fixed: it was 2.4 km WNW of the mall, on the town centroid. Corrected to the five-source cluster at 35.7138 / 140.2940. Unchanged from the operator's facility sheet: 「約5,000台（無料）」, about 1 km from Shisui IC on the Higashi-Kanto Expressway, flat and single-level, so coach to Information Center really is three minutes.",
+   "latitude": 35.713812,
+   "longitude": 140.294023,
+   "coordPrecision": "approximate",
+   "timeWindow": "day",
+   "confidence": "high",
+   "confidenceNote": null,
+   "source": "https://maruchiba.jp/spot/detail_12507.html"
+  },
+  {
+   "id": "d7ss01",
+   "anchorStop": "Shisui Premium Outlets",
+   "name": "Food court",
+   "nameJp": "フードコート",
+   "category": "food",
+   "priceTier": "¥",
+   "stayMinutes": 30,
+   "legs": [
+    {
+     "mode": "walk",
+     "minutes": 3
+    }
+   ],
+   "note": "Coordinate corrected onto the real site, 2.4 km ESE of the old pin. Hours re-confirmed on Chiba Prefecture's official page and they now split FOUR ways, not three: shops and food court 10:00～20:00, restaurants 11:00～21:00, cafés 9:30～20:00, seasonal variation noted. At 14:30 everything is open. With dinner at 18:00 this is a coffee-and-sit stop, not a meal.",
+   "latitude": 35.713812,
+   "longitude": 140.294023,
+   "coordPrecision": "approximate",
+   "timeWindow": "day",
+   "confidence": "high",
+   "confidenceNote": null,
+   "source": "https://maruchiba.jp/spot/detail_12507.html"
+  }
+ ],
+ "mustSee": [
+  {
+   "id": "d7ms03",
+   "anchorStop": "Shisui Premium Outlets",
+   "title": "Shisui central plaza — the whole strip, and the approach traffic",
+   "nameJp": "酒々井プレミアム・アウトレット 中央広場",
+   "tag": "DAY 7",
+   "summary": "COORDINATE CORRECTED BY 2.4 km — the old pin was the 酒々井町 town centroid, not the mall. The frame itself is unchanged: a flat, single-level, open-air American-village layout over about 421,000 m², so from the middle of the strip you see the whole thing end to end, under the Narita approach corridor with aircraft crossing all afternoon.",
+   "whereToFind": "Stand in the open plaza in front of the food court, next to the Information Center, and shoot ALONG the strip rather than across it — the long axis gives you the receding shopfronts and the mountains of parked cars either side, and it is the frame that tells the truth about the scale. At 14:30 the sun is high and slightly west, the buildings are pale and the paving is bright, so you are shooting into flat glare: put people in the shade of an awning and expose for their faces, or step back so a canopy edge cuts the top of the frame. For the aircraft, keep the camera loose and wait — Narita is about 14 km east. NO TRIPODS on the walkways, and this is private property: ask before shooting into a shopfront.",
+   "latitude": 35.713812,
+   "longitude": 140.294023,
+   "coordPrecision": "approximate",
+   "confidence": "high",
+   "confidenceNote": null,
+   "source": "https://maruchiba.jp/spot/detail_12507.html"
+  }
+ ],
+ "shopping": [
+  {
+   "id": "tmisc-abe-teyaki",
+   "anchorStop": "Matsushima Bay Cruise — Nioumaru course",
+   "name": "Grill-your-own sasa-kamaboko, Abe Kamaboko Matsushima",
+   "nameJp": "手焼き笹かま体験（阿部蒲鉾店 松島寺町店）",
+   "placeLabel": "Abe Kamaboko Matsushima Teramachi, 松島町内58 — 9:00–18:00, about 3 min from the cruise pier",
+   "estimate": 300,
+   "note": "「1枚300円(税込)/所要時間:10分程度 ※予約は不要です」 — one sheet, ten minutes, NO BOOKING, which is the whole point next to Matsukama's 10-or-more pre-booking rule. Staff call the turn so it comes off hot. Miyagi Navi prints ¥250, Abe's own page ¥300; take ¥300. Eaten on the spot: fresh kamaboko is chilled and will not survive the flight home — buy the vacuum-packed boxed sets for that instead.",
+   "latitude": 38.370247,
+   "longitude": 141.060349,
+   "coordPrecision": "approximate",
+   "confidence": "medium",
+   "confidenceNote": "Price, duration and the no-booking rule are Abe Kamaboko's own store page; the ¥250 counter-figure is Miyagi Navi's and the two disagree. Hours are Miyagi Navi's, not the operator's, and no closing day is published anywhere. Coordinate is GSI on 松島町内58番地, block level.",
+   "source": "https://www.abekama.co.jp/store"
+  },
+  {
+   "id": "d3shopcurry1",
+   "anchorStop": "Ginzan Onsen Street",
+   "name": "Haikara-san no Curry Pan",
+   "nameJp": "はいからさんのカリーパン",
+   "placeLabel": "Meiyu-an by Shirogane Bridge, AND Taisho Roman-kan at the coach lot (9:00–18:00) — the maker's own shop はいからさん通り is still relocating",
+   "estimate": 250,
+   "note": "SHOP NAME SETTLED: the maker's shop really is called はいからさん通り — Haikara-san-dori is a shop, not a street. It closed to relocate and 大正ろまん館 states 「現在移転準備中のはいからさん通りに変わり、「はいからさんのカリーパン」を販売しています」. NEW AND USEFUL: Yamagata Prefecture's tourism site says 「購入は明友庵又は大正ろまん館でどうぞ」 — Roman-kan is where OUR COACH PARKS, open 9:00, and the group arrives 09:30. Eaten hot; does not travel.",
+   "latitude": 38.571009,
+   "longitude": 140.530397,
+   "coordPrecision": "approximate",
+   "confidence": "medium",
+   "confidenceNote": "The two current outlets and the shop's relocation are confirmed by Yamagata Prefecture's official tourism site and by Roman-kan's own post (dated 8 July 2022, so the relocation may since have completed). Neither publishes a price, so the ¥250 remains the widely reported figure. The coordinate is the Meiyu-an end of the street.",
+   "source": "https://www.ginzan-taishoromankan.jp/information/%E3%81%AF%E3%81%84%E3%81%8B%E3%82%89%E3%81%95%E3%82%93%E3%81%AE%E3%82%AB%E3%83%AA%E3%83%BC%E3%83%91%E3%83%B3%E3%82%92%E8%B2%A9%E5%A3%B2%E4%B8%AD%E3%81%A7%E3%81%99%E2%98%86/"
+  },
+  {
+   "id": "1c0aa6c25b8c",
+   "anchorStop": "Tsukiji Outer Market",
+   "name": "Tsukiji Aritsugu (knives)",
+   "nameJp": "築地有次",
+   "placeLabel": "Tsukiji Aritsugu, 築地4-13-6 — 6:00–15:00, closed only on market closing days, so open Monday 14 Sep",
+   "estimate": 25000,
+   "note": "ENGRAVING NOW CONFIRMED, AND THE 'SEVERAL SHOPS' CLAIM IS WRONG. Aritsugu's own retail channel: 「無料でお名前を入れられます・築地有次の職人が手で入れます・英語、漢字、カタカナなど入れられます」 — free, hand-cut, Latin or kanji or katakana. But it is ONE shop, not several: none of the six knife shops in the market's own directory advertises 名入れ. NO TURNAROUND IS PUBLISHED — do not plan on it inside a 60-minute stop. Checked baggage only.",
+   "latitude": 35.66507,
+   "longitude": 139.770828,
+   "coordPrecision": "verified",
+   "confidence": "medium",
+   "confidenceNote": "The free hand engraving is Aritsugu's own wording on its retail channel; the turnaround is stated nowhere and the order flow is 「ご注文後、弊社からお名前入れの件で連絡します」, which reads as a follow-up conversation rather than a while-you-wait service. ¥25,000 is still an order-of-magnitude estimate. NOTE the market's own site contradicts itself on hours: the Japanese page gives 6:00–15:00 closed 市場休市日, the English page 5:30–15:00 closed Sundays, national holidays and sometimes Wednesdays. Both leave Mon 14 Sep open.",
+   "source": "https://www.tsukiji-go.jp/items/49028677"
+  }
+ ],
+ "subRoutes": [],
+ "outfitByStop": {},
+ "removedFromDay": {},
+ "appliesAfter": {
+  "order": "Import this batch LAST, after every day*-*.json, new-hotels.json and expand-*.json.",
+  "why": "It carries corrections that deliberately REUSE existing record ids, verified against a third-party trip map (slm37102/tohoku-trip-map, a different trip on different dates). Last write wins, so applying this batch earlier would let the older value overwrite the corrected one.",
+  "correctsExistingIds": [
+   "1c0aa6c25b8c",
+   "1c6a9c9d2a24",
+   "70e89c03f9e4",
+   "d3shopcurry1",
+   "d7ms03",
+   "d7ss01",
+   "d7ss08",
+   "e5bb2ba00c92",
+   "fa666ecac0f8"
+  ]
+ }
+}

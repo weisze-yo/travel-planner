@@ -1,0 +1,213 @@
+{
+ "duplicatePairs": [
+  {
+   "keep": "971383114439",
+   "keepName": "Ashiyu Sky Deck footbath",
+   "duplicate": "1b77e5fe61ae",
+   "duplicateName": "Ashiyu Sky Deck (HICity rooftop footbath)",
+   "coordinate": [
+    35.547727,
+    139.756819
+   ]
+  },
+  {
+   "keep": "052699865bda",
+   "keepName": "Haneda Grand Torii",
+   "duplicate": "07a1c5b5ee8d",
+   "duplicateName": "Haneda Grand Torii (former Anamori Inari gate)",
+   "coordinate": [
+    35.547968,
+    139.753554
+   ]
+  },
+  {
+   "keep": "27db6aa32d15",
+   "keepName": "Mochidokoro Fukase kuri-dango",
+   "duplicate": "7b4c9294e31f",
+   "duplicateName": "Mochidokoro Fukase",
+   "coordinate": [
+    38.7433,
+    140.7176
+   ]
+  },
+  {
+   "keep": "6391d4b9279e",
+   "keepName": "Naruko Onsen Shrine stairway",
+   "duplicate": "404b89bd0e46",
+   "duplicateName": "Naruko Onsen Shrine",
+   "coordinate": [
+    38.740635,
+    140.716403
+   ]
+  },
+  {
+   "keep": "834cb646605c",
+   "keepName": "Gyoza no Terui, Iizaka branch",
+   "duplicate": "7c45e657af0d",
+   "duplicateName": "Gyoza no Terui, Iizaka branch",
+   "coordinate": [
+    37.834,
+    140.4548
+   ]
+  },
+  {
+   "keep": "9b69412c0e19",
+   "keepName": "Totsuna-bashi, floodlit",
+   "duplicate": "51145fce1864",
+   "duplicateName": "Totsuna-bashi bridge (floodlit)",
+   "coordinate": [
+    37.830667,
+    140.455111
+   ]
+  },
+  {
+   "keep": "48d9e8c2caa9",
+   "keepName": "Fureai Bridge",
+   "duplicate": "c9054582e60f",
+   "duplicateName": "Fureai Bridge",
+   "coordinate": [
+    36.829846,
+    139.71851
+   ]
+  },
+  {
+   "keep": "0c0376682b44",
+   "keepName": "Takimi Bridge — the abandoned hotels",
+   "duplicate": "ca7f9a39e3f2",
+   "duplicateName": "Takimi Bridge — the abandoned-hotel viewpoint",
+   "coordinate": [
+    36.838448,
+    139.720447
+   ]
+  },
+  {
+   "keep": "9335d452fae7",
+   "keepName": "H-II rocket, Expo Center forecourt",
+   "duplicate": "3ccd9b227958",
+   "duplicateName": "Tsukuba Expo Center — H-II rocket forecourt",
+   "coordinate": [
+    36.08667,
+    140.11053
+   ]
+  },
+  {
+   "keep": "7c0f93111c43",
+   "keepName": "Tsukuba Chuo Park",
+   "duplicate": "a9b950080db7",
+   "duplicateName": "Tsukuba Chuo Park",
+   "coordinate": [
+    36.08547,
+    140.1104
+   ]
+  },
+  {
+   "keep": "3b5a668d643e",
+   "keepName": "Tokyo Metropolitan Government South Observatory",
+   "duplicate": "a8a3c4952a90",
+   "duplicateName": "Tokyo Metropolitan Government Building — South Observatory",
+   "coordinate": [
+    35.68972,
+    139.69222
+   ]
+  },
+  {
+   "keep": "5e98a1595579",
+   "keepName": "Shinjuku Kabuki Hall",
+   "duplicate": "53d7cc0e2295",
+   "duplicateName": "Shinjuku Kabuki Hall / Kabuki Yokocho",
+   "coordinate": [
+    35.6959,
+    139.70065
+   ]
+  },
+  {
+   "keep": "0276e13cf0fe",
+   "keepName": "Hanazono Shrine",
+   "duplicate": "31c38120358c",
+   "duplicateName": "Hanazono Shrine",
+   "coordinate": [
+    35.69355,
+    139.70518
+   ]
+  },
+  {
+   "keep": "7d4bdad86b06",
+   "keepName": "Golden Gai",
+   "duplicate": "12288d4e8216",
+   "duplicateName": "Shinjuku Golden Gai",
+   "coordinate": [
+    35.69389,
+    139.70473
+   ]
+  },
+  {
+   "keep": "9ddb57ccd00d",
+   "keepName": "Tokyo Yurakujo bath complex",
+   "duplicate": "754752560bb7",
+   "duplicateName": "Tokyo Yurakujo bath complex (attached)",
+   "coordinate": [
+    35.7435,
+    140.3452
+   ]
+  },
+  {
+   "keep": "f50cc9e64268",
+   "keepName": "Narita Sakura-no-Yama",
+   "duplicate": "973adfe1ecfb",
+   "duplicateName": "Narita Sakura-no-Yama (plane-spotting hill)",
+   "coordinate": [
+    35.776068,
+    140.363474
+   ]
+  },
+  {
+   "keep": "8928b51f8fcc",
+   "keepName": "THE ROOFTOP",
+   "duplicate": "4745e81862f6",
+   "duplicateName": "THE ROOFTOP, Hotel Metropolitan Haneda",
+   "coordinate": null
+  },
+  {
+   "keep": "20dbdac555d5",
+   "keepName": "Matsuya HICity",
+   "duplicate": "d2dfe1b58e80",
+   "duplicateName": "Matsuya Haneda Innovation City",
+   "coordinate": null
+  },
+  {
+   "keep": "81f119796db4",
+   "keepName": "Sabako-yu",
+   "duplicate": "e20f6363ca0c",
+   "duplicateName": "Sabako-yu — the historic wooden bathhouse",
+   "coordinate": null
+  },
+  {
+   "keep": "8e0037e7a7df",
+   "keepName": "Godzilla Head",
+   "duplicate": "44c49eef1f40",
+   "duplicateName": "Godzilla Head, Shinjuku Toho Building",
+   "coordinate": null
+  }
+ ],
+ "coLocated": [
+  {
+   "a": "ec229901d7fd",
+   "aName": "Lobby — the yukata photo spot",
+   "b": "f8bf831092ec",
+   "bName": "Premium Lounge, in the lobby"
+  },
+  {
+   "a": "f02b36afd49c",
+   "aName": "FamilyMart Tsukuba Q't",
+   "b": "244a0f8595cf",
+   "bName": "Q't 3F dining floor"
+  },
+  {
+   "a": "1c6a9c9d2a24",
+   "aName": "7-Eleven inside the hotel lobby",
+   "b": "c1413e10b0e4",
+   "bName": "Vista Lounge & SuperStars sports bar"
+  }
+ ],
+ "_note": "duplicatePairs: the same real venue stored twice in trip12_app_seed.json under two content-hashed ids — once anchored to a stop and once as a night/dawn spot. to_app_seed.py emits D['spotGroups'] without checking against the stops' own items, so an importer that writes both creates two pins for one place. Recommendation: write the 'keep' id and merge the duplicate's x.timeWindow / x.hoursText / x.hotelKm onto it. coLocated: distinct venues that legitimately share a building coordinate — keep both."
+}

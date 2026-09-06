@@ -1,0 +1,1089 @@
+{
+ "batch": "day7-ginza-backup",
+ "backupFor": {
+  "stop": "Ginza",
+  "replaces": "Shisui Premium Outlets",
+  "day": 7,
+  "status": "backup — not on the printed itinerary as of 4 Sep 2026"
+ },
+ "places": [
+  {
+   "id": "d7gz01",
+   "anchorStop": "Ginza",
+   "name": "Ginza 6-chome coach drop-off (Mihara-dori, beside GINZA SIX)",
+   "nameJp": "銀座六丁目バス乗降所（三原通り）",
+   "category": "rest",
+   "priceTier": "¥",
+   "stayMinutes": 10,
+   "legs": [
+    {
+     "mode": "walk",
+     "minutes": 1
+    }
+   ],
+   "note": "THE ANCHOR, and the hard constraint. Chuo-ku's own page: 「銀座六丁目10番先から同12番先（三原通り）」, three bays, 10:00–21:00, 「無料（事前登録予約制）」 booked through Times Bus Reservation Service, and 「利用時間を1回あたり15分とします」 — 15 minutes per use. DROP-OFF ONLY: 「待機（降車から乗車までの間）は、近隣のバス駐車場を利用ください」. Two slots must be booked, one to drop and one to collect. Enquiries 03-3546-5443.",
+   "latitude": 35.6695,
+   "longitude": 139.7645,
+   "coordPrecision": "approximate",
+   "timeWindow": "day",
+   "confidence": "medium",
+   "confidenceNote": "Hours, bay count, the 15-minute cap, the free-but-reserved rule and the no-waiting rule are all quoted from Chuo-ku's own page; the coordinate is the midpoint of the kerb between the two bracketing blocks (GSI resolves 銀座6-10-1 and 銀座6-12), because no coordinate is published for the bays themselves.",
+   "source": "https://www.city.chuo.lg.jp/a0035/kurashi/koutsuu/koukyoukoutsuu/ginza6choume-basujoukoujo.html"
+  },
+  {
+   "id": "d7gz27",
+   "anchorStop": "Ginza",
+   "name": "Times Harumi 4-chome Bus Pool — where the coach waits",
+   "nameJp": "タイムズ晴海４丁目バスプール",
+   "category": "rest",
+   "priceTier": "¥¥¥",
+   "stayMinutes": 180,
+   "legs": [
+    {
+     "mode": "bus",
+     "minutes": 12
+    }
+   ],
+   "note": "Because the Ginza drop-off is 15 minutes only, the coach must go somewhere for three hours. Harumi 4-6 is the answer: 8 large-bus bays, 24 hours, ¥2,000/hour, no advance reservation — about 2.9 km and 12 minutes each way, so roughly ¥6,000 for the wait. Kyobashi Edogran takes 2 buses at ¥1,500/first 30 min, members only; Marunouchi Kajibashi is ¥2,800/hour and books by FAX months ahead.",
+   "latitude": 35.65369,
+   "longitude": 139.780075,
+   "coordPrecision": "approximate",
+   "timeWindow": "day",
+   "confidence": "medium",
+   "confidenceNote": "Capacity, hours, fee and the no-reservation rule are from the Tokyo Bus Association-sourced coach-parking listing; the coordinate is the GSI 番-level point for 晴海四丁目6番 because the pool spans the block, and the 12-minute coach leg is derived from the 2.9 km route distance, not measured.",
+   "source": "https://www.bus-trip.jp/magazine/kankonews/tokyo/36742"
+  },
+  {
+   "id": "d7gz02",
+   "anchorStop": "Ginza",
+   "name": "GINZA SIX",
+   "nameJp": "ギンザ シックス",
+   "category": "shopping",
+   "priceTier": "¥¥¥",
+   "stayMinutes": 90,
+   "legs": [
+    {
+     "mode": "walk",
+     "minutes": 3
+    }
+   ],
+   "note": "The single biggest thing in Ginza and the one the coach is parked beside. Official hours 「ショップ・カフェ 10:30〜20:30」, 「レストラン 11:00〜23:00」. Open Monday 14 Sep — its only 休館日 is 1–2 January. Its 1F TERMINAL GINZA runs ONE consolidated tax-free counter for the whole building, 10:30–20:30 — the closest thing in Ginza to a single desk, and the reason to concentrate the group's spending here.",
+   "latitude": 35.669445,
+   "longitude": 139.763351,
+   "coordPrecision": "verified",
+   "timeWindow": "day",
+   "confidence": "high",
+   "confidenceNote": null,
+   "source": "https://ginza6.tokyo/hours/"
+  },
+  {
+   "id": "d7gz03",
+   "anchorStop": "Ginza",
+   "name": "GINZA SIX rooftop garden (13F)",
+   "nameJp": "GINZA SIX ガーデン（13階）",
+   "category": "sight",
+   "priceTier": "¥",
+   "stayMinutes": 20,
+   "legs": [
+    {
+     "mode": "walk",
+     "minutes": 3
+    }
+   ],
+   "note": "Free, 「7:00〜23:00」, about 4,000 m² with a 370 m perimeter walk — the largest rooftop in Ginza and the only high open view you get without paying. Tokyo Tower and Skytree both visible; the small Kakugo Inari shrine is up there too. Mid-September is green, not autumn colour. Closes in bad weather, which in peak typhoon month is a real possibility.",
+   "latitude": 35.669445,
+   "longitude": 139.763351,
+   "coordPrecision": "verified",
+   "timeWindow": "day",
+   "confidence": "medium",
+   "confidenceNote": "Hours and the free rooftop are on GINZA SIX's own hours page; the 4,000 m² area, the 370 m corridor and the Tokyo Tower/Skytree sightlines come from a secondary feature article, and the coordinate is the building's own 号 point rather than a rooftop position.",
+   "source": "https://ginza6.tokyo/hours/"
+  },
+  {
+   "id": "d7gz04",
+   "anchorStop": "Ginza",
+   "name": "TERMINAL GINZA tax-free counter, GINZA SIX 1F",
+   "nameJp": "GINZA SIX 1階 TERMINAL GINZA 免税カウンター",
+   "category": "shopping",
+   "priceTier": "¥",
+   "stayMinutes": 15,
+   "legs": [
+    {
+     "mode": "walk",
+     "minutes": 3
+    }
+   ],
+   "note": "「免税カウンター 10:30 - 20:30」 on 1F inside TERMINAL GINZA, which GINZA SIX calls 「観光案内、外貨両替、免税、手荷物一時預かり、宅配」 — information, currency exchange, tax-free, LUGGAGE STORAGE and forwarding in one desk. It pools exemption across participating GINZA SIX tenants, so ONE queue covers several shops — unlike Shisui, where every shop's till does its own paperwork. Do not join it after 16:15.",
+   "latitude": 35.669445,
+   "longitude": 139.763351,
+   "coordPrecision": "verified",
+   "timeWindow": "day",
+   "confidence": "medium",
+   "confidenceNote": "The counter's floor, hours and consolidated function are from GINZA SIX's own services and hours pages; whether every tenant participates is not stated, and the coordinate is the building point.",
+   "source": "https://ginza6.tokyo/services"
+  },
+  {
+   "id": "d7gz10",
+   "anchorStop": "Ginza",
+   "name": "Ginza Mitsukoshi",
+   "nameJp": "銀座三越",
+   "category": "shopping",
+   "priceTier": "¥¥¥",
+   "stayMinutes": 60,
+   "legs": [
+    {
+     "mode": "walk",
+     "minutes": 6
+    }
+   ],
+   "note": "「営業時間：午前10時～午後8時」, 〒104-8212 東京都中央区銀座4-6-16, 03-3562-1111. No regular closing day, so open Monday 14 Sep, and the earliest opener of the big four. Stands on the NORTH-EAST corner of the Ginza 4-chome crossing, diagonally across Chuo-dori from the Wako clock tower. B2–B3 Ginza Food Garden is the quickest respectable food in Ginza.",
+   "latitude": 35.671577,
+   "longitude": 139.765594,
+   "coordPrecision": "verified",
+   "timeWindow": "day",
+   "confidence": "high",
+   "confidenceNote": null,
+   "source": "https://www.mistore.jp/store/ginza/access.html"
+  },
+  {
+   "id": "d7gz11",
+   "anchorStop": "Ginza",
+   "name": "Ginza Mitsukoshi tax-free counter, New Wing 7F",
+   "nameJp": "銀座三越 新館7階 免税カウンター（海外顧客サービスセンター内）",
+   "category": "shopping",
+   "priceTier": "¥",
+   "stayMinutes": 20,
+   "legs": [
+    {
+     "mode": "walk",
+     "minutes": 7
+    }
+   ],
+   "note": "Mitsukoshi runs its exemption through 「新館7階」, inside the 海外顧客サービスセンター — a single desk for the whole store, seven floors up from the street. That is the trap: allow the lift time as well as the queue. Passport or Visit Japan Web. If you are buying in Mitsukoshi at all, buy early in the visit and clear the counter before 16:00, not after.",
+   "latitude": 35.671577,
+   "longitude": 139.765594,
+   "coordPrecision": "verified",
+   "timeWindow": "day",
+   "confidence": "medium",
+   "confidenceNote": "The 新館7階 location is stated on Mitsukoshi's own tax-free service page, but that page does not publish the counter's own hours, the minimum, or whether a handling fee applies; the coordinate is the store's 号 point.",
+   "source": "https://www.mistore.jp/store/ginza/service/taxfree.html"
+  },
+  {
+   "id": "d7gz20",
+   "anchorStop": "Ginza",
+   "name": "Matsuya Ginza",
+   "nameJp": "松屋銀座",
+   "category": "shopping",
+   "priceTier": "¥¥¥",
+   "stayMinutes": 45,
+   "legs": [
+    {
+     "mode": "walk",
+     "minutes": 9
+    }
+   ],
+   "note": "3-6-1 Ginza, +81-3-3567-1211, B2F–8F 11:00–20:00 and the 8F Restaurant City to 22:00 (L.O. 21:00). Closed ONLY 1 and 2 January, so open Monday 14 Sep — but it opens at 11:00, an hour after Mitsukoshi. The most Japanese-feeling of the big four and the strongest homeware and craft floors; also the shortest walk from the MUJI and Itoya end of Chuo-dori.",
+   "latitude": 35.672779,
+   "longitude": 139.766983,
+   "coordPrecision": "verified",
+   "timeWindow": "day",
+   "confidence": "medium",
+   "confidenceNote": "Hours, phone and the 1–2 January closure are from the Ginza Information Management official landmark listing rather than Matsuya's own site, which serves its store pages only through JavaScript this session.",
+   "source": "https://www.ginza.jp/en/landmark/117"
+  },
+  {
+   "id": "d7gz08",
+   "anchorStop": "Ginza",
+   "name": "SEIKO HOUSE GINZA — Wako main store and the clock tower",
+   "nameJp": "SEIKO HOUSE GINZA（和光 本店）",
+   "category": "shopping",
+   "priceTier": "¥¥¥",
+   "stayMinutes": 25,
+   "legs": [
+    {
+     "mode": "walk",
+     "minutes": 6
+    }
+   ],
+   "note": "The clock tower building, 銀座4-5-11, on the NORTH-WEST corner of the Chuo-dori × Harumi-dori crossing. Jin Watanabe, 1932, curved granite, Westminster chimes on the hour. NAME TRAP: the building has been branded SEIKO HOUSE GINZA since June 2022 — the shop inside is still Wako, but the signage is not. Hours 10:30–19:00, 「無休（年末年始を除く）」, so open Monday. Ginza Line exits A9/A10.",
+   "latitude": 35.671604,
+   "longitude": 139.764832,
+   "coordPrecision": "verified",
+   "timeWindow": "day",
+   "confidence": "medium",
+   "confidenceNote": "The 10:30–19:00 hours and 無休 are from the Chuo-ku Tourism Association listing; Wako's own store page returned 403 this session so the hours are not confirmed at source, and the north-west corner is per japan-guide rather than an official plan.",
+   "source": "https://www.chuo-kanko.or.jp/pages/other_details/115650"
+  },
+  {
+   "id": "d7gz05",
+   "anchorStop": "Ginza",
+   "name": "UNIQLO Ginza — Ginza Komatsu East, 12 floors",
+   "nameJp": "ユニクロ 銀座店（ギンザコマツ東館 1〜12階）",
+   "category": "cloth",
+   "priceTier": "¥",
+   "stayMinutes": 45,
+   "legs": [
+    {
+     "mode": "walk",
+     "minutes": 3
+    }
+   ],
+   "note": "銀座6-9-5, 03-6252-5181, 11:00–21:00, 「1～12階全フロア」 and about 5,000 m² — the largest UNIQLO in the world, and the operator's page states 「免税対応店」. Two minutes from the coach bay, which makes it the single most efficient stop of the afternoon: the whole group can be in one building, one till system, one tax-free procedure, no queue for a shared counter.",
+   "latitude": 35.670086,
+   "longitude": 139.763626,
+   "coordPrecision": "verified",
+   "timeWindow": "day",
+   "confidence": "high",
+   "confidenceNote": null,
+   "source": "https://mitsui-shopping-park.com/urban/komatsu/store/600266.html"
+  },
+  {
+   "id": "d7gz21",
+   "anchorStop": "Ginza",
+   "name": "MUJI Ginza — world flagship",
+   "nameJp": "無印良品 銀座（世界旗艦店）",
+   "category": "shopping",
+   "priceTier": "¥¥",
+   "stayMinutes": 40,
+   "legs": [
+    {
+     "mode": "walk",
+     "minutes": 9
+    }
+   ],
+   "note": "〒104-0061 東京都中央区銀座３丁目３番５号, 03-3538-1311, 11:00–21:00, open seven days. WATCH THE DESK, NOT THE DOOR: the tax-free and delivery counters shut at 20:30, half an hour before the shop. The world flagship, so it carries lines the Malaysian stores do not, and the basement food hall is the best-value edible souvenir in Ginza. MUJI HOTEL sits above it.",
+   "latitude": 35.673199,
+   "longitude": 139.765732,
+   "coordPrecision": "verified",
+   "timeWindow": "day",
+   "confidence": "high",
+   "confidenceNote": null,
+   "source": "https://www.muji.com/jp/ja/shop/detail/046604"
+  },
+  {
+   "id": "d7gz22",
+   "anchorStop": "Ginza",
+   "name": "Ginza Itoya — G.Itoya, 12 floors of stationery",
+   "nameJp": "銀座 伊東屋 本店（G.Itoya）",
+   "category": "shopping",
+   "priceTier": "¥¥",
+   "stayMinutes": 40,
+   "legs": [
+    {
+     "mode": "walk",
+     "minutes": 10
+    }
+   ],
+   "note": "〒104-0061 東京都中央区銀座2-7-15, 03-3561-8311. Weekdays 「10:00～20:00」, Sundays and holidays 10:00–19:00 — Monday 14 Sep is a weekday, so the full 20:00. Twelve themed floors: 3F Write is fountain pens with a pen-care bench, 7F Color holds over 1,300 pencils, 8F Craft is paper. CAFE Stylo on 12F, 11:30–21:00. The best flight-proof souvenirs in Ginza are on these floors.",
+   "latitude": 35.673069,
+   "longitude": 139.767181,
+   "coordPrecision": "verified",
+   "timeWindow": "day",
+   "confidence": "high",
+   "confidenceNote": null,
+   "source": "https://www.ito-ya.co.jp/ext/store/ginza/ginza/index.html"
+  },
+  {
+   "id": "d7gz23",
+   "anchorStop": "Ginza",
+   "name": "Ginza Loft",
+   "nameJp": "銀座ロフト",
+   "category": "shopping",
+   "priceTier": "¥¥",
+   "stayMinutes": 35,
+   "legs": [
+    {
+     "mode": "walk",
+     "minutes": 11
+    }
+   ],
+   "note": "〒104-0061 東京都中央区銀座2-4-6 銀座ベルビア館1階～5階, 03-3562-6210. 「午前11時～午後9時」 Monday to Saturday and holidays, 11:00–20:00 Sundays — so the long day applies on Monday 14 Sep. Five floors of the mid-price Japanese variety goods people actually want to take home: stationery, cosme tools, kitchen gadgets, character stock. Cheaper and faster than a department store.",
+   "latitude": 35.673977,
+   "longitude": 139.766556,
+   "coordPrecision": "verified",
+   "timeWindow": "day",
+   "confidence": "high",
+   "confidenceNote": null,
+   "source": "https://www.loft.co.jp/ginzaloft/"
+  },
+  {
+   "id": "d7gz24",
+   "anchorStop": "Ginza",
+   "name": "Don Quijote Ginza Honkan — 24 hours",
+   "nameJp": "ドン・キホーテ 銀座本館（銀座ナイン3号館）",
+   "category": "shopping",
+   "priceTier": "¥",
+   "stayMinutes": 30,
+   "legs": [
+    {
+     "mode": "walk",
+     "minutes": 7
+    }
+   ],
+   "note": "〒104-0061 東京都中央区銀座8-10 銀座ナイン3号館, 0570-023-811, 「24時間営業」 and 「免税対応」. The cheap-and-cheerful counterweight to the rest of Ginza and the one shop that cannot be shut when you get there. Snacks, KitKat variants, drugstore cosme and novelty in one heap. Under the expressway at the Shimbashi end, so it is a seven-minute walk the wrong way from the bay — send only the people who want it.",
+   "latitude": 35.667789,
+   "longitude": 139.762314,
+   "coordPrecision": "approximate",
+   "timeWindow": "day",
+   "confidence": "medium",
+   "confidenceNote": "Address, 24-hour trading and the tax-free flag are from Don Quijote's own store page, but the published address stops at 銀座8-10 with no 号, so GSI resolves only the 番-level block point.",
+   "source": "https://www.donki.com/store/shop_detail.php?shop_id=92"
+  },
+  {
+   "id": "d7gz18",
+   "anchorStop": "Ginza",
+   "name": "LOTTE DUTY FREE Tokyo Ginza (GinzaNovo 8–9F)",
+   "nameJp": "ロッテ免税店 東京銀座店（GinzaNovo 8・9階）",
+   "category": "shopping",
+   "priceTier": "¥¥",
+   "stayMinutes": 30,
+   "legs": [
+    {
+     "mode": "walk",
+     "minutes": 9
+    }
+   ],
+   "note": "「東京都中央区銀座5-2-1 GinzaNovo 8-9階」, 03-6264-6860, 11:00–21:00. Two different things on two floors: 8F is ordinary in-store tax-free, take it away at once, no passport needed. 9F is airport-collection duty free — passport and flight details, you get a voucher and collect after immigration at Haneda or Narita, 「出国の60日前から1日前までご購入いただけます」. For a group flying out of Narita tomorrow, 9F genuinely works.",
+   "latitude": 35.672646,
+   "longitude": 139.762756,
+   "coordPrecision": "verified",
+   "timeWindow": "day",
+   "confidence": "high",
+   "confidenceNote": null,
+   "source": "https://lotteginza.com/store-information/"
+  },
+  {
+   "id": "d7gz17",
+   "anchorStop": "Ginza",
+   "name": "GinzaNovo — the former Tokyu Plaza Ginza",
+   "nameJp": "GinzaNovo（旧・東急プラザ銀座）",
+   "category": "shopping",
+   "priceTier": "¥¥",
+   "stayMinutes": 40,
+   "legs": [
+    {
+     "mode": "walk",
+     "minutes": 9
+    }
+   ],
+   "note": "NAME TRAP NUMBER TWO: 東急プラザ銀座 was renamed and reopened as GinzaNovo in December 2025 — 「『東急プラザ銀座』が名称変更し、2025年12月にオープンしました」 — and a further rebuild of the glass facade runs to 2027. Address unchanged at 銀座5-2-1, hours 11:00～21:00, restaurants to 23:00, closed 1 January and for statutory inspection. Directly on the Sukiyabashi crossing, Ginza Station exit C3.",
+   "latitude": 35.672646,
+   "longitude": 139.762756,
+   "coordPrecision": "verified",
+   "timeWindow": "day",
+   "confidence": "medium",
+   "confidenceNote": "The rename, address and 11:00–21:00 hours are from the Tokyo Metropolitan Government's GO TOKYO listing; how much of the building is hoarded off for the 2027 facade works on 14 Sep 2026 could not be confirmed from the operator's own site this session.",
+   "source": "https://www.gotokyo.org/jp/spot/663/index.html"
+  },
+  {
+   "id": "d7gz25",
+   "anchorStop": "Ginza",
+   "name": "BicCamera Yurakucho — cosme, electronics, one 1F counter",
+   "nameJp": "ビックカメラ 有楽町店",
+   "category": "cosme",
+   "priceTier": "¥¥",
+   "stayMinutes": 40,
+   "legs": [
+    {
+     "mode": "walk",
+     "minutes": 14
+    }
+   ],
+   "note": "「〒100-0006 東京都千代田区有楽町1-11-1」, 03-5221-1111, 10:00–22:00 every day, with the tax-free counter on 1F. 3F is beauty devices, personal care and supplements — the panasonic-hair-dryer-and-supplement floor a Malaysian group usually wants — and B2F is cameras. Fourteen minutes' walk each way is the cost, so this is an either/or against Chuo-dori, not an addition.",
+   "latitude": 35.675388,
+   "longitude": 139.762878,
+   "coordPrecision": "approximate",
+   "timeWindow": "day",
+   "confidence": "medium",
+   "confidenceNote": "Address, hours, phone and the 1F tax-free counter are from BicCamera's own store page; GSI resolves 有楽町1-11-1 only to the 番-level point 有楽町一丁目11番, so the coordinate is the block, not the entrance.",
+   "source": "https://www.biccamera.com/bc/i/shop/shoplist/shop014.jsp"
+  },
+  {
+   "id": "d7gz16",
+   "anchorStop": "Ginza",
+   "name": "Matsumoto Kiyoshi GINZA FLAG — the cosme flagship",
+   "nameJp": "薬 マツモトキヨシ GINZA FLAG",
+   "category": "cosme",
+   "priceTier": "¥",
+   "stayMinutes": 30,
+   "legs": [
+    {
+     "mode": "walk",
+     "minutes": 6
+    }
+   ],
+   "note": "東京都中央区銀座5-5-1, opened 25 July 2025, 「10:00～23:00」, four levels B1–3F and 「免税取扱い」. The floor that matters is 2F: 「トレンドの韓国コスメからハイグレードブランド」. B1 is whitening, skincare and supplements, 1F is medicines and trending skincare, 3F is the dispensing pharmacy. Open earlier and later than everything else in Ginza, and prices are drugstore, not department store.",
+   "latitude": 35.671856,
+   "longitude": 139.763916,
+   "coordPrecision": "verified",
+   "timeWindow": "day",
+   "confidence": "high",
+   "confidenceNote": null,
+   "source": "https://prtimes.jp/main/html/rd/p/000000073.000031551.html"
+  },
+  {
+   "id": "d7gz15",
+   "anchorStop": "Ginza",
+   "name": "Matsumoto Kiyoshi Ginza Miyuki Ave. — the nearest drugstore to the coach",
+   "nameJp": "薬局マツモトキヨシ 銀座みゆきAve.店（BINO GINZA 1階）",
+   "category": "cosme",
+   "priceTier": "¥",
+   "stayMinutes": 20,
+   "legs": [
+    {
+     "mode": "walk",
+     "minutes": 3
+    }
+   ],
+   "note": "「東京都中央区銀座五丁目８番９号 ＢＩＮＯ ＧＩＮＺＡ １階」, about five minutes from Ginza Station and three from the coach bay — the closest cosme and sundries to the drop-off, and the one to use if someone needs plasters, a fan or sunscreen rather than a shopping trip. Ginza has at least six Matsumoto Kiyoshi branches within nine minutes' walk of the station, so nobody needs to go far.",
+   "latitude": 35.670292,
+   "longitude": 139.764908,
+   "coordPrecision": "verified",
+   "timeWindow": "day",
+   "confidence": "medium",
+   "confidenceNote": "The address is from Matsumoto Kiyoshi's own branch directory; that directory does not publish this branch's opening hours, so they are unknown and the tax-free status is unconfirmed for this branch specifically.",
+   "source": "https://www.kusurinomadoguchi.com/brand/kmbp1072/tokyo/line/station/2800111"
+  },
+  {
+   "id": "d7gz12",
+   "anchorStop": "Ginza",
+   "name": "Tokyo Kyukyodo Ginza main store",
+   "nameJp": "東京鳩居堂 銀座本店",
+   "category": "shopping",
+   "priceTier": "¥",
+   "stayMinutes": 20,
+   "legs": [
+    {
+     "mode": "walk",
+     "minutes": 5
+    }
+   ],
+   "note": "東京都中央区銀座5-7-4, 03-3571-4429, 11時00分～19時00分, two minutes from Ginza Station. Incense, calligraphy supplies, postcards, writing paper and 金封 — 「香や書画用品、はがき、便せん、金封といったさまざまな和紙製品」. Incense sticks and washi weigh nothing, survive a flight perfectly and cost from a few hundred yen, which makes this the best small-gift shop in Ginza for 35 people. CLOSES AT 19:00.",
+   "latitude": 35.671089,
+   "longitude": 139.764679,
+   "coordPrecision": "verified",
+   "timeWindow": "day",
+   "confidence": "medium",
+   "confidenceNote": "Address, phone, 11:00–19:00 hours and the product range are from a Time Out Tokyo listing; Kyukyodo's own shop page could not be fetched this session, so no closing day is confirmed.",
+   "source": "https://www.timeout.jp/tokyo/ja/%E3%82%B7%E3%83%A7%E3%83%83%E3%83%94%E3%83%B3%E3%82%B0/kyukyodo-ginza"
+  },
+  {
+   "id": "d7gz06",
+   "anchorStop": "Ginza",
+   "name": "Ginza Natsuno — 2,500 kinds of chopsticks",
+   "nameJp": "銀座 夏野 銀座本店",
+   "category": "shopping",
+   "priceTier": "¥¥",
+   "stayMinutes": 20,
+   "legs": [
+    {
+     "mode": "walk",
+     "minutes": 5
+    }
+   ],
+   "note": "東京都中央区銀座6-7-4, 03-3569-0952, 10:30–19:30 Monday to Saturday. 「約2,500種類の箸と1,000種類以上の箸置きを取り揃えています」, with same-day name engraving. Five minutes from the coach bay. Chopsticks are the ideal Trip 12 souvenir: flat, unbreakable, no shelf life, no liquid, ¥1,000–3,000 buys something good, and a named engraved pair reads as a real present rather than airport stock.",
+   "latitude": 35.67067,
+   "longitude": 139.763046,
+   "coordPrecision": "verified",
+   "timeWindow": "day",
+   "confidence": "medium",
+   "confidenceNote": "Address, phone, the hours and the 2,500-variety figure are from Natsuno's own store page, which also notes it is 「現在、短縮営業中」 — currently on shortened hours — so the closing time may be earlier than published.",
+   "source": "https://www.e-ohashi.com/shop/ginza.php"
+  },
+  {
+   "id": "d7gz13",
+   "anchorStop": "Ginza",
+   "name": "Ginza Akebono — monaka and rice crackers",
+   "nameJp": "銀座あけぼの 銀座本店",
+   "category": "food",
+   "priceTier": "¥",
+   "stayMinutes": 12,
+   "legs": [
+    {
+     "mode": "walk",
+     "minutes": 5
+    }
+   ],
+   "note": "銀座5-7-19, on Chuo-dori five minutes from the coach bay. The classic Ginza wagashi counter: 最中 and the 味の民藝 rice-cracker assortment, boxed, individually wrapped, ambient — which is exactly what survives a hold bag to Kuala Lumpur when nothing chilled from Tsukiji does. Boxes from roughly ¥1,000. Buy this instead of the boiled peanuts Shisui would have sold you.",
+   "latitude": 35.671326,
+   "longitude": 139.764465,
+   "coordPrecision": "verified",
+   "timeWindow": "day",
+   "confidence": "medium",
+   "confidenceNote": "The address is confirmed by GSI at 号 level and the shop's product range is well established, but Akebono's own store page could not be fetched this session, so the opening hours, closing day and current prices are unverified.",
+   "source": "https://ginza-akebono.co.jp/shop/"
+  },
+  {
+   "id": "d7gz14",
+   "anchorStop": "Ginza",
+   "name": "GINZA PLACE — Nissan Crossing and the Sony showroom",
+   "nameJp": "GINZA PLACE（銀座プレイス）",
+   "category": "sight",
+   "priceTier": "¥",
+   "stayMinutes": 20,
+   "legs": [
+    {
+     "mode": "walk",
+     "minutes": 5
+    }
+   ],
+   "note": "「東京都中央区銀座五丁目8番1号」, 「東京メトロ銀座線・丸ノ内線・日比谷線「銀座駅」A4出口直結」. The white filigree block on the SOUTH-EAST corner of the 4-chome crossing, and — more usefully — the corner you STAND ON to photograph the Wako clock tower diagonally opposite. Nissan Crossing on the lower floors and the Sony showroom above are free walk-ins; tenant hours differ, so check per shop.",
+   "latitude": 35.670975,
+   "longitude": 139.76503,
+   "coordPrecision": "verified",
+   "timeWindow": "day",
+   "confidence": "medium",
+   "confidenceNote": "The address and the A4-exit connection are from GINZA PLACE's own access page, which states only 「店舗ごとに異なるのでショップ情報をご確認ください」 and publishes no building hours; the Nissan Crossing and Sony showroom hours are therefore unverified.",
+   "source": "https://ginzaplace.jp/access/"
+  },
+  {
+   "id": "d7gz07",
+   "anchorStop": "Ginza",
+   "name": "Beer Hall Lion Ginza 7-chome — the sit-down option",
+   "nameJp": "ビヤホールライオン 銀座七丁目店",
+   "category": "food",
+   "priceTier": "¥¥",
+   "stayMinutes": 60,
+   "legs": [
+    {
+     "mode": "walk",
+     "minutes": 4
+    }
+   ],
+   "note": "「東京都中央区銀座7－9－20 銀座ライオンビル 1F」, 03-3571-2590, 11:30–22:00 (L.O. 21:30) Monday, 「総席数 280席」, 定休日 「なし」. Japan's oldest surviving beer hall, 1934, a barrel-vaulted glass-mosaic room — the one interior in Ginza worth sitting in. FOUR minutes from the coach bay. But 「直接のご来店をお願いしており、ご予約は承っておりません」: the 1F hall takes no bookings, so 35 people cannot be guaranteed a table.",
+   "latitude": 35.669258,
+   "longitude": 139.763153,
+   "coordPrecision": "verified",
+   "timeWindow": "day",
+   "confidence": "high",
+   "confidenceNote": null,
+   "source": "https://www.ginzalion.jp/shop/brand/lion/shop1.html"
+  },
+  {
+   "id": "d7gz09",
+   "anchorStop": "Ginza",
+   "name": "Ginza Kimuraya — the original anpan, at the crossing",
+   "nameJp": "銀座木村家 本店",
+   "category": "food",
+   "priceTier": "¥",
+   "stayMinutes": 15,
+   "legs": [
+    {
+     "mode": "walk",
+     "minutes": 6
+    }
+   ],
+   "note": "東京都中央区銀座4-5-7, 03-3561-0091, 10:00〜20:00, 「無休(大晦日・元旦を除く）」 — so open Monday 14 Sep. On Chuo-dori a few doors from the clock tower. 1F is the bakery: buy the sakadane anpan over the counter for a few hundred yen and eat it walking. 2F 喫茶木村家 does sandwiches and dessert, 3F 洋食グリル木村家 old-school western, 4F a French bistro. The quick-eat answer with lunch already at 12:15.",
+   "latitude": 35.671623,
+   "longitude": 139.765244,
+   "coordPrecision": "verified",
+   "timeWindow": "day",
+   "confidence": "high",
+   "confidenceNote": null,
+   "source": "https://ginzakimuraya.jp/store/index.html"
+  },
+  {
+   "id": "d7gz26",
+   "anchorStop": "Ginza",
+   "name": "Kabukiza and the Kobikicho Hiroba basement",
+   "nameJp": "歌舞伎座・木挽町広場（地下2階）",
+   "category": "sight",
+   "priceTier": "¥",
+   "stayMinutes": 25,
+   "legs": [
+    {
+     "mode": "walk",
+     "minutes": 7
+    }
+   ],
+   "note": "「中央区銀座4-12-15 地下2階」, 03-3545-6551, 木挽町広場 open 「9:30～18:30」 and free — you do not need a ticket to walk in. Directly connected to Higashi-Ginza station. Kabukiza's own shops, food stalls, a coffee shop and a convenience store, 「毎日が縁日のような賑わい」: the cheapest genuinely Japanese souvenirs of the afternoon. Seven minutes east along Harumi-dori from the coach bay.",
+   "latitude": 35.669304,
+   "longitude": 139.767654,
+   "coordPrecision": "verified",
+   "timeWindow": "day",
+   "confidence": "medium",
+   "confidenceNote": "Floor, hours, phone and the free-access plaza are from the Chuo-ku Tourism Association company listing; whether the plaza keeps the same hours on a day with no performance is not stated there.",
+   "source": "https://www.chuo-kanko.or.jp/pages/company_details/339366"
+  },
+  {
+   "id": "d7gz19",
+   "anchorStop": "Ginza",
+   "name": "Ginza Sony Park",
+   "nameJp": "Ginza Sony Park",
+   "category": "sight",
+   "priceTier": "¥",
+   "stayMinutes": 25,
+   "legs": [
+    {
+     "mode": "walk",
+     "minutes": 8
+    }
+   ],
+   "note": "銀座5-3-1 on the Sukiyabashi crossing, generally 11:00–19:00, free to walk into. Rebuilt and grand-opened January 2025 as a permanent concrete 'park' rather than the old empty lot. Its published 2026 closing days are 「9月28日 (月)・10月27日 (火)」, so 14 September is OPEN. B3 holds 銀座の洋食 Nibun no Ichi, 11:00–21:00. A cool, dark, free twenty minutes when 26°C and glare have won.",
+   "latitude": 35.672276,
+   "longitude": 139.763245,
+   "coordPrecision": "verified",
+   "timeWindow": "day",
+   "confidence": "medium",
+   "confidenceNote": "The 11:00–19:00 hours and the two 2026 closing days are from Ginza Sony Park's own site, which does not state an admission price or a full address on the page fetched; free entry to the building is therefore inferred from the programme listings.",
+   "source": "https://www.ginzasonypark.com/"
+  }
+ ],
+ "mustSee": [
+  {
+   "id": "d7gzms1",
+   "anchorStop": "Ginza",
+   "title": "The Wako clock tower from the corner diagonally opposite",
+   "nameJp": "セイコーハウス銀座（和光）時計塔 — 銀座四丁目交差点",
+   "tag": "DAY 7 BACKUP",
+   "summary": "Jin Watanabe's 1932 curved-granite corner with the Hattori clock tower is the one image that says Ginza, and mid-afternoon is the right hour for it: the WSW sun rakes across the curve while the Chuo-dori face drops into shadow, which is what gives the tower its shape. Branded SEIKO HOUSE GINZA since June 2022.",
+   "whereToFind": "Stand on the SOUTH-EAST corner of the Chuo-dori × Harumi-dori crossing, on the pavement in front of GINZA PLACE (銀座5-8-1, Ginza Station exit A4), and shoot back NORTH-WEST across the junction. Wako is the north-west corner; from GINZA PLACE you get the whole curve plus the tower against sky, and the 14:30–15:30 sun (azimuth 241°–253°, altitude 39°–27°) sits about 80–100° to your LEFT, so faces are side-lit and there is no flare. DO NOT shoot it from the Mitsukoshi corner: that view faces roughly 250°, straight into the sun. And note the FOURTH corner is gone — the San-ai Dream Center at 銀座5-7-2 was demolished from March 2023 and its replacement is not due until 2027, so the south-west corner is hoarding. Keep it out of frame by standing tight to the GINZA PLACE kerb. Monday means NO pedestrian precinct: you are on a live four-lane arterial and must shoot from the pavement inside the signal cycle.",
+   "latitude": 35.671604,
+   "longitude": 139.764832,
+   "coordPrecision": "verified",
+   "confidence": "medium",
+   "confidenceNote": "The building, its 1932 date and architect and the SEIKO HOUSE rebranding are well documented, and the north-west corner is per japan-guide; the sun azimuths are computed with the same NOAA routine used for the rest of the trip, but no official plan of the crossing's corners was obtainable this session.",
+   "source": "https://www.japan-guide.com/e/e3005.html"
+  },
+  {
+   "id": "d7gzms2",
+   "anchorStop": "Ginza",
+   "title": "Chuo-dori as a straight avenue — and the Monday reality",
+   "nameJp": "中央通り（銀座通り）の直線パース",
+   "tag": "DAY 7 BACKUP",
+   "summary": "Ginza's whole visual character is one 1,100 m straight line of glass and granite running NNE–SSW, and on a Monday it is a working road. The weekend pedestrian precinct — Saturdays, Sundays and public holidays only, 12:00–18:00 from April to September — is NOT on. 14 September 2026 is a plain Monday; Respect for the Aged Day falls on 21 September.",
+   "whereToFind": "For the avenue shot, walk NORTH to the Ginza 2-chome end (outside Ginza Loft, 銀座2-4-6) and look back SOUTH-SOUTH-WEST down Chuo-dori toward 8-chome. The street runs on a bearing of about 209° that way, and at 15:00–16:00 the sun sits at azimuth 248°–258°, i.e. 40–50° off your view axis to the right — cross-light down the facades, which models the buildings instead of flattening them, and no sun in frame. Shoot from the PAVEMENT, tucked behind a signal pole, never from the carriageway: with no hokoten there is live bus and taxi traffic and Chuo-ku's own rule 「歩行者天国（中央通り・銀座通り入り口から銀座八丁目交差点までの間）実施時間中は、自転車も通行できません」 applies only during the weekend closure. Use the signalled crossings at 4-chome and 6-chome; a 35-person group cannot cross Chuo-dori anywhere else.",
+   "latitude": 35.673977,
+   "longitude": 139.766556,
+   "coordPrecision": "verified",
+   "confidence": "medium",
+   "confidenceNote": "The Saturday/Sunday/holiday-only schedule and the April–September 12:00–18:00 window are from a secondary summary corroborated by japan-guide ('noon to 18:00, until 17:00 October to March'); Chuo-ku's own page confirms the closed section but does not publish the days and hours.",
+   "source": "https://www.asoview.com/note/1748/"
+  },
+  {
+   "id": "d7gzms3",
+   "anchorStop": "Ginza",
+   "title": "Tokyo Tower and Skytree from the GINZA SIX roof",
+   "nameJp": "GINZA SIX ガーデン（13階屋上庭園）からの眺望",
+   "tag": "DAY 7 BACKUP",
+   "summary": "The only free high viewpoint in Ginza, and the one shot that ties Day 7 together — you photographed Tokyo Tower at 09:00 and from here you can see it again with Skytree in the same frame. About 4,000 m² of rooftop with a 370 m perimeter walk, open 7:00–23:00 at no charge, three minutes from where the coach drops you.",
+   "whereToFind": "Take the lift to 13F, walk out of the garden's glass doors and go to the SOUTH-WEST edge of the perimeter walk for Tokyo Tower, then the NORTH-EAST edge for Skytree. Stand at the rail rather than behind the glass panels — the glazing double-images a low sun. Mid-afternoon is the compromise hour: at 15:00 the sun is WSW at 33° altitude, so Tokyo Tower to the south-west is BACKLIT and reads as a silhouette, while Skytree to the north-east is fully front-lit and is the better photograph. For people-plus-city, put the group at the north-east rail with Skytree behind them and the sun over their shoulders. The garden shuts in bad weather, and September is peak typhoon month, so treat it as a bonus rather than a plan.",
+   "latitude": 35.669445,
+   "longitude": 139.763351,
+   "coordPrecision": "verified",
+   "confidence": "medium",
+   "confidenceNote": "The 7:00–23:00 free rooftop is on GINZA SIX's own hours page; the 4,000 m² area, the 370 m corridor and the Tokyo Tower and Skytree sightlines are from a secondary feature article, and the coordinate is the building point rather than a rooftop position.",
+   "source": "https://ginza6.tokyo/hours/"
+  },
+  {
+   "id": "d7gzms4",
+   "anchorStop": "Ginza",
+   "title": "The Kabukiza gable from across Harumi-dori",
+   "nameJp": "歌舞伎座 — 晴海通りの対岸から",
+   "tag": "DAY 7 BACKUP",
+   "summary": "The 2013 Kabukiza keeps the 1924 Momoyama-style tiled gable and karahafu porch, stacked in front of a 29-storey tower — the sharpest old-against-new frame in Ginza, and free. The basement Kobikicho Hiroba is open 9:30–18:30 whether or not there is a performance, so the group can go inside without a ticket.",
+   "whereToFind": "Cross to the SOUTH side of Harumi-dori, opposite the theatre, and stand on the wide pavement in front of the Togeki building — that is the only position far enough back to fit the gable and the tower above it into one frame without shooting straight up. The theatre faces roughly north-west across Harumi-dori, so at 15:00–16:00 (sun azimuth 248°–258°, altitude 33°–22°) the west end of the facade and the karahafu porch are in full raking sun while the recessed entrance is in deep shadow — expose for the tiles and let the porch go dark, or move ten metres east so a street tree breaks the highlight. Then walk down to the B2 plaza, 「中央区銀座4-12-15 地下2階」, for the souvenir stalls. Seven minutes east of the coach bay along Harumi-dori.",
+   "latitude": 35.669304,
+   "longitude": 139.767654,
+   "coordPrecision": "verified",
+   "confidence": "medium",
+   "confidenceNote": "The address, the free B2 plaza and its 9:30–18:30 hours are from the Chuo-ku Tourism Association listing; the 1924 gable and 2013 rebuild are general knowledge not re-confirmed at an official source this session, and the Togeki standing position is derived from the geometry, not from a site visit.",
+   "source": "https://www.chuo-kanko.or.jp/pages/company_details/339366"
+  }
+ ],
+ "shopping": [
+  {
+   "id": "d7gzsh01",
+   "anchorStop": "Ginza",
+   "name": "Tax-free at the till — how it works in Ginza",
+   "nameJp": "免税手続き（レジでの即時免税）",
+   "placeLabel": "Each participating shop's own till across Ginza — plus TWO consolidated counters: GINZA SIX 1F TERMINAL GINZA and Ginza Mitsukoshi 新館7階",
+   "estimate": 5000,
+   "note": "The ¥5,000 is the THRESHOLD, not a price: ¥5,000 tax-excluded PER STORE PER DAY for general goods. Still deducted AT THE TILL — the refund-at-departure system starts with sales from 1 Nov 2026. Passport at the cashier; Visit Japan Web accepted instead. THE DIFFERENCE FROM SHISUI: Shisui has no central desk at all, so it is shop by shop. Ginza gives you a choice — GINZA SIX and Mitsukoshi each pool their tenants into one counter, everywhere else is per till.",
+   "latitude": 35.671604,
+   "longitude": 139.764832,
+   "coordPrecision": "verified",
+   "confidence": "high",
+   "confidenceNote": null,
+   "source": "https://www.mlit.go.jp/kankocho/tax-free/page01_000001_00019.html"
+  },
+  {
+   "id": "d7gzsh02",
+   "anchorStop": "Ginza",
+   "name": "UNIQLO Ginza — Japan-only lines, one till system",
+   "nameJp": "ユニクロ 銀座店限定・日本限定ライン",
+   "placeLabel": "UNIQLO Ginza, ギンザコマツ東館 1〜12階, 銀座6-9-5 — 「免税対応店」",
+   "estimate": 8000,
+   "note": "The single most efficient purchase of the afternoon: world's largest UNIQLO, twelve floors, three minutes from the coach, one shop and therefore ONE tax-free receipt for the whole spend. ¥8,000 clears the ¥5,000 threshold in one go — two AIRism sets plus a UT or a Japan-only collaboration the Malaysian stores never get. Flies perfectly: soft, light, no liquid. Buy for the 7 kg cabin bag, not the 25 kg hold.",
+   "latitude": 35.670086,
+   "longitude": 139.763626,
+   "coordPrecision": "verified",
+   "confidence": "high",
+   "confidenceNote": null,
+   "source": "https://mitsui-shopping-park.com/urban/komatsu/store/600266.html"
+  },
+  {
+   "id": "d7gzsh03",
+   "anchorStop": "Ginza",
+   "name": "Ginza Natsuno engraved chopsticks",
+   "nameJp": "銀座夏野の名入れ箸",
+   "placeLabel": "銀座 夏野 銀座本店, 銀座6-7-4, five minutes from the coach bay",
+   "estimate": 2500,
+   "note": "「約2,500種類の箸と1,000種類以上の箸置きを取り揃えています」 with same-day name engraving. The best gift-per-gram on Day 7: ¥1,500–3,000 buys a lacquered pair, engraved with a name, in a flat box that will not break, leak, melt or expire. Buy several for colleagues who did not come. Nothing Shisui sells does this job — and add a 箸置き rest for a few hundred yen to make it look considered.",
+   "latitude": 35.67067,
+   "longitude": 139.763046,
+   "coordPrecision": "verified",
+   "confidence": "medium",
+   "confidenceNote": "Product range, address and prices are from Natsuno's own store page, which notes the shop is 「現在、短縮営業中」 on shortened hours, so closing time and engraving turnaround on the day are not guaranteed.",
+   "source": "https://www.e-ohashi.com/shop/ginza.php"
+  },
+  {
+   "id": "d7gzsh04",
+   "anchorStop": "Ginza",
+   "name": "Kyukyodo incense and washi",
+   "nameJp": "東京鳩居堂の線香・和紙製品",
+   "placeLabel": "東京鳩居堂 銀座本店, 銀座5-7-4 — CLOSES 19:00",
+   "estimate": 1500,
+   "note": "「香や書画用品、はがき、便せん、金封といったさまざまな和紙製品」. Incense from a few hundred yen a box, washi letter sets around ¥1,000: weightless, unbreakable, no shelf life, no liquid restriction, and unmistakably from Tokyo rather than an airport. The one caution is that incense is strongly scented — keep it out of a bag with tea or dried fish from Tsukiji, or both will taste of sandalwood.",
+   "latitude": 35.671089,
+   "longitude": 139.764679,
+   "coordPrecision": "verified",
+   "confidence": "medium",
+   "confidenceNote": "Address, hours and product range are from a Time Out Tokyo listing; Kyukyodo's own shop page could not be fetched, so prices are indicative and no closing day is confirmed.",
+   "source": "https://www.timeout.jp/tokyo/ja/%E3%82%B7%E3%83%A7%E3%83%83%E3%83%94%E3%83%B3%E3%82%B0/kyukyodo-ginza"
+  },
+  {
+   "id": "d7gzsh05",
+   "anchorStop": "Ginza",
+   "name": "Itoya fountain pen and letterpress card set",
+   "nameJp": "伊東屋 3F Write の万年筆・2F Share のカード",
+   "placeLabel": "銀座 伊東屋 本店 G.Itoya, 銀座2-7-15 — 3F Write, 2F Share, 7F Color",
+   "estimate": 12000,
+   "note": "Twelve floors, and three of them matter: 3F Write is fountain pens with a pen-care bench, 7F Color holds over 1,300 pencils, 2F Share does cards and the Write & Post desk. ¥12,000 is a mid-range Japanese fountain pen — a Pilot or Sailor at Japanese domestic price, well under Malaysian retail — and it clears the tax-free threshold on one receipt. Empty the pen before flying; ink is a liquid and a 30,000-foot leak ruins a shirt.",
+   "latitude": 35.673069,
+   "longitude": 139.767181,
+   "coordPrecision": "verified",
+   "confidence": "high",
+   "confidenceNote": null,
+   "source": "https://www.ito-ya.co.jp/ext/store/ginza/ginza/index.html"
+  },
+  {
+   "id": "d7gzsh06",
+   "anchorStop": "Ginza",
+   "name": "Korean and J-beauty cosme at GINZA FLAG 2F",
+   "nameJp": "マツモトキヨシ GINZA FLAG 2階のコスメ",
+   "placeLabel": "薬 マツモトキヨシ GINZA FLAG, 銀座5-5-1, B1–3F, 10:00–23:00, 「免税取扱い」",
+   "estimate": 6000,
+   "note": "The cosme answer, and it is a drugstore price not a department-store one. 2F is 「トレンドの韓国コスメからハイグレードブランド」; B1 is whitening, skincare and supplements. ¥6,000 clears the ¥5,000 threshold — but note cosmetics count as 消耗品 (consumables), so they must be sealed at the till and NOT opened before you leave Japan. All liquid, so hold baggage tomorrow, and double-bag: a burst serum in a 25 kg case is a bad end to the trip.",
+   "latitude": 35.671856,
+   "longitude": 139.763916,
+   "coordPrecision": "verified",
+   "confidence": "high",
+   "confidenceNote": null,
+   "source": "https://prtimes.jp/main/html/rd/p/000000073.000031551.html"
+  },
+  {
+   "id": "d7gzsh07",
+   "anchorStop": "Ginza",
+   "name": "MUJI Ginza flagship-only stock and the basement food hall",
+   "nameJp": "無印良品 銀座（世界旗艦店）限定品・食品売場",
+   "placeLabel": "無印良品 銀座, 銀座３丁目３番５号 — tax-free desk closes 20:30, shop 21:00",
+   "estimate": 5000,
+   "note": "The world flagship carries lines the Malaysian MUJI does not. Best buys for a flight: the retort curries and freeze-dried soups (ambient, flat, about ¥350 each — a dozen makes a real gift box), the aluminium pens, and the packable travel goods. Cheap enough that ¥5,000 is easy to reach in one receipt. WATCH THE DESK: the tax-free counter shuts at 20:30, half an hour before the store, which catches people out on a normal day.",
+   "latitude": 35.673199,
+   "longitude": 139.765732,
+   "coordPrecision": "verified",
+   "confidence": "high",
+   "confidenceNote": null,
+   "source": "https://www.muji.com/jp/ja/shop/detail/046604"
+  },
+  {
+   "id": "d7gzsh08",
+   "anchorStop": "Ginza",
+   "name": "Ginza Kimuraya sakadane anpan",
+   "nameJp": "銀座木村家の酒種あんぱん",
+   "placeLabel": "銀座木村家 本店 1F bakery, 銀座4-5-7, 10:00〜20:00, 「無休(大晦日・元旦を除く）」",
+   "estimate": 300,
+   "note": "The originator of anpan, sold over the counter a few doors from the clock tower for a few hundred yen. This is a walk-and-eat purchase, not a souvenir: fresh bread with sweet bean paste has a one-to-two day life and no business in a suitcase. Buy one each, eat it at the crossing, and let the boxed Akebono monaka be the thing that flies. Cash is quickest at a counter this busy.",
+   "latitude": 35.671623,
+   "longitude": 139.765244,
+   "coordPrecision": "verified",
+   "confidence": "high",
+   "confidenceNote": null,
+   "source": "https://ginzakimuraya.jp/store/index.html"
+  },
+  {
+   "id": "d7gzsh09",
+   "anchorStop": "Ginza",
+   "name": "Ginza Akebono monaka and the Aji-no-Mingei cracker box",
+   "nameJp": "銀座あけぼの 最中・味の民藝",
+   "placeLabel": "銀座あけぼの 銀座本店, 銀座5-7-19, on Chuo-dori",
+   "estimate": 1500,
+   "note": "The flight-proof edible souvenir of the afternoon: boxed 最中 and the 味の民藝 rice-cracker assortment, individually wrapped, ambient, no refrigeration. Boxes from roughly ¥1,000. This is the direct replacement for Shisui's boiled Chiba peanuts, which are refrigerated and CANNOT fly — swapping Shisui for Ginza actually improves what you can take home, because everything here is shelf-stable.",
+   "latitude": 35.671326,
+   "longitude": 139.764465,
+   "coordPrecision": "verified",
+   "confidence": "medium",
+   "confidenceNote": "The address is GSI-verified at 号 level and the product range is well established, but Akebono's own store page could not be fetched this session, so hours and prices are indicative.",
+   "source": "https://ginza-akebono.co.jp/shop/"
+  },
+  {
+   "id": "d7gzsh10",
+   "anchorStop": "Ginza",
+   "name": "LOTTE DUTY FREE 9F — collect it at Narita tomorrow",
+   "nameJp": "ロッテ免税店 東京銀座店 9階（空港受取）",
+   "placeLabel": "LOTTE DUTY FREE Tokyo Ginza, 「銀座5-2-1 GinzaNovo 8-9階」, 11:00–21:00",
+   "estimate": 15000,
+   "note": "The one mechanism Shisui cannot offer. 9F is airport-collection duty free: passport and flight details, pay in Ginza, get a voucher, collect after immigration at Narita — 「出国の60日前から1日前までご購入いただけます」, and the group flies out of Narita T1 tomorrow, so this is inside the window. Perfect for spirits, cigarettes and large fragrance, which are exactly the things that must not go in a 7 kg cabin bag. 8F is ordinary take-away tax-free.",
+   "latitude": 35.672646,
+   "longitude": 139.762756,
+   "coordPrecision": "verified",
+   "confidence": "high",
+   "confidenceNote": null,
+   "source": "https://lotteginza.com/store-information/"
+  },
+  {
+   "id": "d7gzsh11",
+   "anchorStop": "Ginza",
+   "name": "Kabukiza Kobikicho Hiroba souvenirs",
+   "nameJp": "歌舞伎座 木挽町広場のお土産",
+   "placeLabel": "木挽町広場, 「中央区銀座4-12-15 地下2階」, 「9:30～18:30」, free entry",
+   "estimate": 1200,
+   "note": "No ticket needed and no admission: the B2 plaza is 「毎日が縁日のような賑わい」 of kabuki-crest tenugui, sweets, fans and prints. The best value-for-authenticity on Day 7 — a ¥1,200 tenugui folds flat, weighs nothing and is genuinely Japanese in a way that a Coach bag from Shisui is not. Closes 18:30, so it is safe against a 16:30 coach. Directly connected to Higashi-Ginza station if anyone gets separated.",
+   "latitude": 35.669304,
+   "longitude": 139.767654,
+   "coordPrecision": "verified",
+   "confidence": "medium",
+   "confidenceNote": "Floor, hours and free access are from the Chuo-ku Tourism Association listing; the specific merchandise and prices are indicative rather than quoted from an official price list.",
+   "source": "https://www.chuo-kanko.or.jp/pages/company_details/339366"
+  },
+  {
+   "id": "d7gzsh12",
+   "anchorStop": "Ginza",
+   "name": "BicCamera Yurakucho 3F — beauty devices and supplements",
+   "nameJp": "ビックカメラ有楽町店 3階 美容家電・サプリメント",
+   "placeLabel": "ビックカメラ 有楽町店, 「有楽町1-11-1」, 10:00–22:00, tax-free counter on 1F",
+   "estimate": 20000,
+   "note": "3F is beauty devices, personal care and supplements — the Panasonic hair-dryer, the Hitachi facial steamer, the supplement wall — and this is where a Malaysian group's electronics money actually goes. Tax-free is one counter on 1F, so it is a single queue for the whole store. CHECK THE VOLTAGE: Japan is 100 V and Malaysia is 240 V, so buy only the dual-voltage models or the thing is an ornament. Fourteen minutes' walk each way.",
+   "latitude": 35.675388,
+   "longitude": 139.762878,
+   "coordPrecision": "approximate",
+   "confidence": "medium",
+   "confidenceNote": "Floors, hours and the 1F tax-free counter are from BicCamera's own store page; GSI resolves 有楽町1-11-1 only to the 番-level block, and the specific models and prices are not quoted from an official list.",
+   "source": "https://www.biccamera.com/bc/i/shop/shoplist/shop014.jsp"
+  },
+  {
+   "id": "d7gzsh13",
+   "anchorStop": "Ginza",
+   "name": "Ginza Mitsukoshi B2–B3 Ginza Food Garden — the depachika box",
+   "nameJp": "銀座三越 B2〜B3 ギンザフードガーデン",
+   "placeLabel": "Ginza Mitsukoshi B2–B3, 銀座4-6-16, store hours 「午前10時～午後8時」",
+   "estimate": 3000,
+   "note": "The department-store food hall is the right place to buy for people at home: boxed senbei, tsukudani, tea, castella, all ambient and gift-wrapped without asking. Keep the receipt separate and take it to 新館7階 with everything else from the store. Two warnings: anything refrigerated is out — you have a coach ride and a hotel night before a flight — and depachika assistants will gift-wrap, which adds bulk you must then fit in a 25 kg case.",
+   "latitude": 35.671577,
+   "longitude": 139.765594,
+   "coordPrecision": "verified",
+   "confidence": "medium",
+   "confidenceNote": "The B2–B3 Ginza Food Garden and the store hours are on Mitsukoshi's own access page; that page does not publish the food hall's own hours, and the products and prices are indicative.",
+   "source": "https://www.mistore.jp/store/ginza/access.html"
+  }
+ ],
+ "essentials": {
+  "Ginza": {
+   "hours": {
+    "mon": [
+     [
+      "11:00",
+      "20:00"
+     ]
+    ],
+    "tue": [
+     [
+      "11:00",
+      "20:00"
+     ]
+    ],
+    "wed": [
+     [
+      "11:00",
+      "20:00"
+     ]
+    ],
+    "thu": [
+     [
+      "11:00",
+      "20:00"
+     ]
+    ],
+    "fri": [
+     [
+      "11:00",
+      "20:00"
+     ]
+    ],
+    "sat": [
+     [
+      "11:00",
+      "20:00"
+     ]
+    ],
+    "sun": [
+     [
+      "11:00",
+      "20:00"
+     ]
+    ]
+   },
+   "closedNote": "Ginza has no single opening time, so `hours` is the DOMINANT RETAIL PATTERN (11:00–20:00, seven days) and the exceptions matter more than the pattern. MONDAY 14 SEP 2026 IS A PLAIN MONDAY, NOT A HOLIDAY — 敬老の日 falls on 21 Sep 2026 — and all four big stores are OPEN: Ginza Mitsukoshi 「午前10時～午後8時」 with no regular closing day; GINZA SIX 「ショップ・カフェ 10:30〜20:30」, restaurants to 23:00, and its only 休館日 in the current calendar is 1–2 January (「GINZA SIX全体が休館」); Matsuya Ginza B2F–8F 11:00–20:00, closed only 1–2 January; SEIKO HOUSE GINZA (Wako) 10:30–19:00, 「無休（年末年始を除く）」. EARLY CLOSERS to beat a 16:30 coach: Wako and Kyukyodo 19:00, Ginza Sony Park 19:00, Natsuno 19:30, Kabukiza's Kobikicho Hiroba 18:30. LATE: Don Quijote Ginza Honkan 「24時間営業」, Matsumoto Kiyoshi GINZA FLAG 10:00–23:00, BicCamera Yurakucho 10:00–22:00, UNIQLO / MUJI / Loft / GinzaNovo 21:00. TAX-FREE DESKS CLOSE EARLY: MUJI Ginza's shuts 20:30, thirty minutes before the shop. THE PEDESTRIAN PRECINCT DOES NOT RUN. Chuo-dori's 歩行者天国 is SATURDAYS, SUNDAYS AND PUBLIC HOLIDAYS ONLY, 12:00–18:00 April–September (17:00 October–March), over the 1,100 m from the Ginza-dori entrance to the 銀座八丁目交差点. On Monday 14 September it is a live four-lane arterial with buses and taxis: no strolling in the road, cross only at the signals at 4-chome and 6-chome, and budget a signal cycle every time a group of 35 changes side. ONE CORNER IS A BUILDING SITE: the San-ai Dream Center at 銀座5-7-2 came down from March 2023 and Ricoh's replacement is 「2027年の竣工を目指し」, so the fourth corner of the 4-chome crossing is hoarding, not a landmark. TWO NAME TRAPS: 和光本館 is signed SEIKO HOUSE GINZA (since June 2022) and 東急プラザ銀座 was renamed GinzaNovo in December 2025.",
+   "lastAdmission": "16:15",
+   "lastAdmissionNote": "There is no admission anywhere — 16:15 is the operational last moment. It is the latest you can join a tax-free queue and still make a 16:30 coach: the GINZA SIX counter (1F TERMINAL GINZA, 10:30–20:30) and the Mitsukoshi counter (新館7階, seven floors up) both take real time, and per-till exemption inside a shop like UNIQLO is faster but still a queue.",
+   "seasonFrom": "01-01",
+   "seasonTo": "12-31",
+   "seasonNote": "Year-round; nothing here is seasonal. Mid-September Tokyo is 26°/23° and humid, in peak typhoon month, with NO autumn colour — the GINZA SIX rooftop garden is green and shuts in bad weather. The only date-sensitive facts are the Monday (no pedestrian precinct) and the tax-free deadline of 31 October 2026.",
+   "groupRate": "No admission and no group rate. The money question is TAX-FREE, and it is per shopper per shop, not per group. Threshold ¥5,000 tax-excluded PER STORE PER DAY for 一般物品; ¥5,000–500,000 per store per day for 消耗品 (cosmetics, food, medicine — sealed at the till, do not open in Japan). Still granted AT THE TILL on 14 Sep 2026: the Japan Tourism Agency's 「リファンド方式」 refund-at-departure system applies to sales from 1 November 2026. Passport at the cashier; Visit Japan Web accepted in place of the book. HOW THIS DIFFERS FROM SHISUI: at Shisui there is no central desk at all, so every one of ~220 shops does its own paperwork at its own till and the group's spend fragments into small receipts that never clear ¥5,000. In Ginza you get a genuine choice. GINZA SIX pools its participating tenants into ONE counter — 「免税カウンター 10:30 - 20:30」 at 1F TERMINAL GINZA. Ginza Mitsukoshi pools its own into 新館7階 inside the 海外顧客サービスセンター. Everywhere else — UNIQLO, MUJI, Loft, Matsumoto Kiyoshi, Don Quijote, BicCamera — is per-store at the till, so the trick is the same as Shisui: spend DEEP in few shops. And LOTTE DUTY FREE's 9F does something Shisui cannot at all: pay in Ginza, collect after immigration at Narita tomorrow.",
+   "phone": "Ginza is a district, not a venue, so there is no single number. The one that matters operationally is Chuo-ku's traffic division for the coach bay: 03-3546-5443. Then Ginza Mitsukoshi 03-3562-1111, Matsuya Ginza 03-3567-1211, UNIQLO Ginza 03-6252-5181, MUJI Ginza 03-3538-1311, Itoya 03-3561-8311, Ginza Loft 03-3562-6210, Kyukyodo 03-3571-4429, Natsuno 03-3569-0952, Kimuraya 03-3561-0091, Beer Hall Lion 03-3571-2590, Kabukiza Kobikicho Hiroba 03-3545-6551, LOTTE DUTY FREE 03-6264-6860, BicCamera Yurakucho 03-5221-1111.",
+   "website": "https://www.ginza.jp/",
+   "tickets": "No admission to anything in this batch — the rooftop garden at GINZA SIX, Ginza Sony Park, GINZA PLACE and the Kabukiza Kobikicho Hiroba are all free walk-ins. WHAT TO BRIEF INSTEAD, on the coach before the doors open: (1) PASSPORT IN HAND, not in the coach — exemption is granted at each shop's till or at one of the two consolidated counters, and you cannot go back for it. (2) The coach will NOT be outside — the bay is 15 minutes only and the coach must leave, so name the pick-up time and the exact kerb before anyone walks off. (3) Chuo-dori is a live road today; cross at the 4-chome and 6-chome signals only. (4) Regroup at 16:15 on the Mihara-dori kerb beside GINZA SIX, not inside the building — 35 people cannot be found across 12 floors. (5) One deep receipt beats six small ones. BAG DROP: GINZA SIX's TERMINAL GINZA on 1F is the one-stop desk — 「観光案内、外貨両替、免税、手荷物一時預かり、宅配」, i.e. tourist information, currency exchange, tax-free, SAME-DAY LUGGAGE STORAGE and forwarding. Two minutes from the kerb, so shopping bags need not be carried round Chuo-dori in 26°C. No coin-locker bank is named on any operator page fetched this session.",
+   "transport": "THE BINDING CONSTRAINT IS WHERE A 45-SEAT COACH STOPS. Chuo-ku operates a designated tourist-coach drop-off at 「銀座六丁目10番先から同12番先（三原通り）」, alongside GINZA SIX — the building's own facilities page confirms it, 「三原通りに面して、観光バス乗降所を設置」 — three bays, 「午前10時から午後9時まで」, 「無料（事前登録予約制）」 booked through the Times Bus Reservation Service, and 「利用時間を1回あたり15分とします」. It is DROP-OFF ONLY — 「待機（降車から乗車までの間）は、近隣のバス駐車場を利用ください」 — so the agent must book TWO 15-minute slots, one to set down at about 13:45 and one to pick up at about 16:30, and the coach must go and park in between. WHERE THE COACH WAITS: Times Harumi 4-chome Bus Pool, 晴海4-6, 8 bays, 24 hours, ¥2,000/hour, no advance reservation — about 2.9 km and 12 minutes each way, so roughly ¥6,000 for a three-hour wait. Alternatives are worse: Kyobashi Edogran (京橋2-2-1) takes 2 buses at ¥1,500 for the first 30 minutes then ¥1,000 per 30, Japan Bus Association members only and reservation required; Ichibabashi (築地4-15-2) is ¥2,200/hour and 09:00–17:00; Marunouchi Kajibashi (丸の内3-8-2) has 22 bays at ¥2,800 for the first hour but books by FAX up to the end of the month three months ahead. ON FOOT: Ginza Station (Ginza, Marunouchi, Hibiya lines) sits under the 4-chome crossing — GINZA PLACE is exit A4, Wako is A9/A10, Loft is C8/C9. Higashi-Ginza (Hibiya, Asakusa) connects straight into the Kabukiza basement. Yurakucho JR is four minutes from Loft. From TSUKIJI OUTER MARKET the walk is only about 1.0–1.2 km, 13–16 minutes — considerably closer than the 2 km assumed in the brief.",
+   "confidence": "medium",
+   "confidenceNote": "The coach bay rules, the four big stores' hours, the weekend-only pedestrian precinct, the San-ai construction site and the tax-free mechanics are all quoted from official or operator sources. Unverified: the coach-parking fees come from a bus-industry listing rather than each operator; the Mitsukoshi tax-free counter's own hours are not published; Wako's hours are from the Chuo-ku Tourism Association because wako.co.jp returned 403; and no operator page names public lockers.",
+   "source": "https://www.city.chuo.lg.jp/a0035/kurashi/koutsuu/koukyoukoutsuu/ginza6choume-basujoukoujo.html"
+  }
+ },
+ "subRoutes": [
+  {
+   "id": "d7gzsub1",
+   "anchorStop": "Ginza",
+   "title": "The Chuo-dori spine — 13:45 drop, 16:15 regroup, 16:30 away",
+   "startMinutes": 825,
+   "deadlineMinutes": 975,
+   "placeIDs": [
+    "d7gz01",
+    "d7gz05",
+    "d7gz08",
+    "d7gz10",
+    "d7gz02",
+    "d7gz04"
+   ],
+   "steps": [
+    {
+     "placeID": "d7gz01",
+     "label": "Ginza 6-chome bay, Mihara-dori — brief, passports out, name the 16:15 kerb",
+     "arrive": "13:45",
+     "stayMinutes": 8,
+     "walkMinutesToNext": 3
+    },
+    {
+     "placeID": "d7gz05",
+     "label": "UNIQLO Ginza, 12 floors — the one-shop, one-receipt buy",
+     "arrive": "13:56",
+     "stayMinutes": 40,
+     "walkMinutesToNext": 5
+    },
+    {
+     "placeID": "d7gz08",
+     "label": "SEIKO HOUSE GINZA — the clock-tower photo from the GINZA PLACE corner opposite",
+     "arrive": "14:41",
+     "stayMinutes": 15,
+     "walkMinutesToNext": 3
+    },
+    {
+     "placeID": "d7gz10",
+     "label": "Ginza Mitsukoshi — B2 food hall, then 新館7階 for the counter EARLY",
+     "arrive": "14:59",
+     "stayMinutes": 45,
+     "walkMinutesToNext": 6
+    },
+    {
+     "placeID": "d7gz02",
+     "label": "GINZA SIX — 13F rooftop for Skytree, then the floors",
+     "arrive": "15:50",
+     "stayMinutes": 15,
+     "walkMinutesToNext": 2
+    },
+    {
+     "placeID": "d7gz04",
+     "label": "TERMINAL GINZA 1F tax-free counter — LAST JOIN 16:15",
+     "arrive": "16:07",
+     "stayMinutes": 8,
+     "walkMinutesToNext": 1
+    }
+   ],
+   "walkMinutes": 20,
+   "note": "Built round the two consolidated tax-free counters, because that is the only thing Ginza does better than Shisui. UNIQLO first — nearest the bay, one till, one receipt. Mitsukoshi's counter is SEVEN FLOORS UP at 新館7階, so clear it at 15:45, not 16:15. GINZA SIX last because its counter is on 1F, 2 minutes from the kerb, and open to 20:30. Hard regroup 16:15 on the Mihara-dori kerb, not inside a building.",
+   "confidence": "medium",
+   "confidenceNote": "Store hours and both counter locations are from official pages, but the walking minutes are derived from GSI coordinates at 70 m/min plus a signal allowance and are not measured, and the 13:45 arrival assumes the tour agent secures a booked 15-minute slot at the Ginza 6-chome bay.",
+   "source": "https://ginza6.tokyo/services"
+  },
+  {
+   "id": "d7gzsub2",
+   "anchorStop": "Ginza",
+   "title": "The cosme-and-cheap-stuff variant, for whoever is not buying luxury",
+   "startMinutes": 825,
+   "deadlineMinutes": 975,
+   "placeIDs": [
+    "d7gz01",
+    "d7gz16",
+    "d7gz21",
+    "d7gz23",
+    "d7gz22",
+    "d7gz09"
+   ],
+   "steps": [
+    {
+     "placeID": "d7gz01",
+     "label": "Ginza 6-chome bay — split off here after the group brief",
+     "arrive": "13:45",
+     "stayMinutes": 6,
+     "walkMinutesToNext": 6
+    },
+    {
+     "placeID": "d7gz16",
+     "label": "Matsumoto Kiyoshi GINZA FLAG — 2F Korean and J-beauty, tax-free at the till",
+     "arrive": "13:57",
+     "stayMinutes": 33,
+     "walkMinutesToNext": 6
+    },
+    {
+     "placeID": "d7gz21",
+     "label": "MUJI Ginza world flagship — retort curries and flagship-only lines",
+     "arrive": "14:36",
+     "stayMinutes": 35,
+     "walkMinutesToNext": 4
+    },
+    {
+     "placeID": "d7gz23",
+     "label": "Ginza Loft — five floors of the mid-price stuff people actually want",
+     "arrive": "15:15",
+     "stayMinutes": 30,
+     "walkMinutesToNext": 3
+    },
+    {
+     "placeID": "d7gz22",
+     "label": "G.Itoya — 3F Write, 7F Color, 2F Share; open to 20:00 on a weekday",
+     "arrive": "15:48",
+     "stayMinutes": 20,
+     "walkMinutesToNext": 10
+    },
+    {
+     "placeID": "d7gz09",
+     "label": "Ginza Kimuraya — anpan over the counter, eat it walking back",
+     "arrive": "16:18",
+     "stayMinutes": 5,
+     "walkMinutesToNext": 6
+    }
+   ],
+   "walkMinutes": 35,
+   "note": "The northern half of Chuo-dori, where the ¥1,000–6,000 purchases live: cosme, MUJI, Loft, Itoya. Every one is per-till tax-free, so tell people to spend ¥5,000 in ONE of them rather than ¥2,000 in three. It is 35 minutes of walking, all of it on live pavement with no pedestrian precinct on a Monday. Tight against 16:15 — drop Kimuraya if anyone is slow.",
+   "confidence": "medium",
+   "confidenceNote": "Hours for all five shops are from official or operator pages, but the walking minutes are derived from GSI coordinates and not measured, and this loop finishes at 16:24 against a 16:15 regroup, so the last stop is optional by design.",
+   "source": "https://prtimes.jp/main/html/rd/p/000000073.000031551.html"
+  }
+ ],
+ "outfitByStop": {
+  "Ginza": {
+   "photo": "Glass, granite and hard low sun down one straight avenue. Chuo-dori runs NNE–SSW, and from 14:30 the sun swings from azimuth 241° to 263° at 39° down to 15° altitude — so it is ALONGSIDE the avenue, not down it, and every west-facing shopfront turns into a mirror while every east-facing one drops into deep shade. That single-stop contrast range is the problem to dress for. WEAR SOLID MID-TONES: navy, dark olive, wine, rust, teal. They hold their colour against granite and hold detail against a blown-out shop window. AVOID: pure white and cream, which blow out completely next to sunlit granite and then read grey in the shade three metres away; black, which goes to a featureless hole in Ginza's shadows; and anything with a fine check, stripe or logo grid, because Ginza's backdrop is already a lattice of window mullions and the two fight. Big brand logos look cheap in front of Ginza's actual brand facades — this is the one stop where a plain shirt out-photographs a branded one. SUNGLASSES OFF FOR THE PHOTO. At 33° altitude with granite either side, the light comes from every direction and dark lenses erase the eyes. Squinting is the alternative, so shoot with the sun over a shoulder rather than in the face — from the GINZA PLACE corner looking north-west at the clock tower, the sun is about 90° to the left and faces are side-lit, which is the best light of the whole stop. AND EVERYONE WILL BE CARRYING BAGS. Shopping bags dominate a photograph. Take the group shot at the crossing FIRST, before the bags exist, or hand them all to one person out of frame.",
+   "practical": "26°/23°, humid, peak typhoon month — and then aggressively air-conditioned stores. That swing, not the heat, is what catches people: outside is 26° with granite radiating it back, inside GINZA SIX or Mitsukoshi is nearer 22° and dry, and the afternoon is a dozen crossings between the two. Carry ONE light layer — a packable long-sleeve shirt or a thin cardigan — and put it on indoors. Skip the heavy jacket; there is nowhere to leave it and no locker named on any operator page. SHOES: flat and closed. The whole afternoon is granite, marble and polished tile, which is unforgiving under a thin sole and genuinely slippery when a shower has tracked in — and September in Tokyo means a shower can arrive in ten minutes. Reckon on 2.5–4 km of walking if the group works both ends of Chuo-dori. PASSPORT IN HAND, NOT IN THE COACH. Exemption is granted at each shop's till or at the GINZA SIX / Mitsukoshi counter, and the coach will be 3 km away at the Harumi bus pool for the whole three hours. Carry it in something that closes, with a zipped pocket for receipts kept separate per shop. AN UMBRELLA, NOT A HOOD. Typhoon-month rain in Tokyo is heavy and vertical, the walking is all pavement, and every convenience store sells a ¥700 clear one if you did not bring it. A hood in 23° humidity is unbearable. AND THE ROAD IS LIVE. Chuo-dori's pedestrian precinct runs Saturdays, Sundays and holidays only, so on Monday 14 September you are on a four-lane arterial: keep to the pavement, cross only at the 4-chome and 6-chome signals, and let the group bunch up at the lights rather than trickling across."
+  }
+ }
+}

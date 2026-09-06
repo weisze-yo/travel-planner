@@ -1,0 +1,1727 @@
+{
+ "batch": "day2-matsushima",
+ "places": [
+  {
+   "id": "a62d23d53160",
+   "anchorStop": "Tokyo Station",
+   "name": "Ekibenya Matsuri, Gransta 1F",
+   "nameJp": "駅弁屋 祭 グランスタ東京店",
+   "category": "food",
+   "priceTier": "¥¥",
+   "stayMinutes": 20,
+   "legs": [
+    {
+     "mode": "walk",
+     "minutes": 3
+    }
+   ],
+   "note": "Officially 05:30–22:00 every day, 150種類以上 of ekiben, 1F Central Passage area of Gransta Tokyo and INSIDE the ticket gates. The one shop certain to be trading at 09:15. Tel 03-3213-4353. Buy here first — the Gransta souvenir and cosmetics units do not open until 10:00.",
+   "latitude": 35.681389,
+   "longitude": 139.766389,
+   "coordPrecision": "verified",
+   "timeWindow": "day",
+   "confidence": "high",
+   "confidenceNote": null,
+   "source": "https://www.gransta.jp/mall/gransta_tokyo/ekibenyamatsuri/"
+  },
+  {
+   "id": "6939f7433f8f",
+   "anchorStop": "Tokyo Station",
+   "name": "Gyuniku Domannaka ekiben",
+   "nameJp": "牛肉どまん中",
+   "category": "food",
+   "priceTier": "¥¥",
+   "stayMinutes": 5,
+   "legs": [
+    {
+     "mode": "walk",
+     "minutes": 3
+    }
+   ],
+   "note": "¥1,620, by Shinkineya of Yonezawa — soy-simmered Yonezawa beef with beef soboro over rice, the perennial No.1 seller at Ekibenya Matsuri. Eat it on the 10:05 Tohoku Shinkansen, not in the station. Sold from the same 1F counter inside the gates.",
+   "latitude": 35.681389,
+   "longitude": 139.766389,
+   "coordPrecision": "verified",
+   "timeWindow": "day",
+   "confidence": "medium",
+   "confidenceNote": "The ¥1,620 price and top-seller ranking come from the seed research, not from a 2026 official Ekibenya Matsuri price list; the coordinate is the shop's, since a bento has no location of its own.",
+   "source": "https://www.gransta.jp/mall/gransta_tokyo/ekibenyamatsuri/"
+  },
+  {
+   "id": "0d16c8503b7c",
+   "anchorStop": "Tokyo Station",
+   "name": "Marunouchi North Dome",
+   "nameJp": "丸の内北口ドーム",
+   "category": "sight",
+   "priceTier": "¥",
+   "stayMinutes": 10,
+   "legs": [
+    {
+     "mode": "walk",
+     "minutes": 4
+    }
+   ],
+   "note": "Restored 1914 dome, free, indoors, no opening hours to worry about — you walk through it. Eight zodiac reliefs sit at the octagon's diagonal corners; the four cardinal animals (rat, rabbit, horse, rooster) are deliberately absent. Four minutes from the Central Passage.",
+   "latitude": 35.68182,
+   "longitude": 139.76607,
+   "coordPrecision": "verified",
+   "timeWindow": "24h",
+   "confidence": "high",
+   "confidenceNote": null,
+   "source": "https://www.gransta.jp/mall/gransta_tokyo/"
+  },
+  {
+   "id": "819125747a61",
+   "anchorStop": "Tokyo Station",
+   "name": "Marunouchi South Dome",
+   "nameJp": "丸の内南口ドーム",
+   "category": "sight",
+   "priceTier": "¥",
+   "stayMinutes": 8,
+   "legs": [
+    {
+     "mode": "walk",
+     "minutes": 6
+    }
+   ],
+   "note": "The matching dome at the south gate, usually emptier than the north one — the better bet for 35 people who all want the same ceiling shot. Same eight reliefs, same missing four. Free and indoors.",
+   "latitude": 35.679861,
+   "longitude": 139.765833,
+   "coordPrecision": "verified",
+   "timeWindow": "24h",
+   "confidence": "high",
+   "confidenceNote": null,
+   "source": "https://www.gransta.jp/mall/gransta_tokyo/"
+  },
+  {
+   "id": "d2tok001giner",
+   "anchorStop": "Tokyo Station",
+   "name": "Ginnosuzu meeting point, Gransta B1",
+   "nameJp": "銀の鈴 待ち合わせ場所",
+   "category": "rest",
+   "priceTier": "¥",
+   "stayMinutes": 5,
+   "legs": [
+    {
+     "mode": "walk",
+     "minutes": 3
+    }
+   ],
+   "note": "NEW. Tokyo Station's designated rally point, B1 inside the gates in the Gransta Tokyo Silver Bell Square — a named, signposted spot every Japanese guide knows, which is what you want for a 35-person head-count before a reserved-seat Shinkansen. Benches and toilets adjacent.",
+   "latitude": 35.680556,
+   "longitude": 139.767222,
+   "coordPrecision": "approximate",
+   "timeWindow": "24h",
+   "confidence": "medium",
+   "confidenceNote": "The Silver Bell Square exists in Gransta Tokyo B1 inside the gates, but no official page publishes its coordinate, so this is a point inside the station footprint rather than a resolved position.",
+   "source": "https://www.gransta.jp/mall/gransta_tokyo/"
+  },
+  {
+   "id": "27d706a3b4ef",
+   "anchorStop": "Sendai Station",
+   "name": "Gyutan-dori & Sushi-dori, 3F",
+   "nameJp": "牛たん通り・すし通り",
+   "category": "food",
+   "priceTier": "¥¥",
+   "stayMinutes": 15,
+   "legs": [
+    {
+     "mode": "walk",
+     "minutes": 2
+    }
+   ],
+   "note": "Six beef-tongue specialists side by side on 3F, directly above the Shinkansen gates. All open from 10:00, so they are trading at 11:40 — but with a 12:15 oyster lunch 29 km away in Matsushima, this is a walk-through and a look, not a meal.",
+   "latitude": 38.260338,
+   "longitude": 140.881699,
+   "coordPrecision": "verified",
+   "timeWindow": "day",
+   "confidence": "high",
+   "confidenceNote": null,
+   "source": "https://www.livit.jregroup.ne.jp/detail/202"
+  },
+  {
+   "id": "4ee3138fb0d3",
+   "anchorStop": "Sendai Station",
+   "name": "Date no Gyutan Honpo, Gyutan-dori",
+   "nameJp": "伊達の牛たん本舗 仙台駅3階 牛たん通り店",
+   "category": "food",
+   "priceTier": "¥¥",
+   "stayMinutes": 40,
+   "legs": [
+    {
+     "mode": "walk",
+     "minutes": 3
+    }
+   ],
+   "note": "Official 10:00–21:30, last order 21:00, no closing day. The opening moved an hour earlier to 10:00 on 17 June 2024, which is exactly why an 11:40 arrival works. Tel 022-715-5056. The 芯たん定食 is the house set; the 牛たん弁当 is the version you can carry onto the coach.",
+   "latitude": 38.260338,
+   "longitude": 140.881699,
+   "coordPrecision": "verified",
+   "timeWindow": "day",
+   "confidence": "high",
+   "confidenceNote": null,
+   "source": "https://www.dategyu.jp/info/728/"
+  },
+  {
+   "id": "7021796b2233",
+   "anchorStop": "Sendai Station",
+   "name": "Sumiyaki Gyutan Rikyu, Gyutan-dori",
+   "nameJp": "牛たん炭焼 利久 仙台駅店",
+   "category": "food",
+   "priceTier": "¥¥",
+   "stayMinutes": 40,
+   "legs": [
+    {
+     "mode": "walk",
+     "minutes": 3
+    }
+   ],
+   "note": "Charcoal-grilled gyutan, the most widely recommended of the arcade six and the same chain that runs the Matsushima Godaido branch you pass at 15:22. On the 3F Gyutan-dori row above the Shinkansen gates.",
+   "latitude": 38.260338,
+   "longitude": 140.881699,
+   "coordPrecision": "verified",
+   "timeWindow": "day",
+   "confidence": "medium",
+   "confidenceNote": "Rikyu's own store-list page redirect-loops from this sandbox, so the Sendai Station branch's exact hours are unconfirmed; the 3F arcade as a whole trades from 10:00.",
+   "source": "https://www.rikyu-gyutan.co.jp/corpo/info/mg/"
+  },
+  {
+   "id": "a1d972705ada",
+   "anchorStop": "Sendai Station",
+   "name": "Zunda Saryo, Zunda Komichi 3F",
+   "nameJp": "ずんだ茶寮 仙台駅ずんだ小径店",
+   "category": "food",
+   "priceTier": "¥",
+   "stayMinutes": 10,
+   "legs": [
+    {
+     "mode": "walk",
+     "minutes": 3
+    }
+   ],
+   "note": "Retail counter 09:00–21:00, café 10:00–18:30, tel 022-715-1081, on the 3F Zunda Komichi. The zunda shake is a sweet green-soybean milkshake drunk in three minutes — the one thing here that fits a 20-minute transit stop, and edamame is at its seasonal peak in early September.",
+   "latitude": 38.260338,
+   "longitude": 140.881699,
+   "coordPrecision": "verified",
+   "timeWindow": "day",
+   "confidence": "high",
+   "confidenceNote": null,
+   "source": "https://www.livit.jregroup.ne.jp/detail/163"
+  },
+  {
+   "id": "7a27a1e1055d",
+   "anchorStop": "Sendai Station",
+   "name": "Aoba-dori from the West Exit deck",
+   "nameJp": "青葉通",
+   "category": "sight",
+   "priceTier": "¥",
+   "stayMinutes": 10,
+   "legs": [
+    {
+     "mode": "walk",
+     "minutes": 4
+    }
+   ],
+   "note": "COORDINATE CORRECTED: the seed held 35.926,140.882, which is in the Pacific off Chiba. The GSI gazetteer point for 青葉通 is used instead. The zelkova avenue that earns Sendai the name Mori no Miyako, still fully leafed in September, seen straight down the axis from the 2F West Exit pedestrian deck.",
+   "latitude": 38.2606169,
+   "longitude": 140.8751436,
+   "coordPrecision": "verified",
+   "timeWindow": "day",
+   "confidence": "medium",
+   "confidenceNote": "The coordinate is now the government gazetteer's Aoba-dori point, but whether the West Exit deck sightline is free of redevelopment hoardings in September 2026 is unverified — check before routing 35 people onto it.",
+   "source": "https://msearch.gsi.go.jp/address-search/AddressSearch?q=青葉通"
+  },
+  {
+   "id": "d2sen001omiya",
+   "anchorStop": "Sendai Station",
+   "name": "Omiyage-dokoro Sendai No.3, 2F west",
+   "nameJp": "おみやげ処せんだい3号",
+   "category": "shopping",
+   "priceTier": "¥¥",
+   "stayMinutes": 15,
+   "legs": [
+    {
+     "mode": "walk",
+     "minutes": 4
+    }
+   ],
+   "note": "NEW. Official 07:00–21:00, tel 022-267-1965, 2F west side. This is the actual counter for Hagi no Tsuki, sasakamaboko and packed gyutan — a JR East LiViT shop, so the hours are the operator's own. Open through the whole 11:40–12:00 window, unlike anything at Tokyo Station.",
+   "latitude": 38.260338,
+   "longitude": 140.881699,
+   "coordPrecision": "verified",
+   "timeWindow": "day",
+   "confidence": "high",
+   "confidenceNote": null,
+   "source": "https://www.livit.jregroup.ne.jp/detail/128"
+  },
+  {
+   "id": "f017d1965514",
+   "anchorStop": "Matsushima Fish Market",
+   "name": "Kaki burger counter, 1F yakimono",
+   "nameJp": "松島かきバーガー",
+   "category": "food",
+   "priceTier": "¥",
+   "stayMinutes": 15,
+   "legs": [
+    {
+     "mode": "walk",
+     "minutes": 1
+    }
+   ],
+   "note": "PRICE CORRECTED: the official menu lists 松島かきバーガー at ¥600, not ¥380 — the ¥380 figure survives only on tourism-portal pages. The market's own invention, a breaded oyster patty in a bun, and COOKED, which is what makes it the honest September oyster. 1F grill counter, reception 09:00–15:00 on a weekday.",
+   "latitude": 38.372082,
+   "longitude": 141.063568,
+   "coordPrecision": "verified",
+   "timeWindow": "day",
+   "confidence": "high",
+   "confidenceNote": null,
+   "source": "https://www.sakana-ichiba.co.jp/eat/menu/"
+  },
+  {
+   "id": "efa7e3c31a7d",
+   "anchorStop": "Matsushima Fish Market",
+   "name": "Maguro-don counter, 1F",
+   "nameJp": "まぐろ丼カウンター",
+   "category": "food",
+   "priceTier": "¥¥",
+   "stayMinutes": 30,
+   "legs": [
+    {
+     "mode": "walk",
+     "minutes": 1
+    }
+   ],
+   "note": "PRICE RANGE CORRECTED: the official menu's cheapest tuna bowl is ねぎとろ丼 ¥1,300, running to 昭福丸まぐろ大漁丼 ¥2,400 and 極上海鮮丼 ¥3,900 — not ¥750–2,400. Cut from tuna landed by the market's own six Kesennuma longliners. SEPTEMBER: 生うに丼 ¥3,950 is 4月～8月末 only, so it is gone.",
+   "latitude": 38.372082,
+   "longitude": 141.063568,
+   "coordPrecision": "verified",
+   "timeWindow": "day",
+   "confidence": "high",
+   "confidenceNote": null,
+   "source": "https://www.sakana-ichiba.co.jp/eat/menu/"
+  },
+  {
+   "id": "e5bb2ba00c92",
+   "anchorStop": "Matsushima Fish Market",
+   "name": "Yakigaki House (annex, not 2F)",
+   "nameJp": "別館 焼がきハウス",
+   "category": "food",
+   "priceTier": "¥¥¥",
+   "stayMinutes": 45,
+   "legs": [
+    {
+     "mode": "walk",
+     "minutes": 2
+    }
+   ],
+   "note": "TWO CORRECTIONS: it is the 別館 annex, not the 2F, and it is NOT shut in September — the operator writes 通年で食べ放題をお楽しみいただけますが、特に、11月～3月の旬の時期のおいしさは格別です. Weekdays 10:00–15:00, so the grills are lit at 13:18. 45-minute 焼がき食べ放題 ¥3,500, or ¥4,000 with kaki rice and soup.",
+   "latitude": 38.372082,
+   "longitude": 141.063568,
+   "coordPrecision": "verified",
+   "timeWindow": "day",
+   "confidence": "high",
+   "confidenceNote": null,
+   "source": "https://www.sakana-ichiba.co.jp/eat/house/"
+  },
+  {
+   "id": "d2fis001ramen",
+   "anchorStop": "Matsushima Fish Market",
+   "name": "2F ramen counter and dining hall",
+   "nameJp": "2階 ラーメンコーナー",
+   "category": "food",
+   "priceTier": "¥¥",
+   "stayMinutes": 30,
+   "legs": [
+    {
+     "mode": "walk",
+     "minutes": 2
+    }
+   ],
+   "note": "NEW. The only sit-down room in the building — all 1F food is carried up here self-service. Weekday reception 10:00–15:00. しょうゆラーメンミニ ¥600 is the cheap fallback for anyone who ate the 12:15 oyster set; ふかひれラーメン ¥2,200 and かきラーメン ¥1,500 are the named ones.",
+   "latitude": 38.372082,
+   "longitude": 141.063568,
+   "coordPrecision": "verified",
+   "timeWindow": "day",
+   "confidence": "high",
+   "confidenceNote": null,
+   "source": "https://www.sakana-ichiba.co.jp/eat/menu/"
+  },
+  {
+   "id": "f7e2e77d4f16",
+   "anchorStop": "Zuiganji Temple",
+   "name": "Hondo (National Treasure)",
+   "nameJp": "本堂",
+   "category": "sight",
+   "priceTier": "¥¥",
+   "stayMinutes": 25,
+   "legs": [
+    {
+     "mode": "walk",
+     "minutes": 4
+    }
+   ],
+   "note": "Completed 1609 for Date Masamune with Kumano cedar and Kyoto craftsmen. Inside the ¥1,000 ticket (¥900 each for parties of 30+). NOT WHEELCHAIR ACCESSIBLE — the temple states 車いすでの拝観可能な場所は宝物館のみ, so a chair user sees the treasure hall only.",
+   "latitude": 38.372167,
+   "longitude": 141.059389,
+   "coordPrecision": "verified",
+   "timeWindow": "day",
+   "confidence": "high",
+   "confidenceNote": null,
+   "source": "https://www.zuiganji.or.jp/guide/"
+  },
+  {
+   "id": "5f4c2f3b10e5",
+   "anchorStop": "Zuiganji Temple",
+   "name": "Shitchu \"Peacock Room\"",
+   "nameJp": "室中孔雀の間",
+   "category": "sight",
+   "priceTier": "¥¥",
+   "stayMinutes": 10,
+   "legs": [
+    {
+     "mode": "walk",
+     "minutes": 5
+    }
+   ],
+   "note": "Gold-leaf sliding doors painted with peacocks and pines, the showpiece of the 2008–2018 Hondo restoration. The originals of two Hondo rooms, painted 1620–1622, are recreated in the treasure hall's 障壁画収蔵・展示室, so you see the room twice in one ticket.",
+   "latitude": 38.372167,
+   "longitude": 141.059389,
+   "coordPrecision": "approximate",
+   "timeWindow": "day",
+   "confidence": "medium",
+   "confidenceNote": "A room inside the Hondo, so it has no coordinate of its own; the Hondo's verified point is used. Some 障壁画 are shown only for limited periods (文化財保護の観点から期間を制限して公開), so the room's state on 9 Sep is unconfirmed.",
+   "source": "https://zuiganji.or.jp/museum/"
+  },
+  {
+   "id": "880a62f5b491",
+   "anchorStop": "Zuiganji Temple",
+   "name": "Seiryuden treasure museum",
+   "nameJp": "宝物館・青龍殿",
+   "category": "sight",
+   "priceTier": "¥¥",
+   "stayMinutes": 20,
+   "legs": [
+    {
+     "mode": "walk",
+     "minutes": 6
+    }
+   ],
+   "note": "Holds the five Heian-period wooden Wisdom King statues (木造五大明王像 5躯) and the recreated Hondo wall-painting rooms. The ONLY part of Zuiganji a wheelchair can reach. The right place to end the hour — it is furthest from the gate and closest to the walk to Godaido.",
+   "latitude": 38.371525,
+   "longitude": 141.060405,
+   "coordPrecision": "approximate",
+   "timeWindow": "day",
+   "confidence": "medium",
+   "confidenceNote": "Neither the 拝観案内 nor the 宝物館 page states in words that the treasure hall is inside the ¥1,000 ticket, and its own coordinate is not published — position is a within-grounds estimate.",
+   "source": "https://zuiganji.or.jp/museum/"
+  },
+  {
+   "id": "4651cfb8ab4d",
+   "anchorStop": "Zuiganji Temple",
+   "name": "Cave tombs along the approach",
+   "nameJp": "洞窟遺跡群",
+   "category": "sight",
+   "priceTier": "¥",
+   "stayMinutes": 15,
+   "legs": [
+    {
+     "mode": "walk",
+     "minutes": 2
+    }
+   ],
+   "note": "Tuff caves cut into the cliff along the entrance path, packed with weathered Buddhas and stupas. Deep even shade — the one place at Zuiganji that photographs well under a hard afternoon sun, and it needs no flash-free negotiation because it is open air.",
+   "latitude": 38.372627,
+   "longitude": 141.058411,
+   "coordPrecision": "verified",
+   "timeWindow": "day",
+   "confidence": "medium",
+   "confidenceNote": "Whether the cave group sits before or after the ticket gate is not stated on any Zuiganji page I could reach, so the free-to-see assumption is unverified.",
+   "source": "https://www.miyagi-kankou.or.jp/theme/detail.php?id=17591"
+  },
+  {
+   "id": "d2zui001sanzen",
+   "anchorStop": "Zuiganji Temple",
+   "name": "Kasho Sanzen, Matsushima Teramachi-Koji",
+   "nameJp": "菓匠三全 松島寺町小路店",
+   "category": "food",
+   "priceTier": "¥",
+   "stayMinutes": 15,
+   "legs": [
+    {
+     "mode": "walk",
+     "minutes": 5
+    }
+   ],
+   "note": "NEW as a place. 09:00–18:00, on the lane between the temple and Matsushima-Kaigan Station at 町内58, about 15 free car spaces. The zunda shake here is the one quick cold thing on the approach that works for 35 people — and Hagi no Tsuki is sold over the same counter, without the 20-minute Sendai scramble.",
+   "latitude": 38.370247,
+   "longitude": 141.060349,
+   "coordPrecision": "verified",
+   "timeWindow": "day",
+   "confidence": "medium",
+   "confidenceNote": "Hours and address are from the Matsushima tourism association's official listing; the ¥360 zunda shake price in the seed could not be confirmed on any Kasho Sanzen page, and one review quotes about ¥280.",
+   "source": "https://matsushima.miyaginavi.jp/shopping/851.html"
+  },
+  {
+   "id": "d2zui002entsu",
+   "anchorStop": "Zuiganji Temple",
+   "name": "Entsuin",
+   "nameJp": "円通院",
+   "category": "sight",
+   "priceTier": "¥",
+   "stayMinutes": 30,
+   "legs": [
+    {
+     "mode": "walk",
+     "minutes": 2
+    }
+   ],
+   "note": "NEW. Immediately next door at 町内67, 年中無休, tel 022-354-3206. April–November 09:00–16:00, entry advised by 30 minutes before closing. ¥500 adult, and ¥400 each for parties of 15+, so cheaper per head than Zuiganji. Date Mitsumune's 1646 mausoleum. NO AUTUMN COLOUR — its famous maples turn from late October.",
+   "latitude": 38.371414,
+   "longitude": 141.059006,
+   "coordPrecision": "verified",
+   "timeWindow": "day",
+   "confidence": "medium",
+   "confidenceNote": "Hours and fees are the temple's own, but the coordinate is the GSI block point for 町内67, which resolves to the same centroid as Zuiganji's 町内91 — so it locates the block, not the gate.",
+   "source": "https://www.entuuin.or.jp/"
+  },
+  {
+   "id": "0bb91559a8f4",
+   "anchorStop": "Godaido Hall",
+   "name": "The two sukashibashi bridges",
+   "nameJp": "透かし橋",
+   "category": "sight",
+   "priceTier": "¥",
+   "stayMinutes": 10,
+   "legs": [
+    {
+     "mode": "walk",
+     "minutes": 1
+    }
+   ],
+   "note": "Lattice floors that show the sea five metres below through the gaps, built so pilgrims had to watch their step. NO HEELS, NO OPEN-TOE, NO WHEELCHAIRS. The 2023 refurbishment finished on 14 March 2025, so both bridges are open and no September works are scheduled.",
+   "latitude": 38.369861,
+   "longitude": 141.063889,
+   "coordPrecision": "verified",
+   "timeWindow": "day",
+   "confidence": "high",
+   "confidenceNote": null,
+   "source": "https://www.town.miyagi-matsushima.lg.jp/page/1199.html"
+  },
+  {
+   "id": "fbd9e5845db0",
+   "anchorStop": "Godaido Hall",
+   "name": "Zodiac carvings under the eaves",
+   "nameJp": "十二支の彫刻",
+   "category": "sight",
+   "priceTier": "¥",
+   "stayMinutes": 10,
+   "legs": [
+    {
+     "mode": "walk",
+     "minutes": 2
+    }
+   ],
+   "note": "Twelve animals carved on the four faces, each at its compass direction — look up, most visitors do not. Free, no gate, and the hall itself is only opened every 33 years, so the carvings and the bridges are the whole visit. Hours 08:30–17:00.",
+   "latitude": 38.36972,
+   "longitude": 141.064368,
+   "coordPrecision": "verified",
+   "timeWindow": "day",
+   "confidence": "medium",
+   "confidenceNote": "Coordinate is the government gazetteer point for 五大堂; the town's own page describes the hall and bridge but does not itself list the zodiac carvings, so that detail rests on the tourism-navi listing.",
+   "source": "https://matsushima.miyaginavi.jp/shrines_history/855.html"
+  },
+  {
+   "id": "62aaa38bb809",
+   "anchorStop": "Godaido Hall",
+   "name": "Genzo (gyutan korokke)",
+   "nameJp": "げんぞう",
+   "category": "food",
+   "priceTier": "¥",
+   "stayMinutes": 10,
+   "legs": [
+    {
+     "mode": "walk",
+     "minutes": 1
+    }
+   ],
+   "note": "PRICE CORRECTED: 牛タンコロッケ is ¥400 on the shop's own site, not ¥350. 10:30–16:30, 不定休, tel 022-354-0810, in the Matsushima Park green plaza at 町内110 — literally at the Godaido entrance. Grilled oysters ¥300–400 but seasonal, and the kaki chowder is 夏季休止中.",
+   "latitude": 38.369701,
+   "longitude": 141.062378,
+   "coordPrecision": "verified",
+   "timeWindow": "day",
+   "confidence": "high",
+   "confidenceNote": null,
+   "source": "https://genzou-kaki.com/"
+  },
+  {
+   "id": "3cbd10a22c0e",
+   "anchorStop": "Godaido Hall",
+   "name": "Pensee Matsushima oyster curry bread",
+   "nameJp": "パンセ 松島店",
+   "category": "food",
+   "priceTier": "¥",
+   "stayMinutes": 10,
+   "legs": [
+    {
+     "mode": "walk",
+     "minutes": 5
+    }
+   ],
+   "note": "TWO CORRECTIONS: 牡蠣カレーパン is ¥380, not ¥300, and the shop is on the 1F of Matsushima Rikyu Umi-no-Eki at 町内75-14 — about 200 m from the pier, NOT on the Godaido approach. 10:00–17:00 daily, 不定休, tel 022-353-2844. Gold in the Variety class at the 2020 Curry Bread Grand Prix, and fried, so it is the smart September oyster.",
+   "latitude": 38.370644,
+   "longitude": 141.06131,
+   "coordPrecision": "verified",
+   "timeWindow": "day",
+   "confidence": "high",
+   "confidenceNote": null,
+   "source": "https://rikyu-m.com/uminoeki/shop02/"
+  },
+  {
+   "id": "d2god001matsukama",
+   "anchorStop": "Godaido Hall",
+   "name": "Matsushima Kamaboko Honpo Sohonten",
+   "nameJp": "松島蒲鉾本舗 総本店",
+   "category": "shopping",
+   "priceTier": "¥",
+   "stayMinutes": 20,
+   "legs": [
+    {
+     "mode": "walk",
+     "minutes": 4
+    }
+   ],
+   "note": "NEW as a place. Official 9:30–17:00 (Dec–Mar 9:30–16:30), 定休日 なし, tel 022-354-4016, at 町内120. Sasakamaboko ¥300. The hand-grilling counter is ¥400 a stick and takes 7–10 minutes — but PARTIES OF 10 OR MORE MUST BOOK, which for 35 people means calling ahead, not turning up.",
+   "latitude": 38.371143,
+   "longitude": 141.062286,
+   "coordPrecision": "verified",
+   "timeWindow": "day",
+   "confidence": "high",
+   "confidenceNote": null,
+   "source": "https://www.matsukama.jp/ct_shop/souhonten.html"
+  },
+  {
+   "id": "d2god002rikyu",
+   "anchorStop": "Godaido Hall",
+   "name": "Gyutan Sumiyaki Rikyu, Matsushima Godaido",
+   "nameJp": "牛たん炭焼 利久 松島五大堂店",
+   "category": "food",
+   "priceTier": "¥¥",
+   "stayMinutes": 45,
+   "legs": [
+    {
+     "mode": "walk",
+     "minutes": 1
+    }
+   ],
+   "note": "NEW. 町内112-2, tel 022-794-8929, 年中無休, lunch 10:30–15:00 then dinner 15:00–19:00 with last order 18:30 — so it is open through the 15:22 slot. Fifty seats on 1F plus group seating upstairs with a bay view: the only room at Godaido that can actually sit a coach party down.",
+   "latitude": 38.370972,
+   "longitude": 141.063843,
+   "coordPrecision": "verified",
+   "timeWindow": "day",
+   "confidence": "medium",
+   "confidenceNote": "Address, hours and seat counts come from the chain's Gnavi listing rather than a page on Rikyu's own site, whose store list redirect-loops from this sandbox.",
+   "source": "https://r.gnavi.co.jp/e254ys0u0000/"
+  },
+  {
+   "id": "5a7dc83fe7ab",
+   "anchorStop": "Matsushima Bay Cruise — Nioumaru course",
+   "name": "2F Green seat upgrade",
+   "nameJp": "2階展望デッキ（グリーン席）",
+   "category": "sight",
+   "priceTier": "¥¥",
+   "stayMinutes": 50,
+   "legs": [
+    {
+     "mode": "walk",
+     "minutes": 1
+    }
+   ],
+   "note": "Confirmed on the operator's fare table: +¥600 adult, +¥300 child, infants free, on top of ¥1,500 / ¥750. Open upper deck of the 第二仁王丸 instead of a glassed cabin — the only purchase here that changes the photographs. Group discount of 10% for 15+ applies to the base fare.",
+   "latitude": 38.369179,
+   "longitude": 141.06308,
+   "coordPrecision": "verified",
+   "timeWindow": "day",
+   "confidence": "high",
+   "confidenceNote": null,
+   "source": "https://www.matsushima.or.jp/timesheet/index.html"
+  },
+  {
+   "id": "7dac0410cca7",
+   "anchorStop": "Matsushima Bay Cruise — Nioumaru course",
+   "name": "Nio-jima",
+   "nameJp": "仁王島",
+   "category": "sight",
+   "priceTier": "¥¥",
+   "stayMinutes": 5,
+   "legs": [
+    {
+     "mode": "walk",
+     "minutes": 2
+    }
+   ],
+   "note": "COORDINATE CORRECTED: the government gazetteer puts 仁王島 at 38.3281,141.0869 in Shiogama waters off the Urato islands, about 3.5 km from the seed's figure. The wave-cut rock the course is named for, said to look like a temple guardian smoking a pipe — the outermost turn of the loop, roughly 20 minutes out.",
+   "latitude": 38.328148,
+   "longitude": 141.086909,
+   "coordPrecision": "verified",
+   "timeWindow": "day",
+   "confidence": "medium",
+   "confidenceNote": "The islet's coordinate is now gazetteer-verified, but the leg is a two-minute walk to the boarding gate — the islet itself is only reachable aboard, and where in the 50 minutes it appears is an estimate.",
+   "source": "https://msearch.gsi.go.jp/address-search/AddressSearch?q=仁王島"
+  },
+  {
+   "id": "680c2696e33b",
+   "anchorStop": "Matsushima Bay Cruise — Nioumaru course",
+   "name": "Kanejima",
+   "nameJp": "鐘島",
+   "category": "sight",
+   "priceTier": "¥¥",
+   "stayMinutes": 5,
+   "legs": [
+    {
+     "mode": "walk",
+     "minutes": 2
+    }
+   ],
+   "note": "Pierced by four surf-cut caves and the most photographed islet on the loop — the sea booming through the holes is where the name comes from. Passed in the outer half of the circuit, so it is a green-deck shot rather than a cabin one.",
+   "latitude": 38.3583,
+   "longitude": 141.0889,
+   "coordPrecision": "approximate",
+   "timeWindow": "day",
+   "confidence": "medium",
+   "confidenceNote": "DOWNGRADED from the seed's 'verified': the GSI gazetteer returns no entry at all for 鐘島, so this coordinate has no source I could check and is carried forward unconfirmed.",
+   "source": "https://www.matsushima.or.jp/"
+  },
+  {
+   "id": "d2cru001futago",
+   "anchorStop": "Matsushima Bay Cruise — Nioumaru course",
+   "name": "Futagojima",
+   "nameJp": "双子島",
+   "category": "sight",
+   "priceTier": "¥¥",
+   "stayMinutes": 5,
+   "legs": [
+    {
+     "mode": "walk",
+     "minutes": 2
+    }
+   ],
+   "note": "NEW. Gazetteer-verified at 38.3646,141.0646, only about 600 m off the pier — the first islet of the loop and therefore the one shot everybody gets before the deck fills up. Also visible from the Godaido seaward rail thirty minutes earlier, which makes it the day's easiest before-and-after pair.",
+   "latitude": 38.3646426,
+   "longitude": 141.0645542,
+   "coordPrecision": "verified",
+   "timeWindow": "day",
+   "confidence": "medium",
+   "confidenceNote": "The coordinate is gazetteer-verified, but the operator's course page does not print a running order for the islets, so 'first of the loop' is inferred from distance off the pier.",
+   "source": "https://msearch.gsi.go.jp/address-search/AddressSearch?q=双子島"
+  },
+  {
+   "id": "2e5d5567ff7b",
+   "anchorStop": "Matsushima Bay Cruise — Nioumaru course",
+   "name": "Matsushima Kushiya",
+   "nameJp": "松島 串や",
+   "category": "food",
+   "priceTier": "¥",
+   "stayMinutes": 15,
+   "legs": [
+    {
+     "mode": "walk",
+     "minutes": 3
+    }
+   ],
+   "note": "LOCATION CORRECTED: it is on the 1F of Matsushima Rikyu Umi-no-Eki, about 200 m and three minutes from the pier — not directly opposite it. 10:00–17:00. Long skewers heavily loaded with gyutan. Buy BEFORE boarding: the 16:00 sailing is back at 16:50 and the shop shuts at 17:00, the same minute the coach leaves.",
+   "latitude": 38.370644,
+   "longitude": 141.06131,
+   "coordPrecision": "verified",
+   "timeWindow": "day",
+   "confidence": "medium",
+   "confidenceNote": "Hours and the Umi-no-Eki 1F location are from JAL's OnTrip feature rather than a page the shop controls; the coordinate is the verified GSI block point for 町内75, the Umi-no-Eki address.",
+   "source": "https://ontrip.jal.co.jp/tohoku/17665961"
+  },
+  {
+   "id": "d2cru002kouha",
+   "anchorStop": "Matsushima Bay Cruise — Nioumaru course",
+   "name": "Kaki Matsushima Kouha, Sky Restaurant (pier-front)",
+   "nameJp": "かき松島 こうは 松島スカイレストラン店",
+   "category": "food",
+   "priceTier": "¥¥¥",
+   "stayMinutes": 60,
+   "legs": [
+    {
+     "mode": "walk",
+     "minutes": 1
+    }
+   ],
+   "note": "NEW, and the answer if a typhoon cancels the boat. 磯崎75-14, directly in front of the 遊覧船乗り場, tel 022-353-2311, 11:00–17:00 Tue–Fri and CLOSED MONDAYS — so it is trading on Wednesday 9 Sep. Oysters year-round: fried oyster set ¥2,200, smoked platter ¥2,200, fried-and-grilled set ¥2,900.",
+   "latitude": 38.369179,
+   "longitude": 141.06308,
+   "coordPrecision": "approximate",
+   "timeWindow": "day",
+   "confidence": "medium",
+   "confidenceNote": "The 磯崎 chiban does not resolve in the government geocoder, so the coordinate is the verified pier block (町内85) standing in for a shop the operator describes as directly in front of the pier.",
+   "source": "http://www.kakikouha.com/matsusimasukairesutoran.html"
+  },
+  {
+   "id": "9e6b9eac61e8",
+   "anchorStop": "Hotel Kameya, Naruko Onsen",
+   "name": "Kameya's black-water baths",
+   "nameJp": "黒湯",
+   "category": "rest",
+   "priceTier": "¥",
+   "stayMinutes": 60,
+   "legs": [
+    {
+     "mode": "walk",
+     "minutes": 1
+    }
+   ],
+   "note": "Three baths — the valley-view tenbo daiyokujo, the hinoki cypress bath and a source-fed rotenburo. The hotel's own line for the water is 初めて経験する方は驚き、おなじみ客には長く愛されてきた亀屋の「黒湯」. Spring type 塩化物泉・炭酸水素塩泉. Usable from 15:00 check-in through to 10:00 check-out.",
+   "latitude": 38.748074,
+   "longitude": 140.726532,
+   "coordPrecision": "verified",
+   "timeWindow": "night",
+   "confidence": "medium",
+   "confidenceNote": "The hotel's own site redirect-loops from this sandbox, so bath names, hours and the 黒湯 wording come from the JTB and Nifty Onsen facility listings; no posted bath closing time was found.",
+   "source": "https://www.jtb.co.jp/kokunai-hotel/htl/2402013/",
+   "retired": true,
+   "retiredReason": "Superseded on the 4 Sep 2026 app screenshots. Night 2 is now a different property.",
+   "retiredReplacedBy": "Ooedo Onsen Monogatari Naruko Onsen Kounkaku"
+  },
+  {
+   "id": "27db6aa32d15",
+   "anchorStop": "Hotel Kameya, Naruko Onsen",
+   "name": "Mochidokoro Fukase kuri-dango",
+   "nameJp": "餅処 深瀬 くりだんご",
+   "category": "food",
+   "priceTier": "¥",
+   "stayMinutes": 15,
+   "legs": [
+    {
+     "mode": "walk",
+     "minutes": 14
+    }
+   ],
+   "note": "¥400 for two — a whole syrup-steeped chestnut inside mochi under sweet walnut-miso sauce, the same recipe for over a century. It OPENS AT 09:00 and the coach leaves at 08:30, so this only happens if the guide agrees a stop. One kilometre from the hotel, about fourteen minutes on foot downhill to the station.",
+   "latitude": 38.7433,
+   "longitude": 140.7176,
+   "coordPrecision": "verified",
+   "timeWindow": "dawn",
+   "confidence": "medium",
+   "confidenceNote": "Hours, price and the irregular closing days are carried from the seed research; I found no page controlled by the shop to re-confirm them for September 2026.",
+   "source": "https://www.jtb.co.jp/kokunai-hotel/htl/2402013/",
+   "retired": true,
+   "retiredReason": "Superseded on the 4 Sep 2026 app screenshots. Night 2 is now a different property.",
+   "retiredReplacedBy": "Ooedo Onsen Monogatari Naruko Onsen Kounkaku"
+  },
+  {
+   "id": "6391d4b9279e",
+   "anchorStop": "Hotel Kameya, Naruko Onsen",
+   "name": "Naruko Onsen Shrine stairway",
+   "nameJp": "鳴子温泉神社",
+   "category": "sight",
+   "priceTier": "¥",
+   "stayMinutes": 25,
+   "legs": [
+    {
+     "mode": "walk",
+     "minutes": 17
+    }
+   ],
+   "note": "Founded 835. The stone stairway starting at Taki-no-Yu's entrance is the best free vantage back down over the steaming tin roofs of the bath town, and the grounds have no gate or hour. Sunrise on 10 Sep is about 05:15, so a 05:45–06:30 climb has low side light on the steam. Do not promise autumn colour — Naruko-kyo peaks late October.",
+   "latitude": 38.740635,
+   "longitude": 140.716403,
+   "coordPrecision": "verified",
+   "timeWindow": "dawn",
+   "confidence": "high",
+   "confidenceNote": null,
+   "source": "https://onsen.nifty.com/naruko-onsen/onsen008070/",
+   "retired": true,
+   "retiredReason": "Superseded on the 4 Sep 2026 app screenshots. Night 2 is now a different property.",
+   "retiredReplacedBy": "Ooedo Onsen Monogatari Naruko Onsen Kounkaku"
+  },
+  {
+   "id": "c6843df359bd",
+   "anchorStop": "Hotel Kameya, Naruko Onsen",
+   "name": "Taki-no-Yu public bath",
+   "nameJp": "滝の湯",
+   "category": "rest",
+   "priceTier": "¥",
+   "stayMinutes": 40,
+   "legs": [
+    {
+     "mode": "walk",
+     "minutes": 15
+    }
+   ],
+   "note": "Naruko Onsen Shrine's thousand-year-old sacred bath: two Aomori-cypress tubs per side at 44–46°C and 39–41°C, acidic pH 2.9 sulphur water. 07:30–21:00, last entry 20:30, daily, ¥300 adult / ¥100 child from the machine. NO showers, NO taps, and no soap or shampoo sold — carry your own from the hotel, 1.05 km away.",
+   "latitude": 38.741577,
+   "longitude": 140.717851,
+   "coordPrecision": "verified",
+   "timeWindow": "night",
+   "confidence": "medium",
+   "confidenceNote": "Hours, fee and the no-amenities rule are carried unchanged from the verified seed record; I did not re-source them this session and the walking leg is derived from the seed's 1.05 km straight-line figure.",
+   "source": "https://onsen.nifty.com/naruko-onsen/onsen008070/",
+   "retired": true,
+   "retiredReason": "Superseded on the 4 Sep 2026 app screenshots. Night 2 is now a different property.",
+   "retiredReplacedBy": "Ooedo Onsen Monogatari Naruko Onsen Kounkaku"
+  },
+  {
+   "id": "06cb9e37e31a",
+   "anchorStop": "Hotel Kameya, Naruko Onsen",
+   "name": "Waseda Sajiki-yu public bath",
+   "nameJp": "鳴子・早稲田桟敷湯",
+   "category": "rest",
+   "priceTier": "¥",
+   "stayMinutes": 40,
+   "legs": [
+    {
+     "mode": "walk",
+     "minutes": 13
+    }
+   ],
+   "note": "A concrete-terraced modern bathhouse over the spring that Waseda University engineering students drilled in 1948. 09:00–21:30, last entry 21:00, ¥660 adult / ¥330 child — the latest-closing bath in town, which is the one that still works if the 19:00 kaiseki runs long. 0.95 km from the hotel.",
+   "latitude": 38.743698,
+   "longitude": 140.717239,
+   "coordPrecision": "verified",
+   "timeWindow": "night",
+   "confidence": "medium",
+   "confidenceNote": "Hours and fees are carried unchanged from the verified seed record rather than re-sourced this session; the walking leg is derived from the seed's 0.95 km straight-line distance.",
+   "source": "https://onsen.nifty.com/naruko-onsen/onsen008070/",
+   "retired": true,
+   "retiredReason": "Superseded on the 4 Sep 2026 app screenshots. Night 2 is now a different property.",
+   "retiredReplacedBy": "Ooedo Onsen Monogatari Naruko Onsen Kounkaku"
+  },
+  {
+   "id": "f3afba04e849",
+   "anchorStop": "Hotel Kameya, Naruko Onsen",
+   "name": "Poppo no Ashiyu footbath",
+   "nameJp": "ぽっぽの足湯",
+   "category": "rest",
+   "priceTier": "¥",
+   "stayMinutes": 20,
+   "legs": [
+    {
+     "mode": "walk",
+     "minutes": 15
+    }
+   ],
+   "note": "Two triangular cypress footbaths about ten metres outside the ticket gate of JR Naruko Onsen Station. Always open, free, and nothing is provided — carry a towel from the room. With the coach leaving at 08:30 this and the Yumeguri bath are the only Naruko things that are actually open before departure.",
+   "latitude": 38.742847,
+   "longitude": 140.715912,
+   "coordPrecision": "verified",
+   "timeWindow": "24h",
+   "confidence": "medium",
+   "confidenceNote": "Position and the always-open, free status are carried from the verified seed record; the walking leg is derived from the seed's 1.1 km straight-line distance rather than a routed path.",
+   "source": "https://onsen.nifty.com/naruko-onsen/onsen008070/",
+   "retired": true,
+   "retiredReason": "Superseded on the 4 Sep 2026 app screenshots. Night 2 is now a different property.",
+   "retiredReplacedBy": "Ooedo Onsen Monogatari Naruko Onsen Kounkaku"
+  },
+  {
+   "id": "52d18832135b",
+   "anchorStop": "Hotel Kameya, Naruko Onsen",
+   "name": "Yumeguri Hiroba footbath (Shimo-jigoku source)",
+   "nameJp": "ゆめぐり広場「下地獄足湯」",
+   "category": "rest",
+   "priceTier": "¥",
+   "stayMinutes": 20,
+   "legs": [
+    {
+     "mode": "walk",
+     "minutes": 15
+    }
+   ],
+   "note": "A second free footbath in the car park beside the station, on a different source from Poppo about 50 m away — this is where the dawn steam-stroll starts. Unstaffed, free, no posted closing time. 1.06 km from the hotel, so allow half an hour there and back before a 07:30 breakfast.",
+   "latitude": 38.74265,
+   "longitude": 140.7166,
+   "coordPrecision": "verified",
+   "timeWindow": "24h",
+   "confidence": "medium",
+   "confidenceNote": "Carried from the seed record, which itself flagged the unstaffed hours as uncertain; no operator page publishes this footbath's status and the leg is derived from the 1.06 km straight-line figure.",
+   "source": "https://onsen.nifty.com/naruko-onsen/onsen008070/",
+   "retired": true,
+   "retiredReason": "Superseded on the 4 Sep 2026 app screenshots. Night 2 is now a different property.",
+   "retiredReplacedBy": "Ooedo Onsen Monogatari Naruko Onsen Kounkaku"
+  },
+  {
+   "id": "404b89bd0e46",
+   "anchorStop": "Hotel Kameya, Naruko Onsen",
+   "name": "Naruko Onsen Shrine (dawn visit)",
+   "nameJp": "鳴子温泉神社",
+   "category": "sight",
+   "priceTier": "¥",
+   "stayMinutes": 25,
+   "legs": [
+    {
+     "mode": "walk",
+     "minutes": 17
+    }
+   ],
+   "note": "Founded in 835, reached by the stone stairway starting at Taki-no-Yu's entrance, with the hall's bell wrapped against the sulphur. Grounds open at all hours and free; the goshuin is only issued during staffed daytime hours, so a dawn visit gets the view and not the stamp. 1.21 km from the hotel.",
+   "latitude": 38.740635,
+   "longitude": 140.716403,
+   "coordPrecision": "verified",
+   "timeWindow": "dawn",
+   "confidence": "medium",
+   "confidenceNote": "The dawn-window duplicate of the same shrine; details are carried from the verified seed record and the leg is derived from its 1.21 km straight-line distance, not a routed walk up the gorge.",
+   "source": "https://onsen.nifty.com/naruko-onsen/onsen008070/",
+   "retired": true,
+   "retiredReason": "Superseded on the 4 Sep 2026 app screenshots. Night 2 is now a different property.",
+   "retiredReplacedBy": "Ooedo Onsen Monogatari Naruko Onsen Kounkaku"
+  },
+  {
+   "id": "7b4c9294e31f",
+   "anchorStop": "Hotel Kameya, Naruko Onsen",
+   "name": "Mochidokoro Fukase (dawn stop)",
+   "nameJp": "餅処 深瀬",
+   "category": "food",
+   "priceTier": "¥",
+   "stayMinutes": 15,
+   "legs": [
+    {
+     "mode": "walk",
+     "minutes": 14
+    }
+   ],
+   "note": "Kuri-dango, ¥400 for two, 09:00–17:00 with irregular closing days. TIMING CLASH: it opens at 09:00 and the coach leaves at 08:30, so this is a guide-negotiated stop on the way out of town, not something anyone can do on foot before breakfast.",
+   "latitude": 38.7433,
+   "longitude": 140.7176,
+   "coordPrecision": "verified",
+   "timeWindow": "dawn",
+   "confidence": "medium",
+   "confidenceNote": "The dawn-window duplicate of the Fukase record; hours and price are carried from the seed and were not re-sourced from a page the shop controls.",
+   "source": "https://onsen.nifty.com/naruko-onsen/onsen008070/",
+   "retired": true,
+   "retiredReason": "Superseded on the 4 Sep 2026 app screenshots. Night 2 is now a different property.",
+   "retiredReplacedBy": "Ooedo Onsen Monogatari Naruko Onsen Kounkaku"
+  },
+  {
+   "id": "0c341e352614",
+   "anchorStop": "Hotel Kameya, Naruko Onsen",
+   "name": "Sakurai Kokeshi-ten honten",
+   "nameJp": "桜井こけし店 本店",
+   "category": "shopping",
+   "priceTier": "¥¥",
+   "stayMinutes": 25,
+   "legs": [
+    {
+     "mode": "walk",
+     "minutes": 15
+    }
+   ],
+   "note": "COORDINATE PROMOTED from the shop's official address, 〒989-6823 大崎市鳴子温泉字湯元26. Official hours weekdays 10:00–17:00, weekends from 09:30, 不定休, tel 0229-87-3575, workshop behind the counter. Opens after the 08:30 coach, so it is a detour ask, not a dawn stop.",
+   "latitude": 38.741169,
+   "longitude": 140.715469,
+   "coordPrecision": "verified",
+   "timeWindow": "dawn",
+   "confidence": "high",
+   "confidenceNote": null,
+   "source": "https://sakuraikokeshi.jp/naruko-onsen-head-office/",
+   "retired": true,
+   "retiredReason": "Superseded on the 4 Sep 2026 app screenshots. Night 2 is now a different property.",
+   "retiredReplacedBy": "Ooedo Onsen Monogatari Naruko Onsen Kounkaku"
+  }
+ ],
+ "mustSee": [
+  {
+   "id": "9a4889e0da9f",
+   "anchorStop": "Tokyo Station",
+   "title": "Marunouchi North Dome, Tokyo Station",
+   "nameJp": "東京駅 丸の内北口ドーム",
+   "tag": "DAY 2",
+   "summary": "The restored 1914 dome, indoors and free — eight zodiac reliefs at the octagon's diagonal corners, with the four cardinal animals deliberately missing. The one frame at Tokyo Station that does not depend on a shop being open, which matters when the group is inside the gates from 09:15 to 10:05.",
+   "whereToFind": "whereToFind FIXED — the seed held a time here. Come out of the Marunouchi North ticket gate and stand in the CENTRE of the octagonal hall, directly under the apex, back to the ticket gates. That puts all eight reliefs in one upward frame and keeps the gate crowd behind you. Shoot straight up; hand-held, no tripod, because this is a working concourse. Do NOT go outside for the brick facade: the Marunouchi front faces west, so at 09:15 it is entirely in its own shadow.",
+   "latitude": 35.68182,
+   "longitude": 139.76607,
+   "coordPrecision": "verified",
+   "confidence": "high",
+   "confidenceNote": null,
+   "source": "https://www.gransta.jp/mall/gransta_tokyo/"
+  },
+  {
+   "id": "d2ms001aobadori",
+   "anchorStop": "Sendai Station",
+   "title": "Aoba-dori from the 2F West Exit deck",
+   "nameJp": "青葉通（仙台駅西口ペデストリアンデッキ）",
+   "tag": "DAY 2",
+   "summary": "The only Sendai frame the day allows: a straight green tunnel of zelkova running west from the station, the avenue that earns the city its name Mori no Miyako. Still fully leafed on 9 September — this is a summer-green picture, not an autumn one.",
+   "whereToFind": "NEW. From the 2F West Exit, walk out onto the pedestrian deck and stand at the WEST RAIL, on the deck's centre line, looking straight down the Aoba-dori axis away from the station. The avenue runs almost due west, so at 11:40 the near-noon sun is high and slightly behind your left shoulder — the canopy reads as deep shade against a bright road, so expose for the road and let the trees go dark. Four minutes each way from the Shinkansen gates; the whole stop is 20 minutes.",
+   "latitude": 38.2606169,
+   "longitude": 140.8751436,
+   "coordPrecision": "verified",
+   "confidence": "medium",
+   "confidenceNote": "The coordinate is the government gazetteer's Aoba-dori point, but whether the deck's sightline is clear of redevelopment hoardings in September 2026 is unverified.",
+   "source": "https://msearch.gsi.go.jp/address-search/AddressSearch?q=青葉通"
+  },
+  {
+   "id": "d2ms002tunacounter",
+   "anchorStop": "Matsushima Fish Market",
+   "title": "The 1F tuna counter and the lit annex grills",
+   "nameJp": "1階まぐろカウンターと別館焼がきハウス",
+   "tag": "DAY 2",
+   "summary": "Whole tuna and the collar and cheek cuts laid out on ice, landed by the market's own six Kesennuma longliners — and, contrary to what the plan assumed, the annex charcoal grills are LIT, because the all-you-can-eat runs 通年 with November–March as the peak, not the season.",
+   "whereToFind": "NEW. Inside the main hall, stand at the LEFT-REAR corner of the 1F sushi and don counter with the ice bed between you and the fishmongers — that is the only angle where the whole fish, the price cards and a server's hands land in one frame without shooting over other customers' shoulders. For the grills, go through to the 別館 Yakigaki House and shoot from the doorway inward. Mixed daylight and fluorescent over wet ice: set white balance manually or everything goes green.",
+   "latitude": 38.372082,
+   "longitude": 141.063568,
+   "coordPrecision": "verified",
+   "confidence": "high",
+   "confidenceNote": null,
+   "source": "https://www.sakana-ichiba.co.jp/eat/house/"
+  },
+  {
+   "id": "405b2825e3d3",
+   "anchorStop": "Zuiganji Temple",
+   "title": "Zuiganji cave-tomb approach",
+   "nameJp": "瑞巌寺 洞窟遺跡群",
+   "tag": "DAY 2",
+   "summary": "Tuff caves cut into the cliff along the entrance path, packed with weathered Buddhas and stupas — deep even shade, so it is the one place at Zuiganji that photographs well under a harsh afternoon sun.",
+   "whereToFind": "whereToFind FIXED — the seed held a time here. Two minutes in from the 総門, stand on the path with the cliff face on your LEFT and shoot along it rather than into it: a single cave mouth square-on is a black hole, whereas a raking shot down the row keeps the carved figures lit by bounced light off the gravel. Do this on the way IN, at 14:20, before the group is spread across the Hondo. Open air, so no flash rule to negotiate.",
+   "latitude": 38.372627,
+   "longitude": 141.058411,
+   "coordPrecision": "verified",
+   "confidence": "medium",
+   "confidenceNote": "Whether the cave group lies before or after the ticket gate is not stated on any Zuiganji page reachable from here, so the free-access assumption is unverified.",
+   "source": "https://www.miyagi-kankou.or.jp/theme/detail.php?id=17591"
+  },
+  {
+   "id": "5f2f092136f7",
+   "anchorStop": "Godaido Hall",
+   "title": "Godaido — seaward side",
+   "nameJp": "五大堂 海側",
+   "tag": "DAY 2",
+   "summary": "The classic Matsushima composition: pine-topped islets, the vermilion Fukuura bridge to the left, cruise boats crossing. Look up under the eaves for the twelve zodiac animals, each carved at its compass direction.",
+   "whereToFind": "whereToFind FIXED — the seed held a time here. Cross both sukashibashi and go round to the SEAWARD (south-east) rail of the platform, standing at its left-hand end so the vermilion Fukuura bridge enters the frame from the left and Futagojima sits centre-right. The sun is WSW at about 28° behind your right shoulder, which lights the vermilion instead of flattening it. NO HEELS and NO OPEN-TOE to get here, and no wheelchair — the lattice floor shows the sea five metres down.",
+   "latitude": 38.36972,
+   "longitude": 141.064368,
+   "coordPrecision": "verified",
+   "confidence": "high",
+   "confidenceNote": null,
+   "source": "https://www.town.miyagi-matsushima.lg.jp/page/1199.html"
+  },
+  {
+   "id": "d2ms003sukashibashi",
+   "anchorStop": "Godaido Hall",
+   "title": "Straight down through the sukashibashi lattice",
+   "nameJp": "透かし橋の格子床",
+   "tag": "DAY 2",
+   "summary": "The bridge floor itself: vermilion beams with the sea moving five metres below through the gaps, built so pilgrims had to watch their step and compose themselves before entering. A wholly different picture from the postcard view, and the one that explains the shoe rule to anyone who did not listen on the coach.",
+   "whereToFind": "NEW. Stand at the MIDDLE of the second (inner) bridge, feet planted on two adjacent beams, and shoot vertically down between your own shoes so the lattice frames moving water. At 15:22–15:52 the sun is WSW and low enough to throw the beam shadows across the gaps, which is what makes the grid read. Free, no gate. The bridges reopened on 14 March 2025 after the 2023 refurbishment, so both are walkable — and they cannot take a wheelchair.",
+   "latitude": 38.369861,
+   "longitude": 141.063889,
+   "coordPrecision": "verified",
+   "confidence": "high",
+   "confidenceNote": null,
+   "source": "https://www.palace-matsushima.jp/topics/tourism/59312/"
+  },
+  {
+   "id": "b8c191db43d8",
+   "anchorStop": "Matsushima Bay Cruise — Nioumaru course",
+   "title": "Matsushima Bay cruise — 2F open deck",
+   "nameJp": "松島湾遊覧船 2階グリーン席",
+   "tag": "DAY 2",
+   "summary": "The +¥600 adult upgrade is the only purchase here that changes the photographs — open air instead of a glassed-in cabin, as you pass Futagojima, the four sea caves of Kanejima and Nio-jima on the outer turn. Confirmed as the LAST sailing of the day, back at the pier at 16:50.",
+   "whereToFind": "whereToFind FIXED — the seed held a time here. Go up to the 2F deck of the 第二仁王丸 and take the PORT (left) rail about a third of the way back from the bow. The sun sits due west at 22° for the whole 50 minutes, so the bay is back-lit: from the port rail you shoot north and east with the light behind you, and the islets keep their texture instead of turning into silhouettes. Windy and it carries spray — nothing loose, and wipe the lens between islands.",
+   "latitude": 38.369179,
+   "longitude": 141.06308,
+   "coordPrecision": "verified",
+   "confidence": "medium",
+   "confidenceNote": "The sailing time, fare and deck are the operator's own, but which side of the boat faces the islands on the outbound leg is inferred from the loop's geometry, not from a published course diagram.",
+   "source": "https://www.matsushima.or.jp/timesheet/index.html"
+  },
+  {
+   "id": "d2ms004narukosteam",
+   "anchorStop": "Hotel Kameya, Naruko Onsen",
+   "title": "Naruko steam from the shrine stairway",
+   "nameJp": "鳴子温泉神社の石段からの湯けむり",
+   "tag": "DAY 2",
+   "summary": "Naruko vents sulphurous steam from roadside sources all through the town, and the best free vantage is the stone stairway up to Naruko Onsen Shrine above Taki-no-Yu, looking back down over the tin roofs. Do NOT promise autumn colour: Naruko-kyo gorge peaks in late October.",
+   "whereToFind": "NEW. From the hotel it is 1.2 km on foot. Start at Taki-no-Yu's entrance, climb the stone stairway and stop about two-thirds up, then turn and shoot BACK DOWN the steps with the stone balustrade running out of the bottom-left corner and the tin roofs beyond. Steam only reads against a dark backdrop and low light, so this is a 05:45–06:30 picture (sunrise about 05:15) or after dark, not a midday one. Grounds are open at any hour and free.",
+   "latitude": 38.740635,
+   "longitude": 140.716403,
+   "coordPrecision": "verified",
+   "confidence": "medium",
+   "confidenceNote": "The shrine coordinate and free all-hours access are verified, but the two-thirds-up vantage is a judgement from descriptions of the stairway rather than a position published anywhere.",
+   "source": "https://onsen.nifty.com/naruko-onsen/onsen008070/",
+   "retired": true,
+   "retiredReason": "Superseded on the 4 Sep 2026 app screenshots. Night 2 is now a different property.",
+   "retiredReplacedBy": "Ooedo Onsen Monogatari Naruko Onsen Kounkaku"
+  }
+ ],
+ "shopping": [
+  {
+   "id": "d179bc1bcca5",
+   "anchorStop": "Tokyo Station",
+   "name": "(NO) RAISIN SANDWICH",
+   "nameJp": "ノーレーズンサンド",
+   "placeLabel": "(NO) RAISIN SANDWICH, Gransta Tokyo — inside the gates, on the way to the Tohoku Shinkansen platforms",
+   "estimate": 1580,
+   "note": "4 pieces ¥1,580, caramel butter, a Tokyo-Station exclusive. SURVIVES THE FLIGHT: shelf-stable, boxed, cabin-bag shaped. And it is the right pick at 09:15 for a structural reason — Gransta's 雑貨・コスメ units run 全日 10:00–21:00 and are shut for the whole window, while the bento and sweets counters trade from 08:00.",
+   "latitude": 35.681389,
+   "longitude": 139.766389,
+   "coordPrecision": "approximate",
+   "confidence": "medium",
+   "confidenceNote": "The Gransta mall hours are official, but the ¥1,580 four-piece price is carried from the seed — the shop's own Gransta page 404s, so the 2026 price is unconfirmed.",
+   "source": "https://www.gransta.jp/mall/gransta_tokyo/"
+  },
+  {
+   "id": "84de8a2be11e",
+   "anchorStop": "Sendai Station",
+   "name": "Hagi no Tsuki (Kasho Sanzen)",
+   "nameJp": "萩の月・菓匠三全",
+   "placeLabel": "Omiyage-dokoro Sendai No.3, Sendai Station 2F west — 07:00–21:00, tel 022-267-1965",
+   "estimate": 1590,
+   "note": "6-piece box ¥1,590 confirmed on Kasho Sanzen's own shop. SURVIVES THE FLIGHT: 常温保存 and 14 days of shelf life, so it clears an 8-day trip with room. Kikufuku's zunda cream daifuku tastes better but ships frozen and will not. Buy here or, with more time, at the Matsushima Teramachi-Koji branch at 14:20.",
+   "latitude": 38.260338,
+   "longitude": 140.881699,
+   "coordPrecision": "verified",
+   "confidence": "high",
+   "confidenceNote": null,
+   "source": "https://www.shop.sanzen.co.jp/shop/g/g3006/"
+  },
+  {
+   "id": "d2sh001haginomatsu",
+   "anchorStop": "Zuiganji Temple",
+   "name": "Hagi no Tsuki, bought in Matsushima instead",
+   "nameJp": "萩の月（松島寺町小路店）",
+   "estimate": 1590,
+   "placeLabel": "Kasho Sanzen Matsushima Teramachi-Koji, 町内58 — 09:00–18:00, on the lane between Zuiganji and Matsushima-Kaigan Station",
+   "note": "NEW, and the practical fix for the day's worst shopping squeeze. The same ¥1,590 six-piece box, the same 14-day 常温 shelf life, but bought inside a one-hour temple stop instead of a 20-minute Shinkansen-gate dash at Sendai. Zunda shake over the same counter. About 15 free car spaces, five minutes from the temple gate.",
+   "latitude": 38.370247,
+   "longitude": 141.060349,
+   "coordPrecision": "verified",
+   "confidence": "medium",
+   "confidenceNote": "The box price and shelf life are Kasho Sanzen's own, but that this branch stocks the six-piece box is inferred from it being a Kasho Sanzen shop rather than stated on the branch listing.",
+   "source": "https://matsushima.miyaginavi.jp/shopping/851.html"
+  },
+  {
+   "id": "3e41d18ab32f",
+   "anchorStop": "Matsushima Fish Market",
+   "name": "Kaki-shoyu and Sanriku Kaiho-zuke",
+   "nameJp": "かき醤油・三陸海宝漬",
+   "placeLabel": "1F souvenir wall, Matsushima Fish Market — market open 09:00–16:00 on a weekday, tel 022-353-2318",
+   "estimate": 700,
+   "note": "Oyster soy sauce is the honest way to take September Matsushima oyster flavour home: SURVIVES THE FLIGHT because it is shelf-stable and sealed — but bottles are liquid, so it goes in checked baggage under the 25 kg, not the 7 kg cabin bag. Sanriku wakame is the other volume seller and is the lighter, cabin-safe alternative.",
+   "latitude": 38.372082,
+   "longitude": 141.063568,
+   "coordPrecision": "verified",
+   "confidence": "medium",
+   "confidenceNote": "Market hours, phone and address are official, but no official page prices the souvenir wall, so the ¥700 estimate is a typical bottle price rather than a quoted one.",
+   "source": "https://www.sakana-ichiba.co.jp/access/"
+  },
+  {
+   "id": "295706215131",
+   "anchorStop": "Zuiganji Temple",
+   "name": "Zuiganji goshuin",
+   "nameJp": "御朱印",
+   "placeLabel": "Goshuin desk by the Kuri exit, Zuiganji — inside the ¥1,000 ticket area, temple 08:30–17:00 in September",
+   "estimate": 500,
+   "note": "¥500 for the seal, or ¥1,200 for the temple's own seal book — the only souvenir here that is actually Zuiganji rather than generic Matsushima. SURVIVES THE FLIGHT: paper, flat, weightless. Bring the ¥500 in coins; and note that the desk sits past the Hondo, which a wheelchair cannot reach.",
+   "latitude": 38.372167,
+   "longitude": 141.059389,
+   "coordPrecision": "verified",
+   "confidence": "medium",
+   "confidenceNote": "The temple's hours and the wheelchair restriction are official, but the ¥500 / ¥1,200 goshuin prices are carried from the seed and are not published on Zuiganji's site.",
+   "source": "https://www.zuiganji.or.jp/guide/"
+  },
+  {
+   "id": "16b64d767bbf",
+   "anchorStop": "Godaido Hall",
+   "name": "Sasakamaboko, Matsushima Kamaboko Honpo Sohonten",
+   "nameJp": "笹かまぼこ・松島蒲鉾本舗 総本店",
+   "placeLabel": "Matsushima Kamaboko Honpo Sohonten, 町内120 — 9:30–17:00, never closed, tel 022-354-4016",
+   "estimate": 300,
+   "note": "TWO CORRECTIONS: the shop opens 9:30, not 09:00, and the hand-grilling counter is ¥400 a stick, not ¥300 — and PARTIES OF 10+ MUST PRE-BOOK it, so 35 people means a phone call. Sasakamaboko ¥300. Fresh kamaboko is chilled and does NOT survive the flight; only the vacuum-packed shelf-stable line does, so ask which is which at the till.",
+   "latitude": 38.371143,
+   "longitude": 141.062286,
+   "coordPrecision": "verified",
+   "confidence": "medium",
+   "confidenceNote": "Hours, address, phone and the ¥400 booking rule are official; the ¥300 sasakamaboko price is from JAL's OnTrip feature, and which specific packs are shelf-stable is not stated on Matsukama's site.",
+   "source": "https://www.matsukama.jp/activity.html"
+  },
+  {
+   "id": "0fcd6683028c",
+   "anchorStop": "Hotel Kameya, Naruko Onsen",
+   "name": "Naruko kokeshi, Sakurai Kokeshi-ten",
+   "nameJp": "鳴子こけし・桜井こけし店 本店",
+   "placeLabel": "Sakurai Kokeshi-ten honten, 大崎市鳴子温泉字湯元26 — weekdays 10:00–17:00, tel 0229-87-3575",
+   "estimate": 2640,
+   "note": "Mini Naruko kokeshi ¥2,640, a small ejiko or nemariko ¥3,300; full-size traditional pieces cost more. Naruko kokeshi are the ones whose head squeaks when you turn it — 首の部分を回すとキュキュッと音がする — because head and body are turned separately on the lathe. SURVIVES THE FLIGHT: solid wood, but wrap it, and it opens after the 08:30 coach.",
+   "latitude": 38.741169,
+   "longitude": 140.715469,
+   "coordPrecision": "verified",
+   "confidence": "medium",
+   "confidenceNote": "Hours, address and phone are the shop's own; the ¥2,640 / ¥3,300 prices are from a retailer that stocks Sakurai's work, not from Sakurai's own price list, so in-store prices may differ.",
+   "source": "https://sakuraikokeshi.jp/naruko-onsen-head-office/",
+   "retired": true,
+   "retiredReason": "Superseded on the 4 Sep 2026 app screenshots. Night 2 is now a different property.",
+   "retiredReplacedBy": "Ooedo Onsen Monogatari Naruko Onsen Kounkaku"
+  }
+ ],
+ "essentials": {
+  "Tokyo Station": {
+   "hours": {
+    "mon": [
+     [
+      "05:30",
+      "22:00"
+     ]
+    ],
+    "tue": [
+     [
+      "05:30",
+      "22:00"
+     ]
+    ],
+    "wed": [
+     [
+      "05:30",
+      "22:00"
+     ]
+    ],
+    "thu": [
+     [
+      "05:30",
+      "22:00"
+     ]
+    ],
+    "fri": [
+     [
+      "05:30",
+      "22:00"
+     ]
+    ],
+    "sat": [
+     [
+      "05:30",
+      "22:00"
+     ]
+    ],
+    "sun": [
+     [
+      "05:30",
+      "21:00"
+     ]
+    ]
+   },
+   "closedNote": "Hours above are Ekibenya Matsuri, the only unit certain to be trading at 09:15. THE REST OF GRANSTA IS NOT: 雑貨・コスメ・サービス run 全日 10:00–21:00, restaurants 平日・土 10:00–22:00, and bento/sweets 平日・土 8:00–22:00. So the group's 09:15–10:05 window covers ekiben and sweets, and NO souvenirs or cosmetics.",
+   "lastAdmission": null,
+   "seasonFrom": null,
+   "seasonTo": null,
+   "groupRate": null,
+   "phone": "03-3213-4353",
+   "phoneNote": "Ekibenya Matsuri, Gransta Tokyo. Tokyo Station itself has no single public counter worth giving 35 people.",
+   "website": "https://www.gransta.jp/mall/gransta_tokyo/",
+   "tickets": "Shinkansen seats are the agent's, booked in advance. The 10:05 departure to Sendai is about 1h35 and roughly 304 km per the app. Have the whole party through the gates and on the platform by 09:50 — a 35-person reserved-seat block boards as one.",
+   "transport": "Chiyoda-ku, Tokyo; the Marunouchi building sits at 丸の内1-9. Coach in from Hotel Metropolitan Haneda, about 45 min and 18 km, arriving 09:15. Tohoku Shinkansen platforms are at the Yaesu end, so budget the walk from the Marunouchi domes back across the Central Passage. Rally point: the Ginnosuzu Silver Bell Square, Gransta B1 inside the gates.",
+   "confidence": "high",
+   "source": "https://www.gransta.jp/news/info/20200601eigyousaikai/"
+  },
+  "Sendai Station": {
+   "hours": {
+    "mon": [
+     [
+      "07:00",
+      "21:00"
+     ]
+    ],
+    "tue": [
+     [
+      "07:00",
+      "21:00"
+     ]
+    ],
+    "wed": [
+     [
+      "07:00",
+      "21:00"
+     ]
+    ],
+    "thu": [
+     [
+      "07:00",
+      "21:00"
+     ]
+    ],
+    "fri": [
+     [
+      "07:00",
+      "21:00"
+     ]
+    ],
+    "sat": [
+     [
+      "07:00",
+      "21:00"
+     ]
+    ],
+    "sun": [
+     [
+      "07:00",
+      "21:00"
+     ]
+    ]
+   },
+   "closedNote": "Hours above are Omiyage-dokoro Sendai No.3, 2F west — the souvenir counter, open right through the 11:40 arrival. The 3F Gyutan-dori restaurants open at 10:00 (Date no Gyutan Honpo 10:00–21:30, L.O. 21:00, no closing day). Zunda Saryo on 3F: retail 09:00–21:00, café 10:00–18:30.",
+   "lastAdmission": null,
+   "seasonFrom": null,
+   "seasonTo": null,
+   "groupRate": null,
+   "phone": "022-267-1965",
+   "phoneNote": "Omiyage-dokoro Sendai No.3, 2F west — the counter the group will actually use. Zunda Saryo Zunda Komichi is 022-715-1081; Date no Gyutan Honpo 3F is 022-715-5056.",
+   "website": "https://www.livit.jregroup.ne.jp/detail/128",
+   "tickets": "None needed. Nothing at Sendai Station is ticketed; the constraint is the clock, not admission.",
+   "transport": "Aoba-ku, Chuo 1-1, Sendai. Arrive 11:40 on the Shinkansen, then about 40 min and 29 km by coach to Matsushima for the 12:15 oyster lunch. That leaves roughly 20 minutes in the building — a grab-and-go, and specifically NOT enough for a gyutan sit-down even though the arcade is open.",
+   "confidence": "high",
+   "source": "https://www.dategyu.jp/info/728/"
+  },
+  "Matsushima Fish Market": {
+   "hours": {
+    "mon": [
+     [
+      "09:00",
+      "16:00"
+     ]
+    ],
+    "tue": [
+     [
+      "09:00",
+      "16:00"
+     ]
+    ],
+    "wed": [
+     [
+      "09:00",
+      "16:00"
+     ]
+    ],
+    "thu": [
+     [
+      "09:00",
+      "16:00"
+     ]
+    ],
+    "fri": [
+     [
+      "09:00",
+      "16:00"
+     ]
+    ],
+    "sat": [
+     [
+      "08:00",
+      "16:00"
+     ]
+    ],
+    "sun": [
+     [
+      "08:00",
+      "16:00"
+     ]
+    ]
+   },
+   "closedNote": "年中無休 (year-round; year-end and New Year hours change). FOOD CLOSES EARLIER THAN THE MARKET: on a weekday the 1F sushi and don counter takes orders 09:00–15:00 and the 別館 Yakigaki House plus the 2F hall 10:00–15:00. At 13:18–14:18 the group is inside every window, but 15:00 is a hard cut-off, not a soft last order.",
+   "lastAdmission": null,
+   "seasonFrom": null,
+   "seasonTo": null,
+   "groupRate": null,
+   "phone": "022-353-2318",
+   "phoneNote": "Freephone 0120-50-2318 also works. Worth one call to confirm coach parking on the day.",
+   "website": "https://www.sakana-ichiba.co.jp/",
+   "tickets": "No admission. Order and pay at the counters; all 1F food is carried up to the 2F hall self-service. Yakigaki House 45-minute all-you-can-eat is ¥3,500, or ¥4,000 with kaki rice and soup — feasible inside the hour but it would consume the whole stop.",
+   "transport": "〒981-0213 宮城県宮城郡松島町松島字普賢堂4-10. Parking is free for both cars (about 60 spaces) and 大型自動車 — LARGE COACHES ARE EXPLICITLY ACCEPTED, which is the one logistics fact worth confirming with the driver. Onward to Zuiganji is about 450 m and 7 minutes on foot.",
+   "confidence": "high",
+   "source": "https://www.sakana-ichiba.co.jp/access/"
+  },
+  "Zuiganji Temple": {
+   "hours": {
+    "mon": [
+     [
+      "08:30",
+      "17:00"
+     ]
+    ],
+    "tue": [
+     [
+      "08:30",
+      "17:00"
+     ]
+    ],
+    "wed": [
+     [
+      "08:30",
+      "17:00"
+     ]
+    ],
+    "thu": [
+     [
+      "08:30",
+      "17:00"
+     ]
+    ],
+    "fri": [
+     [
+      "08:30",
+      "17:00"
+     ]
+    ],
+    "sat": [
+     [
+      "08:30",
+      "17:00"
+     ]
+    ],
+    "sun": [
+     [
+      "08:30",
+      "17:00"
+     ]
+    ]
+   },
+   "closedNote": "April–September 08:30–17:00; the temple publishes no closing days. Other bands: March and October to 16:30, February and November to 16:00, January and December to 15:30. ACCESSIBILITY IS A REAL LIMIT — 車いすでの拝観可能な場所は宝物館のみ, so a wheelchair user reaches the treasure hall and neither the Hondo nor the Kuri.",
+   "lastAdmission": "16:30",
+   "seasonFrom": "04-01",
+   "seasonTo": "09-30",
+   "groupRate": "¥900 per adult for parties of 30 or more (¥400 per middle/elementary child); individuals ¥1,000 and ¥500. The pre-2026 fee sheet also carried a 100+ tier, which the current page no longer shows — worth asking about for a 35-person booking.",
+   "phone": "022-354-2023",
+   "phoneNote": "Fax 022-354-5145. Book the 30+ group rate in advance rather than negotiating at the window with 35 people behind you.",
+   "website": "https://www.zuiganji.or.jp/guide/",
+   "tickets": "Adult (university/high school) ¥1,000, middle and elementary ¥500, revised on 1 April 2026 to fund the treasure-hall refit. Group of 30+: ¥900 and ¥400. At 35 people the group rate saves ¥3,500. Last reception is 30 minutes before closing, so 16:30 — the 14:20 slot is not near it.",
+   "transport": "〒981-0213 宮城県宮城郡松島町松島字町内91番地. 専用駐車場はありません — NO DEDICATED PARKING, so the coach must set down and park elsewhere. 450 m and 7 min on foot from the fish market; 500 m and 8 min on to Godaido. Entsuin is 2 minutes away at 町内67 and closes at 16:00.",
+   "confidence": "high",
+   "source": "https://www.zuiganji.or.jp/guide/"
+  },
+  "Godaido Hall": {
+   "hours": {
+    "mon": [
+     [
+      "08:30",
+      "17:00"
+     ]
+    ],
+    "tue": [
+     [
+      "08:30",
+      "17:00"
+     ]
+    ],
+    "wed": [
+     [
+      "08:30",
+      "17:00"
+     ]
+    ],
+    "thu": [
+     [
+      "08:30",
+      "17:00"
+     ]
+    ],
+    "fri": [
+     [
+      "08:30",
+      "17:00"
+     ]
+    ],
+    "sat": [
+     [
+      "08:30",
+      "17:00"
+     ]
+    ],
+    "sun": [
+     [
+      "08:30",
+      "17:00"
+     ]
+    ]
+   },
+   "closedNote": "Open 08:30–17:00, free, no closing day. The hall's five Myo statues are shown only once every 33 years, so the visit is the two bridges, the exterior and the zodiac carvings under the eaves. The 透かし橋 refurbishment ran from May 2023 and COMPLETED ON 14 MARCH 2025 — no September works risk, and no lattice closure to plan around.",
+   "lastAdmission": null,
+   "seasonFrom": null,
+   "seasonTo": null,
+   "groupRate": "Not applicable — admission is free for any party size.",
+   "phone": "022-354-5708",
+   "phoneNote": "Matsushima Town 産業観光課 観光班, the authority that publishes the Godaido and Sukashibashi information. Godaido itself has no ticket office to ring.",
+   "website": "https://www.town.miyagi-matsushima.lg.jp/page/1199.html",
+   "tickets": "拝観料 無料 — free, so nothing to buy and nothing to queue for. Thirty minutes is genuinely enough.",
+   "transport": "〒981-0213 宮城県宮城郡松島町松島字町内111. No on-site parking; nearby paid lots only. 500 m and 8 min on foot from Zuiganji, then 280 m and 5 min on to the cruise pier. TWO BRIDGES WITH LATTICE FLOORS: no heels, no open-toe, and they cannot take a wheelchair.",
+   "confidence": "high",
+   "source": "https://matsushima.miyaginavi.jp/shrines_history/855.html"
+  },
+  "Matsushima Bay Cruise — Nioumaru course": {
+   "hours": {
+    "mon": [
+     [
+      "09:00",
+      "16:00"
+     ]
+    ],
+    "tue": [
+     [
+      "09:00",
+      "16:00"
+     ]
+    ],
+    "wed": [
+     [
+      "09:00",
+      "16:00"
+     ]
+    ],
+    "thu": [
+     [
+      "09:00",
+      "16:00"
+     ]
+    ],
+    "fri": [
+     [
+      "09:00",
+      "16:00"
+     ]
+    ],
+    "sat": [
+     [
+      "09:00",
+      "16:00"
+     ]
+    ],
+    "sun": [
+     [
+      "09:00",
+      "16:00"
+     ]
+    ]
+   },
+   "closedNote": "Hours are DEPARTURE times: eight sailings, hourly on the hour 09:00 to 16:00, each 50 minutes, and the operator labels this the 通年 (year-round) timetable. The 16:00 IS THE LAST BOAT and it runs in September — the only seasonal note is 冬季は日の入りが早いため16:00の便が休航になります, which is winter only. Sunset at Matsushima on 9 Sep is 17:54. Real risk is weather: 台風などにより安全が確保できない場合は運航中止とさせていただきます.",
+   "lastAdmission": "16:00",
+   "seasonFrom": null,
+   "seasonTo": null,
+   "groupRate": "団体（15名以上）1割引 — 10% off the adult base fare, so ¥1,350 instead of ¥1,500 for a 35-person party. The discount applies to the base fare; the Green-deck supplement is not discounted.",
+   "phone": "022-354-2233",
+   "phoneNote": "Ticket office 8:00–17:00 (winter 8:30–16:00). Group bookings placed through the website are called back to confirm, so give a contact name and a time to be reached. Cancellation by phone, fax or email before the previous day's close carries no fee.",
+   "website": "https://www.matsushima.or.jp/timesheet/index.html",
+   "tickets": "Adult (junior high and above) ¥1,500, child (elementary) ¥750, under-school free. 2F 展望デッキ グリーン supplement +¥600 adult, +¥300 child, infant free. Disability discounts: 50% for first-class physical / A-rated intellectual / grade-1 mental certificates, 10% otherwise. Web booking carries its own discount. HAVE THE GUIDE HOLD ALL 35 TICKETS AND BOARD BY 15:50.",
+   "transport": "宮城県宮城郡松島町松島字町内85番地, the central pier — 280 m and 5 minutes on foot from Godaido. The 第二仁王丸 is a large vessel (300–400 capacity) with toilets aboard. THE 16:00 RETURNS AT 16:50 AND THE COACH LEAVES AT 17:00: a ten-minute margin with no slack upstream, so any delay at the market or the temple costs the cruise entirely.",
+   "confidence": "high",
+   "source": "https://www.matsushima.or.jp/timesheet/index.html"
+  },
+  "Hotel Kameya, Naruko Onsen": {
+   "hours": {
+    "mon": [
+     [
+      "00:00",
+      "23:59"
+     ]
+    ],
+    "tue": [
+     [
+      "00:00",
+      "23:59"
+     ]
+    ],
+    "wed": [
+     [
+      "00:00",
+      "23:59"
+     ]
+    ],
+    "thu": [
+     [
+      "00:00",
+      "23:59"
+     ]
+    ],
+    "fri": [
+     [
+      "00:00",
+      "23:59"
+     ]
+    ],
+    "sat": [
+     [
+      "00:00",
+      "23:59"
+     ]
+    ],
+    "sun": [
+     [
+      "00:00",
+      "23:59"
+     ]
+    ]
+   },
+   "closedNote": "Reception is round the clock; official check-in 15:00 and check-out 10:00, so the 18:30 arrival is late but poses no conflict. Baths are usable between check-in and check-out with no posted closing. Day-use bathing (12:30–15:00, ¥700) will already be over. Fifty rooms.",
+   "lastAdmission": null,
+   "seasonFrom": null,
+   "seasonTo": null,
+   "groupRate": null,
+   "phone": "0229-83-2211",
+   "phoneNote": "Hotel Kameya, Naruko Onsen (HMI Hotel Group). Use this to ask about the 09:00 Fukase stop on the way out at 08:30.",
+   "website": "https://hmihotelgroup.com/ryokan-kameya/",
+   "tickets": "Night 2 of eight is in the package; kaiseki at 19:00, breakfast 07:30, coach 08:30. AFTER DARK, Wednesday: Taki-no-Yu 07:30–21:00, last entry 20:30, ¥300 from the machine, no soap or towel sold — take your own. Waseda Sajiki-yu is the latest at 09:00–21:30, ¥660. Two station footbaths are free and always open.",
+   "transport": "宮城県大崎市鳴子温泉車湯54-6. 66 km and about 1h30 up from Matsushima, arriving 18:30. Naruko sits around 200 m in a gorge and holds 9 of Japan's 11 recognised spring types; Kameya's own water is 塩化物泉・炭酸水素塩泉, the 黒湯. The bath town and station are 0.95–1.2 km from the door — 13 to 17 minutes on foot each way, which is what makes a post-dinner public bath a 40-minute round trip.",
+   "confidence": "medium",
+   "source": "https://www.jtb.co.jp/kokunai-hotel/htl/2402013/"
+  }
+ },
+ "subRoutes": [
+  {
+   "id": "d2sr001zuiganji",
+   "anchorStop": "Zuiganji Temple",
+   "name": "Zuiganji in one hour: caves, Hondo, treasure hall",
+   "note": "The hour at Zuiganji is the only stop today long enough to need an order, because its three things are 200 m apart and the light suits them in this sequence. Caves first at 14:20 while the group is still together and the shade is even; the Hondo next; the treasure hall last because it is nearest the exit and the 500 m walk to Godaido. Back at the gate by 15:14 for a 15:22 arrival.",
+   "startMinutes": 860,
+   "deadlineMinutes": 914,
+   "placeIDs": [
+    "4651cfb8ab4d",
+    "f7e2e77d4f16",
+    "880a62f5b491"
+   ],
+   "latitude": 38.371414,
+   "longitude": 141.059006,
+   "coordPrecision": "verified",
+   "confidence": "medium",
+   "confidenceNote": "Walking minutes inside the grounds are estimated from the site's published 500 m onward distance and the buildings' relative positions, not from a measured path; the temple publishes no internal route timings.",
+   "source": "https://www.zuiganji.or.jp/guide/"
+  }
+ ],
+ "outfitByStop": {
+  "Tokyo Station": {
+   "photo": "Everything here is indoors under cool-white station lighting: the Marunouchi domes are cream plaster, gold relief and dark green ironwork, lit from below. Mid-tone solids read; black sinks into the shadowed vault and pure white goes chalky under the LEDs. Plain over print, because 35 people in patterns is noise in a wide concourse frame. Do not plan the red-brick facade shot — the Marunouchi front faces WEST, so at 09:15 the whole elevation is in its own shadow and looks flat and brown. Save the exterior for another trip and shoot the ceiling instead.",
+   "practical": "You are inside for the whole 50 minutes, so this is about the walk, not the weather: it is 29°/22° outside and the concourse is air-conditioned, which means a light layer you can carry. Slip-on shoes and a hand free — the Marunouchi domes are at one end and the Tohoku Shinkansen platforms at the other, and you will cross the Central Passage twice. Have the ekiben bought BEFORE the domes, because Ekibenya Matsuri is open from 05:30 while the souvenir units stay shut until 10:00. Coins for the platform kiosks."
+  },
+  "Sendai Station": {
+   "photo": "Twenty minutes, and one frame worth taking: the zelkova tunnel of Aoba-dori from the 2F West Exit deck. At 11:40 the sun is nearly overhead and slightly left, so the canopy is deep shade against a bright road — the highest-contrast light of the day. Expose for the road and let the trees go dark rather than lifting the shadows into mush. Against that near-black green, dark green and olive vanish; a mid-tone blue, white or a warm neutral separates. The green is SUMMER green, fully leafed — nothing about this picture says autumn, so do not sell it as one.",
+   "practical": "Concourse to platform to deck to coach, all in twenty minutes, mostly indoors and cool. The deck itself is open and it is 29° with humidity, so if you go out for Aoba-dori you will be back sweating — factor it in before a 40-minute coach ride. Shoes for stairs: the arcade is 3F, the souvenir counter 2F west, the deck 2F. Buy the zunda shake LAST so it is still cold on the bus, and remember the 12:15 oyster lunch is only 35 minutes away — do not eat a gyutan set here."
+  },
+  "Matsushima Fish Market": {
+   "photo": "The hardest light of the day: 13:18 with the sun SW at 49°, so anything outdoors is top-lit and shadowless. Fortunately the pictures are inside — wet ice, stainless trays, whole tuna, mixed daylight from the doors against fluorescent overhead. Set white balance by hand or the ice turns green. White tops blow out where the door light hits and mid-tone blue or navy holds; avoid pale linen you mind about, because this is a working fish floor and the counters splash. And the annex grills ARE lit — the all-you-can-eat runs year-round — so there is smoke and oyster fat in the air where you stand.",
+   "practical": "29°/22°, coastal, and the market hall is neither air-conditioned nor cool: wet floors, fish smell, charcoal smoke from the 別館. Closed shoes you do not mind, and nothing pale on the hem. Wash-and-go hands: order at the counter, carry your own tray up to the 2F hall, and eat standing or at the hall tables. Cash in small notes. One hour is enough for the burger, a look at the tuna and the souvenir wall, but the 45-minute grilled-oyster all-you-can-eat would eat the whole stop. Keep bottles for checked baggage — kaki-shoyu is a liquid."
+  },
+  "Zuiganji Temple": {
+   "photo": "The gentlest light of the afternoon. The approach is a corridor of tuff cliff and cedar, and by 14:20 the sun is WSW and blocked by it — deep, even shade, which is why the cave tombs are the one Zuiganji frame that works under a hard sun. Backdrops are grey-brown rock, raked gravel and unpainted timber, so almost any colour reads except grey itself, which merges with the tuff. Inside the Hondo it is dark polished wood and gold leaf: light mid-tones separate, black disappears entirely. Nothing here fights the vermilion problem — that is Godaido's, not the temple's.",
+   "practical": "Gravel and stone steps, so flat closed shoes; the Hondo is shoes-off, which means socks you are happy to be seen in and a bag you can carry rather than set down. THE VENUE RULE THAT MATTERS: the temple states wheelchair access reaches the treasure hall ONLY — not the Hondo, not the Kuri — so anyone using a chair needs to be told before the ticket, not at the step. Entsuin next door closes at 16:00 and costs another ¥400 a head at group rate, so it only happens by trading time against Zuiganji. The onward walk is 500 m of flat paving."
+  },
+  "Godaido Hall": {
+   "photo": "This is the frame the whole day is built around, and it has one colour rule: VERMILION. The two bridges and the Fukuura bridge to the left are the brightest thing in the picture, so orange and red on a person fight them and lose. Dark green disappears into the near-black pines on the islets. Mid-tone blue, navy or a soft neutral reads cleanly against both sea and pine. At 15:22 the sun is WSW at about 28° — low enough to light the vermilion rather than flatten it, so stand at the seaward rail with the sun behind your right shoulder. White is safe now in a way it was not at 13:18.",
+   "practical": "THE LATTICE BRIDGES RULE OUT HEELS. Both sukashibashi have open lattice floors showing the sea five metres below through the gaps — no heels, no open-toe, nothing that can drop through, and they cannot take a wheelchair. Say it on the coach, not at the bridge, because there is no way round. Phone on a strap or in a zipped pocket while you cross. Free and open 08:30–17:00, so no tickets and no queue; thirty minutes is genuinely enough. Flat paving for the 280 m on to the pier, and the bridges reopened in March 2025 after refurbishment."
+  },
+  "Matsushima Bay Cruise — Nioumaru course": {
+   "photo": "The sun sits due WEST at 22° for the whole sailing, so the bay is fully back-lit and the islets want to become silhouettes. Work with it: from the 2F deck take the port rail and shoot north and east with the light behind you, which keeps texture on the pines and the wave-cut rock. Against a silver-white sea any dark colour reads as a shape, so a mid-tone or one warm colour keeps a person from turning into a cut-out. Wipe the lens between islands — spray dries into haze you will not see until later. The +¥600 upgrade is the only thing here that changes the photographs.",
+   "practical": "The open 2F deck at 16:00 is genuinely windy and carries spray, which is a different proposition from the sheltered walk you have had all afternoon. Nothing loose: no hat without a strap, no scarf, no unzipped bag, and a phone secured — it is a 50-minute loop and there is no going back for anything dropped. A light layer despite 29°, because moving over water at speed is cool. AND THE CLOCK: this is the LAST boat of the day, it returns at 16:50 and the coach leaves at 17:00, so board by 15:50 and buy any skewers before you get on."
+  },
+  "Hotel Kameya, Naruko Onsen": {
+   "photo": "You arrive at 18:30, well after the 17:54 sunset, and Naruko sits in a gorge so it is fully dark. Every picture tonight is either steam against a dark ground or a lit interior — and steam only reads backlit, so find a lamp or a lit window behind it and shoot towards the light. Nothing on your face means dark colours vanish completely; a light mid-tone separates. The real frame is tomorrow at 05:45–06:30, from two-thirds up the shrine stairway looking back over the steaming tin roofs. And say it plainly to the group: NO AUTUMN COLOUR — Naruko-kyo peaks late October.",
+   "practical": "Yukata and the hotel's own geta for the corridors, but the public baths are 0.95–1.2 km away down and back up a gorge, which is 13 to 17 minutes each way in real shoes — a 40-minute round trip after a 19:00 kaiseki, so decide before dinner. Taki-no-Yu sells NEITHER soap NOR towel and has no showers or taps, so carry both from the room plus ¥300 in coins. Its water is acidic pH 2.9 sulphur, which will blacken silver — take rings, chains and watches off before you get in, at Taki-no-Yu and in Kameya's black water alike."
+  }
+ },
+ "removedFromDay": {
+  "Hotel Kameya, Naruko Onsen": {
+   "reason": "Superseded on the 4 Sep 2026 app screenshots. Night 2 is now a different property.",
+   "replacedBy": "Ooedo Onsen Monogatari Naruko Onsen Kounkaku",
+   "removedOn": "2026-09-04",
+   "keepBecause": "Still in NARUKO ONSEN, so the town-level research — Takimi Bridge, Naruko Onsen Shrine, Mochidokoro Fukase, Sakurai Kokeshi, the footbaths, the kokeshi shops — transfers to the new hotel unchanged. Only the on-property records (baths, breakfast, lobby) are specific to Kameya.",
+   "importAs": "Removed from this Day"
+  }
+ }
+}

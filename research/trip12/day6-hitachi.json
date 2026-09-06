@@ -1,0 +1,1402 @@
+{
+  "batch": "day6-hitachi",
+  "places": [
+    {
+      "id": "01ced68d11d2",
+      "anchorStop": "Hitachi Seaside Park",
+      "name": "Miharashi Hill summit path",
+      "nameJp": "みはらしの丘",
+      "category": "sight",
+      "priceTier": "¥",
+      "stayMinutes": 30,
+      "legs": [
+        {
+          "mode": "walk",
+          "minutes": 17
+        }
+      ],
+      "note": "The kochia are GREEN, and that is the official state: the park's own kochia page gives 緑葉 8月中旬〜9月下旬 and the colour change only from late September. About 40,000 plants over 2.3 ha, 70 cm tall, lime green, Pacific behind. Highest ground in Hitachinaka; nearest gate 西口・翼のゲート.",
+      "latitude": 36.402019,
+      "longitude": 140.596889,
+      "coordPrecision": "verified",
+      "timeWindow": "day",
+      "confidence": "high",
+      "confidenceNote": "Bloom state, plant count and gate are official; the 17-minute walk from the West Gate is estimated from the park map, not a published figure.",
+      "source": "https://www.hitachikaihin.jp/flower-plant/flower/kochia.html"
+    },
+    {
+      "id": "b660d216eded",
+      "anchorStop": "Hitachi Seaside Park",
+      "name": "Seaside Train (park loop)",
+      "nameJp": "シーサイドトレイン",
+      "category": "sight",
+      "priceTier": "¥",
+      "stayMinutes": 40,
+      "legs": [
+        {
+          "mode": "walk",
+          "minutes": 2
+        }
+      ],
+      "note": "¥600 one-day pass, age 3 and over pays; 9 stops; ONE FULL LOOP IS ABOUT 40 MINUTES — two thirds of this stop, so it is a one-leg lift, not a tour. Direct runs to Miharashi Hill are 春や秋の行楽シーズン extras; mid-September is not one, so check the timetable posted at the stop.",
+      "latitude": 36.403129,
+      "longitude": 140.5917,
+      "coordPrecision": "approximate",
+      "timeWindow": "day",
+      "confidence": "high",
+      "confidenceNote": "Fare, 9 stops, 40-minute loop and the seasonal-only Miharashi direct service are official; the boarding-point coordinate is the seed's West Gate estimate.",
+      "source": "https://www.hitachikaihin.jp/spot-guide/seaside-train.html"
+    },
+    {
+      "id": "09f1cfbfafb4",
+      "anchorStop": "Hitachi Seaside Park",
+      "name": "Big Ferris wheel BLUE EYES",
+      "nameJp": "大観覧車 ブルーアイズ",
+      "category": "sight",
+      "priceTier": "¥¥",
+      "stayMinutes": 15,
+      "legs": [
+        {
+          "mode": "walk",
+          "minutes": 8
+        }
+      ],
+      "note": "In the Pleasure Garden, which is a SEPARATE payment from park admission: ride tickets are sold in ¥100 units, or a 1-day free pass at ¥3,600 (¥3,000 discounted, 4 together ¥12,800). The only way to get the green hill and the ocean in one frame inside an hour — but budget the queue, not just the ride.",
+      "latitude": 36.397583,
+      "longitude": 140.590889,
+      "coordPrecision": "verified",
+      "timeWindow": "day",
+      "confidence": "medium",
+      "confidenceNote": "The Pleasure Garden ticket structure is official; the fare for this single ride is not published on a reachable page (pleasure.hitachikaihin.jp blocks automated fetching), so the per-ride cost is unconfirmed.",
+      "source": "https://pleasure.hitachikaihin.jp/page-258.html"
+    },
+    {
+      "id": "d577f5c4daed",
+      "anchorStop": "Hitachi Seaside Park",
+      "name": "Lakeside Cafe — West Gate soft-serve and shop",
+      "nameJp": "レイクサイドカフェ",
+      "category": "food",
+      "priceTier": "¥",
+      "stayMinutes": 12,
+      "legs": [
+        {
+          "mode": "walk",
+          "minutes": 2
+        }
+      ],
+      "note": "The West Gate outlet that is actually open at 09:30: official hours 9時30分から閉園時間まで, takeout only, waterside terrace, soft-serve, takoyaki, croquettes, coffee. Its RETAIL counter is 平日休業（土日祝日のみ営業）— weekends and holidays only — and Sunday 13 September qualifies, so the goods shelf is open.",
+      "latitude": 36.401864,
+      "longitude": 140.592424,
+      "coordPrecision": "approximate",
+      "timeWindow": "day",
+      "confidence": "high",
+      "confidenceNote": "Hours, takeout-only format and the weekend-only retail counter are official; the coordinate is the seed's West Gate estimate.",
+      "source": "https://www.hitachikaihin.jp/gourmet/lakeside-cafe.html"
+    },
+    {
+      "id": "be809250e5a6",
+      "anchorStop": "Hitachi Seaside Park",
+      "name": "Glass House cafe",
+      "nameJp": "グラスハウス",
+      "category": "food",
+      "priceTier": "¥¥",
+      "stayMinutes": 30,
+      "legs": [
+        {
+          "mode": "train",
+          "minutes": 15
+        },
+        {
+          "mode": "walk",
+          "minutes": 5
+        }
+      ],
+      "note": "HONEST WARNING: it is in the 砂丘エリア, nearest gate 海浜口・風のゲート, Seaside Train stop 海浜テラス — the far side of the park from the coach. Open 9時30分から閉園1時間前まで, so 09:30–16:00 today. A glass-walled terrace on the Pacific, and not reachable and back inside a 60-minute stop from the West Gate.",
+      "latitude": 36.408333,
+      "longitude": 140.605556,
+      "coordPrecision": "verified",
+      "timeWindow": "day",
+      "confidence": "high",
+      "confidenceNote": null,
+      "source": "https://www.hitachikaihin.jp/gourmet/glass-house.html"
+    },
+    {
+      "id": "d6hitachi01",
+      "anchorStop": "Hitachi Seaside Park",
+      "name": "West Gate / Tsubasa Gate ticket windows",
+      "nameJp": "西口・翼のゲート",
+      "category": "sight",
+      "priceTier": "¥",
+      "stayMinutes": 10,
+      "legs": [
+        {
+          "mode": "walk",
+          "minutes": 1
+        }
+      ],
+      "note": "NEW. The gate the coach uses and the one the park itself names as nearest to Miharashi Hill. Group rate ¥290 adult for 20名以上 against ¥450 walk-up; silver 65+ ¥210; middle-school and under free. NO seasonal surcharge today — the +¥350 applies 3 Apr–6 May and about 20 days in October only. Large-bus parking ¥1,800.",
+      "timeWindow": "day",
+      "confidence": "high",
+      "confidenceNote": "Prices, the 20-person group threshold and the surcharge windows are official; no coordinate is offered because the GSI geocoder resolves the park's address (馬渡字大沼605-4) only to the 馬渡 district centroid, 2 km west of the gate.",
+      "source": "https://www.hitachikaihin.jp/guide/ticket.html"
+    },
+    {
+      "id": "d6hitachi02",
+      "anchorStop": "Hitachi Seaside Park",
+      "name": "Kinen no Mori Rest House",
+      "nameJp": "記念の森レストハウス",
+      "category": "food",
+      "priceTier": "¥",
+      "stayMinutes": 15,
+      "legs": [
+        {
+          "mode": "walk",
+          "minutes": 8
+        }
+      ],
+      "note": "NEW, and it clashes with the schedule: it OPENS AT 10:00 and shuts an hour before the park, so of the group's 09:30–10:30 window only the last 30 minutes are usable. This is where the Hitachinaka 干し芋タルト, melon baum and melon and sweet-potato soft-serve actually are, plus toilets, free Wi-Fi and the park's own coffee blend. Seaside Train stop 8.",
+      "timeWindow": "day",
+      "confidence": "high",
+      "confidenceNote": "Hours, stop number and menu are official; no coordinate is published for the rest house and the GSI geocoder cannot resolve inside the park, so none is given.",
+      "source": "https://www.hitachikaihin.jp/gourmet/kinen-no-mori.html"
+    },
+    {
+      "id": "21181d81b459",
+      "anchorStop": "Kawagoe Old Town (Kurazukuri Street)",
+      "name": "Toki no Kane bell tower",
+      "nameJp": "時の鐘",
+      "category": "sight",
+      "priceTier": "¥",
+      "stayMinutes": 10,
+      "legs": [
+        {
+          "mode": "walk",
+          "minutes": 5
+        }
+      ],
+      "note": "COORDINATE CORRECTED — see notes6.md. Three tiers, 16 m, rebuilt 1894 to Sekine Matsugoro's design the year after the 1893 Great Kawagoe Fire; one of Japan's 100 Soundscapes since 1996. Automatic striker, 06:00 / 12:00 / 15:00 / 18:00. The coach leaves at 14:30, so the 15:00 chime is missed by half an hour: this is a photograph, not a sound.",
+      "latitude": 35.923476,
+      "longitude": 139.483335,
+      "coordPrecision": "verified",
+      "timeWindow": "day",
+      "confidence": "high",
+      "confidenceNote": null,
+      "source": "https://chocotabi-saitama.jp/spot/19043/"
+    },
+    {
+      "id": "8572e0e989d2",
+      "anchorStop": "Kawagoe Old Town (Kurazukuri Street)",
+      "name": "Kasho Umon Toki no Kane branch — imo-koi",
+      "nameJp": "菓匠右門 時の鐘店 いも恋",
+      "category": "food",
+      "priceTier": "¥",
+      "stayMinutes": 10,
+      "legs": [
+        {
+          "mode": "walk",
+          "minutes": 5
+        }
+      ],
+      "note": "幸町15-13, AM10:00〜PM6:00, closed only over New Year, 049-226-5663 — open through the whole 13:30–14:30 slot. Eat it hot in the hand: a yam-flour bun round Kawagoe sweet potato and chestnut-azuki paste, about ¥250 (5-piece service box ¥1,250). THE BOXED VERSION IS FROZEN — 賞味期限 冷凍90日 — so it is not a suitcase gift.",
+      "latitude": 35.923595,
+      "longitude": 139.483627,
+      "coordPrecision": "approximate",
+      "timeWindow": "day",
+      "confidence": "high",
+      "confidenceNote": "Address, hours, phone and the frozen 90-day shelf life are from the maker's own site; the coordinate is the GSI block point for 幸町15番地, which contains both this shop and the bell tower.",
+      "source": "https://imokoi.com/item/%E3%81%84%E3%82%82%E6%81%8B"
+    },
+    {
+      "id": "f565e4c5eef1",
+      "anchorStop": "Kawagoe Old Town (Kurazukuri Street)",
+      "name": "Ogakiku (unagi, founded 1807)",
+      "nameJp": "小川菊",
+      "category": "food",
+      "priceTier": "¥¥¥",
+      "stayMinutes": 60,
+      "legs": [
+        {
+          "mode": "walk",
+          "minutes": 9
+        }
+      ],
+      "note": "CORRECTION: it closes THURSDAYS, not Mondays. On Sundays and holidays it runs straight through, 10:40–18:00 last order, so it is open — but 50 seats, about ¥4,000 a head and a famous queue mean 35 people do not walk in during a 60-minute stop. 仲町3-22, a 9-minute walk south of the drop-off.",
+      "latitude": 35.92075,
+      "longitude": 139.483032,
+      "coordPrecision": "approximate",
+      "timeWindow": "day",
+      "confidence": "high",
+      "confidenceNote": "Address, Thursday closure, weekend hours, seat count and price band are from the restaurant's own Gnavi listing; the coordinate is the GSI block point for 仲町3番.",
+      "source": "https://r.gnavi.co.jp/3h723d7v0000/"
+    },
+    {
+      "id": "1e0a21362096",
+      "anchorStop": "Kawagoe Old Town (Kurazukuri Street)",
+      "name": "Koedo Kurari (Kawagoe Industry & Tourism Hall)",
+      "nameJp": "小江戸蔵里",
+      "category": "food",
+      "priceTier": "¥¥",
+      "stayMinutes": 30,
+      "legs": [
+        {
+          "mode": "walk",
+          "minutes": 15
+        }
+      ],
+      "note": "COORDINATE WAS 1.1 km OUT — see notes6.md. It is at 新富町1-10-1 on Crea Mall by Hon-Kawagoe, not on the kurazukuri street. No closing day; 明治蔵 souvenir hall 10:00–18:00, 大正蔵 restaurant 11:00–22:00 at weekends, 昭和蔵 tasting 11:00–19:00 with sake from 32 Saitama breweries. 049-224-5934.",
+      "latitude": 35.916283,
+      "longitude": 139.48378,
+      "coordPrecision": "approximate",
+      "timeWindow": "day",
+      "confidence": "medium",
+      "confidenceNote": "Address, hours and phone are from the city's official page, which lists Saitama SAKE tasting and does not mention COEDO beer — so Beniaka being stocked here is unconfirmed, and the coordinate is the GSI block point for 新富町一丁目10番.",
+      "source": "https://www.city.kawagoe.saitama.jp/kanko/k-spots/1011557/1011564/1011566.html"
+    },
+    {
+      "id": "ada0ef53b513",
+      "anchorStop": "Kawagoe Old Town (Kurazukuri Street)",
+      "name": "Former Eighty-Fifth Bank (Saitama Resona)",
+      "nameJp": "旧第八十五銀行本店（埼玉りそな銀行川越支店）",
+      "category": "sight",
+      "priceTier": "¥",
+      "stayMinutes": 5,
+      "legs": [
+        {
+          "mode": "walk",
+          "minutes": 7
+        }
+      ],
+      "note": "COORDINATE CORRECTED. The 1918 landmark at 幸町4-1, still a working bank branch, and the orientation point at the south end of Ichibangai: from here the black kurazukuri row runs north to the bell tower. Exterior only — do not take 35 people into a bank lobby on a photo stop.",
+      "latitude": 35.922665,
+      "longitude": 139.483154,
+      "coordPrecision": "approximate",
+      "timeWindow": "day",
+      "confidence": "medium",
+      "confidenceNote": "The building, date and address are well established, but the coordinate is the GSI block point for 幸町4番 rather than the building footprint, and the previous value was about 300 m north-east.",
+      "source": "https://msearch.gsi.go.jp/address-search/AddressSearch?q=%E5%9F%BC%E7%8E%89%E7%9C%8C%E5%B7%9D%E8%B6%8A%E5%B8%82%E5%B9%B8%E7%94%BA4-1"
+    },
+    {
+      "id": "8b6833c6d287",
+      "anchorStop": "Kawagoe Old Town (Kurazukuri Street)",
+      "name": "Osawa House",
+      "nameJp": "大沢家住宅",
+      "category": "sight",
+      "priceTier": "¥",
+      "stayMinutes": 10,
+      "legs": [
+        {
+          "mode": "walk",
+          "minutes": 4
+        }
+      ],
+      "note": "COORDINATE CORRECTED. Built 1792 (Kansei 4), the oldest kurazukuri on the street, designated a National Important Cultural Property in 1971 — it survived the 1893 fire that destroyed almost everything around it, which is why the rest of the row was rebuilt in the same fireproof style. 元町1-15-2.",
+      "latitude": 35.924648,
+      "longitude": 139.483246,
+      "coordPrecision": "approximate",
+      "timeWindow": "day",
+      "confidence": "medium",
+      "confidenceNote": "Build year and 1971 designation are from the Japanese Wikipedia article, which carries no coordinates; the point given is the GSI block point for 元町一丁目15番.",
+      "source": "https://ja.wikipedia.org/wiki/%E5%A4%A7%E6%B2%A2%E5%AE%B6%E4%BD%8F%E5%AE%85"
+    },
+    {
+      "id": "832c1aaef868",
+      "anchorStop": "Kawagoe Old Town (Kurazukuri Street)",
+      "name": "Kawagoe Matsuri Kaikan",
+      "nameJp": "川越まつり会館",
+      "category": "sight",
+      "priceTier": "¥",
+      "stayMinutes": 30,
+      "legs": [
+        {
+          "mode": "walk",
+          "minutes": 6
+        }
+      ],
+      "note": "COORDINATE CORRECTED. 元町2-1-10, 049-225-2727. April–September 09:30–18:30 with last admission 18:00; closed 2nd and 4th Wednesdays, so Sunday 13 September is open. ¥300 adult, ¥240 for parties of 20 or more, ¥100/¥80 school. Two real festival floats indoors, and the 2026 Kawagoe Matsuri itself is 17–18 October, so this is the only way to see them on 13 September.",
+      "latitude": 35.924306,
+      "longitude": 139.482361,
+      "coordPrecision": "verified",
+      "timeWindow": "day",
+      "confidence": "high",
+      "confidenceNote": null,
+      "source": "https://www.city.kawagoe.saitama.jp/shisei/shisetsu/kanko/1013322/1013323.html"
+    },
+    {
+      "id": "d6kawagoe01",
+      "anchorStop": "Kawagoe Old Town (Kurazukuri Street)",
+      "name": "Kurazukuri Honpo Ichibangai branch",
+      "nameJp": "くらづくり本舗 一番街店",
+      "category": "shopping",
+      "priceTier": "¥",
+      "stayMinutes": 12,
+      "legs": [
+        {
+          "mode": "walk",
+          "minutes": 8
+        }
+      ],
+      "note": "NEW. 幸町2-16, 049-225-5252, 10:00–18:00, CLOSED TUESDAYS — Sunday is fine. The gift-box shop on the street itself: Fukugura monaka ¥210 each, ¥1,100 for five, ¥2,090 for nine, and a 7-day room-temperature shelf life. Café 11:00–17:00 with last orders 16:00.",
+      "latitude": 35.921909,
+      "longitude": 139.483002,
+      "coordPrecision": "approximate",
+      "timeWindow": "day",
+      "confidence": "high",
+      "confidenceNote": "Address, hours, Tuesday closure and prices are from the maker's own site; the coordinate is the GSI block point for 幸町2番.",
+      "source": "https://www.kuradukuri.jp/f/shop/ichibangai"
+    },
+    {
+      "id": "d6kawagoe02",
+      "anchorStop": "Kawagoe Old Town (Kurazukuri Street)",
+      "name": "Kameya Toki no Kane branch (founded 1783)",
+      "nameJp": "龜屋 時の鐘店",
+      "category": "shopping",
+      "priceTier": "¥",
+      "stayMinutes": 12,
+      "legs": [
+        {
+          "mode": "walk",
+          "minutes": 6
+        }
+      ],
+      "note": "NEW. 幸町7-7, 049-225-7451, 10:00–17:30, irregular closing days; 2F café 11:00–17:00, last order 16:30. Tenmei 3 (1783), old purveyor to the Kawagoe domain, and the branch that is ON the street — the 仲町4-3 main shop opens earlier at 09:00 but is a further 3 minutes south.",
+      "latitude": 35.92355,
+      "longitude": 139.48262,
+      "coordPrecision": "approximate",
+      "timeWindow": "day",
+      "confidence": "high",
+      "confidenceNote": "Addresses, hours and phones are from the company's own shop page; the coordinate is the GSI block point for 幸町7番.",
+      "source": "https://www.koedo-kameya.com/shop.html"
+    },
+    {
+      "id": "d6kawagoe03",
+      "anchorStop": "Kawagoe Old Town (Kurazukuri Street)",
+      "name": "Coach drop-off, north side of City Hall (+ Motomachi Rest House)",
+      "nameJp": "市役所北側 観光バス乗降場・元町休憩所",
+      "category": "rest",
+      "priceTier": "¥",
+      "stayMinutes": 5,
+      "legs": [
+        {
+          "mode": "walk",
+          "minutes": 1
+        }
+      ],
+      "note": "NEW, and this is where the hour actually starts. The city designates the north side of City Hall (元町1-3-1) as the tour-coach 乗降場: drop-off only, 駐車場としての利用は、できません, 路上での乗降は、行わないでください, no smoking, keep the noise down. Motomachi Rest House — free, toilets, air-conditioned, holds about 100 — is 6 minutes from it.",
+      "latitude": 35.925049,
+      "longitude": 139.485748,
+      "coordPrecision": "approximate",
+      "timeWindow": "day",
+      "confidence": "high",
+      "confidenceNote": "The drop-off, its rules and the rest house are from the city's official coach page; the coordinate is the GSI block point for 元町一丁目3番, and the numbered coach car parks are only on a PDF map that could not be fetched.",
+      "source": "https://www.city.kawagoe.saitama.jp/kanko/kotsu/1011605.html"
+    },
+    {
+      "id": "d888cbc8fdbd",
+      "anchorStop": "Shibuya Scramble Crossing",
+      "name": "Hachiko Statue",
+      "nameJp": "忠犬ハチ公像",
+      "category": "sight",
+      "priceTier": "¥",
+      "stayMinutes": 15,
+      "legs": [
+        {
+          "mode": "walk",
+          "minutes": 2
+        }
+      ],
+      "note": "The group photo everyone expects, on the Hachiko Exit plaza between the crossing and the JR gates. Free, open, no gate. On a Sunday at 15:30 there is a standing queue of people waiting their turn at the statue — send two or three at a time rather than trying to put 35 in one frame there.",
+      "latitude": 35.65906,
+      "longitude": 139.70065,
+      "coordPrecision": "verified",
+      "timeWindow": "day",
+      "confidence": "high",
+      "confidenceNote": "Position and access are established; the Sunday queue is an observed pattern rather than a published figure.",
+      "source": "https://matcha-jp.com/jp/1141"
+    },
+    {
+      "id": "15437da8658b",
+      "anchorStop": "Shibuya Scramble Crossing",
+      "name": "Shibuya Scramble Square 2F station deck",
+      "nameJp": "渋谷スクランブルスクエア 2階デッキ",
+      "category": "sight",
+      "priceTier": "¥",
+      "stayMinutes": 10,
+      "legs": [
+        {
+          "mode": "walk",
+          "minutes": 3
+        }
+      ],
+      "note": "COORDINATE PROMOTED to the building's registered address, 渋谷2-24-12. Free and public, and useful as the regroup point on the east side of the crossing, but treat it as a station-forecourt view: no official page describes a scramble-crossing overlook from 2F. For a real free elevated view use the Mark City 2F glass corridor. Shops in the building run 10:00–21:00.",
+      "latitude": 35.657951,
+      "longitude": 139.702316,
+      "coordPrecision": "verified",
+      "timeWindow": "day",
+      "confidence": "medium",
+      "confidenceNote": "The coordinate is the GSI point for the building's address, but the claim that the crossing reads as a spectacle from this 2F deck is not supported by any official source I could reach.",
+      "source": "https://msearch.gsi.go.jp/address-search/AddressSearch?q=%E6%9D%B1%E4%BA%AC%E9%83%BD%E6%B8%8B%E8%B0%B7%E5%8C%BA%E6%B8%8B%E8%B0%B72-24-12"
+    },
+    {
+      "id": "75abcc7637a9",
+      "anchorStop": "Shibuya Scramble Crossing",
+      "name": "SHIBUYA TSUTAYA / Q FRONT screens",
+      "nameJp": "渋谷TSUTAYA・QFRONT",
+      "category": "sight",
+      "priceTier": "¥",
+      "stayMinutes": 15,
+      "legs": [
+        {
+          "mode": "walk",
+          "minutes": 1
+        }
+      ],
+      "note": "COORDINATE PROMOTED (宇田川町21-6). The stacked screens on the glass face are what makes the crossing photograph the way it does in films — stand with your back to Hachiko and shoot into them. Reopened 25 April 2024; Starbucks now has the whole of 1F and 2F at about 100 seats, and the 2F window counter is the closest seated view of the crossing there is.",
+      "latitude": 35.659824,
+      "longitude": 139.700226,
+      "coordPrecision": "verified",
+      "timeWindow": "day",
+      "confidence": "high",
+      "confidenceNote": "The 2024 reopening and the 100-seat 1F–2F Starbucks are from Shibuya Keizai Shimbun; seating 35 people there on a Sunday afternoon is not realistic.",
+      "source": "https://www.shibukei.com/headline/18345/"
+    },
+    {
+      "id": "9d55f55c86a4",
+      "anchorStop": "Shibuya Scramble Crossing",
+      "name": "CROSSING VIEW & ROOFTOP LOUNGE MAG8 (MAG'S PARK)",
+      "nameJp": "MAG'S PARK クロッシングビュー",
+      "category": "sight",
+      "priceTier": "¥¥¥",
+      "stayMinutes": 30,
+      "legs": [
+        {
+          "mode": "walk",
+          "minutes": 3
+        }
+      ],
+      "note": "PRICE CORRECTED. The R-floor rooftop of MAGNET by SHIBUYA109 is now a paid lounge: 入場料 1人1,800円（1DRINK付）, 10:00–22:00, last entry 21:30, plus a Crossing Photo sky-camera at ¥1,500 per 150 seconds. The ¥300 and ¥600 figures still on travel sites are stale. For 35 people that is ¥63,000 — a few volunteers, not the group.",
+      "latitude": 35.659771,
+      "longitude": 139.700775,
+      "coordPrecision": "verified",
+      "timeWindow": "day",
+      "confidence": "high",
+      "confidenceNote": null,
+      "source": "https://magnetbyshibuya109.jp/shop/shibuya-mag8/"
+    },
+    {
+      "id": "f0fd97e06271",
+      "anchorStop": "Shibuya Scramble Crossing",
+      "name": "Myth of Tomorrow mural",
+      "nameJp": "明日の神話",
+      "category": "sight",
+      "priceTier": "¥",
+      "stayMinutes": 10,
+      "legs": [
+        {
+          "mode": "walk",
+          "minutes": 5
+        }
+      ],
+      "note": "COORDINATE CORRECTED to the Mark City block. Taro Okamoto's 30 m mural hangs in the 2F concourse on the way from the JR Tamagawa-guchi gates to the Keio Inokashira Line gates — the same glass-walled corridor that gives the free low view over the crossing, so the mural and the free vantage point are one stop, not two.",
+      "latitude": 35.658337,
+      "longitude": 139.698578,
+      "coordPrecision": "approximate",
+      "timeWindow": "day",
+      "confidence": "medium",
+      "confidenceNote": "The mural's presence in the JR-to-Keio Inokashira 2F concourse is well documented, but no official page publishes a coordinate; this is the GSI point for Mark City, 道玄坂1-12-1, and the previous value sat north of the crossing.",
+      "source": "https://matcha-jp.com/jp/1141"
+    },
+    {
+      "id": "d6shibuya01",
+      "anchorStop": "Shibuya Scramble Crossing",
+      "name": "Shibuya Mark City 2F glass corridor",
+      "nameJp": "渋谷マークシティ 2階連絡通路",
+      "category": "sight",
+      "priceTier": "¥",
+      "stayMinutes": 10,
+      "legs": [
+        {
+          "mode": "walk",
+          "minutes": 5
+        }
+      ],
+      "note": "NEW, and the honest free answer. A glass-walled passage on the way from the JR Tamagawa-guchi gates to the Keio Inokashira gates, open with the station, no ticket, no drink to buy: ガラス張りになっており、スクランブル交差点を斜め上の低い位置から見ることができます. Low oblique, not straight down — and the Okamoto mural is on the same walk.",
+      "latitude": 35.658337,
+      "longitude": 139.698578,
+      "coordPrecision": "verified",
+      "timeWindow": "day",
+      "confidence": "high",
+      "confidenceNote": "The corridor, its glass wall and the low oblique angle are described by MATCHA and corroborated by a Shibuya free-viewpoint survey; the coordinate is the GSI point for Mark City's address.",
+      "source": "https://matcha-jp.com/jp/1141"
+    },
+    {
+      "id": "d6shibuya02",
+      "anchorStop": "Shibuya Scramble Crossing",
+      "name": "SHIBU NIWA rooftop garden, Tokyu Plaza Shibuya",
+      "nameJp": "SHIBU NIWA（しぶにわ）",
+      "category": "rest",
+      "priceTier": "¥",
+      "stayMinutes": 20,
+      "legs": [
+        {
+          "mode": "walk",
+          "minutes": 4
+        }
+      ],
+      "note": "NEW. The 17F roof garden of Shibuya Fukuras, four minutes from the crossing, and the operator states 一般の方もご利用を頂けます — free to the public, no purchase. Chairs and trees, and the crossing seen from above at a distance. 悪天候時には、SHIBU NIWAを閉鎖することがございます — it shuts in bad weather, which matters in typhoon month.",
+      "latitude": 35.657677,
+      "longitude": 139.700531,
+      "coordPrecision": "verified",
+      "timeWindow": "day",
+      "confidence": "medium",
+      "confidenceNote": "Free public access and the bad-weather closure are from Tokyu Plaza's own facility page, which publishes no hours; a Shibuya viewpoint survey gives 11:00–20:00, which is unofficial.",
+      "source": "https://tokyu-plaza.com/shibuya/facility/detail/17"
+    },
+    {
+      "id": "d6shibuya03",
+      "anchorStop": "Shibuya Scramble Crossing",
+      "name": "Shibuya Hikarie 11F Sky Lobby",
+      "nameJp": "渋谷ヒカリエ 11階スカイロビー",
+      "category": "rest",
+      "priceTier": "¥",
+      "stayMinutes": 15,
+      "legs": [
+        {
+          "mode": "walk",
+          "minutes": 7
+        }
+      ],
+      "note": "NEW. A free indoor lobby with a wide window over the station bowl — 109までハッキリと見渡せる — and the seated, air-conditioned option when 30°C and a Sunday crowd have finished the group off. Same building as the ShinQs food floors, so it doubles as the bento-and-sit stop.",
+      "latitude": 35.659267,
+      "longitude": 139.703964,
+      "coordPrecision": "approximate",
+      "timeWindow": "day",
+      "confidence": "medium",
+      "confidenceNote": "Free access and the view are from a Shibuya free-viewpoint survey, not an official Hikarie page, and its 07:00–24:00 hours are unverified; the coordinate is the GSI point for Hikarie's address, 渋谷2-21-1.",
+      "source": "https://tabikura-bike.com/archives/17241"
+    },
+    {
+      "id": "3b5a668d643e",
+      "anchorStop": "Shinjuku Granbell Hotel",
+      "name": "Tokyo Metropolitan Government South Observatory",
+      "nameJp": "東京都庁 南展望室",
+      "category": "sight",
+      "priceTier": "¥",
+      "stayMinutes": 60,
+      "legs": [
+        {
+          "mode": "walk",
+          "minutes": 4
+        },
+        {
+          "mode": "train",
+          "minutes": 5
+        },
+        {
+          "mode": "walk",
+          "minutes": 5
+        }
+      ],
+      "note": "OFFICIALLY CONFIRMED and free: 入室料金 無料, south deck 入室可能時間 9時30分〜21時30分 with last entry 30 minutes before close, 202 m up on 45F. It closes 1st and 3rd Tuesdays and the north deck 2nd and 4th Mondays — Sunday 13 September has both open. Two Oedo Line stops from Higashi-Shinjuku to Tochomae, ¥180.",
+      "latitude": 35.68972,
+      "longitude": 139.69222,
+      "coordPrecision": "verified",
+      "timeWindow": "night",
+      "confidence": "high",
+      "confidenceNote": "Hours, free entry and closure days are from the Bureau of Finance's own page; the ¥180 fare is the standard Toei minimum and was not re-checked this session.",
+      "source": "https://www.zaimu.metro.tokyo.lg.jp/tochousha/goannai/tenbou"
+    },
+    {
+      "id": "5e98a1595579",
+      "anchorStop": "Shinjuku Granbell Hotel",
+      "name": "Shinjuku Kabuki Hall / Kabuki Yokocho",
+      "nameJp": "新宿カブキhall〜歌舞伎横丁",
+      "category": "food",
+      "priceTier": "¥",
+      "stayMinutes": 60,
+      "legs": [
+        {
+          "mode": "walk",
+          "minutes": 8
+        }
+      ],
+      "note": "2F of Tokyu Kabukicho Tower, 600 m from the door: about 1,300 seats across nine regional stalls, kiosk-fixed prices, picture menus, no seating charge, effectively round the clock. The only place in Kabukicho that absorbs 35 people at any hour — and the fallback if the observatory shuts for wind.",
+      "latitude": 35.6959,
+      "longitude": 139.70065,
+      "coordPrecision": "verified",
+      "timeWindow": "24h",
+      "confidence": "medium",
+      "confidenceNote": "Seat count, stall count and the round-the-clock opening are carried over from the seed and could not be re-verified this session; the tower's floor guide and the venue's own advertising disagree between 24 hours and 06:00–05:00.",
+      "source": "https://tokyu-kabukicho-tower.jp/"
+    },
+    {
+      "id": "1b8165fc63eb",
+      "anchorStop": "Shinjuku Granbell Hotel",
+      "name": "roof top bar & terrace G, 13F",
+      "nameJp": "13階 ルーフトップバー＆テラス G",
+      "category": "rest",
+      "priceTier": "¥¥",
+      "stayMinutes": 60,
+      "legs": [
+        {
+          "mode": "walk",
+          "minutes": 1
+        }
+      ],
+      "note": "The hotel's own 13F open-air bar over the Kabukicho neon with the Metropolitan Government towers behind, and the reason not to pay for a view tonight. Carried-over detail to confirm at the desk on arrival: 62 seats, Sunday 14:00–22:30 rather than the 04:00 close it keeps midweek, ¥500 table charge waived for guests, walk-up only.",
+      "latitude": 35.69668,
+      "longitude": 139.70557,
+      "coordPrecision": "approximate",
+      "timeWindow": "night",
+      "confidence": "medium",
+      "confidenceNote": "granbellhotel.jp blocks automated fetching, so the Sunday hours, seat count and waived charge could not be re-verified; the coordinate is the hotel's own point because the GSI geocoder resolves Kabukicho only to the district centroid.",
+      "source": "https://www.granbellhotel.jp/shinjuku/restaurant/"
+    },
+    {
+      "id": "8e0037e7a7df",
+      "anchorStop": "Shinjuku Granbell Hotel",
+      "name": "Godzilla Head, Shinjuku Toho Building",
+      "nameJp": "ゴジラヘッド（新宿東宝ビル）",
+      "category": "sight",
+      "priceTier": "¥",
+      "stayMinutes": 15,
+      "legs": [
+        {
+          "mode": "walk",
+          "minutes": 6
+        }
+      ],
+      "note": "The 12 m head on the 8F terrace above Hotel Gracery, free from the street, best seen looking up from the plaza at the head of Kabukicho Ichibangai. The roar-and-light effect runs hourly 12:00–20:00, so leave the hotel by about 19:45 for the last one; the Godzilla Terrace itself is closed.",
+      "latitude": 35.69539,
+      "longitude": 139.70203,
+      "coordPrecision": "verified",
+      "timeWindow": "night",
+      "confidence": "medium",
+      "confidenceNote": "The hourly effect ending at 20:00 and the terrace closure are carried over from the seed and were not re-verified from Toho's own page this session.",
+      "source": "https://www.toho.co.jp/"
+    },
+    {
+      "id": "0276e13cf0fe",
+      "anchorStop": "Shinjuku Granbell Hotel",
+      "name": "Hanazono Shrine",
+      "nameJp": "花園神社",
+      "category": "sight",
+      "priceTier": "¥",
+      "stayMinutes": 20,
+      "legs": [
+        {
+          "mode": "walk",
+          "minutes": 6
+        }
+      ],
+      "note": "The only ungated gravel, trees and lanterns in Kabukicho, six minutes from the door and walkable at any hour, with a back exit straight into Golden Gai. Best used at dawn on the 14th: sunrise 05:23 and the alleys are empty and swept. Its big festival is late May and the Tori-no-ichi is November, so expect no festival now.",
+      "latitude": 35.69355,
+      "longitude": 139.70518,
+      "coordPrecision": "verified",
+      "timeWindow": "dawn",
+      "confidence": "medium",
+      "confidenceNote": "Grounds being ungated and the festival calendar are carried over from the seed; the shrine's own page was not fetched this session.",
+      "source": "https://hanazono-jinja.or.jp/"
+    },
+    {
+      "id": "7d4bdad86b06",
+      "anchorStop": "Shinjuku Granbell Hotel",
+      "name": "Shinjuku Golden Gai",
+      "nameJp": "新宿ゴールデン街",
+      "category": "food",
+      "priceTier": "¥¥",
+      "stayMinutes": 60,
+      "legs": [
+        {
+          "mode": "walk",
+          "minutes": 6
+        }
+      ],
+      "note": "Over 200 bars in two-storey wooden nagaya, most with 5–10 seats, so parties of four or more are routinely turned away — go in pairs. Most open 20:00–21:00 and a noticeable number close on Sundays. CONFIRM THE SEAT CHARGE BEFORE SITTING: usually ¥300–1,000 a head, but a documented case ran to ¥8,000 for two drinks. Ask before photographing.",
+      "latitude": 35.69389,
+      "longitude": 139.70473,
+      "coordPrecision": "verified",
+      "timeWindow": "night",
+      "confidence": "medium",
+      "confidenceNote": "Bar count, seat charges and Sunday closures are carried over from the seed; Golden Gai has no single operator page to verify against.",
+      "source": "https://www.goldengai.jp/"
+    },
+    {
+      "id": "d6shinjuku01",
+      "anchorStop": "Shinjuku Granbell Hotel",
+      "name": "Restaurant G breakfast buffet, 12F",
+      "nameJp": "12階 レストラン G 朝食ビュッフェ",
+      "category": "food",
+      "priceTier": "¥¥",
+      "stayMinutes": 40,
+      "legs": [
+        {
+          "mode": "walk",
+          "minutes": 1
+        }
+      ],
+      "note": "NEW. Day 7 breakfast is here at 07:30 and the coach leaves at 08:30, so the timing is comfortable — a glass-walled 12F room over Shinjuku with a buffet the hotel advertises at 30-plus items. Carried-over detail to confirm at check-in: 07:00–10:30. Anyone wanting the Hanazono Shrine dawn walk should eat at 07:00 and be back by 07:45.",
+      "latitude": 35.69668,
+      "longitude": 139.70557,
+      "coordPrecision": "approximate",
+      "timeWindow": "day",
+      "confidence": "medium",
+      "confidenceNote": "The 12F restaurant and the buffet are confirmed by JTB's listing, but the 07:00–10:30 hours are carried over from the seed and the hotel's own site blocks automated fetching.",
+      "source": "https://www.jtb.co.jp/kokunai-hotel/htl/4016112/"
+    },
+    {
+      "id": "d6kawagoe04",
+      "anchorStop": "Kawagoe Old Town (Kurazukuri Street)",
+      "name": "Kashiya Yokocho (Penny Candy Lane)",
+      "nameJp": "菓子屋横丁",
+      "category": "shopping",
+      "priceTier": "¥",
+      "stayMinutes": 20,
+      "legs": [
+        {
+          "mode": "walk",
+          "minutes": 7
+        }
+      ],
+      "note": "NEW as a place record, and COORDINATE VERIFIED at 35.9246, 139.4811. 元町2丁目, about 30 shops by the city's count (Wikipedia says 20-odd, down from 70 in early Showa), and one of Japan's 100 Fragrant Landscapes since 2001 for the smell of roasting brown sugar. Confections have been made here since early Meiji, and the lane boomed supplying Tokyo after the 1923 earthquake.",
+      "latitude": 35.924611,
+      "longitude": 139.481056,
+      "coordPrecision": "verified",
+      "timeWindow": "day",
+      "confidence": "high",
+      "confidenceNote": null,
+      "source": "https://www.city.kawagoe.saitama.jp/kanko/k-spots/1011557/1011568.html"
+    },
+    {
+      "id": "d6shibuya04",
+      "anchorStop": "Shibuya Scramble Crossing",
+      "name": "Starbucks SHIBUYA TSUTAYA 2F window counter",
+      "nameJp": "スターバックス SHIBUYA TSUTAYA 2F店",
+      "category": "food",
+      "priceTier": "¥",
+      "stayMinutes": 25,
+      "legs": [
+        {
+          "mode": "walk",
+          "minutes": 1
+        }
+      ],
+      "note": "NEW. The cheapest seated view of the crossing — the price of a drink — from the 2F window counter of the Q FRONT building, dead in front of the junction. Starbucks took the whole of 1F and 2F in the 25 April 2024 refit, about 100 seats. On a Sunday at 15:30 there is a queue for the counter seats and no chance of holding one for a group; send two people, not thirty-five.",
+      "latitude": 35.659824,
+      "longitude": 139.700226,
+      "coordPrecision": "verified",
+      "timeWindow": "day",
+      "confidence": "medium",
+      "confidenceNote": "The 2024 refit and the roughly 100-seat 1F–2F layout are from Shibuya Keizai Shimbun; Starbucks Japan's own store page for this branch returned 404, so the current opening hours are unverified.",
+      "source": "https://www.shibukei.com/headline/18345/"
+    }
+  ],
+  "mustSee": [
+    {
+      "id": "3a908417ee96",
+      "anchorStop": "Hitachi Seaside Park",
+      "title": "Green kochia on Miharashi Hill",
+      "nameJp": "みはらしの丘 頂上",
+      "tag": "DAY 6",
+      "summary": "About 40,000 kochia over 2.3 ha, lime green and roughly 70 cm tall, with the Pacific filling the frame behind them. This is the correct September picture: the park's own kochia page puts 緑葉 at 8月中旬〜9月下旬 and the red only from mid-October. There is no nemophila — that is April and May.",
+      "whereToFind": "Walk the loop path to the SUMMIT MARKER at the top of Miharashi Hill and stand on its EAST side, so the domes fall away downhill in front of you and the ocean closes the frame — the sun at 09:40 is SE at 48 degrees, behind your left shoulder, which side-lights the domes and keeps the sea blue. Then walk 30 m back down the west path, crouch to knee height and shoot BACK UP INTO the sun through the nearest domes: at that angle the leaves go translucent lime. Do not stand on the crown with the group facing the camera into the sun. Nobody in green.",
+      "latitude": 36.402019,
+      "longitude": 140.596889,
+      "coordPrecision": "verified",
+      "confidence": "high",
+      "confidenceNote": null,
+      "source": "https://www.hitachikaihin.jp/flower-plant/flower/kochia.html"
+    },
+    {
+      "id": "cd46570f0660",
+      "anchorStop": "Hitachi Seaside Park",
+      "title": "The hill and the ocean in one frame, from BLUE EYES",
+      "nameJp": "大観覧車 ブルーアイズ",
+      "tag": "DAY 6",
+      "summary": "The only way to get the green hill, the dune belt and the Pacific in a single frame inside a 60-minute stop — and the only shot here that does not need you to walk to the hill at all. It sits in the Pleasure Garden, which charges separately from park admission.",
+      "whereToFind": "Board at the Pleasure Garden wheel station about 8 minutes on foot from the West Gate, and take the SEAWARD side of the cabin — the side facing east — then shoot from the top of the arc as the cabin comes round, through the glass with the lens flat against it to kill reflections. Buy the ride ticket at the Pleasure Garden window before queueing, not at the wheel. If the Seaside Train has eaten the hour, skip the wheel: the queue is unpredictable and the coach leaves at 10:30.",
+      "latitude": 36.397583,
+      "longitude": 140.590889,
+      "coordPrecision": "verified",
+      "confidence": "medium",
+      "confidenceNote": "The vantage is straightforward, but the single-ride fare is not published on any page reachable from here, so the cost of this frame is unconfirmed.",
+      "source": "https://pleasure.hitachikaihin.jp/page-258.html"
+    },
+    {
+      "id": "6d40ab11c4ff",
+      "anchorStop": "Kawagoe Old Town (Kurazukuri Street)",
+      "title": "Toki no Kane bell tower",
+      "nameJp": "時の鐘",
+      "tag": "DAY 6",
+      "summary": "Three tiers, 16 m, rebuilt in 1894 to Sekine Matsugoro's design the year after the 1893 Great Kawagoe Fire, and one of Japan's 100 Soundscapes to be Preserved since 1996. Coordinate corrected this session — the seed had it about 250 m north-east.",
+      "whereToFind": "Stand on the WEST pavement of Ichibangai about 25 m SOUTH of the tower, at the Kanetsuki-dori corner, and shoot north-east so the three tiers stand clear against sky instead of against the shopfronts opposite. At 13:45 the sun is SW at 46 degrees and slightly behind you, which lights the timber and the white plaster of the gate below it. Keep the group OFF the tower side of the road: the lane under the arch is the only way through and a 35-person cluster blocks it. The 15:00 chime is 30 minutes after the coach leaves.",
+      "latitude": 35.923476,
+      "longitude": 139.483335,
+      "coordPrecision": "verified",
+      "confidence": "high",
+      "confidenceNote": null,
+      "source": "https://chocotabi-saitama.jp/spot/19043/"
+    },
+    {
+      "id": "6aeca8b336e1",
+      "anchorStop": "Kawagoe Old Town (Kurazukuri Street)",
+      "title": "Kurazukuri Street looking north",
+      "nameJp": "蔵造りの町並み",
+      "tag": "DAY 6",
+      "summary": "The row of black-plastered clay-walled merchant warehouses along Ichibangai, about 7.8 ha of it designated an Important Preservation District in 1999. The 1918 former Eighty-Fifth Bank marks the south end and Osawa House of 1792 is the oldest building on the street.",
+      "whereToFind": "Stand on the EAST pavement outside the former Eighty-Fifth Bank at 幸町4-1 and look NORTH up Ichibangai, so the black warehouse gables stack away from you towards the bell tower. At 13:45 the sun is SW at 46 degrees, which lights the west-facing black facades directly instead of leaving them in shade — that is the only hour of this trip the walls are lit rather than flat. Put the group on the SUNNY west pavement facing across, and keep light-coloured clothing on the front row: black clothes vanish into black plaster at 10 m.",
+      "latitude": 35.922665,
+      "longitude": 139.483154,
+      "coordPrecision": "approximate",
+      "confidence": "medium",
+      "confidenceNote": "The preservation-district figures are from the Kawagoe city article and the standing position is deduced from the street's north-south axis; the coordinate is the GSI block point for 幸町4番, not a surveyed viewpoint.",
+      "source": "https://ja.wikipedia.org/wiki/%E5%B7%9D%E8%B6%8A%E5%B8%82"
+    },
+    {
+      "id": "d6ms01",
+      "anchorStop": "Kawagoe Old Town (Kurazukuri Street)",
+      "title": "The mouth of Kashiya Yokocho",
+      "nameJp": "菓子屋横丁",
+      "tag": "DAY 6",
+      "summary": "About thirty surviving penny-sweet shops in one narrow lane, one of Japan's 100 Fragrant Landscapes since 2001 — the smell of roasting brown sugar is the reason it is on that list. Coordinate verified this session at 35.9246, 139.4811.",
+      "whereToFind": "Walk west off Ichibangai past Osawa House and stop AT THE LANE MOUTH before you go in — the frame is the narrow entrance with the sweet-shop awnings receding, shot from OUTSIDE looking in, because once inside the lane is barely three metres wide and there is no shot at all with people in it. At 14:00 the lane runs in shade with a lit strip along its north wall; put anyone being photographed on that lit strip. Send the group in in threes and set the return time before anyone enters.",
+      "latitude": 35.924611,
+      "longitude": 139.481056,
+      "coordPrecision": "verified",
+      "confidence": "high",
+      "confidenceNote": null,
+      "source": "https://ja.wikipedia.org/wiki/%E8%8F%93%E5%AD%90%E5%B1%8B%E6%A8%AA%E4%B8%81"
+    },
+    {
+      "id": "7dcc69232de6",
+      "anchorStop": "Shibuya Scramble Crossing",
+      "title": "Above the crossing — the free and the paid vantage points",
+      "nameJp": "スクランブル交差点 展望",
+      "tag": "DAY 6",
+      "summary": "From street level the crossing is just a crowd; it only reads as a spectacle from height. In one hour, on a Sunday afternoon, you get ONE elevated look and two crossings on foot — so pick the vantage point before you arrive rather than queueing twice.",
+      "whereToFind": "FREE, and the one to use: the Shibuya Mark City 2F GLASS CORRIDOR — go in at the JR Tamagawa-guchi gates and walk towards the Keio Inokashira Line gates; stand at the glass on the LEFT-hand side, station hours, no ticket, low oblique view, and Okamoto's Myth of Tomorrow mural is on the same wall. FREE at a distance: SHIBU NIWA, the 17F roof garden of Tokyu Plaza Shibuya, 4 minutes away, public and free but closed in bad weather. PRICE OF A DRINK: the 2F window counter at Starbucks SHIBUYA TSUTAYA, dead in front of the crossing and queued out on a Sunday. PAID: CROSSING VIEW / MAG8 on the roof of MAGNET by SHIBUYA109, ¥1,800 a head with one drink, the only straight-down angle — send two or three, not 35.",
+      "latitude": 35.658337,
+      "longitude": 139.698578,
+      "coordPrecision": "verified",
+      "confidence": "high",
+      "confidenceNote": "The free corridor, SHIBU NIWA and the MAG8 price are each sourced to the operator or a survey of Shibuya viewpoints; no official source supports the seed's claim of a crossing view from Scramble Square's 2F deck.",
+      "source": "https://magnetbyshibuya109.jp/shop/shibuya-mag8/"
+    },
+    {
+      "id": "ea6565444816",
+      "anchorStop": "Shibuya Scramble Crossing",
+      "title": "Hachiko Statue",
+      "nameJp": "忠犬ハチ公像",
+      "tag": "DAY 6",
+      "summary": "The group photo everyone expects, on the Hachiko Exit plaza. At 15:45 the sun is WSW at 24 degrees — low enough that the tower blocks on Dogenzaka throw the plaza into patchy shade, which is actually kinder to faces than midday.",
+      "whereToFind": "Stand the group with their BACKS TO THE STATUE'S RIGHT FLANK, facing WEST across the plaza, and put the photographer between the statue and the station wall shooting west-north-west — that keeps the low WSW sun off the lens and puts the Q FRONT screens over the group's shoulders. Do not try to fit 35 people plus the statue in one frame: shoot the statue with three or four at a time, then move the whole group 20 m to the plaza's open west end for the wide frame with the crossing behind. Nobody stands in the tactile paving or the bus lane.",
+      "latitude": 35.65906,
+      "longitude": 139.70065,
+      "coordPrecision": "verified",
+      "confidence": "high",
+      "confidenceNote": "The standing position is worked out from the plaza layout and the 15:45 sun azimuth, not from a published photo guide.",
+      "source": "https://matcha-jp.com/jp/1141"
+    },
+    {
+      "id": "d6ms02",
+      "anchorStop": "Shinjuku Granbell Hotel",
+      "title": "Godzilla Head over Kabukicho Ichibangai",
+      "nameJp": "ゴジラヘッド",
+      "tag": "DAY 6",
+      "summary": "A 12 m head on the 8F terrace of the Shinjuku Toho Building, free from the street, and the one Kabukicho frame that reads instantly in a photo contest. The roar-and-light effect is hourly to 20:00, so the last one of the evening is the 20:00.",
+      "whereToFind": "Stand in the middle of the plaza at the HEAD OF KABUKICHO ICHIBANGAI, directly under the red arch, and look up and slightly north-west: from there the head clears the building parapet and you get neon on both sides of the frame. Move about 15 m back towards the arch if you want the whole facade in. Leave the hotel by 19:45 for the 20:00 roar. The terrace itself is closed, so there is no closer position than the street — and do not stop to talk to anyone who approaches you in this plaza.",
+      "latitude": 35.69539,
+      "longitude": 139.70203,
+      "coordPrecision": "verified",
+      "confidence": "medium",
+      "confidenceNote": "The hourly effect to 20:00 and the terrace closure are carried over from the seed rather than re-verified from Toho's own page this session.",
+      "source": "https://www.toho.co.jp/"
+    }
+  ],
+  "shopping": [
+    {
+      "id": "0bb04b8e852f",
+      "anchorStop": "Hitachi Seaside Park",
+      "name": "Park merchandise and Nemophila Blue Tea",
+      "nameJp": "コキア・ネモフィラグッズ／ネモフィラブルーティー",
+      "placeLabel": "Lakeside Cafe retail counter, West Gate area — 物販は土日祝日のみ営業, and 13 Sep is a Sunday",
+      "estimate": 1000,
+      "note": "The only shop at the West Gate that is open at 09:30, and its goods shelf trades WEEKENDS AND HOLIDAYS ONLY — a weekday group would find it shut. Listed stock: Nemophila Blue Tea, park coffee, flower-seed packs, bookmarks, eco-bags, plush keychains. Tea, seeds and cloth all survive a flight; note that even the merchandise is nemophila-branded.",
+      "latitude": 36.401864,
+      "longitude": 140.592424,
+      "coordPrecision": "approximate",
+      "confidence": "medium",
+      "confidenceNote": "The stock list and the weekend-only retail rule are official, but the park publishes no prices, so ¥1,000 is a budget figure for a plush keychain or tea tin rather than a quoted one.",
+      "source": "https://www.hitachikaihin.jp/gourmet/lakeside-cafe.html"
+    },
+    {
+      "id": "aae9625a5c19",
+      "anchorStop": "Kawagoe Old Town (Kurazukuri Street)",
+      "name": "Penny sweets and the 95 cm fu-gashi",
+      "nameJp": "駄菓子・ふ菓子",
+      "placeLabel": "Kashiya Yokocho, Motomachi 2-chome — about 30 shops, 7 minutes from the coach drop-off",
+      "estimate": 500,
+      "note": "COORDINATE VERIFIED this session. The city counts 30-odd shops; the Japanese Wikipedia article says 20-odd, down from over 70 in early Showa. Individual sweets run from about ¥50, so ¥500 buys a bag of several plus one long fu-gashi. Hard sweets, senbei and fu-gashi all travel; anything with fresh cream or moist bean paste does not.",
+      "latitude": 35.924611,
+      "longitude": 139.481056,
+      "coordPrecision": "verified",
+      "confidence": "medium",
+      "confidenceNote": "Shop count differs between the city page (30数軒) and Wikipedia (20数件); per-item prices are not published anywhere official, so ¥500 is a basket estimate.",
+      "source": "https://www.city.kawagoe.saitama.jp/kanko/k-spots/1011557/1011568.html"
+    },
+    {
+      "id": "b5c43d818088",
+      "anchorStop": "Kawagoe Old Town (Kurazukuri Street)",
+      "name": "Fukugura monaka",
+      "nameJp": "くらづくり本舗 福蔵",
+      "placeLabel": "Kurazukuri Honpo Ichibangai branch, Saiwaicho 2-16 — 10:00–18:00, closed Tuesdays",
+      "estimate": 1100,
+      "note": "PRICES CONFIRMED at the maker: ¥210 each, ¥1,100 for five, ¥1,460 for six, ¥2,090 for nine, ¥4,400 for twenty. A monaka packed with whole azuki and mochi. Shelf life is 7日 at room temperature — no refrigeration, so it rides the coach fine, but bought on the 13th it expires on the 20th: this is a gift to hand over in the first week home, not a keeper.",
+      "latitude": 35.921909,
+      "longitude": 139.483002,
+      "coordPrecision": "approximate",
+      "confidence": "high",
+      "confidenceNote": "Prices and the 7-day room-temperature shelf life are from the maker's own shop page; the coordinate is the GSI block point for 幸町2番.",
+      "source": "https://www.kuradukuri.jp/c/monaka/monaka-01/mnk1-1"
+    },
+    {
+      "id": "08d76cd7bca1",
+      "anchorStop": "Kawagoe Old Town (Kurazukuri Street)",
+      "name": "Imo-senbei sweet-potato crackers",
+      "nameJp": "龜屋 いもせん",
+      "placeLabel": "Kameya Toki no Kane branch, Saiwaicho 7-7 — 10:00–17:30; main shop Nakacho 4-3 from 09:00",
+      "estimate": 600,
+      "note": "Tenmei 3 (1783), old purveyor to the Kawagoe domain. Thin sweet-potato crackers: dry, flat, light and shelf-stable, which makes them the best office-gift-in-bulk on this street — the opposite of the frozen imo-koi. The Toki no Kane branch is the one on the street; the 仲町 main shop opens an hour earlier but is 3 minutes further south.",
+      "latitude": 35.92355,
+      "longitude": 139.48262,
+      "coordPrecision": "approximate",
+      "confidence": "medium",
+      "confidenceNote": "Addresses and hours are from the company's own page, but Kameya publishes no price for imo-sen online, so ¥600 is a budget figure for one bag, not a quoted price.",
+      "source": "https://www.koedo-kameya.com/shop.html"
+    },
+    {
+      "id": "56faaff6ecbe",
+      "anchorStop": "Kawagoe Old Town (Kurazukuri Street)",
+      "name": "Japan's longest brown-sugar fu-gashi",
+      "nameJp": "松陸製菓 元祖 日本一なが〜い黒糖ふ菓子",
+      "placeLabel": "Matsuriku Seika, Motomachi 2-11-6, Kashiya Yokocho — 10:00–17:00, CLOSED MONDAYS, 049-222-1577",
+      "estimate": 500,
+      "note": "CORRECTION: it is 95 cm, not a metre — 長さ(95センチ)も日本一 in the shop's own words, made with Okinawan brown sugar. Sunday 13 September is fine; a Monday visit would find it shut. The shop's own price band is ¥500–2,000. Absurd, cheap, photogenic and it survives a flight if nobody sits on it — carry it in the cabin, not the hold.",
+      "latitude": 35.92411,
+      "longitude": 139.480865,
+      "coordPrecision": "approximate",
+      "confidence": "medium",
+      "confidenceNote": "Length, hours, Monday closure, phone and the ¥500–2,000 band are from the shop's listing; the only published price for the fu-gashi itself is ¥400 in a 2010 report, so ¥500 is an updated estimate.",
+      "source": "https://www.ekiten.jp/shop_525222/"
+    },
+    {
+      "id": "5ee260408c1b",
+      "anchorStop": "Shibuya Scramble Crossing",
+      "name": "Tokyu Food Show EDGE, Scramble Square B2",
+      "nameJp": "東急フードショーエッジ",
+      "placeLabel": "Tokyu Food Show EDGE, Shibuya Scramble Square B2 — two minutes from the crossing, 10:00–21:00",
+      "estimate": 1500,
+      "note": "NAME CORRECTED: the B2 hall at Scramble Square is Tokyu Food Show EDGE; the original Tokyu Food Show is the older Shibuya station-side hall. Baked and dry famous-name sweets from here travel to Malaysia; fresh cream, chilled cakes and prepared bento do not — buy those only if they are being eaten before the 17:00 dinner. Coordinate promoted to the building's registered address.",
+      "latitude": 35.657951,
+      "longitude": 139.702316,
+      "coordPrecision": "verified",
+      "confidence": "medium",
+      "confidenceNote": "The EDGE branding and the B2 location are from Tokyu's own page; the 10:00–21:00 hours are the building's standard shop hours and were not confirmed tenant by tenant.",
+      "source": "https://www.tokyu-dept.co.jp/scsq/foodshow_edge/"
+    },
+    {
+      "id": "57bf0b2af0a7",
+      "anchorStop": "Shibuya Scramble Crossing",
+      "name": "SHIBUYA109",
+      "nameJp": "SHIBUYA109",
+      "placeLabel": "SHIBUYA109, Dogenzaka 2-29-1 — the cylindrical tower on the Dogenzaka corner, 3 minutes from the crossing",
+      "estimate": 3000,
+      "note": "COORDINATE VERIFIED this session at 35.6595, 139.6989. Be honest with the group about what it is: ten floors of young women's fashion and cosmetics, a landmark to photograph rather than a place to buy gifts that survive a flight. For edible souvenirs cross back to Scramble Square's B2 hall instead.",
+      "latitude": 35.659466,
+      "longitude": 139.698898,
+      "coordPrecision": "verified",
+      "confidence": "medium",
+      "confidenceNote": "The coordinate is the GSI point for the registered address; the building's 10:00–21:00 hours were not confirmed from the operator's own page this session, so no hours are asserted here.",
+      "source": "https://msearch.gsi.go.jp/address-search/AddressSearch?q=%E6%9D%B1%E4%BA%AC%E9%83%BD%E6%B8%8B%E8%B0%B7%E5%8C%BA%E9%81%93%E7%8E%84%E5%9D%822-29-1"
+    },
+    {
+      "id": "cf7c63b3e943",
+      "anchorStop": "Shinjuku Granbell Hotel",
+      "name": "Don Quijote Shinjuku Kabukicho",
+      "nameJp": "ドン・キホーテ 新宿歌舞伎町店",
+      "placeLabel": "Don Quijote Shinjuku Kabukicho, 600 m and 8 minutes from the hotel — 24 hours",
+      "estimate": 5500,
+      "note": "The estimate IS the tax-free threshold: ¥5,500 in one transaction plus a passport at the tax-free counter. Tax-free is still deducted at the till until 1 November 2026, so there is no refund desk to find at Narita. Matcha KitKat multipacks and Tokyo Banana are stacked near the entrance. In mid-September heat buy chocolate LAST and put it straight in the room fridge.",
+      "latitude": 35.69374,
+      "longitude": 139.70173,
+      "coordPrecision": "approximate",
+      "confidence": "medium",
+      "confidenceNote": "The 24-hour opening and the ¥5,500 tax-free threshold are carried over from the seed and the trip's own tax-free finding; the coordinate is the seed's Kabukicho estimate, since GSI resolves Kabukicho only to the district centroid.",
+      "source": "https://www.donki.com/store/shop_detail.php?shop_id=195"
+    }
+  ],
+  "essentials": {
+    "Hitachi Seaside Park": {
+      "hours": {
+        "mon": [
+          [
+            "09:30",
+            "17:00"
+          ]
+        ],
+        "tue": null,
+        "wed": [
+          [
+            "09:30",
+            "17:00"
+          ]
+        ],
+        "thu": [
+          [
+            "09:30",
+            "17:00"
+          ]
+        ],
+        "fri": [
+          [
+            "09:30",
+            "17:00"
+          ]
+        ],
+        "sat": [
+          [
+            "09:30",
+            "17:00"
+          ]
+        ],
+        "sun": [
+          [
+            "09:30",
+            "17:00"
+          ]
+        ]
+      },
+      "closedNote": "毎週火曜日 — CLOSED TUESDAYS, not Mondays (and the following weekday if a Tuesday is a public holiday), plus 31 Dec, 1 Jan and the first-Tuesday week of February. Sunday 13 September 2026 is a normal open day. Inside the park, Lakeside Cafe opens with the gate at 09:30 but Kinen no Mori Rest House NOT UNTIL 10:00, an hour into a 60-minute stop.",
+      "lastAdmission": null,
+      "seasonFrom": "09-01",
+      "seasonTo": "10-31",
+      "groupRate": "¥290 adult for 団体 20名以上 (against ¥450 walk-up); silver 65+ ¥210; middle school and under free. The +¥350 seasonal surcharge does NOT apply on 13 September — it runs 3 Apr–6 May 2026 and about 20 days in October only.",
+      "phone": "029-265-9001",
+      "phoneNote": "Hitachi Park Management Centre, the number printed on the park's own access page.",
+      "website": "https://www.hitachikaihin.jp/",
+      "tickets": "Admission 09:30–17:00 today; the park publishes no separate last admission. Extras are all separate: Seaside Train 1日周遊券 ¥600 (age 3+), rental cycles ¥600 for 3 hours or ¥800 all day, and the Pleasure Garden rides are ticketed on their own (¥100 units, or a ¥3,600 one-day free pass). SEASONALITY: the app's 'seaside nemophila fields' do not exist in September — nemophila is mid-April to early May. What is there is GREEN kochia, 緑葉 8月中旬〜9月下旬, about 40,000 plants on Miharashi Hill, plus pampas grass just past its 8月下旬〜9月上旬 peak. No cosmos until October.",
+      "transport": "〒312-0012 茨城県ひたちなか市馬渡字大沼605-4. Coach parking ¥1,800 for a large vehicle; the West car park holds 2,000 spaces, South 2,000 and Kaihin-guchi 350, 4,350 in all. Use the WEST GATE (西口・翼のゲート): the park's own Miharashi Hill page names it as the nearest entrance, and Lakeside Cafe and Kinen no Mori Rest House are both in that area. The park is 350 ha planned with 215.2 ha open, so 60 minutes from the West Gate realistically buys the hill and back on foot, or one leg of the Seaside Train — the full loop alone is 40 minutes.",
+      "confidence": "high",
+      "confidenceNote": null,
+      "source": "https://www.hitachikaihin.jp/guide/ticket.html"
+    },
+    "Kawagoe Old Town (Kurazukuri Street)": {
+      "hours": {
+        "mon": [
+          [
+            "00:00",
+            "23:59"
+          ]
+        ],
+        "tue": [
+          [
+            "00:00",
+            "23:59"
+          ]
+        ],
+        "wed": [
+          [
+            "00:00",
+            "23:59"
+          ]
+        ],
+        "thu": [
+          [
+            "00:00",
+            "23:59"
+          ]
+        ],
+        "fri": [
+          [
+            "00:00",
+            "23:59"
+          ]
+        ],
+        "sat": [
+          [
+            "00:00",
+            "23:59"
+          ]
+        ],
+        "sun": [
+          [
+            "00:00",
+            "23:59"
+          ]
+        ]
+      },
+      "closedNote": "Ichibangai itself is a public road, open and free at any hour; the shops are what close, and on Sunday 13 September every one of these is OPEN. Kurazukuri Honpo Ichibangai 10:00–18:00 closed TUESDAYS; Matsuriku Seika in Kashiya Yokocho 10:00–17:00 closed MONDAYS; Ogakiku 10:40–18:00 last order at weekends, closed THURSDAYS (not Mondays, as the seed had it); Kawagoe Matsuri Kaikan 09:30–18:30 closed 2nd and 4th Wednesdays; Kasho Umon Toki no Kane 10:00–18:00; Kameya Toki no Kane 10:00–17:30, irregular closings.",
+      "lastAdmission": "18:00",
+      "seasonFrom": "04-01",
+      "seasonTo": "09-30",
+      "groupRate": "Kawagoe Matsuri Kaikan ¥240 adult and ¥80 school for parties of 20 or more, against ¥300/¥100. Nothing else on the street charges admission, so there is no other group rate to claim.",
+      "phone": "049-224-5940",
+      "phoneNote": "Kawagoe City tourism division (産業観光部 観光課), the number on the city's own Kashiya Yokocho page. Kawagoe Matsuri Kaikan direct: 049-225-2727. Toki no Kane queries go to the cultural properties division on 049-224-6097.",
+      "website": "https://www.city.kawagoe.saitama.jp/kanko/",
+      "tickets": "The street, the bell tower, Kashiya Yokocho and the warehouse facades are all free; the only ticket worth buying is Kawagoe Matsuri Kaikan at ¥300, or ¥240 for the group. TIMING: the tower chimes 06:00, 12:00, 15:00 and 18:00, and the coach leaves at 14:30, so the group misses the 15:00 by half an hour. SEASONALITY: mid-September here is green and hot — the Kawagoe Festival is 17–18 October 2026 per kawagoematsuri.jp, so the floats are indoors at the Matsuri Kaikan and not on the street.",
+      "transport": "The city designates the NORTH SIDE OF CITY HALL (元町1-3-1) as the tour-coach 乗降場: drop-off and pick-up only, no parking, and 路上での乗降は、行わないでください — no roadside boarding anywhere else. It is about 290 m and 5 minutes from there to Toki no Kane, 7 to Kashiya Yokocho. Motomachi Rest House, free, air-conditioned, with toilets and room for about 100 people, is 6 minutes from the drop-off and is the obvious muster point for 35 people. Numbered coach car parks exist but are published only on a PDF map that could not be retrieved.",
+      "confidence": "high",
+      "confidenceNote": null,
+      "source": "https://www.city.kawagoe.saitama.jp/kanko/kotsu/1011605.html"
+    },
+    "Shibuya Scramble Crossing": {
+      "hours": {
+        "mon": [
+          [
+            "00:00",
+            "23:59"
+          ]
+        ],
+        "tue": [
+          [
+            "00:00",
+            "23:59"
+          ]
+        ],
+        "wed": [
+          [
+            "00:00",
+            "23:59"
+          ]
+        ],
+        "thu": [
+          [
+            "00:00",
+            "23:59"
+          ]
+        ],
+        "fri": [
+          [
+            "00:00",
+            "23:59"
+          ]
+        ],
+        "sat": [
+          [
+            "00:00",
+            "23:59"
+          ]
+        ],
+        "sun": [
+          [
+            "00:00",
+            "23:59"
+          ]
+        ]
+      },
+      "closedNote": "The crossing is a public road junction: free, open, 24 hours, never closed. What closes is every vantage point above it — CROSSING VIEW / MAG8 on the MAGNET rooftop 10:00–22:00 with last entry 21:30, MAGNET itself 10:00–21:00 and closed only on 1 January, Scramble Square's shops 10:00–21:00, SHIBU NIWA on Tokyu Plaza's 17F free but 悪天候時には閉鎖することがございます. The Mark City 2F glass corridor is the one that keeps station hours.",
+      "lastAdmission": "21:30",
+      "seasonFrom": null,
+      "seasonTo": null,
+      "groupRate": "None anywhere. MAG8 is ¥1,800 a head with no party discount, which is ¥63,000 for 35 people; the free options carry no booking and no group facility either, so 35 people arrive as 35 individuals.",
+      "phone": "03-3477-5111",
+      "phoneNote": "MAGNET by SHIBUYA109, the operator of the only paid vantage point over the crossing. A public road junction has no phone number of its own.",
+      "website": "https://magnetbyshibuya109.jp/en/mags-park/",
+      "tickets": "The crossing itself: free. CROSSING VIEW & ROOFTOP LOUNGE MAG8, R floor: 入場料 1人1,800円（1DRINK付）, plus a Crossing Photo sky-camera at ¥1,500 per 150 seconds — the ¥300 and ¥600 figures still printed on travel sites are stale. Free alternatives: the Shibuya Mark City 2F glass corridor, and SHIBU NIWA on Tokyu Plaza Shibuya's 17F. Shibuya Sky is NOT on this itinerary and is a 230 m panorama rather than a view of the crossing.",
+      "transport": "The coach cannot wait here — there is no coach bay at the crossing and Shibuya has almost no tour-coach parking; the nearest documented option is Ebisu Garden Place (3 buses, ¥5,000 for the first 3 hours, reservation required, 03-5423-9697), one station away. Plan a drop and a timed pick-up at a point agreed with the driver, and give the group a hard muster time. Everything named here is within 7 minutes on foot of the Hachiko Exit.",
+      "confidence": "high",
+      "confidenceNote": "The coach-parking picture is from a coach-industry guide rather than a Shibuya City page, so treat the Ebisu figure as indicative.",
+      "source": "https://magnetbyshibuya109.jp/shop/shibuya-mag8/"
+    },
+    "Shinjuku Granbell Hotel": {
+      "hours": {
+        "mon": [
+          [
+            "00:00",
+            "23:59"
+          ]
+        ],
+        "tue": [
+          [
+            "00:00",
+            "23:59"
+          ]
+        ],
+        "wed": [
+          [
+            "00:00",
+            "23:59"
+          ]
+        ],
+        "thu": [
+          [
+            "00:00",
+            "23:59"
+          ]
+        ],
+        "fri": [
+          [
+            "00:00",
+            "23:59"
+          ]
+        ],
+        "sat": [
+          [
+            "00:00",
+            "23:59"
+          ]
+        ],
+        "sun": [
+          [
+            "00:00",
+            "23:59"
+          ]
+        ]
+      },
+      "closedNote": "Reception 24 hours. The night places nearby are the ones with hours: the Metropolitan Government South Observatory 09:30–21:30 last entry, free, and open on a Sunday (it closes 1st and 3rd Tuesdays); the Godzilla Head roars hourly only to 20:00; Golden Gai's bars mostly open 20:00–21:00 and a noticeable number shut on Sundays; Shinjuku Gyoen does NOT work tomorrow — it opens 09:00, half an hour after the coach leaves, and Monday is its closing day.",
+      "lastAdmission": null,
+      "seasonFrom": null,
+      "seasonTo": null,
+      "groupRate": null,
+      "phone": "03-5155-2666",
+      "phoneNote": "Hotel switchboard as listed in the Mapion directory; the hotel's own site blocks automated fetching, so this was taken from a directory rather than granbellhotel.jp.",
+      "website": "https://www.granbellhotel.jp/shinjuku/",
+      "tickets": "Standard check-in 15:00, check-out 11:00; the app puts the group's check-in at 18:30 and breakfast at 07:30 on the 14th, both inside those windows. Dinner is at 17:00 elsewhere, so this is the trip's one free city evening. THE FREE EVENING PLAN: Toei Oedo Line two stops, Higashi-Shinjuku to Tochomae, ¥180, for the free 45F South Observatory at 202 m — no cover charge, air conditioning, no touts, and back by 22:15.",
+      "transport": "〒160-0021 東京都新宿区歌舞伎町2-14-5 — this is the KABUKICHO Granbell, not the Shibuya one. About 4 minutes on foot to Higashi-Shinjuku (Toei Oedo and Fukutoshin lines), 6 to Golden Gai and Hanazono Shrine, 15 to JR Shinjuku. Last trains 00:20–00:45. Kabukicho is a designated no-touting zone and it is still worked on Ichibangai, Central Road, Kuyakusho-dori and Sakura-dori: do not stop walking when approached, only enter a bar with prices at the door, pay cash, never hand over a passport or card.",
+      "confidence": "medium",
+      "confidenceNote": "Address, phone and 15:00/11:00 check-in are confirmed from directory and agency listings, but granbellhotel.jp blocks automated fetching, so the 12F breakfast hours and the 13F rooftop bar's Sunday hours are carried over from the seed and unverified.",
+      "source": "https://www.mapion.co.jp/phonebook/M05001/13104/ILSP0056912723_ipclm/"
+    }
+  },
+  "subRoutes": [
+    {
+      "id": "d6sub1",
+      "anchorStop": "Kawagoe Old Town (Kurazukuri Street)",
+      "title": "Bell tower, candy lane, gift box — and back by 14:25",
+      "startMinutes": 810,
+      "deadlineMinutes": 870,
+      "placeIDs": [
+        "d6kawagoe03",
+        "21181d81b459",
+        "d6kawagoe04",
+        "8572e0e989d2",
+        "d6kawagoe01"
+      ],
+      "steps": [
+        {
+          "placeID": "d6kawagoe03",
+          "label": "Coach drop-off, north side of City Hall — set the muster time here",
+          "arrive": "13:30",
+          "stayMinutes": 3,
+          "walkMinutesToNext": 5
+        },
+        {
+          "placeID": "21181d81b459",
+          "label": "Toki no Kane — shoot from the west pavement 25 m south",
+          "arrive": "13:38",
+          "stayMinutes": 10,
+          "walkMinutesToNext": 4
+        },
+        {
+          "placeID": "d6kawagoe04",
+          "label": "Kashiya Yokocho — frame the lane mouth, then in in threes",
+          "arrive": "13:52",
+          "stayMinutes": 18,
+          "walkMinutesToNext": 4
+        },
+        {
+          "placeID": "8572e0e989d2",
+          "label": "Kasho Umon — imo-koi hot in the hand, about ¥250",
+          "arrive": "14:14",
+          "stayMinutes": 8,
+          "walkMinutesToNext": 3
+        },
+        {
+          "placeID": "d6kawagoe01",
+          "label": "Kurazukuri Honpo — Fukugura ¥1,100 for five, then straight back",
+          "arrive": "14:25",
+          "stayMinutes": 0,
+          "walkMinutesToNext": 5
+        }
+      ],
+      "walkMinutes": 21,
+      "note": "One hour is exactly this and nothing else — the street, the sweet lane, one box. The order matters: the bell tower first while the group is still together, sweets second because that is where people scatter, and the gift shop last so nobody carries a box round the lane. Get-back-by is 14:25 for a 14:30 departure.",
+      "confidence": "high",
+      "confidenceNote": "Walking minutes are computed from the corrected GSI coordinates rather than measured on the ground; all shop hours in the loop are verified open on a Sunday.",
+      "source": "https://www.city.kawagoe.saitama.jp/kanko/kotsu/1011605.html"
+    },
+    {
+      "id": "d6sub2",
+      "anchorStop": "Kawagoe Old Town (Kurazukuri Street)",
+      "title": "The gift-run variant, for whoever wants boxes not photos",
+      "startMinutes": 810,
+      "deadlineMinutes": 865,
+      "placeIDs": [
+        "d6kawagoe03",
+        "8572e0e989d2",
+        "d6kawagoe02",
+        "d6kawagoe01",
+        "ada0ef53b513"
+      ],
+      "steps": [
+        {
+          "placeID": "d6kawagoe03",
+          "label": "Split off at the drop-off",
+          "arrive": "13:30",
+          "stayMinutes": 0,
+          "walkMinutesToNext": 5
+        },
+        {
+          "placeID": "8572e0e989d2",
+          "label": "Kasho Umon, Saiwaicho 15-13 — eat the imo-koi here, do not box it",
+          "arrive": "13:35",
+          "stayMinutes": 10,
+          "walkMinutesToNext": 2
+        },
+        {
+          "placeID": "d6kawagoe02",
+          "label": "Kameya Toki no Kane branch — imo-sen, flat, dry, flight-proof",
+          "arrive": "13:47",
+          "stayMinutes": 12,
+          "walkMinutesToNext": 3
+        },
+        {
+          "placeID": "d6kawagoe01",
+          "label": "Kurazukuri Honpo Ichibangai — Fukugura, 7-day shelf life",
+          "arrive": "14:02",
+          "stayMinutes": 15,
+          "walkMinutesToNext": 2
+        },
+        {
+          "placeID": "ada0ef53b513",
+          "label": "Former Eighty-Fifth Bank — look north up the lit black facades",
+          "arrive": "14:19",
+          "stayMinutes": 6,
+          "walkMinutesToNext": 7
+        }
+      ],
+      "walkMinutes": 19,
+      "note": "All three gift shops sit within 200 m of each other on Saiwaicho, so the buyers can clear the list in 40 minutes and still get the one lit photograph of the street on the way back. Deadline 14:25: the walk back from the bank end is 7 minutes, longer than from the bell tower.",
+      "confidence": "high",
+      "confidenceNote": "Shop hours and prices are from each maker's own site; walking minutes are computed from GSI block coordinates, not measured.",
+      "source": "https://www.kuradukuri.jp/f/shop/ichibangai"
+    }
+  ],
+  "outfitByStop": {
+    "Hitachi Seaside Park": {
+      "photo": "The best colour hour of the trip, with one hard rule: DO NOT WEAR GREEN. Miharashi Hill at 09:40 is 40,000 lime-green kochia domes under blue sky with the Pacific behind, and anything green, olive or khaki turns a person into shrubbery. White, cream, coral, red and yellow all detonate against it; pale blue disappears into the sky-and-sea half of the frame, so keep blue off the front row. Plain colours, not prints — 35 people in patterns is noise at 10 m. The sun is SE at 48 degrees, high and hard: caps and wide brims put the whole face in shadow, so take them off for the frame and put them straight back on. Sunglasses off. And do not promise anyone a nemophila photograph — there is none until next April.",
+      "practical": "Exposed is the word: 215 open hectares on a Pacific coast with no shade on the hill and enough onshore wind to take a hat off the back of your head, so a chin cord or a hat you can pocket. 29 degrees and humid by mid-morning. You have 60 minutes from the West Gate and the hill is a 17-minute walk each way, so wear shoes you can move in — the alternative is ¥600 for the Seaside Train, whose full loop is 40 minutes and would eat the stop. Water before you go up: the only outlet open at 09:30 is Lakeside Cafe at the gate, and Kinen no Mori does not open until 10:00. One toilet stop at the gate before walking, not after."
+    },
+    "Kawagoe Old Town (Kurazukuri Street)": {
+      "photo": "Kawagoe inverts the Hitachi rule. The kurazukuri walls are BLACK-plastered clay, a near-matt dark backdrop that swallows black, charcoal, navy and dark brown completely — a person in black photographs as a hole in the row. White, cream, pale blue, pale yellow and coral pop hard against it, and this is the one hour on the trip when the walls themselves are lit rather than flat: the sun at 13:45 is SW at 46 degrees, striking the west-facing facades directly. So put the group on the sunny west pavement looking across, keep the light colours in the front row, and shoot north up Ichibangai from the former Eighty-Fifth Bank so the gables stack. Under the bell tower the lane is narrow and busy; three or four people per frame, not 35.",
+      "practical": "This is the hottest hour of the whole trip — 30 to 31 degrees inland, on a treeless asphalt corridor with no shade at all, straight off a two-hour coach leg. Something you can sit in for three hours in total, and a hand towel: there is nowhere on the street to cool down. Motomachi Rest House, 6 minutes from the drop-off, is free, air-conditioned and takes about 100 people, and it has the toilets — use it at the start or the end, not both. Cash in a reachable pocket for the sweet shops. Flat but crowded pavement with car traffic still running on Ichibangai, so closed shoes and nobody stepping backwards into the road for a photo."
+    },
+    "Shibuya Scramble Crossing": {
+      "photo": "The backdrop is glass, LED screens and a Sunday crowd — no colour of its own, so the colour has to come from what people wear. Plain saturated solids read; busy prints dissolve into the visual noise of the screens and the signage behind them. Avoid white on white: the Q FRONT screens throw shifting light and a white shirt in front of them either blows out or takes on whatever colour the advert is. Nothing green needed here. At 15:45 the sun is WSW at only 24 degrees, so the tower blocks on Dogenzaka drop the plaza into patchy shade — better for faces than midday, but it means you must choose sun or shade deliberately rather than shoot wherever the group stops. No tripods on the crossing; keep out of the roadway and off the tactile paving.",
+      "practical": "Sunday at 15:30 is the shopping-and-strolling peak, not the commuter surge, but it is still a Shibuya crowd and 35 people will lose each other in one light change. Fix the muster point and time before anyone crosses — the coach cannot wait at the crossing. Bags to the front, phones in zipped pockets while crossing, and no group photo mid-junction: you get one light cycle and then the wave arrives. Still 29 degrees at street level with heat coming off the asphalt; the free air-conditioned sit-downs are Hikarie's 11F lobby and the Scramble Square basement, both within 7 minutes. Dinner is unagi at 17:00, so do not let anyone fill up in the food hall."
+    },
+    "Shinjuku Granbell Hotel": {
+      "photo": "Everything tonight is shot in the dark against neon, and none of it puts any light on a face. Mixed colour temperature is the problem — Kabukicho's signage is red, magenta and cold white all at once, so white clothing takes on whatever sign is nearest and skin goes orange. A light mid-tone or one clear warm colour separates you from the background; head-to-toe dark vanishes entirely. Under the Godzilla Head you are lit from above and behind, so step into a shopfront's spill to get any light on the face. Brace the phone on a rail or a wall rather than using night mode handheld, and if you go up the Metropolitan Government tower expect glass: lens flat to the pane, no flash.",
+      "practical": "Warm and humid into the evening, so the 13F rooftop terrace is comfortable rather than cold. Card key in a pocket before you leave the room. Cash for Golden Gai, where the seat charge is usually ¥300 to ¥1,000 and must be confirmed before you sit — parties of four or more are routinely turned away, so plan pairs. Do not stop walking when a tout approaches; say daijoubu desu and keep going, only enter a bar you chose yourself with prices at the door, never hand over a passport or a card, and skip the Okubo Park stretch of Shokuan-dori after midnight. Last trains 00:20 to 00:45. Tomorrow: sunrise 05:23, and the dawn walk is Hanazono Shrine, not Shinjuku Gyoen, which is shut on Monday."
+    }
+  }
+}

@@ -1,0 +1,1267 @@
+{
+ "batch": "expand-d56-walk30",
+ "places": [
+  {
+   "id": "d5w30kegon01",
+   "anchorStop": "Kegon Falls",
+   "name": "Chuzen-ji Tachiki Kannon",
+   "nameJp": "日光山中禅寺 立木観音",
+   "category": "sight",
+   "priceTier": "¥",
+   "stayMinutes": 30,
+   "legs": [
+    {
+     "mode": "walk",
+     "minutes": 22
+    }
+   ],
+   "timeWindow": "day",
+   "note": "Rinnoji's lakeside temple on the SOUTH shore, 22 min along the Utagahama road. Its 6 m Senju-Kannon is carved into the living trunk of a katsura; the hall was rebuilt here in 1902 after the lake burst its banks. 44 min of walking out of a 60-min stop, so it only works if you skip the lift queue.",
+   "latitude": 36.730726,
+   "longitude": 139.491686,
+   "coordPrecision": "verified",
+   "confidence": "high",
+   "confidenceNote": null,
+   "source": "https://www.nikko-kankou.org/spot/137"
+  },
+  {
+   "id": "d5w30kegon02",
+   "anchorStop": "Kegon Falls",
+   "name": "Utagahama lakeside promenade",
+   "nameJp": "歌ヶ浜",
+   "category": "sight",
+   "priceTier": "¥",
+   "stayMinutes": 20,
+   "legs": [
+    {
+     "mode": "walk",
+     "minutes": 19
+    }
+   ],
+   "timeWindow": "day",
+   "note": "The classic Mt Nantai-across-the-water view, from the free Utagahama car park 19 min west then south of the coach lot. The promenade to the embassy villas starts here. Mid-September is solid green — Oku-Nikko's colour is late October, so nobody should expect autumn here.",
+   "latitude": 36.732469,
+   "longitude": 139.492319,
+   "coordPrecision": "verified",
+   "confidence": "high",
+   "confidenceNote": null,
+   "source": "https://www.tochigiji.or.jp/spot/s5830"
+  },
+  {
+   "id": "d5w30kegon03",
+   "anchorStop": "Kegon Falls",
+   "name": "Futarasan-jinja Chugushi",
+   "nameJp": "二荒山神社中宮祠",
+   "category": "sight",
+   "priceTier": "¥",
+   "stayMinutes": 25,
+   "legs": [
+    {
+     "mode": "walk",
+     "minutes": 22
+    }
+   ],
+   "timeWindow": "day",
+   "note": "The middle shrine of Futarasan, on the north shore about 1.4 km west along Route 120 — the gate to the Mt Nantai climb (登拝門) and a treasure house. Free precinct; the climb needs a ¥1,000 permit and 7 hours, which this stop does not have.",
+   "latitude": 36.745589,
+   "longitude": 139.486794,
+   "coordPrecision": "verified",
+   "confidence": "medium",
+   "confidenceNote": "GSI's facility point plots the precinct, which runs uphill to the 登拝門; the lakeside torii and haiden sit roughly 200 m south of it, so the 22 min is measured along the Route 120 lakeshore rather than to this exact point.",
+   "source": "https://ja.wikipedia.org/wiki/%E6%97%A5%E5%85%89%E4%BA%8C%E8%8D%92%E5%B1%B1%E7%A5%9E%E7%A4%BE"
+  },
+  {
+   "id": "d5w30kegon04",
+   "anchorStop": "Kegon Falls",
+   "name": "Funanoeki Chuzenji pier & Chuzenji Onsen bus terminal",
+   "nameJp": "船の駅中禅寺・中禅寺温泉バスターミナル",
+   "category": "rest",
+   "priceTier": "¥¥",
+   "stayMinutes": 20,
+   "legs": [
+    {
+     "mode": "walk",
+     "minutes": 10
+    }
+   ],
+   "timeWindow": "day",
+   "note": "中宮祠2478, 10 min west: the Tobu bus terminal, toilets, and the Lake Chuzenji cruise pier (中禅寺湖機船, 0288-55-0360). Boats run mid-April to 30 Nov, departures 09:00-15:30. The shortest circuit still eats more than the 60-minute stop, so treat this as the shop-and-toilet stop, not a cruise.",
+   "confidence": "medium",
+   "confidenceNote": "Address and cruise hours confirmed on Tochigi's tourism site, but no verified coordinate for the pier — GSI resolves 中宮祠 only to a 字 centroid 1.3 km off, so no coordinate is given rather than a guessed one.",
+   "source": "https://www.tochigiji.or.jp/spot/s5919"
+  },
+  {
+   "id": "d5w30kegon06",
+   "anchorStop": "Kegon Falls",
+   "name": "Italian Embassy Villa Memorial Park",
+   "nameJp": "イタリア大使館別荘記念公園",
+   "category": "sight",
+   "priceTier": "¥",
+   "stayMinutes": 40,
+   "legs": [
+    {
+     "mode": "walk",
+     "minutes": 10
+    },
+    {
+     "mode": "bus",
+     "minutes": 5
+    },
+    {
+     "mode": "walk",
+     "minutes": 10
+    }
+   ],
+   "timeWindow": "day",
+   "note": "1928 cedar-bark villa right on the water, 1 May-10 Nov 09:00-17:00, ¥300 adult / ¥150 child, or ¥450/¥200 combined with the British villa. On foot from the coach lot it is about 34 min — OUTSIDE the radius — so the honest route is walk to Chuzenji Onsen, one short bus, then 10 min down.",
+   "latitude": 36.728291,
+   "longitude": 139.493256,
+   "coordPrecision": "approximate",
+   "confidence": "medium",
+   "confidenceNote": "Coordinate is the GSI point for the shared 中宮祠2482 address block, not the villa building; the bus leg is the operator's own '中禅寺温泉から約5分' figure and was not timetable-checked for 12 Sep 2026.",
+   "source": "https://www.tochigiji.or.jp/spot/s5830"
+  },
+  {
+   "id": "d5w30kegon07",
+   "anchorStop": "Kegon Falls",
+   "name": "British Embassy Villa Memorial Park",
+   "nameJp": "英国大使館別荘記念公園",
+   "category": "sight",
+   "priceTier": "¥",
+   "stayMinutes": 30,
+   "legs": [
+    {
+     "mode": "walk",
+     "minutes": 30
+    }
+   ],
+   "timeWindow": "day",
+   "note": "Ernest Satow's 1896 villa, restored 2016; 1 May-10 Nov 09:00-17:00, ¥300 / ¥150, tea room 10:00-16:30. Reached on foot only via Utagahama and the lakeside promenade — right on the 30-minute limit, so a 60-minute stop cannot include it. Closed Mondays in April only, so 12 Sep is fine.",
+   "confidence": "medium",
+   "confidenceNote": "No verified coordinate: the park shares the 中宮祠2482 block with the Italian villa and GSI returns one point for both, so none is claimed. The 30 min is Utagahama (19, measured) plus the operator's promenade figure.",
+   "source": "https://www.pref.tochigi.lg.jp/d04/27eikoku/kaienbi.html"
+  },
+  {
+   "id": "d5w30tosho01",
+   "anchorStop": "Nikko Toshogu Shrine",
+   "name": "Rinnoji Sanbutsudo",
+   "nameJp": "日光山輪王寺 三仏堂",
+   "category": "sight",
+   "priceTier": "¥",
+   "stayMinutes": 25,
+   "legs": [
+    {
+     "mode": "walk",
+     "minutes": 4
+    }
+   ],
+   "timeWindow": "day",
+   "note": "Only 4 min from the Nishi-sando coach lot — closer than Toshogu's own Omotemon. Tochigi's largest wooden hall, three gilt 8 m Buddhas. 08:00-17:00 Apr-Oct, last entry 16:30; ¥400 adult, ¥360 for parties of 35+, allow 10-20 min inside. Open on 12 Sep (its only closures are 3 Feb, 1-2 Apr, 14 Dec).",
+   "latitude": 36.755189,
+   "longitude": 139.598326,
+   "coordPrecision": "verified",
+   "confidence": "high",
+   "confidenceNote": null,
+   "source": "https://www.rinnoji.or.jp/information.html"
+  },
+  {
+   "id": "d5w30tosho03",
+   "anchorStop": "Nikko Toshogu Shrine",
+   "name": "Taiyuin — Iemitsu's mausoleum",
+   "nameJp": "日光山輪王寺 大猷院",
+   "category": "sight",
+   "priceTier": "¥",
+   "stayMinutes": 40,
+   "legs": [
+    {
+     "mode": "walk",
+     "minutes": 13
+    }
+   ],
+   "timeWindow": "day",
+   "note": "Straight up the Nishi-sando, 13 min: 315 lanterns, the Nio-mon, Yasha-mon and a black-and-gold Chinese gate, far emptier than Toshogu. ¥550 adult / ¥495 group 35+; the temple itself budgets 30-60 min. The 輪王寺券 (Sanbutsudo + Taiyuin) is ¥900, ¥810 for 35+.",
+   "confidence": "medium",
+   "confidenceNote": "No verified coordinate — Taiyuin shares Rinnoji's 山内2300 address and GSI has no separate facility point for 大猷院, so none is claimed. Hours and fees are from Rinnoji's own admission page.",
+   "source": "https://www.rinnoji.or.jp/information.html"
+  },
+  {
+   "id": "d5w30tosho04",
+   "anchorStop": "Nikko Toshogu Shrine",
+   "name": "Nikko Futarasan-jinja main shrine",
+   "nameJp": "日光二荒山神社",
+   "category": "sight",
+   "priceTier": "¥",
+   "stayMinutes": 25,
+   "legs": [
+    {
+     "mode": "walk",
+     "minutes": 15
+    }
+   ],
+   "timeWindow": "day",
+   "note": "The 767-founded shrine that owns Mt Nantai and the Shinkyo bridge, 15 min up the Nishi-sando past Taiyuin. Precinct free; the 神苑 with the Kanibiki-no-sasa and the sacred spring is ¥300. The quiet alternative when Toshogu's Yomeimon is shoulder-to-shoulder on a Saturday.",
+   "latitude": 36.761265,
+   "longitude": 139.59635,
+   "coordPrecision": "verified",
+   "confidence": "medium",
+   "confidenceNote": "GSI's 二荒山神社 facility point sits about 250 m behind the haiden most visitors stand at; the walk figure is to the precinct entrance, and the ¥300 神苑 fee was not re-read at source this session.",
+   "source": "https://ja.wikipedia.org/wiki/%E6%97%A5%E5%85%89%E4%BA%8C%E8%8D%92%E5%B1%B1%E7%A5%9E%E7%A4%BE"
+  },
+  {
+   "id": "d5w30tosho05",
+   "anchorStop": "Nikko Toshogu Shrine",
+   "name": "Hongu Shrine",
+   "nameJp": "日光二荒山神社別宮 本宮神社",
+   "category": "sight",
+   "priceTier": "¥",
+   "stayMinutes": 15,
+   "legs": [
+    {
+     "mode": "walk",
+     "minutes": 8
+    }
+   ],
+   "timeWindow": "day",
+   "note": "The oldest of the three Nikko shrines and Shodo Shonin's first foothold, 8 min east of the coach lot beside the Shinkyo end of the Sannai. Free, unstaffed, almost always empty even on a Saturday — the best five-minute escape from the Toshogu queue.",
+   "latitude": 36.754672,
+   "longitude": 139.604414,
+   "coordPrecision": "verified",
+   "confidence": "high",
+   "confidenceNote": null,
+   "source": "https://ja.wikipedia.org/wiki/%E6%97%A5%E5%85%89%E4%BA%8C%E8%8D%92%E5%B1%B1%E7%A5%9E%E7%A4%BE"
+  },
+  {
+   "id": "d5w30tosho06",
+   "anchorStop": "Nikko Toshogu Shrine",
+   "name": "Takinoo Shrine",
+   "nameJp": "滝尾神社",
+   "category": "sight",
+   "priceTier": "¥",
+   "stayMinutes": 40,
+   "legs": [
+    {
+     "mode": "walk",
+     "minutes": 24
+    }
+   ],
+   "timeWindow": "day",
+   "note": "Up the stone Takinoo-michi behind Toshogu, 24 min: moss, cryptomeria and the Unryu falls, with the Ishidorii you throw pebbles through. Free and genuinely deserted. A 48-minute round trip does NOT fit a 75-minute stop — flag it as a return-trip idea, not a plan.",
+   "latitude": 36.765475,
+   "longitude": 139.5919,
+   "coordPrecision": "verified",
+   "confidence": "high",
+   "confidenceNote": null,
+   "source": "https://ja.wikipedia.org/wiki/%E6%97%A5%E5%85%89%E4%BA%8C%E8%8D%92%E5%B1%B1%E7%A5%9E%E7%A4%BE"
+  },
+  {
+   "id": "d5w30tosho07",
+   "anchorStop": "Nikko Toshogu Shrine",
+   "name": "Nikko Tamozawa Imperial Villa Memorial Park",
+   "nameJp": "日光田母沢御用邸記念公園",
+   "category": "sight",
+   "priceTier": "¥¥",
+   "stayMinutes": 50,
+   "legs": [
+    {
+     "mode": "walk",
+     "minutes": 12
+    }
+   ],
+   "timeWindow": "day",
+   "note": "106 rooms of Edo, Meiji and Taisho carpentry, 12 min WEST of the coach lot — the single biggest thing the Nishi-sando park unlocks (it is 25+ min from Toshogu's own lot). Apr-Oct 09:00-17:00, last entry 16:00, closed Tuesdays but open all September. ¥510, ¥410 for 20+.",
+   "latitude": 36.753128,
+   "longitude": 139.591293,
+   "coordPrecision": "verified",
+   "confidence": "high",
+   "confidenceNote": null,
+   "source": "https://www.park-tochigi.com/tamozawa/"
+  },
+  {
+   "id": "d5w30tosho08",
+   "anchorStop": "Nikko Toshogu Shrine",
+   "name": "Nikko Coffee Nishi-sando",
+   "nameJp": "日光珈琲 西参道",
+   "category": "food",
+   "priceTier": "¥¥",
+   "stayMinutes": 30,
+   "legs": [
+    {
+     "mode": "walk",
+     "minutes": 4
+    }
+   ],
+   "timeWindow": "day",
+   "note": "安川町10-20, 4 min from the coach lot on the Nishi-sando itself — the nearest real coffee to the Saturday parking. Old-house cafe, 10:00-17:00, closed FRIDAYS, so Sat 12 Sep is open. Natural-ice kakigori in summer; the bus stop outside is literally called 西参道茶屋.",
+   "latitude": 36.754562,
+   "longitude": 139.596954,
+   "coordPrecision": "verified",
+   "confidence": "high",
+   "confidenceNote": null,
+   "source": "https://www.tochigiji.or.jp/spot/s6114/"
+  },
+  {
+   "id": "d5w30tosho10",
+   "anchorStop": "Nikko Toshogu Shrine",
+   "name": "Kanmangafuchi Abyss & the Narabi-jizo",
+   "nameJp": "憾満ヶ淵・並び地蔵",
+   "category": "sight",
+   "priceTier": "¥",
+   "stayMinutes": 30,
+   "legs": [
+    {
+     "mode": "walk",
+     "minutes": 22
+    }
+   ],
+   "timeWindow": "day",
+   "note": "A lava gorge on the Daiya with about 70 stone jizo in a row — the ones you never count the same twice. Free, unstaffed, 24 h. Nikko City's own access line is 'get off at the 安川町 bus stop, walk about 20 min', and the coach lot IS in 安川町. Leeches after rain; wear closed shoes.",
+   "latitude": 36.748577,
+   "longitude": 139.582489,
+   "coordPrecision": "approximate",
+   "confidence": "medium",
+   "confidenceNote": "Coordinate is the GSI point for the 匠町8 address block, not the jizo row itself; GSI has no facility point for 憾満ヶ淵. Walk time reconciles the official 'about 20 min from 安川町' with a 26 min street-distance estimate.",
+   "source": "https://www.tochigiji.or.jp/spot/s8780/"
+  },
+  {
+   "id": "d5w30edo01",
+   "anchorStop": "Edo Wonderland Nikko Edomura",
+   "name": "Jigokudera hell-temple walkthrough",
+   "nameJp": "地獄寺",
+   "category": "sight",
+   "priceTier": "¥",
+   "stayMinutes": 20,
+   "legs": [
+    {
+     "mode": "walk",
+     "minutes": 10
+    }
+   ],
+   "timeWindow": "day",
+   "note": "The park's walk-through haunted temple, in the 商家街 beyond Nihonbashi. Costs extra on top of the 通行手形 and the queue is longest 14:00-15:00 — exactly the group's window. With only 2 h and a 16:00 departure, pick this OR the Ninja Trick Maze, not both.",
+   "confidence": "medium",
+   "confidenceNote": "Edo Wonderland's own site is robots-blocked to this fetcher, so the attraction is confirmed only from third-party listings; no coordinate, no verified surcharge figure.",
+   "source": "https://www.tochigiji.or.jp/spot/s5693/"
+  },
+  {
+   "id": "d5w30edo02",
+   "anchorStop": "Edo Wonderland Nikko Edomura",
+   "name": "Wakamatsuya oiran theatre",
+   "nameJp": "若松屋",
+   "category": "sight",
+   "priceTier": "¥",
+   "stayMinutes": 30,
+   "legs": [
+    {
+     "mode": "walk",
+     "minutes": 9
+    }
+   ],
+   "timeWindow": "day",
+   "note": "One of the park's theatres, the indoor oiran show — the sit-down counterpart to the 花魁道中 street procession already in the plan. Named on Tochigi's own listing. Shows run to a printed timetable; with 2 h and a 16:00 coach, one theatre is the realistic maximum.",
+   "confidence": "medium",
+   "confidenceNote": "Named on the prefectural tourism listing but the show times could not be read — edowonderland.net/schedule/ is blocked to automated fetching. No coordinate available for individual park buildings.",
+   "source": "https://www.tochigiji.or.jp/spot/s5693/"
+  },
+  {
+   "id": "d5w30edo03",
+   "anchorStop": "Edo Wonderland Nikko Edomura",
+   "name": "Edo Life & Culture Museum (Modern Edo-tech Museum)",
+   "nameJp": "江戸生活文化伝承館",
+   "category": "sight",
+   "priceTier": "¥",
+   "stayMinutes": 25,
+   "legs": [
+    {
+     "mode": "walk",
+     "minutes": 10
+    }
+   ],
+   "timeWindow": "day",
+   "note": "Indoor exhibition of Edo craft and everyday goods — the wet-weather answer in peak typhoon month, when the outdoor sets and processions are the first thing cancelled. Included in the 通行手形. Under a 2 h stop this is the best rain plan the park has.",
+   "confidence": "medium",
+   "confidenceNote": "Named on the prefectural tourism listing; hours, exact location inside the 49.5 ha park and any surcharge unverified because the park's own site is blocked to this fetcher.",
+   "source": "https://www.tochigiji.or.jp/spot/s5693/"
+  },
+  {
+   "id": "d5w30edo05",
+   "anchorStop": "Edo Wonderland Nikko Edomura",
+   "name": "Kosagoe Station, Tobu Kinugawa Line",
+   "nameJp": "小佐越駅",
+   "category": "rest",
+   "priceTier": "¥",
+   "stayMinutes": 10,
+   "legs": [
+    {
+     "mode": "walk",
+     "minutes": 20
+    }
+   ],
+   "timeWindow": "24h",
+   "note": "The nearest station, 20 min on foot from the park — and, apart from the car parks, the ONLY thing outside the gate inside a 30-minute walk. Unstaffed, two platforms, roughly hourly. Worth knowing only as a walk-out fallback if someone misses the 16:00 coach.",
+   "latitude": 36.80224,
+   "longitude": 139.706508,
+   "coordPrecision": "verified",
+   "confidence": "high",
+   "confidenceNote": null,
+   "source": "https://ja.wikipedia.org/wiki/%E5%B0%8F%E4%BD%90%E8%B6%8A%E9%A7%85"
+  },
+  {
+   "id": "d5w30edo06",
+   "anchorStop": "Edo Wonderland Nikko Edomura",
+   "name": "Tobu World Square",
+   "nameJp": "東武ワールドスクウェア",
+   "category": "sight",
+   "priceTier": "¥¥¥",
+   "stayMinutes": 90,
+   "legs": [
+    {
+     "mode": "walk",
+     "minutes": 30
+    }
+   ],
+   "timeWindow": "day",
+   "note": "102 1:25-scale world landmarks, 09:00-17:00. Its station sits 30 min on foot from Edo Wonderland — just inside the radius on paper and completely unusable in practice: it is a 90-minute park, the group's slot is 14:00-16:00 in a different paid enclosure, and the coach leaves at 16:00.",
+   "confidence": "medium",
+   "confidenceNote": "Walk time is measured to the verified GSI point for 東武ワールドスクウェア駅 (36.808233, 139.709177); no separate coordinate is claimed for the park entrance, and admission was not re-read this session.",
+   "source": "https://ja.wikipedia.org/wiki/%E6%9D%B1%E6%AD%A6%E3%83%AF%E3%83%BC%E3%83%AB%E3%83%89%E3%82%B9%E3%82%AF%E3%82%A6%E3%82%A7%E3%82%A2"
+  },
+  {
+   "id": "d5w30tsuk01",
+   "anchorStop": "Hotel Nikko Tsukuba",
+   "name": "BiVi Tsukuba izakaya floor",
+   "nameJp": "BiViつくば 飲食フロア",
+   "category": "food",
+   "priceTier": "¥¥",
+   "stayMinutes": 60,
+   "legs": [
+    {
+     "mode": "walk",
+     "minutes": 3
+    }
+   ],
+   "timeWindow": "night",
+   "note": "吾妻1-11-1, 3 min from the hotel and the only late option that actually works after a 16:45 dinner: 茨城地のもの わらやき料理 たたきの一九 and 魚が旨い焼き鳥屋 六 to 24:00, オリオン餃子 to 24:00 (L.O. 23:30), 北海道魚鮮水産 to about 24:00, 樓外樓別館 to 22:30.",
+   "latitude": 36.081043,
+   "longitude": 140.11322,
+   "coordPrecision": "verified",
+   "confidence": "high",
+   "confidenceNote": null,
+   "source": "https://www.e-bivi.com/tsukuba/shop/index.jsp?bf=6&cat=116"
+  },
+  {
+   "id": "d5w30tsuk02",
+   "anchorStop": "Hotel Nikko Tsukuba",
+   "name": "Saza Coffee Tsukuba Ekimae",
+   "nameJp": "サザコーヒー つくば駅前店",
+   "category": "food",
+   "priceTier": "¥¥",
+   "stayMinutes": 30,
+   "legs": [
+    {
+     "mode": "walk",
+     "minutes": 3
+    }
+   ],
+   "timeWindow": "day",
+   "note": "Ibaraki's own roaster (Hitachinaka, 1969) in BiVi Tsukuba, closing 19:00 — reachable on the evening of arrival but NOT before an 08:30 coach. Their Tokugawa Shogun blend and Colombian estate beans travel home well; whole beans are the buy, not the cup.",
+   "latitude": 36.081043,
+   "longitude": 140.11322,
+   "coordPrecision": "verified",
+   "confidence": "medium",
+   "confidenceNote": "Coordinate is BiVi Tsukuba's building point (吾妻1-11), shared with the izakaya record; the 19:00 close is from BiVi's tenant list, the roaster's own history was not re-read at source.",
+   "source": "https://www.e-bivi.com/tsukuba/shop/index.jsp?bf=6&cat=116"
+  },
+  {
+   "id": "d5w30tsuk04",
+   "anchorStop": "Hotel Nikko Tsukuba",
+   "name": "Matsumi Park & observation tower",
+   "nameJp": "松見公園・展望塔",
+   "category": "sight",
+   "priceTier": "¥",
+   "stayMinutes": 30,
+   "legs": [
+    {
+     "mode": "walk",
+     "minutes": 19
+    }
+   ],
+   "timeWindow": "day",
+   "note": "19 min north on the pedestrian deck: a Japanese pond garden and a slim concrete observation tower looking at Mt Tsukuba. Free, and the park itself is open ground at any hour — the best dawn walk in range before an 08:30 departure. The tower's own opening is limited, so plan on the garden.",
+   "latitude": 36.091658,
+   "longitude": 140.10753,
+   "coordPrecision": "verified",
+   "confidence": "high",
+   "confidenceNote": null,
+   "source": "https://www.city.tsukuba.lg.jp/"
+  },
+  {
+   "id": "d5w30tsuk05",
+   "anchorStop": "Hotel Nikko Tsukuba",
+   "name": "JAXA Tsukuba Space Center — Space Dome",
+   "nameJp": "筑波宇宙センター スペースドーム",
+   "category": "sight",
+   "priceTier": "¥",
+   "stayMinutes": 60,
+   "legs": [
+    {
+     "mode": "walk",
+     "minutes": 28
+    }
+   ],
+   "timeWindow": "day",
+   "note": "The real Kibo module mock-up, H-II hardware and a 1:1 satellite hall, 28 min south-east — just inside the radius. Free, photo ID needed. It opens 10:00-17:00, and the group is at the hotel 18:00 to 08:30, so it is reachable and completely unusable on this itinerary.",
+   "latitude": 36.068258,
+   "longitude": 140.123927,
+   "coordPrecision": "verified",
+   "confidence": "high",
+   "confidenceNote": null,
+   "source": "https://www.city.tsukuba.lg.jp/"
+  },
+  {
+   "id": "d5w30tsuk07",
+   "anchorStop": "Hotel Nikko Tsukuba",
+   "name": "LALAgarden Tsukuba",
+   "nameJp": "LALAガーデンつくば",
+   "category": "shopping",
+   "priceTier": "¥¥",
+   "stayMinutes": 60,
+   "legs": [
+    {
+     "mode": "walk",
+     "minutes": 19
+    }
+   ],
+   "timeWindow": "night",
+   "note": "小野崎278-1, 19 min south-west — an open-air mall with a supermarket, drugstore and casual restaurants that trade later than the station buildings. The realistic post-dinner shopping walk if Tonarie has already shut, though the return is along an unlit stretch of Nishi-Odori.",
+   "latitude": 36.076344,
+   "longitude": 140.10231,
+   "coordPrecision": "verified",
+   "confidence": "medium",
+   "confidenceNote": "Coordinate verified from the 小野崎278 address point, but the mall's 2026 trading hours and current tenant mix were not read at source this session.",
+   "source": "https://www.city.tsukuba.lg.jp/"
+  },
+  {
+   "id": "d5w30tsuk09",
+   "anchorStop": "Hotel Nikko Tsukuba",
+   "name": "Takezono Park",
+   "nameJp": "竹園公園",
+   "category": "rest",
+   "priceTier": "¥",
+   "stayMinutes": 20,
+   "legs": [
+    {
+     "mode": "walk",
+     "minutes": 16
+    }
+   ],
+   "timeWindow": "day",
+   "note": "竹園3-19, 16 min east: a long green wedge of zelkova and lawn on the same traffic-free deck network, with a pond and a small playground. Unlit in places. Better as the 06:30 walk before an 08:30 coach than as an after-dark stroll.",
+   "latitude": 36.080605,
+   "longitude": 140.125366,
+   "coordPrecision": "verified",
+   "confidence": "medium",
+   "confidenceNote": "Coordinate verified from the 竹園3-19 address point; lighting and facilities are an on-the-ground judgement rather than a published fact.",
+   "source": "https://www.city.tsukuba.lg.jp/"
+  },
+  {
+   "id": "d6w30hit01",
+   "anchorStop": "Hitachi Seaside Park",
+   "name": "Miharashi no Sato & the former Dohi house",
+   "nameJp": "みはらしの里・旧土肥家住宅",
+   "category": "sight",
+   "priceTier": "¥",
+   "stayMinutes": 25,
+   "legs": [
+    {
+     "mode": "walk",
+     "minutes": 15
+    }
+   ],
+   "timeWindow": "day",
+   "note": "The farm village at the FOOT of Miharashi Hill — thatched Dohi and Aizawa houses, the 里の家, and worked fields. Nearest gate is the West/Tsubasa Gate, Seaside Train stop 7. In mid-September the plots hold buckwheat and zinnia; the sunflowers are over. Free inside the park ticket.",
+   "confidence": "medium",
+   "confidenceNote": "The park's own facility page gives the nearest gate and train stop but no coordinate or walking time; the 15 min is derived from the already-verified 17 min to the hill summit above it.",
+   "source": "https://www.hitachikaihin.jp/park_spot.php?mode=detail&code=6"
+  },
+  {
+   "id": "d6w30hit02",
+   "anchorStop": "Hitachi Seaside Park",
+   "name": "Tamago no Mori Flower Garden & Pyon-pyon Tamago",
+   "nameJp": "たまごの森フラワーガーデン・ぴょんぴょんたまご",
+   "category": "sight",
+   "priceTier": "¥",
+   "stayMinutes": 20,
+   "legs": [
+    {
+     "mode": "walk",
+     "minutes": 6
+    }
+   ],
+   "timeWindow": "day",
+   "note": "West Gate area, Seaside Train stop 9. The egg sculptures, windmills and trampolines sit under pines 6 min inside the gate. Be blunt about the season: the tulips it is famous for are mid-APRIL. On 13 September this is shade, sculpture and something for children to bounce on.",
+   "confidence": "medium",
+   "confidenceNote": "Nearest gate and train stop are from the park's own page; no coordinate is published for park facilities and the 6 min is estimated against the verified 2 min to Lakeside Cafe in the same area.",
+   "source": "https://www.hitachikaihin.jp/park_spot.php?mode=detail&code=33"
+  },
+  {
+   "id": "d6w30hit03",
+   "anchorStop": "Hitachi Seaside Park",
+   "name": "West Gate Cycle Centre",
+   "nameJp": "西口サイクルセンター",
+   "category": "rest",
+   "priceTier": "¥",
+   "stayMinutes": 15,
+   "legs": [
+    {
+     "mode": "walk",
+     "minutes": 4
+    }
+   ],
+   "timeWindow": "day",
+   "note": "The single best answer to a 60-minute stop in a 215 ha park: rental cycles ¥600 for 3 h or ¥800 all day, on an 11 km dedicated course, 4 min inside the West Gate. Faster than the Seaside Train for anyone wanting the dune end, and it does not wait for a timetable.",
+   "confidence": "medium",
+   "confidenceNote": "Fees are from the park's own ticket page; the cycle centre's location is from the park's West Gate area listing, which publishes no coordinates or walking times.",
+   "source": "https://www.hitachikaihin.jp/guide/ticket.html"
+  },
+  {
+   "id": "d6w30hit04",
+   "anchorStop": "Hitachi Seaside Park",
+   "name": "Dune Garden & the Grand Dune",
+   "nameJp": "砂丘ガーデン・大砂丘",
+   "category": "sight",
+   "priceTier": "¥",
+   "stayMinutes": 30,
+   "legs": [
+    {
+     "mode": "train",
+     "minutes": 18
+    },
+    {
+     "mode": "walk",
+     "minutes": 6
+    }
+   ],
+   "timeWindow": "day",
+   "note": "Raw coastal dune with a planted garden reading into it — the most unusual landscape in the park and nothing like the kochia hill. It is at the far KAIHIN (east) end by the Wind Gate, well beyond a 30-minute walk from the West Gate, so it is a Seaside Train ride (¥600 day pass, 40 min full loop).",
+   "confidence": "medium",
+   "confidenceNote": "Facility names are from the park's own 砂丘エリア listing; the park publishes no coordinates or inter-area times, so the train leg is scaled from the already-verified 15-min train leg to the neighbouring Glass House.",
+   "source": "https://www.hitachikaihin.jp/park_spot.php?mode=area&area=4"
+  },
+  {
+   "id": "d6w30hit05",
+   "anchorStop": "Hitachi Seaside Park",
+   "name": "Sawada Spring Nature House",
+   "nameJp": "沢田湧水ネイチャーハウス",
+   "category": "sight",
+   "priceTier": "¥",
+   "stayMinutes": 25,
+   "legs": [
+    {
+     "mode": "train",
+     "minutes": 6
+    },
+    {
+     "mode": "walk",
+     "minutes": 6
+    }
+   ],
+   "timeWindow": "day",
+   "note": "A spring-fed wetland kept as it was before the airbase, with a small nature centre and boardwalk — dragonflies and cool shade on a 30C September morning. In the 樹林エリア north of the pleasure garden, so ride one Seaside Train hop rather than walking it.",
+   "confidence": "medium",
+   "confidenceNote": "Facility name is from the park's own 樹林エリア listing; no coordinate or published walking time exists, so the leg is an estimate against the verified 8-min walk to the Ferris wheel in the adjacent area.",
+   "source": "https://www.hitachikaihin.jp/park_spot.php?mode=area&area=2"
+  },
+  {
+   "id": "d6w30hit07",
+   "anchorStop": "Hitachi Seaside Park",
+   "name": "Pleasure Garden — Disk-O and Family Tower",
+   "nameJp": "プレジャーガーデン（ディスク・オー・ファミリータワー）",
+   "category": "sight",
+   "priceTier": "¥¥",
+   "stayMinutes": 40,
+   "legs": [
+    {
+     "mode": "walk",
+     "minutes": 9
+    }
+   ],
+   "timeWindow": "day",
+   "note": "The amusement corner beyond the big wheel: ディスク・オー, ファミリータワー, スモッグ王国大冒険 and リスさんの空中ドライブ. Rides are ticketed separately from park admission in ¥100 units, or a ¥3,600 one-day free pass — which no one should buy for a 60-minute stop.",
+   "confidence": "medium",
+   "confidenceNote": "Ride names come from the Pleasure Garden's own attraction list, which prints prices only against internal codes; the ¥100 units and ¥3,600 pass are from the park ticket page. No coordinates are published.",
+   "source": "https://pleasure.hitachikaihin.jp/attractionlist.html"
+  },
+  {
+   "id": "d6w30hit08",
+   "anchorStop": "Hitachi Seaside Park",
+   "name": "Mizu no Stage, Nishi-ike pond and the History Gallery",
+   "nameJp": "水のステージ・西池・歴史ギャラリー",
+   "category": "rest",
+   "priceTier": "¥",
+   "stayMinutes": 20,
+   "legs": [
+    {
+     "mode": "walk",
+     "minutes": 6
+    }
+   ],
+   "timeWindow": "day",
+   "note": "Three things clustered just inside the West Gate: a waterside performance stage, the Nishi-ike pond, and a small gallery on the site's history as the Imperial Navy's Mito bombing range and then a US airbase. Shade, seats and toilets 6 min from the coach — the sensible muster point for 35 people.",
+   "confidence": "medium",
+   "confidenceNote": "All three are listed by the park as West Gate area facilities, but no coordinates or walking times are published and the gallery's opening hours were not confirmed.",
+   "source": "https://www.hitachikaihin.jp/park_spot.php?mode=area&area=5"
+  },
+  {
+   "id": "d6w30kaw01",
+   "anchorStop": "Kawagoe Old Town (Kurazukuri Street)",
+   "name": "Kita-in (Kawagoe Daishi) & the Gohyaku Rakan",
+   "nameJp": "川越大師 喜多院・五百羅漢",
+   "category": "sight",
+   "priceTier": "¥¥",
+   "stayMinutes": 45,
+   "legs": [
+    {
+     "mode": "walk",
+     "minutes": 13
+    }
+   ],
+   "timeWindow": "day",
+   "note": "13 min south of the coach bay: the Kyakuden and Shoin were moved here from Edo Castle in 1638, so these are the only surviving rooms of the shogun's own palace — including the room Iemitsu was born in. Plus 538 stone rakan, no two alike. A 45-minute visit does not fit a 60-minute stop.",
+   "latitude": 35.918022,
+   "longitude": 139.488731,
+   "coordPrecision": "verified",
+   "confidence": "medium",
+   "confidenceNote": "Coordinate verified from GSI's facility point, but Kita-in's admission page is robots-blocked to this fetcher so the current fee and its Monday/irregular closures were not read at source.",
+   "source": "https://kitain.net/"
+  },
+  {
+   "id": "d6w30kaw02",
+   "anchorStop": "Kawagoe Old Town (Kurazukuri Street)",
+   "name": "Kawagoe Castle Honmaru Goten",
+   "nameJp": "川越城本丸御殿",
+   "category": "sight",
+   "priceTier": "¥",
+   "stayMinutes": 25,
+   "legs": [
+    {
+     "mode": "walk",
+     "minutes": 8
+    }
+   ],
+   "timeWindow": "day",
+   "note": "郭町2-13-1, 8 min east — one of only two surviving honmaru palaces in Japan, with the 1848 entrance hall and the Ietatsu-no-ma. Closed MONDAYS, so Sunday 13 September is open. Small ticket, big rooms, and almost nobody there while Ichibangai is jammed.",
+   "latitude": 35.923862,
+   "longitude": 139.491119,
+   "coordPrecision": "verified",
+   "confidence": "medium",
+   "confidenceNote": "Coordinate verified from the 郭町2-13 address point; the 2026 admission fee and exact hours were not read at source this session.",
+   "source": "https://www.city.kawagoe.saitama.jp/kanko/"
+  },
+  {
+   "id": "d6w30kaw03",
+   "anchorStop": "Kawagoe Old Town (Kurazukuri Street)",
+   "name": "Kawagoe Hikawa Shrine",
+   "nameJp": "川越氷川神社",
+   "category": "sight",
+   "priceTier": "¥",
+   "stayMinutes": 25,
+   "legs": [
+    {
+     "mode": "walk",
+     "minutes": 6
+    }
+   ],
+   "timeWindow": "day",
+   "note": "宮下町2-11-3, 6 min north of the coach bay — the closest major sight to the drop-off and closer than Toki no Kane. Famous for match-making: the tai-mikuji you fish for with a rod, the tunnel of ema, and the summer wind-chime corridor. Free precinct, open air, no closing day.",
+   "latitude": 35.927532,
+   "longitude": 139.488831,
+   "coordPrecision": "verified",
+   "confidence": "medium",
+   "confidenceNote": "Coordinate verified from the 宮下町2-11 address point. The 縁結び玉 amulet's daily quota and distribution time are widely reported but were NOT confirmed on the shrine's own site, so they are deliberately not stated here.",
+   "source": "https://www.kawagoehikawa.jp/"
+  },
+  {
+   "id": "d6w30kaw04",
+   "anchorStop": "Kawagoe Old Town (Kurazukuri Street)",
+   "name": "Taisho-roman Yumedori",
+   "nameJp": "大正浪漫夢通り",
+   "category": "sight",
+   "priceTier": "¥",
+   "stayMinutes": 25,
+   "legs": [
+    {
+     "mode": "walk",
+     "minutes": 10
+    }
+   ],
+   "timeWindow": "day",
+   "note": "連雀町, 10 min south: a short cable-free street of Taisho and early-Showa shopfronts — brick, tile and Western trim instead of the black kura of Ichibangai. Far quieter than Ichibangai on a Sunday afternoon, and it runs straight on into Crea Mall if anyone wants ordinary shops.",
+   "latitude": 35.919849,
+   "longitude": 139.483322,
+   "coordPrecision": "verified",
+   "confidence": "high",
+   "confidenceNote": null,
+   "source": "https://www.city.kawagoe.saitama.jp/kanko/"
+  },
+  {
+   "id": "d6w30kaw06",
+   "anchorStop": "Kawagoe Old Town (Kurazukuri Street)",
+   "name": "Crea Mall",
+   "nameJp": "クレアモール",
+   "category": "shopping",
+   "priceTier": "¥¥",
+   "stayMinutes": 60,
+   "legs": [
+    {
+     "mode": "walk",
+     "minutes": 21
+    }
+   ],
+   "timeWindow": "day",
+   "note": "The 1.2 km covered-free shopping street between Kawagoe and Hon-Kawagoe stations, 21 min south of the coach bay. This is where the everyday chains, drugstores and cheap food are — the antidote if the kurazukuri souvenir prices grate. Busy on a Sunday but never as dense as Ichibangai.",
+   "latitude": 35.913662,
+   "longitude": 139.48317,
+   "coordPrecision": "verified",
+   "confidence": "medium",
+   "confidenceNote": "Coordinate verified from the 新富町2-2 address point, which is mid-street; Crea Mall is linear so the walk figure varies by up to 8 min depending on which end you mean.",
+   "source": "https://www.city.kawagoe.saitama.jp/kanko/"
+  },
+  {
+   "id": "d6w30kaw08",
+   "anchorStop": "Kawagoe Old Town (Kurazukuri Street)",
+   "name": "Senba Toshogu",
+   "nameJp": "仙波東照宮",
+   "category": "sight",
+   "priceTier": "¥",
+   "stayMinutes": 20,
+   "legs": [
+    {
+     "mode": "walk",
+     "minutes": 17
+    }
+   ],
+   "timeWindow": "day",
+   "note": "One of Japan's three Toshogu, 17 min south in Kita-in's grounds: Ieyasu's coffin rested at Kita-in for four days in 1617 on its way to Nikko, and this 1640 rebuild is a national Important Cultural Property. Free, and a neat bookend to Day 5 at Nikko Toshogu.",
+   "latitude": 35.916328,
+   "longitude": 139.489548,
+   "coordPrecision": "verified",
+   "confidence": "medium",
+   "confidenceNote": "Coordinate verified from the 小仙波町1-21 address point. Reports that the inner precinct opens only on Sundays could NOT be confirmed — Kita-in's own page covers the history only — so treat gate access as unknown.",
+   "source": "https://kitain.net/history/cultural-asset/spot10/"
+  },
+  {
+   "id": "d6w30kaw09",
+   "anchorStop": "Kawagoe Old Town (Kurazukuri Street)",
+   "name": "Kawagoe City Museum & Art Museum",
+   "nameJp": "川越市立博物館・美術館",
+   "category": "sight",
+   "priceTier": "¥",
+   "stayMinutes": 40,
+   "legs": [
+    {
+     "mode": "walk",
+     "minutes": 8
+    }
+   ],
+   "timeWindow": "day",
+   "note": "郭町2-30-1, 8 min east and next to the Honmaru Goten — a full-size kurazukuri cross-section you can walk into, plus the castle's story. Both closed MONDAYS, so Sunday 13 September is open. The indoor plan if a September typhoon closes down the street.",
+   "latitude": 35.925831,
+   "longitude": 139.491272,
+   "coordPrecision": "verified",
+   "confidence": "medium",
+   "confidenceNote": "Coordinate verified from the 郭町2-30 address point; 2026 fees and hours were not read at source this session.",
+   "source": "https://www.city.kawagoe.saitama.jp/kanko/"
+  },
+  {
+   "id": "d6w30kaw12",
+   "anchorStop": "Kawagoe Old Town (Kurazukuri Street)",
+   "name": "Kawagoe Hachimangu",
+   "nameJp": "川越八幡宮",
+   "category": "sight",
+   "priceTier": "¥",
+   "stayMinutes": 20,
+   "legs": [
+    {
+     "mode": "walk",
+     "minutes": 25
+    }
+   ],
+   "timeWindow": "day",
+   "note": "南通町19-1, 25 min south near Kawagoe Station — a 1030 foundation with two 1000-year ginkgo trunks grown together into one 'marriage tree'. Free and almost tourist-free. At 25 min each way it is outside any sane reading of a 60-minute stop; note it for anyone with a free evening.",
+   "latitude": 35.911358,
+   "longitude": 139.484589,
+   "coordPrecision": "verified",
+   "confidence": "medium",
+   "confidenceNote": "Coordinate verified from the 南通町19 address point; the shrine's founding date and tree story were not re-read at source this session.",
+   "source": "https://www.city.kawagoe.saitama.jp/kanko/"
+  },
+  {
+   "id": "d6w30shib01",
+   "anchorStop": "Shibuya Scramble Crossing",
+   "name": "Shibuya Center-gai (Basketball Street)",
+   "nameJp": "渋谷センター街／バスケットボールストリート",
+   "category": "shopping",
+   "priceTier": "¥¥",
+   "stayMinutes": 25,
+   "legs": [
+    {
+     "mode": "walk",
+     "minutes": 2
+    }
+   ],
+   "timeWindow": "24h",
+   "note": "宇田川町, 2 min from the crossing: the pedestrian canyon straight off the scramble, renamed Basketball Street in 2011. Cheap food, game arcades and drugstores. On a Sunday at 15:30 it is at its densest — brief the group on a fixed regroup point before anyone walks in.",
+   "latitude": 35.659691,
+   "longitude": 139.699615,
+   "coordPrecision": "verified",
+   "confidence": "medium",
+   "confidenceNote": "Coordinate is the GSI point for the 宇田川町23 address block, taken as mid-street; Center-gai is linear so the figure marks the middle rather than either end.",
+   "source": "https://www.city.shibuya.tokyo.jp/"
+  },
+  {
+   "id": "d6w30shib02",
+   "anchorStop": "Shibuya Scramble Crossing",
+   "name": "MIYASHITA PARK & Shibuya Yokocho",
+   "nameJp": "ミヤシタパーク・渋谷横丁",
+   "category": "food",
+   "priceTier": "¥¥",
+   "stayMinutes": 45,
+   "legs": [
+    {
+     "mode": "walk",
+     "minutes": 5
+    }
+   ],
+   "timeWindow": "24h",
+   "note": "渋谷1-26-5, 5 min north-east: a rebuilt park stacked on a shopping deck, with a rooftop lawn, skate park and bouldering wall on top. At street level Shibuya Yokocho runs 24 hours with regional food counters from all over Japan — the one place near the crossing that can seat a group late.",
+   "latitude": 35.661621,
+   "longitude": 139.702072,
+   "coordPrecision": "verified",
+   "confidence": "high",
+   "confidenceNote": null,
+   "source": "https://www.city.shibuya.tokyo.jp/"
+  },
+  {
+   "id": "d6w30shib03",
+   "anchorStop": "Shibuya Scramble Crossing",
+   "name": "Shibuya Stream & the Inarabashi riverside",
+   "nameJp": "渋谷ストリーム・稲荷橋広場",
+   "category": "rest",
+   "priceTier": "¥¥",
+   "stayMinutes": 30,
+   "legs": [
+    {
+     "mode": "walk",
+     "minutes": 5
+    }
+   ],
+   "timeWindow": "day",
+   "note": "渋谷3-21-3, 5 min south on the old Toyoko line viaduct: a 600 m opened-up stretch of the Shibuya river with a plaza, food arcade and shade. The nearest place to sit down and cool off in a 60-minute stop, and it drains the crossing crowd almost completely.",
+   "latitude": 35.657471,
+   "longitude": 139.70285,
+   "coordPrecision": "verified",
+   "confidence": "high",
+   "confidenceNote": null,
+   "source": "https://www.city.shibuya.tokyo.jp/"
+  },
+  {
+   "id": "d6w30shib04",
+   "anchorStop": "Shibuya Scramble Crossing",
+   "name": "Nonbei Yokocho",
+   "nameJp": "のんべい横丁",
+   "category": "food",
+   "priceTier": "¥¥",
+   "stayMinutes": 40,
+   "legs": [
+    {
+     "mode": "walk",
+     "minutes": 3
+    }
+   ],
+   "timeWindow": "night",
+   "note": "渋谷1-25-10, 3 min from the crossing, wedged against the JR embankment: about 40 tiny post-war bars on two floors, most seating six people. Be clear about the hour — nearly all of them open 17:00-18:00, so at 15:30 the lane is shuttered. Photograph it; do not plan a drink there.",
+   "latitude": 35.660076,
+   "longitude": 139.70137,
+   "coordPrecision": "verified",
+   "confidence": "high",
+   "confidenceNote": null,
+   "source": "https://www.city.shibuya.tokyo.jp/"
+  },
+  {
+   "id": "d6w30shib05",
+   "anchorStop": "Shibuya Scramble Crossing",
+   "name": "SHIBUYA SKY rooftop observatory",
+   "nameJp": "渋谷スカイ",
+   "category": "sight",
+   "priceTier": "¥¥¥",
+   "stayMinutes": 60,
+   "legs": [
+    {
+     "mode": "walk",
+     "minutes": 4
+    }
+   ],
+   "timeWindow": "day",
+   "note": "Scramble Square 45-46F and the open roof, 4 min from the crossing — the shot everyone means when they say 'the crossing from above'. NOT on this itinerary: Tokyo Tower is the Day 7 tower. Timed-entry tickets, sells out on Sunday afternoons, and 60 min inside a 60-min stop is impossible.",
+   "latitude": 35.657951,
+   "longitude": 139.702316,
+   "coordPrecision": "approximate",
+   "confidence": "medium",
+   "confidenceNote": "Coordinate is the Scramble Square building point already verified in the existing batch for its 2F deck; the operator's own page could not be fetched (TLS/robots failure), so no price is quoted.",
+   "source": "https://www.shibuya-scramble-square.com/"
+  },
+  {
+   "id": "d6w30shib08",
+   "anchorStop": "Shibuya Scramble Crossing",
+   "name": "@cosme TOKYO, Harajuku",
+   "nameJp": "アットコスメトーキョー",
+   "category": "cosme",
+   "priceTier": "¥¥",
+   "stayMinutes": 40,
+   "legs": [
+    {
+     "mode": "walk",
+     "minutes": 21
+    }
+   ],
+   "timeWindow": "day",
+   "note": "神宮前1-14-27, 21 min north in front of Harajuku station: the flagship, about 200 brands over three floors with a ranking wall and tester bar. Tax-free is still at-the-till until 1 Nov 2026, so passports go in pockets. Well outside a 60-minute crossing stop — a Day 6 free-evening idea.",
+   "latitude": 35.67017,
+   "longitude": 139.703003,
+   "coordPrecision": "verified",
+   "confidence": "medium",
+   "confidenceNote": "Coordinate verified from the 神宮前1-14-27 address point; the store's brand count and trading hours were not read at source this session.",
+   "source": "https://www.cosme.net/"
+  },
+  {
+   "id": "d6w30shib09",
+   "anchorStop": "Shibuya Scramble Crossing",
+   "name": "Cat Street (Kyu-Shibuyagawa promenade)",
+   "nameJp": "キャットストリート",
+   "category": "cloth",
+   "priceTier": "¥¥",
+   "stayMinutes": 40,
+   "legs": [
+    {
+     "mode": "walk",
+     "minutes": 13
+    }
+   ],
+   "timeWindow": "day",
+   "note": "神宮前5, 13 min north-east: the culverted Shibuya river turned into a narrow, car-light lane of independent and streetwear shops linking Shibuya to Omotesando. Quieter than either end even on a Sunday, and the most pleasant walk out of the crossing if the scramble gets oppressive.",
+   "latitude": 35.665409,
+   "longitude": 139.705017,
+   "coordPrecision": "verified",
+   "confidence": "medium",
+   "confidenceNote": "Coordinate is the 神宮前5-17-13 address point, taken as mid-street; Cat Street is about 1 km long so the walk figure varies by several minutes depending on the end.",
+   "source": "https://www.city.shibuya.tokyo.jp/"
+  },
+  {
+   "id": "d6w30shib10",
+   "anchorStop": "Shibuya Scramble Crossing",
+   "name": "Konnoh Hachimangu",
+   "nameJp": "金王八幡宮",
+   "category": "sight",
+   "priceTier": "¥",
+   "stayMinutes": 20,
+   "legs": [
+    {
+     "mode": "walk",
+     "minutes": 12
+    }
+   ],
+   "timeWindow": "day",
+   "note": "渋谷3-5-12, 12 min east: a 1092 foundation whose gate and hall date from 1612, and the reason the district is called Shibuya at all. Free, wooded, and silent 800 m from the busiest crossing on earth — the single sharpest contrast photo available in this radius.",
+   "latitude": 35.657265,
+   "longitude": 139.706741,
+   "coordPrecision": "verified",
+   "confidence": "high",
+   "confidenceNote": null,
+   "source": "https://www.city.shibuya.tokyo.jp/"
+  },
+  {
+   "id": "d6w30shin01",
+   "anchorStop": "Shinjuku Granbell Hotel",
+   "name": "Omoide Yokocho",
+   "nameJp": "思い出横丁",
+   "category": "food",
+   "priceTier": "¥¥",
+   "stayMinutes": 45,
+   "legs": [
+    {
+     "mode": "walk",
+     "minutes": 11
+    }
+   ],
+   "timeWindow": "night",
+   "note": "西新宿1-2, 11 min west under the JR tracks: about 60 tiny post-war yakitori and motsu counters in two smoke-filled lanes. Most open by 17:00 and run late, so a 18:30 check-in works. Cash in many, six seats a shop — split 35 people up or do not go.",
+   "latitude": 35.692661,
+   "longitude": 139.699646,
+   "coordPrecision": "verified",
+   "confidence": "high",
+   "confidenceNote": null,
+   "source": "https://shinjuku-omoide.com/"
+  },
+  {
+   "id": "d6w30shin02",
+   "anchorStop": "Shinjuku Granbell Hotel",
+   "name": "Shinjuku Gyoen — Shinjuku Gate",
+   "nameJp": "新宿御苑 新宿門",
+   "category": "sight",
+   "priceTier": "¥",
+   "stayMinutes": 60,
+   "legs": [
+    {
+     "mode": "walk",
+     "minutes": 14
+    }
+   ],
+   "timeWindow": "day",
+   "note": "内藤町11, 14 min south: 58 ha of French, English and Japanese garden. Reachable and unusable on this itinerary — it opens 09:00 and the last entry is well before the group's 18:30 arrival, while the coach leaves at 08:30 the next morning. Closed Mondays. Listed so nobody plans it.",
+   "latitude": 35.688934,
+   "longitude": 139.705597,
+   "coordPrecision": "verified",
+   "confidence": "medium",
+   "confidenceNote": "Coordinate verified from the 内藤町11 address point (the Shinjuku Gate side). The exact 2026 seasonal closing and last-admission times were not read at source this session, but every published window ends before 18:30.",
+   "source": "https://www.env.go.jp/garden/shinjukugyoen/"
+  },
+  {
+   "id": "d6w30shin03",
+   "anchorStop": "Shinjuku Granbell Hotel",
+   "name": "Isetan Shinjuku main store",
+   "nameJp": "伊勢丹新宿店",
+   "category": "cosme",
+   "priceTier": "¥¥¥",
+   "stayMinutes": 60,
+   "legs": [
+    {
+     "mode": "walk",
+     "minutes": 10
+    }
+   ],
+   "timeWindow": "day",
+   "note": "新宿3-14-1, 10 min south-east: the country's strongest department-store beauty floor, plus a basement food hall for edible gifts that survive a flight. Trades to 20:00, so a 18:30 check-in leaves a real 60-90 minutes. Tax-free at the till until 1 Nov 2026 — bring the passport.",
+   "latitude": 35.691074,
+   "longitude": 139.704651,
+   "coordPrecision": "verified",
+   "confidence": "medium",
+   "confidenceNote": "Coordinate verified from the 新宿3-14-1 address point; the 20:00 closing time is the store's long-standing hour but was not re-read at source this session.",
+   "source": "https://www.mistore.jp/store/shinjuku.html"
+  },
+  {
+   "id": "d6w30shin04",
+   "anchorStop": "Shinjuku Granbell Hotel",
+   "name": "Shinjuku Suehirotei",
+   "nameJp": "新宿末廣亭",
+   "category": "sight",
+   "priceTier": "¥¥",
+   "stayMinutes": 60,
+   "legs": [
+    {
+     "mode": "walk",
+     "minutes": 10
+    }
+   ],
+   "timeWindow": "night",
+   "note": "新宿3-6-12, 10 min south-east: a 1946 timber vaudeville hall with tatami side galleries, running rakugo daily. The evening bill is 16:45-20:30 and the house discounts late entry — around ¥3,000 from about 18:00 and ¥2,000 after the interval, which fits a 18:30 check-in almost exactly.",
+   "latitude": 35.691212,
+   "longitude": 139.705963,
+   "coordPrecision": "verified",
+   "confidence": "high",
+   "confidenceNote": null,
+   "source": "https://suehirotei.com/"
+  },
+  {
+   "id": "d6w30shin05",
+   "anchorStop": "Shinjuku Granbell Hotel",
+   "name": "Shin-Okubo Korea Town",
+   "nameJp": "新大久保コリアンタウン",
+   "category": "food",
+   "priceTier": "¥¥",
+   "stayMinutes": 60,
+   "legs": [
+    {
+     "mode": "walk",
+     "minutes": 10
+    }
+   ],
+   "timeWindow": "night",
+   "note": "百人町1-10, 10 min north: Okubo-dori and the lanes off it, dense with Korean grills, tteokbokki windows, K-cosmetics and halal groceries. Open late, cheaper than Kabukicho, and the most practical answer if part of a 35-strong group wants halal or non-Japanese food after 20:00.",
+   "latitude": 35.699718,
+   "longitude": 139.699951,
+   "coordPrecision": "verified",
+   "confidence": "high",
+   "confidenceNote": null,
+   "source": "https://www.city.shinjuku.lg.jp/"
+  },
+  {
+   "id": "d6w30shin06",
+   "anchorStop": "Shinjuku Granbell Hotel",
+   "name": "Shinjuku Central Park & Kumano Shrine",
+   "nameJp": "新宿中央公園・熊野神社",
+   "category": "rest",
+   "priceTier": "¥",
+   "stayMinutes": 30,
+   "legs": [
+    {
+     "mode": "walk",
+     "minutes": 27
+    }
+   ],
+   "timeWindow": "day",
+   "note": "西新宿2-11, 27 min west — the far edge of the radius. Open ground under the skyscrapers with the Niagara falls wall, a shrine, and a lawn deck. Genuinely useful only as a 06:30 walk before an 08:30 coach; at night the far end is poorly lit and not worth the 54-minute round trip.",
+   "latitude": 35.691105,
+   "longitude": 139.687698,
+   "coordPrecision": "verified",
+   "confidence": "high",
+   "confidenceNote": null,
+   "source": "https://www.city.shinjuku.lg.jp/"
+  },
+  {
+   "id": "d6w30shin07",
+   "anchorStop": "Shinjuku Granbell Hotel",
+   "name": "Takashimaya Times Square & Hands Shinjuku",
+   "nameJp": "新宿高島屋タイムズスクエア",
+   "category": "shopping",
+   "priceTier": "¥¥¥",
+   "stayMinutes": 60,
+   "legs": [
+    {
+     "mode": "walk",
+     "minutes": 21
+    }
+   ],
+   "timeWindow": "day",
+   "note": "渋谷区千駄ヶ谷5-24-2, 21 min south by the New South Gate: a full department store with Hands stacked above it — the best one-building answer for practical gifts, stationery and luggage odds and ends. Trades to about 20:00, so it is an arrival-evening trip or nothing.",
+   "latitude": 35.684647,
+   "longitude": 139.703354,
+   "coordPrecision": "verified",
+   "confidence": "medium",
+   "confidenceNote": "Coordinate verified from the 千駄ヶ谷5-24-2 address point; the store's 2026 hours and Hands' floor range were not read at source this session.",
+   "source": "https://www.takashimaya.co.jp/shinjuku/"
+  },
+  {
+   "id": "d6w30shin09",
+   "anchorStop": "Shinjuku Granbell Hotel",
+   "name": "BEAMS JAPAN Shinjuku",
+   "nameJp": "ビームス ジャパン 新宿",
+   "category": "cloth",
+   "priceTier": "¥¥¥",
+   "stayMinutes": 40,
+   "legs": [
+    {
+     "mode": "walk",
+     "minutes": 11
+    }
+   ],
+   "timeWindow": "day",
+   "note": "新宿3-32-6, 11 min south: seven floors curated entirely around Japanese making — regional craft, prefectural food, reissued workwear and a gallery. The most gift-dense building in the radius that is not a department store. Trades to about 20:00, so it fits the arrival evening.",
+   "latitude": 35.690388,
+   "longitude": 139.703949,
+   "coordPrecision": "verified",
+   "confidence": "medium",
+   "confidenceNote": "Coordinate verified from the 新宿3-32-6 address point; the floor count and 2026 trading hours were not re-read at source this session.",
+   "source": "https://www.beams.co.jp/beamsjapan/"
+  }
+ ]
+}

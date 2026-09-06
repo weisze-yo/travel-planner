@@ -1,0 +1,272 @@
+{
+ "batch": "topup-naruko",
+ "places": [
+  {
+   "id": "c6843df359bd",
+   "anchorStop": "Ooedo Onsen Monogatari Naruko Onsen Kounkaku",
+   "name": "Taki-no-Yu public bath",
+   "nameJp": "滝の湯",
+   "category": "rest",
+   "priceTier": "¥",
+   "stayMinutes": 40,
+   "legs": [
+    {
+     "mode": "walk",
+     "minutes": 17
+    }
+   ],
+   "note": "RE-SOURCED AND NOW THE ONLY BATH IN TOWN THAT NIGHT, because Waseda Sajiki-yu is shut 3–10 Sep. Osaki City: 字湯元47番地1, 7:30–21:00, 最終受け付けは20時30分, 大人300円・子ども100円, tel 080-9633-7930. Aomori-hiba tubs, no showers, no taps, no soap sold. Osaki warns 「一度に多くの人が入浴できない昔ながらの施設です」 — it cannot take 35 people at once.",
+   "latitude": 38.741577,
+   "longitude": 140.717851,
+   "coordPrecision": "verified",
+   "timeWindow": "night",
+   "confidence": "high",
+   "confidenceNote": null,
+   "source": "https://www.city.osaki.miyagi.jp/shisei/soshikikarasagasu/narukosogoushisho/chiikishinkoka/4/1/3347.html"
+  },
+  {
+   "id": "06cb9e37e31a",
+   "anchorStop": "Ooedo Onsen Monogatari Naruko Onsen Kounkaku",
+   "name": "Waseda Sajiki-yu public bath — CLOSED on our dates",
+   "nameJp": "鳴子・早稲田桟敷湯",
+   "category": "rest",
+   "priceTier": "¥",
+   "stayMinutes": 40,
+   "legs": [
+    {
+     "mode": "walk",
+     "minutes": 15
+    }
+   ],
+   "note": "CLOSED 令和8年9月3日（木）～9月10日（木）for 源泉関係のメンテナンス工事 — both our night (9 Sep) and our dawn (10 Sep). Confirmed on BOTH official association sites, which add 「源泉の状況により、休業期間が延長となる場合もございます」. This kills the held advice that it is the late bath for when dinner runs long: it is a locked door. Normally 9:00–21:30, ¥660/¥330.",
+   "latitude": 38.743698,
+   "longitude": 140.717239,
+   "coordPrecision": "verified",
+   "timeWindow": "night",
+   "confidence": "high",
+   "confidenceNote": null,
+   "source": "https://www.naruko.gr.jp/%E9%B3%B4%E5%AD%90%E6%B8%A9%E6%B3%89%E3%83%BB%E6%97%A9%E7%A8%B2%E7%94%B0%E6%A1%9F%E6%95%B7%E6%B9%AF%E3%80%80%E8%87%A8%E6%99%82%E4%BC%91%E6%A5%AD%E3%81%AE%E3%81%8A%E7%9F%A5%E3%82%89%E3%81%9B%E3%80%80/"
+  },
+  {
+   "id": "tnk-lawson",
+   "anchorStop": "Ooedo Onsen Monogatari Naruko Onsen Kounkaku",
+   "name": "Lawson Osaki Naruko Onsen",
+   "nameJp": "ローソン 大崎鳴子温泉店",
+   "category": "food",
+   "priceTier": "¥",
+   "stayMinutes": 10,
+   "legs": [
+    {
+     "mode": "walk",
+     "minutes": 2
+    }
+   ],
+   "note": "THE 24-HOUR ASSUMPTION IS NOW CONFIRMED: Miyagi's own shop registry prints 営業時間「24時間営業」/ 定休日「なし」. 〒989-6821 鳴子温泉車湯92-45, tel 0229-25-5307 — same 車湯 aza and same postcode as the hotel, 78 m by my measurement, so their 70 m stands. Buy soap and a towel here for Taki-no-Yu, which sells neither. Fits 22:00 and 06:00 alike.",
+   "latitude": 38.748689,
+   "longitude": 140.726959,
+   "coordPrecision": "verified",
+   "timeWindow": "24h",
+   "confidence": "high",
+   "confidenceNote": null,
+   "source": "https://www.miya-pass.jp/shop/?s=jJZVrkF3"
+  },
+  {
+   "id": "tnk-konpa",
+   "anchorStop": "Ooedo Onsen Monogatari Naruko Onsen Kounkaku",
+   "name": "Izakaya Konpa",
+   "nameJp": "居酒屋 こんぱ",
+   "category": "food",
+   "priceTier": "¥¥",
+   "stayMinutes": 75,
+   "legs": [
+    {
+     "mode": "walk",
+     "minutes": 15
+    }
+   ],
+   "note": "THE BEST EVENING FIT, and the source map gave it no hours and no coordinate. Association's own page: 〒989-6822 字新屋敷120-1, tel 0229-81-1778, 18:00〜23:00, 定休日 日曜日・月曜日. Wed 9 Sep is a WEDNESDAY, so it is open and covers the whole 20:00–22:30 window. 馬刺、牛タン、焼き鳥、ラーメン、一品料理 by a fireplace. Their Sun/Mon nights in August would have found it shut.",
+   "latitude": 38.743282,
+   "longitude": 140.717728,
+   "coordPrecision": "approximate",
+   "timeWindow": "night",
+   "confidence": "high",
+   "confidenceNote": null,
+   "source": "https://www.welcome-naruko.jp/shop/%E3%81%93%E3%82%93%E3%81%B1"
+  },
+  {
+   "id": "tnk-kokeshi-izakaya",
+   "anchorStop": "Ooedo Onsen Monogatari Naruko Onsen Kounkaku",
+   "name": "Shunsai Nomidokoro Kokeshi",
+   "nameJp": "旬菜 呑処 こけし",
+   "category": "food",
+   "priceTier": "¥¥",
+   "stayMinutes": 60,
+   "legs": [
+    {
+     "mode": "walk",
+     "minutes": 12
+    }
+   ],
+   "note": "THEY OMITTED THE CLOSING TIME: it is 18:30–21:00, not merely 'from 18:30', so only 20:00–21:00 of our window is live. 〒989-6822 字新屋敷26, tel 0229-83-3122, 30 seats — it cannot seat 35, and rooms take 10–20. Billed as the most 山菜 in Naruko, ¥3,000–3,999. Their 0.6 km / 7–8 min is the walk from the STATION; from our door it is 0.76 km straight, about 12 min down and 15 back up.",
+   "latitude": 38.74585,
+   "longitude": 140.718231,
+   "coordPrecision": "approximate",
+   "timeWindow": "night",
+   "confidence": "medium",
+   "confidenceNote": "Hours agree across Gnavi and Tabelog but no operator page publishes them, and the closing day is unresolved — Tabelog renders it as no fixed day while the source map said irregular; phone 0229-83-3122 before walking down. Coordinate is the GSI 新屋敷26番地 banchi centroid, not the shopfront.",
+   "source": "https://r.gnavi.co.jp/e5bc3u100000/"
+  },
+  {
+   "id": "tnk-egaho",
+   "anchorStop": "Ooedo Onsen Monogatari Naruko Onsen Kounkaku",
+   "name": "Egaho Shokudo — shuts before our window",
+   "nameJp": "ゑがほ食堂",
+   "category": "food",
+   "priceTier": "¥",
+   "stayMinutes": 40,
+   "legs": [
+    {
+     "mode": "walk",
+     "minutes": 17
+    }
+   ],
+   "note": "WRONG ON BOTH COUNTS. Not late: association page gives 9:00〜15:00、17:00〜20:00（ラストオーダー19:30）— last order is half an hour BEFORE our window opens, and 09:00 is after the coach leaves. Not ramen and gyoza either: it is a soba-and-donburi 食堂 whose own picks are カツ丼、天丼、山菜きのこそば. 〒989-6823 字湯元2-4, tel 0229-83-3074, 不定休. The name is ゑがほ in old kana.",
+   "latitude": 38.742847,
+   "longitude": 140.715912,
+   "coordPrecision": "approximate",
+   "timeWindow": "day",
+   "confidence": "high",
+   "confidenceNote": null,
+   "source": "https://www.welcome-naruko.jp/shop/%E3%82%91%E3%81%8C%E3%81%BB%E9%A3%9F%E5%A0%82"
+  },
+  {
+   "id": "tnk-narukokyo",
+   "anchorStop": "Ooedo Onsen Monogatari Naruko Onsen Kounkaku",
+   "name": "Narukokyo Rest House and Mihara-dai lookout",
+   "nameJp": "鳴子峡レストハウス・見晴台",
+   "category": "sight",
+   "priceTier": "¥",
+   "stayMinutes": 30,
+   "legs": [
+    {
+     "mode": "bus",
+     "minutes": 12
+    }
+   ],
+   "note": "'ALWAYS ACCESSIBLE' IS WRONG: Osaki City gives the rest house and both 遊歩道 sections as 9時から16時まで, 28 Apr–late Nov. Only the CAR PARK is 終日, and it is FREE in September — the 大型バス1,500円 tariff runs 11 Oct–24 Nov. 12 bus bays, so our coach fits. Rockfall has cut the trail to ~350 m from 中山平口 and ~230 m from 鳴子口, out and back. tel 0229-87-2050.",
+   "latitude": 38.729013,
+   "longitude": 140.690887,
+   "coordPrecision": "verified",
+   "timeWindow": "day",
+   "confidence": "high",
+   "confidenceNote": null,
+   "source": "https://www.city.osaki.miyagi.jp/shisei/soshikikarasagasu/narukosogoushisho/chiikishinkoka/5/3/3087.html"
+  },
+  {
+   "id": "tnk-narukokyo-sept",
+   "anchorStop": "Ooedo Onsen Monogatari Naruko Onsen Kounkaku",
+   "name": "Naruko Gorge on 10 September — green, and how to reach it",
+   "nameJp": "鳴子峡（9月の姿とアクセス）",
+   "category": "sight",
+   "priceTier": "¥",
+   "stayMinutes": 20,
+   "legs": [
+    {
+     "mode": "bus",
+     "minutes": 12
+    }
+   ],
+   "note": "NO AUTUMN COLOUR: 紅葉 is 例年10月中旬から11月中旬, five to nine weeks after us. On 10 Sep it is a deep-green basalt gorge, and Osaki warns 「気象状況により予告なく閉鎖する場合があります」 in peak typhoon month. 3.75 km straight from our door, about 6 km by road. NEITHER WINDOW WORKS — it opens at 09:00 and the coach leaves 08:30. Only an en-route stop west toward Ginzan does.",
+   "latitude": 38.729013,
+   "longitude": 140.690887,
+   "coordPrecision": "verified",
+   "timeWindow": "day",
+   "confidence": "high",
+   "confidenceNote": null,
+   "source": "https://www.city.osaki.miyagi.jp/kanko/sizen/4/6032.html"
+  },
+  {
+   "id": "n2kk-footbath",
+   "anchorStop": "Ooedo Onsen Monogatari Naruko Onsen Kounkaku",
+   "name": "Naruko Onsen Station footbaths and hand bath",
+   "nameJp": "ぽっぽの足湯・ゆめぐり広場手湯・湯めぐり駐車場足湯",
+   "category": "rest",
+   "priceTier": "¥",
+   "stayMinutes": 20,
+   "legs": [
+    {
+     "mode": "walk",
+     "minutes": 17
+    }
+   ],
+   "note": "UPGRADED FROM THE ASSOCIATION ITSELF: 「温泉街には足湯が３ヵ所、手湯が１ヵ所あります…ご利用は無料です」, naming 湯めぐり駐車場足湯, ぽっぽの足湯 (駅前), リブマート大崎足湯 and ゆめぐり広場手湯 — a third footbath we did not hold. NOT ON THE MAIN STREET: Osaki City places ゆめぐり広場 inside the station's 湯めぐり駐車場. Free is official; ALWAYS-OPEN still is not.",
+   "latitude": 38.742847,
+   "longitude": 140.715912,
+   "coordPrecision": "approximate",
+   "timeWindow": "24h",
+   "confidence": "medium",
+   "confidenceNote": "Free status, the count of three footbaths plus one hand bath and all four names are official; NO source publishes any opening or closing hour for any of them, so 'always open' stays unverified — as the source map's own medium rating conceded. Coordinate is the GSI 湯元2番地 block centroid, not a single fixture.",
+   "source": "https://www.welcome-naruko.jp/%E9%B3%B4%E5%AD%90%E6%B8%A9%E6%B3%89%E3%81%AE%E6%A5%BD%E3%81%97%E3%81%BF%E6%96%B9-%E8%A1%97%E6%AD%A9%E3%81%8D"
+  },
+  {
+   "id": "6391d4b9279e",
+   "anchorStop": "Ooedo Onsen Monogatari Naruko Onsen Kounkaku",
+   "name": "Naruko Onsen Shrine stairway",
+   "nameJp": "鳴子温泉神社",
+   "category": "sight",
+   "priceTier": "¥",
+   "stayMinutes": 25,
+   "legs": [
+    {
+     "mode": "walk",
+     "minutes": 20
+    }
+   ],
+   "note": "THEIR 07:00–22:00 IS INVENTED — no official or operator page publishes any 参拝時間. Free, ungated, 湯元31-1, the steep stone steps starting by Taki-no-Yu's torii, about 200 m south of the station. DAWN YES, EVENING NO: sunrise 10 Sep is 05:15 so 06:00–07:30 is full daylight, while 22:00 on the 9th is three hours past civil dusk on an unlit stairway. 御朱印 only when the 社務所 is staffed.",
+   "latitude": 38.740635,
+   "longitude": 140.716403,
+   "coordPrecision": "verified",
+   "timeWindow": "dawn",
+   "confidence": "high",
+   "confidenceNote": null,
+   "source": "https://www.welcome-naruko.jp/%E9%B3%B4%E5%AD%90%E6%B8%A9%E6%B3%89%E3%81%AE%E6%A5%BD%E3%81%97%E3%81%BF%E6%96%B9-%E8%A1%97%E6%AD%A9%E3%81%8D"
+  }
+ ],
+ "shopping": [
+  {
+   "id": "tnk-sh-bathkit",
+   "anchorStop": "Ooedo Onsen Monogatari Naruko Onsen Kounkaku",
+   "name": "Towel and body soap for Taki-no-Yu",
+   "nameJp": "フェイスタオル・ボディソープ（入浴用）",
+   "placeLabel": "Lawson Osaki Naruko Onsen (ローソン 大崎鳴子温泉店), 78 m from the hotel door",
+   "category": "shopping",
+   "priceTier": "¥",
+   "stayMinutes": 10,
+   "legs": [
+    {
+     "mode": "walk",
+     "minutes": 2
+    }
+   ],
+   "estimate": 600,
+   "note": "Taki-no-Yu has no showers, no taps and sells no soap or shampoo, and on 9 Sep it is the only public bath open in town. This 24-hour Lawson is 78 m from the door and carries both. Buy before walking down: nothing else in Naruko is open at 20:00. A face towel plus a small body soap runs about ¥600 together.",
+   "latitude": 38.748689,
+   "longitude": 140.726959,
+   "coordPrecision": "verified",
+   "timeWindow": "24h",
+   "confidence": "medium",
+   "confidenceNote": "The store and its 24-hour operation are confirmed on Miyagi's official shop registry, but no per-store stock list or price is published — the ¥600 is the usual konbini price band for a face towel plus a travel-size body soap, not a quoted figure.",
+   "source": "https://www.miya-pass.jp/shop/?s=jJZVrkF3"
+  }
+ ],
+ "appliesAfter": {
+  "order": "Import this batch LAST, after every day*-*.json, new-hotels.json and expand-*.json.",
+  "why": "It carries corrections that deliberately REUSE existing record ids, verified against a third-party trip map (slm37102/tohoku-trip-map, a different trip on different dates). Last write wins, so applying this batch earlier would let the older value overwrite the corrected one.",
+  "correctsExistingIds": [
+   "06cb9e37e31a",
+   "6391d4b9279e",
+   "c6843df359bd",
+   "n2kk-footbath"
+  ]
+ }
+}

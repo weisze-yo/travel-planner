@@ -1,0 +1,1323 @@
+{
+ "batch": "day4-aizu",
+ "places": [
+  {
+   "id": "a11832f66607",
+   "anchorStop": "Goshikinuma Ponds",
+   "name": "Bishamon-numa deck",
+   "nameJp": "毘沙門沼 展望デッキ",
+   "category": "sight",
+   "priceTier": "¥",
+   "stayMinutes": 25,
+   "legs": [
+    {
+     "mode": "walk",
+     "minutes": 5
+    }
+   ],
+   "note": "Five minutes in on the paved barrier-free path from the east trailhead — the tourism association's own line is that Bishamon-numa is about 5 minutes from the car park. Largest of the 20-odd ponds; cobalt-emerald from suspended volcanic minerals, with Mt Bandai's blown-out crater wall behind. This is the one pond the 60-minute slot actually buys.",
+   "latitude": 37.655884,
+   "longitude": 140.092468,
+   "coordPrecision": "verified",
+   "timeWindow": "day",
+   "confidence": "high",
+   "confidenceNote": null,
+   "source": "https://www.urabandai-inf.com/?page_id=141"
+  },
+  {
+   "id": "bef42f0431b6",
+   "anchorStop": "Goshikinuma Ponds",
+   "name": "The heart-marked carp",
+   "nameJp": "ハートの鯉",
+   "category": "sight",
+   "priceTier": "¥",
+   "stayMinutes": 10,
+   "legs": [
+    {
+     "mode": "walk",
+     "minutes": 6
+    }
+   ],
+   "note": "A carp with a heart-shaped marking that cruises the shallows off the first deck — a local good-luck story that keeps 35 people looking down instead of drifting up the trail. Free, no set position; it is a fish, so treat it as a maybe rather than a promise.",
+   "latitude": 37.656429,
+   "longitude": 140.0919,
+   "coordPrecision": "approximate",
+   "timeWindow": "day",
+   "confidence": "medium",
+   "confidenceNote": "The carp is real local folklore but no official page fixes it to a coordinate; the position is the shallow water off the first deck, not a surveyed point, and sightings are not guaranteed.",
+   "source": "https://www.urabandai-inf.com/?page_id=141"
+  },
+  {
+   "id": "7c7162422691",
+   "anchorStop": "Goshikinuma Ponds",
+   "name": "\"Goshikinuma\" soft-serve kiosk",
+   "nameJp": "五色沼売店",
+   "category": "food",
+   "priceTier": "¥",
+   "stayMinutes": 10,
+   "legs": [
+    {
+     "mode": "walk",
+     "minutes": 2
+    }
+   ],
+   "note": "The turquoise \"Goshikinuma\" soft-serve at the east trailhead plaza — bright pond-blue, not matcha, and the standard group-photo prop. The plaza itself runs 09:00–16:30 and never closes for a weekday, so a 10:00 arrival is safe. Cash is the sensible assumption at a trailhead kiosk.",
+   "latitude": 37.655164,
+   "longitude": 140.092636,
+   "coordPrecision": "approximate",
+   "timeWindow": "day",
+   "confidence": "medium",
+   "confidenceNote": "The plaza's hours and phone are from the tourism listing, but the kiosk publishes no price list or coordinate of its own — the position is the trailhead plaza forecourt.",
+   "source": "https://www.fukulabo.net/shop/shop.shtml?s=8164"
+  },
+  {
+   "id": "51fcab58541f",
+   "anchorStop": "Goshikinuma Ponds",
+   "name": "Urabandai Visitor Centre",
+   "nameJp": "裏磐梯ビジターセンター",
+   "category": "sight",
+   "priceTier": "¥",
+   "stayMinutes": 15,
+   "legs": [
+    {
+     "mode": "walk",
+     "minutes": 3
+    }
+   ],
+   "note": "Official hours 09:00–17:00 April–November, closed TUESDAYS (open if the Tuesday is a public holiday, closed the next day instead) — so open on Friday 11 Sep. Free. Its own car park is 70 cars, 5 large buses and 3 accessible bays, usable 24 hours, with free 24-hour toilets including an accessible one. No shop.",
+   "latitude": 37.655896,
+   "longitude": 140.090521,
+   "coordPrecision": "approximate",
+   "timeWindow": "day",
+   "confidence": "high",
+   "confidenceNote": null,
+   "source": "https://urabandai-vc.jp/facility/about/"
+  },
+  {
+   "id": "d4goshiplaza",
+   "anchorStop": "Goshikinuma Ponds",
+   "name": "Goshikinuma-iriguchi Tourist Plaza (east trailhead)",
+   "nameJp": "五色沼入口観光プラザ",
+   "category": "rest",
+   "priceTier": "¥",
+   "stayMinutes": 10,
+   "legs": [
+    {
+     "mode": "walk",
+     "minutes": 1
+    }
+   ],
+   "note": "NEW. The building the coach actually pulls up at: 09:00–16:30, open every day (無休), tel 0241-32-2349, and the 92-space car park the seed refers to. Urabandai Tourism Association desk, discount tickets, maps and postcards — and the last toilets before an hour on the trail. It sells no yama-shio; that is at the WEST end.",
+   "latitude": 37.65539,
+   "longitude": 140.09239,
+   "coordPrecision": "approximate",
+   "timeWindow": "day",
+   "confidence": "medium",
+   "confidenceNote": "Hours, phone and the 92-space count are from the Fukulabo tourism listing; the coordinate is placed at the trailhead forecourt between the visitor centre and the kiosk because the GSI geocoder resolves this rural 字 address only to village level.",
+   "source": "https://www.fukulabo.net/shop/shop.shtml?s=8164"
+  },
+  {
+   "id": "d4goshiboat0",
+   "anchorStop": "Goshikinuma Ponds",
+   "name": "Bishamon-numa rowboat pier",
+   "nameJp": "毘沙門沼 手漕ぎボート",
+   "category": "rest",
+   "priceTier": "¥¥",
+   "stayMinutes": 30,
+   "legs": [
+    {
+     "mode": "walk",
+     "minutes": 5
+    }
+   ],
+   "note": "Hand-rowed boats on Bishamon-numa, beside the first deck. The tourism association states only 「手漕ぎボート(冬季休業)」 — running except in winter, so operating on 11 September. Worth naming because it is the one activity here, but it is a 30-minute commitment out of a 60-minute stop: a sub-group option, not a group one.",
+   "latitude": 37.655884,
+   "longitude": 140.092468,
+   "coordPrecision": "approximate",
+   "timeWindow": "day",
+   "confidence": "medium",
+   "confidenceNote": "The association confirms rowboats exist and close only in winter, but publishes no hours, no price and no operator, and the pier has no coordinate of its own — it is placed at the first deck.",
+   "source": "https://www.urabandai-inf.com/?page_id=141"
+  },
+  {
+   "id": "74a30480cbf6",
+   "anchorStop": "Tsuruga Castle (Tsurugajo)",
+   "name": "Honmaru lawn, south-east corner",
+   "nameJp": "本丸 南東",
+   "category": "sight",
+   "priceTier": "¥",
+   "stayMinutes": 25,
+   "legs": [
+    {
+     "mode": "walk",
+     "minutes": 8
+    }
+   ],
+   "note": "THE MAIN GROUP PHOTO SPOT (Mission 3). Stand the group 35–40 m out from the stone base with the keep over their heads, camera another 12–15 m back, looking WNW. Free — the lawn is outside the paid keep, so the photo happens before anyone buys a ticket. No shade at all.",
+   "latitude": 37.488185,
+   "longitude": 139.930651,
+   "coordPrecision": "verified",
+   "timeWindow": "day",
+   "confidence": "high",
+   "confidenceNote": null,
+   "source": "https://www.tsurugajo.com/tsurugajo/tensyukaku/"
+  },
+  {
+   "id": "220ee8048864",
+   "anchorStop": "Tsuruga Castle (Tsurugajo)",
+   "name": "The keep and its red tiles",
+   "nameJp": "天守閣・赤瓦",
+   "category": "sight",
+   "priceTier": "¥",
+   "stayMinutes": 45,
+   "legs": [
+    {
+     "mode": "walk",
+     "minutes": 9
+    }
+   ],
+   "note": "Five tiers roofed in akagawara relaid in 2011 — the only red-tiled castle keep in Japan. Official hours 08:30–17:00, last entry 16:30, 無休 (no closing days). ¥410 adult / ¥150 child, ¥520 with Rinkaku, and ¥360 each for parties of 30–99. Five floors of local-history museum with no lift and a one-way staircase: 45 minutes for 35 people is tight but real.",
+   "latitude": 37.48769,
+   "longitude": 139.92984,
+   "coordPrecision": "verified",
+   "timeWindow": "day",
+   "confidence": "high",
+   "confidenceNote": null,
+   "source": "https://www.tsurugajo.com/tsurugajo/tensyukaku/"
+  },
+  {
+   "id": "eb8ee5390367",
+   "anchorStop": "Tsuruga Castle (Tsurugajo)",
+   "name": "Rokabashi covered bridge",
+   "nameJp": "廊下橋",
+   "category": "sight",
+   "priceTier": "¥",
+   "stayMinutes": 15,
+   "legs": [
+    {
+     "mode": "walk",
+     "minutes": 12
+    }
+   ],
+   "note": "Rebuilt in 2018 and free — it sits outside the paid area, on the west side of the Honmaru. From the middle of the deck you look down on the tallest of the fan-sloped ogi-no-kobai stone walls, which is the best non-keep frame in the park and the only one where 35 people are not fighting for the same angle.",
+   "latitude": 37.486542,
+   "longitude": 139.929063,
+   "coordPrecision": "verified",
+   "timeWindow": "day",
+   "confidence": "high",
+   "confidenceNote": null,
+   "source": "https://www.tsurugajo.com/tsurugajo/"
+  },
+  {
+   "id": "d8d4384afd4d",
+   "anchorStop": "Tsuruga Castle (Tsurugajo)",
+   "name": "Rinkaku tea house",
+   "nameJp": "茶室麟閣",
+   "category": "food",
+   "priceTier": "¥",
+   "stayMinutes": 25,
+   "legs": [
+    {
+     "mode": "walk",
+     "minutes": 10
+    }
+   ],
+   "note": "Confirmed on the operator's own page: the 呈茶 tea service runs 08:30–16:00 and costs 「一服：600円 お抹茶と薯蕷饅頭付」 — matcha with a jouyo-manju of grated yam and rice flour. The 13:10–14:40 slot sits comfortably inside it. This is the seated, shaded alternative for anyone who should not climb five floors of keep.",
+   "latitude": 37.488319,
+   "longitude": 139.92984,
+   "coordPrecision": "approximate",
+   "timeWindow": "day",
+   "confidence": "medium",
+   "confidenceNote": "Hours and the ¥600 price are from the Aizu-Wakamatsu Tourism Bureau's own Rinkaku notice, but no official page gives the tea house a coordinate — it is placed in the south-east of the Honmaru enclosure.",
+   "source": "https://www.tsurugajo.com/2021/03/28/20997/"
+  },
+  {
+   "id": "cffc35de0c30",
+   "anchorStop": "Tsuruga Castle (Tsurugajo)",
+   "name": "Kozuyu",
+   "nameJp": "こづゆ",
+   "category": "food",
+   "priceTier": "¥¥",
+   "stayMinutes": 20,
+   "legs": [
+    {
+     "mode": "walk",
+     "minutes": 1
+    }
+   ],
+   "note": "Aizu's ceremonial soup — dried-scallop dashi with kikurage, wheat gluten, taro and carrot, served in a shallow lacquer dish. A dish, not a venue: the reliable place to meet it on this itinerary is Tsurugajo Kaikan at the north gate, where the coach parks, alongside wappa-meshi and sauce katsudon.",
+   "latitude": 37.489838,
+   "longitude": 139.933334,
+   "coordPrecision": "verified",
+   "timeWindow": "day",
+   "confidence": "medium",
+   "confidenceNote": "Kozuyu is a dish rather than a place; the coordinate is Tsurugajo Kaikan's GSI-verified street address, and no page prints a kozuyu price for that kitchen.",
+   "source": "https://www.aizukanko.com/gourmet/186"
+  },
+  {
+   "id": "168b76c0f10b",
+   "anchorStop": "Tsuruga Castle (Tsurugajo)",
+   "name": "Aizu sauce katsudon",
+   "nameJp": "会津ソースカツ丼",
+   "category": "food",
+   "priceTier": "¥¥",
+   "stayMinutes": 30,
+   "legs": [
+    {
+     "mode": "walk",
+     "minutes": 1
+    }
+   ],
+   "note": "Pork cutlet dipped in Worcestershire-style sauce over rice with shredded cabbage — Aizu's signature bowl, and named on the Aizu-Wakamatsu tourism association's own listing for Tsurugajo Kaikan along with wappa-meshi and Kitakata ramen. Pork, so not an option for anyone in the group avoiding it.",
+   "latitude": 37.489838,
+   "longitude": 139.933334,
+   "coordPrecision": "verified",
+   "timeWindow": "day",
+   "confidence": "medium",
+   "confidenceNote": "The dish is confirmed on the tourism association's Tsurugajo Kaikan page but no price is printed there; the coordinate is the Kaikan's GSI-verified address, not a separate restaurant entrance.",
+   "source": "https://www.aizukanko.com/gourmet/186"
+  },
+  {
+   "id": "d4tsuruganag",
+   "anchorStop": "Tsuruga Castle (Tsurugajo)",
+   "name": "Minamihashiri-Nagaya and Hoshii-yagura (roofed corridor)",
+   "nameJp": "南走長屋・干飯櫓",
+   "category": "sight",
+   "priceTier": "¥",
+   "stayMinutes": 15,
+   "legs": [
+    {
+     "mode": "walk",
+     "minutes": 9
+    }
+   ],
+   "note": "NEW, and the reason it matters: this is the only ROOFED space inside the castle. A single-storey running corridor about 18 m long and 2.5 m wide linking the keep to the Hoshii-yagura, the largest of the castle's eleven corner turrets — reconstructed 1998–2000 with Edo techniques and entered on the keep ticket. Narrow, so two rows maximum: the in-park rain option.",
+   "latitude": 37.48733,
+   "longitude": 139.92995,
+   "coordPrecision": "approximate",
+   "timeWindow": "day",
+   "confidence": "medium",
+   "confidenceNote": "The city's own reconstruction page gives the dimensions, dates and the fact it is a roofed corridor, but publishes no coordinate; the point is placed immediately south of the keep, and the corridor's suitability for a 35-person photo is my judgement, not a venue statement.",
+   "source": "https://www.city.aizuwakamatsu.fukushima.jp/docs/2018071100053/"
+  },
+  {
+   "id": "d4tsurutetsu",
+   "anchorStop": "Tsuruga Castle (Tsurugajo)",
+   "name": "Tetsumon gate",
+   "nameJp": "鉄門",
+   "category": "sight",
+   "priceTier": "¥",
+   "stayMinutes": 10,
+   "legs": [
+    {
+     "mode": "walk",
+     "minutes": 9
+    }
+   ],
+   "note": "The 表門 — the front gate from the obikuruwa into the Honmaru, and where Matsudaira Katamori directed the 1868 Boshin War defence. Worth ten minutes for one specific frame: standing in the gate opening you get the red akagawara tiles at close to eye level rather than as a distant roofline, which is the detail shot the wide group photo cannot give you.",
+   "latitude": 37.487528,
+   "longitude": 139.929985,
+   "coordPrecision": "approximate",
+   "timeWindow": "day",
+   "confidence": "medium",
+   "confidenceNote": "The gate's identity and role are confirmed by the city and tourism-bureau pages, but neither publishes a coordinate and neither states whether the passage beneath is roofed, so it is not offered as the rain fallback.",
+   "source": "https://www.ntt-east.co.jp/fukushima/fbrari/004/02.html"
+  },
+  {
+   "id": "dee70ad12e48",
+   "anchorStop": "Ouchi-juku",
+   "name": "Miharashidai lookout",
+   "nameJp": "見晴台",
+   "category": "sight",
+   "priceTier": "¥",
+   "stayMinutes": 25,
+   "legs": [
+    {
+     "mode": "walk",
+     "minutes": 14
+    }
+   ],
+   "note": "Free, always open, up stone steps behind Koyasu Kannon at the top of the street — the only place you get the whole unbroken double row of thatch in one frame. Budget 20–25 minutes round trip from the top of the street, and about 14 minutes each way from the coach park. Steps get slippery in rain.",
+   "latitude": 37.335618,
+   "longitude": 139.861804,
+   "coordPrecision": "verified",
+   "timeWindow": "day",
+   "confidence": "high",
+   "confidenceNote": null,
+   "source": "https://ouchi-juku.com/"
+  },
+  {
+   "id": "f7248e95eb9c",
+   "anchorStop": "Ouchi-juku",
+   "name": "Misawaya (negi soba)",
+   "nameJp": "大内宿 三澤屋",
+   "category": "food",
+   "priceTier": "¥¥",
+   "stayMinutes": 45,
+   "legs": [
+    {
+     "mode": "walk",
+     "minutes": 7
+    }
+   ],
+   "note": "CORRECTION to the seed's \"usually closed Wednesdays\": the operator's own site prints 営業時間「午前9時30分～午後4時」 and 定休日「なし」 — no regular closing day. Tel 0241-68-2927. Takato soba eaten with a whole raw spring onion for chopsticks, in a 350-year-old farmhouse. Kitchen shuts at 16:00, so it is the one soba house still serving after 15:30.",
+   "latitude": 37.333889,
+   "longitude": 139.861111,
+   "coordPrecision": "verified",
+   "timeWindow": "day",
+   "confidence": "high",
+   "confidenceNote": null,
+   "source": "https://www.misawaya.jp/access.php"
+  },
+  {
+   "id": "544e6b9d8704",
+   "anchorStop": "Ouchi-juku",
+   "name": "Yamagataya",
+   "nameJp": "大内宿 山形屋",
+   "category": "food",
+   "priceTier": "¥¥",
+   "stayMinutes": 40,
+   "legs": [
+    {
+     "mode": "walk",
+     "minutes": 8
+    }
+   ],
+   "note": "Own site: 「AM 9:00〜PM 3:30」, 不定休, tel 0241-68-2932. It is the only Ouchi-juku house with a published GROUP page — 10 to 50 people, set menus ¥1,700/¥1,800, ¥2,000/¥2,100, ¥2,300/¥2,400, ¥2,700/¥2,800, CASH ONLY, everyone must order the same set, and no last-minute bookings. Closes 15:30, i.e. 50 minutes after the coach arrives.",
+   "latitude": 37.334306,
+   "longitude": 139.860918,
+   "coordPrecision": "approximate",
+   "timeWindow": "day",
+   "confidence": "high",
+   "confidenceNote": null,
+   "source": "https://ouchijuku-yamagataya.com/reservation/"
+  },
+  {
+   "id": "cf52295ef726",
+   "anchorStop": "Ouchi-juku",
+   "name": "Man'ya (grilled iwana)",
+   "nameJp": "萬屋",
+   "category": "food",
+   "priceTier": "¥",
+   "stayMinutes": 15,
+   "legs": [
+    {
+     "mode": "walk",
+     "minutes": 6
+    }
+   ],
+   "note": "Stick-grilled iwana char salted and stood around an irori hearth — the smell that carries down the street, and the quickest thing to eat here at about ¥550. Take it standing; there is no queue management for 35 people, so send four or five at a time.",
+   "latitude": 37.333041,
+   "longitude": 139.861651,
+   "coordPrecision": "approximate",
+   "timeWindow": "day",
+   "confidence": "low",
+   "confidenceNote": "Man'ya publishes nothing of its own and the aggregator listings for it are empty templates — hours, closing days, phone and the ~¥550 price are all uncorroborated, and the coordinate is a street-position estimate.",
+   "source": "https://co-trip.jp/spot/855080"
+  },
+  {
+   "id": "f3ae598d5f82",
+   "anchorStop": "Ouchi-juku",
+   "name": "Ajidokoro Minatoya (shingoro)",
+   "nameJp": "味処 みなとや",
+   "category": "food",
+   "priceTier": "¥",
+   "stayMinutes": 25,
+   "legs": [
+    {
+     "mode": "walk",
+     "minutes": 6
+    }
+   ],
+   "note": "CORRECTION to the seed's \"09:30–17:00\": the listing prints 「10時30分～16時(15時30分LO)」, 不定休, tel 0241-68-2933, at 大内山本34. Shingoro is half-pounded rice on a skewer coated in perilla-miso and charcoal-grilled. Last orders 15:30 — 50 minutes into a slot that runs to 16:40, so this is a front-of-slot stop.",
+   "latitude": 37.333773,
+   "longitude": 139.859545,
+   "coordPrecision": "approximate",
+   "timeWindow": "day",
+   "confidence": "medium",
+   "confidenceNote": "Hours, phone and address are from the Rurubu listing; the shop's own site would not serve to this session, and no source gives a coordinate or a shingoro price.",
+   "source": "https://rurubu.jp/andmore/spot/80005529"
+  },
+  {
+   "id": "a8a775ff71aa",
+   "anchorStop": "Ouchi-juku",
+   "name": "The thatched street and its water channels",
+   "nameJp": "茅葺きの町並み",
+   "category": "sight",
+   "priceTier": "¥",
+   "stayMinutes": 45,
+   "legs": [
+    {
+     "mode": "walk",
+     "minutes": 5
+    }
+   ],
+   "note": "About 40 kayabuki farmhouses in a 500 m double row, a national Important Preservation District since 1981, with open water channels running down both sides. Free, no gate, walkable at any hour — the association's own guidance is only that 「午前9時から午後4時位まで」 is when most shops are open. In September the thatch is green-season grey-brown; there is no autumn colour.",
+   "latitude": 37.333677,
+   "longitude": 139.860918,
+   "coordPrecision": "verified",
+   "timeWindow": "day",
+   "confidence": "high",
+   "confidenceNote": null,
+   "source": "https://ouchi-juku.com/"
+  },
+  {
+   "id": "d4ouchikinta",
+   "anchorStop": "Ouchi-juku",
+   "name": "Kintaro Soba Yamamotoya",
+   "nameJp": "大内宿 金太郎そば 山本屋",
+   "category": "food",
+   "priceTier": "¥¥",
+   "stayMinutes": 40,
+   "legs": [
+    {
+     "mode": "walk",
+     "minutes": 9
+    }
+   ],
+   "note": "NEW, and it corrects a seed claim: the shop is 不定休, NOT closed Thursdays-and-Fridays. Its own site lists September's closures as 2, 3, 4, 8, 10, 17, 18, 24, 25 and 30 — Friday 11 September is NOT among them, so it is OPEN. But soba is 11:00–15:00 「蕎麦が無くなり次第終了」 and souvenirs 9:30–16:00, so a 14:40 arrival gets the shop, not the kitchen. Kurumi soba ¥1,550. Tel 0241-68-2912.",
+   "latitude": 37.334,
+   "longitude": 139.86145,
+   "coordPrecision": "approximate",
+   "timeWindow": "day",
+   "confidence": "medium",
+   "confidenceNote": "Hours, prices, phone and the September closure dates are from the shop's own site, but the dates carry 「※天候やその他理由により急遽お休みになる場合があります」 and no source gives the shop a coordinate — it is placed on the street from its 大内字山本15 address.",
+   "source": "https://www.yamamotoya15.com/"
+  },
+  {
+   "id": "d4ouchipark0",
+   "anchorStop": "Ouchi-juku",
+   "name": "Ouchi-juku coach park",
+   "nameJp": "大内宿 駐車場",
+   "category": "rest",
+   "priceTier": "¥¥",
+   "stayMinutes": 10,
+   "legs": [
+    {
+     "mode": "walk",
+     "minutes": 1
+    }
+   ],
+   "note": "NEW. Shimogo Town's published rates: 大型バス ¥3,000, microbus ¥1,500, car ¥500, motorcycle free — cash on arrival, and the association states 「バス駐車場は、到着順でに案内となっております。予約は受け付けておりません」, so no reservation is possible and a busy Friday means whatever bay is free. Fees part-fund the thatch repairs. Allow 5 minutes' walk to the bottom of the street.",
+   "latitude": 37.33192,
+   "longitude": 139.86,
+   "coordPrecision": "approximate",
+   "timeWindow": "day",
+   "confidence": "medium",
+   "confidenceNote": "Fees are from Shimogo Town's official page and the no-reservation rule from the association's own site, but neither publishes the lot's capacity or coordinate — the point is placed at the street's south entrance.",
+   "source": "https://shimogo.jp/sightseeing/oouchijuku/"
+  },
+  {
+   "id": "d4ouchikoyas",
+   "anchorStop": "Ouchi-juku",
+   "name": "Koyasu Kannon-do",
+   "nameJp": "子安観音堂",
+   "category": "sight",
+   "priceTier": "¥",
+   "stayMinutes": 10,
+   "legs": [
+    {
+     "mode": "walk",
+     "minutes": 12
+    }
+   ],
+   "note": "NEW. The small hall at the top of the street, at the foot of the stone steps up to the Miharashidai — free, always open, a Kannon of safe childbirth. Practical value: it is the landmark that tells people they have reached the climb, and the flat ground in front of it is where anyone not doing the steps should wait.",
+   "latitude": 37.335339,
+   "longitude": 139.861543,
+   "coordPrecision": "approximate",
+   "timeWindow": "day",
+   "confidence": "low",
+   "confidenceNote": "The hall's existence and position at the foot of the Miharashidai steps are confirmed by the tourism listing, but no official page gives it hours, a dedication or a coordinate — the point is interpolated between the top of the street and the verified lookout.",
+   "source": "https://rurubu.jp/andmore/spot/80005550"
+  },
+  {
+   "id": "ec229901d7fd",
+   "anchorStop": "Ooedo Onsen Monogatari Premium Kinugawa Kanko Hotel",
+   "name": "Lobby — the yukata photo spot",
+   "nameJp": "ロビー",
+   "category": "sight",
+   "priceTier": "¥",
+   "stayMinutes": 35,
+   "legs": [
+    {
+     "mode": "walk",
+     "minutes": 1
+    }
+   ],
+   "note": "MISSION 2 happens here, in hotel-provided yukata, at dinner time. Shoot with the front-desk wall and the self-playing grand piano behind you, NOT the entrance doors — after 18:00 the glass is black and 35 backlit faces are gone. It is the same room as the Premium Lounge and the yukata rack, so it is also the busiest room in the building at 18:40.",
+   "latitude": 36.829525,
+   "longitude": 139.717556,
+   "coordPrecision": "verified",
+   "timeWindow": "night",
+   "confidence": "high",
+   "confidenceNote": null,
+   "source": "https://www.ooedoonsen.jp/kinugawa-kanko/",
+   "retired": true,
+   "retiredReason": "Superseded on the 4 Sep 2026 app screenshots. Night 4 is now a different property.",
+   "retiredReplacedBy": "Kinugawa Onsen Hana no Yado Matsuya"
+  },
+  {
+   "id": "be86fd1fc62b",
+   "anchorStop": "Ooedo Onsen Monogatari Premium Kinugawa Kanko Hotel",
+   "name": "Lobby yukata rack",
+   "nameJp": "浴衣コーナー（フロント横）",
+   "category": "cloth",
+   "priceTier": "¥",
+   "stayMinutes": 15,
+   "legs": [
+    {
+     "mode": "walk",
+     "minutes": 1
+    }
+   ],
+   "note": "Confirmed: adult yukata are NOT in the rooms — 「フロントの浴衣コーナーにて貸し出しをしております」 — while children's yukata ARE laid out in the room. That single fact is why Mission 2 is a lobby shoot, and it is also the bottleneck: 35 people choosing and sizing colour yukata at the front desk is the slow step, not the walk to the restaurant.",
+   "latitude": 36.829346,
+   "longitude": 139.717621,
+   "coordPrecision": "approximate",
+   "timeWindow": "night",
+   "confidence": "high",
+   "confidenceNote": null,
+   "source": "https://www.yukoyuko.net/6561",
+   "retired": true,
+   "retiredReason": "Superseded on the 4 Sep 2026 app screenshots. Night 4 is now a different property.",
+   "retiredReplacedBy": "Kinugawa Onsen Hana no Yado Matsuya"
+  },
+  {
+   "id": "14fb5925b0ae",
+   "anchorStop": "Ooedo Onsen Monogatari Premium Kinugawa Kanko Hotel",
+   "name": "Restaurant IWATO buffet",
+   "nameJp": "レストラン IWATO",
+   "category": "food",
+   "priceTier": "¥¥",
+   "stayMinutes": 90,
+   "legs": [
+    {
+     "mode": "walk",
+     "minutes": 2
+    }
+   ],
+   "note": "The buffet off a 14 m live kitchen: Utsunomiya gyoza, Tochigi nira soba, Nasu chicken yurinchi, kuroge wagyu sukiyaki, market-direct sashimi and sushi, grilled unagi. Pork on the line and no halal certification — tell the hotel a week ahead if anyone needs pork-free plates. Sittings are ASSIGNED AT CHECK-IN, not published: 「繁忙期の夕食開始時間は6部制となる場合があります」.",
+   "latitude": 36.828889,
+   "longitude": 139.718284,
+   "coordPrecision": "approximate",
+   "timeWindow": "night",
+   "confidence": "medium",
+   "confidenceNote": "The dish list is from the operator's own material and the sitting rule is the operator's notice reproduced by JTB, but no official page prints the actual sitting times, a 90-minute limit or a floor position for the restaurant.",
+   "source": "https://www.jtb.co.jp/kokunai-hotel/htl/3310046/plan/",
+   "retired": true,
+   "retiredReason": "Superseded on the 4 Sep 2026 app screenshots. Night 4 is now a different property.",
+   "retiredReplacedBy": "Kinugawa Onsen Hana no Yado Matsuya"
+  },
+  {
+   "id": "2ac84e4a40bd",
+   "anchorStop": "Ooedo Onsen Monogatari Premium Kinugawa Kanko Hotel",
+   "name": "Nokke-don (breakfast)",
+   "nameJp": "のっけ丼",
+   "category": "food",
+   "priceTier": "¥¥",
+   "stayMinutes": 40,
+   "legs": [
+    {
+     "mode": "walk",
+     "minutes": 2
+    }
+   ],
+   "note": "Build-your-own seafood rice bowl — the breakfast signature at IWATO, and the reason to take the 07:30 sitting rather than skip it before the 08:30 coach to Kegon Falls. Raw fish at breakfast is not everyone's Saturday; the buffet also runs a Western line.",
+   "latitude": 36.828889,
+   "longitude": 139.718284,
+   "coordPrecision": "approximate",
+   "timeWindow": "dawn",
+   "confidence": "medium",
+   "confidenceNote": "Nokke-don is named in the operator's own buffet material but no page prints breakfast times for this property; the coordinate is the restaurant's estimated position, not a published one.",
+   "source": "https://www.jtb.co.jp/kokunai-hotel/htl/3310046/",
+   "retired": true,
+   "retiredReason": "Superseded on the 4 Sep 2026 app screenshots. Night 4 is now a different property.",
+   "retiredReplacedBy": "Kinugawa Onsen Hana no Yado Matsuya"
+  },
+  {
+   "id": "0abf71302fe1",
+   "anchorStop": "Ooedo Onsen Monogatari Premium Kinugawa Kanko Hotel",
+   "name": "Premium Lounge",
+   "nameJp": "プレミアムラウンジ",
+   "category": "rest",
+   "priceTier": "¥",
+   "stayMinutes": 45,
+   "legs": [
+    {
+     "mode": "walk",
+     "minutes": 1
+    }
+   ],
+   "note": "Free coffee, soft drinks and alcohol, a manga corner and cool-down seating — included in the stay, and where 35 people will actually end up, because nothing commercial in Kinugawa is open after 20:00. It is the SAME room as the yukata rack and the group photo, so time the shoot against lounge traffic rather than fighting it.",
+   "latitude": 36.830334,
+   "longitude": 139.718874,
+   "coordPrecision": "approximate",
+   "timeWindow": "night",
+   "confidence": "medium",
+   "confidenceNote": "The lounge and its free drinks are confirmed on the operator's own feature page, but its opening hours are not published there and the coordinate is an estimate inside the hotel footprint — the seed's 14:00–22:00 window is uncorroborated.",
+   "source": "https://www.ooedoonsen.jp/article/feature/?slug=lounge-kinugawa-kanko",
+   "retired": true,
+   "retiredReason": "Superseded on the 4 Sep 2026 app screenshots. Night 4 is now a different property.",
+   "retiredReplacedBy": "Kinugawa Onsen Hana no Yado Matsuya"
+  },
+  {
+   "id": "48d9e8c2caa9",
+   "anchorStop": "Ooedo Onsen Monogatari Premium Kinugawa Kanko Hotel",
+   "name": "Fureai Bridge",
+   "nameJp": "ふれあい橋",
+   "category": "sight",
+   "priceTier": "¥",
+   "stayMinutes": 20,
+   "legs": [
+    {
+     "mode": "walk",
+     "minutes": 2
+    }
+   ],
+   "note": "Ninety metres from the door: a pedestrian Vierendeel-truss plaza bridge with giant oni murals on the stair walls and the Kinuta mascot statues, floodlit at night, free and open 24 hours. The outdoor fallback for the yukata reel — but taking 35 borrowed yukata onto a public bridge needs the hotel's say-so first.",
+   "latitude": 36.8298461,
+   "longitude": 139.7185099,
+   "coordPrecision": "verified",
+   "timeWindow": "24h",
+   "confidence": "high",
+   "confidenceNote": null,
+   "source": "https://www.ooedoonsen.jp/kinugawa-kanko/sightseeing/",
+   "retired": true,
+   "retiredReason": "Superseded on the 4 Sep 2026 app screenshots. Night 4 is now a different property.",
+   "retiredReplacedBy": "Kinugawa Onsen Hana no Yado Matsuya"
+  },
+  {
+   "id": "0c0376682b44",
+   "anchorStop": "Ooedo Onsen Monogatari Premium Kinugawa Kanko Hotel",
+   "name": "Takimi Bridge — the abandoned hotels",
+   "nameJp": "滝見橋・廃墟ホテル群",
+   "category": "sight",
+   "priceTier": "¥",
+   "stayMinutes": 30,
+   "legs": [
+    {
+     "mode": "walk",
+     "minutes": 17
+    }
+   ],
+   "note": "Five derelict riverside hotels stacked on the east cliff, seen in one sweep from the resort's only suspension bridge, 1.3 km north — including this hotel's own east annexe, closed in 2008. The deck is wooden, unlit and it sways, so dawn or daylight only. There is a coach bay and toilets beside it, which makes it a ten-minute stop on Saturday's way out rather than a night walk.",
+   "latitude": 36.8384482,
+   "longitude": 139.7204465,
+   "coordPrecision": "verified",
+   "timeWindow": "dawn",
+   "confidence": "medium",
+   "confidenceNote": "The bridge, the ruins and the coach bay are all confirmed, but the 2008 closure of the east annexe and the count of five buildings come from tourism write-ups rather than an operator statement.",
+   "source": "https://www.ooedoonsen.jp/kinugawa-kanko/sightseeing/",
+   "retired": true,
+   "retiredReason": "Superseded on the 4 Sep 2026 app screenshots. Night 4 is now a different property.",
+   "retiredReplacedBy": "Kinugawa Onsen Hana no Yado Matsuya"
+  },
+  {
+   "id": "d4kinucoach0",
+   "anchorStop": "Ooedo Onsen Monogatari Premium Kinugawa Kanko Hotel",
+   "name": "Front entrance and coach bay",
+   "nameJp": "玄関前・バス乗降場",
+   "category": "rest",
+   "priceTier": "¥",
+   "stayMinutes": 5,
+   "legs": [
+    {
+     "mode": "walk",
+     "minutes": 1
+    }
+   ],
+   "note": "NEW, and it corrects the seed: the hotel publishes 「有（無料）200台 予約不要」 — 200 FREE on-site spaces, no booking — so the coach does not need to park off-site. Fix the 08:30 pick-up point here at the front door. Address 〒321-2526 栃木県日光市鬼怒川温泉滝359-2, resolved by the GSI geocoder to this point.",
+   "latitude": 36.829346,
+   "longitude": 139.717621,
+   "coordPrecision": "verified",
+   "timeWindow": "24h",
+   "confidence": "high",
+   "confidenceNote": null,
+   "source": "https://msearch.gsi.go.jp/address-search/AddressSearch?q=%E6%A0%83%E6%9C%A8%E7%9C%8C%E6%97%A5%E5%85%89%E5%B8%82%E9%AC%BC%E6%80%92%E5%B7%9D%E6%B8%A9%E6%B3%89%E6%BB%9D359-2",
+   "retired": true,
+   "retiredReason": "Superseded on the 4 Sep 2026 app screenshots. Night 4 is now a different property.",
+   "retiredReplacedBy": "Kinugawa Onsen Hana no Yado Matsuya"
+  }
+ ],
+ "mustSee": [
+  {
+   "id": "141398c9c21e",
+   "anchorStop": "Tsuruga Castle (Tsurugajo)",
+   "title": "Tsurugajo Honmaru — south-east corner",
+   "nameJp": "鶴ヶ城 本丸南東",
+   "tag": "DAY 4 · MISSION 3",
+   "summary": "THE MAIN GROUP PHOTO for all ~35 people. Five tiers of white plaster under the only red akagawara-tiled keep in Japan, relaid in 2011, standing over an open green lawn. The lawn is outside the paid area, so this happens before anyone buys a ¥360 group ticket — shoot it first, at 13:15–13:35, then let people into the keep.",
+   "whereToFind": "Stand in the SOUTH-EAST corner of the Honmaru lawn and face WNW, so the keep is across the corner rather than square-on. Put the back row 35–40 m out from the stone base — close enough that the five tiers still read above their heads, far enough that a 24–28 mm equivalent gets base and roof in. Camera another 12–15 m behind that, on the lawn, at chest height. Split 35 people into three rows: back row standing on the slight rise, middle standing, front row crouching, and stagger every head into the gap in front. Banner across the front row at waist height, held taut by the two people at the ends. Expose for faces and add fill flash — at 13:15 the sun is SW at azimuth 220°, altitude 50°, i.e. behind the keep, so faces go dark if you meter for the sky. Do NOT drift round to due east for a square-on shot; that puts the sun straight down the lens.",
+   "latitude": 37.488185,
+   "longitude": 139.930651,
+   "coordPrecision": "verified",
+   "confidence": "high",
+   "confidenceNote": null,
+   "source": "https://www.tsurugajo.com/tsurugajo/tensyukaku/"
+  },
+  {
+   "id": "d4msrainfall",
+   "anchorStop": "Tsuruga Castle (Tsurugajo)",
+   "title": "Mission 3 rain fallback — Tsurugajo Kaikan",
+   "nameJp": "鶴ヶ城会館（雨天時の代替）",
+   "tag": "DAY 4 · MISSION 3 RAIN FALLBACK",
+   "summary": "September is peak typhoon month and the Honmaru lawn has no cover of any kind, so Mission 3 needs a declared indoor plan before the coach leaves Urabandai. The answer is the building the coach is already parked at: Tsurugajo Kaikan at the north gate, 追手町4-47, a group-tour facility with 20 large-bus bays and 100 car spaces, open 09:30–17:00 from 11 April to 10 November, tel 0242-28-2288.",
+   "whereToFind": "PRIMARY: inside Tsurugajo Kaikan, backed against the souvenir-hall wall rather than the glazed frontage, with the group in three rows on the flat floor and the banner across the front. Zero transfer — the coach is already in the bay, so a rain call costs nothing but the castle backdrop. SECONDARY, if you must keep the keep in shot: the Minamihashiri-Nagaya, the roofed corridor about 18 m long and 2.5 m wide running south from the keep to the Hoshii-yagura, reconstructed 1998–2000 and entered on the keep ticket. Stand the group ALONG the corridor in two rows only — 2.5 m of width will not take three — and shoot down its length so the red tiles show through the open side. It is on the main visitor route, so it blocks traffic; send a marshal to each end.",
+   "latitude": 37.489838,
+   "longitude": 139.933334,
+   "coordPrecision": "verified",
+   "confidence": "medium",
+   "confidenceNote": "The Kaikan's address, hours, phone and 20-bus capacity are published by the Aizu-Wakamatsu tourism association, and the corridor's dimensions and date by the city, but neither venue states that it permits a 35-person group photograph — clear it with the Kaikan and the ticket office on arrival.",
+   "source": "https://www.aizukanko.com/gourmet/186"
+  },
+  {
+   "id": "d4mstetsumon",
+   "anchorStop": "Tsuruga Castle (Tsurugajo)",
+   "title": "The red akagawara tiles at eye level, from the Tetsumon",
+   "nameJp": "鉄門から見る赤瓦",
+   "tag": "DAY 4",
+   "summary": "The one detail frame the wide group photo cannot give you: the akagawara tiles close enough to see that they are individually red-glazed clay, not a paint job. Tsurugajo is the only castle keep in Japan roofed this way, relaid in 2011, and from the Tetsumon — the 表門 into the Honmaru, where Matsudaira Katamori directed the 1868 defence — the roofline sits far lower in the frame than it does from the lawn.",
+   "whereToFind": "Walk to the Tetsumon, the gate between the obikuruwa and the Honmaru, and stand IN the gate opening on the Honmaru side, looking back up and left at the keep. Frame the tiles against the white plaster wall so the red reads against white rather than against sky — sky at 13:30 is bright enough to grey the tiles out. A short telephoto, 70–100 mm equivalent, from the gate; do not try this from the lawn, where the roof is too far away to resolve. Two people at a time: this is the main pedestrian route into the Honmaru.",
+   "latitude": 37.487528,
+   "longitude": 139.929985,
+   "coordPrecision": "approximate",
+   "confidence": "medium",
+   "confidenceNote": "The gate's identity and the 2011 tile relaying are both documented, but no official page gives the Tetsumon a coordinate, so the point is placed on the Honmaru's south-east approach.",
+   "source": "https://www.ntt-east.co.jp/fukushima/fbrari/004/02.html"
+  },
+  {
+   "id": "042811b8b27d",
+   "anchorStop": "Tsuruga Castle (Tsurugajo)",
+   "title": "Rokabashi covered bridge",
+   "nameJp": "廊下橋",
+   "tag": "DAY 4",
+   "summary": "Rebuilt in 2018, free, and outside the paid area on the west side of the park — from it you look down on the tallest of the castle's fan-sloped ogi-no-kobai stone walls. The best non-keep frame at Tsurugajo, and the only one where nobody is queuing behind you.",
+   "whereToFind": "Stand at the MIDDLE of the bridge deck, on the upstream (north) parapet, and shoot down and left along the fan slope so the curve of the wall runs diagonally out of the frame — square-on flattens it into a grey wall. From the same spot, turning right gives you the moat with the keep's red roof over the trees. Twelve minutes' walk from the north-gate coach bay, so pair it with the keep exit at 14:00–14:30 rather than making a separate trip.",
+   "latitude": 37.486542,
+   "longitude": 139.929063,
+   "coordPrecision": "verified",
+   "confidence": "high",
+   "confidenceNote": null,
+   "source": "https://www.tsurugajo.com/tsurugajo/"
+  },
+  {
+   "id": "0b0785ae4189",
+   "anchorStop": "Ouchi-juku",
+   "title": "Ouchi-juku Miharashidai lookout",
+   "nameJp": "大内宿 見晴台",
+   "tag": "DAY 4",
+   "summary": "Free, always open, and the only place you get the whole unbroken double row of thatch in one frame with the water channels running down both sides of the street. This slot is the best light of the whole trip: the sun drops from altitude 37° at 14:40 to 14° at 16:40, so you get raking side light and then genuinely golden light from about 16:00. September thatch is green-season grey-brown — no autumn colour.",
+   "whereToFind": "Walk the full 500 m of street to the top, past Koyasu Kannon-do, then up the stone steps behind it — 20–25 minutes round trip from the top of the street, about 14 minutes each way from the coach park. On the platform, stand at the FRONT RAIL and face SOUTH, back down the street, so the two rows of thatch converge away from you. Take it from the left-hand end of the rail rather than the centre: the centre puts the modern car park in the far distance dead-centre in frame, the left end hides it behind the last roof. Steps are stone and get slippery — in rain, skip it and shoot the street at ground level instead.",
+   "latitude": 37.335618,
+   "longitude": 139.861804,
+   "coordPrecision": "verified",
+   "confidence": "high",
+   "confidenceNote": null,
+   "source": "https://ouchi-juku.com/"
+  },
+  {
+   "id": "55fb00cd1fd1",
+   "anchorStop": "Goshikinuma Ponds",
+   "title": "Bishamon-numa first deck",
+   "nameJp": "毘沙門沼 展望デッキ",
+   "tag": "DAY 4",
+   "summary": "Cobalt-emerald water — the colour comes from weather, season, viewing angle and suspended volcanic minerals, not from foliage, which is why this stop works in September when nothing has turned — with the blown-out crater wall of Mt Bandai directly behind. Five minutes in on the paved barrier-free path, and realistically the only pond a 60-minute stop reaches from the east trailhead.",
+   "whereToFind": "First viewing deck on the paved path, five minutes from the plaza car park. Stand at the LEFT-HAND (south) end of the deck rail and face SOUTH-WEST, so the crater wall fills the top third and the water the bottom two-thirds; the right-hand end puts a tree into the crater. For a group, put people ON the deck against the rail and shoot from the path behind — do not step off the boardwalk onto the bank for a better angle, the visitor centre's own instruction is 「コースの外には出ないようにしましょう」. Before noon the sun is still in the eastern half of the sky and behind you as you face the crater, so faces are front-lit and no fill is needed.",
+   "latitude": 37.655884,
+   "longitude": 140.092468,
+   "coordPrecision": "verified",
+   "confidence": "high",
+   "confidenceNote": null,
+   "source": "https://urabandai-vc.jp/trekking/1goshiki/"
+  },
+  {
+   "id": "c07f12a723dc",
+   "anchorStop": "Ooedo Onsen Monogatari Premium Kinugawa Kanko Hotel",
+   "title": "Ooedo Kinugawa hotel lobby — the yukata group photo",
+   "nameJp": "鬼怒川観光ホテル ロビー",
+   "tag": "DAY 4 · MISSION 2",
+   "summary": "MISSION 2: the yukata group photo and the ViTrox reel, all ~35 people, in hotel-provided yukata, in this lobby at dinner time. The app also puts the Company Reel on \"Day3 with Yukata\" under Mission 4 — a contradiction the app itself prints and does not resolve; Day 4 is where the yukata actually are, because this is the hotel whose yukata come off a rack beside the front desk rather than out of the wardrobe.",
+   "whereToFind": "Stand the group with the FRONT-DESK WALL and the self-playing grand piano behind them, facing into the room — never with the entrance doors behind them, because after 18:00 that glass is black and it will silhouette every one of 35 faces. Three rows, back row on the step if there is one, and alternate the colour yukata along each row so the group does not read as one flat block; obi knots to the front, left lapel over right on everyone. Lock white balance to about 3000–3200K rather than leaving it on auto, which will swing every frame between the warm lobby and the cool glass. This is the same room as the Premium Lounge and the yukata rack, so post two people to hold the shooting lane while the rest of the hotel walks through it.",
+   "latitude": 36.829525,
+   "longitude": 139.717556,
+   "coordPrecision": "verified",
+   "confidence": "medium",
+   "confidenceNote": "The mission, the location and the yukata-from-the-lobby fact are all confirmed, but the workable shooting window depends on which dinner sitting the group is given, and the operator publishes no sitting times — it assigns them at check-in.",
+   "source": "https://www.yukoyuko.net/6561",
+   "retired": true,
+   "retiredReason": "Superseded on the 4 Sep 2026 app screenshots. Night 4 is now a different property.",
+   "retiredReplacedBy": "Kinugawa Onsen Hana no Yado Matsuya"
+  },
+  {
+   "id": "e28effa84c93",
+   "anchorStop": "Ooedo Onsen Monogatari Premium Kinugawa Kanko Hotel",
+   "title": "Fureai Bridge",
+   "nameJp": "ふれあい橋",
+   "tag": "DAY 4",
+   "summary": "Ninety metres from the hotel door: a pedestrian-only plaza bridge on a nationally rare Vierendeel truss, with giant oni murals painted up the stair walls and the Kinuta mascot statues on the deck, floodlit at night. Free, no gate, 24 hours — the outdoor fallback for the yukata reel, and the one place in Kinugawa still worth walking to after 20:00.",
+   "whereToFind": "Cross the bridge to the FAR (east) abutment and shoot back west along the deck, so the truss lines converge and the floodlit hotel wall sits behind the group — the mid-deck position gives you sky on both sides and nothing to read against. For the oni murals, stand at the bottom of the stair and shoot up the wall with the group on the steps. Sunrise on 12 September is about 05:20, so 05:30–06:30 gives you the bridge completely empty in flat morning light, two minutes from the door. Taking 35 borrowed yukata onto a public bridge needs the hotel's permission first — ask at check-in, not at 19:30.",
+   "latitude": 36.8298461,
+   "longitude": 139.7185099,
+   "coordPrecision": "verified",
+   "confidence": "high",
+   "confidenceNote": null,
+   "source": "https://www.ooedoonsen.jp/kinugawa-kanko/sightseeing/",
+   "retired": true,
+   "retiredReason": "Superseded on the 4 Sep 2026 app screenshots. Night 4 is now a different property.",
+   "retiredReplacedBy": "Kinugawa Onsen Hana no Yado Matsuya"
+  }
+ ],
+ "shopping": [
+  {
+   "id": "287a502083b5",
+   "anchorStop": "Goshikinuma Ponds",
+   "name": "Aizu yama-shio",
+   "nameJp": "会津山塩",
+   "placeLabel": "Urabandai Bussankan (裏磐梯物産館), WEST end of the Goshikinuma trail — not the east trailhead where the coach stops",
+   "estimate": 450,
+   "note": "Salt boiled down from the Oshio Urabandai hot-spring brine. Dry, sealed, indefinite shelf life — one of the few day-4 buys that genuinely survives four more days on a coach and a flight to Malaysia. Be honest with the group: the Bussankan is at the WEST end (09:00–17:00, open daily, seasonal April to mid-November, tel 0241-32-3751); the east trailhead plaza sells maps and postcards.",
+   "coordPrecision": "approximate",
+   "confidence": "medium",
+   "confidenceNote": "Hours, phone and the seasonal closure are from the Urabandai Tourism Association's own Bussankan page, but that page does not print the yama-shio price — the ~¥450 figure carries over from the seed and is unverified, and no coordinate is claimed because the GSI geocoder resolves this rural 字 address only to village level.",
+   "source": "https://www.urabandai-inf.com/?page_id=37427"
+  },
+  {
+   "id": "78defc46103c",
+   "anchorStop": "Tsuruga Castle (Tsurugajo)",
+   "name": "Tsurugajo Kaikan",
+   "nameJp": "鶴ヶ城会館",
+   "placeLabel": "Tsurugajo Kaikan, 追手町4-47 — the north-gate coach base, 8 minutes' walk from the Honmaru",
+   "estimate": 2000,
+   "note": "Where the coach parks and where 35 people should do their Aizu shopping: 20 large-bus bays and 100 car spaces, 09:30–17:00 from 11 April to 10 November, tel 0242-28-2288. The tourism association names Aizu lacquerware, Aizu Hongo-yaki pottery and handmade gelato alongside wappa-meshi and sauce katsudon. Budget about ¥2,000 a head; lacquer and pottery are the items that fly.",
+   "latitude": 37.489838,
+   "longitude": 139.933334,
+   "coordPrecision": "verified",
+   "confidence": "medium",
+   "confidenceNote": "Address, hours, phone and parking are published by the Aizu-Wakamatsu tourism association and the coordinate is GSI-resolved from that address, but the ¥2,000 figure is a per-head basket estimate, not a printed price.",
+   "source": "https://www.aizukanko.com/gourmet/186"
+  },
+  {
+   "id": "f23035d38431",
+   "anchorStop": "Tsuruga Castle (Tsurugajo)",
+   "name": "Akabeko",
+   "nameJp": "赤べこ",
+   "placeLabel": "Tsurugajo Kaikan souvenir hall — the Nozawa Mingei line is the standard one",
+   "estimate": 2255,
+   "note": "The nodding red papier-mâché cow from the Yanaizu legend, a charm against illness and for safe childbirth. Real prices from the Aizu maker's list: Nozawa Mingei akabeko ¥2,255 for a No.1, ¥2,530 No.2, ¥2,915 No.3, ¥3,685 No.4. If ¥2,255 is too much for a colleague gift, the same line does an akabeko pin at ¥385 and a magnet at ¥550. Papier-mâché — light, but crushable, so hand luggage.",
+   "latitude": 37.489838,
+   "longitude": 139.933334,
+   "coordPrecision": "verified",
+   "confidence": "medium",
+   "confidenceNote": "The prices are the Aizu Kosen Koboshi maker's own published list; whether the Kaikan stocks that exact line at those prices is not confirmed, and the coordinate is the Kaikan's, not a specific counter.",
+   "source": "https://aizu-omiyage.com/detail/582/menu.html"
+  },
+  {
+   "id": "03838777210d",
+   "anchorStop": "Tsuruga Castle (Tsurugajo)",
+   "name": "Okiagari-koboshi",
+   "nameJp": "起き上がり小法師",
+   "placeLabel": "Tsurugajo Kaikan souvenir hall, Aizu crafts shelf",
+   "estimate": 160,
+   "note": "The self-righting Aizu doll — tradition is one per family member plus a spare, so this is a multi-buy, not a single. Published maker prices: ¥160 for the 3.5 cm, ¥385 for the 6.5 cm, ¥198 for the kamisama version, ¥418 for the washi Byakkotai one. A family of four therefore costs about ¥800 at the small size. Thumb-sized, papier-mâché, weighs nothing — the best value souvenir on day 4.",
+   "latitude": 37.489838,
+   "longitude": 139.933334,
+   "coordPrecision": "verified",
+   "confidence": "medium",
+   "confidenceNote": "Prices are the Aizu Kosen Koboshi maker's own list; stocking and pricing at Tsurugajo Kaikan specifically is not confirmed, and the coordinate is the Kaikan's.",
+   "source": "https://aizu-omiyage.com/detail/582/menu.html"
+  },
+  {
+   "id": "7d9f3decc2be",
+   "anchorStop": "Tsuruga Castle (Tsurugajo)",
+   "name": "Suehiro sake, from the Kaeigura brewery",
+   "nameJp": "末廣酒造 嘉永蔵",
+   "placeLabel": "Suehiro Shuzo Kaeigura, 日新町12-38 — 1.2 km and about 18 minutes ON FOOT from the north-gate coach bay",
+   "estimate": 1800,
+   "note": "CORRECTION to the seed's \"tour 09:30–16:30\": the brewery runs guided tours at FIXED times — 10:00, 11:00, 13:00, 14:00, 15:00, 16:00 from March to November — closed the 2nd Wednesday (so open Friday 11 Sep), and 「団体様は要予約」, groups must book ahead. Attached café Kura-kissa Anzu 10:00–16:30, L.O. 16:00, closed Wednesdays and the 1st/3rd Thursdays. Tel 0242-27-0002.",
+   "latitude": 37.497765,
+   "longitude": 139.923523,
+   "coordPrecision": "verified",
+   "confidence": "medium",
+   "confidenceNote": "Tour times, closing day, group-booking rule, café hours and phone are all from the brewery's own site and the coordinate is GSI-resolved from its published address, but no bottle price is printed there — ¥1,800 for a 720 ml is an estimate. It is also NOT walkable inside a 90-minute castle stop.",
+   "source": "https://sake-suehiro.co.jp/museum/"
+  },
+  {
+   "id": "977d07731774",
+   "anchorStop": "Tsuruga Castle (Tsurugajo)",
+   "name": "Sharaku, from Miyaizumi Meijo",
+   "nameJp": "宮泉銘醸 寫樂",
+   "placeLabel": "Miyaizumi Meijo, 東栄町8番7号 — about 340 m and 5 minutes' walk from the Tsurugajo Kaikan coach bay",
+   "estimate": 2500,
+   "note": "The label serious drinkers recognise, brewed 340 m from where the coach parks — genuinely the closest brewery to the castle, though about 600 m from the keep rather than \"next to\" it. Brands: 寫樂, 會津宮泉, 玄武. Glass bottles: 720 ml goes in checked baggage wrapped in clothing, and Malaysia's duty-free alcohol allowance is 1 litre, so one bottle each and no more.",
+   "latitude": 37.492104,
+   "longitude": 139.930786,
+   "coordPrecision": "verified",
+   "confidence": "medium",
+   "confidenceNote": "The address is from the company's own site and the coordinate is GSI-resolved from it, but Miyaizumi publishes no shop hours, no phone and no price list, and Sharaku is an allocation label often unavailable at the brewery itself — do not promise the group a bottle.",
+   "source": "https://miyaizumi.co.jp/"
+  },
+  {
+   "id": "8cf52a1d9c2e",
+   "anchorStop": "Ouchi-juku",
+   "name": "Nishin no sansho-zuke (boxed, refrigerated)",
+   "nameJp": "にしんの山椒漬け",
+   "placeLabel": "Ouchi-juku village preserve stalls, and the Aizu makers Nimaruya Yamaguchi Shoten and Aizu Takasago-ya",
+   "estimate": 1100,
+   "note": "DO NOT PACK THIS ONE. Herring cured with sansho pepper in a shallow nishin-bachi — a genuine Aizu preserve, but the boxed version ships 「冷蔵便」 with 「出荷日より14日」, i.e. refrigerated, 14 days. Four more coach days in a September Japan at 28–30°C and then a 7-hour flight is not a shelf life, it is a health hazard. Eat it here, or buy the dry version instead.",
+   "latitude": 37.333677,
+   "longitude": 139.860918,
+   "coordPrecision": "approximate",
+   "confidence": "medium",
+   "confidenceNote": "The refrigerated 14-day shelf life and the ¥4,860/500 g mail-order price are from the maker's own listing; the ~¥1,100 counter estimate for a small Ouchi-juku box is not a printed price, and no Ouchi-juku stall publishes one. Coordinate is the street centre.",
+   "source": "https://fukushima-ichiba.com/products/n03408"
+  },
+  {
+   "id": "d4shopdryhrr",
+   "anchorStop": "Tsuruga Castle (Tsurugajo)",
+   "name": "Nishin sansho-zuke DRY, 70 g",
+   "nameJp": "にしん山椒漬 ドライ 70g",
+   "placeLabel": "Aizu Takasago-ya line — ask the Tsurugajo Kaikan preserves shelf for the ドライ, not the chilled box",
+   "estimate": 864,
+   "note": "NEW, and it is the fix for the item above: the same Aizu preserve made shelf-stable. Aizu Takasago-ya publishes 「にしん 山椒漬 ドライ 70g 864円（税込）」 and a three-kind assortment at ¥1,188. Dried and vacuum-packed, so it takes a coach and a flight the way the chilled box cannot. Still a fish product — declare it on the Malaysian customs form rather than hiding it in a suitcase.",
+   "latitude": 37.489838,
+   "longitude": 139.933334,
+   "coordPrecision": "verified",
+   "confidence": "medium",
+   "confidenceNote": "The product and its ¥864 tax-inclusive price are from the maker's own shop, but the maker does not state a shelf life for the dry version and it is not confirmed that Tsurugajo Kaikan stocks it — the coordinate is the Kaikan's.",
+   "source": "https://www.kintakasago.com/?mode=cate&cbid=95128&csid=0"
+  },
+  {
+   "id": "d4shopmiso3y",
+   "anchorStop": "Ouchi-juku",
+   "name": "Three-year miso, 1,300 g",
+   "nameJp": "三年みそ（大1300g）",
+   "placeLabel": "Kintaro Soba Yamamotoya's own shop counter, 大内字山本15 — souvenir side 09:30–16:00",
+   "estimate": 1500,
+   "note": "NEW. The shop's own listed best-seller, ahead of even its walnut soba: miso aged three years, 1,300 g. Fermented, salty and sealed — it travels, unlike the herring. Buy it on the souvenir side (09:30–16:00), which stays open after the 15:00 soba kitchen shuts, so it is reachable inside a 14:40–16:40 slot. Also stocked: dried kurumi-soba noodles, and Aizu wild oni-gurumi walnuts.",
+   "latitude": 37.334,
+   "longitude": 139.86145,
+   "coordPrecision": "approximate",
+   "confidence": "medium",
+   "confidenceNote": "The product and its 1,300 g size are named as the shop's top seller on its own site, but the site does not print a counter price — ¥1,500 is an estimate — and no source gives the shop a coordinate.",
+   "source": "https://www.yamamotoya15.com/"
+  },
+  {
+   "id": "1ec44dc8cf43",
+   "anchorStop": "Ooedo Onsen Monogatari Premium Kinugawa Kanko Hotel",
+   "name": "Dried Nikko yuba, from the lobby shop",
+   "nameJp": "日光ゆば（乾燥）・売店",
+   "placeLabel": "Hotel lobby shop — the same lap of the room as the yukata rack, open 07:30–20:00",
+   "estimate": 800,
+   "note": "The lobby shop runs 07:30–20:00, so it is open for the whole dinner-and-lounge evening and again before the 08:30 coach. DRIED yuba is the one to buy: light, ambient, keeps for months. Tochiotome strawberry sweets and Nikko Jingoro senbei also fly; the frozen Utsunomiya gyoza does not, and the Ooedo colour yukata is rental only and not for sale — say so before someone tries to pack one.",
+   "latitude": 36.829346,
+   "longitude": 139.717621,
+   "coordPrecision": "approximate",
+   "confidence": "medium",
+   "confidenceNote": "The 07:30–20:00 shop hours are the operator's own figure reproduced by JTB, but no page prints a product list or prices for this shop — the ¥800 dried-yuba figure is a typical Nikko retail estimate, and the coordinate is the hotel's GSI-verified address point rather than a floor position.",
+   "source": "https://www.jtb.co.jp/kokunai-hotel/htl/3310046/",
+   "retired": true,
+   "retiredReason": "Superseded on the 4 Sep 2026 app screenshots. Night 4 is now a different property.",
+   "retiredReplacedBy": "Kinugawa Onsen Hana no Yado Matsuya"
+  }
+ ],
+ "essentials": {
+  "Goshikinuma Ponds": {
+   "hours": {
+    "mon": [
+     [
+      "00:00",
+      "23:59"
+     ]
+    ],
+    "tue": [
+     [
+      "00:00",
+      "23:59"
+     ]
+    ],
+    "wed": [
+     [
+      "00:00",
+      "23:59"
+     ]
+    ],
+    "thu": [
+     [
+      "00:00",
+      "23:59"
+     ]
+    ],
+    "fri": [
+     [
+      "00:00",
+      "23:59"
+     ]
+    ],
+    "sat": [
+     [
+      "00:00",
+      "23:59"
+     ]
+    ],
+    "sun": [
+     [
+      "00:00",
+      "23:59"
+     ]
+    ]
+   },
+   "closedNote": "The Goshikinuma Shizen Tanshoro trail is free, ungated and open at any hour, so the stop itself never closes. Its FACILITIES do: the Urabandai Visitor Centre is 09:00–17:00 April–November and closed TUESDAYS (open if the Tuesday is a public holiday, shut the following day) — open on Friday 11 Sep; the east trailhead plaza is 09:00–16:30 every day; the west-end Urabandai Bussankan is 09:00–17:00 but shuts entirely from about mid-November to mid-April.",
+   "lastAdmission": null,
+   "seasonFrom": "04-01",
+   "seasonTo": "11-15",
+   "groupRate": null,
+   "phone": "0241-32-2850",
+   "phoneNote": "Urabandai Visitor Centre (FAX 0241-32-2851). The east trailhead plaza is 0241-32-2349 and the west-end Bussankan 0241-32-3751.",
+   "website": "https://urabandai-vc.jp/trekking/1goshiki/",
+   "tickets": "Free. No admission, no gate, no ticket office. The only paid thing here is the hand-rowed boat on Bishamon-numa, which the tourism association says runs except in winter but for which it publishes no price.",
+   "transport": "Coach to the east trailhead: 五色沼入口観光プラザ, 92 spaces, plus the Visitor Centre's own lot at 70 cars / 5 LARGE BUSES / 3 accessible bays, usable 24 hours with free 24-hour toilets including an accessible one. Bishamon-numa is about 5 minutes on the paved barrier-free path. THE 60-MINUTE PROBLEM: the full trail is about 4 km and 1h10–1h30 ONE WAY per the visitor centre, so 10:00–11:00 from the east buys Bishamon-numa and little else. If the guide wants three blue ponds in the hour, drop at the WEST end (裏磐梯高原駅 bus stop) instead — Yanagi-numa, then Ao-numa, Ruri-numa and Benten-numa. Public alternative: Aizu Bus to 五色沼入口.",
+   "confidence": "high",
+   "source": "https://urabandai-vc.jp/facility/about/"
+  },
+  "Tsuruga Castle (Tsurugajo)": {
+   "hours": {
+    "mon": [
+     [
+      "08:30",
+      "17:00"
+     ]
+    ],
+    "tue": [
+     [
+      "08:30",
+      "17:00"
+     ]
+    ],
+    "wed": [
+     [
+      "08:30",
+      "17:00"
+     ]
+    ],
+    "thu": [
+     [
+      "08:30",
+      "17:00"
+     ]
+    ],
+    "fri": [
+     [
+      "08:30",
+      "17:00"
+     ]
+    ],
+    "sat": [
+     [
+      "08:30",
+      "17:00"
+     ]
+    ],
+    "sun": [
+     [
+      "08:30",
+      "17:00"
+     ]
+    ]
+   },
+   "closedNote": "無休 — the keep museum has no closing days at all, so there is no date conflict on Friday 11 September. The 13:10–14:40 slot sits well inside 08:30–17:00 and inside the Rinkaku tea service, which the bureau publishes as 08:30–16:00. The park and lawn around the keep are free and open beyond those hours; the Rokabashi bridge is also outside the paid area.",
+   "lastAdmission": "16:30",
+   "seasonFrom": null,
+   "seasonTo": null,
+   "groupRate": "¥360 per adult and ¥135 per child for parties of 30–99 — the band this group of ~35 falls in — against ¥410/¥150 individually. With the Rinkaku tea house it is ¥460 group against ¥520 individual, and 100+ drops to ¥320/¥120/¥410. A three-facility pass covering the keep, Rinkaku and Oyakuen is ¥730. Holders of a Japanese disability certificate enter free. BOOK AS A GROUP: at 35 adults the group rate saves ¥1,750 on the keep alone.",
+   "phone": "0242-27-4005",
+   "phoneNote": "Tsurugajo keep / Aizu-Wakamatsu Tourism Bureau. Tsurugajo Kaikan at the north gate, where the coach parks, is 0242-28-2288.",
+   "website": "https://www.tsurugajo.com/tsurugajo/tensyukaku/",
+   "tickets": "¥410 adult / ¥150 child for the keep; ¥520 combined with the Rinkaku tea house; group rates as above. Rinkaku's tea service is a separate ¥600 for matcha with a jouyo-manju, ordered up to 16:00. Buy the group ticket AFTER the Mission 3 photo — the Honmaru lawn is outside the paid area.",
+   "transport": "〒965-0873 会津若松市追手町1-1. Car parks: Nishi-demaru 200 cars, Higashiguchi 129, Minamiguchi 35, charged ¥200 for the first hour then ¥100 an hour — but none of those is a coach lot. For a large bus use Tsurugajo Kaikan at 追手町4-47, which publishes 20 large-bus bays and 100 car spaces and is 09:30–17:00 from 11 April to 10 November; from there the Honmaru south-east corner is about 8 minutes on foot. NOT walkable in this slot: Suehiro Shuzo Kaeigura is 1.2 km / ~18 minutes each way. Miyaizumi Meijo is, at about 340 m / 5 minutes.",
+   "confidence": "high",
+   "source": "https://www.tsurugajo.com/tsurugajo/tensyukaku/"
+  },
+  "Ouchi-juku": {
+   "hours": {
+    "mon": [
+     [
+      "09:00",
+      "16:00"
+     ]
+    ],
+    "tue": [
+     [
+      "09:00",
+      "16:00"
+     ]
+    ],
+    "wed": [
+     [
+      "09:00",
+      "16:00"
+     ]
+    ],
+    "thu": [
+     [
+      "09:00",
+      "16:00"
+     ]
+    ],
+    "fri": [
+     [
+      "09:00",
+      "16:00"
+     ]
+    ],
+    "sat": [
+     [
+      "09:00",
+      "16:00"
+     ]
+    ],
+    "sun": [
+     [
+      "09:00",
+      "16:00"
+     ]
+    ]
+   },
+   "closedNote": "The hours above are the SHOPS, not the village: the association's own guidance is 「午前9時から午後4時位までお越しいただけますと開店中の店舗が多いです」, and it adds 「各店舗の事情により営業時間が変更となる場合もございます。確実な営業時間については各店舗へ直接お問合せくださいますようお願いいたします」. The street, the water channels and the Miharashidai lookout are free, ungated and open 24 hours. Closures here are 不定休 — irregular dates, not fixed weekdays. Kitchen close times, earliest first: Kintaro Soba Yamamotoya 15:00 (or when the soba runs out), Yamagataya 15:30, Minatoya last orders 15:30, Misawaya 16:00. THE 14:40–16:40 SLOT THEREFORE SPENDS ITS SECOND HALF IN A CLOSING VILLAGE.",
+   "lastAdmission": null,
+   "seasonFrom": null,
+   "seasonTo": null,
+   "groupRate": "No admission fee — the village is free. The charge is parking, and Shimogo Town publishes it as 大型バス ¥3,000, microbus ¥1,500, car ¥500, motorcycle free, cash on arrival. Bus bays are 「到着順」, first come, and 「予約は受け付けておりません」 — no reservation is possible. Yamagataya is the only house with a published group menu: 10–50 people, ¥1,700–¥2,800 a head, CASH ONLY, one set for the whole party, no last-minute bookings.",
+   "phone": "0241-68-3611",
+   "phoneNote": "Ouchi-juku Tourism Association — the number to call for the September shop calendar, because the association itself says individual shops must be asked directly. Shops: Misawaya 0241-68-2927, Yamagataya 0241-68-2932, Minatoya 0241-68-2933, Kintaro Soba Yamamotoya 0241-68-2912.",
+   "website": "https://ouchi-juku.com/",
+   "tickets": "Free. About 40 kayabuki farmhouses, a national Important Preservation District since 1981. Parking fees part-fund 「景観保存、補修、整備」 — the thatch repairs — so they are the de facto entry charge.",
+   "transport": "Coach into the village car park at the south end, then about 5 minutes on foot to the bottom of the 500 m street and about 14 minutes to the Miharashidai. Public alternative if anyone travels separately: the 猿游号 retro bus from Yunokami-Onsen Station, run by Hirota Taxi, 15–30 minutes depending on traffic, sold only as a ¥1,100 free pass (child ¥500), with roughly six departures between 09:00 and 14:53 — the last one leaves before this group even arrives.",
+   "confidence": "high",
+   "source": "https://ouchi-juku.com/"
+  },
+  "Ooedo Onsen Monogatari Premium Kinugawa Kanko Hotel": {
+   "hours": {
+    "mon": [
+     [
+      "00:00",
+      "23:59"
+     ]
+    ],
+    "tue": [
+     [
+      "00:00",
+      "23:59"
+     ]
+    ],
+    "wed": [
+     [
+      "00:00",
+      "23:59"
+     ]
+    ],
+    "thu": [
+     [
+      "00:00",
+      "23:59"
+     ]
+    ],
+    "fri": [
+     [
+      "00:00",
+      "23:59"
+     ]
+    ],
+    "sat": [
+     [
+      "00:00",
+      "23:59"
+     ]
+    ],
+    "sun": [
+     [
+      "00:00",
+      "23:59"
+     ]
+    ]
+   },
+   "closedNote": "Open year-round, 172 rooms, upgraded to Premium in July 2024. Facility hours that are actually published: lobby shop 07:30–20:00, karaoke 15:00–22:00 in 3 rooms. NOT published anywhere by the operator: the bath hours, the Premium Lounge hours, or the dinner buffet sitting times — the seed's 15:00–24:00 / 05:00–10:00 baths and 14:00–22:00 lounge are uncorroborated. The one thing the operator does print about dinner is 「繁忙期の夕食開始時間は6部制となる場合があります。チェックイン時にご案内します」 — up to six sittings on a busy night, told to you at check-in.",
+   "lastAdmission": "18:00",
+   "seasonFrom": null,
+   "seasonTo": null,
+   "groupRate": null,
+   "phone": "0120-333-333",
+   "phoneNote": "Ooedo Onsen Monogatari reservation centre, 09:00–21:00 daily year-round. No direct property line is published on the operator's own booking data.",
+   "website": "https://www.ooedoonsen.jp/kinugawa-kanko/",
+   "tickets": "Dinner and breakfast buffets are in the package. CHECK THE SITTING: the group's 18:30 dinner needs a sitting reserved in advance, because the operator assigns them at check-in and runs up to six on busy nights. Day-use listings put the dinner buffet venue window at 17:00–21:00. Adult yukata are lent from the front-desk corner, not left in the rooms; children's yukata ARE in the room.",
+   "transport": "〒321-2526 栃木県日光市鬼怒川温泉滝359-2, GSI-resolved to 36.829346, 139.717621. About 15 minutes on foot from Kinugawa-Onsen Station and about 30 minutes from the Imaichi IC. Parking is 「有（無料）200台 予約不要」 — 200 free on-site spaces, no reservation — so the coach does NOT need to park off-site, contrary to the seed; still fix the 08:30 pick-up at the front door. Check-in 15:00, and the operator's booking data prints the latest check-in as 18:00 on one channel and 19:00 on two others; check-out 11:00.",
+   "confidence": "medium",
+   "source": "https://www.yukoyuko.net/6561"
+  }
+ },
+ "subRoutes": [
+  {
+   "id": "d4srouchijuku",
+   "anchorStop": "Ouchi-juku",
+   "title": "Ouchi-juku: eat low, climb high, buy on the way down",
+   "startMinutes": 880,
+   "deadlineMinutes": 990,
+   "placeIDs": [
+    "d4ouchipark0",
+    "a8a775ff71aa",
+    "f3ae598d5f82",
+    "d4ouchikoyas",
+    "dee70ad12e48",
+    "544e6b9d8704"
+   ],
+   "note": "Two hours, one 500 m thatched street, and a village that shuts from 15:30. Order is everything. 14:40 off the coach, 5 min to the bottom of the street. 14:45–15:05 walk the thatch northward with the water channels beside you, no stops. 15:05–15:30 EAT NOW, not later: Minatoya's shingoro (last orders 15:30) or Man'ya's stick-grilled iwana, taken standing. 15:30–15:45 up past Koyasu Kannon-do and the stone steps. 15:45–16:15 Miharashidai, facing south down the double row — from 16:00 the sun is at altitude 14–20° and the light is the best of the trip. 16:15–16:30 back down, buy at Yamagataya or the Kintaro Soba souvenir side on the way past, both of which are open on the descent only if you kept to this order. GET-BACK-BY 16:30 at the car park gate, which leaves 10 minutes' slack before the 16:40 departure. In rain, cut the steps entirely — they are stone and slippery — and spend the time in the houses instead.",
+   "confidence": "high",
+   "confidenceNote": null,
+   "source": "https://ouchi-juku.com/"
+  },
+  {
+   "id": "d4srtsurugajo",
+   "anchorStop": "Tsuruga Castle (Tsurugajo)",
+   "title": "Tsurugajo: mission first, ticket second",
+   "startMinutes": 790,
+   "deadlineMinutes": 875,
+   "placeIDs": [
+    "74a30480cbf6",
+    "220ee8048864",
+    "d4tsurutetsu",
+    "eb8ee5390367",
+    "d8d4384afd4d"
+   ],
+   "note": "Ninety minutes and one non-negotiable: Mission 3 is shot BEFORE anyone buys a ticket, because the Honmaru lawn is free and the light is right now. 13:10 off the coach at Tsurugajo Kaikan, 8 min walk in. 13:18–13:40 the group photo from the south-east corner looking WNW, while the sun is still at azimuth 220° rather than 243°. 13:40 buy the ¥360 group ticket. 13:45–14:20 the keep: five floors, no lift, one-way stairs, 5F observation deck over the Aizu basin — pause at the Tetsumon on the way in for the red tiles at eye level. Anyone who should not climb goes to Rinkaku instead, ¥600 matcha, orders to 16:00. 14:20–14:32 out and round to the Rokabashi bridge for the fan-sloped stone wall, then 8 min back to the Kaikan. GET-BACK-BY 14:35 for a 14:40 departure to Ouchi-juku. Souvenir shopping happens at the Kaikan, where the coach already is, not in the park.",
+   "confidence": "high",
+   "confidenceNote": null,
+   "source": "https://www.tsurugajo.com/tsurugajo/tensyukaku/"
+  }
+ ],
+ "outfitByStop": {
+  "Goshikinuma Ponds": {
+   "photo": "The backdrop is a cool, saturated, mid-to-dark frame: cobalt-emerald water, dark conifer on both banks and the grey-brown blown-out crater wall of Mt Bandai. Its colour comes from suspended volcanic minerals rather than foliage, which is the only reason this stop works on 11 September — there is no autumn colour anywhere in Tohoku yet. Because it is before noon the sun is still in the eastern half of the sky and behind you as you face the crater to the south-west, so faces are front-lit and no fill is needed. What reads against that water: warm colours — coral, rust, mustard, white, cream, and anything orange. What disappears completely: teal, petrol blue, forest green and khaki, which merge into either the water or the trees, plus navy in the shade under the canopy. Plain over print: 35 people in patterns is noise at boardwalk distance. Venue rule that matters for photographers — the visitor centre prints 「コースの外には出ないようにしましょう」, so nobody steps off the boardwalk onto the bank for a better angle.",
+   "practical": "At 820 m this is the coolest stop of the day at roughly 22–25°C, but the humidity is unchanged and the boardwalk stays muddy for hours after rain. Only the first five minutes to the Bishamon-numa deck is paved and barrier-free; past that it is rock, root and puddle, so closed shoes with grip, not sandals. Mosquitoes and horseflies are still active in September and the visitor centre notes bears in the area, so stay with the group and stay on the trail. Free 24-hour toilets at the trailhead — use them, because there are none on the trail and the next stop is 1h10 of coach away. Fill water bottles at the plaza; it is the last kiosk for an hour."
+  },
+  "Tsuruga Castle (Tsurugajo)": {
+   "photo": "MISSION 3, and the backdrop makes a specific demand: white lime plaster, grey ashlar stone and a RED akagawara tiled roof over an open green lawn. The red roof is what changes the usual advice — red, maroon, brick, terracotta and hot pink all clash with the only red-tiled keep in Japan, and dark green sinks into the lawn. White, cream, ivory, navy and pale blue are the safe picks, and genuinely light clothing helps, because from the Honmaru at 13:15 the sun is south-west at azimuth 220° and altitude 50°, which puts it behind the keep. That is why the shot is from the SOUTH-EAST corner looking WNW rather than square-on from due east, why it happens at 13:15–13:35 rather than 14:20 when the sun has swung to 243°, and why you expose for faces and add fill flash. Keep sunglasses off and hats off for the frame — at altitude 50° a cap brim blacks out the whole face. The lawn is grass: heels sink into it after rain.",
+   "practical": "The Aizu basin sits at 28–30°C at around 79% humidity and the Honmaru lawn is almost entirely unshaded, so fill water bottles at Tsurugajo Kaikan before walking in, not after. The keep is a stair-heavy five floors with no lift and a one-way route, so anyone who should not climb should be steered to Rinkaku instead — ¥600 for matcha and a jouyo-manju, seated, shaded, service to 16:00. Last toilets are at the Kaikan, 8 minutes' walk from the photo position. Do not plan on walking to Suehiro Shuzo: it is 1.2 km each way, about 18 minutes, and it takes group bookings in advance anyway. Miyaizumi at 340 m is the only brewery genuinely reachable inside the slot."
+  },
+  "Ouchi-juku": {
+   "photo": "Thatch, in September, is grey-brown with a green cast — green-season, not golden, and there is no autumn colour to help you. Add a pale dirt-and-gravel street and running water in open channels down both sides, and the whole frame is low-saturation warm neutral. Beige, khaki, stone, taupe and mid-brown all vanish into it; so does white in the 16:00 sun, which blows out. Wear ONE strong saturated colour — red, cobalt, emerald, deep yellow, black — and you separate instantly from the thatch. This slot is the best light of the trip: the sun falls from altitude 37° at 14:40 to 14° at 16:40, azimuth swinging to about 265°, so from 16:00 it rakes in from almost due west, low across the roofs. Stand your subject on the WEST verge facing east and the low sun is behind you, lighting faces; do the reverse and you get 35 silhouettes. From the Miharashidai, face south so the two rows converge. Rule to brief on the coach: these are private houses, so no walking into doorways and no photographing interiors without asking, and the channels are the residents' water, not a paddling pool.",
+   "practical": "Unshaded gravel for 500 m, and the Miharashidai is a real 20–25 minute round trip up stone steps that get slippery — proper shoes, and drop it in rain. The clock is the real problem: half this slot happens in a closing village, so eat and buy BEFORE 15:30 and climb after. Carry cash. Yamagataya is cash-only for groups, several stalls take nothing else, and there is no ATM in the village. Toilets are at the car park end, so use them before walking up rather than at the top. Closures here are irregular rather than weekly, so the guide should ring 0241-68-3611 for the September calendar a few days out."
+  },
+  "Ooedo Onsen Monogatari Premium Kinugawa Kanko Hotel": {
+   "photo": "MISSION 2, and the wardrobe advice is almost the opposite of the daytime one: the hotel provides the yukata, so nobody's own clothes are in the frame at all. What that means is that contrast has to come from arrangement instead of colour — pull DIFFERENT colours off the self-serve rack and alternate them along each row, or 35 people in the same print read as one flat block. Obi knots to the front, left lapel over right on everyone, and the hotel's slippers on. The backdrop is a warm interior at roughly 3000–3200K, so lock white balance there rather than leaving it on auto, which will swing frame to frame. Shoot with the front-desk wall and the self-playing grand piano behind the group and NEVER with the entrance doors behind them: after 18:00 that glass is black and it silhouettes every face. If the reel moves outdoors to Fureai Bridge, the bridge is floodlit and the sky is not, so faces need a light of their own — and taking 35 borrowed yukata onto a public bridge needs the hotel's permission, asked at check-in.",
+   "practical": "Wear something you can get out of in five minutes, because the itinerary gives you exactly that: 18:20 check-in, 18:30 dinner. The bottleneck is not the walk to the restaurant, it is 35 people choosing and sizing yukata at the front desk — adult yukata are NOT in the rooms, only children's are. Run the lobby as one station: keys and yukata in the same lap, then the photo, then the buffet. Take the next size up if you are between sizes; a yukata that gapes photographs badly and behaves worse. Afterwards the free Premium Lounge is the same room as the photo, the lobby shop runs to 20:00 and karaoke to 22:00, and nothing commercial in Kinugawa is open past 20:00. Baths are swapped between the sexes evening to morning, so read the curtain rather than trusting last night's memory."
+  }
+ },
+ "removedFromDay": {
+  "Ooedo Onsen Monogatari Premium Kinugawa Kanko Hotel": {
+   "reason": "Superseded on the 4 Sep 2026 app screenshots. Night 4 is now a different property.",
+   "replacedBy": "Kinugawa Onsen Hana no Yado Matsuya",
+   "removedOn": "2026-09-04",
+   "keepBecause": "Still in KINUGAWA ONSEN, so the town-level research — Kinuko-no-yu footbath, Kinu Tateiwa suspension bridge, Kinugawa Onsen Station plaza, Takimi Bridge and the abandoned hotels, Fureai Bridge — transfers unchanged. CRITICAL: the Mission 2 yukata group photo was pinned to THIS hotel's lobby, and the whole six-sitting buffet analysis was this operator's. Both are now void — see notes.md.",
+   "importAs": "Removed from this Day"
+  }
+ }
+}

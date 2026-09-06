@@ -1,0 +1,1101 @@
+{
+ "batch": "expand-d34-walk30",
+ "places": [
+  {
+   "id": "d3w30gin01",
+   "anchorStop": "Ginzan Onsen Street",
+   "name": "Sosui-ko drainage adit",
+   "nameJp": "疎水坑",
+   "category": "sight",
+   "priceTier": "¥",
+   "stayMinutes": 5,
+   "legs": [
+    {
+     "mode": "walk",
+     "minutes": 9
+    }
+   ],
+   "timeWindow": "day",
+   "note": "The silver mine's water-drainage tunnel, at the Shirogane Park trail entrance beside the public toilet. You can walk a few metres in; it drips constantly and runs cold, which on a humid mid-September morning is the point. Free, ungated. Concrete path from the falls, then a short unpaved apron.",
+   "latitude": 38.572292,
+   "longitude": 140.532444,
+   "coordPrecision": "approximate",
+   "confidence": "medium",
+   "confidenceNote": "Coordinate is the verified Shirogane Falls point at the lower gate of Shirogane Park, not the feature itself, which is further up the same streamside path. Walk minutes are derived from Obanazawa City's published course distances (0.8 km/20 min, 2 km/50 min, 4 km/1h40), not measured to this feature.",
+   "source": "https://canike-0823.com/ginnzannonnsenn-spot/"
+  },
+  {
+   "id": "d3w30gin02",
+   "anchorStop": "Ginzan Onsen Street",
+   "name": "Sekotoi-bashi red bridge",
+   "nameJp": "せことい橋",
+   "category": "sight",
+   "priceTier": "¥",
+   "stayMinutes": 5,
+   "legs": [
+    {
+     "mode": "walk",
+     "minutes": 10
+    }
+   ],
+   "timeWindow": "day",
+   "note": "Small red-painted bridge just above Shirogane Falls; from the deck you see both falls at once, which you cannot from the falls viewpoint itself. It is the turnaround of Obanazawa City's shortest published loop (0.8 km, about 20 minutes, 白銀の滝→せことい橋→鬼子母神) — the one loop that fits a 2-hour stop.",
+   "latitude": 38.572292,
+   "longitude": 140.532444,
+   "coordPrecision": "approximate",
+   "confidence": "medium",
+   "confidenceNote": "Coordinate is the verified Shirogane Falls point at the lower gate of Shirogane Park, not the feature itself, which is further up the same streamside path. Walk minutes are derived from Obanazawa City's published course distances (0.8 km/20 min, 2 km/50 min, 4 km/1h40), not measured to this feature.",
+   "source": "https://www.tabikobo.com/tabi-pocket/japan/yamagata/article58265.html"
+  },
+  {
+   "id": "d3w30gin03",
+   "anchorStop": "Ginzan Onsen Street",
+   "name": "Senshin-kyo gorge",
+   "nameJp": "洗心峡",
+   "category": "sight",
+   "priceTier": "¥",
+   "stayMinutes": 10,
+   "legs": [
+    {
+     "mode": "walk",
+     "minutes": 11
+    }
+   ],
+   "timeWindow": "day",
+   "note": "The narrow rock gorge the Ginzan river cuts through Shirogane Park above the falls. Free and always open. In mid-September it is deep green and wet-black rock with no autumn colour at all — this is not the snow scene Ginzan is photographed in. Handrails but wet stone underfoot.",
+   "latitude": 38.572292,
+   "longitude": 140.532444,
+   "coordPrecision": "approximate",
+   "confidence": "medium",
+   "confidenceNote": "Coordinate is the verified Shirogane Falls point at the lower gate of Shirogane Park, not the feature itself, which is further up the same streamside path. Walk minutes are derived from Obanazawa City's published course distances (0.8 km/20 min, 2 km/50 min, 4 km/1h40), not measured to this feature.",
+   "source": "https://www.tabikobo.com/tabi-pocket/japan/yamagata/article58265.html"
+  },
+  {
+   "id": "d3w30gin04",
+   "anchorStop": "Ginzan Onsen Street",
+   "name": "Raion-no-taki falls and its rest tables",
+   "nameJp": "籟音の滝",
+   "category": "rest",
+   "priceTier": "¥",
+   "stayMinutes": 10,
+   "legs": [
+    {
+     "mode": "walk",
+     "minutes": 13
+    }
+   ],
+   "timeWindow": "day",
+   "note": "Second waterfall on the Shirogane Park course, past Sekotoi-bashi, with tables and chairs set out beside it — the only real sit-down rest point above the street and a sensible turn-back line for anyone who does not want the full climb. Free. Read らいおん, not the English 'lion'.",
+   "latitude": 38.572292,
+   "longitude": 140.532444,
+   "coordPrecision": "approximate",
+   "confidence": "medium",
+   "confidenceNote": "Coordinate is the verified Shirogane Falls point at the lower gate of Shirogane Park, not the feature itself, which is further up the same streamside path. Walk minutes are derived from Obanazawa City's published course distances (0.8 km/20 min, 2 km/50 min, 4 km/1h40), not measured to this feature.",
+   "source": "https://canike-0823.com/ginnzannonnsenn-spot/"
+  },
+  {
+   "id": "d3w30gin05",
+   "anchorStop": "Ginzan Onsen Street",
+   "name": "Natsu-shirazu-ko cold-air adit",
+   "nameJp": "夏しらず坑",
+   "category": "sight",
+   "priceTier": "¥",
+   "stayMinutes": 5,
+   "legs": [
+    {
+     "mode": "walk",
+     "minutes": 15
+    }
+   ],
+   "timeWindow": "day",
+   "note": "A mine adit that vents cold air all summer — locals call it 天然のクーラー. Its name means 'knows no summer'. For a 09:30 stop in a hot, humid September this is the single most useful thing above the street. On the 2 km / 50-minute Ginko-do loop. Free, ungated; uneven rock at the mouth.",
+   "latitude": 38.572292,
+   "longitude": 140.532444,
+   "coordPrecision": "approximate",
+   "confidence": "medium",
+   "confidenceNote": "Coordinate is the verified Shirogane Falls point at the lower gate of Shirogane Park, not the feature itself, which is further up the same streamside path. Walk minutes are derived from Obanazawa City's published course distances (0.8 km/20 min, 2 km/50 min, 4 km/1h40), not measured to this feature.",
+   "source": "https://canike-0823.com/ginnzannonnsenn-spot/"
+  },
+  {
+   "id": "d3w30gin06",
+   "anchorStop": "Ginzan Onsen Street",
+   "name": "Kajika-bashi stone bridge",
+   "nameJp": "河鹿橋",
+   "category": "sight",
+   "priceTier": "¥",
+   "stayMinutes": 5,
+   "legs": [
+    {
+     "mode": "walk",
+     "minutes": 17
+    }
+   ],
+   "timeWindow": "day",
+   "note": "Stone bridge upstream of the falls with benches placed to look back down the gorge. Named for the kajika frog you can hear here in summer. Free. The path to it is paved concrete but narrow, with no lighting — fine at 10:00, not after dusk.",
+   "latitude": 38.572292,
+   "longitude": 140.532444,
+   "coordPrecision": "approximate",
+   "confidence": "medium",
+   "confidenceNote": "Coordinate is the verified Shirogane Falls point at the lower gate of Shirogane Park, not the feature itself, which is further up the same streamside path. Walk minutes are derived from Obanazawa City's published course distances (0.8 km/20 min, 2 km/50 min, 4 km/1h40), not measured to this feature.",
+   "source": "https://canike-0823.com/ginnzannonnsenn-spot/"
+  },
+  {
+   "id": "d3w30gin07",
+   "anchorStop": "Ginzan Onsen Street",
+   "name": "Choja-no-ike pond",
+   "nameJp": "長者の池",
+   "category": "sight",
+   "priceTier": "¥",
+   "stayMinutes": 5,
+   "legs": [
+    {
+     "mode": "walk",
+     "minutes": 19
+    }
+   ],
+   "timeWindow": "day",
+   "note": "Small carp pond ringed with hydrangeas on the upper Shirogane Park course. SEASONALITY: the hydrangeas are a June-July draw and will be finished by 10 September — what is left in mid-September is a green pond with koi in it. Free, ungated.",
+   "latitude": 38.572292,
+   "longitude": 140.532444,
+   "coordPrecision": "approximate",
+   "confidence": "medium",
+   "confidenceNote": "Coordinate is the verified Shirogane Falls point at the lower gate of Shirogane Park, not the feature itself, which is further up the same streamside path. Walk minutes are derived from Obanazawa City's published course distances (0.8 km/20 min, 2 km/50 min, 4 km/1h40), not measured to this feature.",
+   "source": "https://canike-0823.com/ginnzannonnsenn-spot/"
+  },
+  {
+   "id": "d3w30gin08",
+   "anchorStop": "Ginzan Onsen Street",
+   "name": "Ginzan Omokage-en",
+   "nameJp": "銀山おもかげ園",
+   "category": "sight",
+   "priceTier": "¥",
+   "stayMinutes": 10,
+   "legs": [
+    {
+     "mode": "walk",
+     "minutes": 18
+    }
+   ],
+   "timeWindow": "day",
+   "note": "Open-air display of historic photographs of the Nobesawa silver mine and the old onsen village, set beside the upper course — and one of only two toilets above the street. Free. Useful as the natural halfway rest on the 2 km Ginko-do loop before turning back for the coach.",
+   "latitude": 38.572292,
+   "longitude": 140.532444,
+   "coordPrecision": "approximate",
+   "confidence": "medium",
+   "confidenceNote": "Coordinate is the verified Shirogane Falls point at the lower gate of Shirogane Park, not the feature itself, which is further up the same streamside path. Walk minutes are derived from Obanazawa City's published course distances (0.8 km/20 min, 2 km/50 min, 4 km/1h40), not measured to this feature.",
+   "source": "https://canike-0823.com/ginnzannonnsenn-spot/"
+  },
+  {
+   "id": "d3w30gin09",
+   "anchorStop": "Ginzan Onsen Street",
+   "name": "Giga Ichirozaemon statue",
+   "nameJp": "儀賀市郎左衛門像",
+   "category": "sight",
+   "priceTier": "¥",
+   "stayMinutes": 3,
+   "legs": [
+    {
+     "mode": "walk",
+     "minutes": 20
+    }
+   ],
+   "timeWindow": "day",
+   "note": "Statue of the man credited with opening the Nobesawa silver mine in 1456, standing on the long 4 km course past the Ginko-do tunnel. Free. Beyond here the course stops being a stroll and becomes a hill walk on partly unpaved forest path.",
+   "latitude": 38.572292,
+   "longitude": 140.532444,
+   "coordPrecision": "approximate",
+   "confidence": "medium",
+   "confidenceNote": "Coordinate is the verified Shirogane Falls point at the lower gate of Shirogane Park, not the feature itself, which is further up the same streamside path. Walk minutes are derived from Obanazawa City's published course distances (0.8 km/20 min, 2 km/50 min, 4 km/1h40), not measured to this feature.",
+   "source": "https://www.tabikobo.com/tabi-pocket/japan/yamagata/article58265.html"
+  },
+  {
+   "id": "d3w30gin10",
+   "anchorStop": "Ginzan Onsen Street",
+   "name": "Taki-no-Fudoson shrine",
+   "nameJp": "滝の不動尊",
+   "category": "sight",
+   "priceTier": "¥",
+   "stayMinutes": 5,
+   "legs": [
+    {
+     "mode": "walk",
+     "minutes": 25
+    }
+   ],
+   "timeWindow": "day",
+   "note": "Small Fudo Myoo shrine set by the upper stream, on Obanazawa City's long course (4 km, about 1h40). DOES NOT FIT THE SLOT as a round trip: 25 minutes up plus 20 back plus the coach walk leaves nothing of the 09:30-11:30 window. Free, ungated; unpaved forest path, wet after rain.",
+   "latitude": 38.572292,
+   "longitude": 140.532444,
+   "coordPrecision": "approximate",
+   "confidence": "medium",
+   "confidenceNote": "Coordinate is the verified Shirogane Falls point at the lower gate of Shirogane Park, not the feature itself, which is further up the same streamside path. Walk minutes are derived from Obanazawa City's published course distances (0.8 km/20 min, 2 km/50 min, 4 km/1h40), not measured to this feature.",
+   "source": "https://www.tabikobo.com/tabi-pocket/japan/yamagata/article58265.html"
+  },
+  {
+   "id": "d3w30gin11",
+   "anchorStop": "Ginzan Onsen Street",
+   "name": "Yamanokami-jinja shrine and its cedar avenue",
+   "nameJp": "山ノ神神社",
+   "category": "sight",
+   "priceTier": "¥",
+   "stayMinutes": 10,
+   "legs": [
+    {
+     "mode": "walk",
+     "minutes": 30
+    }
+   ],
+   "timeWindow": "day",
+   "note": "The old guardian shrine of the silver mine, reached by an avenue of cedars — the far end of Obanazawa City's 4 km / 1h40 course and the outer edge of, possibly just beyond, a 30-minute walk. REACHABLE BUT NOT IN THIS SLOT: the course time alone is 1h40 against a 2-hour stop that must also absorb the 10-minute shuttle each way. Unpaved forest path.",
+   "latitude": 38.572292,
+   "longitude": 140.532444,
+   "coordPrecision": "approximate",
+   "confidence": "medium",
+   "confidenceNote": "Coordinate is the verified Shirogane Falls point at the lower gate of Shirogane Park, not the feature itself, which is further up the same streamside path. Walk minutes are derived from Obanazawa City's published course distances (0.8 km/20 min, 2 km/50 min, 4 km/1h40), not measured to this feature.",
+   "source": "https://www.tabikobo.com/tabi-pocket/japan/yamagata/article58265.html"
+  },
+  {
+   "id": "d3w30gin12",
+   "anchorStop": "Ginzan Onsen Street",
+   "name": "Koumori-ana bat cave — closed",
+   "nameJp": "こうもり穴",
+   "category": "sight",
+   "priceTier": "¥",
+   "stayMinutes": 3,
+   "legs": [
+    {
+     "mode": "walk",
+     "minutes": 20
+    }
+   ],
+   "timeWindow": "day",
+   "note": "A bat cave on the upper Shirogane Park course that is signposted but CLOSED — 現在通行止め, barred to entry. Listed here so nobody walks 20 minutes uphill for it. The path past it to the Ginko-do tunnel is open.",
+   "latitude": 38.572292,
+   "longitude": 140.532444,
+   "coordPrecision": "approximate",
+   "confidence": "medium",
+   "confidenceNote": "Closure is reported by a 2024 first-hand walk-through of the course, not by Obanazawa City; the city page does not list this feature at all. Coordinate is the verified Shirogane Falls point at the lower gate of Shirogane Park, not the feature itself, which is further up the same streamside path. Walk minutes are derived from Obanazawa City's published course distances (0.8 km/20 min, 2 km/50 min, 4 km/1h40), not measured to this feature.",
+   "source": "https://canike-0823.com/ginnzannonnsenn-spot/"
+  },
+  {
+   "id": "d3w30gin13",
+   "anchorStop": "Ginzan Onsen Street",
+   "name": "Takimikan and Sobadokoro Takimitei",
+   "nameJp": "瀧見舘・そば処 瀧見亭",
+   "category": "food",
+   "priceTier": "¥¥",
+   "stayMinutes": 45,
+   "legs": [
+    {
+     "mode": "walk",
+     "minutes": 10
+    }
+   ],
+   "timeWindow": "day",
+   "note": "Upper ryokan on the plateau above the village — the one place you look DOWN on the ryokan rows. Its soba restaurant does zaru ¥1,200, kamo ¥1,300, tempura ¥800. TWO PROBLEMS ON 10 SEP: Takimitei is CLOSED THURSDAYS, and it opens 11:00 while the coach leaves at 11:30. Treat the walk up as a viewpoint only. 銀山新畑522, 0237-28-2164.",
+   "latitude": 38.57004167,
+   "longitude": 140.530925,
+   "coordPrecision": "approximate",
+   "confidence": "medium",
+   "confidenceNote": "The ryokan's own listing gives about 8 minutes on foot from the street centre; 10 is used here because the lane climbs steeply. Coordinate is the verified Ginzan street-entrance point; GSI resolves 銀山新畑 only to a district centroid 1.5 km off, so no building-level fix was available.",
+   "source": "https://www.onsen1.org/ginzanonsen/takimikan.html"
+  },
+  {
+   "id": "d3w30gin14",
+   "anchorStop": "Ginzan Onsen Street",
+   "name": "Senkyo-no-Yado Ginzanso",
+   "nameJp": "仙峡の宿 銀山荘",
+   "category": "rest",
+   "priceTier": "¥¥¥",
+   "stayMinutes": 30,
+   "legs": [
+    {
+     "mode": "walk",
+     "minutes": 14
+    }
+   ],
+   "timeWindow": "day",
+   "note": "The large ryokan downstream of the village, on the road between the street and the Taisho Roman-kan coach lot — and the operator of the ¥500 on-demand shuttle the group depends on (080-9283-2268). Worth knowing as the shelter and toilet point if a September downpour catches the group between street and coach.",
+   "latitude": 38.57004167,
+   "longitude": 140.530925,
+   "coordPrecision": "approximate",
+   "confidence": "medium",
+   "confidenceNote": "Position is inferred from the shuttle route between the street entrance and Taisho Roman-kan; no building-level coordinate was obtainable. Coordinate is the verified Ginzan street-entrance point; GSI resolves 銀山新畑 only to a district centroid 1.5 km off, so no building-level fix was available.",
+   "source": "https://www.ginzanso.jp/"
+  },
+  {
+   "id": "d3w30gin15",
+   "anchorStop": "Ginzan Onsen Street",
+   "name": "Shirogane-yu public bath",
+   "nameJp": "共同浴場 しろがね湯",
+   "category": "rest",
+   "priceTier": "¥",
+   "stayMinutes": 30,
+   "legs": [
+    {
+     "mode": "walk",
+     "minutes": 7
+    }
+   ],
+   "timeWindow": "day",
+   "note": "Ginzan's one working public bath, at the upper end of the street. Obanazawa City publishes 09:00-16:00, last entry 15:30, ¥500 adult / ¥200 child. Open through the whole 09:30-11:30 slot — but it is a small wooden bathhouse, so 35 people cannot use it; it is a two-or-three-person detour, not a group stop.",
+   "latitude": 38.57004167,
+   "longitude": 140.530925,
+   "coordPrecision": "approximate",
+   "confidence": "high",
+   "confidenceNote": null,
+   "source": "https://www.city.obanazawa.yamagata.jp/kanko/kankochi/1346"
+  },
+  {
+   "id": "d3w30gin16",
+   "anchorStop": "Ginzan Onsen Street",
+   "name": "Izu Kokeshi Kobo",
+   "nameJp": "伊豆こけし工房",
+   "category": "shopping",
+   "priceTier": "¥",
+   "stayMinutes": 25,
+   "legs": [
+    {
+     "mode": "walk",
+     "minutes": 5
+    }
+   ],
+   "timeWindow": "day",
+   "note": "Kokeshi workshop on the street: Obanazawa City lists a paint-your-own experience at ¥540-1,080 and finished kokeshi from about ¥1,100, 08:30-17:30. The one hands-on thing at Ginzan that works inside a 2-hour stop and survives a flight home unrefrigerated. Ask about a group slot — the workbench is small.",
+   "latitude": 38.57004167,
+   "longitude": 140.530925,
+   "coordPrecision": "approximate",
+   "confidence": "high",
+   "confidenceNote": null,
+   "source": "https://www.city.obanazawa.yamagata.jp/kanko/kankochi/1346"
+  },
+  {
+   "id": "d3w30gin17",
+   "anchorStop": "Ginzan Onsen Street",
+   "name": "Kosankaku and its kote-e plaster reliefs",
+   "nameJp": "古山閣の鏝絵",
+   "category": "sight",
+   "priceTier": "¥",
+   "stayMinutes": 10,
+   "legs": [
+    {
+     "mode": "walk",
+     "minutes": 5
+    }
+   ],
+   "timeWindow": "day",
+   "note": "Ryokan on the street whose walls carry kote-e — coloured relief pictures troweled into wet plaster, one per month of the year, by the plasterers who built the Taisho facades. Free to look at from the street; it is a working ryokan, so do not go in. Best in the flat morning light of a 09:30 arrival.",
+   "latitude": 38.57004167,
+   "longitude": 140.530925,
+   "coordPrecision": "approximate",
+   "confidence": "medium",
+   "confidenceNote": "The kote-e panels and Kosankaku's position on the street are well documented, but no building-level coordinate was obtainable. Coordinate is the verified Ginzan street-entrance point; GSI resolves 銀山新畑 only to a district centroid 1.5 km off, so no building-level fix was available.",
+   "source": "https://www.tabikobo.com/tabi-pocket/japan/yamagata/article58265.html"
+  },
+  {
+   "id": "d3w30zao01",
+   "anchorStop": "Zao Fox Village",
+   "name": "Yajiro Kokeshi Village",
+   "nameJp": "弥治郎こけし村",
+   "category": "shopping",
+   "priceTier": "¥",
+   "stayMinutes": 40,
+   "legs": [
+    {
+     "mode": "bus",
+     "minutes": 15
+    }
+   ],
+   "timeWindow": "day",
+   "note": "NOT WALKABLE — about 4.2 km straight line and 6-7 km by mountain road, roughly 50+ minutes on foot, so it is here as a coach add-on only. Free entry, paint-your-own kokeshi ¥850 including the blank, 09:00-17:00 Apr-Oct, CLOSED WEDNESDAYS so Thursday 10 Sep is open. 白石市福岡八宮字弥治郎北72-1, 0224-26-3993.",
+   "latitude": 38.02763,
+   "longitude": 140.575333,
+   "coordPrecision": "approximate",
+   "confidence": "medium",
+   "confidenceNote": "Coordinate is the GSI centroid for the 弥治郎南 district, not the building; the centre's own address is 弥治郎北72-1. The 15-minute bus figure is derived from that distance, not published.",
+   "source": "https://shiroishi-navi.jp/detail/detail_2144/"
+  },
+  {
+   "id": "d4w30gos01",
+   "anchorStop": "Goshikinuma Ponds",
+   "name": "Aka-numa",
+   "nameJp": "赤沼",
+   "category": "sight",
+   "priceTier": "¥",
+   "stayMinutes": 10,
+   "legs": [
+    {
+     "mode": "walk",
+     "minutes": 30
+    }
+   ],
+   "timeWindow": "day",
+   "note": "The iron-stained red-shored pond, and the exact limit of a 30-minute walk from the coach: 5 minutes to the Bishamon-numa deck plus 25 more along the pond's full length. REACHABLE BUT NOT IN THIS SLOT — out and back is 60 minutes of walking against a 60-minute stop, with nothing left for looking.",
+   "latitude": 37.655884,
+   "longitude": 140.092468,
+   "coordPrecision": "approximate",
+   "confidence": "medium",
+   "confidenceNote": "Coordinate is the verified Bishamon-numa deck; Aka-numa is about 1.5 km further west along the trail. The 25-minute segment is published by two independent trail guides.",
+   "source": "https://www.jalan.net/news/article/699004/"
+  },
+  {
+   "id": "d4w30gos02",
+   "anchorStop": "Goshikinuma Ponds",
+   "name": "Bandaisan Eruption Memorial Museum and its 3D World",
+   "nameJp": "磐梯山噴火記念館・3Dワールド",
+   "category": "sight",
+   "priceTier": "¥¥",
+   "stayMinutes": 40,
+   "legs": [
+    {
+     "mode": "walk",
+     "minutes": 4
+    }
+   ],
+   "timeWindow": "day",
+   "note": "Beside the east trailhead: the 1888 Bandai eruption that made these ponds, plus a 42 m cylindrical-screen film of it. 08:00-17:00 April-November (last entry 16:30), ¥600 adult museum, ¥800 for the 3D World. Closing days are 不定休 — irregular, not a fixed weekday — so telephone 0241-32-2888 before counting on it.",
+   "latitude": 37.65539,
+   "longitude": 140.09239,
+   "coordPrecision": "approximate",
+   "confidence": "medium",
+   "confidenceNote": "Coordinate is the east trailhead plaza; the museum shares the 桧原字剣ヶ峰1093 block but no building-level fix was obtainable. 不定休 means the Friday opening cannot be confirmed from a published calendar.",
+   "source": "https://www.urabandai-inf.com/?page_id=25002"
+  },
+  {
+   "id": "d4w30gos03",
+   "anchorStop": "Goshikinuma Ponds",
+   "name": "Morohashi Museum of Modern Art — SHUT",
+   "nameJp": "諸橋近代美術館",
+   "category": "sight",
+   "priceTier": "¥¥",
+   "stayMinutes": 5,
+   "legs": [
+    {
+     "mode": "walk",
+     "minutes": 6
+    }
+   ],
+   "timeWindow": "day",
+   "note": "The Dali collection next to the Goshikinuma entrance is CLOSED FOR RENOVATION from 10 November 2025 until about April 2027, so it is shut on 11 September 2026. Listed only so nobody walks over expecting the ¥1,300 galleries. Its car park and lakeside grounds are not a substitute.",
+   "latitude": 37.65539,
+   "longitude": 140.09239,
+   "coordPrecision": "approximate",
+   "confidence": "high",
+   "confidenceNote": null,
+   "source": "https://www.urabandai-inf.com/?page_id=25000"
+  },
+  {
+   "id": "d4w30gos04",
+   "anchorStop": "Goshikinuma Ponds",
+   "name": "Yanagi-numa, at the west trailhead",
+   "nameJp": "柳沼",
+   "category": "sight",
+   "priceTier": "¥",
+   "stayMinutes": 10,
+   "legs": [
+    {
+     "mode": "bus",
+     "minutes": 7
+    },
+    {
+     "mode": "walk",
+     "minutes": 3
+    }
+   ],
+   "timeWindow": "day",
+   "note": "The trail's west-end pond, neutral pH so it mirrors the trees rather than glowing. The point of it is the approach: the route bus links the two trailheads in about 7 minutes (roughly hourly), and the coach can do the same, which turns the unreachable half of the trail into a 3-minute walk.",
+   "confidence": "medium",
+   "confidenceNote": "No coordinate is given: GSI resolves 北塩原村桧原 only to a village point about 4 km off, and the east-trailhead points already in the batch would be 3-4 km wrong for a west-end pond.",
+   "source": "https://www.jalan.net/news/article/699004/"
+  },
+  {
+   "id": "d4w30gos05",
+   "anchorStop": "Goshikinuma Ponds",
+   "name": "Ao-numa",
+   "nameJp": "青沼",
+   "category": "sight",
+   "priceTier": "¥",
+   "stayMinutes": 10,
+   "legs": [
+    {
+     "mode": "bus",
+     "minutes": 7
+    },
+    {
+     "mode": "walk",
+     "minutes": 18
+    }
+   ],
+   "timeWindow": "day",
+   "note": "Cobalt-blue, tree-ringed, and the most photographed of the ponds — 18 minutes in from the WEST trailhead against roughly 65 minutes from the east. In mid-September the draw here is the mineral water colour, not foliage; there is no autumn colour on 11 September.",
+   "confidence": "medium",
+   "confidenceNote": "No coordinate is given: GSI resolves 北塩原村桧原 only to a village point about 4 km off, and the east-trailhead points already in the batch would be 3-4 km wrong for a west-end pond.",
+   "source": "https://www.jalan.net/news/article/699004/"
+  },
+  {
+   "id": "d4w30gos06",
+   "anchorStop": "Goshikinuma Ponds",
+   "name": "Ruri-numa",
+   "nameJp": "るり沼",
+   "category": "sight",
+   "priceTier": "¥",
+   "stayMinutes": 10,
+   "legs": [
+    {
+     "mode": "bus",
+     "minutes": 7
+    },
+    {
+     "mode": "walk",
+     "minutes": 21
+    }
+   ],
+   "timeWindow": "day",
+   "note": "The deepest pond at about 19 m, lapis-blue over moss beds, with the Bandai ridge behind it — the classic Urabandai view. 21 minutes from the west trailhead. Boardwalk viewing platform; do not leave it, this is a 特別保護地区 special protection zone.",
+   "confidence": "medium",
+   "confidenceNote": "No coordinate is given: GSI resolves 北塩原村桧原 only to a village point about 4 km off, and the east-trailhead points already in the batch would be 3-4 km wrong for a west-end pond.",
+   "source": "https://www.jalan.net/news/article/699004/"
+  },
+  {
+   "id": "d4w30gos07",
+   "anchorStop": "Goshikinuma Ponds",
+   "name": "Benten-numa",
+   "nameJp": "弁天沼",
+   "category": "sight",
+   "priceTier": "¥",
+   "stayMinutes": 10,
+   "legs": [
+    {
+     "mode": "bus",
+     "minutes": 7
+    },
+    {
+     "mode": "walk",
+     "minutes": 30
+    }
+   ],
+   "timeWindow": "day",
+   "note": "Second-largest pond, turquoise shading to emerald, with aquatic plants patterning the shallows. At 30 minutes from the west trailhead it is the far edge of the radius from either end — 35 minutes from the east. Take it as the turnaround of a west-end walk, not as an addition to an east-end one.",
+   "confidence": "medium",
+   "confidenceNote": "No coordinate is given: GSI resolves 北塩原村桧原 only to a village point about 4 km off, and the east-trailhead points already in the batch would be 3-4 km wrong for a west-end pond.",
+   "source": "https://www.jalan.net/news/article/699004/"
+  },
+  {
+   "id": "d4w30gos08",
+   "anchorStop": "Goshikinuma Ponds",
+   "name": "Urabandai Bussankan",
+   "nameJp": "裏磐梯物産館",
+   "category": "shopping",
+   "priceTier": "¥¥",
+   "stayMinutes": 20,
+   "legs": [
+    {
+     "mode": "bus",
+     "minutes": 7
+    },
+    {
+     "mode": "walk",
+     "minutes": 3
+    }
+   ],
+   "timeWindow": "day",
+   "note": "The west trailhead's shop and the only real souvenir counter on the trail, 09:00-17:00, beside the 裏磐梯高原駅 bus stop. Shuts entirely from about mid-November to mid-April, so 11 September is inside its season. If the coach repositions west, this is where the group can buy and use a toilet before walking in.",
+   "confidence": "medium",
+   "confidenceNote": "No coordinate is given: GSI resolves 北塩原村桧原 only to a village point about 4 km off, and the east-trailhead points already in the batch would be 3-4 km wrong for a west-end pond.",
+   "source": "https://www.urabandai-inf.com/?page_id=141"
+  },
+  {
+   "id": "d4w30gos09",
+   "anchorStop": "Goshikinuma Ponds",
+   "name": "Nakase-numa lookout and Urabandai Site Station",
+   "nameJp": "中瀬沼探勝台・裏磐梯サイトステーション",
+   "category": "sight",
+   "priceTier": "¥",
+   "stayMinutes": 45,
+   "legs": [
+    {
+     "mode": "bus",
+     "minutes": 5
+    },
+    {
+     "mode": "walk",
+     "minutes": 15
+    }
+   ],
+   "timeWindow": "day",
+   "note": "The other Bandai view: 1.2 km one way, 15 minutes from either trailhead to the deck, about 45 minutes round. The Renge-numa half was built flat enough for a wheelchair. Site Station 09:00-17:00 April-October, CLOSED WEDNESDAYS so Friday is open; tip-box toilets. 北塩原村桧原小野川原1092-65.",
+   "confidence": "medium",
+   "confidenceNote": "Reachable only by road from the Goshikinuma east trailhead and the bus leg is an estimate from the addresses, not a published time; no coordinate, as GSI resolves 桧原小野川原 no better than the village.",
+   "source": "https://mori-eki.com/trekking/nakase/"
+  },
+  {
+   "id": "d4w30tsu01",
+   "anchorStop": "Tsuruga Castle (Tsurugajo)",
+   "name": "Fukushima Prefectural Museum",
+   "nameJp": "福島県立博物館",
+   "category": "sight",
+   "priceTier": "¥",
+   "stayMinutes": 60,
+   "legs": [
+    {
+     "mode": "walk",
+     "minutes": 4
+    }
+   ],
+   "timeWindow": "day",
+   "note": "In the castle's Sannomaru, four minutes from the Tsurugajo Kaikan coach bay — the closest thing here to a wet-weather plan. 09:30-17:00, last entry 16:30, ¥400 adult and FREE for all school students. Closed Mondays and the day after a public holiday; 11 September 2026 is neither, so it is open. 0242-28-6000.",
+   "latitude": 37.488377,
+   "longitude": 139.933807,
+   "coordPrecision": "verified",
+   "confidence": "high",
+   "confidenceNote": null,
+   "source": "https://www.aizukanko.com/spot/49"
+  },
+  {
+   "id": "d4w30tsu02",
+   "anchorStop": "Tsuruga Castle (Tsurugajo)",
+   "name": "Tsurugajo Kaikan",
+   "nameJp": "鶴ヶ城会館",
+   "category": "shopping",
+   "priceTier": "¥¥",
+   "stayMinutes": 25,
+   "legs": [
+    {
+     "mode": "walk",
+     "minutes": 1
+    }
+   ],
+   "timeWindow": "day",
+   "note": "The coach base itself, at 追手町4-47: 20 large-bus bays, a souvenir hall carrying the akabeko and okiagari-koboshi lines, restaurants and clean toilets, 09:30-17:00 from 11 April to 10 November. It has no place record in the existing batch despite three shopping items pointing at it. 0242-28-2288.",
+   "latitude": 37.489838,
+   "longitude": 139.933334,
+   "coordPrecision": "verified",
+   "confidence": "high",
+   "confidenceNote": null,
+   "source": "https://www.tohokukanko.jp/attractions/detail_1589.html"
+  },
+  {
+   "id": "d4w30tsu03",
+   "anchorStop": "Tsuruga Castle (Tsurugajo)",
+   "name": "Oyakuen",
+   "nameJp": "御薬園",
+   "category": "sight",
+   "priceTier": "¥",
+   "stayMinutes": 40,
+   "legs": [
+    {
+     "mode": "walk",
+     "minutes": 16
+    }
+   ],
+   "timeWindow": "day",
+   "note": "The Aizu-Matsudaira lords' medicinal-herb garden and pond garden, a national Place of Scenic Beauty. 08:30-17:00, entry closes 16:30, 無休 — open on 11 September. ¥320 adult / ¥270 high school / ¥160 child with a 30+ group rate, or ¥730 on the three-facility pass with the keep and Rinkaku. 0242-27-2472.",
+   "latitude": 37.491123,
+   "longitude": 139.943802,
+   "coordPrecision": "verified",
+   "confidence": "high",
+   "confidenceNote": null,
+   "source": "https://www.aizukanko.com/spot/136"
+  },
+  {
+   "id": "d4w30tsu04",
+   "anchorStop": "Tsuruga Castle (Tsurugajo)",
+   "name": "Tsurugajo Inari-jinja",
+   "nameJp": "鶴ヶ城稲荷神社",
+   "category": "sight",
+   "priceTier": "¥",
+   "stayMinutes": 10,
+   "legs": [
+    {
+     "mode": "walk",
+     "minutes": 6
+    }
+   ],
+   "timeWindow": "day",
+   "note": "The castle's own Inari shrine, on the rise between the north gate and the Honmaru — a tunnel of vermilion torii and a 600-year-old zelkova, passed by almost everyone walking up to the keep and noticed by almost nobody. Free, always open. Gravel and stone steps.",
+   "latitude": 37.488185,
+   "longitude": 139.930651,
+   "coordPrecision": "approximate",
+   "confidence": "medium",
+   "confidenceNote": "Coordinate is the verified Honmaru south-east corner; the shrine is roughly 150 m north-west of it inside the same park and no building-level fix was obtainable.",
+   "source": "https://www.tsurugajo.com/"
+  },
+  {
+   "id": "d4w30tsu05",
+   "anchorStop": "Tsuruga Castle (Tsurugajo)",
+   "name": "Kojo-no-Tsuki monument",
+   "nameJp": "荒城の月碑",
+   "category": "sight",
+   "priceTier": "¥",
+   "stayMinutes": 5,
+   "legs": [
+    {
+     "mode": "walk",
+     "minutes": 10
+    }
+   ],
+   "timeWindow": "day",
+   "note": "The stone carrying Doi Bansui's lyric for Kojo no Tsuki, written of this castle after it was pulled down — the song every Japanese visitor on the coach will know. Free, in the free part of the park. A quieter alternative to the keep steps for anyone who does not want the climb.",
+   "latitude": 37.488185,
+   "longitude": 139.930651,
+   "coordPrecision": "approximate",
+   "confidence": "medium",
+   "confidenceNote": "Coordinate is the verified Honmaru south-east corner; the monument stands within about 200 m of it and no building-level fix was obtainable.",
+   "source": "https://www.mapple.net/spot/7001286/"
+  },
+  {
+   "id": "d4w30tsu06",
+   "anchorStop": "Tsuruga Castle (Tsurugajo)",
+   "name": "Kita-demaru, the Ote-mon site and Tsubaki-zaka",
+   "nameJp": "北出丸・大手門跡・椿坂",
+   "category": "sight",
+   "priceTier": "¥",
+   "stayMinutes": 20,
+   "legs": [
+    {
+     "mode": "walk",
+     "minutes": 12
+    }
+   ],
+   "timeWindow": "day",
+   "note": "The north-west bastion and the ramp up into it, built so defenders could fire down on anyone in the approach — hence its other name, 皆殺し丸. Free, outside the paid area, and the best surviving stonework on the site. From the east coach bay it is a 12-minute walk around the outside of the moat.",
+   "latitude": 37.488185,
+   "longitude": 139.930651,
+   "coordPrecision": "approximate",
+   "confidence": "medium",
+   "confidenceNote": "Coordinate is the verified Honmaru south-east corner; Kita-demaru is about 350 m north-west of it. The 12-minute leg is derived from the moat perimeter, not published.",
+   "source": "https://www.tsurugajo.com/"
+  },
+  {
+   "id": "d4w30tsu07",
+   "anchorStop": "Tsuruga Castle (Tsurugajo)",
+   "name": "The inner moat circuit",
+   "nameJp": "鶴ヶ城 内堀一周",
+   "category": "sight",
+   "priceTier": "¥",
+   "stayMinutes": 35,
+   "legs": [
+    {
+     "mode": "walk",
+     "minutes": 3
+    }
+   ],
+   "timeWindow": "day",
+   "note": "A full lap of the water moat on the free perimeter path, out through Nishi-demaru and back by the Rokabashi bridge — roughly 2 km and 30 minutes at a walk, all of it outside the ticket. This is the one way to use a 90-minute stop without paying, and in mid-September it is shaded most of the way.",
+   "latitude": 37.488185,
+   "longitude": 139.930651,
+   "coordPrecision": "approximate",
+   "confidence": "medium",
+   "confidenceNote": "Coordinate is the verified Honmaru south-east corner. The circuit length is derived from the published 18.7 ha park footprint, not from an official route map.",
+   "source": "https://www.jalan.net/kankou/spt_07202ah3330043050/"
+  },
+  {
+   "id": "d4w30tsu08",
+   "anchorStop": "Tsuruga Castle (Tsurugajo)",
+   "name": "Miyaizumi Meijo brewery",
+   "nameJp": "宮泉銘醸",
+   "category": "food",
+   "priceTier": "¥¥",
+   "stayMinutes": 30,
+   "legs": [
+    {
+     "mode": "walk",
+     "minutes": 6
+    }
+   ],
+   "timeWindow": "day",
+   "note": "The brewery behind the Sharaku label, six minutes from the coach bay at 東栄町8-7 — the only Aizu sake house that is genuinely inside a 90-minute castle stop. Tasting and shop on site. Existing research lists Sharaku as a buy but gives the brewery no place record.",
+   "latitude": 37.492104,
+   "longitude": 139.930786,
+   "coordPrecision": "verified",
+   "confidence": "medium",
+   "confidenceNote": "The address is GSI-verified to the building, but tasting-room hours and whether a 35-person group can be taken without notice were not confirmed from the brewery's own page.",
+   "source": "https://www.aizukanko.com/spot/49"
+  },
+  {
+   "id": "d4w30tsu09",
+   "anchorStop": "Tsuruga Castle (Tsurugajo)",
+   "name": "Suehiro Shuzo Kaeigura",
+   "nameJp": "末廣酒造 嘉永蔵",
+   "category": "shopping",
+   "priceTier": "¥¥",
+   "stayMinutes": 45,
+   "legs": [
+    {
+     "mode": "walk",
+     "minutes": 19
+    }
+   ],
+   "timeWindow": "day",
+   "note": "The 1850 brewery hall at 日新町12-38, free guided tours of the wooden kura and a cafe in it. Existing research lists Suehiro sake as a buy but gives the kura no place record. REACHABLE BUT TIGHT: 19 minutes each way is 38 minutes of the 90-minute slot before you see anything, so it only works if someone skips the keep entirely.",
+   "latitude": 37.497765,
+   "longitude": 139.923523,
+   "coordPrecision": "verified",
+   "confidence": "medium",
+   "confidenceNote": "Address is GSI-verified; the walk time is derived from that coordinate and the coach bay, and tour times were not re-checked for 11 September.",
+   "source": "https://www.aizukanko.com/spot/49"
+  },
+  {
+   "id": "d4w30tsu10",
+   "anchorStop": "Tsuruga Castle (Tsurugajo)",
+   "name": "Kokamachi-guchi gate ruins",
+   "nameJp": "甲賀町口門跡",
+   "category": "sight",
+   "priceTier": "¥",
+   "stayMinutes": 10,
+   "legs": [
+    {
+     "mode": "walk",
+     "minutes": 12
+    }
+   ],
+   "timeWindow": "day",
+   "note": "The one survivor of the sixteen guard gates Gamo Ujisato set around the castle town — a block of gate stonework standing in the street at 城東町1, on the old boundary between the samurai quarter and the merchants'. Free, always open, and almost never busy.",
+   "latitude": 37.496272,
+   "longitude": 139.931876,
+   "coordPrecision": "verified",
+   "confidence": "medium",
+   "confidenceNote": "Coordinate is published by a walking-route site rather than by the city, and is quoted to more decimals than it can support; the walk time is derived from it.",
+   "source": "https://osanpo.info/s/CGFDA"
+  },
+  {
+   "id": "d4w30tsu11",
+   "anchorStop": "Tsuruga Castle (Tsurugajo)",
+   "name": "Nanokamachi-dori",
+   "nameJp": "七日町通り",
+   "category": "shopping",
+   "priceTier": "¥¥",
+   "stayMinutes": 45,
+   "legs": [
+    {
+     "mode": "walk",
+     "minutes": 24
+    }
+   ],
+   "timeWindow": "day",
+   "note": "The Taisho-retro shopping street — kura warehouses, Western shopfronts, lacquer and sake shops, cafes. REACHABLE BUT NOT IN THIS SLOT: 24 minutes each way eats 48 of 90 minutes. Worth flagging to the tour agent as a substitute for the castle for anyone who has seen it, not as an addition.",
+   "latitude": 37.500874,
+   "longitude": 139.919342,
+   "coordPrecision": "approximate",
+   "confidence": "medium",
+   "confidenceNote": "Coordinate is the GSI-verified point for 七日町4-20 at the street's west end; the street runs about 600 m east from there, so the nearer end is roughly 18 minutes' walk.",
+   "source": "https://www.gurutto-aizu.com/detail/518/index.html"
+  },
+  {
+   "id": "d4w30tsu12",
+   "anchorStop": "Tsuruga Castle (Tsurugajo)",
+   "name": "Amidaji and the Gosankai",
+   "nameJp": "阿弥陀寺・御三階",
+   "category": "sight",
+   "priceTier": "¥",
+   "stayMinutes": 20,
+   "legs": [
+    {
+     "mode": "walk",
+     "minutes": 27
+    }
+   ],
+   "timeWindow": "day",
+   "note": "The temple at 七日町4-20 holding the Gosankai — a three-storey building moved here from inside the castle after 1868, the only surviving structure of the original keep complex — plus the Boshin war dead and Saito Hajime's grave. Free. REACHABLE BUT NOT IN THIS SLOT at 27 minutes each way.",
+   "latitude": 37.500874,
+   "longitude": 139.919342,
+   "coordPrecision": "verified",
+   "confidence": "high",
+   "confidenceNote": null,
+   "source": "https://www.gurutto-aizu.com/detail/518/index.html"
+  },
+  {
+   "id": "d4w30ouc01",
+   "anchorStop": "Ouchi-juku",
+   "name": "Ouchi-juku Machinami Exhibition Hall",
+   "nameJp": "大内宿町並み展示館",
+   "category": "sight",
+   "priceTier": "¥",
+   "stayMinutes": 30,
+   "legs": [
+    {
+     "mode": "walk",
+     "minutes": 8
+    }
+   ],
+   "timeWindow": "day",
+   "note": "The rebuilt honjin at mid-street, the inn kept for daimyo on the Aizu-Nishi road: irori, dirt floor, Edo furnishings, the lord's own separate entrance. THE KEY FACT — it runs 09:00-16:30, half an hour past the 16:00 the shops shut at, so it is the one paid thing still open in the back half of this slot. ¥250 / ¥150, group 30+ ¥200 / ¥100.",
+   "latitude": 37.334,
+   "longitude": 139.859,
+   "coordPrecision": "approximate",
+   "confidence": "medium",
+   "confidenceNote": "Coordinate is the low-precision figure published on Shimogo Town's tourism page (three decimals, so about 100 m of slack); GSI resolves 下郷町大内 only to a district centroid.",
+   "source": "https://shimogo.or.jp/?page_id=840"
+  },
+  {
+   "id": "d4w30ouc02",
+   "anchorStop": "Ouchi-juku",
+   "name": "Takakura-jinja main hall",
+   "nameJp": "高倉神社 本殿",
+   "category": "sight",
+   "priceTier": "¥",
+   "stayMinutes": 20,
+   "legs": [
+    {
+     "mode": "walk",
+     "minutes": 20
+    }
+   ],
+   "timeWindow": "day",
+   "note": "The only shrine at Ouchi-juku, enshrining Prince Mochihito, who is said to have hidden here in 1180 — and the reason the village is called Ouchi. Reached from the plain-wood torii on the street by 8-10 minutes across open paddy, then stone steps up through cedars. Free, and almost empty even when the street is not. Its 半夏まつり is 2 July, not September.",
+   "latitude": 37.334476,
+   "longitude": 139.857742,
+   "coordPrecision": "approximate",
+   "confidence": "medium",
+   "confidenceNote": "Coordinate is the GSI centroid for 下郷町大内, which falls in the paddy flat west of the street on the shrine approach; the honden itself is further west and uphill. Walk time is from visitor accounts.",
+   "source": "https://4travel.jp/dm_shisetsu/11370167"
+  },
+  {
+   "id": "d4w30ouc03",
+   "anchorStop": "Ouchi-juku",
+   "name": "Takakura-jinja first torii",
+   "nameJp": "高倉神社 一の鳥居",
+   "category": "sight",
+   "priceTier": "¥",
+   "stayMinutes": 5,
+   "legs": [
+    {
+     "mode": "walk",
+     "minutes": 8
+    }
+   ],
+   "timeWindow": "day",
+   "note": "A torii of unfinished, unpainted timber standing in the middle of the thatched street — no stone, no vermilion, which is why most visitors walk past it without registering that it is a shrine gate at all. Free. It frames the thatched roofs behind it, and it is the trailhead for the paddy walk to the honden.",
+   "latitude": 37.333677,
+   "longitude": 139.860918,
+   "coordPrecision": "approximate",
+   "confidence": "medium",
+   "confidenceNote": "Coordinate is the verified thatched-street point; the torii stands on that street but no separate fix was obtainable.",
+   "source": "https://4travel.jp/dm_shisetsu/11370167"
+  },
+  {
+   "id": "d4w30ouc04",
+   "anchorStop": "Ouchi-juku",
+   "name": "The paddy lane west of the village",
+   "nameJp": "大内の田んぼ道",
+   "category": "sight",
+   "priceTier": "¥",
+   "stayMinutes": 20,
+   "legs": [
+    {
+     "mode": "walk",
+     "minutes": 12
+    }
+   ],
+   "timeWindow": "day",
+   "note": "The farm lane running out across the rice flat below the village on the Takakura-jinja approach — the one place you can photograph the whole thatched row from level ground with no cars and no crowd. In mid-September the rice is heavy and turning gold, with harvest starting in Aizu around then. No shade, no handrail, mud after rain.",
+   "latitude": 37.334476,
+   "longitude": 139.857742,
+   "coordPrecision": "approximate",
+   "confidence": "medium",
+   "confidenceNote": "Coordinate is the GSI centroid for 下郷町大内, in the paddy flat itself. The mid-September ripening-rice description is general Aizu harvest timing, not a dated field report for 2026.",
+   "source": "https://www.mlit.go.jp/tagengo-db/R3-00507.html"
+  },
+  {
+   "id": "d4w30ouc05",
+   "anchorStop": "Ouchi-juku",
+   "name": "Ishihara-ya",
+   "nameJp": "石原屋",
+   "category": "food",
+   "priceTier": "¥¥",
+   "stayMinutes": 40,
+   "legs": [
+    {
+     "mode": "walk",
+     "minutes": 9
+    }
+   ],
+   "timeWindow": "day",
+   "note": "Thatched soba house at 大内山本5 doing ume-oroshi soba — plum and grated daikon rather than the whole spring onion everyone photographs — and properly whisked matcha. 09:30-15:30, 不定休, 0241-68-2914. IT SHUTS AT 15:30, fifty minutes into a 14:40-16:40 slot, so this is an eat-first-then-walk stop.",
+   "latitude": 37.33464873,
+   "longitude": 139.861212358,
+   "coordPrecision": "approximate",
+   "confidence": "medium",
+   "confidenceNote": "Coordinate is published by a commercial travel database rather than the shop or the town, and is quoted to far more decimals than it can support; closing days are 不定休 so 11 September cannot be confirmed.",
+   "source": "https://rurubu.jp/andmore/spot/80005548"
+  },
+  {
+   "id": "d4w30ouc06",
+   "anchorStop": "Ouchi-juku",
+   "name": "Yamato-ya",
+   "nameJp": "大和屋",
+   "category": "food",
+   "priceTier": "¥¥",
+   "stayMinutes": 40,
+   "legs": [
+    {
+     "mode": "walk",
+     "minutes": 9
+    }
+   ],
+   "timeWindow": "day",
+   "note": "Mid-street thatched house at 大内字山本6: negi-soba at about ¥1,000, and tochi-daifuku — horse-chestnut mochi around sweet bean — made on the premises to take away. A named alternative to Misawaya when the queue there swallows the slot. Hours are not published; the village's own guidance is 09:00 to about 16:00.",
+   "latitude": 37.333677,
+   "longitude": 139.860918,
+   "coordPrecision": "approximate",
+   "confidence": "medium",
+   "confidenceNote": "Address and dishes are from a visitor database; no coordinate, hours or closing day is published for this shop, so the verified street point stands in and hours are the village default.",
+   "source": "https://4travel.jp/dm_shisetsu/10948409"
+  },
+  {
+   "id": "d4w30ouc07",
+   "anchorStop": "Ouchi-juku",
+   "name": "Ouchi-juku Shoku-no-Yakata",
+   "nameJp": "大内宿食の館",
+   "category": "food",
+   "priceTier": "¥¥",
+   "stayMinutes": 40,
+   "legs": [
+    {
+     "mode": "walk",
+     "minutes": 6
+    }
+   ],
+   "timeWindow": "day",
+   "note": "Sit-down local-cooking hall at 大内1053, on the approach below the preserved street rather than among the thatched houses. 09:00-16:00, CLOSED MONDAYS and shut entirely 1 December to 31 March — so Friday 11 September is inside both. 0241-67-2416. Its 16:00 close is the same wall the rest of the village hits, so it is a first-hour option only.",
+   "latitude": 37.33192,
+   "longitude": 139.86,
+   "coordPrecision": "approximate",
+   "confidence": "medium",
+   "confidenceNote": "The 大内1053 street number is outside the preserved 字山本 / 字宮ノ前 blocks, so it sits on the approach, but its exact position and therefore the 6-minute leg are not confirmed; the coordinate is the verified coach-park point standing in.",
+   "source": "https://www.jalan.net/kankou/spt_07362fc3560136719/"
+  }
+ ],
+ "shopping": [
+  {
+   "id": "d3w30shop01",
+   "anchorStop": "Ginzan Onsen Street",
+   "name": "Hand-painted kokeshi from Izu Kokeshi Kobo",
+   "nameJp": "伊豆こけし工房の絵付けこけし",
+   "placeLabel": "Izu Kokeshi Kobo, on Ginzan Onsen Street, 08:30-17:30",
+   "estimate": 1100,
+   "note": "Obanazawa City lists finished kokeshi from about ¥1,100 and a paint-your-own session at ¥540-1,080 including the blank. Wooden, unbreakable in a case, no shelf life, no customs question — the best thing to carry home from Ginzan. The painting takes 20-25 minutes, which fits a 2-hour stop; telephone ahead for a group, the bench is small.",
+   "latitude": 38.57004167,
+   "longitude": 140.530925,
+   "coordPrecision": "approximate",
+   "confidence": "high",
+   "confidenceNote": null,
+   "source": "https://www.city.obanazawa.yamagata.jp/kanko/kankochi/1346"
+  },
+  {
+   "id": "d4w30shop01",
+   "anchorStop": "Ouchi-juku",
+   "name": "Tochi-daifuku from Yamato-ya",
+   "nameJp": "大和屋のとち大福",
+   "placeLabel": "Yamato-ya, 大内字山本6, mid-street at Ouchi-juku",
+   "estimate": null,
+   "note": "Horse-chestnut mochi wrapped round sweet bean paste, made in the shop. Fresh mochi, so it is a same-day or next-day item — it will not survive to Malaysia. Buy before 16:00; no price is published, hence the null estimate.",
+   "latitude": 37.333677,
+   "longitude": 139.860918,
+   "coordPrecision": "approximate",
+   "confidence": "medium",
+   "confidenceNote": "Neither the price nor the shop's hours are published anywhere I could reach; the item itself is attested by visitor reports of the shop.",
+   "source": "https://4travel.jp/dm_shisetsu/10948409"
+  }
+ ]
+}

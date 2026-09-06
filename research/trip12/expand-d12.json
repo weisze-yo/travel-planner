@@ -1,0 +1,979 @@
+{
+  "batch": "expand-d12-walk30",
+  "places": [
+    {
+      "id": "d1w30t3a",
+      "anchorStop": "Haneda Airport — Terminal 3",
+      "name": "Terminal 3 rooftop observation deck, 5F",
+      "nameJp": "羽田空港第3ターミナル 展望デッキ",
+      "category": "sight",
+      "priceTier": "¥",
+      "stayMinutes": 15,
+      "legs": [
+        {
+          "mode": "walk",
+          "minutes": 8
+        }
+      ],
+      "timeWindow": "24h",
+      "note": "The airport's own service page lists T3's 5F deck as 開場時間24時間 — the only Haneda deck open all night (T1 and T2 both shut 22:00). Landside, no ticket, escalators up from the 2F arrivals hall past Edo Koji. At a 21:55 landing this is the one thing still open besides Air LAWSON. Closes without notice for wind or security. Mid-September: still 26-28C and humid at 22:00.",
+      "latitude": 35.5487,
+      "longitude": 139.7692,
+      "coordPrecision": "approximate",
+      "confidence": "high",
+      "confidenceNote": null,
+      "source": "https://tokyo-haneda.com/text/service/facilities/observation_deck.html"
+    },
+    {
+      "id": "d1w30t3b",
+      "anchorStop": "Haneda Airport — Terminal 3",
+      "name": "Izumi Tenku no Yu Haneda Airport",
+      "nameJp": "天然温泉 泉天空の湯 羽田空港",
+      "category": "rest",
+      "priceTier": "¥¥¥",
+      "stayMinutes": 90,
+      "legs": [
+        {
+          "mode": "walk",
+          "minutes": 12
+        }
+      ],
+      "timeWindow": "24h",
+      "note": "24-hour real onsen inside Haneda Airport Garden, T3-直結 on the 2F walkway. ¥4,800 adult (towels and robe included), ¥2,000 child 4-elementary, plus a ¥4,000 surcharge for 02:00-05:00 (so ¥8,800). Men's Ginyoku-no-Yu looks at the south ends of Runways A and D; women's Fujimi-no-Yu looks over the Tamagawa. Not doable in the 21:55-22:30 transfer — this is for anyone who breaks off from the coach.",
+      "latitude": 35.543854,
+      "longitude": 139.764679,
+      "coordPrecision": "verified",
+      "confidence": "high",
+      "confidenceNote": null,
+      "source": "https://www.traicy.com/posts/20221029252095/"
+    },
+    {
+      "id": "d1w30t3c",
+      "anchorStop": "Haneda Airport — Terminal 3",
+      "name": "Haneda Airport Garden — Japan Promenade",
+      "nameJp": "羽田エアポートガーデン ジャパンプロムナード",
+      "category": "shopping",
+      "priceTier": "¥¥",
+      "stayMinutes": 40,
+      "legs": [
+        {
+          "mode": "walk",
+          "minutes": 11
+        }
+      ],
+      "timeWindow": "day",
+      "note": "The 1F regional-souvenir street plus Lawson and a Matsumotokiyoshi drugstore, T3-直結 by the 2F walkway. SHUT FOR THIS GROUP: shops run 10:00-20:00 and restaurants 11:00-22:00, so at a 21:55 arrival only Lawson and the 24h onsen are trading, and the coach leaves before 10:00 next day. Worth knowing only if a flight slips or someone stays behind.",
+      "latitude": 35.543854,
+      "longitude": 139.764679,
+      "coordPrecision": "verified",
+      "confidence": "high",
+      "confidenceNote": null,
+      "source": "https://www.gotokyo.org/jp/spot/1878/index.html"
+    },
+    {
+      "id": "d1w30hma",
+      "anchorStop": "Hotel Metropolitan Tokyo Haneda",
+      "name": "Anamori Inari Shrine",
+      "nameJp": "穴守稲荷神社",
+      "category": "sight",
+      "priceTier": "¥",
+      "stayMinutes": 25,
+      "legs": [
+        {
+          "mode": "walk",
+          "minutes": 8
+        }
+      ],
+      "timeWindow": "24h",
+      "note": "Ota-ku Haneda 5-2-7, next to Anamori-Inari Station on the Keikyu line — 8 minutes on foot from HICity along Kanpachi-dori, the nearest real sight to the hotel. Grounds are 24時間参拝可能, so a pre-08:30 walk works. The shrine office is 09:00-16:00, so no goshuin, no charms and nobody to ask before the coach goes. Free. Tel 03-3741-0809.",
+      "latitude": 35.5505492,
+      "longitude": 139.7498401,
+      "coordPrecision": "verified",
+      "confidence": "high",
+      "confidenceNote": null,
+      "source": "https://anamori.jp/"
+    },
+    {
+      "id": "d1w30hmb",
+      "anchorStop": "Hotel Metropolitan Tokyo Haneda",
+      "name": "Anamori Inari — sen-bon torii, Okunomiya and Inariyama",
+      "nameJp": "穴守稲荷神社 千本鳥居・奥之宮・稲荷山",
+      "category": "sight",
+      "priceTier": "¥",
+      "stayMinutes": 20,
+      "legs": [
+        {
+          "mode": "walk",
+          "minutes": 9
+        }
+      ],
+      "timeWindow": "dawn",
+      "note": "Behind the main hall: a vermillion torii tunnel leading to the Okunomiya and up the small Inariyama mound, where the 御神砂 sacred sand is dispensed. This is the photograph, not the main hall — a compressed tunnel of red uprights, best in flat early light before the sun clears the buildings. Steps and gravel, no handrail on the mound. The sand is at the Okunomiya, self-serve when the office is shut.",
+      "latitude": 35.5505492,
+      "longitude": 139.7498401,
+      "coordPrecision": "approximate",
+      "confidence": "medium",
+      "confidenceNote": "Coordinate is the shrine's GSI point; the Okunomiya and Inariyama sit a few tens of metres behind it and are not separately geocoded.",
+      "source": "https://anamori.jp/"
+    },
+    {
+      "id": "d1w30hmc",
+      "anchorStop": "Hotel Metropolitan Tokyo Haneda",
+      "name": "Soramunade Haneda Ryokuchi promenade",
+      "nameJp": "ソラムナード羽田緑地",
+      "category": "sight",
+      "priceTier": "¥",
+      "stayMinutes": 35,
+      "legs": [
+        {
+          "mode": "walk",
+          "minutes": 11
+        }
+      ],
+      "timeWindow": "dawn",
+      "note": "A 2.0 km riverside walkway on the Haneda Airport No.2 former-site zone, fully opened 1 Apr 2024, with an observation terrace pointed at departing aircraft. Ota Ward gives it as 10 minutes on foot from Tenkubashi, so 11 from the hotel gate. Free. SEASONALITY: its 14,600 sukashiyuri lilies flower late May to mid-June — in September it is a green levee path, and the aircraft are the whole point.",
+      "latitude": 35.545586,
+      "longitude": 139.758331,
+      "coordPrecision": "verified",
+      "confidence": "high",
+      "confidenceNote": null,
+      "source": "https://www.city.ota.tokyo.jp/seikatsu/sumaimachinami/haneda_airport/hgw/waterside/soramunadohanedaryokuti.html"
+    },
+    {
+      "id": "d1w30hmd",
+      "anchorStop": "Hotel Metropolitan Tokyo Haneda",
+      "name": "Tamagawa Sky Bridge",
+      "nameJp": "多摩川スカイブリッジ",
+      "category": "sight",
+      "priceTier": "¥",
+      "stayMinutes": 30,
+      "legs": [
+        {
+          "mode": "walk",
+          "minutes": 15
+        }
+      ],
+      "timeWindow": "dawn",
+      "note": "The 675 m Haneda-Kawasaki link, opened 12 Mar 2022, with a proper footway and a separate cycle track (mopeds banned, and cyclists must use the cycle side). Walking the deck and back is about 20 minutes on top of the 15 each way, so 50 minutes all in — it fits a pre-08:30 window only if you leave by 07:15. No fee, no gate.",
+      "latitude": 35.5439833,
+      "longitude": 139.7625218,
+      "coordPrecision": "verified",
+      "confidence": "medium",
+      "confidenceNote": "Kawasaki City's project page states the footway and cycle track but publishes no pedestrian opening hours; assume open but treat 24h access as unconfirmed.",
+      "source": "https://www.city.kawasaki.jp/530/page/0000097966.html"
+    },
+    {
+      "id": "d1w30hme",
+      "anchorStop": "Hotel Metropolitan Tokyo Haneda",
+      "name": "Haneda Shrine and the Haneda Fuji mound",
+      "nameJp": "羽田神社・羽田富士",
+      "category": "sight",
+      "priceTier": "¥",
+      "stayMinutes": 20,
+      "legs": [
+        {
+          "mode": "walk",
+          "minutes": 21
+        }
+      ],
+      "timeWindow": "day",
+      "note": "Ota-ku Motohaneda 3-9-12, the parish shrine that once covered the airport land and now specialises in 航空安全祈祷 — aviation-safety prayers. In the grounds: the Haneda Fuji miniature Mt Fuji mound with a designated torii, plus a Daikoku figure. 21 minutes on foot from HICity, 42 from Terminal 3, so hotel-side only. Office hours are not published, so a pre-08:30 visit is grounds-only.",
+      "latitude": 35.546978,
+      "longitude": 139.740967,
+      "coordPrecision": "verified",
+      "confidence": "medium",
+      "confidenceNote": "The shrine's own history page confirms the aviation-safety role and the Haneda Fuji mound but publishes no worship or office hours.",
+      "source": "https://www.hanedajinja.com/jinja/info02.htm"
+    },
+    {
+      "id": "d2w30tka",
+      "anchorStop": "Tokyo Station",
+      "name": "Maruzen Marunouchi Main Store, Oazo 1F–4F",
+      "nameJp": "丸善 丸の内本店",
+      "category": "shopping",
+      "priceTier": "¥¥",
+      "stayMinutes": 30,
+      "legs": [
+        {
+          "mode": "walk",
+          "minutes": 4
+        }
+      ],
+      "timeWindow": "day",
+      "note": "THE answer to the 09:15-10:05 problem: Maruzen opens 09:00 and runs to 21:00, with no closing day in September or October. Four floors in Marunouchi Oazo, one minute from the Marunouchi North Exit — about a million Japanese titles and 120,000 foreign-language ones, plus stationery and a 4F refit from Oct 2024. Tel 03-5288-8881. Tax-free is still at-the-till in 2026.",
+      "latitude": 35.683708,
+      "longitude": 139.766266,
+      "coordPrecision": "verified",
+      "confidence": "high",
+      "confidenceNote": null,
+      "source": "https://honto.jp/store/detail_1572000_14HB310.html"
+    },
+    {
+      "id": "d2w30tkb",
+      "anchorStop": "Tokyo Station",
+      "name": "Marunouchi Naka-dori avenue",
+      "nameJp": "丸の内仲通り",
+      "category": "sight",
+      "priceTier": "¥¥",
+      "stayMinutes": 20,
+      "legs": [
+        {
+          "mode": "walk",
+          "minutes": 5
+        }
+      ],
+      "timeWindow": "day",
+      "note": "Runs Marunouchi 1-3-chome to Yurakucho 1-chome, parallel to the station, lined with seasonal street trees, benches and public sculpture. TWO REASONS IT DOES NOT WORK AT 09:15: nothing on it opens before 11:00, and the pedestrian-only Marunouchi Naka-dori Urban Terrace with its outdoor tables runs 11:00-15:00 on weekdays. Before 11:00 it is a normal street with traffic on it.",
+      "latitude": 35.681561,
+      "longitude": 139.767197,
+      "coordPrecision": "approximate",
+      "confidence": "high",
+      "confidenceNote": null,
+      "source": "https://visit-chiyoda.tokyo/app/spot/detail/462"
+    },
+    {
+      "id": "d2w30tkc",
+      "anchorStop": "Tokyo Station",
+      "name": "KITTE Marunouchi and the JP Tower",
+      "nameJp": "KITTE丸の内・JPタワー",
+      "category": "shopping",
+      "priceTier": "¥¥",
+      "stayMinutes": 30,
+      "legs": [
+        {
+          "mode": "walk",
+          "minutes": 5
+        }
+      ],
+      "timeWindow": "day",
+      "note": "Marunouchi 2-7-2, straight out of the Marunouchi South Exit. SHUT IN THIS WINDOW: shops and restaurants from 11:00, the 6F KITTE Garden roof terrace 11:00-23:00 weekdays (and it closes in bad weather), the free 4F former postmaster's room 11:00-20:00, and the Intermediatheque museum on 2F-3F also 11:00. Only the 1F post-office counter is likely trading at 09:15.",
+      "latitude": 35.679085,
+      "longitude": 139.764679,
+      "coordPrecision": "verified",
+      "confidence": "medium",
+      "confidenceNote": "KITTE's own facilities page gives the garden and museum hours; the exact opening time of the Tokyo Central Post Office counter inside is unconfirmed (Japan Post's branch page 404s).",
+      "source": "https://marunouchi.jp-kitte.jp/guide/facilities.jsp"
+    },
+    {
+      "id": "d2w30tkd",
+      "anchorStop": "Tokyo Station",
+      "name": "Tokyo Midtown Yaesu",
+      "nameJp": "東京ミッドタウン八重洲",
+      "category": "shopping",
+      "priceTier": "¥¥",
+      "stayMinutes": 30,
+      "legs": [
+        {
+          "mode": "walk",
+          "minutes": 5
+        }
+      ],
+      "timeWindow": "day",
+      "note": "Yaesu 2-2-1, underground-linked to the Yaesu side and sitting on top of Bus Terminal Tokyo Yaesu. B1 10:00-21:00, 1F-3F retail 11:00-21:00, restaurants 11:00-23:00, 4F-5F Innovation Field 09:00-22:00. So at 09:15-10:05 only the office floors and the bus concourse are open — useful as an air-conditioned indoor route to the Yaesu shinkansen gates, not as shopping.",
+      "latitude": 35.679695,
+      "longitude": 139.769165,
+      "coordPrecision": "verified",
+      "confidence": "high",
+      "confidenceNote": null,
+      "source": "https://www.yaesu.tokyo-midtown.com/shop-restaurant"
+    },
+    {
+      "id": "d2w30tke",
+      "anchorStop": "Tokyo Station",
+      "name": "Tokyo International Forum glass hall",
+      "nameJp": "東京国際フォーラム ガラス棟",
+      "category": "sight",
+      "priceTier": "¥",
+      "stayMinutes": 20,
+      "legs": [
+        {
+          "mode": "walk",
+          "minutes": 9
+        }
+      ],
+      "timeWindow": "day",
+      "note": "Open 07:00-23:30, 年中無休, and the glass hall and ground plaza are free public space — one of very few things around Tokyo Station actually trading at 09:15. Rafael Vinoly's 60 m glass prow and the boat-hull ribs overhead; shoot upward from the plaza floor. Marunouchi 3-5-1, nine minutes from the Marunouchi South Exit. The 7F lounge is a hire area and may be closed off. Info desk 09:00-19:00.",
+      "latitude": 35.676849,
+      "longitude": 139.76387,
+      "coordPrecision": "verified",
+      "confidence": "high",
+      "confidenceNote": null,
+      "source": "https://www.t-i-forum.co.jp/contact/faq/service/"
+    },
+    {
+      "id": "d2w30tkf",
+      "anchorStop": "Tokyo Station",
+      "name": "Imperial Palace Outer Garden — Wadakura and the Kusunoki statue",
+      "nameJp": "皇居外苑・和田倉噴水公園・楠公像",
+      "category": "sight",
+      "priceTier": "¥",
+      "stayMinutes": 20,
+      "legs": [
+        {
+          "mode": "walk",
+          "minutes": 12
+        }
+      ],
+      "timeWindow": "24h",
+      "note": "Chiyoda-ku Kokyo Gaien 1-1: the Ministry of the Environment describes a great lawn dotted with black pines plus the moats and castle gates left from Edo Castle, with Wadakura Fountain Park at the station end. Straight out of the Marunouchi Central Exit across Gyoko-dori. The best use of a 50-minute stop given Gransta stays shut till 10:00 — but 24 minutes of walking leaves 20 on site.",
+      "latitude": 35.6799438,
+      "longitude": 139.7584664,
+      "coordPrecision": "verified",
+      "confidence": "medium",
+      "confidenceNote": "The Ministry of the Environment page confirms the garden, Wadakura Fountain Park and the black-pine lawn but publishes neither opening hours nor an admission line; treat free round-the-clock access as the plaza's normal state rather than a cited fact.",
+      "source": "https://www.env.go.jp/garden/kokyogaien/"
+    },
+    {
+      "id": "d2w30tkg",
+      "anchorStop": "Tokyo Station",
+      "name": "Nijubashi and Seimon Ishibashi viewpoint",
+      "nameJp": "二重橋・皇居正門石橋",
+      "category": "sight",
+      "priceTier": "¥",
+      "stayMinutes": 10,
+      "legs": [
+        {
+          "mode": "walk",
+          "minutes": 16
+        }
+      ],
+      "timeWindow": "24h",
+      "note": "The postcard shot of the palace: stand on the gravel at the head of the moat so the Seimon Ishibashi arch sits below the Fushimi-yagura turret. Free and open at all hours. HONEST LIMIT: 32 minutes of walking out of a 50-minute stop leaves under 20 minutes, and only if the whole party moves together. At 09:30 the sun is behind you in the southeast, which is the right side for this frame.",
+      "latitude": 35.6799438,
+      "longitude": 139.7584664,
+      "coordPrecision": "approximate",
+      "confidence": "medium",
+      "confidenceNote": "Coordinate is the Kokyo Gaien GSI point; the standing position is roughly 400 m west and is not separately geocoded, and no official source states hours for the viewing gravel.",
+      "source": "https://www.env.go.jp/garden/kokyogaien/"
+    },
+    {
+      "id": "d2w30tkh",
+      "anchorStop": "Tokyo Station",
+      "name": "Imperial Palace East Gardens via Ote-mon",
+      "nameJp": "皇居東御苑（大手門）",
+      "category": "sight",
+      "priceTier": "¥",
+      "stayMinutes": 25,
+      "legs": [
+        {
+          "mode": "walk",
+          "minutes": 13
+        }
+      ],
+      "timeWindow": "day",
+      "note": "Free. September hours are 09:00-17:00 with last entry 16:30, and it is closed Mondays AND Fridays — Wed 9 Sep 2026 is an open day, so the calendar works. Enter at Ote-mon, Hirakawa-mon or Kita-hanebashi-mon. HONEST LIMIT: 26 minutes of walking plus 25 inside is 51 of a 50-minute stop. Realistic version is walk to Ote-mon, photograph the gate and the moat, and turn round.",
+      "latitude": 35.68607072,
+      "longitude": 139.75981093,
+      "coordPrecision": "verified",
+      "confidence": "high",
+      "confidenceNote": null,
+      "source": "https://www.kikuyou.or.jp/higashigyoen/jp.html"
+    },
+    {
+      "id": "d2w30tki",
+      "anchorStop": "Tokyo Station",
+      "name": "Nihonbashi bridge and the zero milestone",
+      "nameJp": "日本橋・日本国道路元標",
+      "category": "sight",
+      "priceTier": "¥",
+      "stayMinutes": 12,
+      "legs": [
+        {
+          "mode": "walk",
+          "minutes": 12
+        }
+      ],
+      "timeWindow": "24h",
+      "note": "The 1911 stone bridge that is kilometre zero for every national highway in Japan; the brass 日本国道路元標 plate is set into the carriageway mid-span, with a replica on the pavement. Free, always there. SET EXPECTATIONS: the Shuto Expressway still runs directly overhead in Sep 2026 — the replacement tunnel is due FY2035 and the elevated deck is not being taken down until FY2040.",
+      "latitude": 35.683861,
+      "longitude": 139.773697,
+      "coordPrecision": "verified",
+      "confidence": "high",
+      "confidenceNote": null,
+      "source": "https://www.shutoko.jp/ss/nihonbashi-tikaka/overview/"
+    },
+    {
+      "id": "d2w30tkj",
+      "anchorStop": "Tokyo Station",
+      "name": "Fukutoku Shrine and Coredo Muromachi",
+      "nameJp": "福徳神社・コレド室町",
+      "category": "sight",
+      "priceTier": "¥¥",
+      "stayMinutes": 15,
+      "legs": [
+        {
+          "mode": "walk",
+          "minutes": 15
+        }
+      ],
+      "timeWindow": "day",
+      "note": "Nihonbashi Muromachi 2-4-14, on this site since the Jogan era (859-877), rebuilt small and vermillion in 2014 and wedged between the Coredo Muromachi towers with the Fukutoku Garden beside it. Tel 03-3276-3550. SHUT IN THIS WINDOW: the amulet and goshuin desk is 10:00-17:00 and the Coredo shops open 10:00-11:00, so at 09:30 you get an empty plaza, a shrine you can bow at, and nothing to buy.",
+      "latitude": 35.687042,
+      "longitude": 139.774246,
+      "coordPrecision": "verified",
+      "confidence": "high",
+      "confidenceNote": null,
+      "source": "https://mebuki.jp/"
+    },
+    {
+      "id": "d2w30tkk",
+      "anchorStop": "Tokyo Station",
+      "name": "Hibiya Park",
+      "nameJp": "日比谷公園",
+      "category": "sight",
+      "priceTier": "¥",
+      "stayMinutes": 25,
+      "legs": [
+        {
+          "mode": "walk",
+          "minutes": 24
+        }
+      ],
+      "timeWindow": "24h",
+      "note": "NOT IN THIS SLOT — 24 minutes each way is 48 of a 50-minute stop. Japan's first Western-style public park, 常時開園 and 無料 apart from a few paid facilities. AND IT IS A BUILDING SITE: the great fountain and fountain plaza are fenced for preparatory works and the small bandstand area went under renovation from 2025. Recorded because it is inside the radius, not because it fits Day 2.",
+      "latitude": 35.672764,
+      "longitude": 139.754089,
+      "coordPrecision": "verified",
+      "confidence": "high",
+      "confidenceNote": null,
+      "source": "https://www.tokyo-park.or.jp/park/hibiya/index.html"
+    },
+    {
+      "id": "d2w30tkl",
+      "anchorStop": "Tokyo Station",
+      "name": "Tokyo Station Gallery",
+      "nameJp": "東京ステーションギャラリー",
+      "category": "sight",
+      "priceTier": "¥¥",
+      "stayMinutes": 45,
+      "legs": [
+        {
+          "mode": "walk",
+          "minutes": 4
+        }
+      ],
+      "timeWindow": "day",
+      "note": "Inside the restored Marunouchi red-brick building, with exposed 1914 brickwork in the galleries. Closed Mondays as a rule — Wed 9 Sep is fine — but it opens at 10:00, five minutes after the group is due on the Sendai platform. So: a near miss, not an option. Hours 10:00-18:00 (Fridays to 20:00), last entry 30 minutes before close, price varies by exhibition; IC cards accepted.",
+      "latitude": 35.68182,
+      "longitude": 139.76607,
+      "coordPrecision": "approximate",
+      "confidence": "high",
+      "confidenceNote": null,
+      "source": "https://www.ejrcf.or.jp/gallery/museum-info.html"
+    },
+    {
+      "id": "d2w30sna",
+      "anchorStop": "Sendai Station",
+      "name": "AER Observation Terrace, 31F",
+      "nameJp": "AER展望テラス",
+      "category": "sight",
+      "priceTier": "¥",
+      "stayMinutes": 15,
+      "legs": [
+        {
+          "mode": "walk",
+          "minutes": 4
+        }
+      ],
+      "timeWindow": "day",
+      "note": "Free, top floor of the 145.5 m AER tower at Chuo 1-3-1, two minutes from the station's 2F west deck (exits 2-8) and open 10:00-20:00 — so it IS open when the group lands at 11:40. East and west terraces: Sendai's grid, the Hirose river valley and the Zao ridge on a clear day. The single best use of a 20-minute in-station gap; lifts are the bottleneck for 35 people.",
+      "latitude": 38.262653,
+      "longitude": 140.881424,
+      "coordPrecision": "verified",
+      "confidence": "high",
+      "confidenceNote": null,
+      "source": "https://www.sentabi.jp/spots/35"
+    },
+    {
+      "id": "d2w30snb",
+      "anchorStop": "Sendai Station",
+      "name": "Hapina Nakakecho arcade",
+      "nameJp": "ハピナ名掛丁商店街",
+      "category": "shopping",
+      "priceTier": "¥¥",
+      "stayMinutes": 15,
+      "legs": [
+        {
+          "mode": "walk",
+          "minutes": 3
+        }
+      ],
+      "timeWindow": "day",
+      "note": "The first roofed arcade straight out of the station's west exit, 198.6 m long — the name is HAPPY plus the Japanese adjective ending -na, chosen to mean a bright, happy street. Fully covered, which matters in September rain and heat. Most units open 10:00, so at 11:40 it is trading. This is the arcade the group walks through to reach Clis Road; nobody needs to plan it, only to know it is there.",
+      "latitude": 38.260338,
+      "longitude": 140.881699,
+      "coordPrecision": "approximate",
+      "confidence": "high",
+      "confidenceNote": null,
+      "source": "https://crd.ndl.go.jp/reference/entry/index.php?id=1000329110&page=ref_view"
+    },
+    {
+      "id": "d2w30snc",
+      "anchorStop": "Sendai Station",
+      "name": "Clis Road arcade",
+      "nameJp": "クリスロード商店街",
+      "category": "shopping",
+      "priceTier": "¥¥",
+      "stayMinutes": 20,
+      "legs": [
+        {
+          "mode": "walk",
+          "minutes": 6
+        }
+      ],
+      "timeWindow": "day",
+      "note": "284 m of covered arcade continuing west from Hapina Nakakecho; Clis is an acronym of Creative Life In Shopping, coined to make the street sound young. Its own association gives it as five minutes from Sendai Station under a daylit translucent roof. Mitakisan Fudoin, where the Edo eccentric Sendai Shiro is enshrined, sits on it, as does Abe Kamaboko's flagship. Units from 10:00, so open at 11:40.",
+      "latitude": 38.26099,
+      "longitude": 140.874954,
+      "coordPrecision": "approximate",
+      "confidence": "high",
+      "confidenceNote": null,
+      "source": "https://www.clisroad.jp/"
+    },
+    {
+      "id": "d2w30snd",
+      "anchorStop": "Sendai Station",
+      "name": "Abe Kamaboko Honten, Clis Road",
+      "nameJp": "阿部蒲鉾店 本店",
+      "category": "food",
+      "priceTier": "¥",
+      "stayMinutes": 15,
+      "legs": [
+        {
+          "mode": "walk",
+          "minutes": 10
+        }
+      ],
+      "timeWindow": "day",
+      "note": "Chuo 2-3-18 on Clis Road, the shop that named sasa-kamaboko. Hyotan-age — sasa-kamaboko in sweet batter on a stick — is ¥300, and a winning stick gets a second free. Grill your own over charcoal, ¥300, 10 minutes, 10:00-16:00, no booking. Counter: sasa-kamaboko ¥220, Ginsen-sasa ¥280, cheese ball ¥170. Open 10:00-18:30, closed only 1 Jan. Tel 022-221-7121.",
+      "latitude": 38.26099,
+      "longitude": 140.874954,
+      "coordPrecision": "verified",
+      "confidence": "medium",
+      "confidenceNote": "Closing time is given as 18:30 by one Sendai outlet and 19:00 by the Clis Road association page; either way it is open through the 11:40-12:15 window.",
+      "source": "https://loco.kufu.jp/sendai/articles/original/1675"
+    },
+    {
+      "id": "d2w30sne",
+      "anchorStop": "Sendai Station",
+      "name": "Sendai Asaichi morning market",
+      "nameJp": "仙台朝市商店街",
+      "category": "food",
+      "priceTier": "¥",
+      "stayMinutes": 20,
+      "legs": [
+        {
+          "mode": "walk",
+          "minutes": 5
+        }
+      ],
+      "timeWindow": "day",
+      "note": "Sendai's kitchen, five minutes west of the station, roughly 08:00-17:00 and CLOSED SUNDAYS AND PUBLIC HOLIDAYS — Wed 9 Sep 2026 is a normal trading day. Named buys: Hanagasa Dango Honpo zunda dango ¥150 a skewer, Sato Kei Shoten sankaku aburaage ¥150, Marumo Bakery salt-and-pepper focaccia ¥324, Hamashine Watanabe shell oysters ¥540. Ito Shoten's ¥500 asa-ramen is 07:00-10:00 only, gone by 11:40.",
+      "latitude": 38.258598,
+      "longitude": 140.878586,
+      "coordPrecision": "verified",
+      "confidence": "high",
+      "confidenceNote": null,
+      "source": "https://ontrip.jal.co.jp/tohoku/17698964"
+    },
+    {
+      "id": "d2w30snf",
+      "anchorStop": "Sendai Station",
+      "name": "Iroha Yokocho",
+      "nameJp": "壱弐参横丁",
+      "category": "food",
+      "priceTier": "¥¥",
+      "stayMinutes": 15,
+      "legs": [
+        {
+          "mode": "walk",
+          "minutes": 11
+        }
+      ],
+      "timeWindow": "night",
+      "note": "Ichibancho 2-3-28/30: a black-market alley that became a market after 1945 and has run for nearly eighty years, with a hand-pump well still standing inside. Corrugated roofs, hand-painted signs, Japanese-only menus. MOSTLY A NIGHT PLACE — hours are 店舗による and at midday a large share of the shutters are down, so a 12:00 visit is a photograph of an empty lane, not a meal.",
+      "latitude": 38.258696,
+      "longitude": 140.873471,
+      "coordPrecision": "verified",
+      "confidence": "high",
+      "confidenceNote": null,
+      "source": "https://www.sentabi.jp/spots/232"
+    },
+    {
+      "id": "d2w30sng",
+      "anchorStop": "Sendai Station",
+      "name": "Marble Road Omachi and Sunmall Ichibancho",
+      "nameJp": "マーブルロードおおまち・サンモール一番町",
+      "category": "shopping",
+      "priceTier": "¥¥",
+      "stayMinutes": 25,
+      "legs": [
+        {
+          "mode": "walk",
+          "minutes": 13
+        }
+      ],
+      "timeWindow": "day",
+      "note": "Where Chuo-dori meets Ichibancho-dori the arcades turn south: Marble Road Omachi, 195.35 m, floored in marble, which is where the name comes from; then Brandome Ichibancho, 195.67 m; then Sunmall Ichibancho, 240 m, whose roof opens on fine days. This is Sendai's department-store belt (Fujisaki, 10:00 onward). 26 minutes of walking of a 35-minute stop — a browse only if the coach waits.",
+      "latitude": 38.264011,
+      "longitude": 140.870224,
+      "coordPrecision": "approximate",
+      "confidence": "medium",
+      "confidenceNote": "Arcade lengths are from the National Diet Library reference database; the coordinate is the Ichibancho 4-chome address point, at the north end of the chain rather than its centre.",
+      "source": "https://crd.ndl.go.jp/reference/entry/index.php?id=1000329110&page=ref_view"
+    },
+    {
+      "id": "d2w30snh",
+      "anchorStop": "Sendai Station",
+      "name": "Aji Tasuke Honten",
+      "nameJp": "味太助 本店",
+      "category": "food",
+      "priceTier": "¥¥",
+      "stayMinutes": 45,
+      "legs": [
+        {
+          "mode": "walk",
+          "minutes": 18
+        }
+      ],
+      "timeWindow": "day",
+      "note": "NOT IN THIS SLOT. Ichibancho 4-4-13, the shop that invented Sendai gyutan in 1948 — charcoal-grilled tongue with oxtail soup and barley rice, dinner spend ¥1,000-1,999. Open 11:30-20:30 and CLOSED TUESDAYS, so Wed 9 Sep is fine. But 36 minutes of walking plus a 45-minute sit-down cannot happen inside a 35-minute stop; the station's 3F Gyutan-dori is the substitute, and it is already in the plan.",
+      "latitude": 38.264011,
+      "longitude": 140.870224,
+      "coordPrecision": "verified",
+      "confidence": "medium",
+      "confidenceNote": "Hours and the Tuesday closing come from a restaurant-listing page, not the shop's own site; worth one phone check before anyone walks out there.",
+      "source": "https://www.hotpepper.jp/strJ000100924/"
+    },
+    {
+      "id": "d2w30sni",
+      "anchorStop": "Sendai Station",
+      "name": "Sendai Mediatheque",
+      "nameJp": "せんだいメディアテーク",
+      "category": "sight",
+      "priceTier": "¥",
+      "stayMinutes": 40,
+      "legs": [
+        {
+          "mode": "walk",
+          "minutes": 30
+        }
+      ],
+      "timeWindow": "day",
+      "note": "NOT IN THIS SLOT. Toyo Ito's 2001 building at Kasugamachi 2-1 — thirteen steel tube-columns through a glass box, free to walk into, 09:00-22:00, closed the 4th Thursday Jan-Nov, so Wed 9 Sep is open. Its own access page says 約30分（約2.0km）on foot: exactly the radius limit and impossible in 35 minutes. About 10 minutes by city bus instead.",
+      "latitude": 38.265327,
+      "longitude": 140.865921,
+      "coordPrecision": "verified",
+      "confidence": "high",
+      "confidenceNote": null,
+      "source": "https://www.smt.jp/info/access/"
+    },
+    {
+      "id": "d2w30fma",
+      "anchorStop": "Matsushima Fish Market",
+      "name": "Michinoku Date Masamune Historical Museum",
+      "nameJp": "みちのく伊達政宗歴史館",
+      "category": "sight",
+      "priceTier": "¥¥",
+      "stayMinutes": 30,
+      "legs": [
+        {
+          "mode": "walk",
+          "minutes": 2
+        }
+      ],
+      "timeWindow": "day",
+      "note": "Two minutes from the market at Fugendo 13-13 and almost nobody has it on their list. Around 200 life-size waxworks staging Masamune's life; the museum itself says allow 30 minutes and takes parties up to 300. Adults ¥1,000, primary/junior ¥500, school groups ¥300. Open 09:00-17:00, last admission 16:30, 無休. Tel 022-354-4131. Fits the 13:18-14:18 hour only if lunch is a stand-up kaki burger.",
+      "latitude": 38.371372,
+      "longitude": 141.065018,
+      "coordPrecision": "verified",
+      "confidence": "high",
+      "confidenceNote": null,
+      "source": "https://datekan.jp/manabitabi/spots/%E3%81%BF%E3%81%A1%E3%81%AE%E3%81%8F%E4%BC%8A%E9%81%94%E6%94%BF%E5%AE%97%E6%AD%B4%E5%8F%B2%E9%A4%A8/"
+    },
+    {
+      "id": "d2w30fmb",
+      "anchorStop": "Matsushima Fish Market",
+      "name": "Saigyo Modoshi no Matsu Park",
+      "nameJp": "西行戻しの松公園",
+      "category": "sight",
+      "priceTier": "¥",
+      "stayMinutes": 25,
+      "legs": [
+        {
+          "mode": "walk",
+          "minutes": 20
+        }
+      ],
+      "timeWindow": "day",
+      "note": "The hilltop that gives the whole bay in one frame — the view the boat cannot show you. Free, unfenced, 通年無休. A real climb on a road with no shade, in 30C and high humidity. 40 minutes of walking out of a 60-minute lunch stop leaves about 20 at the top, so only for someone who eats a kaki burger standing up. Its 260 cherries mean nothing in September.",
+      "latitude": 38.367296,
+      "longitude": 141.0546207,
+      "coordPrecision": "verified",
+      "confidence": "medium",
+      "confidenceNote": "Walk time is estimated from the GSI straight-line distance plus the hill; the town publishes only a driving time (about 3 minutes from Matsushima Kaigan Station).",
+      "source": "https://datekan.jp/manabitabi/spots/%E8%A5%BF%E8%A1%8C%E6%88%BB%E3%81%97%E3%81%AE%E6%9D%BE%E5%85%AC%E5%9C%92/"
+    },
+    {
+      "id": "d2w30zga",
+      "anchorStop": "Zuiganji Temple",
+      "name": "Oshima island and Togetsukyo bridge",
+      "nameJp": "雄島・渡月橋",
+      "category": "sight",
+      "priceTier": "¥",
+      "stayMinutes": 30,
+      "legs": [
+        {
+          "mode": "walk",
+          "minutes": 8
+        }
+      ],
+      "timeWindow": "day",
+      "note": "Free, no gate, usually empty — the quiet counterweight to Zuiganji's queue, and Basho's first stop in Oku no Hosomichi. Cross the small red Togetsukyo to about fifty rock-cut niches with worn Buddhas and stupas, the Raiken monument (a national Important Cultural Property, for a monk who meditated here 22 years), and Basho poem stones. No toilets, no barrier-free route.",
+      "latitude": 38.366833,
+      "longitude": 141.061066,
+      "coordPrecision": "approximate",
+      "confidence": "medium",
+      "confidenceNote": "The GSI point for Oshima's registered address (Namiuchihama 24) falls on the mainland shore block, not on the island itself; the island lies a short way offshore to the west.",
+      "source": "https://matsushima.miyaginavi.jp/tourist_attractions/1862.html"
+    },
+    {
+      "id": "d2w30zgb",
+      "anchorStop": "Zuiganji Temple",
+      "name": "Tenrin-in",
+      "nameJp": "天麟院",
+      "category": "sight",
+      "priceTier": "¥",
+      "stayMinutes": 15,
+      "legs": [
+        {
+          "mode": "walk",
+          "minutes": 3
+        }
+      ],
+      "timeWindow": "day",
+      "note": "Free, 08:00-17:00, and immediately next door to Entsuin at Machiuchi 51 — the temple of Irohahime, Date Masamune's eldest daughter. Hydrangeas, the Iroha Kannon and a Namu-Enmei Jizo; second station of the Sanriku Thirty-three Kannon circuit, with two different goshuin (Shaka Nyorai and Iroha Kannon). Three minutes and no ticket makes it the cheapest add-on inside the 14:20 hour.",
+      "latitude": 38.371414,
+      "longitude": 141.059006,
+      "coordPrecision": "approximate",
+      "confidence": "high",
+      "confidenceNote": null,
+      "source": "https://matsushima.miyaginavi.jp/shrines_history/1106.html"
+    },
+    {
+      "id": "d2w30zgc",
+      "anchorStop": "Zuiganji Temple",
+      "name": "Yotokuin — the closed mausoleum",
+      "nameJp": "陽徳院（非公開）",
+      "category": "sight",
+      "priceTier": "¥",
+      "stayMinutes": 10,
+      "legs": [
+        {
+          "mode": "walk",
+          "minutes": 3
+        }
+      ],
+      "timeWindow": "day",
+      "note": "SAY THIS PLAINLY: Yotokuin is 非公開 — the Matsushima tourist association lists it as not open to the public, and the Hokaden mausoleum of Megohime, an Important Cultural Property, stays behind a closed gate outside announced special openings. What you can do is walk three minutes up behind Zuiganji to the gate, the moss and the cedar. Do not promise the interior.",
+      "latitude": 38.372986,
+      "longitude": 141.060593,
+      "coordPrecision": "verified",
+      "confidence": "high",
+      "confidenceNote": null,
+      "source": "https://www.matsushima-kanko.com/miru/detail.php?id=146"
+    },
+    {
+      "id": "d2w30zgd",
+      "anchorStop": "Zuiganji Temple",
+      "name": "Miyagi Matsushima Rikyu rooftop deck",
+      "nameJp": "宮城県松島離宮 屋上展望台",
+      "category": "sight",
+      "priceTier": "¥",
+      "stayMinutes": 25,
+      "legs": [
+        {
+          "mode": "walk",
+          "minutes": 7
+        }
+      ],
+      "timeWindow": "day",
+      "note": "Namiuchihama 18, beside Matsushima Kaigan Station on the old Matsushima Park Hotel site — a 2020 attraction most itineraries miss. A 3F roof deck over the 260-odd islands, a Japanese garden whose water basins mirror the bay, and a room on how the bay was formed. Adults (junior high and up) ¥400, children 4-primary ¥200; admission 10:00-18:00, no closing day; parties of 20+ price separately.",
+      "latitude": 38.367126,
+      "longitude": 141.060074,
+      "coordPrecision": "verified",
+      "confidence": "high",
+      "confidenceNote": null,
+      "source": "https://rikyu-m.com/facility/"
+    },
+    {
+      "id": "d2w30gda",
+      "anchorStop": "Godaido Hall",
+      "name": "Kanrantei and Matsushima Museum",
+      "nameJp": "観瀾亭・松島博物館",
+      "category": "sight",
+      "priceTier": "¥",
+      "stayMinutes": 20,
+      "legs": [
+        {
+          "mode": "walk",
+          "minutes": 2
+        }
+      ],
+      "timeWindow": "day",
+      "note": "Two minutes from Godaido at Machiuchi 56: a tea pavilion moved here from Fushimi-Momoyama Castle, gifted by Hideyoshi to Masamune, with gold-ground painted panels and tatami looking straight out over the water. April-October 08:30-17:00, 無休. Sit on the tatami with matcha and a sweet — tea from ¥500 on top of admission. Adults ¥300, ¥250 each for parties of 30 or more. Tel 022-353-3355.",
+      "latitude": 38.369701,
+      "longitude": 141.062378,
+      "coordPrecision": "verified",
+      "confidence": "medium",
+      "confidenceNote": "Matsushima Town's own page gives ¥300 adult with a 30+ group rate of ¥250, while the tourist association still shows ¥200 — treat ¥300 as current and carry the difference in cash.",
+      "source": "https://www.town.miyagi-matsushima.lg.jp/page/1140.html"
+    },
+    {
+      "id": "d2w30gdb",
+      "anchorStop": "Godaido Hall",
+      "name": "Fukuurabashi and Fukuura Island",
+      "nameJp": "福浦橋・福浦島",
+      "category": "sight",
+      "priceTier": "¥",
+      "stayMinutes": 20,
+      "legs": [
+        {
+          "mode": "walk",
+          "minutes": 4
+        }
+      ],
+      "timeWindow": "day",
+      "note": "The 252 m vermillion bridge to Fukuura Island, four minutes east of Godaido — also the Deai-bashi, the meeting bridge, and a lucky crossing. Adults ¥300, students ¥100; Apr-Oct 08:30-17:00, Nov-Mar to 16:30. Tel 022-354-3457. IN A 30-MINUTE STOP: bridge out and back plus the walk is about 20 minutes, so you get the bridge and the island gate. The island loop needs 45.",
+      "latitude": 38.370209,
+      "longitude": 141.066589,
+      "coordPrecision": "verified",
+      "confidence": "medium",
+      "confidenceNote": "Matsushima Town's page gives ¥300 adult; Tohoku's tourism portal still lists ¥200 — assume ¥300.",
+      "source": "https://www.town.miyagi-matsushima.lg.jp/page/1578.html"
+    },
+    {
+      "id": "d2w30bca",
+      "anchorStop": "Matsushima Bay Cruise — Nioumaru course",
+      "name": "Matsushima Kaigan Station — the after-17:00 fallback",
+      "nameJp": "松島海岸駅",
+      "category": "rest",
+      "priceTier": "¥",
+      "stayMinutes": 10,
+      "legs": [
+        {
+          "mode": "walk",
+          "minutes": 6
+        }
+      ],
+      "timeWindow": "day",
+      "note": "Six minutes from the Central Pier, and the practical fallback after a 16:00-17:00 cruise when every shop in Matsushima closes at 17:00: toilets, benches and shade. Also the escape route — the JR Senseki Line runs from here to Sendai in 40 minutes if anyone misses the coach to Naruko. Recorded because nothing else in Matsushima is open past 17:00, not because the station is interesting.",
+      "latitude": 38.3686271,
+      "longitude": 141.0588063,
+      "coordPrecision": "verified",
+      "confidence": "high",
+      "confidenceNote": null,
+      "source": "https://matsushima.miyaginavi.jp/access/"
+    },
+    {
+      "id": "d2w30bcb",
+      "anchorStop": "Matsushima Bay Cruise — Nioumaru course",
+      "name": "FamilyMart Matsushima Kaigan-dori",
+      "nameJp": "ファミリーマート松島海岸通り店",
+      "category": "shopping",
+      "priceTier": "¥",
+      "stayMinutes": 10,
+      "legs": [
+        {
+          "mode": "walk",
+          "minutes": 4
+        }
+      ],
+      "timeWindow": "24h",
+      "note": "Fugendo 32-4, open 24 hours, and the nearest convenience store to Matsushima Kaigan — the last chance for water, an ATM, a toilet and snacks before roughly two hours of coach to Naruko Onsen. 22 free parking spaces, so the coach can pull in; five eat-in seats, Wi-Fi, toilets. Tel 022-355-1020. In September heat this is the water stop, and it is the only thing here open after 17:00.",
+      "latitude": 38.371372,
+      "longitude": 141.065018,
+      "coordPrecision": "approximate",
+      "confidence": "medium",
+      "confidenceNote": "The GSI point resolves to the Fugendo 32 block rather than the storefront, so it sits within roughly 100 m of the actual shop.",
+      "source": "https://matsushima.miyaginavi.jp/tourist_attractions/6219.html"
+    }
+  ],
+  "shopping": [
+    {
+      "id": "d1w30shop01",
+      "anchorStop": "Hotel Metropolitan Tokyo Haneda",
+      "name": "Anamori Inari sacred sand (goshinsuna)",
+      "nameJp": "穴守稲荷神社 御神砂",
+      "placeLabel": "Anamori Inari Shrine, Okunomiya on Inariyama — 8 min walk from HICity",
+      "estimate": null,
+      "note": "The shrine's own take-home: sand from the Inariyama mound at the Okunomiya, traditionally scattered at a doorway or carried for safe travel. Weightless, flight-safe, no shelf life. The shrine office is 09:00-16:00 and the group leaves before 08:30, so this is a self-serve pickup at the mound rather than a counter purchase, and no price is published — leave a coin.",
+      "latitude": 35.5505492,
+      "longitude": 139.7498401,
+      "coordPrecision": "verified",
+      "confidence": "medium",
+      "confidenceNote": "The shrine lists the goshinsuna among its offerings but publishes no price and does not state whether it is available outside office hours.",
+      "source": "https://anamori.jp/"
+    },
+    {
+      "id": "d2w30shop01",
+      "anchorStop": "Sendai Station",
+      "name": "Abe no sasa-kamaboko and Ginsen-sasa",
+      "nameJp": "阿部の笹かまぼこ・吟撰笹",
+      "placeLabel": "Abe Kamaboko Honten, Chuo 2-3-18 on Clis Road (10 min walk)",
+      "estimate": 220,
+      "note": "Abe no sasa-kamaboko ¥220 a piece, Ginsen-sasa ¥280, cheese ball ¥170, Sasa-dayori ¥160 — from the shop that coined the name sasa-kamaboko. Chilled fish paste: it will not survive an unrefrigerated flight to Malaysia, so buy it to eat the same day and buy the vacuum-packed boxed sets from the station counter for taking home instead.",
+      "latitude": 38.26099,
+      "longitude": 140.874954,
+      "coordPrecision": "verified",
+      "confidence": "high",
+      "confidenceNote": null,
+      "source": "https://loco.kufu.jp/sendai/articles/original/1675"
+    },
+    {
+      "id": "d2w30shop02",
+      "anchorStop": "Sendai Station",
+      "name": "Hyotan-age, on a stick",
+      "nameJp": "ひょうたん揚げ",
+      "placeLabel": "Abe Kamaboko Honten, Chuo 2-3-18 on Clis Road (10 min walk)",
+      "estimate": 300,
+      "note": "Sasa-kamaboko dipped in a sweet American-dog batter and deep fried, ¥300 a stick, eaten walking. There is a lottery in it — a winning stick gets you a second free. Hot, greasy and gone in five minutes, so it is a snack, not a souvenir. Counter runs with the shop, 10:00 to about 18:30.",
+      "latitude": 38.26099,
+      "longitude": 140.874954,
+      "coordPrecision": "verified",
+      "confidence": "high",
+      "confidenceNote": null,
+      "source": "https://loco.kufu.jp/sendai/articles/original/1675"
+    },
+    {
+      "id": "d2w30shop03",
+      "anchorStop": "Sendai Station",
+      "name": "Zunda dango and sankaku aburaage, Sendai Asaichi",
+      "nameJp": "ずんだだんご・三角油揚げ",
+      "placeLabel": "Hanagasa Dango Honpo and Sato Kei Shoten, Sendai Asaichi (5 min walk)",
+      "estimate": 150,
+      "note": "Hanagasa Dango Honpo zunda dango ¥150 a skewer and onigiri or okowa ¥170; Sato Kei Shoten's sankaku aburaage ¥150 and shiso-maki miso ¥540 for three. Eat-now items, not luggage. Market hours are roughly 08:00-17:00 and it is closed Sundays and public holidays — Wed 9 Sep 2026 trades normally.",
+      "latitude": 38.258598,
+      "longitude": 140.878586,
+      "coordPrecision": "verified",
+      "confidence": "high",
+      "confidenceNote": null,
+      "source": "https://ontrip.jal.co.jp/tohoku/17698964"
+    },
+    {
+      "id": "d2w30shop04",
+      "anchorStop": "Zuiganji Temple",
+      "name": "Tenrin-in goshuin (two designs)",
+      "nameJp": "天麟院 御朱印",
+      "placeLabel": "Tenrin-in, Machiuchi 51, next to Entsuin (3 min walk)",
+      "estimate": null,
+      "note": "Tenrin-in issues two seals, one for Shaka Nyorai and one for the Iroha Kannon, and it is the second station of the Sanriku Thirty-three Kannon circuit — a different stamp from the Zuiganji goshuin already on the list, three minutes away and free to enter. Bring the book, not loose paper. Open 08:00-17:00.",
+      "latitude": 38.371414,
+      "longitude": 141.059006,
+      "coordPrecision": "approximate",
+      "confidence": "medium",
+      "confidenceNote": "The two goshuin designs are listed by the Matsushima tourism guide but no price is published; ¥300-500 is the regional norm and is not confirmed for this temple.",
+      "source": "https://matsushima.miyaginavi.jp/shrines_history/1106.html"
+    }
+  ]
+}

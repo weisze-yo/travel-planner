@@ -1,0 +1,1601 @@
+{
+ "batch": "day5-nikko",
+ "places": [
+  {
+   "id": "f70f99739abe",
+   "anchorStop": "Kegon Falls",
+   "name": "Kegon Falls Elevator",
+   "nameJp": "華厳滝エレベーター",
+   "category": "sight",
+   "priceTier": "¥",
+   "stayMinutes": 25,
+   "legs": [
+    {
+     "mode": "walk",
+     "minutes": 2
+    }
+   ],
+   "note": "100 m straight down through bedrock in a 30-person Otis car, about one minute, then roughly 70 steps out to the deck. September hours 07:30-18:00, no closing day. ¥600 adult round trip, ¥400 elementary, and ¥550/¥350 at 30 or more — no booking, first come. Two minutes from the coach in the prefectural car park.",
+   "latitude": 36.738333,
+   "longitude": 139.503611,
+   "coordPrecision": "verified",
+   "timeWindow": "day",
+   "confidence": "medium",
+   "confidenceNote": "The 07:30-18:00 May-September window is carried from the project's own §2 correction: kegon.jp/info/ was unreachable this session (robots block on every kegon.jp sub-path, egress proxy refuses direct requests to the host), and every reachable listing - including Tochigi Prefecture's own tourism site - still prints 08:00-17:00 for 1 Mar-30 Nov.",
+   "source": "https://www.kegon.jp/"
+  },
+  {
+   "id": "77bfc40ff5cf",
+   "anchorStop": "Kegon Falls",
+   "name": "Basin observation platform",
+   "nameJp": "観瀑台",
+   "category": "sight",
+   "priceTier": "¥",
+   "stayMinutes": 20,
+   "legs": [
+    {
+     "mode": "walk",
+     "minutes": 5
+    }
+   ],
+   "note": "The 97 m single drop head-on from basin level, only about 7 m wide at normal flow, with the Junitaki side-seeps trickling out of the cliff beside it. Included in the lift fare. At 09:20 the sun is SE at 45 degrees, behind you - the only hour of the day that is true. Spray carries about 150 m to the deck on a windy morning.",
+   "latitude": 36.737447,
+   "longitude": 139.502722,
+   "coordPrecision": "verified",
+   "timeWindow": "day",
+   "confidence": "high",
+   "confidenceNote": null,
+   "source": "https://www.kegon.jp/"
+  },
+  {
+   "id": "d8ebfc8b7bf2",
+   "anchorStop": "Kegon Falls",
+   "name": "Free upper observation area",
+   "nameJp": "無料観瀑台",
+   "category": "sight",
+   "priceTier": "¥",
+   "stayMinutes": 10,
+   "legs": [
+    {
+     "mode": "walk",
+     "minutes": 2
+    }
+   ],
+   "note": "Prefecture-run, no ticket, no queue, two minutes from the coach behind the first car park - it looks DOWN on the falls from the rim instead of up from the basin. This is the fallback if 35 people cannot clear one lift car inside the hour, and on a domestic-crowd Saturday it is the realistic plan B.",
+   "latitude": 36.739181,
+   "longitude": 139.504889,
+   "coordPrecision": "verified",
+   "timeWindow": "day",
+   "confidence": "high",
+   "confidenceNote": null,
+   "source": "https://www.tochigiji.or.jp/spot/s5865"
+  },
+  {
+   "id": "9ba0c5175f61",
+   "anchorStop": "Kegon Falls",
+   "name": "Juichiya (yuba yakisoba)",
+   "nameJp": "十一屋",
+   "category": "food",
+   "priceTier": "¥",
+   "stayMinutes": 15,
+   "legs": [
+    {
+     "mode": "walk",
+     "minutes": 3
+    }
+   ],
+   "note": "Yuba yakisoba ¥500 from 08:00 - one of the very few things actually open at 09:20 up here, because the hand-cut soba houses do not lift their shutters until 11:00 and lunch is already booked for 12:30 in Nikko anyway. Treat it as a shared taste, not a meal.",
+   "latitude": 36.738689,
+   "longitude": 139.5025,
+   "coordPrecision": "approximate",
+   "timeWindow": "day",
+   "confidence": "medium",
+   "confidenceNote": "The shop is on the Chuzenji lakefront parade but no official page publishes its address, so the coordinate is a lakefront guess and the ¥500/08:00 figures come from the seed rather than the shop.",
+   "source": "https://www.tochigiji.or.jp/spot/s5865"
+  },
+  {
+   "id": "802174703d9d",
+   "anchorStop": "Kegon Falls",
+   "name": "Chuzenji himemasu & rainbow trout",
+   "nameJp": "中禅寺湖のヒメマス・ニジマス",
+   "category": "food",
+   "priceTier": "¥¥",
+   "stayMinutes": 15,
+   "legs": [
+    {
+     "mode": "walk",
+     "minutes": 4
+    }
+   ],
+   "note": "Himemasu is landlocked sockeye from the lake below you and the only genuinely local protein up here; the counters do it salt-grilled or fried. At 09:20 most kitchens are cold - the Chuzenji Kanko Center counters open at 09:00 and are the first thing available.",
+   "latitude": 36.738156,
+   "longitude": 139.501138,
+   "coordPrecision": "approximate",
+   "timeWindow": "day",
+   "confidence": "medium",
+   "confidenceNote": "A dish rather than one address, so the coordinate is a lakefront centroid; no single official page prices himemasu at a named counter.",
+   "source": "https://www.tochigiji.or.jp/spot/s5865"
+  },
+  {
+   "id": "d5k01kegonpk",
+   "anchorStop": "Kegon Falls",
+   "name": "Kegon Falls Prefectural Car Park No.1 (coach drop)",
+   "nameJp": "県営華厳の滝第一駐車場",
+   "category": "rest",
+   "priceTier": "¥",
+   "stayMinutes": 5,
+   "legs": [
+    {
+     "mode": "walk",
+     "minutes": 1
+    }
+   ],
+   "note": "Where the coach actually stops: 日光市中宮祠2480, two minutes from the lift door, ¥2,190 per use for a large bus, no reservation, open 07:00-22:00 April-November. It also holds the toilets and the free rim deck, so brief the group here before splitting lift-goers from rim-walkers.",
+   "latitude": 36.739769,
+   "longitude": 139.501587,
+   "coordPrecision": "verified",
+   "timeWindow": "day",
+   "confidence": "medium",
+   "confidenceNote": "Coordinate is the GSI geocode of 中宮祠2480; the ¥2,190 coach fee and 07:00-22:00 window come from a charter-bus trade guide, not from the prefecture's own page.",
+   "source": "https://msearch.gsi.go.jp/address-search/AddressSearch?q=%E6%A0%83%E6%9C%A8%E7%9C%8C%E6%97%A5%E5%85%89%E5%B8%82%E4%B8%AD%E5%AE%AE%E7%A5%A02480"
+  },
+  {
+   "id": "d5k02akechi",
+   "anchorStop": "Kegon Falls",
+   "name": "Akechidaira — ropeway SHUT until 2027",
+   "nameJp": "明智平ロープウェイ（運休中）",
+   "category": "sight",
+   "priceTier": "¥",
+   "stayMinutes": 10,
+   "legs": [
+    {
+     "mode": "bus",
+     "minutes": 8
+    }
+   ],
+   "note": "Say this on the coach before anyone asks: the ropeway has been shut for renewal since mid-January 2026 and the operator's own page says reopening is 「2027年9月を予定しております」. The classic panorama of falls, lake and Mt Nantai is NOT available on this trip. The Irohazaka rest area and its car park are still there, but the view from the tarmac is not the view from the deck.",
+   "latitude": 36.739372,
+   "longitude": 139.517839,
+   "coordPrecision": "verified",
+   "timeWindow": "day",
+   "confidence": "high",
+   "confidenceNote": null,
+   "source": "https://www.nikko-kotsu.co.jp/ropeway/"
+  },
+  {
+   "id": "873154f9370a",
+   "anchorStop": "Nikko Toshogu Shrine",
+   "name": "Yomeimon",
+   "nameJp": "陽明門",
+   "category": "sight",
+   "priceTier": "¥¥",
+   "stayMinutes": 15,
+   "legs": [
+    {
+     "mode": "walk",
+     "minutes": 8
+    }
+   ],
+   "note": "Some 500 carvings of Chinese sages, dragons and children across 11 m of gate, Heisei restoration finished March 2017 - nicknamed the sunset gate because you could look at it until dusk. Fill the frame from below; the wide shot throws away the detail that makes it. Covered by the ¥1,600 ticket.",
+   "latitude": 36.758095,
+   "longitude": 139.599044,
+   "coordPrecision": "verified",
+   "timeWindow": "day",
+   "confidence": "high",
+   "confidenceNote": null,
+   "source": "https://toshogu.jp/pages/25/"
+  },
+  {
+   "id": "4faa364ae4bc",
+   "anchorStop": "Nikko Toshogu Shrine",
+   "name": "Sanzaru, on the sacred stable",
+   "nameJp": "三猿・神厩舎",
+   "category": "sight",
+   "priceTier": "¥¥",
+   "stayMinutes": 8,
+   "legs": [
+    {
+     "mode": "walk",
+     "minutes": 6
+    }
+   ],
+   "note": "The see/hear/speak-no-evil monkeys are one scene in an eight-panel monkey life-cycle frieze that reads left to right along the stable wall, and the faces were noticeably repainted in 2017 - a detail Japanese visitors still argue about. It is the first bottleneck inside the gate, so on a Saturday take it on the way in, not on the way out.",
+   "latitude": 36.757778,
+   "longitude": 139.598611,
+   "coordPrecision": "verified",
+   "timeWindow": "day",
+   "confidence": "high",
+   "confidenceNote": null,
+   "source": "https://toshogu.jp/pages/25/"
+  },
+  {
+   "id": "70b571def166",
+   "anchorStop": "Nikko Toshogu Shrine",
+   "name": "Nemuri-neko, above the Sakashitamon",
+   "nameJp": "眠り猫",
+   "category": "sight",
+   "priceTier": "¥¥",
+   "stayMinutes": 8,
+   "legs": [
+    {
+     "mode": "walk",
+     "minutes": 12
+    }
+   ],
+   "note": "The sleeping cat is small and set high above the gate, so most people photograph the wrong panel - it is directly over the doorway of the Sakashitamon, with the two sparrows carved behind it. It sits on the route to the 207 steps, so you get it even if you drop the Okumiya, which in 75 minutes you should.",
+   "latitude": 36.759042,
+   "longitude": 139.600639,
+   "coordPrecision": "verified",
+   "timeWindow": "day",
+   "confidence": "high",
+   "confidenceNote": null,
+   "source": "https://toshogu.jp/pages/25/"
+  },
+  {
+   "id": "fbda94e95f7c",
+   "anchorStop": "Nikko Toshogu Shrine",
+   "name": "Honjido — the Naki-ryu",
+   "nameJp": "本地堂 鳴龍",
+   "category": "sight",
+   "priceTier": "¥¥",
+   "stayMinutes": 15,
+   "legs": [
+    {
+     "mode": "walk",
+     "minutes": 10
+    }
+   ],
+   "note": "A priest strikes wooden clappers under the dragon's head and only there does the ceiling produce the flutter-echo cry. Japanese commentary only, no photography, and it IS covered by the main ticket - the shrine lists 本地堂（鳴龍）in the ¥1,600 inclusion. Groups are batched, so the queue is the risk in a 75-minute slot, not the show.",
+   "latitude": 36.758689,
+   "longitude": 139.59895,
+   "coordPrecision": "approximate",
+   "timeWindow": "day",
+   "confidence": "medium",
+   "confidenceNote": "Inclusion in the main ticket is confirmed on the shrine's own hours-and-fees page, but no official plan gives the Honjido a coordinate, so the point is placed inside the precinct west of the Yomeimon.",
+   "source": "https://toshogu.jp/pages/25/"
+  },
+  {
+   "id": "8effb3a92604",
+   "anchorStop": "Nikko Toshogu Shrine",
+   "name": "Nikko yuba (Ebisuya / Yugen)",
+   "nameJp": "日光湯波",
+   "category": "food",
+   "priceTier": "¥¥",
+   "stayMinutes": 60,
+   "legs": [
+    {
+     "mode": "walk",
+     "minutes": 18
+    }
+   ],
+   "note": "Spelled 湯波 here - thicker and rolled, not Kyoto's 湯葉. Ebisuya does courses ¥2,400-5,000, Yugen sets ¥1,590-2,130. Both are down on the main street near Shinkyo, 1.3-1.6 km below the Omotemon, so they are a 35-40 minute round trip out of a 75-minute slot - and lunch today is already a ramen-and-gyoza set at 12:30. Seek the yuba out, do not plan the meal around it.",
+   "latitude": 36.758156,
+   "longitude": 139.597587,
+   "coordPrecision": "approximate",
+   "timeWindow": "day",
+   "confidence": "medium",
+   "confidenceNote": "The seeded coordinate sits inside the shrine precinct, which is wrong: both restaurants are on the Kamihatsuishi/Shinkyo stretch of the main street about 1.3-1.6 km downhill. Left as-is rather than invented, and flagged here.",
+   "source": "https://www.tochigiji.or.jp/gourmet/1416/"
+  },
+  {
+   "id": "b88e838c31d0",
+   "anchorStop": "Nikko Toshogu Shrine",
+   "name": "Nikko Kanaya Hotel — hyakunen curry",
+   "nameJp": "日光金谷ホテル 百年ライスカレー",
+   "category": "food",
+   "priceTier": "¥¥¥",
+   "stayMinutes": 60,
+   "legs": [
+    {
+     "mode": "walk",
+     "minutes": 20
+    }
+   ],
+   "note": "A rediscovered Taisho recipe, about ¥2,592 with ice cream and coffee in the Maple Leaf lounge, and it takes group bookings unlike Meiji-no-Yakata. It is 1.6 km below the shrine near Shinkyo, so it is a coach stop or nothing - you cannot walk it inside the 11:00-12:15 slot.",
+   "latitude": 36.752222,
+   "longitude": 139.605278,
+   "coordPrecision": "verified",
+   "timeWindow": "day",
+   "confidence": "medium",
+   "confidenceNote": "The ¥2,592 set price is from the seed, not re-checked against the hotel's current menu this session.",
+   "source": "https://www.kanayahotel.co.jp/nkh/"
+  },
+  {
+   "id": "d5t01nishisando",
+   "anchorStop": "Nikko Toshogu Shrine",
+   "name": "Municipal Nishi-sando car park No.2/3 (Saturday coach park)",
+   "nameJp": "市営西参道第2・3駐車場",
+   "category": "rest",
+   "priceTier": "¥",
+   "stayMinutes": 5,
+   "legs": [
+    {
+     "mode": "walk",
+     "minutes": 10
+    }
+   ],
+   "note": "This is the Saturday answer, and it changes the day: the shrine's own coach park prints 「土・日・祝祭日、特別な行事のある日は駐車不可」, so on 12 September the 45-seater cannot use it. Nishi-sando 2/3 at 安川町2-47 takes large buses at ¥1,540 a day, 140 spaces, open 24 hours, about 10 minutes on foot up the Nishi-sando to the Omotemon.",
+   "latitude": 36.753441,
+   "longitude": 139.599228,
+   "coordPrecision": "verified",
+   "timeWindow": "day",
+   "confidence": "medium",
+   "confidenceNote": "Coordinate and address are a GSI geocode of 安川町2-47 and the Saturday ban is verbatim from the shrine's own access page, but the ¥1,540 large-bus tariff comes from parking guides rather than Nikko City's own page.",
+   "source": "https://toshogu.jp/pages/26/"
+  },
+  {
+   "id": "d5t02shinkyo",
+   "anchorStop": "Nikko Toshogu Shrine",
+   "name": "Shinkyo bridge",
+   "nameJp": "神橋",
+   "category": "sight",
+   "priceTier": "¥",
+   "stayMinutes": 10,
+   "legs": [
+    {
+     "mode": "walk",
+     "minutes": 15
+    }
+   ],
+   "note": "The vermilion bridge over the Daiya river at the foot of the shrine road - free to photograph from the road bridge beside it, about ¥300 if you want to walk onto it. It is 1 km and 15 minutes below the Omotemon, so it belongs to the coach window rather than the 75 minutes: ask the driver to pause here on the way in or out.",
+   "latitude": 36.753075,
+   "longitude": 139.60398,
+   "coordPrecision": "verified",
+   "timeWindow": "day",
+   "confidence": "medium",
+   "confidenceNote": "Coordinate is the GSI national-geocoder point for 神橋; the crossing fee was not re-checked on Rinnoji's own page this session.",
+   "source": "https://msearch.gsi.go.jp/address-search/AddressSearch?q=%E7%A5%9E%E6%A9%8B"
+  },
+  {
+   "id": "d5t03homotsukan",
+   "anchorStop": "Nikko Toshogu Shrine",
+   "name": "Toshogu Treasure House (skip it today)",
+   "nameJp": "日光東照宮宝物館",
+   "category": "sight",
+   "priceTier": "¥¥",
+   "stayMinutes": 40,
+   "legs": [
+    {
+     "mode": "walk",
+     "minutes": 4
+    }
+   ],
+   "note": "Not included in the ¥1,600: it is ¥1,000 extra for adults, ¥400 for children, or a ¥2,400 combined ticket (¥2,240 at 35 or more). Honest advice for a 75-minute slot on a Saturday - do not buy it. Forty minutes indoors is the whole Nemuri-neko-and-Naki-ryu half of the visit.",
+   "latitude": null,
+   "longitude": null,
+   "timeWindow": "day",
+   "confidence": "medium",
+   "confidenceNote": "Prices are from the shrine's own fees page, but the shrine publishes no opening hours for the Treasure House and no coordinate, so lat/long is deliberately left empty rather than guessed.",
+   "source": "https://toshogu.jp/pages/25/"
+  },
+  {
+   "id": "5a7f954a6f52",
+   "anchorStop": "Edo Wonderland Nikko Edomura",
+   "name": "Nihonbashi",
+   "nameJp": "日本橋",
+   "category": "sight",
+   "priceTier": "¥¥¥",
+   "stayMinutes": 10,
+   "legs": [
+    {
+     "mode": "walk",
+     "minutes": 6
+    }
+   ],
+   "note": "Stand on the bridge looking down the main street - 49.5 hectares of real timber Edo buildings, still a working film set. It is also the end of the Oiran-douchuu route, which comes down this street from the fire-lookout tower, so it doubles as the procession position.",
+   "latitude": 36.792533,
+   "longitude": 139.696461,
+   "coordPrecision": "verified",
+   "timeWindow": "day",
+   "confidence": "high",
+   "confidenceNote": null,
+   "source": "https://edowonderland.net/"
+  },
+  {
+   "id": "f75ceb58db63",
+   "anchorStop": "Edo Wonderland Nikko Edomura",
+   "name": "Oiran-douchuu procession",
+   "nameJp": "花魁道中",
+   "category": "sight",
+   "priceTier": "¥¥¥",
+   "stayMinutes": 15,
+   "legs": [
+    {
+     "mode": "walk",
+     "minutes": 6
+    }
+   ],
+   "note": "High-clogged oiran gliding down the main street with attendants, five to ten minutes, free with admission and the best photo of the day. Usually 15:00, which sits perfectly inside a 14:00-16:30 slot - but the operator says times move with the season, so read the printed sheet at the gate before you plan anything else around it.",
+   "latitude": 36.793049,
+   "longitude": 139.69646,
+   "coordPrecision": "approximate",
+   "timeWindow": "day",
+   "confidence": "medium",
+   "confidenceNote": "The usual 15:00 start and the fire-tower-to-Nihonbashi route are from a Rakuten Travel guide; the park's own schedule page was unreachable this session, and it states in general that show times vary by date.",
+   "source": "https://travel.rakuten.co.jp/mytrip/howto/edomura-guide"
+  },
+  {
+   "id": "a6b0b3a2e3bd",
+   "anchorStop": "Edo Wonderland Nikko Edomura",
+   "name": "Ninja Karakuri Mansion",
+   "nameJp": "忍者からくり屋敷",
+   "category": "sight",
+   "priceTier": "¥¥¥",
+   "stayMinutes": 25,
+   "legs": [
+    {
+     "mode": "walk",
+     "minutes": 8
+    }
+   ],
+   "note": "Tilted floors and hidden doors, walked at your own pace, so unlike the theatres it does not need a start time - which is exactly why it is the right thing to do in the gap between two shows. Pair it with the Ninja Trick Maze next door; together they are about 45 minutes.",
+   "latitude": 36.791784,
+   "longitude": 139.697187,
+   "coordPrecision": "approximate",
+   "timeWindow": "day",
+   "confidence": "medium",
+   "confidenceNote": "In-park building with no published coordinate; the point is placed inside the park footprint from the seed and is not a surveyed position.",
+   "source": "https://edowonderland.net/"
+  },
+  {
+   "id": "06acceabda07",
+   "anchorStop": "Edo Wonderland Nikko Edomura",
+   "name": "Mizugei-za water-magic show",
+   "nameJp": "水芸座",
+   "category": "sight",
+   "priceTier": "¥¥¥",
+   "stayMinutes": 25,
+   "legs": [
+    {
+     "mode": "walk",
+     "minutes": 7
+    }
+   ],
+   "note": "About 20 minutes of water-jet illusion, three performances a day, and the most watchable of the four theatres if nobody in the group reads Japanese - the trick is visual. Three shows a day means at most one of them falls inside 14:00-16:30, so it is the sheet at the gate that decides, not you.",
+   "latitude": 36.792516,
+   "longitude": 139.695097,
+   "coordPrecision": "approximate",
+   "timeWindow": "day",
+   "confidence": "medium",
+   "confidenceNote": "Duration and three-a-day frequency are from a Rakuten Travel guide; exact start times were not obtainable from the park's own schedule page this session, and the coordinate is a seed position inside the park.",
+   "source": "https://travel.rakuten.co.jp/mytrip/howto/edomura-guide"
+  },
+  {
+   "id": "7ee6455168b0",
+   "anchorStop": "Edo Wonderland Nikko Edomura",
+   "name": "Minami-machi Bugyosho",
+   "nameJp": "南町奉行所",
+   "category": "sight",
+   "priceTier": "¥¥¥",
+   "stayMinutes": 35,
+   "legs": [
+    {
+     "mode": "walk",
+     "minutes": 9
+    }
+   ],
+   "note": "Courtroom comedy, about 30 minutes, and the audience gets pulled in - the most accessible of the theatre pieces for a group that does not read Japanese. Budget 35 minutes with the walk and the queue, which is a fifth of the whole slot: this is a choose-one-of-four decision, not a see-them-all.",
+   "latitude": 36.793229,
+   "longitude": 139.697778,
+   "coordPrecision": "approximate",
+   "timeWindow": "day",
+   "confidence": "medium",
+   "confidenceNote": "In-park building with no published coordinate; start times could not be read off the park's own schedule page this session.",
+   "source": "https://edowonderland.net/"
+  },
+  {
+   "id": "a8a76bca569c",
+   "anchorStop": "Edo Wonderland Nikko Edomura",
+   "name": "Kamado-ya (dango)",
+   "nameJp": "かまど屋",
+   "category": "food",
+   "priceTier": "¥",
+   "stayMinutes": 10,
+   "legs": [
+    {
+     "mode": "walk",
+     "minutes": 8
+    }
+   ],
+   "note": "¥300-1,400. Between shows the skewered dango here is one of the only things you can eat standing up and still make a 15:00 procession. Cash-and-counter, no seating to fight for.",
+   "latitude": 36.791893,
+   "longitude": 139.698908,
+   "coordPrecision": "approximate",
+   "timeWindow": "day",
+   "confidence": "medium",
+   "confidenceNote": "In-park counter with no published coordinate or price list; the ¥300-1,400 range is from the seed.",
+   "source": "https://edowonderland.net/"
+  },
+  {
+   "id": "69d7d55aae4d",
+   "anchorStop": "Edo Wonderland Nikko Edomura",
+   "name": "Nihon-soba Yabu",
+   "nameJp": "日本蕎麦 藪",
+   "category": "food",
+   "priceTier": "¥¥",
+   "stayMinutes": 30,
+   "legs": [
+    {
+     "mode": "walk",
+     "minutes": 7
+    }
+   ],
+   "note": "¥900-1,700, sit-down. Lunch is already eaten at 12:30, so choosing this costs you a theatre - it is the option for anyone who would rather sit in the shade than stand for a third show. Edo-period counters here have no halal certification and sake on the menu; brief the group before the gate, not at the table.",
+   "latitude": 36.791377,
+   "longitude": 139.693951,
+   "coordPrecision": "approximate",
+   "timeWindow": "day",
+   "confidence": "medium",
+   "confidenceNote": "In-park restaurant with no published coordinate; the ¥900-1,700 range is from the seed.",
+   "source": "https://edowonderland.net/"
+  },
+  {
+   "id": "d5e01sekisho",
+   "anchorStop": "Edo Wonderland Nikko Edomura",
+   "name": "Sekisho main gate — tickets and the printed timetable",
+   "nameJp": "関所（入村口）",
+   "category": "rest",
+   "priceTier": "¥¥¥",
+   "stayMinutes": 15,
+   "legs": [
+    {
+     "mode": "walk",
+     "minutes": 2
+    }
+   ],
+   "note": "The single most important two minutes of this stop: buy the 通行手形 and take the printed 演目スケジュール sheet, because nothing inside is walk-up. Ask for the GROUP AFTERNOON pass - ¥4,400 adult against ¥5,800 at the individual day window, and a 14:00 arrival is exactly when the afternoon tariff starts. Groups of 20 or more must book the coach park by phone or e-mail in advance.",
+   "latitude": 36.794739,
+   "longitude": 139.696138,
+   "coordPrecision": "approximate",
+   "timeWindow": "day",
+   "confidence": "medium",
+   "confidenceNote": "Prices are verbatim from the park's own price page, but the coordinate is the GSI name point for 日光江戸村 as a whole, which is the park label rather than the gate itself.",
+   "source": "https://edowonderland.net/price/"
+  },
+  {
+   "id": "d5e02henshin",
+   "anchorStop": "Edo Wonderland Nikko Edomura",
+   "name": "Costume rental (Henshin-dokoro)",
+   "nameJp": "変身処",
+   "category": "cloth",
+   "priceTier": "¥¥",
+   "stayMinutes": 45,
+   "legs": [
+    {
+     "mode": "walk",
+     "minutes": 3
+    }
+   ],
+   "note": "From about ¥2,800, and dressing takes 30-45 minutes - so in a 150-minute slot the costume costs you a whole theatre and the walk to it. Decide on the coach, not at the counter, and if anyone is doing it send them straight there at 14:00 while the rest go to the first show.",
+   "latitude": null,
+   "longitude": null,
+   "timeWindow": "day",
+   "confidence": "medium",
+   "confidenceNote": "The ¥2,800 entry price and 30-45 minute dressing time are from the seed; the park's own costume page was unreachable this session and no coordinate is published, so lat/long is left empty.",
+   "source": "https://edowonderland.net/"
+  },
+  {
+   "id": "d5e03meiro",
+   "anchorStop": "Edo Wonderland Nikko Edomura",
+   "name": "Ninja Trick Maze",
+   "nameJp": "忍者怪々迷路",
+   "category": "sight",
+   "priceTier": "¥¥¥",
+   "stayMinutes": 20,
+   "legs": [
+    {
+     "mode": "walk",
+     "minutes": 8
+    }
+   ],
+   "note": "Walk-in, no start time, about 20 minutes, and it sits beside the Karakuri Mansion - the two together are the reliable half of a 2.5-hour visit because neither depends on a timetable. Dark, uneven and low-ceilinged: not for anyone unsteady on their feet.",
+   "latitude": null,
+   "longitude": null,
+   "timeWindow": "day",
+   "confidence": "medium",
+   "confidenceNote": "Named in the seed's must-do and pairs with the Karakuri Mansion, but the park's attraction page was unreachable this session and no coordinate is published, so lat/long is left empty.",
+   "source": "https://edowonderland.net/"
+  },
+  {
+   "id": "9335d452fae7",
+   "anchorStop": "Hotel Nikko Tsukuba",
+   "name": "H-II rocket, Expo Center forecourt",
+   "nameJp": "H-IIロケット実物大模型",
+   "category": "sight",
+   "priceTier": "¥",
+   "stayMinutes": 20,
+   "legs": [
+    {
+     "mode": "walk",
+     "minutes": 8
+    }
+   ],
+   "note": "A full-size 50 m rocket standing in an open forecourt, floodlit after dark, unfenced from the public path and needing no ticket - the ¥500 buys the museum, which shut at 17:00 long before you arrive. Best photo in walking distance of night 5, a 600 m walk out through Chuo Park, 30-40 minutes round trip.",
+   "latitude": 36.08667,
+   "longitude": 140.11053,
+   "coordPrecision": "verified",
+   "timeWindow": "night",
+   "confidence": "high",
+   "confidenceNote": null,
+   "source": "https://msearch.gsi.go.jp/address-search/AddressSearch?q=%E3%81%A4%E3%81%8F%E3%81%B0%E3%82%A8%E3%82%AD%E3%82%B9%E3%83%9D%E3%82%BB%E3%83%B3%E3%82%BF%E3%83%BC"
+  },
+  {
+   "id": "4abf04b5ec35",
+   "anchorStop": "Hotel Nikko Tsukuba",
+   "name": "Ibaraki natto",
+   "nameJp": "納豆",
+   "category": "food",
+   "priceTier": "¥",
+   "stayMinutes": 10,
+   "legs": [
+    {
+     "mode": "walk",
+     "minutes": 3
+    }
+   ],
+   "note": "Ibaraki is Japan's natto capital, so put a plate on tomorrow's breakfast in Serena and let people try it - the group will not meet it again on this itinerary. Cheapest look is the Ropia supermarket on Tonarie CREO 1F tonight, three packs for a couple of hundred yen.",
+   "latitude": 36.081724,
+   "longitude": 140.114681,
+   "coordPrecision": "approximate",
+   "timeWindow": "night",
+   "confidence": "medium",
+   "confidenceNote": "A regional food rather than an address, so the coordinate is a Tsukuba-centre placeholder from the seed.",
+   "source": "https://www.nikko-tsukuba.com/"
+  },
+  {
+   "id": "7c0f93111c43",
+   "anchorStop": "Hotel Nikko Tsukuba",
+   "name": "Tsukuba Chuo Park",
+   "nameJp": "つくば中央公園",
+   "category": "sight",
+   "priceTier": "¥",
+   "stayMinutes": 30,
+   "legs": [
+    {
+     "mode": "walk",
+     "minutes": 7
+    }
+   ],
+   "note": "Unenclosed municipal park, no gate and no fee, so it works at 06:30 when nothing else in Tsukuba's visitor economy is open - JAXA opens 09:30, the Expo Center 09:50, the mall 10:00, all after the 08:30 coach. The pond, the modernist civic buildings, the rocket at the far end, and haze permitting Mount Tsukuba's twin peaks closing the northern axis.",
+   "latitude": 36.08547,
+   "longitude": 140.1104,
+   "coordPrecision": "verified",
+   "timeWindow": "dawn",
+   "confidence": "high",
+   "confidenceNote": null,
+   "source": "https://www.city.tsukuba.lg.jp/"
+  },
+  {
+   "id": "8a5875930fb7",
+   "anchorStop": "Hotel Nikko Tsukuba",
+   "name": "Tonarie Tsukuba Square (Q't / MOG / CREO)",
+   "nameJp": "トナリエつくばスクエア",
+   "category": "shopping",
+   "priceTier": "¥¥",
+   "stayMinutes": 60,
+   "legs": [
+    {
+     "mode": "walk",
+     "minutes": 3
+    }
+   ],
+   "note": "The whole evening for a group that has already eaten at 17:15: two minutes from the lobby, ALL THREE buildings closing at 20:00, so an 18:30 check-in leaves about 85 usable minutes. Announce the window on the coach before anyone unpacks. Best value for 35 people is Ropia and the farm stand on CREO 1F. Rebranded from Tsukuba Creo Square.",
+   "latitude": 36.0818,
+   "longitude": 140.1119,
+   "coordPrecision": "verified",
+   "timeWindow": "night",
+   "confidence": "medium",
+   "confidenceNote": "Coordinate and the 20:00 close are carried from the seed; the GSI geocode of 吾妻一丁目7番地 lands about 200 m south, so the point is block-level rather than door-level.",
+   "source": "https://www.tonarie-tsukubasquare.com/"
+  },
+  {
+   "id": "a3f5d387ccd7",
+   "anchorStop": "Hotel Nikko Tsukuba",
+   "name": "Tsukuba no Yoi Shina (Tsukuba Station B1)",
+   "nameJp": "つくばの良い品",
+   "category": "shopping",
+   "priceTier": "¥",
+   "stayMinutes": 20,
+   "legs": [
+    {
+     "mode": "walk",
+     "minutes": 4
+    }
+   ],
+   "note": "The souvenir answer, open 08:00-20:00 exactly when the group needs it: Tsukuba ham and bacon, local breads, and the fukure-mikan shichimi blend. Its neighbour, Tsukuba City Bussankan, carries the certified Tsukuba Collection products. Both inside the station box, so it works in a wet evening.",
+   "latitude": 36.0821,
+   "longitude": 140.1113,
+   "coordPrecision": "approximate",
+   "timeWindow": "night",
+   "confidence": "medium",
+   "confidenceNote": "Coordinate is from the seed; the GSI point for つくば駅 is 36.08253/140.11106, which is the station box rather than the B1 shop, so this stays approximate.",
+   "source": "https://msearch.gsi.go.jp/address-search/AddressSearch?q=%E3%81%A4%E3%81%8F%E3%81%B0%E9%A7%85"
+  },
+  {
+   "id": "3ccd9b227958",
+   "anchorStop": "Hotel Nikko Tsukuba",
+   "name": "Tsukuba Expo Center — H-II rocket forecourt",
+   "nameJp": "つくばエキスポセンター H-IIロケット実物大模型",
+   "category": "sight",
+   "priceTier": "¥",
+   "stayMinutes": 30,
+   "legs": [
+    {
+     "mode": "walk",
+     "minutes": 8
+    }
+   ],
+   "note": "The one genuinely photogenic thing in walking distance after dark: a 50 m rocket in an open forecourt on the edge of Chuo Park, floodlit at night and sometimes lit in special colours. No ticket needed to see or photograph it - the ¥500 is the museum, 09:50-17:00 and closed Mondays. 600 m out, 30-40 minutes round trip.",
+   "latitude": 36.08667,
+   "longitude": 140.11053,
+   "coordPrecision": "verified",
+   "timeWindow": "night",
+   "confidence": "high",
+   "confidenceNote": null,
+   "source": "https://msearch.gsi.go.jp/address-search/AddressSearch?q=%E3%81%A4%E3%81%8F%E3%81%B0%E3%82%A8%E3%82%AD%E3%82%B9%E3%83%9D%E3%82%BB%E3%83%B3%E3%82%BF%E3%83%BC"
+  },
+  {
+   "id": "f02b36afd49c",
+   "anchorStop": "Hotel Nikko Tsukuba",
+   "name": "FamilyMart Tsukuba Q't",
+   "nameJp": "ファミリーマート つくばQ’t店",
+   "category": "food",
+   "priceTier": "¥",
+   "stayMinutes": 15,
+   "legs": [
+    {
+     "mode": "walk",
+     "minutes": 3
+    }
+   ],
+   "note": "24 hours, every day, and it matters because the hotel has no shop and no bar at all - this is where the group gets water, beer, onigiri and coach snacks for a 2-hour run tomorrow. Inside Tonarie Q't, 210 m from the lobby, on covered walkways most of the way.",
+   "latitude": 36.08176,
+   "longitude": 140.11171,
+   "coordPrecision": "verified",
+   "timeWindow": "24h",
+   "confidence": "high",
+   "confidenceNote": null,
+   "source": "https://www.family.co.jp/"
+  },
+  {
+   "id": "244a0f8595cf",
+   "anchorStop": "Hotel Nikko Tsukuba",
+   "name": "Q't 3F dining floor",
+   "nameJp": "tonarie Q’t 3F ダイニング",
+   "category": "food",
+   "priceTier": "¥¥",
+   "stayMinutes": 60,
+   "legs": [
+    {
+     "mode": "walk",
+     "minutes": 3
+    }
+   ],
+   "note": "The only kitchens near the hotel still serving after 20:00, running to 23:00 - ramen, kushikatsu, yakiniku, a family Italian, and Saino, the Indian restaurant, which is the most likely halal-friendly option in walking distance but should be confirmed by phone rather than assumed. The hotel's own rooms stop taking orders at 20:00 and 19:30.",
+   "latitude": 36.08176,
+   "longitude": 140.11171,
+   "coordPrecision": "verified",
+   "timeWindow": "night",
+   "confidence": "medium",
+   "confidenceNote": "The 23:00 close is a floor-level figure from the seed and individual tenants vary; Saino's halal status is unverified and explicitly flagged as needing a phone call.",
+   "source": "https://www.tonarie-tsukubasquare.com/"
+  },
+  {
+   "id": "a9b950080db7",
+   "anchorStop": "Hotel Nikko Tsukuba",
+   "name": "Tsukuba Chuo Park at dawn",
+   "nameJp": "つくば中央公園（早朝）",
+   "category": "sight",
+   "priceTier": "¥",
+   "stayMinutes": 40,
+   "legs": [
+    {
+     "mode": "walk",
+     "minutes": 7
+    }
+   ],
+   "note": "The dawn option, 470 m away with no gate to wait for. Sunrise on 13 September is about 05:25, so there is real light from 05:00 and a comfortable 06:30 walk before the 07:30 breakfast: the pond, the modernist civic buildings, the rocket at the far end, and haze permitting Mount Tsukuba's twin peaks on the northern axis.",
+   "latitude": 36.08547,
+   "longitude": 140.1104,
+   "coordPrecision": "verified",
+   "timeWindow": "dawn",
+   "confidence": "high",
+   "confidenceNote": null,
+   "source": "https://www.city.tsukuba.lg.jp/"
+  },
+  {
+   "id": "ed8754f68095",
+   "anchorStop": "Hotel Nikko Tsukuba",
+   "name": "Starbucks Tonarie CREO",
+   "nameJp": "スターバックスコーヒー トナリエつくばCREO店",
+   "category": "food",
+   "priceTier": "¥",
+   "stayMinutes": 20,
+   "legs": [
+    {
+     "mode": "walk",
+     "minutes": 3
+    }
+   ],
+   "note": "07:00-23:00, so it bridges both ends of this stop and is the only sit-down space near the hotel open outside mall hours - coffee before the 07:30 breakfast, a takeaway cup for the 08:30 coach, and the late option for anyone who does not want an izakaya.",
+   "latitude": 36.0819,
+   "longitude": 140.112,
+   "coordPrecision": "approximate",
+   "timeWindow": "dawn",
+   "confidence": "medium",
+   "confidenceNote": "Hours and coordinate are carried from the seed; the store's own page was not re-checked this session.",
+   "source": "https://store.starbucks.co.jp/"
+  },
+  {
+   "id": "d5h01serena",
+   "anchorStop": "Hotel Nikko Tsukuba",
+   "name": "Restaurant Serena (breakfast)",
+   "nameJp": "レストラン セリーナ",
+   "category": "food",
+   "priceTier": "¥¥",
+   "stayMinutes": 45,
+   "legs": [
+    {
+     "mode": "walk",
+     "minutes": 1
+    }
+   ],
+   "note": "Main building 2F, opens 06:30, and the official page gives breakfast LAST ORDER 09:00 - not the 09:30 in the seed. It seats 63, so 35 people is well over half the room and a pre-set group section needs arranging in advance. The room does breakfast and lunch only; there is no dinner service here at all.",
+   "latitude": 36.08236,
+   "longitude": 140.11396,
+   "coordPrecision": "approximate",
+   "timeWindow": "dawn",
+   "confidence": "high",
+   "confidenceNote": null,
+   "source": "https://okura.com/ja/japan/tsukuba/hotel-nikko-tsukuba/dining/"
+  },
+  {
+   "id": "d5h02sansui",
+   "anchorStop": "Hotel Nikko Tsukuba",
+   "name": "Hitachi-gyu Sansui",
+   "nameJp": "常陸牛 山水",
+   "category": "food",
+   "priceTier": "¥¥¥",
+   "stayMinutes": 60,
+   "legs": [
+    {
+     "mode": "walk",
+     "minutes": 1
+    }
+   ],
+   "note": "Main building 2F, 40 seats plus three private rooms, Hitachi beef, dinner 17:30-21:00 with last orders 20:00. Closed TUESDAYS, so Saturday 12 September it is open - but dinner was already eaten at 17:15 en route, so this is the in-house option for a drink or a second plate, and anyone who wants it has to be seated before 20:00.",
+   "latitude": 36.08236,
+   "longitude": 140.11396,
+   "coordPrecision": "approximate",
+   "timeWindow": "night",
+   "confidence": "high",
+   "confidenceNote": null,
+   "source": "https://okura.com/ja/japan/tsukuba/hotel-nikko-tsukuba/dining/"
+  },
+  {
+   "id": "d5h03touri",
+   "anchorStop": "Hotel Nikko Tsukuba",
+   "name": "Chinese Restaurant Tao-Li",
+   "nameJp": "中国料理 桃李",
+   "category": "food",
+   "priceTier": "¥¥¥",
+   "stayMinutes": 60,
+   "legs": [
+    {
+     "mode": "walk",
+     "minutes": 2
+    }
+   ],
+   "note": "Annex 2F, 36 seats and five private rooms, Cantonese, dinner 17:30-21:00 with last orders 19:30 - the earliest cut-off in the building, so it is effectively a one-hour window from an 18:30 check-in. Closed WEDNESDAYS, so Saturday is fine.",
+   "latitude": 36.08236,
+   "longitude": 140.11396,
+   "coordPrecision": "approximate",
+   "timeWindow": "night",
+   "confidence": "high",
+   "confidenceNote": null,
+   "source": "https://okura.com/ja/japan/tsukuba/hotel-nikko-tsukuba/dining/"
+  }
+ ],
+ "mustSee": [
+  {
+   "id": "261230c479aa",
+   "anchorStop": "Kegon Falls",
+   "title": "Kegon Falls basin platform",
+   "nameJp": "華厳の滝 観瀑台",
+   "tag": "DAY 5",
+   "summary": "A 97 m single drop only about 7 m wide at normal flow, seen head-on from 100 m below the rim, with the Junitaki side-seeps trickling out of the cliff beside it. On a windy morning the spray carries roughly 150 m to the deck and throws rainbows across the frame.",
+   "whereToFind": "Down the lift, out the tunnel and about 70 steps to the LOWEST of the three stepped decks, then take the far RIGHT-HAND end of the rail — that puts the drop dead centre with the side-seeps entering frame on your left and no rail post in the foreground. Do not shoot from the top deck: the tunnel mouth eats the sky. At 09:20 the sun is SE at 45° over your shoulder, which is the only hour of the day it is behind you rather than in the lens. Expect a fine mist on the lens after two minutes — wipe between frames.",
+   "latitude": 36.737447,
+   "longitude": 139.502722,
+   "coordPrecision": "verified",
+   "confidence": "high",
+   "confidenceNote": null,
+   "source": "https://www.kegon.jp/"
+  },
+  {
+   "id": "9b494268c541",
+   "anchorStop": "Kegon Falls",
+   "title": "Kegon free upper observation area",
+   "nameJp": "華厳の滝 無料観瀑台",
+   "tag": "DAY 5",
+   "summary": "Two minutes from the coach, no ticket and no lift queue — it looks DOWN on the falls from the rim rather than up from the basin, so you get the lip, the plunge pool and the gorge in one frame instead of the wall of water. The fallback if 35 people cannot clear one lift car inside the hour.",
+   "whereToFind": "Behind the first car park, on the fenced concrete terrace at the head of the short ramp — stand at the LEFT (west) end of the fence, where the rock spur stops blocking the plunge pool. Shoot slightly downward over the rail rather than straight out; the trees on the near rim will otherwise cut the lip of the fall. Free, unstaffed and open whenever the car park is.",
+   "latitude": 36.739181,
+   "longitude": 139.504889,
+   "coordPrecision": "verified",
+   "confidence": "high",
+   "confidenceNote": null,
+   "source": "https://www.tochigiji.or.jp/spot/s5865"
+  },
+  {
+   "id": "bd6db88b61b0",
+   "anchorStop": "Nikko Toshogu Shrine",
+   "title": "Toshogu Yomeimon",
+   "nameJp": "日光東照宮 陽明門",
+   "tag": "DAY 5",
+   "summary": "Some 500 carvings of Chinese sages, dragons and children across 11 m of gate — nicknamed the sunset gate because you could look at it until dusk. The Heisei restoration finished in March 2017, so the gold leaf and the vermilion are at their brightest for a generation.",
+   "whereToFind": "On the paved forecourt directly SOUTH of the gate, about 8–10 m back and slightly LEFT of the centre line so the flanking lantern does not overlap the lower carving band. Fill the frame with the upper two tiers; the wide shot that includes the steps throws away the detail that makes it. At 11:00 the sun is SSE at 56° and near its harshest, which puts the gate's own eaves in hard shade over the carvings — expose for the shaded lacquer, not the lit gold, or the frame goes to two blown highlights and a black hole.",
+   "latitude": 36.758095,
+   "longitude": 139.599044,
+   "coordPrecision": "verified",
+   "confidence": "high",
+   "confidenceNote": null,
+   "source": "https://toshogu.jp/pages/25/"
+  },
+  {
+   "id": "71b48304b33b",
+   "anchorStop": "Nikko Toshogu Shrine",
+   "title": "Nemuri-neko, above the Sakashitamon",
+   "nameJp": "眠り猫",
+   "tag": "DAY 5",
+   "summary": "The sleeping cat, small and set high above the gateway, with two sparrows carved behind it — most people photograph the wrong panel entirely. It sits on the route up to the 207 steps, so it is free even if you drop the Okumiya, which in 75 minutes you should.",
+   "whereToFind": "Walk through the east corridor to the Sakashitamon and stop UNDER the gateway, then turn and look back UP at the beam directly over the doorway you just came through — the cat is on the transom above the door, not on the wall beside it. Stand hard against the right-hand pillar to get a straight-on angle; from the middle of the path you shoot it at a steep angle and lose the face. Deep shade all day, so brace against the pillar rather than raising ISO.",
+   "latitude": 36.759042,
+   "longitude": 139.600639,
+   "coordPrecision": "verified",
+   "confidence": "high",
+   "confidenceNote": null,
+   "source": "https://toshogu.jp/pages/25/"
+  },
+  {
+   "id": "d5ms01group",
+   "anchorStop": "Nikko Toshogu Shrine",
+   "title": "The 35-person group photo, at the Ishidorii",
+   "nameJp": "日光東照宮 石鳥居前",
+   "tag": "DAY 5",
+   "summary": "The only place at Toshogu where 35 people fit in one frame without blocking anybody: the wide gravel apron in front of the granite Ishidorii, at the top of the ten stone steps, with the five-storey pagoda over one shoulder and the torii framing the group.",
+   "whereToFind": "BEFORE the ticket window, on the level gravel apron between the top of the ten stone steps and the Ishidorii itself. Put the group with their backs to the torii and the photographer downhill on the steps, shooting slightly up — that is the only sightline here wide enough for three rows and it needs no ticket, so latecomers are not stuck outside a turnstile. Do NOT try this in the Yomeimon forecourt: it is the single busiest square metre on the site at 11:00 on a Saturday and a shrine attendant will move you.",
+   "latitude": null,
+   "longitude": null,
+   "confidence": "medium",
+   "confidenceNote": "The staging judgement is derived from the shrine's own precinct guide and the ticket-gate position rather than from a published photo point, and no official page gives the Ishidorii apron a coordinate, so lat/long is left empty rather than guessed.",
+   "source": "https://toshogu.jp/pages/31/"
+  },
+  {
+   "id": "b51a2192d9f2",
+   "anchorStop": "Edo Wonderland Nikko Edomura",
+   "title": "Edo Wonderland — Nihonbashi",
+   "nameJp": "日光江戸村 日本橋",
+   "tag": "DAY 5",
+   "summary": "Stand on the bridge looking down the main street: 49.5 hectares of real timber Edo buildings, still a working film set, with no modern rooflines in the frame anywhere. The one shot from this park that reads instantly as Edo rather than as a theme park.",
+   "whereToFind": "On the CROWN of Nihonbashi, on the up-street side of the arch, shooting along the street away from the gate — the arch of the bridge gives you a metre of extra height, which is what lifts the far shopfronts clear of the heads in front of you. Keep the fire-lookout tower in the top of the frame as the vertical anchor. Both sides of the street are two-storey timber, so the light is a slot: before about 15:30 it is hard side-light, after 16:00 it goes low and warm down the street's length.",
+   "latitude": 36.792533,
+   "longitude": 139.696461,
+   "coordPrecision": "verified",
+   "confidence": "high",
+   "confidenceNote": null,
+   "source": "https://edowonderland.net/"
+  },
+  {
+   "id": "d5ms02oiran",
+   "anchorStop": "Edo Wonderland Nikko Edomura",
+   "title": "Oiran-douchuu on the main street",
+   "nameJp": "花魁道中",
+   "tag": "DAY 5",
+   "summary": "High-clogged oiran gliding down the main street with attendants and parasols, five to ten minutes end to end, free with admission and comfortably the best photograph of Day 5. Usually 15:00, which sits in the middle of the 14:00–16:30 slot.",
+   "whereToFind": "On the EAST kerb of the main street, roughly 20 m up-street from Nihonbashi — between the fire-lookout tower and the bridge, which is the route. Stand at the kerb line and crouch: the oiran's walk is a slow outward roll of the foot and it only reads from low down. Facing up-street means she approaches you and you get the whole retinue behind her instead of their backs. Be in position eight to ten minutes early; the front kerb fills fast on a Saturday.",
+   "latitude": 36.793049,
+   "longitude": 139.69646,
+   "coordPrecision": "approximate",
+   "timeWindow": "day",
+   "confidence": "medium",
+   "confidenceNote": "The usual 15:00 start and the fire-tower-to-Nihonbashi route come from a Rakuten Travel guide, not the park's own schedule page, which was unreachable this session; the park states show times move with the date, so confirm on the printed sheet at the gate.",
+   "source": "https://travel.rakuten.co.jp/mytrip/howto/edomura-guide"
+  },
+  {
+   "id": "d5ms03rocket",
+   "anchorStop": "Hotel Nikko Tsukuba",
+   "title": "The H-II rocket, floodlit",
+   "nameJp": "H-IIロケット実物大模型（夜）",
+   "tag": "NIGHT 5",
+   "summary": "A full-size 50-metre H-II standing in an open, unfenced forecourt, floodlit from below after dark and sometimes lit in special colours. It needs no ticket, it is 600 m from the lobby, and it is the only genuinely photogenic thing in walking distance on night 5.",
+   "whereToFind": "On the public path along the NORTH edge of the Expo Center forecourt, at the corner nearest Chuo Park — from there the rocket stands clear against open sky with no building behind it and no fence in the frame. Shoot portrait and get the whole 50 m in; a landscape frame wastes it. Brace the phone on the low wall, because the floodlights are hard uplight and every hand-held frame smears. The museum behind it shut at 17:00 and is irrelevant to the photo.",
+   "latitude": 36.08667,
+   "longitude": 140.11053,
+   "coordPrecision": "verified",
+   "confidence": "high",
+   "confidenceNote": null,
+   "source": "https://msearch.gsi.go.jp/address-search/AddressSearch?q=%E3%81%A4%E3%81%8F%E3%81%B0%E3%82%A8%E3%82%AD%E3%82%B9%E3%83%9D%E3%82%BB%E3%83%B3%E3%82%BF%E3%83%BC"
+  }
+ ],
+ "shopping": [
+  {
+   "id": "ce803d451e25",
+   "anchorStop": "Kegon Falls",
+   "name": "Rakusan-ko cave-aged wine",
+   "nameJp": "楽山こうじ 小島屋「楽山湖」",
+   "placeLabel": "Rakusan Koji Kojimaya, Chuzenji lakefront parade — 09:00–20:00, the latest-opening shop on the lake",
+   "estimate": 1500,
+   "note": "Its own \"Rakusan-ko\" wine aged five years in caves under Mt Nantai: ¥1,500 the half-size, ¥2,500 the full bottle. Nikko Gokenin sake is ¥2,250 for 1.8 L. Survives the flight but ONLY in checked baggage — glass and over 100 ml, so it cannot go in the cabin, and 1.8 L of sake is 2 kg of a 25 kg allowance. Buy on the way out of the shop, not before the lift.",
+   "latitude": null,
+   "longitude": null,
+   "confidence": "medium",
+   "confidenceNote": "Prices and the 09:00–20:00 window are carried from the seed; the shop publishes no page of its own that could be reached this session and no address, so there is no coordinate.",
+   "source": "https://www.tochigiji.or.jp/spot/s5865"
+  },
+  {
+   "id": "c4fe528717de",
+   "anchorStop": "Nikko Toshogu Shrine",
+   "name": "Toshogu goshuin",
+   "nameJp": "日光東照宮 御朱印",
+   "placeLabel": "Goshuin office just inside the Yomeimon, and a second at the Yakushido exit for the Naki-ryu stamp",
+   "estimate": 500,
+   "note": "¥500 each, and they are all PRE-WRITTEN slips — no on-the-spot brushwork, so the wait is usually under ten minutes even at Saturday midday. That is the whole reason this fits a 75-minute visit. Two different stamps: the main shrine one inside the Yomeimon and the Naki-ryu one at the Yakushido exit. Paper, weightless, survives the flight indefinitely — the best-value souvenir of the day.",
+   "latitude": null,
+   "longitude": null,
+   "confidence": "medium",
+   "confidenceNote": "The ¥500 price and the pre-written format are carried from the seed; the shrine's own site does not publish goshuin pricing, and the offices have no coordinate.",
+   "source": "https://toshogu.jp/pages/31/"
+  },
+  {
+   "id": "d1e348592e90",
+   "anchorStop": "Nikko Toshogu Shrine",
+   "name": "Kanaya Hotel Bakery — hyakunen curry and rusks",
+   "nameJp": "金谷ホテルベーカリー 神橋店",
+   "placeLabel": "Kanaya Hotel Bakery Shinkyo branch, in the Nikko Bussan Shokai building, 日光市上鉢石町1024 — 10:00–17:00, no closing day",
+   "estimate": 1100,
+   "note": "The retort hyakunen rice curry is about ¥1,100 a box and is the only thing here that survives to Malaysia — shelf-stable and flat. The cheese bread and rusks are why you queue but they are three-day bread. CORRECTION: 10:00–17:00, not the seed's 08:00–18:00, and it sells out by mid-afternoon. It is 1 km below the Omotemon — a coach stop at Shinkyo, not a walk out of the 75 minutes.",
+   "latitude": null,
+   "longitude": null,
+   "confidence": "medium",
+   "confidenceNote": "The 10:00–17:00 hours, address and phone are corroborated by two independent listings (Tochinavi and Hot Pepper) but the operator's own bussanshokai.com page was unreachable this session, and no coordinate is published for the shop door.",
+   "source": "https://www.hotpepper.jp/strJ000779038/"
+  },
+  {
+   "id": "a168d1ed8239",
+   "anchorStop": "Edo Wonderland Nikko Edomura",
+   "name": "Echigoya \"Sode-no-shita\" manju",
+   "nameJp": "越後屋 袖の下",
+   "placeLabel": "Echigoya, on the main street inside Edo Wonderland",
+   "estimate": 1450,
+   "note": "¥1,450 for nine — the joke is that golden koban wafers are hidden UNDER the buns, so you hand the box over reciting the kabuki bribe line. The best office-souvenir on the trip because the gag travels. Manju is a two-week product at best: fine for the flight home on 15 September, not fine as a keepsake, so buy it for people and not for the shelf.",
+   "latitude": null,
+   "longitude": null,
+   "confidence": "medium",
+   "confidenceNote": "Price and contents are carried from the seed; the park's shop pages were unreachable this session and no coordinate is published for in-village shopfronts.",
+   "source": "https://edowonderland.net/"
+  },
+  {
+   "id": "14536bda74d6",
+   "anchorStop": "Edo Wonderland Nikko Edomura",
+   "name": "Nyanmage goods",
+   "nameJp": "ニャンまげ",
+   "placeLabel": "Nyanmage shop at the Sekisho gate end of the main street, Edo Wonderland",
+   "estimate": 750,
+   "note": "The topknotted samurai-cat mascot, and the volume buy for 35 colleagues: steamed kintsuba ¥750 for nine, choco crunch ¥650 for ten, small plush from ¥1,500. The confectionery is boxed and shelf-stable enough for the flight; the plush is the thing that actually survives a year in Penang. Buy on the way OUT at 16:20 — carrying boxes round a gravel park for two hours is a mistake.",
+   "latitude": null,
+   "longitude": null,
+   "confidence": "medium",
+   "confidenceNote": "Prices are carried from the seed; the park's shop pages were unreachable this session and no coordinate is published for in-village shopfronts.",
+   "source": "https://edowonderland.net/"
+  },
+  {
+   "id": "c436a38d3015",
+   "anchorStop": "Hotel Nikko Tsukuba",
+   "name": "Ropia supermarket and the CREO 1F farm stand",
+   "nameJp": "トナリエつくばスクエア（ロピア・産直コーナー）",
+   "placeLabel": "Tonarie Tsukuba Square — Q't, MOG and CREO, ALL closing 20:00, 200 m from the hotel lobby",
+   "estimate": 1000,
+   "note": "An 18:30 check-in gives about 85 minutes and every shop shuts at 20:00 — announce it on the coach before anyone unpacks. Best value for 35 people is Ropia and the farm stand on CREO 1F: Ibaraki natto, Earl's melon, cheap local fruit; about ¥1,000 fills a bag. Fresh produce does NOT fly — this is tonight's supper, not a souvenir run.",
+   "latitude": 36.0818,
+   "longitude": 140.1119,
+   "coordPrecision": "approximate",
+   "confidence": "medium",
+   "confidenceNote": "The 20:00 close and the tenant list are carried from the seed; the GSI geocode of 吾妻一丁目7番地 lands about 200 m away, so the coordinate is block-level not door-level.",
+   "source": "https://www.tonarie-tsukubasquare.com/"
+  },
+  {
+   "id": "14df596441ce",
+   "anchorStop": "Hotel Nikko Tsukuba",
+   "name": "Fukure-mikan shichimi blend",
+   "nameJp": "福来みかん七味",
+   "placeLabel": "Tsukuba no Yoi Shina, Tsukuba Station B1 — 08:00–20:00, 285 m from the hotel",
+   "estimate": 600,
+   "note": "The pick of this shop for a flight: Mount Tsukuba's own fukure-mikan peel blended into shichimi — light, cheap, dry and unavailable in Malaysia. The Tsukuba ham beside it is the trap: chilled, with three more nights and a seven-hour flight to go, so eat it here or skip it. Tsukuba City Bussankan next door carries the certified Tsukuba Collection products.",
+   "latitude": 36.0821,
+   "longitude": 140.1113,
+   "coordPrecision": "approximate",
+   "confidence": "medium",
+   "confidenceNote": "The ¥600 figure is an estimate — the shop does not publish a price list online — and the coordinate is a seed position inside the station box rather than the B1 unit.",
+   "source": "https://msearch.gsi.go.jp/address-search/AddressSearch?q=%E3%81%A4%E3%81%8F%E3%81%B0%E9%A7%85"
+  },
+  {
+   "id": "1cb5ca338c1d",
+   "anchorStop": "Hotel Nikko Tsukuba",
+   "name": "Hoshi-imo (dried sweet potato)",
+   "nameJp": "干しいも",
+   "placeLabel": "Tsukuba no Yoi Shina and the CREO 1F farm stand, Tonarie Tsukuba Square",
+   "estimate": 800,
+   "note": "Ibaraki grows over 90% of Japan's dried sweet potato and it travels beautifully — dry, vacuum-bagged, no cold chain, months of shelf life. Roughly ¥600–1,200 a bag. Label it honestly to the group: drying only STARTS in September, so a September shelf holds last winter's crop, not new season, and the soft 平干し is the one worth buying over the hard sliced kind.",
+   "latitude": null,
+   "longitude": null,
+   "confidence": "medium",
+   "confidenceNote": "The ¥600–1,200 range is a market estimate rather than a published price from a named shop, and hoshi-imo is a product rather than an address, so there is no coordinate.",
+   "source": "https://www.tonarie-tsukubasquare.com/"
+  }
+ ],
+ "essentials": {
+  "Kegon Falls": {
+   "hours": {
+    "mon": [
+     [
+      "07:30",
+      "18:00"
+     ]
+    ],
+    "tue": [
+     [
+      "07:30",
+      "18:00"
+     ]
+    ],
+    "wed": [
+     [
+      "07:30",
+      "18:00"
+     ]
+    ],
+    "thu": [
+     [
+      "07:30",
+      "18:00"
+     ]
+    ],
+    "fri": [
+     [
+      "07:30",
+      "18:00"
+     ]
+    ],
+    "sat": [
+     [
+      "07:30",
+      "18:00"
+     ]
+    ],
+    "sun": [
+     [
+      "07:30",
+      "18:00"
+     ]
+    ]
+   },
+   "closedNote": "No closing day (年中無休); the lift stops without notice in high wind, lightning or heavy snow. CORRECTION HELD: the elevator runs 07:30–18:00 in May–September, NOT the 08:00–17:00 that Tochigi Prefecture's own tourism site, Jalan and Guidoor all still print for 1 Mar–30 Nov. December–February is 09:00–16:30. Either way a 09:20–10:20 slot is comfortably inside opening.",
+   "lastAdmission": null,
+   "seasonFrom": "05-01",
+   "seasonTo": "09-30",
+   "groupRate": "¥550 adult / ¥350 elementary for parties of 30 or more (adults, high-school and JHS counted together). School groups of 30+: high school ¥500, JHS ¥400, elementary ¥350. No reservation taken — first come, first served.",
+   "phone": "0288-55-0030",
+   "phoneNote": "Kegon Falls Elevator office, operated by 株式会社丸沼 (Marunuma), 〒321-1661 栃木県日光市中宮祠2479-2.",
+   "website": "https://www.kegon.jp/",
+   "tickets": "¥600 adult (JHS and up) / ¥400 elementary for the round trip, ¥550/¥350 at 30 or more, preschool free. Note the fare was revised upward: listings still showing ¥570/¥340 are pre-revision. The prefectural free rim deck needs no ticket at all and is the fallback if the single lift car cannot clear 35 people in an hour.",
+   "transport": "Coach stops at 県営華厳の滝第一駐車場, 日光市中宮祠2480 (36.739769, 139.501587), two minutes' walk from the lift door; about ¥2,190 per use for a large bus, no reservation, roughly 07:00–22:00 April–November. 41 km and about 50 minutes up from Kinugawa via the second Irohazaka. THE AKECHIDAIRA ROPEWAY IS SHUT and will not be an option: renewal work from mid-January 2026, reopening 「2027年9月を予定しております」.",
+   "confidence": "medium",
+   "confidenceNote": "kegon.jp/info/ could not be opened this session — every sub-path of the operator's domain is robots-blocked to the fetcher and the egress proxy refuses direct requests to the host — so the 07:30–18:00 window is carried from the project's own §2 correction rather than re-read at source. Fares, phone, address and group threshold ARE confirmed on Tochigi Prefecture's official tourism site.",
+   "source": "https://www.tochigiji.or.jp/spot/s5865"
+  },
+  "Nikko Toshogu Shrine": {
+   "hours": {
+    "mon": [
+     [
+      "09:00",
+      "17:00"
+     ]
+    ],
+    "tue": [
+     [
+      "09:00",
+      "17:00"
+     ]
+    ],
+    "wed": [
+     [
+      "09:00",
+      "17:00"
+     ]
+    ],
+    "thu": [
+     [
+      "09:00",
+      "17:00"
+     ]
+    ],
+    "fri": [
+     [
+      "09:00",
+      "17:00"
+     ]
+    ],
+    "sat": [
+     [
+      "09:00",
+      "17:00"
+     ]
+    ],
+    "sun": [
+     [
+      "09:00",
+      "17:00"
+     ]
+    ]
+   },
+   "closedNote": "年中無休 — open every day of the year. Reception closes 30 minutes before the gate (「各期間とも受付は閉門30分前に終了いたします」), so last entry is 16:30 in the 1 Apr–31 Oct period. From 1 November it is 09:00–16:00 with 15:30 last entry.",
+   "lastAdmission": "16:30",
+   "seasonFrom": "04-01",
+   "seasonTo": "10-31",
+   "groupRate": "¥1,440 adult/high-school and ¥495 elementary/JHS for parties of 35 OR MORE; the individual rate ¥1,600/¥550 applies to 1–34 people, so a coach of 34 pays full price. Combined shrine + Treasure House: ¥2,240 group against ¥2,400 individual (children ¥815/¥870).",
+   "phone": "0288-54-0560",
+   "phoneNote": "Shrine office, 〒321-1431 栃木県日光市山内2301 (fax 0288-54-0061). The same number handles coach-parking reservations. Group audio-guide use is arranged by e-mail to toshoguonsei@gmail.com.",
+   "website": "https://toshogu.jp/",
+   "tickets": "¥1,600 adult/high-school, ¥550 elementary/JHS. The ticket covers 表門, 陽明門, 拝殿, 石の間, 東廻廊 (眠猫), 奥宮 and 本地堂 (鳴龍) — so the Naki-ryu needs no extra payment. The 宝物館 Treasure House is separate at ¥1,000/¥400 and is not worth buying inside a 75-minute slot.",
+   "transport": "SATURDAY PROBLEM: the shrine's own coach park (東照宮大駐車場, ¥2,000 a day, 大型バス booking required 7 days ahead) prints 「土・日・祝祭日、特別な行事のある日は駐車不可」 — no coach parking on a Saturday. Fall back to 市営西参道第2・3駐車場 (安川町2-47, 36.753441/139.599228, 140 spaces, 24 h, about ¥1,540 a day for a large bus), roughly a 10-minute walk up the Nishi-sando to the Omotemon. Budget that walk out of the 75 minutes.",
+   "confidence": "high",
+   "confidenceNote": null,
+   "source": "https://toshogu.jp/pages/25/"
+  },
+  "Edo Wonderland Nikko Edomura": {
+   "hours": {
+    "mon": [
+     [
+      "09:00",
+      "17:00"
+     ]
+    ],
+    "tue": [
+     [
+      "09:00",
+      "17:00"
+     ]
+    ],
+    "wed": null,
+    "thu": [
+     [
+      "09:00",
+      "17:00"
+     ]
+    ],
+    "fri": [
+     [
+      "09:00",
+      "17:00"
+     ]
+    ],
+    "sat": [
+     [
+      "09:00",
+      "17:00"
+     ]
+    ],
+    "sun": [
+     [
+      "09:00",
+      "17:00"
+     ]
+    ]
+   },
+   "closedNote": "Closed every WEDNESDAY, but open if the Wednesday is a public holiday and open right through 25 Mar–7 Apr, 21 Jul–31 Aug, Golden Week and 29 Dec–5 Jan; a further maintenance shutdown runs in the second half of January. SATURDAY 12 SEPTEMBER 2026 IS A NORMAL OPERATING DAY, 09:00–17:00, with no separate weekend timetable — the hours are seasonal, not day-of-week. Winter (1 Dec–19 Mar) is 09:30–16:00 with 15:00 last entry.",
+   "lastAdmission": "16:00",
+   "seasonFrom": "03-20",
+   "seasonTo": "11-30",
+   "groupRate": "団体 from just 8 people: one-day 通行手形 ¥5,000 adult / ¥2,600 child, and AFTERNOON 通行手形 (valid from 14:00, winter 13:00) ¥4,400 adult / ¥2,300 child — against ¥5,800 and ¥5,000 at the individual window. A 14:00 arrival lands exactly on the afternoon tariff, so the group afternoon pass at ¥4,400 is ¥1,400 a head below the individual day pass. School groups: elementary ¥1,600, JHS/high school ¥1,900, university/vocational ¥2,300.",
+   "phone": "0288-77-1777",
+   "phoneNote": "Main village number, 〒321-2524 栃木県日光市柄倉470-2. Also the number for the coach-park booking that groups of 20 or more must make in advance.",
+   "website": "https://edowonderland.net/",
+   "tickets": "Individual ¥5,800 adult (JHS and up) / ¥3,000 elementary; afternoon pass from 14:00 ¥5,000 / ¥2,600; silver (65+) ¥4,700; disability ¥3,500 / ¥1,800; preschool free. Buy at the 関所 gate and take the printed 演目スケジュール sheet at the same moment — every theatre piece is timed and nothing inside is walk-up except the two ninja mazes.",
+   "transport": "About 16 km and 30 minutes from Toshogu. On-site coach parking about ¥1,300; parties of 20 or more must book it by phone or e-mail in advance. NO ITINERARY CONFLICT: last entry 16:00 is two hours after arrival and the 16:30 coach leaves 30 minutes before the 17:00 close, so nothing forces the group out early — the binding constraint is the show clock, not the gate. Working back from 16:30, the last theatre piece you can start is roughly 15:50 for a 25-30 minute show plus the walk to the gate.",
+   "confidence": "high",
+   "confidenceNote": null,
+   "source": "https://edowonderland.net/price/"
+  },
+  "Hotel Nikko Tsukuba": {
+   "hours": {
+    "mon": [
+     [
+      "00:00",
+      "23:59"
+     ]
+    ],
+    "tue": [
+     [
+      "00:00",
+      "23:59"
+     ]
+    ],
+    "wed": [
+     [
+      "00:00",
+      "23:59"
+     ]
+    ],
+    "thu": [
+     [
+      "00:00",
+      "23:59"
+     ]
+    ],
+    "fri": [
+     [
+      "00:00",
+      "23:59"
+     ]
+    ],
+    "sat": [
+     [
+      "00:00",
+      "23:59"
+     ]
+    ],
+    "sun": [
+     [
+      "00:00",
+      "23:59"
+     ]
+    ]
+   },
+   "closedNote": "Reception 24 hours. The dining is the part that closes: レストラン セリーナ (main 2F, 63 seats) runs 06:30–14:00 with breakfast LAST ORDER 09:00 and lunch L.O. 13:30, and does NO dinner service; 常陸牛 山水 (main 2F) dinner 17:30–21:00 L.O. 20:00, closed TUESDAYS; 中国料理 桃李 (annex 2F) dinner 17:30–21:00 L.O. 19:30, closed WEDNESDAYS. On Saturday 12 September both dinner rooms are open. There is no shop, no bar and no large communal bath in the building, and the 昴 banquet hall is being renewed for a 2026-autumn reopening.",
+   "lastAdmission": null,
+   "seasonFrom": null,
+   "seasonTo": null,
+   "groupRate": null,
+   "phone": "029-852-1112",
+   "phoneNote": "Hotel main line. Okura Nikko's international page lists +81-29-852-5623 for reservations and info@nikko-tsukuba.com for e-mail.",
+   "website": "https://www.nikko-tsukuba.com/",
+   "tickets": "Check-in 14:00, check-out 11:00 — the 18:30 arrival is well inside, and the 08:30 departure is well inside check-out. Breakfast is in Serena on 2F from 06:30, but the room seats only 63, so 35 people is more than half of it: arrange a pre-set group section rather than letting the coach walk in at 07:30.",
+   "transport": "〒305-0031 茨城県つくば市吾妻1-1364-1. Two minutes on foot from Tsukuba Express つくば駅 exit A3 (station geocoded at 36.082530/140.111064, about 285 m). 123 km and roughly 2 h 10 from Edo Wonderland, with dinner taken at 17:15 en route — so this is a shopping-and-a-stroll evening, not a meal. Everything that closes at 20:00 is 200–300 m away; the only 24-hour thing is the FamilyMart inside Q't.",
+   "confidence": "high",
+   "confidenceNote": null,
+   "source": "https://okura.com/ja/japan/tsukuba/hotel-nikko-tsukuba/dining/"
+  }
+ },
+ "subRoutes": [
+  {
+   "id": "d5sr01kegon",
+   "anchorStop": "Kegon Falls",
+   "title": "Kegon in one hour — the lift-or-rim decision",
+   "startMinutes": 560,
+   "deadlineMinutes": 620,
+   "placeIDs": [
+    "d5k01kegonpk",
+    "f70f99739abe",
+    "77bfc40ff5cf",
+    "d8ebfc8b7bf2",
+    "802174703d9d"
+   ],
+   "steps": [
+    {
+     "placeID": "d5k01kegonpk",
+     "name": "Coach drop, prefectural car park No.1",
+     "atMinutes": 560,
+     "minutes": 5,
+     "walkMinutes": 0,
+     "note": "Brief and split here. One lift car, 30 people nominal, 35 in the group — decide now who takes the rim instead."
+    },
+    {
+     "placeID": "f70f99739abe",
+     "name": "Elevator down",
+     "atMinutes": 565,
+     "minutes": 10,
+     "walkMinutes": 2,
+     "note": "Ticket machine, one-minute descent, about 70 steps out. Buy at 30+ for ¥550."
+    },
+    {
+     "placeID": "77bfc40ff5cf",
+     "name": "Basin observation platform",
+     "atMinutes": 575,
+     "minutes": 20,
+     "walkMinutes": 0,
+     "note": "The 97 m drop head-on with the sun behind you. Lowest deck, right-hand end of the rail."
+    },
+    {
+     "placeID": "d8ebfc8b7bf2",
+     "name": "Free upper observation area",
+     "atMinutes": 600,
+     "minutes": 10,
+     "walkMinutes": 3,
+     "note": "Back up, then the rim view looking down — a completely different frame for no ticket. Also where the rim group has been waiting."
+    },
+    {
+     "placeID": "802174703d9d",
+     "name": "Lakefront counters",
+     "atMinutes": 612,
+     "minutes": 8,
+     "walkMinutes": 3,
+     "note": "Himemasu or a ¥500 yuba yakisoba if anyone skipped hotel breakfast. Kitchens open from 08:00–09:00 only."
+    }
+   ],
+   "totalWalkMinutes": 8,
+   "note": "One hour, one lift car and 35 people is the whole problem. Split the group at the coach: half down the lift first, half on the free rim deck, then swap at about 10:00. On a September Saturday the queue is the risk, not the weather — and there is no autumn colour yet, so nobody should expect the postcard.",
+   "confidence": "medium",
+   "confidenceNote": "Walk times are paced off the car-park-to-lift distance and the operator's own description of the descent plus roughly 70 steps; they are not measured on site.",
+   "source": "https://www.kegon.jp/"
+  },
+  {
+   "id": "d5sr02toshogu",
+   "anchorStop": "Nikko Toshogu Shrine",
+   "title": "What 75 minutes at Toshogu actually buys",
+   "startMinutes": 660,
+   "deadlineMinutes": 735,
+   "placeIDs": [
+    "4faa364ae4bc",
+    "873154f9370a",
+    "70b571def166",
+    "fbda94e95f7c",
+    "d5t01nishisando"
+   ],
+   "steps": [
+    {
+     "placeID": "d5t01nishisando",
+     "name": "Coach drop / Nishi-sando walk-up",
+     "atMinutes": 660,
+     "minutes": 10,
+     "walkMinutes": 10,
+     "note": "SATURDAY: the shrine coach park is closed to buses, so the walk up from Nishi-sando 2/3 is 10 minutes of the 75 before you have bought a ticket."
+    },
+    {
+     "placeID": "4faa364ae4bc",
+     "name": "Omotemon, group ticket, Sanzaru",
+     "atMinutes": 670,
+     "minutes": 12,
+     "walkMinutes": 4,
+     "note": "¥1,440 a head at 35+. Take the Sanzaru frieze on the way IN — it is the first bottleneck and it only gets worse."
+    },
+    {
+     "placeID": "873154f9370a",
+     "name": "Yomeimon",
+     "atMinutes": 682,
+     "minutes": 15,
+     "walkMinutes": 3,
+     "note": "The one non-negotiable. Fill the frame from the forecourt; expose for the shaded lacquer."
+    },
+    {
+     "placeID": "70b571def166",
+     "name": "East corridor and the Nemuri-neko",
+     "atMinutes": 697,
+     "minutes": 10,
+     "walkMinutes": 4,
+     "note": "Look UP at the transom over the Sakashitamon doorway. This is where you STOP — the 207 steps to the Okumiya are the thing you drop."
+    },
+    {
+     "placeID": "fbda94e95f7c",
+     "name": "Honjido — Naki-ryu",
+     "atMinutes": 707,
+     "minutes": 18,
+     "walkMinutes": 4,
+     "note": "Covered by the main ticket, groups batched, Japanese only, no photos. Budget the queue, not the show. Leave by 12:07 to be at the coach for 12:15."
+    }
+   ],
+   "totalWalkMinutes": 25,
+   "note": "Honest arithmetic: 75 minutes, minus a 10-minute Saturday walk-up from Nishi-sando and 15 minutes of internal walking, leaves about 50 minutes of looking. That buys four things — Sanzaru, Yomeimon, Nemuri-neko, Naki-ryu. The 207 steps to the Okumiya, the Treasure House and the yuba restaurants are all out. Guides budget 1.5–2 hours for this same route.",
+   "confidence": "medium",
+   "confidenceNote": "Hours, fares, the 35-person group threshold and the Saturday coach-parking ban are from the shrine's own pages; the per-stop minute allocations are a planning estimate, and the Honjido queue in particular varies with how many coaches arrive together.",
+   "source": "https://toshogu.jp/pages/26/"
+  },
+  {
+   "id": "d5sr03edo",
+   "anchorStop": "Edo Wonderland Nikko Edomura",
+   "title": "Edo Wonderland, 14:00–16:30, built around the show clock",
+   "startMinutes": 840,
+   "deadlineMinutes": 960,
+   "placeIDs": [
+    "d5e01sekisho",
+    "7ee6455168b0",
+    "f75ceb58db63",
+    "5a7f954a6f52",
+    "a6b0b3a2e3bd",
+    "d5e03meiro",
+    "a8a76bca569c"
+   ],
+   "steps": [
+    {
+     "placeID": "d5e01sekisho",
+     "name": "Sekisho gate — group afternoon 手形 + the printed timetable",
+     "atMinutes": 840,
+     "minutes": 10,
+     "walkMinutes": 2,
+     "note": "Ask for the 団体 afternoon pass: ¥4,400 against ¥5,800 individual, and 14:00 is exactly when the afternoon tariff opens. Read the 演目スケジュール sheet BEFORE moving — every timing below is provisional on it."
+    },
+    {
+     "placeID": "7ee6455168b0",
+     "name": "One theatre piece",
+     "atMinutes": 850,
+     "minutes": 40,
+     "walkMinutes": 9,
+     "note": "Whichever of the four theatres starts between about 14:10 and 14:40 on today's sheet. Minami-machi Bugyosho is the pick if nobody reads Japanese; the Mizugei-za water illusion is the other visual one. No mid-show entry at the ninja theatre."
+    },
+    {
+     "placeID": "f75ceb58db63",
+     "name": "Oiran-douchuu, main street",
+     "atMinutes": 890,
+     "minutes": 25,
+     "walkMinutes": 4,
+     "note": "Be on the east kerb 20 m up-street from Nihonbashi by 14:50 for the usual 15:00 start; the procession itself is only five to ten minutes. This outranks everything else in the slot."
+    },
+    {
+     "placeID": "5a7f954a6f52",
+     "name": "Nihonbashi, street frame",
+     "atMinutes": 915,
+     "minutes": 10,
+     "walkMinutes": 2,
+     "note": "Straight after the procession, while the street is still dressed and the light is going low and warm down its length."
+    },
+    {
+     "placeID": "a6b0b3a2e3bd",
+     "name": "Ninja Karakuri Mansion + Ninja Trick Maze",
+     "atMinutes": 925,
+     "minutes": 45,
+     "walkMinutes": 8,
+     "note": "The reliable half of the visit, because neither needs a start time — which is exactly why they go in the leftover block rather than the timed one. Together about 45 minutes."
+    },
+    {
+     "placeID": "a8a76bca569c",
+     "name": "Kamado-ya dango, standing",
+     "atMinutes": 970,
+     "minutes": 10,
+     "walkMinutes": 5,
+     "note": "The only thing you can eat without sitting down and still make the coach. ¥300–1,400, cash."
+    },
+    {
+     "placeID": "d5e01sekisho",
+     "name": "Nyanmage / Echigoya on the way out",
+     "atMinutes": 980,
+     "minutes": 10,
+     "walkMinutes": 6,
+     "note": "Buy at the END — boxes carried round a gravel park for two hours arrive crushed. Coach at 16:30 sharp and the gate is 6–8 minutes from Nihonbashi, so this step IS the walk out.",
+     "label": "Sekisho gate shop — Nyanmage goods on the way out"
+    }
+   ],
+   "totalWalkMinutes": 35,
+   "note": "150 minutes buys ONE theatre piece, the 15:00 procession, the two ninja walk-throughs and the shopping — a full slot. Japanese guides say three hours just to walk this park, five to see shows: choose-and-lose. If today's sheet moves the procession, swap it with the maze block. The 16:30 coach is not the constraint; the show clock is, and the last start is about 15:50. FIX: the final step pointed at shopping record 14536bda74d6 (Nyanmage goods), which is not a place; retargeted to the Sekisho main gate, where that shop is. ITINERARY REVISION 4 Sep 2026: the stop was shortened from 2h30 to 2h and the coach now departs 16:00, not 16:30. The get-back-by is 30 minutes earlier and the ~15:50 last theatre start is no longer watchable — re-plan off the printed sheet at the gate.",
+   "confidence": "medium",
+   "confidenceNote": "Prices, hours and last admission are verified on the park's own pages, but exact show start times could not be read this session (the park's schedule page was unreachable) and the operator says they move with the date — so the minute allocations are provisional on the printed sheet handed out at the gate.",
+   "source": "https://edowonderland.net/price/"
+  }
+ ],
+ "outfitByStop": {
+  "Kegon Falls": {
+   "photo": "The one place all week where warm colours genuinely win. The backdrop is grey andesite, white falling water and dark green cliff — a cold, desaturated wall — so rust, mustard, terracotta and coral pop off it, and this is the frame to wear them in. Avoid white and pale grey: they read as another patch of spray, and the falls are already the brightest thing in shot. Black is not much better, because the gorge below the rim is in deep shade at 09:20 and dark clothing merges into it. Mid-tone warm solids, no busy prints — the water is the pattern. The sun is SE at 45° and behind you on the basin deck, so faces are lit and the falls are lit; you do not need to fight the light here, which is not true of anywhere else today.",
+   "practical": "The coolest hour of the trip: 1,269 m at the lake, roughly 17–19°C at 09:20 against 29°C forecast down in Nikko, so a light layer that comes straight back off in the coach. Expect to get slightly damp — spray carries about 150 m to the basin deck on a windy morning and it will be on your lens, your glasses and your shirt. Take a lens cloth, not a sleeve. The route is a lift then about 70 wet stone steps in a tunnel: flat closed shoes with grip, nothing open-toed. Anyone who does not want the steps takes the free rim deck two minutes from the coach instead, which is a flat concrete terrace. September is peak typhoon month — a wet morning here is normal, not bad luck."
+  },
+  "Nikko Toshogu Shrine": {
+   "photo": "The hard one on the whole trip. The backdrop is dense gilded gold and vermilion lacquer carving standing in deep cedar shade, punched through by hard sunlit gaps at a 56° sun — a brutal dynamic range that punishes both extremes. White blows out in the lit patches and black dies in the shade, so wear a MID-TONE: slate, olive, dusty blue, warm grey. Busy prints are the specific mistake here, because the gate behind you is already 500 carvings of dragons and sages across 11 m and any pattern on a person becomes visual mud against it. Solid colour, and preferably not red or gold, which the lacquer already owns. If you are in a photo at the Yomeimon, expose for the shaded carving and accept the blown gaps — the alternative is a silhouette.",
+   "practical": "Gravel and worn stone throughout, with 207 steps to the Okumiya if you take them, which in 75 minutes you probably should not. Shoes stay ON for the main route; you only unshoe if you go into the Honsha inner hall, so slip-ons still earn their place. On a Saturday at 11:00 this is the busiest hour of the busiest day of the week and the paths between the Sanzaru and the Yomeimon are single-file — keep the group tight and do not carry a rucksack on your back through the corridor. No photography at all inside the Honjido for the Naki-ryu, so put the phone away before you join the queue. And say the seasonal truth out loud: Nikko's foliage is LATE OCTOBER. On 12 September the cedars are dark green, the maples are green, and there is no autumn colour anywhere — anyone who came for the postcard needs telling before they arrive, not after."
+  },
+  "Edo Wonderland Nikko Edomura": {
+   "photo": "Everyone in shot around you is in Edo costume, which is the whole visual logic of the place: modern prints, logos and technical fabric look wrong in every single frame. Either rent the period costume from about ¥2,800 or wear plain solids — indigo, charcoal, off-white, brown — and you will read as part of the street instead of against it. The backdrop is unpainted weathered timber and dark tile, warm and low in contrast, so mid-tone earth colours sit in it beautifully and anything fluorescent detonates. Between two-storey timber frontages the main street is a light slot: hard side-light before about 15:30, then low warm raking light down the street's length toward 16:30, an hour and a half before sunset. That late light is the good stuff — save the Nihonbashi frame for after the 15:00 procession rather than shooting it on arrival.",
+   "practical": "49.5 hectares of gravel and timber, so this is the most walking of the day and it is all flat but all loose underfoot — no heels, no new shoes. Costume rental takes 30–45 minutes to get dressed and it costs you a whole theatre piece out of 150 minutes, so decide on the coach and send those people straight to the counter at 14:00. Still 29°C and humid in early September with very little shade on the main street: water in hand, and the dango and nikuman counters are the only things you can eat standing. Brief the group before the gate that these are Edo-period counters with no halal certification and sake on the menu. The mazes are dark, low-ceilinged and uneven — not for anyone unsteady."
+  },
+  "Hotel Nikko Tsukuba": {
+   "photo": "Night 5's only frame is the floodlit H-II rocket, and it is hard uplight against a black sky with nothing lighting your face at all. Anything dark disappears completely — wear a light mid-tone or one warm colour and you separate from the background instead of becoming part of it. White is fine here, unusually: the rocket is white-grey and the floodlights are cold, so a pale top actually picks up enough spill to hold a face. No tripod is needed but nothing will be sharp hand-held, so brace on the low wall along the north path. The dawn alternative in Chuo Park is the opposite problem: flat soft light over a pond at 06:00, where mid-tones go muddy and one strong colour is what saves the frame.",
+   "practical": "Down from 1,269 m at Chuzenji to 25 m in Tsukuba: it is a warm, humid, still evening at 18:30, about 23°C, and the walk to the rocket is 600 m of flat paved park path with no shade needed and no gate to clear. Take the card key, because you are leaving an 11-storey city hotel that has NO shop, NO bar and NO large communal bath — everything you need is 200–300 m away and shuts at 20:00, except the 24-hour FamilyMart inside Q't. Shoes for 1.2 km of pavement round trip, and mosquito repellent for the pond edge in September. Breakfast in Serena starts 06:30 with last orders at 09:00 and the room seats 63, so a 35-person group is more than half of it — be early or be pre-seated."
+  }
+ },
+ "itineraryRevisions": [
+  {
+   "date": "2026-09-04",
+   "stop": "Edo Wonderland Nikko Edomura",
+   "was": "14:00–16:30, 2 h 30 min tour",
+   "now": "14:00–16:00, 2 h tour",
+   "consequence": "30 minutes lost. Last entry is still 16:00 so admission is fine, but the ~15:50 last theatre start now begins after the coach leaves. Day 5 also moved dinner 17:15->16:45 and check-in 18:30->18:00."
+  }
+ ]
+}

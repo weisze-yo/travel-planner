@@ -1,0 +1,1183 @@
+{
+ "batch": "expand-d78-walk30",
+ "places": [
+  {
+   "id": "d7w30tt01",
+   "anchorStop": "Tokyo Tower",
+   "name": "Atago Shrine and the 86-step Shusse-no-Ishidan",
+   "nameJp": "愛宕神社・出世の石段",
+   "category": "sight",
+   "priceTier": "¥",
+   "stayMinutes": 25,
+   "legs": [
+    {
+     "mode": "walk",
+     "minutes": 12
+    }
+   ],
+   "timeWindow": "day",
+   "latitude": 35.664818,
+   "longitude": 139.748657,
+   "coordPrecision": "approximate",
+   "note": "Tokyo's official site gives 9:00-16:00, free — it opens the minute your coach reaches Tokyo Tower. The draw is the 86-step stairway at roughly 40 degrees that a samurai is said to have ridden up on horseback. Founded 1603 as Edo's fire shrine, on the highest natural hill in the 23 wards. A gentler side slope and a lift in the NHK Museum next door avoid the steps in September humidity.",
+   "confidence": "high",
+   "source": "https://www.gotokyo.org/jp/spot/465/index.html",
+   "confidenceNote": null
+  },
+  {
+   "id": "d7w30tt02",
+   "anchorStop": "Tokyo Tower",
+   "name": "Shiba Toshogu and Iemitsu's great ginkgo",
+   "nameJp": "芝東照宮・大銀杏",
+   "category": "sight",
+   "priceTier": "¥",
+   "stayMinutes": 15,
+   "legs": [
+    {
+     "mode": "walk",
+     "minutes": 6
+    }
+   ],
+   "timeWindow": "day",
+   "latitude": 35.655983,
+   "longitude": 139.746246,
+   "coordPrecision": "approximate",
+   "note": "A gap in the existing Zojoji records: this was Zojoji's own Ieyasu shrine before the 1873 separation, and it holds the 寿像 — a seated portrait statue Ieyasu commissioned in his own lifetime, not a posthumous one. Grounds free and unenclosed; the goshuin desk is 09:00-17:00. The great ginkgo behind the hall, said to be planted by Iemitsu in 1641, is a Tokyo Natural Monument.",
+   "confidence": "medium",
+   "confidenceNote": "Coordinate is the GSI centroid for the 芝公園4-8 block, not the shrine gate; the grounds are open but the shrine publishes no gate hour, only the 09:00-17:00 goshuin desk.",
+   "source": "https://www.jinjyagoshuin.com/entry/shibatoushougu"
+  },
+  {
+   "id": "d7w30tt03",
+   "anchorStop": "Tokyo Tower",
+   "name": "Shiba Maruyama Kofun and the Ino Tadataka survey monument",
+   "nameJp": "芝丸山古墳・伊能忠敬測地遺功表",
+   "category": "sight",
+   "priceTier": "¥",
+   "stayMinutes": 20,
+   "legs": [
+    {
+     "mode": "walk",
+     "minutes": 9
+    }
+   ],
+   "timeWindow": "day",
+   "latitude": 35.655983,
+   "longitude": 139.746246,
+   "coordPrecision": "approximate",
+   "note": "Minato City calls it the largest keyhole-shaped burial mound in Tokyo, built in the second half of the 5th century, inside Shiba Park No.4 behind Zojoji. Free, ungated, and you may climb it. On top: Maruyama Zuishin Inari shrine and the granite monument to Ino Tadataka, who surveyed Japan on foot. Unpaved and root-crossed, so bad in the wet — and mid-September rain is likely.",
+   "confidence": "medium",
+   "confidenceNote": "Minato City's own page gives no hours or dimensions, and the coordinate is the 芝公園4-8 block centroid; the mound sits in that block but its summit point is not published.",
+   "source": "https://visit-minato-city.tokyo/en/places/1122"
+  },
+  {
+   "id": "d7w30tt04",
+   "anchorStop": "Tokyo Tower",
+   "name": "Zojoji Senzo Kosodate Jizo — the rows of red-bibbed jizo",
+   "nameJp": "増上寺 千躰子育地蔵尊",
+   "category": "sight",
+   "priceTier": "¥",
+   "stayMinutes": 15,
+   "legs": [
+    {
+     "mode": "walk",
+     "minutes": 7
+    }
+   ],
+   "timeWindow": "day",
+   "latitude": 35.657222,
+   "longitude": 139.748333,
+   "coordPrecision": "approximate",
+   "note": "The photograph everyone actually takes at Zojoji, and it is not in the existing records: rows of small stone jizo in red knitted caps and bibs, each with a spinning pinwheel, ranked up the west side of the precinct toward Tokyo Tower. Free, ungated, no hours. Zojoji says they have been placed in sequence since 1975 as prayers for children's health. Best light before 10:00, tower behind them.",
+   "confidence": "medium",
+   "confidenceNote": "Coordinate is an approximate point inside the Zojoji precinct west of the Daiden, read off the temple's own precinct map rather than a geocoded address.",
+   "source": "https://www.zojoji.or.jp/keidai/"
+  },
+  {
+   "id": "d7w30tt05",
+   "anchorStop": "Tokyo Tower",
+   "name": "Zojoji Kyozo, Kuromon and the bell tower",
+   "nameJp": "増上寺 経蔵・黒門・鐘楼堂",
+   "category": "sight",
+   "priceTier": "¥",
+   "stayMinutes": 15,
+   "legs": [
+    {
+     "mode": "walk",
+     "minutes": 6
+    }
+   ],
+   "timeWindow": "day",
+   "latitude": 35.657222,
+   "longitude": 139.748333,
+   "coordPrecision": "approximate",
+   "note": "Three precinct pieces the existing records skip, all free and outdoors — which matters because the Sangedatsumon is inside its steel shed until about 2032. The Kyozo is a 17 m square earthen-walled sutra repository, a Tokyo tangible cultural property. The Kuromon is the black gate given by Iemitsu around 1648-52, moved to its present spot in 1980. The bell tower holds one of Edo's great bells.",
+   "confidence": "medium",
+   "confidenceNote": "Zojoji's precinct page publishes no opening hours or interior access for the Kyozo, and the coordinate is an approximate precinct point rather than a geocoded address.",
+   "source": "https://www.zojoji.or.jp/keidai/"
+  },
+  {
+   "id": "d7w30tt06",
+   "anchorStop": "Tokyo Tower",
+   "name": "Zojoji Ankokuden — the Kuro-honzon hall",
+   "nameJp": "増上寺 安国殿（黒本尊）",
+   "category": "sight",
+   "priceTier": "¥",
+   "stayMinutes": 10,
+   "legs": [
+    {
+     "mode": "walk",
+     "minutes": 6
+    }
+   ],
+   "timeWindow": "day",
+   "latitude": 35.657222,
+   "longitude": 139.748333,
+   "coordPrecision": "approximate",
+   "note": "Worth knowing precisely because you miss it by one day. The Ankokuden holds the Kuro-honzon, Ieyasu's own black Amida, and Zojoji shows it publicly on only three dates a year: 15 January, 15 May and 15 SEPTEMBER. You are at Zojoji on the 14th and at Narita on the 15th. The hall itself is open and free; the statue stays behind closed doors on your date.",
+   "confidence": "medium",
+   "confidenceNote": "The three viewing dates are stated on Zojoji's own site, but the hall's daily opening and closing hours are not published and the coordinate is an approximate precinct point.",
+   "source": "https://www.zojoji.or.jp/keidai/"
+  },
+  {
+   "id": "d7w30tt07",
+   "anchorStop": "Tokyo Tower",
+   "name": "Tokyo Tower open-air staircase — DOWN only on a Monday",
+   "nameJp": "東京タワー 外階段",
+   "category": "sight",
+   "priceTier": "¥",
+   "stayMinutes": 20,
+   "legs": [
+    {
+     "mode": "walk",
+     "minutes": 1
+    }
+   ],
+   "timeWindow": "day",
+   "latitude": 35.658581,
+   "longitude": 139.745438,
+   "coordPrecision": "verified",
+   "note": "A real Monday trap. Tokyo Tower's own page splits the outdoor staircase: climbing UP is 9:00-16:00 土日祝のみ, weekends and public holidays only, while coming DOWN runs 9:00-20:00 daily. Mon 14 Sep 2026 is a plain weekday — September's holidays are the 21st and 23rd — so you cannot climb it, but you CAN walk the roughly 600 steps down instead of queuing for the lift. Cancelled in rain or wind.",
+   "confidence": "high",
+   "source": "https://www.tokyotower.co.jp/en/price/",
+   "confidenceNote": null
+  },
+  {
+   "id": "d7w30tt08",
+   "anchorStop": "Tokyo Tower",
+   "name": "RED° TOKYO TOWER, Foot Town 3F-5F",
+   "nameJp": "RED° TOKYO TOWER",
+   "category": "sight",
+   "priceTier": "¥¥",
+   "stayMinutes": 30,
+   "legs": [
+    {
+     "mode": "walk",
+     "minutes": 2
+    }
+   ],
+   "timeWindow": "day",
+   "latitude": 35.658581,
+   "longitude": 139.745438,
+   "coordPrecision": "verified",
+   "note": "Occupies Foot Town floors 3F, 4F and 5F — the biggest single thing inside the building, and absent from the existing records. An e-sports and digital amusement park, 10:00-22:00 with irregular closing days, so on a 09:00-10:30 stop it opens with about 30 minutes of your slot left. Ticketed by plan, not one flat price. Treat it as a reason NOT to promise the group Foot Town at 09:00.",
+   "confidence": "medium",
+   "confidenceNote": "Hours and floors are from the venue's own Asoview listing; the price is stated only as varying by plan, and 不定休 means a closure on 14 Sep cannot be ruled out without phoning.",
+   "source": "https://www.asoview.com/base/158741/"
+  },
+  {
+   "id": "d7w30tt09",
+   "anchorStop": "Tokyo Tower",
+   "name": "Azabudai Hills Market, Garden Plaza C 1F/B1F",
+   "nameJp": "麻布台ヒルズ マーケット",
+   "category": "food",
+   "priceTier": "¥¥",
+   "stayMinutes": 30,
+   "legs": [
+    {
+     "mode": "walk",
+     "minutes": 9
+    }
+   ],
+   "timeWindow": "day",
+   "latitude": 35.661549,
+   "longitude": 139.740921,
+   "coordPrecision": "approximate",
+   "note": "The nearest serious food hall to Tokyo Tower, only about 700 m on foot — but the hours kill it: 10:00-20:00, and your coach leaves at 10:30. 33 shops on Garden Plaza C 1F and B1F, including Azabudai Yamayuki fishmonger, Azabudai Torishiki, Comme'N TOKYO bakery and Pierre Herme Paris. Come here instead of Foot Town only if the Tokyo Tower slot slips later.",
+   "confidence": "high",
+   "source": "https://www.azabudai-hills.com/azabudaihillsmarket/index.html",
+   "confidenceNote": null
+  },
+  {
+   "id": "d7w30tt10",
+   "anchorStop": "Tokyo Tower",
+   "name": "Shiba Daijingu",
+   "nameJp": "芝大神宮",
+   "category": "sight",
+   "priceTier": "¥",
+   "stayMinutes": 15,
+   "legs": [
+    {
+     "mode": "walk",
+     "minutes": 11
+    }
+   ],
+   "timeWindow": "day",
+   "latitude": 35.657726,
+   "longitude": 139.752991,
+   "coordPrecision": "approximate",
+   "note": "Called 関東のお伊勢さま, the Kanto Ise: founded 1005, enshrining Amaterasu and Toyouke. It is the practical alternative to Atago if the group will not climb stairs — flat the whole way from Zojoji along Daimon-dori, about 700 m, free. Its own specialities are chigiri-ame cut candy and 千木箱 wooden charm boxes, but the desk is not reliably staffed early on a weekday.",
+   "confidence": "medium",
+   "confidenceNote": "Coordinate is the GSI centroid for 芝大門1-12 rather than the shrine steps, and the shrine publishes no fixed office hours, so charm-box availability at 09:15 on a Monday is unverified.",
+   "source": "https://msearch.gsi.go.jp/address-search/AddressSearch?q=%E6%9D%B1%E4%BA%AC%E9%83%BD%E6%B8%AF%E5%8C%BA%E8%8A%9D%E5%A4%A7%E9%96%801-12-7"
+  },
+  {
+   "id": "d7w30tt11",
+   "anchorStop": "Tokyo Tower",
+   "name": "Kyu Shiba Rikyu Onshi Teien",
+   "nameJp": "旧芝離宮恩賜庭園",
+   "category": "sight",
+   "priceTier": "¥",
+   "stayMinutes": 40,
+   "legs": [
+    {
+     "mode": "walk",
+     "minutes": 20
+    }
+   ],
+   "timeWindow": "day",
+   "latitude": 35.656078,
+   "longitude": 139.758926,
+   "coordPrecision": "approximate",
+   "note": "A complete Edo daimyo garden, and the cheapest ticket in central Tokyo: 一般150円, 65歳以上70円, and for parties of 20 or more 一般120円 — 35 people get in for about ¥4,200. 09:00-17:00, last entry 16:30, open every day but 29 Dec-1 Jan. Look for Nebukawa-yama's stonework and the Xihu embankment copied from Hangzhou. 20 minutes each way eats 40 of your 90.",
+   "confidence": "high",
+   "source": "https://www.tokyo-park.or.jp/park/kyu-shiba-rikyu/index.html",
+   "confidenceNote": null
+  },
+  {
+   "id": "d7w30tt12",
+   "anchorStop": "Tokyo Tower",
+   "name": "Roppongi Hills 66 Plaza, Maman and Mohri Garden",
+   "nameJp": "六本木ヒルズ 66プラザ・ママン・毛利庭園",
+   "category": "sight",
+   "priceTier": "¥",
+   "stayMinutes": 30,
+   "legs": [
+    {
+     "mode": "walk",
+     "minutes": 24
+    }
+   ],
+   "timeWindow": "day",
+   "latitude": 35.660206,
+   "longitude": 139.729202,
+   "coordPrecision": "approximate",
+   "note": "The outer limit of the radius: about 1.5 km, 24 minutes uphill through Roppongi, so 48 minutes of a 90-minute stop just walking. Louise Bourgeois' nine-metre bronze spider Maman on 66 Plaza and the Mohri Garden pond are open air and free at any hour. Everything ticketed — Mori Art Museum, Tokyo City View — opens at 10:00, after you must turn back. Listed to show the boundary, not as a plan.",
+   "confidence": "medium",
+   "confidenceNote": "Coordinate is the GSI centroid for 六本木6-10 and the minutes are derived from straight-line distance with a 1.3 street factor, not a measured route; the open-air plazas have no published hours.",
+   "source": "https://msearch.gsi.go.jp/address-search/AddressSearch?q=%E6%9D%B1%E4%BA%AC%E9%83%BD%E6%B8%AF%E5%8C%BA%E5%85%AD%E6%9C%AC%E6%9C%A86-10-1"
+  },
+  {
+   "id": "d7w30tk01",
+   "anchorStop": "Tsukiji Outer Market",
+   "name": "Tsukiji Hongwanji main hall",
+   "nameJp": "築地本願寺 本堂",
+   "category": "sight",
+   "priceTier": "¥",
+   "stayMinutes": 20,
+   "legs": [
+    {
+     "mode": "walk",
+     "minutes": 5
+    }
+   ],
+   "timeWindow": "day",
+   "latitude": 35.666466,
+   "longitude": 139.772446,
+   "coordPrecision": "approximate",
+   "note": "The stone Indian-style temple at the market's west end, rebuilt 1934 by Chuta Ito after the 1923 earthquake, with winged animals on the staircase and a pipe organ inside. Free, and the one air-conditioned sit-down space within five minutes of the outer market — which on a humid 26C morning is the actual argument for it. Shoes off at the hall entrance, so avoid lace-ups if you intend to go in.",
+   "confidence": "medium",
+   "confidenceNote": "Coordinate is the GSI centroid for 築地3-15; the temple's own site is unreachable from this sandbox, so the main hall's exact Monday opening and closing hours are unverified.",
+   "source": "https://msearch.gsi.go.jp/address-search/AddressSearch?q=%E6%9D%B1%E4%BA%AC%E9%83%BD%E4%B8%AD%E5%A4%AE%E5%8C%BA%E7%AF%89%E5%9C%B03-15-1"
+  },
+  {
+   "id": "d7w30tk02",
+   "anchorStop": "Tsukiji Outer Market",
+   "name": "Tsukiji Hongwanji Cafe Tsumugi",
+   "nameJp": "築地本願寺カフェ Tsumugi",
+   "category": "food",
+   "priceTier": "¥¥",
+   "stayMinutes": 45,
+   "legs": [
+    {
+     "mode": "walk",
+     "minutes": 5
+    }
+   ],
+   "timeWindow": "day",
+   "latitude": 35.666466,
+   "longitude": 139.772446,
+   "coordPrecision": "approximate",
+   "note": "In the temple's Information building, 8:00-18:00, no regular closing day. Famous for the 18品の朝ごはん — eighteen small dishes on one tray, the 18 standing for Amida's 18th vow — but it is a morning set and it sells out, so a 10:50 arrival is late for it. The 12:15 lunch slot is the honest one, and 35 people will not fit without a booking. Direct from Tsukiji Station exit 1: the wet-weather fallback.",
+   "confidence": "medium",
+   "confidenceNote": "Hours and address are from Rurubu's listing; the 18品の朝ごはん price, its exact serving window and whether groups can be seated are not stated on any page reachable here.",
+   "source": "https://rurubu.jp/andmore/spot/80112788"
+  },
+  {
+   "id": "d7w30tk03",
+   "anchorStop": "Tsukiji Outer Market",
+   "name": "Hamarikyu Gardens and the 300-year pine",
+   "nameJp": "浜離宮恩賜庭園・三百年の松",
+   "category": "sight",
+   "priceTier": "¥",
+   "stayMinutes": 50,
+   "legs": [
+    {
+     "mode": "walk",
+     "minutes": 14
+    }
+   ],
+   "timeWindow": "day",
+   "latitude": 35.66013,
+   "longitude": 139.763519,
+   "coordPrecision": "approximate",
+   "note": "Inside the radius — about 1.1 km, 14 min — and open on your date: 09:00-17:00, last entry 16:30, closed only 29 Dec-1 Jan. 一般300円, 65歳以上150円, 20名様以上の団体 240円, so 35 people cost about ¥8,400. Shiomi-no-ike is a real tidal pond fed by Tokyo Bay. Just inside the Otemon gate is the propped black pine planted about 1709 — the one thing here you can see and leave inside ten minutes.",
+   "confidence": "high",
+   "source": "https://www.tokyo-park.or.jp/park/format/index028.html",
+   "confidenceNote": null
+  },
+  {
+   "id": "d7w30tk04",
+   "anchorStop": "Tsukiji Outer Market",
+   "name": "Nakajima-no-Ochaya tea house, Hamarikyu",
+   "nameJp": "浜離宮 中島の御茶屋",
+   "category": "food",
+   "priceTier": "¥",
+   "stayMinutes": 25,
+   "legs": [
+    {
+     "mode": "walk",
+     "minutes": 14
+    },
+    {
+     "mode": "walk",
+     "minutes": 6
+    }
+   ],
+   "timeWindow": "day",
+   "latitude": 35.66013,
+   "longitude": 139.763519,
+   "coordPrecision": "approximate",
+   "note": "A rebuilt 1707 tea pavilion on stilts over the tidal pond, reached by the long Otsutai wooden bridge. Matcha with a seasonal namagashi is ¥720, served 09:00-17:00, last orders 16:30 — cheaper and quieter than any Ginza tea room, and the only place near Tsukiji where the group can sit on tatami over water. Garden admission is extra. Second leg is the gate-to-island walk.",
+   "confidence": "high",
+   "source": "https://www.jalan.net/kankou/spt_guide000000190891/",
+   "confidenceNote": null
+  },
+  {
+   "id": "d7w30tk05",
+   "anchorStop": "Tsukiji Outer Market",
+   "name": "Kachidoki Bridge",
+   "nameJp": "勝鬨橋",
+   "category": "sight",
+   "priceTier": "¥",
+   "stayMinutes": 15,
+   "legs": [
+    {
+     "mode": "walk",
+     "minutes": 8
+    }
+   ],
+   "timeWindow": "24h",
+   "latitude": 35.664,
+   "longitude": 139.7757,
+   "coordPrecision": "approximate",
+   "note": "The 1940 double-leaf bascule bridge at the mouth of the Sumida, built for an Olympics that never happened and last raised in 1970 — the leaves are welded shut now, so nothing opens while you watch. Free, footpaths both sides. Walk to the middle for the downstream view; it is also the only way on foot to Tsukuda and Tsukishima.",
+   "confidence": "medium",
+   "confidenceNote": "Coordinate is an approximate mid-span point between 築地6 and 月島1, not a geocoded address; the bridge's cultural-property designation is stated on other Tokyo Metropolitan Government pages, not the one fetched here.",
+   "source": "https://www.kensetsu.metro.tokyo.lg.jp/road/iji_syuzen/hozen/kachidoki"
+  },
+  {
+   "id": "d7w30tk06",
+   "anchorStop": "Tsukiji Outer Market",
+   "name": "Kachidokibashi Museum — CLOSED ON MONDAYS",
+   "nameJp": "かちどき橋の資料館",
+   "category": "sight",
+   "priceTier": "¥",
+   "stayMinutes": 25,
+   "legs": [
+    {
+     "mode": "walk",
+     "minutes": 9
+    }
+   ],
+   "timeWindow": "day",
+   "latitude": 35.664,
+   "longitude": 139.7757,
+   "coordPrecision": "approximate",
+   "note": "Listed because it is a trap on your date. The Tokyo Metropolitan Government's own page says 毎週火曜日・木曜日・金曜日・土曜日 — Tuesday, Thursday, Friday and Saturday ONLY, 09:30-16:30, free. Mon 14 Sep is not one of them, so it is shut. Inside is the original substation that drove the bascule machinery, a 1:100 model, and a bookable tour into the bridge pier. Address 中央区築地6丁目地先.",
+   "confidence": "high",
+   "source": "https://www.kensetsu.metro.tokyo.lg.jp/road/iji_syuzen/hozen/kachidoki",
+   "confidenceNote": null
+  },
+  {
+   "id": "d7w30tk07",
+   "anchorStop": "Tsukiji Outer Market",
+   "name": "Sumida River Terrace, Tsukiji riverside",
+   "nameJp": "隅田川テラス（築地側）",
+   "category": "rest",
+   "priceTier": "¥",
+   "stayMinutes": 20,
+   "legs": [
+    {
+     "mode": "walk",
+     "minutes": 7
+    }
+   ],
+   "timeWindow": "24h",
+   "latitude": 35.664,
+   "longitude": 139.7757,
+   "coordPrecision": "approximate",
+   "note": "The stepped concrete promenade along the river wall between Tsukiji and the Kachidoki approach: free, flat, open at all hours, and the only place near the market with a breeze and a horizon. Downstream you see the Kachidoki bascule towers, upstream the Tsukuda high-rises. No shade to speak of, so at 11:00 in September it is a ten-minute stop, not a rest.",
+   "confidence": "medium",
+   "confidenceNote": "The terrace is a continuous Tokyo Metropolitan Government riverside walkway with no single address or published hours; the coordinate is the Kachidoki Bridge approach used as the access stair.",
+   "source": "https://www.kensetsu.metro.tokyo.lg.jp/road/iji_syuzen/hozen/kachidoki"
+  },
+  {
+   "id": "d7w30tk08",
+   "anchorStop": "Tsukiji Outer Market",
+   "name": "Tsukuda Kobashi red bridge and Sumiyoshi Shrine",
+   "nameJp": "佃小橋・住吉神社",
+   "category": "sight",
+   "priceTier": "¥",
+   "stayMinutes": 30,
+   "legs": [
+    {
+     "mode": "walk",
+     "minutes": 19
+    }
+   ],
+   "timeWindow": "day",
+   "latitude": 35.668064,
+   "longitude": 139.782959,
+   "coordPrecision": "approximate",
+   "note": "Over Kachidoki Bridge and into the fishing island the Tokugawa moved here from Osaka in 1590. Tsukuda Kobashi is the vermilion footbridge over the boat moat, with the famous yellow sign warning that the festival pole is buried beneath and must not be dug up. Sumiyoshi Shrine, 1646, is the island's guardian. Free, outdoors. 19 minutes each way is more than half a 60-minute Tsukiji stop.",
+   "confidence": "medium",
+   "confidenceNote": "Coordinate is the geocoded 佃1-1-14 shrine address; the bridge is roughly 150 m away and the minutes are derived from straight-line distance across Kachidoki Bridge, not a measured route.",
+   "source": "https://www.jfa.maff.go.jp/j/koho/blog/category/tsukudani_list/tsukudajima_map.html"
+  },
+  {
+   "id": "d7w30tk09",
+   "anchorStop": "Tsukiji Outer Market",
+   "name": "Tenyasu Honten, tsukudani since 1837",
+   "nameJp": "佃煮 天安本店",
+   "category": "shopping",
+   "priceTier": "¥¥",
+   "stayMinutes": 20,
+   "legs": [
+    {
+     "mode": "walk",
+     "minutes": 18
+    }
+   ],
+   "timeWindow": "day",
+   "latitude": 35.667652,
+   "longitude": 139.782242,
+   "coordPrecision": "verified",
+   "note": "Tsukudani was invented on this island and Tenyasu has made it at 佃1-3-14 since 1837, still using a tare carried forward from the founding. Chuo City lists the shop as one of Tsukuda's oldest surviving merchant buildings — narrow frontage, machiya frame. This is the buy that survives Day 7: boiled down in soy and sugar, ambient shelf-stable, sold sealed and boxed, and almost weightless.",
+   "confidence": "high",
+   "source": "https://www.jfa.maff.go.jp/j/koho/blog/category/tsukudani_list/tsukudajima_map.html",
+   "confidenceNote": null
+  },
+  {
+   "id": "d7w30tk10",
+   "anchorStop": "Tsukiji Outer Market",
+   "name": "Tsukugen Tanakaya and Tsukudani Marukyu",
+   "nameJp": "佃源田中屋・つくだに丸久",
+   "category": "shopping",
+   "priceTier": "¥¥",
+   "stayMinutes": 20,
+   "legs": [
+    {
+     "mode": "walk",
+     "minutes": 18
+    }
+   ],
+   "timeWindow": "day",
+   "latitude": 35.667652,
+   "longitude": 139.782242,
+   "coordPrecision": "approximate",
+   "note": "The other two founding houses, both within 100 m of Tenyasu: Tanakaya at 佃1-3-13, Edo-period, whose anago tsukudani the staff tell you to eat with bread or pasta; and Marukyu at 佃1-2-10, founded 1859, handmade and pitched slightly sweeter. Buying across the three lets 35 people spread the queue instead of emptying one small counter. All sealed, ambient, flight-safe.",
+   "confidence": "medium",
+   "confidenceNote": "Founding years and addresses are from the Fisheries Agency's Tsukudajima guide; hours, closing days and prices are not published there, and the coordinate is Tenyasu's address standing in for the cluster.",
+   "source": "https://www.jfa.maff.go.jp/j/koho/blog/category/tsukudani_list/tsukudajima_map.html"
+  },
+  {
+   "id": "d7w30tk11",
+   "anchorStop": "Tsukiji Outer Market",
+   "name": "Tsukishima Monja Street",
+   "nameJp": "月島もんじゃストリート",
+   "category": "food",
+   "priceTier": "¥¥",
+   "stayMinutes": 60,
+   "legs": [
+    {
+     "mode": "walk",
+     "minutes": 16
+    }
+   ],
+   "timeWindow": "night",
+   "latitude": 35.662758,
+   "longitude": 139.780411,
+   "coordPrecision": "approximate",
+   "note": "About 1.3 km over Kachidoki Bridge: roughly 70 monjayaki houses along Tsukishima Nishinaka-dori. In the radius, out of the schedule twice over — most of the street opens between 11:00 and 17:00 with many houses evening-only, and monja is cooked at your own table over 60-90 minutes. You are here 10:50-11:50 and then the coach leaves for Shisui. A Tokyo evening, not a Day 7 stop.",
+   "confidence": "medium",
+   "confidenceNote": "Coordinate is the geocoded 月島3-17 block mid-street; the street has no single operator and shop hours vary, so the 11:00 opening is a generalisation rather than a verified figure.",
+   "source": "https://walk.monja.gr.jp/osampo8.php"
+  },
+  {
+   "id": "d7w30ss01",
+   "anchorStop": "Shisui Premium Outlets",
+   "name": "Shisui Onsen Yura-no-Sato — a real hot spring, 700 m away",
+   "nameJp": "酒々井温泉 湯楽の里",
+   "category": "rest",
+   "priceTier": "¥¥",
+   "stayMinutes": 90,
+   "legs": [
+    {
+     "mode": "walk",
+     "minutes": 11
+    }
+   ],
+   "timeWindow": "day",
+   "latitude": 35.719689,
+   "longitude": 140.293259,
+   "coordPrecision": "approximate",
+   "note": "The one genuine find inside 30 minutes' walk of the outlet, and the sharpest contrast on Day 7: your hotel's bath complex is NOT hot-spring water, while this is — 含よう素-ナトリウム-塩化物強塩泉, 98.3 mg/kg iodine, drawn on site. 09:00-23:00, last entry 22:00, no regular closing day, adult ¥950-1,600. Published as 徒歩約700m from Shisui IC and the outlet bus stop. Tattoos refused; towels rentable.",
+   "confidence": "medium",
+   "confidenceNote": "Coordinate is Chiba Prefecture's official tourism listing, about 660 m from the outlet's mapped position, which reconciles with the operator's published 700 m; the walk is along an interchange approach road with no verified footpath.",
+   "source": "https://www.yurakirari.com/yura/shisui/"
+  },
+  {
+   "id": "d7w30ss02",
+   "anchorStop": "Shisui Premium Outlets",
+   "name": "Unagi Kawatoyo, block 1600",
+   "nameJp": "うなぎ川豊（1600区）",
+   "category": "food",
+   "priceTier": "¥¥¥",
+   "stayMinutes": 45,
+   "legs": [
+    {
+     "mode": "walk",
+     "minutes": 7
+    }
+   ],
+   "timeWindow": "day",
+   "latitude": 35.713812,
+   "longitude": 140.294023,
+   "coordPrecision": "approximate",
+   "note": "This closes a loop in the existing research. Kawatoyo Honten on the Naritasan approach is filed as out of reach on this itinerary — but Kawatoyo has a branch in the outlet at block 1600, 11:00-21:00, which the group reaches on foot during the 14:30-17:00 stop. Charcoal unagi over rice, the area's real dish, without the 25-minute shuttle to Narita. Expect ¥3,000-5,000 and a wait at 15:00.",
+   "confidence": "medium",
+   "confidenceNote": "Block number and hours are from the outlet's own column page; prices are inferred from the Naritasan parent shop's range and are not published for the outlet branch.",
+   "source": "https://www.premiumoutlets.co.jp/column/shisui/725"
+  },
+  {
+   "id": "d7w30ss03",
+   "anchorStop": "Shisui Premium Outlets",
+   "name": "Sushi Choshimaru, block 1335",
+   "nameJp": "すし銚子丸（1335区）",
+   "category": "food",
+   "priceTier": "¥¥",
+   "stayMinutes": 45,
+   "legs": [
+    {
+     "mode": "walk",
+     "minutes": 6
+    }
+   ],
+   "timeWindow": "day",
+   "latitude": 35.713812,
+   "longitude": 140.294023,
+   "coordPrecision": "approximate",
+   "note": "Chiba's own conveyor-sushi chain, landing its fish through Choshi, at block 1335, 11:00-21:00. For a group that had a 10:50 Tsukiji stop it is the honest cheaper repeat: edomae sushi at outlet-mall prices. Plate-priced so 35 people can pace themselves, and it runs four hours past the 17:00 coach — which the food court, closing 20:00, does not.",
+   "confidence": "medium",
+   "confidenceNote": "Block number and hours are from the outlet's own column page; seat count and whether groups can reserve are not published.",
+   "source": "https://www.premiumoutlets.co.jp/column/shisui/725"
+  },
+  {
+   "id": "d7w30ss04",
+   "anchorStop": "Shisui Premium Outlets",
+   "name": "Soryu Togyokudo, block 1330 — 92 seats",
+   "nameJp": "蒼龍唐玉堂（1330区）",
+   "category": "food",
+   "priceTier": "¥¥",
+   "stayMinutes": 40,
+   "legs": [
+    {
+     "mode": "walk",
+     "minutes": 6
+    }
+   ],
+   "timeWindow": "day",
+   "latitude": 35.713812,
+   "longitude": 140.294023,
+   "coordPrecision": "approximate",
+   "note": "The largest room in the food strip and the one that can actually swallow a coach party: 92 seats at block 1330, 11:00-21:00, last order 20:30, tel 043-308-8689. Kiwa Corporation's tantanmen house — many grades of tantanmen plus the 大餃子. Not halal and pork-heavy, so it is the wrong pick for part of a ViTrox group; check before sending anyone here.",
+   "confidence": "high",
+   "source": "https://kiwa-group.co.jp/souryu_shisui/",
+   "confidenceNote": null
+  },
+  {
+   "id": "d7w30ss05",
+   "anchorStop": "Shisui Premium Outlets",
+   "name": "Food court, Botejyu Yatai and the 1100-block early closers",
+   "nameJp": "フードコート ぼてぢゅう屋台・1100区（神座・鳥開）",
+   "category": "food",
+   "priceTier": "¥",
+   "stayMinutes": 30,
+   "legs": [
+    {
+     "mode": "walk",
+     "minutes": 5
+    }
+   ],
+   "timeWindow": "day",
+   "latitude": 35.713812,
+   "longitude": 140.294023,
+   "coordPrecision": "approximate",
+   "note": "Names for the food court the existing record leaves generic: Botejyu Yatai does Osaka okonomiyaki and yakisoba inside the court. The court is the only place at Shisui where 35 people sit together without a booking — and the only one that shuts at 20:00. Dohtonbori Kamiza ramen at block 1120 and Tori-kai at 1115 keep the same 10:00-20:00 window; the 1300-1600 restaurants run to 21:00.",
+   "confidence": "medium",
+   "confidenceNote": "Tenant names, block numbers and hours are from the outlet's own column page; seat counts and prices are not published.",
+   "source": "https://www.premiumoutlets.co.jp/column/shisui/725"
+  },
+  {
+   "id": "d7w30ss06",
+   "anchorStop": "Shisui Premium Outlets",
+   "name": "Gong cha block 1440 and Delifrance block 1325",
+   "nameJp": "ゴンチャ（1440区）・デリフランス（1325区）",
+   "category": "food",
+   "priceTier": "¥",
+   "stayMinutes": 15,
+   "legs": [
+    {
+     "mode": "walk",
+     "minutes": 6
+    }
+   ],
+   "timeWindow": "day",
+   "latitude": 35.713812,
+   "longitude": 140.294023,
+   "coordPrecision": "approximate",
+   "note": "The two early-and-cheap stops, both 09:30-20:00: Gong cha bubble tea at block 1440 and the Delifrance bakery cafe at 1325. On a 26C afternoon with 2.5 hours of open-air outlet walking ahead, iced tea at 1440 is the most useful thing in the 1400 block, and both are far quicker than the sit-down restaurants if the coach leaves at 17:00 sharp.",
+   "confidence": "medium",
+   "confidenceNote": "Block numbers and hours are from the outlet's own column page; no prices or seating detail is published for either outlet branch.",
+   "source": "https://www.premiumoutlets.co.jp/column/shisui/725"
+  },
+  {
+   "id": "d7w30ss07",
+   "anchorStop": "Shisui Premium Outlets",
+   "name": "Shisui Outlet bus stop — the Tokyo and Narita coaches",
+   "nameJp": "酒々井プレミアム・アウトレット 高速バス・シャトルバス乗降場",
+   "category": "rest",
+   "priceTier": "¥",
+   "stayMinutes": 10,
+   "legs": [
+    {
+     "mode": "walk",
+     "minutes": 3
+    }
+   ],
+   "timeWindow": "day",
+   "latitude": 35.713812,
+   "longitude": 140.294023,
+   "coordPrecision": "approximate",
+   "note": "Worth mapping because it is the escape route if anyone gets separated from the coach. From the outlet's own access page: Tokyo Station (Bus Terminal Tokyo Yaesu B1F, bay A02) on the Choshi express, about 50 min, ¥1,300, first-come with no reservation; Narita Airport about 15 min, ¥500, same basis; and a JR Shisui Station West Exit shuttle, about 15 min, ¥310 by cash or IC.",
+   "confidence": "high",
+   "source": "https://www.premiumoutlets.co.jp/shisui/access/access_bus.html",
+   "confidenceNote": null
+  },
+  {
+   "id": "d7w30yj01",
+   "anchorStop": "International Resort Hotel Yurakujo",
+   "name": "Tomisatoya — the Japanese room inside the bath complex",
+   "nameJp": "富里屋",
+   "category": "food",
+   "priceTier": "¥¥",
+   "stayMinutes": 60,
+   "legs": [
+    {
+     "mode": "walk",
+     "minutes": 4
+    }
+   ],
+   "timeWindow": "night",
+   "latitude": 35.7435,
+   "longitude": 140.3452,
+   "coordPrecision": "approximate",
+   "note": "The existing records have the bath complex but not its five restaurants. Tomisatoya is the Japanese one: soba, udon, kaisen-don, tempura fried to order. On a MONDAY it opens 17:00-21:30, last order 21:00, against Tuesday-to-Sunday's 13:00 start. Your 17:30 check-in lands 30 min after it opens, so it is the first food on the property that evening. A 甘味処 dessert counter keeps the same hours.",
+   "confidence": "high",
+   "source": "https://chi-hotelsresorts.com/yurakujo/food/",
+   "confidenceNote": null
+  },
+  {
+   "id": "d7w30yj02",
+   "anchorStop": "International Resort Hotel Yurakujo",
+   "name": "Nanaeya — Chinese, inside the bath complex",
+   "nameJp": "七栄屋",
+   "category": "food",
+   "priceTier": "¥¥",
+   "stayMinutes": 50,
+   "legs": [
+    {
+     "mode": "walk",
+     "minutes": 4
+    }
+   ],
+   "timeWindow": "night",
+   "latitude": 35.7435,
+   "longitude": 140.3452,
+   "coordPrecision": "approximate",
+   "note": "Named for the Nanae district the hotel stands in. Proper Chinese — ramen and mapo tofu are the operator's own examples — Monday 17:00-21:30, last order 21:00. It is the alternative to the California Restaurant buffet for anyone who does not want another buffet after seven days of them, and it is inside the same bath building, so it works in a yukata after the baths.",
+   "confidence": "high",
+   "source": "https://chi-hotelsresorts.com/yurakujo/food/",
+   "confidenceNote": null
+  },
+  {
+   "id": "d7w30yj03",
+   "anchorStop": "International Resort Hotel Yurakujo",
+   "name": "Tomisato Sakaba — the izakaya, and it is groups only",
+   "nameJp": "トミサト酒場",
+   "category": "food",
+   "priceTier": "¥¥",
+   "stayMinutes": 90,
+   "legs": [
+    {
+     "mode": "walk",
+     "minutes": 4
+    }
+   ],
+   "timeWindow": "night",
+   "latitude": 35.7435,
+   "longitude": 140.3452,
+   "coordPrecision": "approximate",
+   "note": "Very likely the 18:00 izakaya dinner in the itinerary, and worth confirming with the agent. The operator says it is currently 団体のみ — group bookings only — ordering off Tomisatoya's menu, Monday 17:00-21:30, last order 21:00. A 35-person party at 18:00 is exactly what that restriction exists for. If the agent has not booked it, the group falls back on the California Restaurant buffet.",
+   "confidence": "medium",
+   "confidenceNote": "The groups-only status and hours are on the operator's own food page, but nothing published confirms this is the venue the tour agent booked for the 18:00 izakaya dinner.",
+   "source": "https://chi-hotelsresorts.com/yurakujo/food/"
+  },
+  {
+   "id": "d7w30yj04",
+   "anchorStop": "International Resort Hotel Yurakujo",
+   "name": "Mitsuan-seki private dining room, 8-50 seats",
+   "nameJp": "密庵席",
+   "category": "food",
+   "priceTier": "¥¥¥",
+   "stayMinutes": 90,
+   "legs": [
+    {
+     "mode": "walk",
+     "minutes": 4
+    }
+   ],
+   "timeWindow": "night",
+   "latitude": 35.7435,
+   "longitude": 140.3452,
+   "coordPrecision": "approximate",
+   "note": "The one room on the property sized for this group: a private dining room the operator lists for 8 to 50 guests, inside the bath complex. 35 people fit with room to spare, and it solves the problem that every other room would split the party across tables. Reservation only, and no menu is published — the agent has to phone 0476-93-1234. Worth asking about even if the izakaya is already booked.",
+   "confidence": "medium",
+   "confidenceNote": "Capacity is stated on the operator's own page; no menu, price, minimum spend or opening hours are published for this room specifically.",
+   "source": "https://chi-hotelsresorts.com/yurakujo/food/"
+  },
+  {
+   "id": "d7w30yj05",
+   "anchorStop": "International Resort Hotel Yurakujo",
+   "name": "Crane Chiba Tomisato riding club — shut for this group",
+   "nameJp": "乗馬クラブ クレイン千葉 富里",
+   "category": "sight",
+   "priceTier": "¥¥",
+   "stayMinutes": 60,
+   "legs": [
+    {
+     "mode": "walk",
+     "minutes": 9
+    }
+   ],
+   "timeWindow": "day",
+   "latitude": 35.739307,
+   "longitude": 140.333069,
+   "coordPrecision": "approximate",
+   "note": "Tomisato City lists it at 七栄650-203 — the same block as the hotel at 七栄650-35 — so it is the closest thing to an attraction on foot from the property. And it is shut both ways: 09:00-17:00, CLOSED TUESDAYS. It is closing as you check in at 17:30 on Monday, and closed all day on Tuesday 15 Sep. The 30-minute taster is free apart from ¥1,860 rental and insurance. Tel 0476-90-1177.",
+   "confidence": "medium",
+   "confidenceNote": "Coordinate is the GSI centroid for the 七栄650 block, which covers both hotel and club, so the 9-minute walk is a block-to-block estimate along an unlit rural road, not a measured route.",
+   "source": "https://www.city.tomisato.lg.jp/fanclub/0000014132.html"
+  },
+  {
+   "id": "d7w30yj06",
+   "anchorStop": "International Resort Hotel Yurakujo",
+   "name": "Direx Tomisato — the late discount store",
+   "nameJp": "ダイレックス富里店",
+   "category": "shopping",
+   "priceTier": "¥",
+   "stayMinutes": 30,
+   "legs": [
+    {
+     "mode": "walk",
+     "minutes": 26
+    }
+   ],
+   "timeWindow": "night",
+   "latitude": 35.735256,
+   "longitude": 140.330078,
+   "coordPrecision": "approximate",
+   "note": "A Sundrug-group discount store at 七栄646-189, about 2.0 km on foot — the largest shop within the radius and the only one carrying drugstore and grocery lines together, so it is the realistic last stop for medicines, snacks and Kao or Shiseido lines at supermarket rather than airport prices. Same warning as the existing 7-Eleven record: unlit rural road, no continuous footpath. Take a taxi.",
+   "confidence": "medium",
+   "confidenceNote": "Coordinate is the GSI centroid for the 七栄646 block, not the shop front, and the store's opening hours could not be retrieved — both the chain's page and Yahoo's listing refuse automated access.",
+   "source": "https://map.yahoo.co.jp/v3/place/l47vrMrZRng"
+  },
+  {
+   "id": "d8w30nt01",
+   "anchorStop": "Narita Airport — Terminal 1 South Wing",
+   "name": "ITOKI work and open lounge, South Wing 4F — LANDSIDE, free",
+   "nameJp": "ITOKI ワークラウンジ／オープンラウンジ（第1南ウイング4F）",
+   "category": "rest",
+   "priceTier": "¥",
+   "stayMinutes": 40,
+   "legs": [
+    {
+     "mode": "walk",
+     "minutes": 3
+    }
+   ],
+   "timeWindow": "dawn",
+   "latitude": 35.772,
+   "longitude": 140.3929,
+   "coordPrecision": "approximate",
+   "note": "BEFORE security, and the single most useful thing at Narita for this group. Two free spaces on the South Wing 4F departure floor, 108 seats between them — 49 in the work lounge, 59 in the open lounge — open 05:00 to midnight, real ITOKI chairs, power at the desks, free wifi, airfield view. Your coach arrives about 07:20 and the SQ counters do not open until 07:55. This is where 35 people wait.",
+   "confidence": "high",
+   "source": "https://www.arukikata.co.jp/tokuhain/364788/",
+   "confidenceNote": null
+  },
+  {
+   "id": "d8w30nt02",
+   "anchorStop": "Narita Airport — Terminal 1 South Wing",
+   "name": "Tully's Coffee, South Wing 4F — LANDSIDE, opens 07:00",
+   "nameJp": "タリーズコーヒー 成田空港第1ターミナル店",
+   "category": "food",
+   "priceTier": "¥",
+   "stayMinutes": 25,
+   "legs": [
+    {
+     "mode": "walk",
+     "minutes": 3
+    }
+   ],
+   "timeWindow": "dawn",
+   "latitude": 35.772,
+   "longitude": 140.3929,
+   "coordPrecision": "approximate",
+   "note": "BEFORE security, South Wing 4F, 07:00-21:00, tel 0476-33-2914 — confirmed on the airport's own store page. It is already open when the coach lands about 07:20, it is beside the ITOKI lounge, and it is the only hot drink in the South Wing landside area at that hour other than the B1F Lawson. Breakfast at the hotel is 06:30, so this is a coffee stop, not a meal.",
+   "confidence": "high",
+   "source": "https://www.narita-airport.jp/ja/shop/shop-search/t1sw04_t000cg/",
+   "confidenceNote": null
+  },
+  {
+   "id": "d8w30nt03",
+   "anchorStop": "Narita Airport — Terminal 1 South Wing",
+   "name": "SUBWAY, South Wing 4F — LANDSIDE, opens 07:00",
+   "nameJp": "サブウェイ 成田空港第1ターミナル南ウイング店",
+   "category": "food",
+   "priceTier": "¥",
+   "stayMinutes": 20,
+   "legs": [
+    {
+     "mode": "walk",
+     "minutes": 3
+    }
+   ],
+   "timeWindow": "dawn",
+   "latitude": 35.772,
+   "longitude": 140.3929,
+   "coordPrecision": "approximate",
+   "note": "BEFORE security, South Wing 4F, 07:00-21:00, tel 0476-32-1050. Made-to-order sandwiches, which matters on this flight: SQ637 is airborne at 10:55 with a 2h15 Singapore connection, and a made-up sub is the one thing here you can legitimately carry through security and eat on your own schedule rather than the cabin's. No liquids over 100 ml, so buy the drink airside.",
+   "confidence": "high",
+   "source": "https://www.narita-airport.jp/ja/shop/shop-search/t1sw04_t0000x/",
+   "confidenceNote": null
+  },
+  {
+   "id": "d8w30nt04",
+   "anchorStop": "Narita Airport — Terminal 1 South Wing",
+   "name": "YAMADA TAX FREE, Central Building New Wing 4F — LANDSIDE",
+   "nameJp": "YAMADA TAX FREE 成田空港第1ターミナル店",
+   "category": "shopping",
+   "priceTier": "¥¥¥",
+   "stayMinutes": 30,
+   "legs": [
+    {
+     "mode": "walk",
+     "minutes": 5
+    }
+   ],
+   "timeWindow": "dawn",
+   "latitude": 35.772,
+   "longitude": 140.3929,
+   "coordPrecision": "approximate",
+   "note": "BEFORE security, 第1ターミナル中央ビル新館4階, 07:30-21:00 — open before your counters do. Terminal 1's only electronics specialist, opened 25 Apr 2025: beauty appliances, headphones, cameras, watches, gaming. Tax-free comes off at this till until 31 Oct 2026 on ¥5,000 excluding tax, Visit Japan Web accepted. Lithium batteries go in the 7 kg cabin bag, not the hold.",
+   "confidence": "high",
+   "source": "https://www.narita-airport.jp/files/7fc56b9a24b0915194cbe3aef757fb7d2d96110a51e9bd44cc97c4b700499475",
+   "confidenceNote": null
+  },
+  {
+   "id": "d8w30nt05",
+   "anchorStop": "Narita Airport — Terminal 1 South Wing",
+   "name": "UNIQLO, Central Building 4F — LANDSIDE, opens 08:00",
+   "nameJp": "ユニクロ 成田空港第1ターミナル店",
+   "category": "cloth",
+   "priceTier": "¥¥",
+   "stayMinutes": 25,
+   "legs": [
+    {
+     "mode": "walk",
+     "minutes": 5
+    }
+   ],
+   "timeWindow": "dawn",
+   "latitude": 35.772,
+   "longitude": 140.3929,
+   "coordPrecision": "approximate",
+   "note": "BEFORE security, T1 Central Building 4F, 08:00-20:00. It opens in the middle of your 07:55-08:30 check-in window, which makes it the last realistic clothes buy of the trip — and the useful item is AIRISM for a 7-hour flight plus a light layer for an over-cooled cabin. Tax-free at the till on ¥5,000 excluding tax. Soft goods, so they compress into the hold bag.",
+   "confidence": "high",
+   "source": "https://www.narita-airport.jp/ja/shop/shop-search/t1cb04_t00031/",
+   "confidenceNote": null
+  },
+  {
+   "id": "d8w30nt06",
+   "anchorStop": "Narita Airport — Terminal 1 South Wing",
+   "name": "Pokemon Store, South Wing 4F — LANDSIDE, opens 09:00 (too late)",
+   "nameJp": "ポケモンストア 成田空港第1ターミナル店",
+   "category": "shopping",
+   "priceTier": "¥¥",
+   "stayMinutes": 20,
+   "legs": [
+    {
+     "mode": "walk",
+     "minutes": 3
+    }
+   ],
+   "timeWindow": "day",
+   "latitude": 35.772,
+   "longitude": 140.3929,
+   "coordPrecision": "approximate",
+   "note": "BEFORE security, South Wing 4F, and the airport's own page gives 09:00-20:00 — which on this schedule is a trap. Counters close 10:15 and boarding for a 10:55 departure starts around 10:15-10:25, so waiting landside until 09:00 to shop leaves no margin. A curated cut of the 2,500-line Pokemon Center range. If someone has been promised this, tell them to buy airside instead and keep moving.",
+   "confidence": "high",
+   "source": "https://www.narita-airport.jp/ja/shop/shop-search/t1sw4f_pokemon/",
+   "confidenceNote": null
+  },
+  {
+   "id": "d8w30nt07",
+   "anchorStop": "Narita Airport — Terminal 1 South Wing",
+   "name": "Mountain Deck on GARDEN WALK, 5F — LANDSIDE, opens 06:30",
+   "nameJp": "展望デッキ GARDEN WALK マウンテンデッキ",
+   "category": "sight",
+   "priceTier": "¥",
+   "stayMinutes": 25,
+   "legs": [
+    {
+     "mode": "walk",
+     "minutes": 8
+    }
+   ],
+   "timeWindow": "dawn",
+   "latitude": 35.772,
+   "longitude": 140.3929,
+   "coordPrecision": "approximate",
+   "note": "BEFORE security, and the reason to be glad the coach is early. The rebuilt deck reopened 9 Apr 2026: about 3,000 sqm, a raised 2.5 m Mountain Deck giving a clear line over the apron, and the old mesh replaced by wire at 7 cm spacing so a lens shoots through it. Free, opens 06:30. Three footbaths, each 5 m by 0.8 m, on the north side, one with seasonal aroma salts. Bring your own towel.",
+   "confidence": "high",
+   "source": "https://www.traicy.com/posts/20260407367420/",
+   "confidenceNote": null
+  },
+  {
+   "id": "d8w30nt08",
+   "anchorStop": "Narita Airport — Terminal 1 South Wing",
+   "name": "\"in sync\" bamboo digital-art corridor and the Sky Ring, 4F-5F — LANDSIDE",
+   "nameJp": "デジタルアート「in sync」・竹のオブジェ「空の環」",
+   "category": "sight",
+   "priceTier": "¥",
+   "stayMinutes": 15,
+   "legs": [
+    {
+     "mode": "walk",
+     "minutes": 6
+    }
+   ],
+   "timeWindow": "dawn",
+   "latitude": 35.772,
+   "longitude": 140.3929,
+   "coordPrecision": "approximate",
+   "note": "BEFORE security. Two commissioned pieces from the April 2026 renewal that nothing in the existing records names: \"in sync\", a projection-mapped bamboo grove you walk through on the way up to 5F, and 空の環 (Sky Ring), a woven bamboo sculpture by Tanabe Chikuunsai IV in the atrium. Free, and the 5F general area opens 05:00. This is the group photo to take at Narita, and it is indoors.",
+   "confidence": "medium",
+   "confidenceNote": "Both works are named in Narita Airport's own press release and in on-site reports, but neither gives the Sky Ring's exact position beyond the 4F/5F atrium, and no separate hours are published for the artworks.",
+   "source": "https://prtimes.jp/main/html/rd/p/000001001.000004762.html"
+  },
+  {
+   "id": "d8w30nt09",
+   "anchorStop": "Narita Airport — Terminal 1 South Wing",
+   "name": "Matsumoto Kiyoshi, Central Building 3F — AFTER SECURITY",
+   "nameJp": "マツモトキヨシ 成田空港第1ターミナル中央ビル3F店",
+   "category": "cosme",
+   "priceTier": "¥¥",
+   "stayMinutes": 25,
+   "legs": [
+    {
+     "mode": "walk",
+     "minutes": 17
+    }
+   ],
+   "timeWindow": "day",
+   "latitude": 35.772,
+   "longitude": 140.3929,
+   "coordPrecision": "approximate",
+   "note": "AFTER security and passport control, T1 Central Building 3F — the airside drugstore, and the answer for anyone who runs out of cosme budget landside. This is where the 09:00-10:15 airside hour is best spent on J-beauty: sunscreen, sheet masks, medicated lines. Airside prices are already tax- or duty-free at the till, which matters because there is no departure refund counter at Narita on 15 Sep.",
+   "confidence": "medium",
+   "confidenceNote": "The shop and its Central Building 3F airside location are on the airport's own T1 after-security mall list, but that page does not publish its opening hours.",
+   "source": "https://www.narita-airport.jp/en/shop/malllist-t1/"
+  },
+  {
+   "id": "d8w30nt10",
+   "anchorStop": "Narita Airport — Terminal 1 South Wing",
+   "name": "7-Eleven, Central Building 3F — AFTER SECURITY",
+   "nameJp": "セブン-イレブン 成田空港第1ターミナル中央ビル3F店",
+   "category": "food",
+   "priceTier": "¥",
+   "stayMinutes": 15,
+   "legs": [
+    {
+     "mode": "walk",
+     "minutes": 17
+    }
+   ],
+   "timeWindow": "day",
+   "latitude": 35.772,
+   "longitude": 140.3929,
+   "coordPrecision": "approximate",
+   "note": "AFTER security, T1 Central Building 3F. It solves the real airside problem: you cannot take liquids through, so this is where 35 people buy water and onigiri at konbini prices instead of airside bottle prices, once past passport control and before a 10:55 departure. Same Chiba souvenir lines as the hotel lobby 7-Eleven, so any last gift missed the night before is recoverable here.",
+   "confidence": "medium",
+   "confidenceNote": "Listed on the airport's own T1 after-security mall page as Central Building 3F airside, but that page publishes no opening hours and 24-hour operation should not be assumed.",
+   "source": "https://www.narita-airport.jp/en/shop/malllist-t1/"
+  },
+  {
+   "id": "d8w30nt11",
+   "anchorStop": "Narita Airport — Terminal 1 South Wing",
+   "name": "IPPUDO, McDonald's and Grill & Craft Beer TATSU, Central 3F — AFTER SECURITY",
+   "nameJp": "一風堂・マクドナルド・JAPANESE GRILL & CRAFT BEER TATSU（中央ビル3F）",
+   "category": "food",
+   "priceTier": "¥¥",
+   "stayMinutes": 40,
+   "legs": [
+    {
+     "mode": "walk",
+     "minutes": 17
+    }
+   ],
+   "timeWindow": "day",
+   "latitude": 35.772,
+   "longitude": 140.3929,
+   "coordPrecision": "approximate",
+   "note": "AFTER security, T1 Central Building 3F, alongside Mitsumoto-tei. The last-ramen-in-Japan question answered: Ippudo's tonkotsu is here, airside, in the hour between clearing immigration around 09:00 and boarding around 10:15. Pork broth, so not for everyone in the group — McDonald's on the same concourse is the fallback, and TATSU is the sit-down grill for a proper last meal.",
+   "confidence": "medium",
+   "confidenceNote": "All four are named on the airport's own T1 after-security mall list for Central Building 3F, but no opening hours, prices or seat counts are published there.",
+   "source": "https://www.narita-airport.jp/en/shop/malllist-t1/"
+  },
+  {
+   "id": "d8w30nt12",
+   "anchorStop": "Narita Airport — Terminal 1 South Wing",
+   "name": "Narita Nakamise luxury boutiques, South Wing 3F — AFTER SECURITY",
+   "nameJp": "成田なかみせ ブランドブティック（南ウイング3F）",
+   "category": "shopping",
+   "priceTier": "¥¥¥",
+   "stayMinutes": 30,
+   "legs": [
+    {
+     "mode": "walk",
+     "minutes": 16
+    }
+   ],
+   "timeWindow": "day",
+   "latitude": 35.772,
+   "longitude": 140.3929,
+   "coordPrecision": "approximate",
+   "note": "AFTER security, South Wing 3F, inside Narita Nakamise: Chanel, Hermes, Tiffany, Gucci, Cartier and Bvlgari as standalone boutiques, plus Fa-So-La Cosmetics & Perfumery, the liquor and tobacco hall and ANA DUTY FREE. Duty-free, so no till paperwork and no refund counter needed. The hard limit is the 7 kg cabin allowance: a watch box or a bottle is fine, several bags of anything is not.",
+   "confidence": "medium",
+   "confidenceNote": "Brand list and the South Wing 3F airside location are from the airport's own T1 after-security mall page; that page gives no opening hours and individual boutique hours are not published.",
+   "source": "https://www.narita-airport.jp/en/shop/malllist-t1/"
+  },
+  {
+   "id": "d8w30nt13",
+   "anchorStop": "Narita Airport — Terminal 1 South Wing",
+   "name": "Tokyo Food Bar and Kagura, South Wing 3F — AFTER SECURITY",
+   "nameJp": "Tokyo Food Bar・かぐら（南ウイング3F）",
+   "category": "food",
+   "priceTier": "¥¥",
+   "stayMinutes": 30,
+   "legs": [
+    {
+     "mode": "walk",
+     "minutes": 16
+    }
+   ],
+   "timeWindow": "day",
+   "latitude": 35.772,
+   "longitude": 140.3929,
+   "coordPrecision": "approximate",
+   "note": "AFTER security, and they matter because they sit in the SOUTH WING itself rather than the Central Building — so anyone already down at their gate does not have to backtrack. Tokyo Food Bar is the South Wing's airside eating room, Kagura the shop beside it. If the group is at the far gates with 40 minutes left, this is the nearest food; the Central 3F Ippudo concourse is a longer walk back.",
+   "confidence": "medium",
+   "confidenceNote": "Both are named on the airport's own T1 after-security mall page under South Wing Narita Nakamise, but hours, menus and the walking distance from the South Wing gates are not published.",
+   "source": "https://www.narita-airport.jp/en/shop/malllist-t1/"
+  }
+ ],
+ "shopping": [
+  {
+   "id": "d7w30shop01",
+   "anchorStop": "Tsukiji Outer Market",
+   "name": "Tenyasu Honten tsukudani, boxed",
+   "nameJp": "天安本店の佃煮（箱入り）",
+   "placeLabel": "Tenyasu Honten, 中央区佃1-3-14, Tsukudajima — 18 min walk from the outer market over Kachidoki Bridge",
+   "estimate": 1500,
+   "note": "The best Day 7 buy nothing in the existing research reaches: tsukudani from the shop that has made it on the island where it was invented, at 佃1-3-14 since 1837, in a tare carried forward from the founding. Simmered in soy and sugar, so it is ambient shelf-stable, sealed and boxed, and survives a 7-hour flight plus a 2h15 Singapore connection unrefrigerated. Cooked, so no customs question.",
+   "latitude": 35.667652,
+   "longitude": 139.782242,
+   "coordPrecision": "verified",
+   "confidence": "medium",
+   "confidenceNote": "The shop, address and 1837 founding are confirmed by the Fisheries Agency and Chuo City; the ¥1,500 estimate is a typical boxed-assortment figure, not a published price.",
+   "source": "https://www.jfa.maff.go.jp/j/koho/blog/category/tsukudani_list/tsukudajima_map.html"
+  },
+  {
+   "id": "d7w30shop02",
+   "anchorStop": "Tsukiji Outer Market",
+   "name": "Anago tsukudani from Tsukugen Tanakaya",
+   "nameJp": "佃源田中屋の穴子佃煮",
+   "placeLabel": "Tsukugen Tanakaya, 中央区佃1-3-13 — 100 m from Tenyasu, 18 min walk from the outer market",
+   "estimate": 1200,
+   "note": "The specific item rather than the category: conger-eel tsukudani, which the shop's own staff recommend eating with bread or pasta rather than rice — a better sell to a Malaysian household than an unlabelled jar of simmered fish. Edo-founded house. Sealed and ambient, so it flies. Buying across Tanakaya, Tenyasu and Marukyu spreads 35 people over three counters instead of clearing one out.",
+   "latitude": 35.667652,
+   "longitude": 139.782242,
+   "coordPrecision": "approximate",
+   "confidence": "medium",
+   "confidenceNote": "Shop and anago speciality are from the Fisheries Agency's Tsukudajima guide; the price is an estimate with no published list found, and the coordinate is Tenyasu's address standing in for the cluster.",
+   "source": "https://www.jfa.maff.go.jp/j/koho/blog/category/tsukudani_list/tsukudajima_map.html"
+  },
+  {
+   "id": "d8w30shop03",
+   "anchorStop": "Narita Airport — Terminal 1 South Wing",
+   "name": "Beauty appliances at YAMADA TAX FREE, T1 4F landside",
+   "nameJp": "YAMADA TAX FREE の美容家電",
+   "placeLabel": "YAMADA TAX FREE, 第1ターミナル中央ビル新館4階 — BEFORE security, 07:30-21:00",
+   "estimate": 25000,
+   "note": "Terminal 1's only electronics shop, open at 07:30 before your counters do — the genuine last chance at Japanese hair tools, headphones, cameras and watches. Tax-free comes off at this till until 31 Oct 2026 on ¥5,000 excluding tax, with Visit Japan Web accepted instead of the passport. 100 V appliances need a converter in Malaysia; lithium batteries must go in the 7 kg cabin bag.",
+   "latitude": 35.772,
+   "longitude": 140.3929,
+   "coordPrecision": "approximate",
+   "confidence": "medium",
+   "confidenceNote": "Location, hours and product range are from Narita Airport's own press release; the ¥25,000 estimate is a typical hair-tool price band, not a published figure.",
+   "source": "https://www.narita-airport.jp/files/7fc56b9a24b0915194cbe3aef757fb7d2d96110a51e9bd44cc97c4b700499475"
+  }
+ ]
+}
