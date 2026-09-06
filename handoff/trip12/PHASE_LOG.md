@@ -388,3 +388,83 @@ The merged snapshot was loaded into the app's local backend and driven through t
    key. Until then no production write.
 2. A **production backup** before the first real write — the emulator one does not count, and the
    Spark plan rules out `gcloud firestore export`, so it is the Admin-SDK read-out above.
+
+---
+
+## Owner decisions, continued
+
+| # | Decision |
+|---|---|
+| **B7** | Day 1's hotel keeps its seed id `d93da2ed9772`. It is a rename of one property, so nothing is re-pointed and there is no retired stop for it. The generated `2b1b645712b1` is unused. |
+| **B8** | **No `ALTERNATIVE TO SHISUI` chip.** The 13:45/14:30 overlap on the Day 7 timeline is the signal on its own, and the owner resolves it with ordinary plan editing. |
+
+### Phase 2A closed — the uid is verified, not merely corroborated
+
+The owner signed into the deployed production app at `https://travel-planner-3e0d3.web.app` with
+Google and read `firebase.auth().currentUser` in the browser console:
+
+```
+uid          w1kRlBbw6ChF3gaQXzDf5413EE03
+email        weisze.ai@gmail.com
+isAnonymous  false
+provider     google.com
+```
+
+That is the fact the emulator could not establish, and it matches the value supplied at the start.
+**All four A3 facts are now recorded: sign-in method, uid, project id, and a key path the owner
+controls.** The gate is satisfied.
+
+### §4.8 schedule — confirmed source of truth
+
+The manifest was generated from full itinerary screenshots the owner supplied in an earlier session,
+not invented. No re-verification needed. A stop whose time looks internally inconsistent during
+testing should be flagged, not silently corrected.
+
+---
+
+## Item 3 — archive and restore, for a main-route stop
+
+Phase 2B proved this for an *archived hotel* (a stop the importer marks `archived` at import time).
+That is not the same item type as a live main-route stop the owner removes by hand, so it was tested
+again properly, on **both** Day 7 candidates — Ginza, which the importer creates, and Shisui Premium
+Outlets, which comes from the seed. Different provenance; the mechanism should not care.
+
+Driven through the real UI: pencil to edit, **✕** on the card, leave edit mode, then **Add back**.
+
+| Requirement | Ginza | Shisui Premium Outlets |
+|---|---|---|
+| (a) appears under **REMOVED FROM THIS DAY** | yes, `was 13:45 · tap to open` | yes, `was 14:30 · tap to open` |
+| (b) opens with **full info, not a stub** | name, subtitle, 5 tabs — **Nearby 27 · Must-see 4 · Shop 13**, 10 essentials, both map links | name, `酒々井プレミアム・アウトレット`, 5 tabs — **Nearby 17 · Must-see 1 · Shop 4**, 9 essentials, both map links |
+| (c) **addable back** | yes, and returns in clock order between Tsukiji and Shisui | yes, and returns in clock order between Ginza and Yurakujo |
+| console errors | none | none |
+
+Both tab-count sets match the §4.8 manifest exactly (Ginza 27/4/13, Shisui 17/1/4), so the record
+links survive the round trip rather than merely the row.
+
+**No special-case code was needed or added.** The mechanism is generic: `archivePlanItem()` sets
+`archived`, `plan.js` renders archived items under the eyebrow, `restorePlanItem()` clears it, and
+the day re-sorts by clock.
+
+Two things worth knowing rather than fixing:
+
+- **"Add back" and the "MOVE TO D*n*" buttons only appear in edit mode.** Outside it an archived
+  card is a link and nothing more. That is the existing design, and it is why a removed stop looks
+  inert until the pencil is tapped.
+- The three hotels the agent removed show `was  · tap to open` with no time, because the §4.8
+  manifest gives them `—` and no schedule exists for them anywhere. A stop the owner removes by
+  hand keeps its own time, as above. Cosmetic; noted for Phase 7 rather than invented now.
+
+---
+
+## Execution change — the production write moves to the owner's machine
+
+This cloud session cannot reach the owner's filesystem and has no secure way to receive a
+service-account key, so **the production backup and the real import are both run by the owner
+locally**, from written instructions. This session will not ask for the key or its contents again.
+
+`handoff/trip12/RUNBOOK.md` is that document: exact commands, the commit to pull, the one dependency,
+and the full ordered sequence — clone, install, dry run, backup, review, throwaway import, review in
+the app, real import, clean up. It also carries the rollback position and the failure modes worth
+recognising.
+
+**Nothing in this repository has ever written to production.**

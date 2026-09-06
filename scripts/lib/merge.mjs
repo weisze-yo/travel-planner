@@ -50,12 +50,14 @@ export const NEW_STOPS = [
     latitude: 36.840755, longitude: 139.721939, replaces: 'Ooedo Onsen Monogatari Premium Kinugawa Kanko Hotel',
   },
   {
-    // Decision A6: a main stop, not a backup. The chip is what stops the
-    // deliberate 13:45/14:30 overlap with Shisui reading as a scheduling bug.
+    // Decision A6: a main stop, not a backup. The 13:45 start deliberately
+    // overlaps Shisui's 14:30 and that overlap IS the signal — the owner
+    // resolves it by editing the plan. No chip (decision B8): `PlanItem.chips`
+    // is never read by the web client anyway, and inventing a label for a
+    // schedule the timeline already shows would be a second, weaker signal.
     id: '03776664f553', day: 7, name: 'Ginza',
     time: '13:45', windowLabel: '13:45 – 16:15', subtitle: 'Day 7 · alternative to Shisui',
     latitude: 35.669445, longitude: 139.763351, replaces: null,
-    chips: ['ALTERNATIVE TO SHISUI'],
   },
 ];
 
@@ -532,9 +534,9 @@ export function buildSnapshot(researchDir, guidePath) {
   // position at the end of the day rather than being given a fake one.
   //
   // Ginza's 13:45 deliberately precedes Shisui's 14:30 and overlaps it. That
-  // is accepted and intentional (A6): the owner picks one later by editing the
-  // plan, and the ALTERNATIVE TO SHISUI chip is what stops the overlap reading
-  // as a scheduling bug. Do not re-time or reorder either stop to tidy it.
+  // is accepted and intentional (A6): the overlap on the timeline IS the
+  // signal, and the owner resolves it by removing one in plan editing (B8).
+  // Do not re-time or reorder either stop to tidy it away.
   for (const d of days) d.items.sort((a, b) => clock(a.time) - clock(b.time));
 
   // ---- 6. retirement is DERIVED from the final anchor, never inherited ----
