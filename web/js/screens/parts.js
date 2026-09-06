@@ -717,23 +717,53 @@ export function readShotEditor(root) {
  * empty one is simply not kept, so the table never shows a label with
  * nothing under it.
  */
-export function factsEditor(place) {
+export function factsEditor(place, { error = '', pending = false } = {}) {
   const held = new Map((place?.essentials || []).map((row) => [row.key, row]));
   const rows = store.PLACE_FACTS.map((fact) => ({ ...fact, ...held.get(fact.key) }));
   const extra = (place?.essentials || []).filter((row) => !store.PLACE_FACTS.some((f) => f.key === row.key));
 
   return html`
-    <div class="scrim" data-act="facts-cancel"></div>
+    <!-- The scrim is a cancel affordance too, so it goes non-interactive with
+         the Cancel button — otherwise a tap outside would close the sheet
+         mid-lookup and R8's "the surface stays up until the work resolves"
+         would hold for the button and not for the screen. -->
+    <div class="scrim" data-act="facts-cancel"${
+      pending ? raw(' style="pointer-events:none"') : ''}></div>
     <div class="modal">
       <div class="form">
         <div class="form-title">What to remember about ${esc(place?.name || 'this place')}</div>
+
+        <!-- The map-link field p1-absence-and-removal-design.md §4.2 names —
+             "opens the facts editor at its map-link field". It is bound to
+             sourceLink, which every place record has carried since places
+             existed and which nothing read. Same eyebrow, same "optional",
+             same explanation as Paste's own row editor, because it is the
+             same field doing the same job on the same kind of thing. -->
+        <div class="row g8 center">
+          <div class="grow eyebrow">MAP LINK</div>
+          <div class="f11 w650 soft">${place?.latitude == null ? 'gives it a position' : 'optional'}</div>
+        </div>
+        <input id="facts-link" value="${esc(place?.sourceLink || '')}"
+               placeholder="Paste a Google or Apple Maps link">
+        ${error ? html`
+          <div class="f11 lh145" style="color:var(--danger-fg);margin-top:-4px">${error}</div>` : ''}
+        <div class="f11 soft lh145" style="margin-top:-2px">
+          ${place?.latitude == null
+            ? html`This one has no position yet, so it is off the map and out of the walking
+                   route. A link fixes both, and fills in whatever OpenStreetMap has.`
+            : html`The link this place came from. Paste a new one to correct its position.`}
+        </div>
+
         ${[...rows, ...extra].map((row, at) => html`
           <label class="f11 soft block">${row.key}</label>
           <input data-fact="${at}" data-fact-key="${esc(row.key)}"
                  value="${esc(row.value || '')}" placeholder="${esc(row.hint || '')}">`)}
         <div class="form-actions">
-          <button class="btn jade grow" data-act="facts-save">Save</button>
-          <button class="btn ghost" style="width:96px" data-act="facts-cancel">Cancel</button>
+          <button class="btn jade grow" data-act="facts-save"${
+            pending ? raw(' disabled aria-busy="true"') : ''}>${
+            pending ? 'Looking it up…' : 'Save'}</button>
+          <button class="btn ghost" style="width:96px${pending ? ';pointer-events:none' : ''}"
+                  data-act="facts-cancel">Cancel</button>
         </div>
         <div class="form-hint">
           Leave a row empty and it is not kept. Anything a map link already found is filled in
@@ -749,6 +779,11 @@ export function readFactsEditor(root) {
     value: input.value,
     detail: '',
   }));
+}
+
+/** The map link, read back on its own — it is a property, not a fact row. */
+export function readFactsLink(root) {
+  return root.querySelector('#facts-link')?.value.trim() ?? '';
 }
 
 // -------------------------------------------------------------- signing in

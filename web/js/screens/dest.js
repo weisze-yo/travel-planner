@@ -10,6 +10,7 @@ import { prepare } from '../photos.js';
 import {
   backHeader, mapsLinks, swipeToDelete, emptyShared,
   itemEditor, readItemEditor, shotEditor, readShotEditor, factsEditor, readFactsEditor,
+  readFactsLink,
 } from './parts.js';
 
 const TABS = [
@@ -86,6 +87,8 @@ let sheet = null;
  * was about (`p1-destination-tabs-design.md` §6.2).
  */
 let sheetError = '';
+/** The facts sheet is async once a map link is in it. P0-5 R1 and R8. */
+let sheetPending = false;
 const repaint = () => store.selectDay(state.selectedDay);
 
 export default {
@@ -277,12 +280,47 @@ export default {
       sheet = null;
     });
 
-    delegate(root, '[data-act="edit-facts"]', () => { sheet = { kind: 'facts' }; sheetError = ''; repaint(); });
-    delegate(root, '[data-act="fix-position"]', () => { sheet = { kind: 'facts' }; sheetError = ''; repaint(); });
-    delegate(root, '[data-act="facts-cancel"]', () => { sheet = null; sheetError = ''; repaint(); });
-    delegate(root, '[data-act="facts-save"]', () => {
-      store.updatePlaceFacts(it?.placeID, readFactsEditor(root));
+    delegate(root, '[data-act="edit-facts"]', () => {
+      sheet = { kind: 'facts' }; sheetError = ''; sheetPending = false; repaint();
+    });
+    delegate(root, '[data-act="fix-position"]', () => {
+      sheet = { kind: 'facts' }; sheetError = ''; sheetPending = false; repaint();
+    });
+    delegate(root, '[data-act="facts-cancel"]', () => {
+      if (sheetPending) return;
+      sheet = null; sheetError = ''; repaint();
+    });
+    delegate(root, '[data-act="facts-save"]', async () => {
+      if (sheetPending) return;
+      const rows = readFactsEditor(root);
+      const link = readFactsLink(root);
+      const was = store.place(it?.placeID)?.sourceLink || '';
+
+      // The typed rows are the user's own and are written first, so a link
+      // that cannot be read never costs them the rest of the edit.
+      store.updatePlaceFacts(it?.placeID, rows);
+
+      if (link === was) { sheet = null; sheetError = ''; repaint(); return; }
+
+      // A link is looked up, which is the network, which is a pending state on
+      // the control that started it (P0-5 R1) and a sheet that stays up until
+      // it resolves (R8).
+      sheetPending = true;
+      sheetError = '';
+      repaint();
+      const result = await store.setPlaceLink(it?.placeID, link);
+      sheetPending = false;
+      if (!result.ok) {
+        // The same refusal a bad link gets anywhere else in the app, in the
+        // field it is about, in rust — never a silent close.
+        sheetError = result.reason;
+        repaint();
+        root.querySelector('#facts-link')?.focus();
+        return;
+      }
       sheet = null;
+      sheetError = '';
+      repaint();
     });
 
     swipeToDelete(root, {
@@ -579,6 +617,8 @@ function sheetMarkup(it, shopHere, shots) {
     return shotEditor(sheet.id ? shots.find((sh) => sh.id === sheet.id) : null,
       { placeName: it?.name, error: sheetError });
   }
-  if (sheet.kind === 'facts') return factsEditor(store.place(it?.placeID));
+  if (sheet.kind === 'facts') {
+    return factsEditor(store.place(it?.placeID), { error: sheetError, pending: sheetPending });
+  }
   return '';
 }

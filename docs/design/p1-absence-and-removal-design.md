@@ -464,3 +464,73 @@ offline can never trip it.
 **Verified:** `test/absence-and-status.mjs` 37 checks, `test/backend-gated.mjs`
 25 checks, `test/review-three-way.mjs` 69 checks, and — for the detector, end
 to end across two real devices — `test/two-phones.mjs` 65/65.
+
+---
+
+## IMPLEMENTED — §4.2's map-link field, `d76fc82`, 6 Sep 2026
+
+**Appended only. Nothing above this line was changed.** This closes the one
+item the note above recorded as unfinished.
+
+**It needed no product decision.** The IMPLEMENTED note above reported this as
+possibly requiring one. On re-reading the canonical documents that was wrong,
+and the correction matters: **four separate approved or shipped strings
+already promise this capability**, so the behaviour was settled and only its
+plumbing was missing.
+
+1. Paste's row editor, on screen today — *"The link is what gives the stop a
+   position. Leave it and the stop still saves — it just has no pin until you
+   add one from the stop itself."*
+2. Paste's done receipt, `p1-paste-review-design.md` §10 — *"…they will not
+   appear on the map until you open one and paste its map link."*
+3. Destination's Info empty state, `p1-destination-tabs-design.md` §9 —
+   *"Pasting a map link fills in whatever OpenStreetMap has — hours, phone,
+   website — and the rest is yours to type."*
+4. `store.js`'s own `importItinerary` header comment — *"the position, the
+   hours and the phone number can be filled in later by opening the stop and
+   pasting its map link, one at a time."*
+
+Four promises and no field to keep them. That is a **missing implementation**,
+not a design ambiguity.
+
+**No new component, exactly as §4.2 requires.** Every piece already existed:
+
+- **`place.sourceLink`** — a field every place record has carried since places
+  existed, written by `savePlaceRecord` and by import, and read by nothing.
+  The facts editor's new row is bound to it.
+- **`resolvePlaceInput()`** — the same lookup `capturePlace` runs, unchanged.
+  `setPlaceLink()` applies it to a record that already exists instead of
+  building a new one.
+- **`factsEditor`** — the sheet this section already names as the destination.
+
+The row uses the same `MAP LINK` eyebrow, the same placeholder and the same
+"optional" treatment as Paste's row editor, because it is the same field doing
+the same job on the same kind of thing. Its hint changes with the state: on a
+place with no position it says what the link fixes; on one that has a position
+it reads as optional.
+
+**Three behaviours worth stating, none of which the design had to settle:**
+
+- The place **keeps its own name**. A link's own label ("Saved from a link")
+  is worse than the name the user already recognises, so only the position and
+  the facts arrive.
+- **Facts typed by hand win.** OpenStreetMap's answers are merged in only
+  under keys the place does not already have.
+- **The typed rows are written before the lookup runs**, so a link that cannot
+  be read never costs the user the rest of the edit.
+
+P0-5 applies because the control is now genuinely async: `Save` → `Looking it
+up…` with `[disabled]` and `aria-busy`, the sheet stays up until it resolves
+(R8), and a link that cannot be read refuses in its own field in rust rather
+than closing in silence — the same sentence a short link gets anywhere else.
+
+**One defect found by the new harness and fixed with it:** the sheet's scrim
+also carries `data-act="facts-cancel"`, so a tap outside would have closed the
+sheet mid-lookup while the button was correctly disabled. R8 has to hold for
+every way out, not just the labelled one. Both are now non-interactive while
+the lookup runs.
+
+**Verified locally:** `test/map-link.mjs`, 27 checks at 390 × 844, 0 page
+errors, with the geocode intercepted so the resolved position, the merged
+facts and the refusal path are each driven for real. Full suite green: 485
+checks across sixteen harnesses.

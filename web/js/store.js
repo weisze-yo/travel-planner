@@ -2597,6 +2597,61 @@ export async function resolvePlaceInput(input) {
   };
 }
 
+/**
+ * Give a place that already exists a position, from a map link.
+ *
+ * Four approved or shipped strings promise this and until now nothing kept
+ * them: Paste's row editor ("no pin until you add one from the stop itself"),
+ * Paste's done receipt ("open one and paste its map link"), Destination's Info
+ * empty state ("Pasting a map link fills in whatever OpenStreetMap has"), and
+ * this file's own `importItinerary` comment. The control that reaches it is
+ * `p1-absence-and-removal-design.md` §4.2's `Paste a map link` on the NO
+ * POSITION strip.
+ *
+ * It is the same lookup `capturePlace` runs — `resolvePlaceInput` unchanged —
+ * applied to a record that already exists instead of building a new one. No
+ * new component, no second code path, and the same refusal text for a short
+ * link that cannot be read in a browser.
+ *
+ * The name is deliberately NOT overwritten: this place is already called
+ * something the user recognises, and a link's own label ("Saved from a link")
+ * is worse than what is there. Only the position and the facts arrive.
+ */
+export async function setPlaceLink(placeID, link) {
+  const record = place(placeID);
+  if (!record) return { ok: false, reason: 'That place is no longer on this trip.' };
+
+  const text = String(link || '').trim();
+  if (!text) {
+    // Clearing the field is a real edit: it forgets the link and nothing else.
+    // The position stays, because it may have been correct all along.
+    put('places', { ...record, sourceLink: '' });
+    return { ok: true, located: record.latitude != null, cleared: true };
+  }
+
+  const resolved = await resolvePlaceInput(text);
+  if (!resolved.ok) return { ok: false, reason: resolved.reason };
+
+  // Facts already on the record win: anything typed by hand is the user's and
+  // is not overwritten by what OpenStreetMap happens to know.
+  const held = record.essentials || [];
+  const known = new Set(held.map((row) => row.key));
+  const merged = [...held, ...resolved.essentials.filter((row) => !known.has(row.key))];
+
+  put('places', {
+    ...record,
+    latitude: resolved.latitude ?? record.latitude,
+    longitude: resolved.longitude ?? record.longitude,
+    essentials: merged,
+    sourceLink: resolved.sourceLink || text,
+  });
+  return {
+    ok: true,
+    located: (resolved.latitude ?? record.latitude) != null,
+    enriched: merged.length > held.length,
+  };
+}
+
 /** Saves a resolved input as a place record. */
 function savePlaceRecord(resolved, { category, walkMinutes, stayMinutes, anchorPlaceID, isStop }) {
   const record = {
