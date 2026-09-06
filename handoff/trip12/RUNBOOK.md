@@ -162,6 +162,34 @@ account.
 
 *(Step numbering kept aligned with the sequence you asked for; the local dry run is step 3.)*
 
+## Step 6b — DEPLOY THE WEB APP (new, and it matters)
+
+**Two fixes live in `web/`, and `web/` has never been deployed.** `deploy-web.yml` runs only on a
+push to `main`, and this branch is not merged — so the app at travel-planner-3e0d3.web.app is still
+running the pre-work build. No amount of hard-refreshing reaches code that was never uploaded.
+
+Without this step the Zuiganji sub-route still renders at the bottom of Day 2, and "Fetch today's
+rate" still logs `Returned response is null`. Everything else in the trip is data and lands without
+it.
+
+Either merge the branch to `main` and let the Action run, or deploy straight from the branch:
+
+```sh
+npx --yes firebase-tools@13 login
+cp .firebaserc.sample .firebaserc     # set the project id to travel-planner-3e0d3
+npx --yes firebase-tools@13 deploy --only hosting --project travel-planner-3e0d3
+```
+
+Then confirm the new build is actually live before reviewing:
+
+```sh
+curl -s https://travel-planner-3e0d3.web.app/js/store.js | grep -c holdsALoop   # expect 1 or more
+curl -s https://travel-planner-3e0d3.web.app/sw.js       | grep -c offlineFallback  # expect 1
+```
+
+Both must be non-zero. Then hard-refresh the app (or close and reopen the PWA) so the new service
+worker installs.
+
 ## Step 7 — import to a THROWAWAY tripId (first production write)
 
 ```sh
@@ -169,13 +197,19 @@ node scripts/import-trip12.mjs \
   --project travel-planner-3e0d3 \
   --uid w1kRlBbw6ChF3gaQXzDf5413EE03 \
   --key ~/.secrets/trip12-admin-key.json \
-  --trip throwaway-t12
+  --trip throwaway-t12b
 ```
 
-This writes to `users/<uid>/trips/throwaway-t12`, which is a separate trip and touches nothing else.
+**Use a NEW throwaway id.** The old `throwaway-t12` is not a clean slate: it was imported before the
+stop-place model existed, the app then minted its own place records into it and saved them back, and
+`set` + `merge` never deletes — so it now holds ~42 place records nothing points at. Reviewing it
+measures that history, not this import. Delete it from the trips home (swipe left, bin) once the new
+one looks right.
+
+This writes to `users/<uid>/trips/throwaway-t12b`, which is a separate trip and touches nothing else.
 
 It will print the project, uid, tripId and full path, list the trips already under that uid, print
-the whole merge report, and then **stop and ask you to type `throwaway-t12`** before writing.
+the whole merge report, and then **stop and ask you to type `throwaway-t12b`** before writing.
 Anything else aborts. Do not pass `--yes`.
 
 Expect `wrote 850 documents.` and a read-back showing:

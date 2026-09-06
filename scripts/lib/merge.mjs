@@ -81,35 +81,45 @@ export const TRAVEL_LEGS = [
   // so it is not repeated here; only the coach transfer after it is added.
   { day: 1, time: '07:00', name: 'Assembly · Penang International Airport',
     durationLabel: 'assemble', stopKind: 'airport',
+    latitude: 5.2971, longitude: 100.2769,
     note: 'Check-in counter by 07:00. Baggage 25 kg checked, 7 kg hand-carry, one piece. '
         + 'Register on Visit Japan Web before flying — Malaysian ePassport holders are visa-free for 90 days.' },
   { day: 1, time: '10:15', name: 'SQ131 · Penang (PEN) → Singapore (SIN)',
-    durationLabel: 'flight', stopKind: 'transit', note: 'Departs 10:15, lands Singapore 11:45.' },
-  { day: 1, time: '11:45', name: 'Arrive Singapore Changi (SIN)',
+    durationLabel: 'flight', stopKind: 'transit',
+    latitude: 5.2971, longitude: 100.2769, note: 'Departs 10:15, lands Singapore 11:45.' },
+  { day: 1, time: '11:45', name: 'Arrive Singapore Changi — connection to SQ634',
     durationLabel: 'connection', stopKind: 'airport',
+    latitude: 1.3644, longitude: 103.9915,
     note: 'A 55-minute connection before SQ634. Stay airside.' },
   { day: 1, time: '13:55', name: 'SQ634 · Singapore (SIN) → Tokyo Haneda (HND)',
     durationLabel: 'flight', stopKind: 'transit',
+    latitude: 1.3644, longitude: 103.9915,
     note: 'Departs 13:55, lands Haneda 21:55. About 20h 20m door to door from Penang.' },
   // Shares 21:55 with the Haneda arrival on purpose: the coach leaves once the
   // group is through the terminal, and no source gives that clock time. The
   // sort is stable, so it stays directly after the arrival it belongs to.
   { day: 1, time: '21:55', name: 'Tour bus to Hotel Metropolitan Tokyo Haneda',
     durationLabel: '~5 min', stopKind: 'transit',
+    latitude: 35.549298, longitude: 139.754715,
     note: 'After immigration and baggage reclaim. The hotel is inside Haneda Innovation City, about five minutes by coach.' },
 
   // ---- Day 8, home.
   { day: 8, time: '06:30', name: 'Depart International Resort Hotel Yurakujo for Narita',
-    durationLabel: 'coach', stopKind: 'transit', note: 'Breakfast at 06:30, then a short coach to Narita.' },
+    durationLabel: 'coach', stopKind: 'transit',
+    latitude: 35.74406, longitude: 140.34459, note: 'Breakfast at 06:30, then a short coach to Narita.' },
   { day: 8, time: '10:55', name: 'SQ637 · Tokyo Narita (NRT) → Singapore (SIN)',
     durationLabel: 'flight', stopKind: 'transit',
+    latitude: 35.7725, longitude: 140.3862,
     note: 'Departs Narita Terminal 1 at 10:55, lands Singapore 16:55.' },
-  { day: 8, time: '16:55', name: 'Arrive Singapore Changi (SIN)',
-    durationLabel: 'connection', stopKind: 'airport', note: 'A 2h15 connection before SQ142.' },
+  { day: 8, time: '16:55', name: 'Arrive Singapore Changi — connection to SQ142',
+    durationLabel: 'connection', stopKind: 'airport',
+    latitude: 1.3644, longitude: 103.9915, note: 'A 2h15 connection before SQ142.' },
   { day: 8, time: '19:10', name: 'SQ142 · Singapore (SIN) → Penang (PEN)',
-    durationLabel: 'flight', stopKind: 'transit', note: 'Departs 19:10, lands Penang 20:35.' },
+    durationLabel: 'flight', stopKind: 'transit',
+    latitude: 1.3644, longitude: 103.9915, note: 'Departs 19:10, lands Penang 20:35.' },
   { day: 8, time: '20:35', name: 'Arrive Penang International (PEN)',
-    durationLabel: 'arrive', stopKind: 'airport', note: 'Welcome back to Penang.' },
+    durationLabel: 'arrive', stopKind: 'airport',
+    latitude: 5.2971, longitude: 100.2769, note: 'Welcome back to Penang.' },
 ];
 
 /**
@@ -550,8 +560,8 @@ export function buildSnapshot(researchDir, guidePath) {
       isSubRouteSummary: false,
       placeID: null,
       essentials: [],
-      latitude: null,
-      longitude: null,
+      latitude: leg.latitude ?? null,
+      longitude: leg.longitude ?? null,
       archived: false,
       movedToDay: null,
       // What marks these as travel rather than sightseeing, using the values
@@ -772,8 +782,25 @@ export function buildSnapshot(researchDir, guidePath) {
     if (placeId) { m.placeID = placeId; report.linked.mustSee += 1; }
   }
   for (const [, s] of coll.shopping) {
-    const placeId = stopPlaceByName.get(s.anchorStop || s.x?.anchorStop);
+    const anchor = s.anchorStop || s.x?.anchorStop;
+    const placeId = stopPlaceByName.get(anchor);
     if (placeId) { s.placeID = placeId; report.linked.shopping += 1; }
+
+    // The Shop screen ALREADY has a day filter — `shopDayOptions()` builds it
+    // and `shop.js` renders "All days" plus a button per day. It was inert for
+    // this trip because `itemDay()` reads the day out of `placeWhen` as text,
+    // and the batches never set that field: every item answered `null`, so the
+    // filter offered nothing to filter by. Writing it makes the existing
+    // feature work with no UI change at all.
+    // Overwrite when the existing value cannot answer the question: the seed
+    // writes things like "Tue 8 Sep", which reads fine but carries no "Day N"
+    // for `itemDay()` to find, so the filter stayed empty.
+    const hit = anchor ? stopByName.get(anchor) : null;
+    if (hit && !/Day\s+\d+/i.test(s.placeWhen || '')) {
+      const w = hit.item.windowLabel || hit.item.time || '';
+      s.placeWhen = `Day ${hit.dayNumber} · ${anchor}${w ? `, ${w}` : ''}`;
+      report.placeWhenSet = (report.placeWhenSet || 0) + 1;
+    }
   }
 
   // ---- 8. subRoutes: the mapping gap in §4.7 ------------------------------
@@ -915,6 +942,14 @@ export function buildSnapshot(researchDir, guidePath) {
     n + [...coll[k].values()].filter((r) => !r.isStop && (r.nameJp || r.x?.nameJp)).length, 0);
   report.retiredRecords = ['places', 'mustSee', 'shopping'].reduce((n, k) =>
     n + [...coll[k].values()].filter((r) => !r.isStop && r.retired).length, 0);
+
+  // Two stops sharing a name is not cosmetic: `stopByName` here is keyed by
+  // name, and so is `unifyPlaces()` in the client, which reuses a place of the
+  // same name — so a duplicate silently merges two different stops into one.
+  const nameCount = new Map();
+  for (const d of days) for (const i of d.items) nameCount.set(i.name, (nameCount.get(i.name) || 0) + 1);
+  report.duplicateStopNames = [...nameCount].filter(([, n]) => n > 1).map(([n]) => n);
+  for (const n of report.duplicateStopNames) report.warnings.push(`two stops share the name "${n}"`);
 
   // Firestore-safe shapes, then prove it: a nested array that survives here
   // fails a 400-document batch with an error that names no field at all.

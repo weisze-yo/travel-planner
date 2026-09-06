@@ -576,3 +576,92 @@ Opening a nearby place today shows its name, `Food · ¥¥`, and the full resear
 `Place.essentials` is empty; the **Nearby / Must-see / Shop** tabs are empty because those records
 anchor to the 33 stops, which is the intended model, not a bug.
 
+
+---
+
+## Review round 2 — the post-mortem, and what it changes
+
+### Why the last audit passed while the bug was still on screen
+
+**Because it tested different code than the owner was running.** The lane fix lives in
+`web/js/store.js`, and `web/` has never been deployed: `.github/workflows/deploy-web.yml` triggers
+only on a push to `main`, and this branch has never been merged — `origin/main` is still at
+`eff90ee`. So the app at travel-planner-3e0d3.web.app runs the pre-work build.
+
+My audit loaded the new snapshot into **my working tree's** `store.js`. The owner loaded the same
+snapshot into the **deployed** `store.js`. Same data, different code, different answer — and my
+report claimed a verification it had not performed.
+
+Proven by running the identical audit against both, from one snapshot:
+
+| Build | Zuiganji stop row | its loop |
+|---|--:|--:|
+| `origin/main` — what is deployed today | 3 | **row 7 — not under it** |
+| this branch | 3 | **row 4 — directly under it** |
+
+The lesson, and the rule from here: **a fix in `web/` is not verified until it is verified against
+the build the owner is actually running.** The audit harness now serves both — `web/` and a copy
+with `origin/main`'s `store.js` and `sw.js` — and every UI claim below says which build it holds
+for.
+
+This also answers item 3 with no further investigation: the service-worker fix is `web/sw.js`, also
+undeployed. A hard refresh cannot install a worker that was never uploaded. **Step 6b of the runbook
+is new and deploys the web app.**
+
+### The Ginzan counts: the data is right, and I could not reproduce the regression
+
+Measured three ways, all agreeing:
+
+| Stop | Nearby | Must-see | Shop |
+|---|--:|--:|--:|
+| **Ginzan Onsen Street** (Day 3) | **31** | **4** | **4** |
+| **Ginza** (Day 7) | **27** | **4** | **13** |
+
+The reported 27 · 4 · 13 is Ginza's row exactly, not approximately. The current merge gives Ginzan
+31 · 4 · 4, the §4.8 manifest agrees, and a full re-run of the per-stop reconciliation still shows
+only the three known differences (Kameya, Nikko Tsukuba, Yurakujo). Nothing in this round touched
+Ginzan: the travel legs are on days 1 and 8, the lane fix reads data and writes none, and the
+shopping backfill only fills an absent `category`.
+
+**But the throwaway trip is genuinely not trustworthy to review**, and that is my fault for saying
+to re-import into the same id. Reproduced with the real `unifyPlaces()`:
+
+| | places |
+|---|--:|
+| import v1 (no stop places) | 532 |
+| after the app's own migration wrote back | 574, of which **42 were minted by the app** with random `place-*` ids |
+| after v2 merged on top (`set` + `merge` never deletes) | **617** — 575 mine plus 42 orphans |
+
+So `throwaway-t12` holds ~42 place records nothing points at, from a model that no longer exists.
+Ginzan still read 31 · 4 · 4 in that reproduction, so this does not explain the reported numbers —
+but it does mean the trip being reviewed is a hybrid of two imports and a browser migration.
+**Round 3 goes to a fresh `throwaway-t12b`.** The real trip is unaffected: it will be written once,
+with `placeID` already set, so `unifyPlaces()` has nothing to do.
+
+### Fixed this round
+
+- **A duplicate stop name.** Both Singapore connections were called `Arrive Singapore Changi (SIN)`.
+  `stopByName` here is keyed by name and so is `unifyPlaces()` in the client, which reuses a place of
+  the same name — so the two would have merged into one stop. Now distinguished by their onward
+  flight, with an assertion in the merge so a duplicate name can never pass silently again.
+- **Coordinates on all 10 travel legs**, so each pins on the map and gets its Google/Apple links.
+  Airports at their own coordinates, each flight at the airport it leaves from, the two transfers at
+  the hotels they serve. Verified: no "NO POSITION" strip, both map links present.
+- **The Shop day filter, which already existed and was inert.** `shop.js` renders "All days" plus a
+  button per day from `shopDayOptions()`, but `itemDay()` reads the day out of `placeWhen` as text
+  and no batch ever set that field — so every item answered `null` and the filter had nothing to
+  offer. Writing `placeWhen` from the stop each item is linked to makes the existing feature work
+  with **no UI change**: all 96 items resolve, across all 8 days. This one works on the deployed
+  build too.
+
+### Which fixes need the deploy, and which do not
+
+| Fix | Deployed build | After step 6b |
+|---|---|---|
+| Travel legs, times, coordinates, map links | ✅ works | ✅ |
+| Narita 07:20 ordering | ✅ works | ✅ |
+| Sub-route real titles (not "Free time") | ✅ works | ✅ |
+| Shop day filter | ✅ works | ✅ |
+| Duplicate stop name | ✅ works | ✅ |
+| **Zuiganji loop under its own stop** | ❌ still wrong | ✅ |
+| **Service worker: `Returned response is null`** | ❌ still logs | ✅ |
