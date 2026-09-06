@@ -15,3 +15,17 @@ web/vendor/firebase-local/
 firebase-debug.log
 firestore-debug.log
 test/node_modules/
+scripts/node_modules/
+
+# Service-account keys. The importer needs one to reach a real project, and it
+# must live outside this repository — these patterns are the second line of
+# defence, not the first. A leaked key is full read/write on every trip in the
+# project, and Firestore rules do not apply to it: the Admin SDK bypasses them.
+*serviceAccount*.json
+*service-account*.json
+firebase-adminsdk-*.json
+
+# Trip exports written by scripts/backup-trip.mjs. Personal data; the script
+# refuses to write inside the repo, and this catches it if that is ever forced.
+*trip-backup*.json
+*trip12-backup*.json

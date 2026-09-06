@@ -392,7 +392,12 @@ export const RECORD_FIELDS = [
  */
 export const PLAN_ITEM_FIELDS = [
   'stopSummary',
-  'hours',          // { mon: [['09:00','17:00']], tue: null, ... }
+  // { mon: [{ open: '09:00', close: '17:00' }], tue: null, ... }
+  // `null` for a day means closed. The research JSON writes each span as a
+  // two-element array; the importer converts it, because Firestore cannot
+  // store an array inside an array. Objects keep the closing-day check
+  // possible in a way a flattened "09:00-17:00" string would not.
+  'hours',
   'closedNote',
   'lastAdmission',
   'seasonFrom',

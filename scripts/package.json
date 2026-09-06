@@ -1,0 +1,9 @@
+{
+  "name": "trip12-import",
+  "private": true,
+  "type": "module",
+  "description": "The Trip 12 importer and its backup tool. Not part of the web app, which ships as untranspiled ES modules with no build step.",
+  "dependencies": {
+    "firebase-admin": "^12.7.0"
+  }
+}

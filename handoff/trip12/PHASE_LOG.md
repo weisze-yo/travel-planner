@@ -223,3 +223,168 @@ When these land in `app.css` (Phase 3), they must also be added to `test/contras
 | Six prep categories reachable | all six present in the demo Prep screen |
 | Currency rate input | `#home-rate`, type `number`, value `33.7`, fetch button present |
 | Console | **zero app errors** (CDN fetches fail in this sandbox; the app falls back to local mode by design) |
+
+---
+
+## Phase 2A — the auth/uid gate (mechanism proven; the FACT is still unverified)
+
+**Added:** `scripts/import-trip12.mjs`, `scripts/backup-trip.mjs`, `scripts/lib/merge.mjs`,
+`scripts/package.json` (one dependency, `firebase-admin`), and `.gitignore` entries for
+service-account keys, trip exports and `scripts/node_modules/`.
+
+### What the gate does, and that it works
+
+| Condition | Result |
+|---|---|
+| no `--project` | refuses — "There is no default and none is inferred" |
+| no `--uid` | refuses, and says where the uid must come from |
+| a real project with no `--key` and no `--emulator` | refuses |
+| `--trip vitrox-trip12-tohoku` (the real trip) | refuses without `--allow-real-trip`, which asserts a throwaway read-back was reviewed |
+| a key whose `project_id` disagrees with `--project` | refuses |
+| any real write | prints project, uid, tripId and full path, lists trips already under the uid, prints the whole merge report, then requires the tripId typed back |
+| `--dry-run` | never imports `firebase-admin` at all, so it cannot open a connection even by mistake |
+
+### What the emulator CANNOT establish
+
+The Auth emulator's user directory has no relation to the production project. So the emulator
+proves the **mechanism** and the **shape of the risk**, and cannot prove the **fact** that
+`w1kRlBbw6ChF3gaQXzDf5413EE03` is the uid the owner's device signs in as. That still needs either
+a signed-in session on the owner's device or a service-account key. **Phase 2A is therefore not
+closed, and no production write may happen.**
+
+What the emulator did establish, against the real `firebase/firestore.rules`, is that the A3 risk
+model is exactly right:
+
+| Reader | Result on `users/w1kRlBbw6ChF3gaQXzDf5413EE03/trips/throwaway-t12` |
+|---|---|
+| that uid | reads the trip |
+| a different signed-in uid | `PERMISSION_DENIED` |
+| not signed in | `PERMISSION_DENIED` |
+
+A trip written under the wrong uid does not error on write and does not appear on read. It is
+silence, which is why the gate refuses to guess.
+
+Corroborating evidence for the uid, none of it sufficient: the sign-in method is confirmed Google
+by the code (`persist.js` implements only Google and email-link; `firestore.rules` says anonymous
+accounts are no longer created); the project id is confirmed by `web/js/config.js`; the uid is
+28 characters, the right shape. **Shape is not proof.**
+
+---
+
+## Phase 2B — dry run and backup (complete, against the emulator)
+
+### The dry run
+
+`node scripts/import-trip12.mjs --project <id> --uid <uid> --dry-run` does the entire merge in
+memory and prints what it would do. It reproduces the B3 figures exactly, and reconciles against
+the guide's §4.8 manifest stop by stop.
+
+| | |
+|---|--:|
+| places stored | **565** = 532 research + 33 stop places |
+| searchable research records | **688** (532 + 60 + 96) |
+| ids updated in place / inserted | **250 / 488** |
+| nameJp coverage | **688 / 688** |
+| active / retired / with data | **30 / 3 / 33** |
+| Day 7 active stops | **5** |
+| summary lines · corrections · structured hours | **165 · 196 · 33/33** |
+| duplicate pairs merged · coLocated kept | **20 · 3** |
+| dangling `anchorPlaceID` · unmappable records | **0 · 0** |
+
+**Manifest cross-check: 31 of 33 stops match §4.8 exactly on all four columns** (places, must-see,
+shopping, sub-routes). The 3 that differ are the B3 reconciliation and nothing else — Hotel Kameya
+10→5 (the 3 re-anchored Naruko records plus 2 duplicate merges), Hotel Nikko Tsukuba 24→22 and
+Yurakujo 22→20 (2 duplicate merges each). Total −9, which is the whole of the 532-vs-523 gap.
+
+### Six things the dry run and the throwaway found
+
+None of these are in the guide. Each would have been a silent failure.
+
+1. **Firestore cannot store an array inside an array**, and two shapes are exactly that:
+   `hours.<day>` (`[["09:00","17:00"]]`, on all 33 stops) and `x.legs[].coords` (10 days' route
+   geometry). The write fails with `INVALID_ARGUMENT: Cannot convert an array value in an array
+   value` and names no field. `toFirestoreShape()` converts them to `{open, close}` and `{lat,lng}`
+   — keeping the closing-day check possible, which a flattened string would not — and
+   `findNestedArrays()` then asserts none survive, so a third shape fails loudly.
+
+2. **Firestore rejects `undefined`.** 63 fields carried it. Pruned deliberately and counted rather
+   than using the SDK's `ignoreUndefinedProperties`, which drops silently.
+
+3. **A stop IS a place in this client, and `store.unifyPlaces()` enforces it on every load.** A stop
+   imported with `placeID: null` gets a place minted for it with a random `uid('place-')`, has its
+   `essentials` moved onto that place and deleted from the item, and everything anchored to its
+   item id re-pointed. Importing without pre-migrating would mean the first person to open the trip
+   triggers 33 inserts and hundreds of rewrites under their own credentials, with ids that differ
+   per device, and a second import would fight the migration it caused. The importer now creates
+   the 33 stop places itself with deterministic `sid('place', day, name)` ids. **Verified: the
+   snapshot is byte-identical before and after the app loads it — `unifyPlaces()` has nothing to
+   do.**
+
+4. **`MustSeeShot.placeID` and `ShoppingItem.placeID` were never set.** `store.shotsFor()` filters
+   on `shot.placeID`, and `dest.js` filters shopping on `row.placeID` before falling back to a
+   `placeLabel` name match. The seed leaves both empty and the batches carry only `anchorStop`; the
+   94 distinct `placeLabel` values are long descriptive strings, not stop names, so the fallback
+   could never match either. All 60 shots and all 96 shopping rows were present, correct and
+   attached to nothing. Now linked: **60/60 and 96/96**, confirmed by the tab counts matching the
+   manifest.
+
+5. **`retired` must be DERIVED, not merged.** The batches set it only on records anchored to a
+   superseded hotel. `topup-naruko.json` re-anchors three Naruko records onto the live Kounkaku and
+   omits the key — so a field-wise merge carries a stale `true` forward and marks three live
+   records dead. It is now recomputed from the final anchor. Retired records: **29** (the guide's
+   31 is the pre-dedupe figure; 2 of the 20 duplicate merges were retired records at Kameya).
+
+6. **`PlanItem.chips` is never read by the web client.** `plan.js`'s `stopChips()` computes its own
+   chips from shopping, must-see, notes and position, and ignores `item.chips` entirely. So A6's
+   `ALTERNATIVE TO SHISUI` chip is in the data and renders nowhere. The guide says this "needs no
+   schema change", which is true and beside the point. **Phase 3/7 work; not done here.**
+
+### The schedule gap
+
+`trip12_app_seed.json` carries `time: ''` and `windowLabel: ''` on all 29 stops, and nothing in the
+17 batches or the stops' `x` blocks holds a schedule. The tour agent's clock times exist **only** in
+the guide's §4.8 manifest. Without them a coach tour renders as 30 stops with no times.
+
+The importer parses that table rather than transcribing it — 33 hand-copied times is 33 chances to
+be wrong, and a corrected manifest should move the import with it. All 33 rows parse, all 33 names
+join, and `endTime`/`windowLabel` are derived where the duration is parseable. `—` is left empty
+rather than invented. Ginza 13:45–16:15 and Shisui 14:30–17:00 overlap on Day 7, visibly and
+intentionally (A6).
+
+### Backup
+
+`scripts/backup-trip.mjs` is read-only and has no flag that makes it write. It refuses to write
+inside the repository, prints per-collection counts so an empty read-out cannot be mistaken for a
+good one, and was run against the throwaway: `days 8 · places 565 · subRoutes 17 · shopping 96 ·
+mustSee 60 · prep 85 · log 0 · outfits 8`.
+
+### Proven against the emulator
+
+| Check | Result |
+|---|---|
+| throwaway import | **840 documents written** |
+| read-back | days 8 · places 565 · subRoutes 17 · shopping 96 · mustSee 60 · prep 85 · outfits 8 |
+| stops | active 30 · retired 3 · with summary 33 |
+| `trip.startDate` | `"2026-09-08"` — a **string**, as the client requires |
+| `trip.prepCategories` | the seven, per B1 |
+| **idempotency** | identical SHA-256 fingerprint of all documents after a second full run |
+| rules isolation | owner reads; another uid and anonymous both `PERMISSION_DENIED` |
+
+### Proven in the real app, with the real data
+
+The merged snapshot was loaded into the app's local backend and driven through the actual screens.
+
+- Day 2 renders 7 stops with their times, and **"REMOVED FROM THIS DAY"** carrying Hotel Kameya —
+  §9.3 satisfied entirely by existing UI, with no new code.
+- The retired stop **opens**: name, Japanese subtitle, five tabs, Nearby 5, 7 essentials.
+- Day 7 renders all five stops in clock order, Ginza before Shisui, overlap visible.
+- Ginzan Onsen Street: **Nearby 31 · Must-see 4 · Shop 4** — exactly the manifest.
+- Tsukiji Outer Market: **Nearby 28 · Must-see 3 · Shop 9** — exactly the manifest.
+- All seven prep groups present. **Zero console errors.**
+
+### Still blocking Phase 2
+
+1. **Phase 2A's uid fact.** Needs a signed-in session on the owner's device or a service-account
+   key. Until then no production write.
+2. A **production backup** before the first real write — the emulator one does not count, and the
+   Spark plan rules out `gcloud firestore export`, so it is the Admin-SDK read-out above.
