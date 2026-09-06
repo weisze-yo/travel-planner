@@ -267,26 +267,27 @@ with no gate in front of it. Say the word and it can be written, with the same g
 
 ## Which code this depends on
 
-A runbook cannot name its own commit — stamping one in produces a hash the file's own commit then
-invalidates. So verify by content instead, which is what actually matters:
+A document inside a repository cannot name the commit that contains it — stamping a hash in produces
+one its own commit immediately invalidates. So the check is by content, and by the dry run.
 
 ```sh
 git checkout claude/inspiring-newton-uzu0mt
 git pull origin claude/inspiring-newton-uzu0mt
-git log --oneline -4
 ```
 
-The four most recent subjects on this branch should be, newest first:
+Confirm the branch carries all four pieces of work this runbook assumes. Order does not matter and
+later commits are fine:
 
-```
-Drop the Ginza chip, prove archive/restore, and write the import runbook
-Phase 2A/2B: the import gate, a real dry run, and a backup
-Phase 1: let the web client hold the researched record shape
-Add Trip 12 handoff documents and research bundle
+```sh
+git log --oneline | grep -c -E "Add Trip 12 handoff documents|Phase 1: let the web client|Phase 2A/2B: the import gate|Drop the Ginza chip"
 ```
 
-If your tip is **newer** than the first of those, this runbook may be out of date — the dry run in
-step 3 is the real check, so compare its output against the expected numbers there before going on.
+That must print **4**. And these must all exist:
 
-The substantive verification is step 3. Those figures come from the merge, and if the code changed
-in any way that matters they will move.
+```sh
+ls scripts/import-trip12.mjs scripts/backup-trip.mjs scripts/lib/merge.mjs research/trip12/trip12_app_seed.json
+```
+
+**The substantive verification is step 3.** Those figures are computed by the merge from the research
+bundle, so any change that matters to the import will move them. If the dry run prints what step 3
+says it should, you are running the right code.
