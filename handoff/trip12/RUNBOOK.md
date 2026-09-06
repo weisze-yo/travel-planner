@@ -13,7 +13,7 @@ production write, and step 9 is the real trip.**
 | | |
 |---|---|
 | Branch | `claude/inspiring-newton-uzu0mt` |
-| Commit | see "Exact commit" below — `git log -1` after cloning should match |
+| Commit | the tip of that branch. **Not `main`** — main has none of this work. See "Which code this depends on" at the end. |
 | Node | **v20 or newer** (v22 is what this was built and tested on). `node -v` |
 | Firebase project | `travel-planner-3e0d3` |
 | Your uid | `w1kRlBbw6ChF3gaQXzDf5413EE03` — verified live, Google, `weisze.ai@gmail.com` |
@@ -61,8 +61,9 @@ git pull origin claude/inspiring-newton-uzu0mt
 git log -1 --oneline
 ```
 
-**Check the commit matches "Exact commit" at the bottom of this file.** If it does not, you are
-running different code than was tested.
+**`main` will not work.** None of the importer, the research bundle or this file exists on it — the
+branch has not been merged. Verify what you have with "Which code this depends on" at the end of
+this file, then let step 3 confirm it.
 
 ## Step 2 — install the one dependency
 
