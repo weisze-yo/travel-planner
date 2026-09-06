@@ -77,6 +77,20 @@ self.addEventListener('activate', (event) => {
   );
 });
 
+/**
+ * `caches.match()` resolves to UNDEFINED when nothing matches, and passing that
+ * to `respondWith()` is itself an error: the console says "FetchEvent
+ * .respondWith received an error: Returned response is null" and the page's
+ * fetch rejects with that instead of with the network failure that actually
+ * happened. It made every uncached offline request look like a bug in the
+ * service worker rather than like being offline.
+ *
+ * `Response.error()` is the honest answer: the page sees an ordinary network
+ * failure, which is what it is, and the code that called `fetch` gets to handle
+ * it. Nothing is logged, because nothing went wrong here.
+ */
+const offlineFallback = (hit) => hit || Response.error();
+
 self.addEventListener('fetch', (event) => {
   const { request } = event;
   if (request.method !== 'GET') return;
@@ -99,7 +113,7 @@ self.addEventListener('fetch', (event) => {
           }
           return response;
         }))
-        .catch(() => caches.match(request))
+        .catch(() => caches.match(request).then(offlineFallback))
     );
     return;
   }
@@ -116,7 +130,7 @@ self.addEventListener('fetch', (event) => {
           }
           return response;
         })
-        .catch(() => caches.match(request))
+        .catch(() => caches.match(request).then(offlineFallback))
     );
     return;
   }
@@ -133,6 +147,8 @@ self.addEventListener('fetch', (event) => {
         }
         return response;
       })
-      .catch(() => caches.match(request).then((hit) => hit || caches.match('./index.html')))
+      .catch(() => caches.match(request)
+        .then((hit) => hit || caches.match('./index.html'))
+        .then(offlineFallback))
   );
 });

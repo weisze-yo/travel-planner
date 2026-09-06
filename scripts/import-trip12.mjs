@@ -60,6 +60,7 @@ function printReport(report, target) {
   const s = report.stops;
   console.log('\n  stops');
   console.log(`    active / retired / with data      ${s.active} / ${s.retired} / ${s.withData}`);
+  console.log(`      of the active: researched / travel  ${s.researched} / ${s.travel}`);
   console.log(`    day 7 active stops                ${s.day7}`);
   console.log(`    with a 5-line summary             ${s.withSummary} / ${s.withData}`);
   console.log(`    summary lines                     ${s.summaryLines}`);
@@ -75,6 +76,10 @@ function printReport(report, target) {
     if (r.retired) console.log(`    REPLACE  day ${r.day}  retire ${r.retired} -> add ${r.added}  ${r.addedName}`);
     else console.log(`    ADD      day ${r.day}  ${r.added}  ${r.addedName}`);
   }
+
+  console.log('\n  travel legs added');
+  for (const t of report.travelLegs) console.log(`    day ${t.day}  ${t.time}  ${t.id}  ${t.name}`);
+  for (const t of report.timeFixes || []) console.log(`    TIME FIX  ${t.id}  ${t.name}  ${t.from} -> ${t.to}`);
 
   console.log(`\n  duplicate venue pairs merged        ${report.duplicateMerges.length}`);
   console.log(`  coLocated pairs kept (both)         ${report.coLocatedKept}`);

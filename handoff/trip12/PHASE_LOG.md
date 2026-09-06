@@ -468,3 +468,111 @@ the app, real import, clean up. It also carries the rollback position and the fa
 recognising.
 
 **Nothing in this repository has ever written to production.**
+
+---
+
+## Review round 1 — findings from throwaway-t12, and what was done
+
+The owner reviewed `throwaway-t12` in the deployed app. The real trip has NOT been written.
+
+### 1 & 2 — the trip had no travel in it
+
+Days 1 and 8 rendered as though the trip began at Haneda at 21:55 and ended at an untimed Narita.
+Neither the 17 batches nor `days[].items[]` carried any flight or transfer: the outbound and return
+exist in the research **only as prose**, in `trip.x.flights` and each day's `x.summary`.
+
+Every figure the owner supplied matches `trip.x.flights` exactly, and the day summaries corroborate
+both ends ("Assemble at the Penang International Airport check-in counter by 07:00"; "Breakfast at
+06:30, then a short coach to Narita"). So this is transcription from the bundle, not new fact.
+
+**10 travel legs added**, `kind: 'main'` with `x.stopKind` of `airport`/`transit` — the values the
+seed already uses — and `travelLeg: true` so they stay countable apart from the 30 researched stops.
+
+| Day 1 | Day 8 |
+|---|---|
+| 07:00 Assembly · Penang International Airport | 06:30 Depart Yurakujo for Narita |
+| 10:15 SQ131 · PEN → SIN | *(07:20 Narita T1 — see below)* |
+| 11:45 Arrive Singapore Changi | 10:55 SQ637 · NRT → SIN |
+| 13:55 SQ634 · SIN → HND | 16:55 Arrive Singapore Changi |
+| *(21:55 Haneda T3 — already existed)* | 19:10 SQ142 · SIN → PEN |
+| 21:55 Tour bus to the hotel, ~5 min | 20:35 Arrive Penang International |
+
+Two judgement calls, both flagged rather than buried:
+
+- **The Haneda arrival was not duplicated.** The owner's list has "21:55 Arrive Haneda, take tour bus
+  to the hotel" as one line, but `Haneda Airport — Terminal 3` already exists at 21:55 with 6 places,
+  a summary and essentials. Only the coach transfer was added, sharing 21:55 — no source gives the
+  time the coach actually pulls away, and the sort is stable so it stays directly after the arrival.
+- **Narita T1 now reads 07:20.** The §4.8 manifest prints `—` for it, which was fine when nothing on
+  Day 8 needed ordering; with the day running 06:30 to 20:35 an untimed stop sorts to the very end,
+  behind the arrival in Penang. 07:20 is derived, not invented: §7.1 puts the landside window at
+  ~07:20–08:40, and 06:30 plus the short coach lands there. **This is the one clock time in the trip
+  that is not printed on the agent's sheet.**
+
+### 3 — sub-routes: two bugs, both mine, both generic
+
+**All 17 were wrong, not one.**
+
+- **16 of 17 had no `name`.** The batches carry `title`; only `d2sr001zuiganji` carries `name`. The
+  merge assigned `title = title ?? name`, which is backwards for 16 of them. The client renders
+  `route.name` everywhere and `store.js:537` **rewrites a nameless loop to "Free time" on load** — so
+  every loop but one would have lost its title the moment the trip was opened. Now `name` is set
+  from `title`, both are kept, and `departMinutes` / `returnByMinutes` are written explicitly so the
+  client stops backfilling them on load (`store.js:542` does exactly that).
+
+- **The Zuiganji loop fell to the bottom of Day 2**, under the night's hotel. Root cause is in
+  `dayTimeline()`: a stop opens a lane at its own start only when it runs ≥ `SELF_LANE_MINUTES` (90).
+  Zuiganji is 60 minutes with a 54-minute loop inside it, so the loop's 14:20 start belonged to no
+  lane at all and fell through to the orphan "free time" row at the end of the day. Fixed generically
+  in `store.js`: **a stop that actually has a loop starting inside its own window is a self-lane stop
+  whatever its length.** The 90-minute rule stays as the other way to qualify, so the demo is
+  unaffected.
+
+**Audit result, driven through the real UI, all 8 days: 17 of 17 loops now sit under their correct
+anchor stop, zero orphans**, and the per-stop counts match the §4.8 `SR` column exactly.
+
+### 4 — "Fetch today's rate": a real service-worker bug, and the button works
+
+The console warning was real and the fix is real, but the rate mechanism was never broken.
+
+`web/sw.js` fell back with `.catch(() => caches.match(request))` in two of its three branches.
+`caches.match()` resolves to **`undefined`** when nothing matches, and `respondWith(undefined)` is
+itself an error — which is literally the message *"FetchEvent.respondWith received an error:
+Returned response is null"*. Worse, it **replaced** the real network failure, so every uncached
+offline request looked like a service-worker bug rather than like being offline.
+
+Fixed: all three branches now fall back through `offlineFallback`, which returns `Response.error()`
+when there is no cache hit. The page then sees an ordinary network failure and handles it.
+
+Tested three ways in the browser, service worker blocked so the network could be controlled:
+
+| Path | Result |
+|---|---|
+| API reachable (stubbed 200) | **rate updates** 33.7 → 39.31, field, stored value and `rateSource` all change, notice reads `Rate updated: 1 MYR = 39.31 JPY · ECB 2026-09-07` |
+| API unreachable | **not silent** — the screen shows `Failed to fetch`, and the stored rate is left alone |
+| Typed by hand and saved | **works** — 33.7 → 39.3 stored, `rateSource` cleared to mean "rate you entered" |
+| `respondWith` errors, after the fix | **none**, in all three |
+
+So: the button is wired correctly and does update the rate when the API answers. The warning meant
+the fetch failed and the service worker mislabelled it. Why it failed on that machine cannot be
+determined from here — `api.frankfurter.app` is unreachable from this sandbox too — but the app will
+now report the real reason. **None of this blocks the trip:** the rate is seeded at 33.7 and the
+field is editable by hand, offline, which is all decision A5 requires.
+
+### 5 — "Nearby" places: investigated, not built (see the report to the owner)
+
+Measured across all 532 non-stop places. Content exists and is already shown; **structure** does not.
+
+| Field | Coverage |
+|---|--:|
+| `note` (rendered today as the description) | **532 / 532**, mean 321 chars, 73% mention opening hours |
+| `nameJp` · `priceTier` · `timeWindow` · `confidence` · `source` | 517 / 532 |
+| `stayMinutes` · `legs` | 532 / 532 |
+| `confidenceNote` | 322 / 532 |
+| **`essentials` · `hours` · `phone` · `website`** | **0 / 532** |
+
+Opening a nearby place today shows its name, `Food · ¥¥`, and the full researched note — which for
+73% of them contains the hours, and often the phone. The **Info** tab is empty because
+`Place.essentials` is empty; the **Nearby / Must-see / Shop** tabs are empty because those records
+anchor to the 33 stops, which is the intended model, not a bug.
+

@@ -92,7 +92,7 @@ No key is needed and none should be passed.
 **Check these numbers before going on.** If any differ, stop and report them:
 
 ```
-places            565  167  398        (532 research + 33 stop places)
+places            575  167  408        (532 research + 43 stop places)
 subRoutes          17    0   17
 shopping           96   49   47
 mustSee            60   34   26
@@ -100,16 +100,20 @@ days                8    8    0
 prep               85   85    0
 
 searchable records                     688
-ids updated in place / inserted        250 / 488
+ids updated in place / inserted        250 / 498
 nameJp coverage                        688 / 688
 records flagged retired                29
 
-stops  active / retired / with data    30 / 3 / 33
+stops  active / retired / with data    40 / 3 / 43
+  of the active: researched / travel    30 / 10
        day 7 active stops              5
-       with a 5-line summary           33 / 33
+       with a 5-line summary           33 / 43
        summary lines                   165
        correctedFromSeed entries       196
-       with structured hours           33 / 33
+       with structured hours           33 / 43
+
+travel legs added                      10   (5 on day 1, 5 on day 8)
+TIME FIX  Narita T1 South Wing         (none) -> 07:20
 
 duplicate venue pairs merged           20
 coLocated pairs kept (both)            3
@@ -174,14 +178,16 @@ It will print the project, uid, tripId and full path, list the trips already und
 the whole merge report, and then **stop and ask you to type `throwaway-t12`** before writing.
 Anything else aborts. Do not pass `--yes`.
 
-Expect `wrote 840 documents.` and a read-back showing:
+Expect `wrote 850 documents.` and a read-back showing:
 
 ```
 trip.startDate      : "2026-09-08" (string)
 trip.prepCategories : [... seven entries, ending "Leave behind"]
-days 8 · places 565 · subRoutes 17 · shopping 96 · mustSee 60 · prep 85 · log 0 · outfits 8
-stops active 30 · retired 3 · with summary 33
+days 8 · places 575 · subRoutes 17 · shopping 96 · mustSee 60 · prep 85 · log 0 · outfits 8
+stops active 40 · retired 3 · with summary 33
 ```
+
+40 active is 30 researched stops plus the 10 travel legs on days 1 and 8.
 
 ## Step 8 — review the throwaway in the real app
 
@@ -191,7 +197,16 @@ will now list **ViTrox Japan Tohoku · Trip 12** alongside the demo. Open it.
 Walk this list. Everything here was verified against the emulator and in the app with the same data,
 so anything that does not match is worth stopping for:
 
-- [ ] **8 days**, and **30 stops** across them, not 33.
+- [ ] **Day 1 opens with the outbound travel**, in order: 07:00 Assembly · Penang · 10:15 SQ131 ·
+      11:45 Arrive Singapore · 13:55 SQ634 · 21:55 Haneda T3 · 21:55 Tour bus to the hotel ·
+      then the hotel.
+- [ ] **Day 8 runs 06:30 to 20:35**: Depart Yurakujo 06:30 · Narita T1 **07:20** · 10:55 SQ637 ·
+      16:55 Arrive Singapore · 19:10 SQ142 · 20:35 Arrive Penang.
+- [ ] **Day 2: the Zuiganji loop sits under Zuiganji Temple**, not at the bottom of the day. Every
+      sub-route should sit under its own stop — 17 in total, none under a heading of its own at the
+      end of a day.
+- [ ] Sub-routes show their **real titles**, not "Free time".
+- [ ] **8 days**, and **40 stops** across them (30 researched + 10 travel legs), 3 removed.
 - [ ] **Day 7 has five stops** — Tokyo Tower 09:00, Tsukiji 10:50, **Ginza 13:45**, **Shisui 14:30**,
       Yurakujo 17:30. Ginza and Shisui overlap on purpose; that overlap is the signal, and you
       resolve it by removing one.

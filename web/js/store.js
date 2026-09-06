@@ -1386,7 +1386,22 @@ export function dayTimeline(n = state.selectedDay) {
     if (row.window.start == null) return;
 
     // Where this stop's lane begins, and where the next stop takes over.
-    const longStop = (row.window.minutes || 0) >= SELF_LANE_MINUTES;
+    //
+    // A stop long enough to hold a loop opens its lane at its own start, so
+    // the loop is drawn inside the stop rather than after it. Ninety minutes
+    // was the only test, and it missed the real case: a loop whose start sits
+    // inside a SHORTER stop's window belonged to no lane at all, so it fell
+    // through to the orphan "free time" row at the very bottom of the day —
+    // Zuiganji's hour-long loop landing under the night's hotel. A stop that
+    // actually has a loop starting inside it is a self-lane stop whatever its
+    // length.
+    const holdsALoop = loops.some((r) => {
+      if (claimed.has(r.id)) return false;
+      const at = loopStart(r);
+      return at != null && row.window.end != null
+        && at >= row.window.start && at < row.window.end;
+    });
+    const longStop = holdsALoop || (row.window.minutes || 0) >= SELF_LANE_MINUTES;
     const from = longStop ? row.window.start : (row.window.end ?? row.window.start);
     const next = timed.find((other) => other.window.start > row.window.start);
     const to = next ? next.window.start : DAY_ENDS_AT;

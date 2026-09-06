@@ -62,6 +62,71 @@ export const NEW_STOPS = [
 ];
 
 /**
+ * The outbound and return travel, which the itinerary batches never covered.
+ *
+ * The research holds these only as prose — `trip.x.flights` and each day's
+ * `x.summary` — so the days rendered as if the trip began at Haneda at 21:55
+ * and ended at an untimed Narita. Every flight number and time here is copied
+ * from `trip.x.flights` and cross-checks against the day summaries:
+ *
+ *   out   SQ131 PEN 10:15 -> SIN 11:45     SQ634 SIN 13:55 -> HND 21:55
+ *   home  SQ637 NRT 10:55 -> SIN 16:55     SQ142 SIN 19:10 -> PEN 20:35
+ *
+ * `kind` stays `main` because they are on the main route; what marks them as
+ * travel rather than sightseeing is `x.stopKind`, which the seed already uses
+ * with exactly these values (`airport`, `transit`, `hotel`, `sight`).
+ */
+export const TRAVEL_LEGS = [
+  // ---- Day 1, outbound. The existing Haneda T3 stop at 21:55 is the arrival,
+  // so it is not repeated here; only the coach transfer after it is added.
+  { day: 1, time: '07:00', name: 'Assembly · Penang International Airport',
+    durationLabel: 'assemble', stopKind: 'airport',
+    note: 'Check-in counter by 07:00. Baggage 25 kg checked, 7 kg hand-carry, one piece. '
+        + 'Register on Visit Japan Web before flying — Malaysian ePassport holders are visa-free for 90 days.' },
+  { day: 1, time: '10:15', name: 'SQ131 · Penang (PEN) → Singapore (SIN)',
+    durationLabel: 'flight', stopKind: 'transit', note: 'Departs 10:15, lands Singapore 11:45.' },
+  { day: 1, time: '11:45', name: 'Arrive Singapore Changi (SIN)',
+    durationLabel: 'connection', stopKind: 'airport',
+    note: 'A 55-minute connection before SQ634. Stay airside.' },
+  { day: 1, time: '13:55', name: 'SQ634 · Singapore (SIN) → Tokyo Haneda (HND)',
+    durationLabel: 'flight', stopKind: 'transit',
+    note: 'Departs 13:55, lands Haneda 21:55. About 20h 20m door to door from Penang.' },
+  // Shares 21:55 with the Haneda arrival on purpose: the coach leaves once the
+  // group is through the terminal, and no source gives that clock time. The
+  // sort is stable, so it stays directly after the arrival it belongs to.
+  { day: 1, time: '21:55', name: 'Tour bus to Hotel Metropolitan Tokyo Haneda',
+    durationLabel: '~5 min', stopKind: 'transit',
+    note: 'After immigration and baggage reclaim. The hotel is inside Haneda Innovation City, about five minutes by coach.' },
+
+  // ---- Day 8, home.
+  { day: 8, time: '06:30', name: 'Depart International Resort Hotel Yurakujo for Narita',
+    durationLabel: 'coach', stopKind: 'transit', note: 'Breakfast at 06:30, then a short coach to Narita.' },
+  { day: 8, time: '10:55', name: 'SQ637 · Tokyo Narita (NRT) → Singapore (SIN)',
+    durationLabel: 'flight', stopKind: 'transit',
+    note: 'Departs Narita Terminal 1 at 10:55, lands Singapore 16:55.' },
+  { day: 8, time: '16:55', name: 'Arrive Singapore Changi (SIN)',
+    durationLabel: 'connection', stopKind: 'airport', note: 'A 2h15 connection before SQ142.' },
+  { day: 8, time: '19:10', name: 'SQ142 · Singapore (SIN) → Penang (PEN)',
+    durationLabel: 'flight', stopKind: 'transit', note: 'Departs 19:10, lands Penang 20:35.' },
+  { day: 8, time: '20:35', name: 'Arrive Penang International (PEN)',
+    durationLabel: 'arrive', stopKind: 'airport', note: 'Welcome back to Penang.' },
+];
+
+/**
+ * Narita has no clock time in the §4.8 manifest — it prints `—`, because
+ * before the travel legs existed nothing on Day 8 needed ordering. Now that
+ * the day runs 06:30 to 20:35, an untimed stop sorts to the very end, behind
+ * the arrival in Penang.
+ *
+ * 07:20 is not invented: §7.1 puts the landside window at ~07:20–08:40, and
+ * 06:30 plus the short coach lands there. Flagged in the phase log as the one
+ * time in the trip that is derived rather than printed on the agent's sheet.
+ */
+export const STOP_TIME_FIXES = {
+  '184f9cf0f25a': { time: '07:20', durationLabel: 'departure' },
+};
+
+/**
  * Day 1 is a RENAME of one property, not a replacement (decision B7): JR East's
  * official English name, same address, same phone. It keeps its seed id, so
  * nothing has to be re-pointed and there is no retired stop for it.
@@ -464,6 +529,49 @@ export function buildSnapshot(researchDir, guidePath) {
     return m ? Number(m[1]) * 60 + Number(m[2]) : Number.MAX_SAFE_INTEGER;
   };
 
+  // ---- 5b. the outbound and return travel -------------------------------
+  report.travelLegs = [];
+  for (const leg of TRAVEL_LEGS) {
+    const d = dayOf(leg.day);
+    if (!d) { report.unmappable.push({ what: 'travel leg', leg }); continue; }
+    const id = sid('stop', leg.day, leg.name);
+    d.items.push({
+      id,
+      time: leg.time,
+      endTime: '',
+      durationLabel: leg.durationLabel,
+      name: leg.name,
+      subtitle: '',
+      note: leg.note,
+      summary: leg.note,
+      windowLabel: '',
+      chips: [],
+      kind: 'main',
+      isSubRouteSummary: false,
+      placeID: null,
+      essentials: [],
+      latitude: null,
+      longitude: null,
+      archived: false,
+      movedToDay: null,
+      // What marks these as travel rather than sightseeing, using the values
+      // the seed already uses. `travelLeg` keeps them countable separately
+      // from the 30 researched stops.
+      travelLeg: true,
+      x: { stopKind: leg.stopKind },
+    });
+    report.travelLegs.push({ day: leg.day, id, time: leg.time, name: leg.name });
+  }
+
+  for (const [id, fix] of Object.entries(STOP_TIME_FIXES)) {
+    const item = days.flatMap((d) => d.items).find((i) => i.id === id);
+    if (!item) { report.unmappable.push({ what: 'stop time fix', id }); continue; }
+    report.timeFixes = [...(report.timeFixes || []),
+      { id, name: item.name, from: item.time || '(none)', to: fix.time }];
+    item.time = fix.time;
+    if (fix.durationLabel) item.durationLabel = fix.durationLabel;
+  }
+
   // The schedule, from the guide's §4.8 manifest — the only source there is.
   const schedule = new Map();
   if (guidePath) {
@@ -506,7 +614,7 @@ export function buildSnapshot(researchDir, guidePath) {
 
       const summary = summaries[item.name];
       if (summary) item.stopSummary = summary;
-      else report.warnings.push(`no stopSummary for stop: ${item.name}`);
+      else if (!item.travelLeg) report.warnings.push(`no stopSummary for stop: ${item.name}`);
 
       const sched = schedule.get(item.name);
       if (sched) {
@@ -523,7 +631,9 @@ export function buildSnapshot(researchDir, guidePath) {
           item.windowLabel = `${item.time} – ${item.endTime}`;
         }
         report.schedule.applied += 1;
-      } else if (guidePath) {
+      } else if (guidePath && !item.travelLeg) {
+        // Travel legs carry their own times from `trip.x.flights`; the §4.8
+        // manifest only covers the 33 researched stops.
         report.schedule.unmatched.push(item.name);
       }
     }
@@ -679,7 +789,18 @@ export function buildSnapshot(researchDir, guidePath) {
     // leaving, so there is one honest answer for all of them.
     sr.returnTarget = 'coach';
     sr.returnMinutes = Math.max(0, (sr.deadlineMinutes ?? 0) - (sr.startMinutes ?? 0));
-    sr.title = sr.title ?? sr.name;
+    // store.js renders `route.name` everywhere and, on load, rewrites a loop
+    // that has none to "Free time" — so 16 of the 17 would have lost their
+    // titles on first open. The batches carry `title`; only one carries
+    // `name`. Keep both, with `name` as the one the client reads.
+    sr.name = sr.name || sr.title;
+    sr.title = sr.title || sr.name;
+    // Set explicitly so the client does not backfill them on load (store.js
+    // does exactly that, which would rewrite every loop on first open).
+    sr.departMinutes = sr.departMinutes ?? sr.startMinutes ?? null;
+    sr.returnByMinutes = sr.returnByMinutes ?? sr.deadlineMinutes ?? null;
+    sr.startPlaceID = sr.startPlaceID ?? null;
+    sr.endPlaceID = sr.endPlaceID ?? null;
   }
 
   // ---- 9. the two category enums, kept apart (§4.2c) ---------------------
@@ -766,6 +887,8 @@ export function buildSnapshot(researchDir, guidePath) {
   const retired = days.flatMap((d) => d.items).filter((i) => i.archived);
   report.stops = {
     active: active.length,
+    researched: active.filter((i) => !i.travelLeg).length,
+    travel: active.filter((i) => i.travelLeg).length,
     retired: retired.length,
     withData: active.length + retired.length,
     withSummary: [...active, ...retired].filter((i) => i.stopSummary).length,
