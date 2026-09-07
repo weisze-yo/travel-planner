@@ -188,8 +188,9 @@ export const MUST_SEE = [
   { id: 'm4', placeID: 'nishi', title: 'South standing bars', tag: 'NIGHT', summary: 'Lights come on after 17:00 — steam, crowd and signage all in one frame.', whereToFind: 'South exit', imagePath: null, captured: false, order: 3, latitude: 35.6795, longitude: 139.7008 },
 ];
 
-// What to wear is generated from each day's real forecast now — see
-// `outfitAdvice()` in store.js — not a fixed sentence about this market.
+// What to wear comes from the day's own researched paragraphs now — see
+// `outfitProse()` in store.js. These are only the quick-add chips for the
+// packing half of the card, which is the traveller's own record.
 export const OUTFIT_PICKS = ['Rust coat', 'Cream knit', 'Flat shoes', 'Shawl'];
 
 /**

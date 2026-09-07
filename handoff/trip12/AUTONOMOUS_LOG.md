@@ -133,4 +133,39 @@ delete the loop and open it).
 
 ## UNRESOLVED — needs the owner
 
-Nothing yet.
+### U1 · `outfitByStop` — 33 researched records, ~1,400 characters each, never imported
+
+Found while building §3.2. Ten research files carry an `outfitByStop` map: **33 records, keyed by
+stop name**, each with a `photo` and a `practical` paragraph of 300–1,600 characters. Day 2 alone
+has seven.
+
+**Nothing imports it.** `merge.mjs` builds the `outfits` collection from `seed.outfits` only, and
+`import-trip12.mjs`'s KINDS list has no path to it either. It is the same class of miss as
+`stopSummary` before the Must tab and the airport batch before `unconsumedBatches` — research
+written, validated, committed, and never read.
+
+**§3.2 is NOT blocked by it.** The eight per-day records in the seed already carry
+`x.suggestionPhoto` / `x.suggestionPractical`, which is exactly what §3.2 draws — Design's own
+Day 2 artboard text is that record, trimmed — and all eight are in the built snapshot. §3.2 ships
+complete against them.
+
+What is unresolved is what to DO with the finer-grained 33:
+
+- Design's §3.2 card is **per day** and shows **one** pair. The 33 are **per stop**.
+- Concatenating a day's stops would put ~7,500 characters on one card, which is the wall §3.2
+  exists to avoid.
+- Showing only the first stop's would hide 26 of 33 records.
+- The natural home is the **stop's own screen**, next to `stopSummary` — item 3's precedent
+  exactly — which is §3.3/§3.7 territory and a design ask, not an implementation one.
+
+**Not guessed at, and not swept up.** No importer change was made for it, so nothing about the
+combined re-import changes. It needs either a Design section or an owner decision.
+
+### U2 · The same outfit prose is stored twice
+
+`days[].x.outfitPhoto` and `outfits[].x.suggestionPhoto` are **byte-identical on all eight days**,
+as are the practical pair. §3.2 reads the `outfits` copy, because that is the per-day collection the
+editor writes to and the one the app already had.
+
+The `days` copy is now redundant. It is left alone: removing a field is a data change with no
+benefit, and something outside this repo may read it.

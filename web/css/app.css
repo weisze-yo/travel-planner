@@ -1111,6 +1111,33 @@ input[type="radio"], input[type="checkbox"] {
 .spend-est { font-size: 11.5px; font-weight: 600; color: var(--muted); }
 .spend-rm { font-size: 14px; font-weight: 700; }
 
+/*
+ * §3.2 · the two researched paragraphs on Prep's WHAT TO WEAR card.
+ *
+ * 272-679 characters each, so the type is the app's own reading size for
+ * prose — the same 12.5px / 1.55 `.must-text` uses for `stopSummary`, which
+ * is the other place this product asks someone to read a paragraph on a
+ * phone. No new size, no new colour.
+ */
+.outfit-block { padding-top: 10px; }
+.outfit-block.first { padding-top: 0; }
+.outfit-prose { font-size: 12.5px; line-height: 1.55; color: var(--charcoal); }
+/*
+ * The ghost action the empty state and a written card both carry. A line,
+ * not a button: it is the third-ranked action on a card whose primary job is
+ * to be READ, and the app's own ordering puts "the other way" below the
+ * content in jade text rather than in a box.
+ */
+.btn-ghost-line {
+  min-height: 44px;
+  padding: 0;
+  font-size: 12px;
+  font-weight: 700;
+  color: var(--jade);
+  text-align: left;
+  background: none;
+}
+
 /* ---------------------------------------------------------------- must-see */
 
 .shot-img {
@@ -1135,16 +1162,9 @@ input[type="radio"], input[type="checkbox"] {
 .shot-desc { font-size: 12.5px; line-height: 1.5; color: var(--charcoal); margin-top: 5px; }
 .shot-where { display: flex; align-items: center; gap: 7px; margin-top: 9px; font-size: 11.5px; font-weight: 650; color: var(--muted); }
 
-.outfit-ref {
-  width: 78px; height: 104px;
-  flex: none;
-  border-radius: 11px;
-  background: repeating-linear-gradient(135deg, #E2E6E2 0 7px, #DADFDA 7px 14px);
-  display: flex; align-items: flex-end; justify-content: center;
-  padding-bottom: 6px;
-  font-size: 9px; font-weight: 700; color: var(--muted);
-}
-.outfit-text { flex: 1; min-width: 0; font-size: 12.5px; line-height: 1.5; color: var(--charcoal); }
+/* §3.2 · `.outfit-ref` (the little "reference" tag) and `.outfit-text` were
+   the generic weather sentence's chrome. Both gone with it: the researched
+   paragraphs are the card's content, not a footnote beside a tag. */
 .mine-chip { display: flex; align-items: center; gap: 6px; padding: 5px 9px; border-radius: 9px; background: var(--jade-bg); color: var(--jade); font-size: 11.5px; font-weight: 700; white-space: nowrap; }
 .pick-chip { padding: 5px 9px; border-radius: 9px; background: var(--bone); color: var(--charcoal); font-size: 11.5px; font-weight: 650; white-space: nowrap; }
 .hairline { height: 1px; background: var(--line-2); margin: 14px 0; }

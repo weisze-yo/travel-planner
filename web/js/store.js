@@ -1185,21 +1185,25 @@ export const day = (n = state.selectedDay) => state.days.find((d) => d.dayNumber
 export const place = (id) => state.places.find((p) => p.id === id) || null;
 export const weather = (n = state.selectedDay) => (state.trip?.weather || []).find((w) => w.dayNumber === n) || null;
 
-/** Temperature band → what to layer. Ordered warmest first. */
-const LAYER_BANDS = [
-  { min: 27, text: 'It will be warm — light, breathable layers are enough', chip: 'light layers' },
-  { min: 21, text: 'Warm enough for a light layer and not much else', chip: 'light layer' },
-  { min: 14, text: 'A mid-weight layer works — something you can shed if it warms up', chip: 'mid layer' },
-  { min: 7, text: 'Bring a warm layer, plus something to add over it', chip: 'warm layer' },
-  { min: -Infinity, text: "It will be properly cold — wear your warmest layer", chip: 'heavy layer' },
-];
-
-/** Rain chance → footwear and whether to carry cover. */
-const RAIN_BANDS = [
-  { min: 60, text: 'rain is likely, so pack closed, waterproof shoes and something to keep you dry', chip: 'rain gear' },
-  { min: 30, text: 'there is a decent chance of rain — shoes that can take a shower are a good idea', chip: 'maybe rain' },
-  { min: -Infinity, text: 'rain is unlikely, so any shoes will do', chip: 'dry likely' },
-];
+/*
+ * §3.2 · LAYER_BANDS and RAIN_BANDS lived here, and `outfitAdvice()` turned
+ * them into one sentence for Prep's WHAT TO WEAR card. All three are gone.
+ *
+ * They were a careful piece of work — two independent bands, honest about
+ * having no wind figure to use — and they were answering the wrong question.
+ * Every one of the eight outfit records already carried two RESEARCHED
+ * paragraphs, 272 to 679 characters each, about the day's actual backdrop
+ * and its actual walking, and nothing rendered either. A derived sentence
+ * that says "warm enough for a light layer" was standing in front of a
+ * paragraph that says which colours disappear into the pines.
+ *
+ * `store.outfitProse()` reads the real thing now. Design's own removal list
+ * names this: "the generic weather sentence in WHAT TO WEAR — replaced by
+ * the two real paragraphs, or by nothing."
+ *
+ * The forecast itself is untouched and still on the card, as the °C and the
+ * summary beside the title, which is what a forecast is good for.
+ */
 
 /**
  * What to wear, worked out from the day's own forecast instead of a fixed
@@ -1210,16 +1214,63 @@ const RAIN_BANDS = [
  * `net.js`'s `fetchForecast`), and inventing a figure would be exactly the
  * kind of false specificity this replaces.
  */
-export function outfitAdvice(n = state.selectedDay) {
-  const wx = weather(n);
-  if (!wx || wx.high == null) {
-    return { text: 'No forecast for this day yet — check back closer to the date.', chips: [] };
-  }
-  const layer = LAYER_BANDS.find((b) => wx.high >= b.min);
-  const rain = wx.rainChance == null ? null : RAIN_BANDS.find((b) => wx.rainChance >= b.min);
-  const text = rain ? `${layer.text}, and ${rain.text}.` : `${layer.text}.`;
-  return { text, chips: [layer.chip, rain?.chip].filter(Boolean) };
+/**
+ * §3.2 · THE TWO PARAGRAPHS THE APP HAS AND DOES NOT SHOW.
+ *
+ * Every one of the eight outfit records carries `x.suggestionPhoto` and
+ * `x.suggestionPractical` — 272 to 679 characters each, researched against
+ * the day's actual backdrop and its actual walking — and NOTHING rendered
+ * either. Prep's WHAT TO WEAR card showed a generic sentence derived from
+ * the forecast instead, and on a day with no forecast it showed "No
+ * forecast for this day yet", which is the emptiest possible answer on a
+ * card that had two paragraphs of real advice sitting behind it.
+ *
+ * Two blocks, in this order, because that is the order the question is
+ * asked in: what will I be standing in front of, and what will the day do
+ * to me.
+ *
+ * A missing block is ABSENT, never a label with nothing under it — the same
+ * rule `factsEditor` holds itself to.
+ */
+export const OUTFIT_BLOCKS = [
+  { key: 'suggestionPhoto', label: 'AGAINST THE BACKDROP',
+    hint: 'What the day looks like behind you, and which colours fight it' },
+  { key: 'suggestionPractical', label: 'HOW THE DAY WILL FEEL',
+    hint: 'Heat, rain, how far you walk and on what' },
+];
+
+/** The day's two paragraphs, absent ones dropped. */
+export function outfitProse(n = state.selectedDay) {
+  const x = outfitFor(n)?.x || {};
+  return OUTFIT_BLOCKS
+    .map((block) => ({ ...block, text: String(x[block.key] || '').trim() }))
+    .filter((block) => block.text);
 }
+
+/**
+ * F1 · the owner confirmed these records are writable.
+ *
+ * An emptied box means "do not keep this block", which is `factsEditor`'s
+ * rule and the reason the blocks are stored rather than merged: writing ''
+ * has to be distinguishable from not writing at all, or clearing a
+ * paragraph would be impossible.
+ *
+ * An edited paragraph is deliberately NOT marked as yours. This app marks
+ * provenance where it changes trust — jade MAIN against amber yours — and
+ * nobody needs telling who wrote their own clothing note. It would be the
+ * app's first provenance mark on prose.
+ */
+export function saveOutfitProse(n = state.selectedDay, blocks = {}) {
+  const record = outfitRecord(n);
+  const x = { ...(record.x || {}) };
+  for (const block of OUTFIT_BLOCKS) {
+    const text = String(blocks[block.key] ?? '').trim();
+    if (text) x[block.key] = text;
+    else delete x[block.key];
+  }
+  put('outfits', { ...record, x });
+}
+
 
 export function planItem(id) {
   for (const d of state.days) {
