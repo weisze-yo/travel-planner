@@ -6,7 +6,7 @@
    "anchorStop": "Haneda Airport — Terminal 3",
    "name": "Currency exchange, 2F arrival lobby — open 24 hours",
    "nameJp": "外貨両替所（第3ターミナル 到着ロビー店）",
-   "category": "sight",
+   "category": "service",
    "priceTier": "free",
    "stayMinutes": 20,
    "legs": [
@@ -29,7 +29,7 @@
    "anchorStop": "Haneda Airport — Terminal 3",
    "name": "ATMs on 2F arrivals — Japan Post Bank (24h) and Seven Bank",
    "nameJp": "ゆうちょ銀行ATM／セブン銀行ATM",
-   "category": "sight",
+   "category": "service",
    "priceTier": "free",
    "stayMinutes": 10,
    "legs": [
@@ -52,7 +52,7 @@
    "anchorStop": "Haneda Airport — Terminal 3",
    "name": "Baggage deposit and coin lockers, 2F arrivals",
    "nameJp": "手荷物一時預り所（到着ロビー）／コインロッカー",
-   "category": "sight",
+   "category": "service",
    "priceTier": "¥",
    "stayMinutes": 15,
    "legs": [
@@ -121,7 +121,7 @@
    "anchorStop": "Haneda Airport — Terminal 3",
    "name": "HANEDA-FREE-WIFI, and the GLOBAL WiFi counter open to 23:45",
    "nameJp": "グローバルWiFi",
-   "category": "sight",
+   "category": "service",
    "priceTier": "free",
    "stayMinutes": 10,
    "legs": [
@@ -144,7 +144,7 @@
    "anchorStop": "Haneda Airport — Terminal 3",
    "name": "Where a chartered coach actually loads — 1F, past the first bus stop",
    "nameJp": "貸切バス乗り場",
-   "category": "sight",
+   "category": "service",
    "priceTier": "free",
    "stayMinutes": 15,
    "legs": [
@@ -167,7 +167,7 @@
    "anchorStop": "Haneda Airport — Terminal 3",
    "name": "The chartered-bus pool rules that squeeze a 22:10-22:40 exit",
    "nameJp": "国際線バスプール",
-   "category": "sight",
+   "category": "service",
    "priceTier": "¥",
    "stayMinutes": 5,
    "legs": [
@@ -190,7 +190,7 @@
    "anchorStop": "Haneda Airport — Terminal 3",
    "name": "There is NO published meeting point on 2F arrivals",
    "nameJp": "待ち合わせ場所（第3ターミナル）",
-   "category": "sight",
+   "category": "service",
    "priceTier": "free",
    "stayMinutes": 5,
    "legs": [
@@ -259,7 +259,7 @@
    "anchorStop": "Haneda Airport — Terminal 3",
    "name": "Last trains out of T3 — the fallback if someone misses the coach",
    "nameJp": "羽田空港第3ターミナル駅（東京モノレール／京急）",
-   "category": "sight",
+   "category": "service",
    "priceTier": "¥",
    "stayMinutes": 5,
    "legs": [

@@ -256,6 +256,25 @@ export const CATEGORY_LABELS = {
   shopping: 'Shopping',
   sight: 'Sights',
   rest: 'Rest',
+  /*
+   * Added 7 Sep 2026, for the airport batch.
+   *
+   * An ATM, a currency-exchange window, a coach kerb, a check-in counter, a
+   * meeting point, free wifi, a re-screening warning: roughly a third of what
+   * is genuinely useful at an airport is neither a sight nor a rest. The
+   * bundle's own precedent was to file them as `sight` — `day1-haneda` has
+   * the Electronic Customs Declaration gates that way — which made the Nearby
+   * category filter lie: someone filtering for Sights got a customs gate.
+   *
+   * Everything that reads this map derives from it (`PLACE_CATEGORY_IDS`, the
+   * add-a-place dropdown) or compares strings (`categoryLabel`, the Nearby
+   * filter), so nothing assumed exactly six. The one hardcoded list is `CATS`
+   * in `nearby.js`, and its seventh chip is deliberately NOT added here: the
+   * chip row is what Design's §3.7 restructures, so it lands with that work,
+   * against the artboards. Until then these records show correctly and are
+   * included by the "All" chip; they simply have no chip of their own.
+   */
+  service: 'Service',
 };
 
 export const MODE_ICONS = { walk: '🚶', train: '🚆', bus: '🚌' };

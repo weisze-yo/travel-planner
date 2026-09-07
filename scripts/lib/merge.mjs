@@ -83,7 +83,15 @@ export const TRAVEL_LEGS = [
   { day: 1, time: '07:00', name: 'Assembly · Penang International Airport',
     durationLabel: 'assemble', stopKind: 'airport',
     latitude: 5.2971, longitude: 100.2769,
-    note: 'Check-in counter by 07:00. Baggage 25 kg checked, 7 kg hand-carry, one piece. '
+    // The assembly is 07:00 and the note used to stop there, which read as
+    // "bags at 07:00". SQ's own rule is that counters OPEN 07:15 and it will
+    // not accept a baggage drop before they do, with a hard close at 09:35 —
+    // so the note has to carry all three or it misleads 35 people into a
+    // fifteen-minute stationary queue. (MAHB's generic 2h/1h guide would say
+    // 08:15/09:15; SQ's rule governs an SQ flight.)
+    note: 'Assemble 07:00 — but SQ opens check-in at 07:15 and takes no bag before then. '
+        + 'Hard close 09:35, 40 min before the 10:15 departure. '
+        + 'Baggage 25 kg checked, 7 kg hand-carry, one piece. '
         + 'Register on Visit Japan Web before flying — Malaysian ePassport holders are visa-free for 90 days.' },
   { day: 1, time: '10:15', name: 'SQ131 · Penang (PEN) → Singapore (SIN)',
     durationLabel: 'flight', stopKind: 'transit',
@@ -204,9 +212,16 @@ export function durationMinutes(label) {
 /**
  * Files that are read by a path OTHER than the batch merge, so their absence
  * from the batch order is correct rather than a mistake: the app seed, the
- * two `stopSummary` files, and the duplicate manifest.
+ * two `stopSummary` files, the duplicate manifest, and the image patch.
+ *
+ * `images_patch.json` is an intermediate written by `fetch_images.py` on a
+ * dry run and consumed by its own `--apply`, which merges the images INTO the
+ * batch files. By the time the importer runs, the images are already in
+ * `day*.json` etc., so the patch itself must never be merged again.
  */
-const NON_BATCH = new Set(['trip12_app_seed.json', 'seed_duplicates.json']);
+const NON_BATCH = new Set([
+  'trip12_app_seed.json', 'seed_duplicates.json', 'images_patch.json',
+]);
 const NON_BATCH_RE = /^summaries-/;
 
 /**

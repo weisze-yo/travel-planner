@@ -6,7 +6,7 @@
    "anchorStop": "Assembly · Penang International Airport",
    "name": "International check-in, Level 2 (Clusters A/B/C, counters 1–61)",
    "nameJp": "",
-   "category": "sight",
+   "category": "service",
    "priceTier": "free",
    "stayMinutes": 45,
    "legs": [
@@ -121,7 +121,7 @@
    "anchorStop": "Assembly · Penang International Airport",
    "name": "ATM row, Level 2 public concourse (Ambank, Bank Islam, CIMB, HSBC, Maybank)",
    "nameJp": "",
-   "category": "sight",
+   "category": "service",
    "priceTier": "free",
    "stayMinutes": 5,
    "legs": [
@@ -144,7 +144,7 @@
    "anchorStop": "Assembly · Penang International Airport",
    "name": "Baggage wrapping and oversize baggage counter, Level 2 public concourse",
    "nameJp": "",
-   "category": "sight",
+   "category": "service",
    "priceTier": "RM",
    "stayMinutes": 15,
    "legs": [
@@ -167,7 +167,7 @@
    "anchorStop": "Assembly · Penang International Airport",
    "name": "Telco counters, Level 1 arrival floor (Celcom, Digi, Maxis)",
    "nameJp": "",
-   "category": "sight",
+   "category": "service",
    "priceTier": "RM",
    "stayMinutes": 15,
    "legs": [
