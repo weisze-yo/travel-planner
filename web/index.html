@@ -28,6 +28,10 @@
   <div id="screen" class="screen-host"></div>
   <div id="strip" class="strip-slot" hidden></div>
   <div id="undo" class="undo-slot" hidden></div>
+  <!-- §3.4 · search is app chrome, not a screen: five screens invoke it and
+       its state must not belong to any of them, which is the same reason
+       #undo lives here. -->
+  <div id="search" hidden></div>
   <nav id="tabbar" class="tabbar"></nav>
 </div>
 

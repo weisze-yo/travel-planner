@@ -1361,6 +1361,114 @@ export function imageCredit(image) {
   return [...parts, 'Commons'].join(' · ');
 }
 
+/*
+ * §3.4 · SEARCH, ACROSS THE THREE KINDS OF RECORD.
+ *
+ * NAMES ONLY — English or Japanese. Notes, summaries, prices and addresses
+ * are not searched, and the empty state says so, because a search that
+ * quietly matches a word buried in 480 characters of prose is a search
+ * whose results cannot be explained. This trip holds 787 named records:
+ * 618 places, 65 must-see spots and 104 shopping items.
+ *
+ * Two characters minimum. One character across 787 records is not a query,
+ * it is a keystroke, and answering it with 300 rows teaches the traveller
+ * to stop reading the list.
+ *
+ * PREFIX MATCHES FIRST, then anything containing the query — so typing
+ * "gin" puts "Ginzan Onsen Street" above "Nogawa, near Ginzan", which is
+ * the order a person means. Thirty shown at most.
+ */
+const SEARCH_MIN = 2;
+const SEARCH_CAP = 30;
+
+/** The searchable name pair, lower-cased once. */
+const searchNames = (r) => [r?.name, r?.nameJp, r?.title]
+  .filter(Boolean).map((v) => String(v).toLowerCase());
+
+/**
+ * Where a record sits, for the result's context line. Never the record's own
+ * note: the line answers "which of the four Ginzan things is this", and a
+ * note answers something else.
+ */
+function searchContext(record, kind) {
+  if (kind === 'place') {
+    if (record.retired) {
+      // §3.4 · a retired place says WHY rather than repeating the day, which
+      // the chip and the ink have already said twice.
+      return record.retiredReason || 'not on the trip any more';
+    }
+    const stopID = record.anchorPlaceID;
+    const n = stopID ? dayForPlace(stopID) : dayForPlace(record.id);
+    const stop = stopID ? place(stopID) : null;
+    return [n ? `Day ${n}` : null, stop?.name || record.anchorStop].filter(Boolean).join(' · ');
+  }
+  const stop = record.placeID ? place(record.placeID) : null;
+  const n = record.placeID ? dayForPlace(record.placeID) : null;
+  return [n ? `Day ${n}` : null, stop?.name || record.placeLabel || record.anchorStop]
+    .filter(Boolean).join(' · ');
+}
+
+/**
+ * A search across every named record on the trip.
+ *
+ * Returns `{ query, tooShort, total, shown, results }`. `tooShort` is a
+ * state of its own rather than "no results": a request that has not been
+ * made yet is not a result of zero, and the panel draws nothing for it.
+ */
+export function searchRecords(input) {
+  const query = String(input || '').trim().toLowerCase();
+  const total = state.places.length + state.mustSee.length + state.shopping.length;
+  if (query.length < SEARCH_MIN) {
+    return { query, tooShort: true, total, shown: 0, results: [] };
+  }
+
+  const hits = [];
+  const scan = (list, kind) => {
+    for (const record of list) {
+      const names = searchNames(record);
+      if (!names.some((n) => n.includes(query))) continue;
+      hits.push({
+        kind,
+        // PLACE / MUST-SEE / BUY as an uppercase WORD, never a colour: three
+        // hues for three record types would be three gated tokens carrying
+        // information a word carries free.
+        label: kind === 'place' ? 'PLACE' : (kind === 'mustSee' ? 'MUST-SEE' : 'BUY'),
+        id: record.id,
+        name: record.name || record.title || '',
+        nameJp: record.nameJp || '',
+        priceTier: kind === 'place' ? record.priceTier : '',
+        retired: Boolean(record.retired),
+        context: searchContext(record, kind),
+        // Where the row that holds this record lives, so the panel can send
+        // the traveller to it and mark it.
+        placeID: kind === 'place' ? (record.anchorPlaceID || record.id) : record.placeID,
+        rowKey: kind === 'place' ? 'place-row' : (kind === 'mustSee' ? 'shot-row' : 'shop-row'),
+        panel: kind === 'place' ? 'nearby' : (kind === 'mustSee' ? 'must' : 'shop'),
+        prefix: names.some((n) => n.startsWith(query)),
+      });
+    }
+  };
+  scan(state.places, 'place');
+  scan(state.mustSee, 'mustSee');
+  scan(state.shopping, 'shopping');
+
+  hits.sort((a, b) => {
+    if (a.prefix !== b.prefix) return a.prefix ? -1 : 1;
+    // A retired place is a real answer and is never hidden, but it sinks:
+    // nobody searching for a hotel wants the one that left the itinerary
+    // above the one they are sleeping in.
+    if (a.retired !== b.retired) return a.retired ? 1 : -1;
+    return a.name.localeCompare(b.name);
+  });
+
+  return {
+    query, tooShort: false, total,
+    shown: Math.min(hits.length, SEARCH_CAP),
+    matched: hits.length,
+    results: hits.slice(0, SEARCH_CAP),
+  };
+}
+
 export const place = (id) => state.places.find((p) => p.id === id) || null;
 export const weather = (n = state.selectedDay) => (state.trip?.weather || []).find((w) => w.dayNumber === n) || null;
 

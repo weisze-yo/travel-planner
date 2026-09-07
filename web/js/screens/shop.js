@@ -6,7 +6,7 @@
 import { html, raw, icon, delegate, money, boundedNumber } from '../util.js';
 import * as store from '../store.js';
 import { state } from '../store.js';
-import { checkbox, itemEditor, readItemEditor } from './parts.js';
+import { checkbox, itemEditor, readItemEditor, searchButton } from './parts.js';
 import { PAYMENTS, BADGES, SHOP_CATEGORIES } from '../data.js';
 import { swipeToDelete } from './parts.js';
 import { go } from '../nav.js';
@@ -48,6 +48,7 @@ export default {
               <div class="screen-title">Shopping list</div>
               <div class="screen-sub">${totals.total} items · ${groups.length} places</div>
             </div>
+            ${searchButton()}
             <button class="btn sm ink" data-act="add-toggle">${addOpen ? 'Close' : '+ Add'}</button>
           </div>
         </div>

@@ -6,7 +6,7 @@ import { html, raw, icon, delegate } from '../util.js';
 import * as store from '../store.js';
 import { state } from '../store.js';
 import { go } from '../nav.js';
-import { dayPills, tripChip, emptyDay, draggableSheet } from './parts.js';
+import { dayPills, tripChip, emptyDay, draggableSheet, searchButton } from './parts.js';
 
 let mapView = null;
 let layers = null;
@@ -32,6 +32,9 @@ export default {
             <button class="grow" style="text-align:left;min-width:0" data-act="trips" aria-label="Switch trip">
               ${tripChip()}
             </button>
+            <!-- §3.4 · between the chip and the gear, which is the gap
+                 this header already had. -->
+            ${searchButton()}
             <button class="iconbtn filled" data-act="trip" aria-label="Trip settings">
               ${raw(icon.gear)}
             </button>

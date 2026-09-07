@@ -24,7 +24,7 @@ import { html, raw, esc, icon, delegate, parseClock, clock } from '../util.js';
 import * as store from '../store.js';
 import { state } from '../store.js';
 import { go } from '../nav.js';
-import { dayPills, weatherBanner, bindDragReorder, swipeToDelete, emptyShared, arrivalBanner } from './parts.js';
+import { dayPills, weatherBanner, bindDragReorder, swipeToDelete, emptyShared, arrivalBanner, searchButton } from './parts.js';
 
 let addOpen = false;
 let form = { name: '', start: '', end: '' };
@@ -97,6 +97,8 @@ export default {
                 ${issues.size ? raw(`· <b class="look-at">${issues.size} thing${issues.size === 1 ? '' : 's'} to look at</b>`) : ''}
               </div>
             </div>
+            <!-- §3.4 · beside the pencil, in the slot this header keeps. -->
+            ${searchButton()}
             <button class="iconbtn filled" data-act="toggle-edit"
                     style="${editing ? 'background:var(--jade)' : ''}"
                     aria-label="${editing ? 'Finish editing' : 'Edit this day'}"

@@ -5,7 +5,7 @@
 import { html, raw, icon, delegate, esc } from '../util.js';
 import * as store from '../store.js';
 import { state } from '../store.js';
-import { checkbox, swipeToDelete, dayPills } from './parts.js';
+import { checkbox, swipeToDelete, dayPills, searchButton } from './parts.js';
 import { OUTFIT_PICKS } from '../data.js';
 import { PACKED_LOCATIONS } from '../data.js';
 
@@ -29,10 +29,18 @@ export default {
     return html`
       <section class="screen">
         <div class="head">
-          <div class="screen-title">Trip prep</div>
-          <div class="screen-sub">
-            ${state.trip?.dayCount || 0} days${gap != null && gap > 0
-              ? ` · departs in ${gap} day${gap === 1 ? '' : 's'}` : ''}
+          <!-- §3.4 · this header had no icon row, so it gains the one every
+               other screen already has rather than the magnifier being
+               dropped somewhere of its own. -->
+          <div class="head-row">
+            <div class="grow">
+              <div class="screen-title">Trip prep</div>
+              <div class="screen-sub">
+                ${state.trip?.dayCount || 0} days${gap != null && gap > 0
+                  ? ` · departs in ${gap} day${gap === 1 ? '' : 's'}` : ''}
+              </div>
+            </div>
+            ${searchButton()}
           </div>
           <div class="progress mt12"><i style="width:${progress.percent}%"></i></div>
           <div class="f11 w650 muted mt6">${progress.packed} of ${progress.total} packed</div>
