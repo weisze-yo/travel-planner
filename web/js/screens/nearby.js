@@ -238,8 +238,12 @@ function card(p) {
           <button class="nearby-name" style="text-align:left" data-open-place="${p.id}">${p.name}</button>
           <span class="nearby-price">${p.priceTier}</span>
         </div>
+        <!-- B4 · the street, when OpenStreetMap named one. The note stays
+             after it: on a researched place the note is the whole reason the
+             place is in the list, and on a pasted one it is "Added from a
+             map link", which the street then qualifies. -->
         <div class="nearby-note">
-          ${store.categoryLabel(p.category)} · ${p.note}
+          ${store.categoryLabel(p.category)}${p.street ? ` · ${p.street}` : ''} · ${p.note}
         </div>
         <div class="row g5 center wrap mt6">
           ${p.latitude ? '' : html`

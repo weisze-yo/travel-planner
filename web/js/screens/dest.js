@@ -380,10 +380,15 @@ export default {
     });
 
     delegate(root, '[data-act="edit-facts"]', () => {
-      sheet = { kind: 'facts' }; sheetError = ''; sheetPending = false; repaint();
+      sheet = { kind: 'facts', id: null }; sheetError = ''; sheetPending = false; repaint();
+    });
+    // B4 · the Edit chip on a nearby card. Same sheet, a different subject.
+    delegate(root, '[data-edit-place]', (el) => {
+      sheet = { kind: 'facts', id: el.dataset.editPlace };
+      sheetError = ''; sheetPending = false; repaint();
     });
     delegate(root, '[data-act="fix-position"]', () => {
-      sheet = { kind: 'facts' }; sheetError = ''; sheetPending = false; repaint();
+      sheet = { kind: 'facts', id: null }; sheetError = ''; sheetPending = false; repaint();
     });
     delegate(root, '[data-act="facts-cancel"]', () => {
       if (sheetPending) return;
@@ -394,7 +399,11 @@ export default {
       const rows = readFactsEditor(root);
       const link = readFactsLink(root);
       const identity = readFactsIdentity(root);
-      const was = store.place(it?.placeID)?.sourceLink || '';
+      // Every write below goes to the sheet's OWN subject, not the screen's:
+      // the Edit chip can open a nearby place's sheet from its stop, and
+      // saving it must not rewrite the stop instead.
+      const target = factsSubject(it)?.id || it?.placeID;
+      const was = store.place(target)?.sourceLink || '';
 
       // Bugs 7 and 8 · a place must keep a name, so an emptied field is a
       // refusal in the field rather than a place with no label.
@@ -407,8 +416,8 @@ export default {
 
       // The typed rows are the user's own and are written first, so a link
       // that cannot be read never costs them the rest of the edit.
-      store.updatePlaceIdentity(it?.placeID, identity);
-      store.updatePlaceFacts(it?.placeID, rows);
+      store.updatePlaceIdentity(target, identity);
+      store.updatePlaceFacts(target, rows);
 
       if (link === was) { sheet = null; sheetError = ''; repaint(); return; }
 
@@ -418,7 +427,7 @@ export default {
       sheetPending = true;
       sheetError = '';
       repaint();
-      const result = await store.setPlaceLink(it?.placeID, link);
+      const result = await store.setPlaceLink(target, link);
       sheetPending = false;
       if (!result.ok) {
         // The same refusal a bad link gets anywhere else in the app, in the
@@ -531,13 +540,22 @@ function nearbyPanel(it, places) {
                   <button class="nearby-name" style="text-align:left" data-open-place="${place.id}">${place.name}</button>
                   <span class="nearby-price">${place.priceTier}</span>
                 </div>
+                <!-- B4 · the second line carries the STREET when one is
+                     known: WHERE, rather than which postcode. It is only
+                     ever a street OpenStreetMap named, never the third
+                     comma-segment of a flat address string, which is
+                     exactly the guess that made the reported case wrong. -->
                 <div class="nearby-note">
-                  ${store.categoryLabel(place.category)} · ${store.duration(travel)} away
+                  ${store.categoryLabel(place.category)}${
+                    place.street ? ` · ${place.street}` : ''} · ${store.duration(travel)} away
                 </div>
-                ${place.latitude ? '' : html`
-                  <!-- N-11 · the same chip the Plan row carries, on its own
-                       row rather than tucked into the metadata line. -->
-                  <div class="row g5 mt6"><span class="chip amber">No position</span></div>`}
+                <div class="row g5 center wrap mt6">
+                  ${place.latitude ? '' : html`
+                    <!-- N-11 · the same chip the Plan row carries. -->
+                    <span class="chip amber">No position</span>`}
+                  <button class="edit-chip" data-edit-place="${place.id}"
+                          aria-label="Correct ${place.name}">Edit</button>
+                </div>
               </div>
               <button class="nearby-add${picked ? ' on' : ''}" data-pick="${place.id}"
                       aria-label="${picked
@@ -820,6 +838,9 @@ function logPanel(it, notes) {
     </div>`;
 }
 
+/** Which place the open facts sheet is about: a card's, or this screen's. */
+const factsSubject = (it) => store.place(sheet?.id || it?.placeID);
+
 /** Whichever sheet is open, over the panels. */
 function sheetMarkup(it, shopHere, shots) {
   if (!sheet) return '';
@@ -835,7 +856,13 @@ function sheetMarkup(it, shopHere, shots) {
       { placeName: it?.name, error: sheetError, image: pendingPhoto });
   }
   if (sheet.kind === 'facts') {
-    return factsEditor(store.place(it?.placeID), { error: sheetError, pending: sheetPending });
+    // B4 · an id, like the item and shot sheets have carried all along. The
+    // Edit chip on a nearby card opens THAT place's sheet without leaving
+    // the stop, so correcting a name pasted from a map link no longer means
+    // navigating into the place and finding the Info tab first. No id means
+    // the subject of this screen, which is what the Info tab's own
+    // "Correct or add to this" has always meant.
+    return factsEditor(factsSubject(it), { error: sheetError, pending: sheetPending });
   }
   return '';
 }

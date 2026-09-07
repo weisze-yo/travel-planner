@@ -253,9 +253,16 @@ export function parseMapLink(text) {
  * data, not a commercial places database — so every field is optional.
  */
 export async function placeDetails({ latitude, longitude, query }) {
+  // `addressdetails=1` is here for B4's second line on a nearby card, which
+  // wants THE STREET and not a guess at one. `display_name` is a flat comma
+  // string, so picking "the street" out of it means picking the third
+  // segment and hoping — which is wrong for exactly the addresses that made
+  // this a bug ("Part of Lot 2219, Section 1, Jalan Raja Uda, ..."). Asking
+  // for the structured object instead means the street is either KNOWN or
+  // absent, and absent renders as nothing.
   const url = latitude != null && longitude != null
-    ? `https://nominatim.openstreetmap.org/reverse?format=jsonv2&extratags=1&lat=${latitude}&lon=${longitude}`
-    : `https://nominatim.openstreetmap.org/search?format=jsonv2&extratags=1&limit=1&q=${encodeURIComponent(query)}`;
+    ? `https://nominatim.openstreetmap.org/reverse?format=jsonv2&extratags=1&addressdetails=1&lat=${latitude}&lon=${longitude}`
+    : `https://nominatim.openstreetmap.org/search?format=jsonv2&extratags=1&addressdetails=1&limit=1&q=${encodeURIComponent(query)}`;
 
   const data = await get(url);
   const hit = Array.isArray(data) ? data[0] : data;
@@ -267,6 +274,11 @@ export async function placeDetails({ latitude, longitude, query }) {
     latitude: hit.lat ? Number(hit.lat) : null,
     longitude: hit.lon ? Number(hit.lon) : null,
     address: hit.display_name || null,
+    // The named way this place is ON. OSM files a street under `road`, and
+    // a square or a lane under one of these instead; anything else is not a
+    // street and is left out rather than approximated.
+    street: hit.address?.road || hit.address?.pedestrian || hit.address?.footway
+      || hit.address?.residential || null,
     openingHours: tags.opening_hours || null,
     phone: tags.phone || tags['contact:phone'] || null,
     website: tags.website || tags['contact:website'] || null,

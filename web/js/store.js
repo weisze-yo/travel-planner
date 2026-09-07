@@ -2771,11 +2771,36 @@ export async function resolvePlaceInput(input) {
   }
 
   const fromLink = link?.kind === 'link' ? link : null;
-  const name = fromLink?.name || (fromLink ? 'Saved from a link' : text);
+  const label = fromLink?.name || (fromLink ? 'Saved from a link' : text);
+
+  /*
+   * B4 · A NAME IS WHAT YOU CALL IT. THE ADDRESS IS A ROW IN THE TABLE.
+   *
+   * A Google `/place/` URL yields its own address as the label, so pasting
+   * one put
+   *
+   *   "FamilyMart Caltex Raja Uda, Part of Lot 2219, Section, 1, Jalan Raja
+   *    Uda, Taman Tanjung Aman, 12300 Butterworth, Penang"
+   *
+   * — 168 characters — in the `name`. That is five lines in a 14px name
+   * column, and the same string then reappeared in the Plan card, the
+   * sub-route summary, the dark dock and the Log.
+   *
+   * The first comma-segment is the name; the whole string is the address,
+   * which the Info tab already has a row for. Splitting only when there IS
+   * a comma means "Tsukiji Outer Market" is untouched, and the two halves
+   * always come from the same string so the pair cannot disagree.
+   */
+  const comma = label.indexOf(',');
+  const split = fromLink && comma > 0
+    ? { name: label.slice(0, comma).trim(), address: label }
+    : null;
+  const name = split ? split.name : label;
 
   let latitude = fromLink?.latitude ?? null;
   let longitude = fromLink?.longitude ?? null;
   let essentials = [];
+  let street = null;
 
   if (online()) {
     try {
@@ -2788,16 +2813,28 @@ export async function resolvePlaceInput(input) {
           latitude = detail.latitude;
           longitude = detail.longitude;
         }
+        street = detail.street || null;
         essentials = [
           detail.openingHours && { key: 'Hours', value: detail.openingHours, detail: 'From OpenStreetMap' },
           detail.phone && { key: 'Phone', value: detail.phone, detail: '' },
           detail.website && { key: 'Website', value: detail.website, detail: '' },
-          detail.address && { key: 'Address', value: detail.address, detail: '' },
+          // The link's OWN string wins when the name was split out of it:
+          // the two halves have to keep coming from one string, or a place
+          // ends up named after the first segment of a different address.
+          (split?.address || detail.address) && {
+            key: 'Address', value: split?.address || detail.address, detail: '',
+          },
         ].filter(Boolean);
       }
     } catch {
       // Offline, or nothing known. It still saves.
     }
+  }
+
+  // A link that could not be looked up still keeps its own split, so the
+  // name is short whether or not OpenStreetMap answered.
+  if (split && !essentials.some((row) => row.key === 'Address')) {
+    essentials = [...essentials, { key: 'Address', value: split.address, detail: '' }];
   }
 
   return {
@@ -2806,6 +2843,7 @@ export async function resolvePlaceInput(input) {
     latitude,
     longitude,
     essentials,
+    street,
     fromLink: Boolean(fromLink),
     sourceLink: fromLink ? text : '',
   };
@@ -2857,6 +2895,7 @@ export async function setPlaceLink(placeID, link) {
     latitude: resolved.latitude ?? record.latitude,
     longitude: resolved.longitude ?? record.longitude,
     essentials: merged,
+    street: record.street || resolved.street || null,
     sourceLink: resolved.sourceLink || text,
   });
   return {
@@ -2881,6 +2920,9 @@ function savePlaceRecord(resolved, { category, walkMinutes, stayMinutes, anchorP
     latitude: resolved.latitude,
     longitude: resolved.longitude,
     essentials: resolved.essentials,
+    // B4 · the useful half of an address: WHERE, not which postcode. Only
+    // ever a street OpenStreetMap named; never derived from the flat string.
+    street: resolved.street || null,
     sourceLink: resolved.sourceLink,
     isStop: Boolean(isStop),
   };

@@ -59,6 +59,41 @@ fractional borders. 1.5px stays in the stylesheet because it is the app's own pr
 target, an iPhone 13 — paints it. The test asserts the app and a bare div agree, so a real
 override would still be caught.
 
+### 3 · The street on a nearby card comes from OSM's structured address, not from the flat string
+
+B4 asks the card's second line to carry "the street — the useful half of the address, which is
+*where* rather than which postcode", and its example turns
+
+    Part of Lot 2219, Section 1, Jalan Raja Uda, Taman Tanjung Aman, 12300 Butterworth, Penang
+
+into `Jalan Raja Uda`. That is the **third** comma-segment. Picking the third segment of an
+arbitrary address is exactly the guess that made the original bug wrong — plenty of addresses put
+the street first, or second, or nowhere.
+
+So `placeDetails` asks Nominatim for `addressdetails=1` and reads `address.road` (with
+`pedestrian` / `footway` / `residential` as the other things OSM files an actual named way under).
+The street is then either **known** or **absent**, and absent renders as nothing rather than as a
+suburb wearing a street's slot.
+
+**Consequence to know about:** in this sandbox OpenStreetMap is unreachable, so `street` is null
+on every place created here and the second line reads `Food · 5 min away`. That is the designed
+fallback and the test asserts it explicitly. On a real device with a network, the street appears.
+The Nominatim response shape for `addressdetails=1` could not be verified live from here.
+
+### 4 · The Edit chip lands on the Nearby TAB only, not on the fuller Nearby screen
+
+B4 draws the Edit chip on a nearby card. There are two renderers for nearby cards: `dest.js`'s
+Nearby tab, and `nearby.js`'s fuller screen. The chip is on the first.
+
+`nearby.js` has no sheet infrastructure at all — no scrim, no modal, no sheet state — and §3.7
+rebuilds that entire screen (the dock goes, the `+`/`✓` goes, `Sort` goes, the card gains a
+sub-route select). Adding a facts sheet to it now means building it twice, and B4's own drawing
+places the chip beside §3.7's sub-route select, which does not exist yet.
+
+Both renderers DO get the split name, the ellipsis and the street — those are cheap and belong
+everywhere. **§3.7 must carry the Edit chip onto the fuller screen's card**; it is written into
+that task so it cannot be lost.
+
 ## UNRESOLVED — needs the owner
 
 Nothing yet.

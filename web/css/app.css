@@ -917,7 +917,57 @@ input[type="radio"], input[type="checkbox"] {
 .nearby-card { display: flex; gap: 11px; padding: 11px; background: #fff; border-radius: 15px; border: 1px solid var(--line-2); }
 .nearby-card.picked { border-color: var(--amber-bd); }
 .nearby-thumb { width: 56px; height: 56px; flex: none; border-radius: 11px; background: repeating-linear-gradient(135deg, #E2E6E2 0 7px, #DADFDA 7px 14px); }
-.nearby-name { font-size: 14px; font-weight: 650; line-height: 1.2; flex: 1; min-width: 0; }
+/*
+ * B4 · ONE LINE, ELLIPSISED, NEVER WRAPPED.
+ *
+ * A pasted Google `/place/` link used to put its whole address in the name —
+ * 168 characters in a 14px column, five lines on one card, and the same
+ * string again in the Plan card, the sub-route summary, the dark dock and
+ * the Log. The name is split at its first comma now (store.js
+ * `resolvePlaceInput`), and this is the belt to that braces: a long name
+ * from any other source truncates instead of pushing the card open.
+ */
+.nearby-name {
+  font-size: 14px;
+  font-weight: 650;
+  line-height: 1.2;
+  flex: 1;
+  min-width: 0;
+  white-space: nowrap;
+  overflow: hidden;
+  text-overflow: ellipsis;
+}
+/*
+ * The Edit chip the report asked for twice ("user unable to edit the name",
+ * "cannot edit the info shown on the card"). Built on §3.5's inline chip
+ * geometry — 26px, r8, #EFF1EE — so it agrees with the sub-route select
+ * that lands beside it in §3.7, and carries F2's 26-seen/44-felt padding
+ * for the same reason the selects do.
+ */
+.edit-chip {
+  position: relative;
+  height: 26px;
+  padding: 0 10px;
+  border-radius: 8px;
+  background: #EFF1EE;
+  font-size: 11.5px;
+  font-weight: 700;
+  color: var(--charcoal);
+  white-space: nowrap;
+  flex: none;
+}
+/*
+ * F2 again, and it cannot be done the way `.sel-chip` does it. There the
+ * painted chip is the WRAPPER and the 44px box is the select inside it; a
+ * button is one box, so padding would grow the paint with the target. A
+ * pseudo-element is a box of its own that still targets its host, so the
+ * hit area reaches 44px while the chip stays painted at 26px.
+ */
+.edit-chip::before {
+  content: '';
+  position: absolute;
+  inset: -9px 0;
+}
 .nearby-price { font-size: 11px; color: var(--soft); font-weight: 700; flex: none; }
 .nearby-note { font-size: 11px; color: var(--muted); margin-top: 2px; }
 .leg { display: flex; align-items: center; gap: 4px; padding: 3px 7px; border-radius: 7px; background: #EFF1EE; font-size: 10.5px; font-weight: 700; color: var(--charcoal); white-space: nowrap; }
