@@ -29,6 +29,14 @@ ACTIVE = {
  "Kawagoe Old Town (Kurazukuri Street)","Shibuya Scramble Crossing","Shinjuku Granbell Hotel",
  "Tokyo Tower","Tsukiji Outer Market","Shisui Premium Outlets","International Resort Hotel Yurakujo",
  "Narita Airport — Terminal 1 South Wing",
+ # --- the travel-leg airport stops, added 7 Sep 2026 so incoming airport
+ # research validates against them. These have been in the app's plan since
+ # the travel legs were imported; only "Haneda Airport — Terminal 3" was ever
+ # in this whitelist, so records for the other three were rejected as unknown
+ # stops. Byte-for-byte the names the plan carries.
+ "Assembly · Penang International Airport",
+ "Arrive Singapore Changi — connection to SQ634",
+ "Arrive Singapore Changi — connection to SQ142",
 }
 # --- kept for shape compatibility; empty since owner decision A6 made Ginza a MAIN stop ---
 BACKUP = set()
@@ -54,9 +62,36 @@ errs, warns = [], []
 def E(m): errs.append(m)
 def W(m): warns.append(m)
 
-def in_japan(lat, lon):
-    return isinstance(lat,(int,float)) and isinstance(lon,(int,float)) \
-           and 30 < lat < 46 and 128 < lon < 146
+# --- Blocker 2, 7 Sep 2026 · the coordinate guard is per-STOP, not per-country.
+#
+# It used to be a single in_japan() box, which is right for 33 of the stops
+# and wrong for the first three that are not in Japan: Penang (5.30, 100.28)
+# and Changi (1.36, 103.99) both failed it. A wider single box would have been
+# the easy fix and the wrong one — it would have stopped catching the class of
+# error this guard exists for. Two coordinates in the existing bundle were
+# once marked `verified` and were wrong, one by 260 km because an English
+# homonym sent a geocoder to Hokkaido; a box loose enough to hold Penang and
+# Sendai at once would have accepted both of them.
+#
+# So each region keeps a tight box, and a stop names its region. Anything not
+# named here is in Japan, which is the default the other 33 stops want.
+REGIONS = {
+    "japan":     (30, 46, 128, 146),
+    "penang":    (5.1, 5.6, 100.1, 100.6),
+    "singapore": (1.15, 1.55, 103.6, 104.1),
+}
+REGION_OF_STOP = {
+    "Assembly · Penang International Airport":        "penang",
+    "Arrive Singapore Changi — connection to SQ634":  "singapore",
+    "Arrive Singapore Changi — connection to SQ142":  "singapore",
+}
+
+def in_region(lat, lon, stop):
+    if not (isinstance(lat,(int,float)) and isinstance(lon,(int,float))):
+        return False, "japan"
+    name = REGION_OF_STOP.get(stop, "japan")
+    lo_lat, hi_lat, lo_lon, hi_lon = REGIONS[name]
+    return (lo_lat < lat < hi_lat and lo_lon < lon < hi_lon), name
 
 def check_images(r, where):
     """Images get redistributed into the user's app, so licence is mandatory."""
@@ -96,8 +131,11 @@ def check_common(r, where, declared):
         W("%s: no source URL" % where)
     lat, lon = r.get("latitude"), r.get("longitude")
     if lat is not None or lon is not None:
-        if not in_japan(lat, lon):
-            E("%s: coordinates %r,%r are not in Japan" % (where, lat, lon))
+        ok, region = in_region(lat, lon, a)
+        if not ok:
+            E("%s: coordinates %r,%r are outside the %s box %r — a stop's region "
+              "comes from REGION_OF_STOP, and everything unlisted is Japan"
+              % (where, lat, lon, region, REGIONS[region]))
         p = r.get("coordPrecision")
         if p not in PREC:
             E("%s: coordPrecision must be 'verified' or 'approximate' (got %r)" % (where, p))
@@ -155,6 +193,13 @@ def validate(path):
                 if not isinstance(lg, dict) or lg.get("mode") not in MODE \
                         or not isinstance(lg.get("minutes"), int):
                     E("%s: bad leg %r — want {mode:walk|train|bus, minutes:N}" % (w, lg))
+                # Blocker 3, 7 Sep 2026 · MAX_WALK stays at 30 and applies to
+                # WALK legs only. An airport terminal transfer is not a walk:
+                # Changi's Skytrain runs airside between T1/T2/T3 free, every
+                # few minutes, and the ride itself is 2-4 minutes. Expressed
+                # as a `train` leg it is honest and it is not measured against
+                # a walking radius; expressed as a walk it would both break
+                # this ceiling and misdescribe how you get there.
                 elif lg["mode"] == "walk" and lg["minutes"] > MAX_WALK:
                     # a retired record documents what WAS researched — do not rewrite its legs
                     (W if r.get("retired") else E)(

@@ -38,8 +38,9 @@ component library.
 ```
 
 Each accent already carries a meaning. **Do not reuse one for a new meaning.** A new meaning gets a
-new hue. There is precedent: a five-colour set was added for the stop-summary labels, chosen to sit
-in the cool arc the palette leaves empty, and it stays out of jade/amber/danger territory:
+new hue. There is precedent: a five-colour set is in `app.css` for the Must-tab
+labels (§3.2), chosen to sit in the cool arc the palette leaves empty, and it stays out of
+jade/amber/danger territory:
 
 ```
 --sum-do #26327A (231°)  --sum-eat #7C2F72 (308°)  --sum-see #6A4FA8 (258°)
@@ -49,7 +50,9 @@ in the cool arc the palette leaves empty, and it stays out of jade/amber/danger 
 ### The accessibility bar — this is gated in CI, not advisory
 
 `test/contrast.mjs` computes real WCAG ratios from the hex values and **exits non-zero** if any pair
-introduced by a session drops below **AA 4.5:1**. Every new foreground/background pair you propose
+introduced by a session drops below **AA 4.5:1**. The five above are in its gated set, measured on
+both grounds — 11.54 / 8.38 / 6.37 / 5.33 / 5.52 on white, and 10.37 / 7.53 / 5.72 / 4.79 / 4.96 on
+`--bone`. Every new foreground/background pair you propose
 must clear 4.5:1 on **both** white and `--bone #F2F3F1`.
 
 Two further rules the existing work holds itself to:
@@ -109,8 +112,18 @@ every day currently reads *"No forecast for this day yet."*
 
 **Please decide:** where these two paragraphs live and how they relate to each other and to the
 existing "WHAT I AM ACTUALLY BRINGING" list below them. They are ~300–400 characters each, they are
-genuinely different in kind (one is about photographs, one is about comfort), and they are the single
-biggest piece of finished content the app is currently hiding.
+genuinely different in kind (one is about photographs, one is about comfort), and they were until
+recently the single biggest piece of finished content the app was hiding.
+
+**One precedent, offered rather than imposed.** The same problem has just been solved once, for a
+different body of hidden prose: each stop carries five researched lines (do · eat · snack · buy ·
+see, ~480 characters each) that nothing rendered either, and they now live on a **Must** tab as five
+collapsible sections — the label and its own hue on the header, a one-line truncated peek of the
+text when closed, one section open by default. `.must-sec` in `app.css` is the shipped recipe, and
+the five hues are the `--sum-*` tokens listed in §2. That is a per-stop answer to a per-day
+question, so it may or may not suit here; reuse it, or depart from it deliberately and say why. What
+would be worth avoiding is the app growing two unrelated ways to present the same *kind* of
+thing.
 
 ### 3.3 An image slot that degrades honestly
 
