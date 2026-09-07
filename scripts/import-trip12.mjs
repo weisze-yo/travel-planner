@@ -99,6 +99,7 @@ function printReport(report, target) {
   console.log(`  places whose anchorStop changed     ${report.anchorChanges.length}`);
   for (const a of report.anchorChanges) console.log(`      ${a.id}  ${String(a.name).slice(0, 38)}  -> ${a.to}`);
   console.log(`  fields preserved by field-wise merge ${report.fieldWiseRescues}`);
+  console.log(`  nearby places given an Info tab      ${report.placeEssentials.filled} (${report.placeEssentials.rows} rows)`);
 
   console.log('\n  stop coordinate fixes');
   for (const c of report.coordFixes) {

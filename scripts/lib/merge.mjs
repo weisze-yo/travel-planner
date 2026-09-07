@@ -364,6 +364,66 @@ export function findNestedArrays(snapshot) {
   return hits;
 }
 
+/** "30 min" · "1 h 30" — the register the stop rows already use. */
+const stayLabel = (m) => {
+  if (!Number.isFinite(m) || m <= 0) return '';
+  return m < 60 ? `${m} min` : `${Math.floor(m / 60)} h${m % 60 ? ` ${m % 60}` : ''}`;
+};
+
+const TIME_WINDOW_LABEL = {
+  day: 'Daytime',
+  night: 'After dark',
+  dawn: 'Before dawn',
+  '24h': 'Any hour',
+};
+
+/**
+ * The Info tab of a NEARBY place, built from what the research already knows
+ * about it.
+ *
+ * Every one of the 532 places carries a note, and 73% of those notes state the
+ * opening hours in prose — that text already renders as the description. What
+ * was empty was the Info panel itself, because `Place.essentials` was never
+ * set, so opening a place showed "Nothing here yet. Pasting a map link fills in
+ * whatever OpenStreetMap has."  That reads as missing data on a record that is
+ * in fact fully researched.
+ *
+ * So this projects the fields that ARE there into the same `[EssentialRow]`
+ * shape the stops use. It invents nothing: no hours, no phone, no website —
+ * those genuinely do not exist per place, and claiming them would be worse
+ * than an empty panel.
+ *
+ * `Position` earns its row because two coordinates in this dataset were once
+ * marked verified and were wrong, one by 260 km. Whether a pin was confirmed
+ * or inferred is worth saying out loud.
+ */
+export function projectPlaceEssentials(p) {
+  const rows = [];
+  const add = (key, value, detail = '') => {
+    if (value === null || value === undefined || value === '') return;
+    rows.push({ key, value: String(value), detail: detail ? String(detail) : '' });
+  };
+
+  add('Price', p.priceTier);
+  add('Time needed', stayLabel(p.stayMinutes));
+
+  const legs = Array.isArray(p.legs) ? p.legs : [];
+  if (legs.length) {
+    const total = legs.reduce((n, l) => n + (l.minutes || 0), 0);
+    add('Getting there',
+      legs.map((l) => `${l.mode} ${l.minutes} min`).join(' · '),
+      total ? `${total} minutes from the stop, one way` : '');
+  }
+
+  add('Best time', TIME_WINDOW_LABEL[p.timeWindow]);
+  // A confidence below `high` always carries a note saying what is uncertain —
+  // the validator enforces it — so the doubt travels with the fact.
+  add('Confidence', p.confidence, p.confidenceNote);
+  add('Position', p.coordPrecision === 'verified' ? 'Verified' : 'Approximate', p.coordFix);
+  add('Source', p.source);
+  return rows;
+}
+
 /**
  * Reads the bundle and returns the finished snapshot plus a report of every
  * decision the merge made. The report is the dry run's output, and the same
@@ -802,6 +862,18 @@ export function buildSnapshot(researchDir, guidePath) {
       s.placeWhen = `Day ${hit.dayNumber} · ${anchor}${w ? `, ${w}` : ''}`;
       report.placeWhenSet = (report.placeWhenSet || 0) + 1;
     }
+  }
+
+  // ---- 7c. the Info tab on every nearby place -----------------------------
+  report.placeEssentials = { filled: 0, rows: 0 };
+  for (const [, p] of coll.places) {
+    if (p.isStop) continue;          // a stop's Info comes from its own essentials block
+    if (p.essentials?.length) continue;
+    const rows = projectPlaceEssentials(p);
+    if (!rows.length) continue;
+    p.essentials = rows;
+    report.placeEssentials.filled += 1;
+    report.placeEssentials.rows += rows.length;
   }
 
   // ---- 8. subRoutes: the mapping gap in §4.7 ------------------------------

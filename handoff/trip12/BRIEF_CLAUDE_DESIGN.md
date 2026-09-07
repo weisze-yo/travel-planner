@@ -130,23 +130,37 @@ broken or as a loading state.
 image carries `credit` (e.g. an artist name) and `sourcePage` (a Commons URL). Your design must
 include somewhere legible for that credit line. It cannot be hidden behind a tap.
 
-### 3.4 Where a full-text search box lives
+### 3.4 Where a full-text search box lives  — *deliberately bounded*
 
 **Not yet built, and the mounting point is genuinely open.** One box over 688 records (532 places +
 60 must-see + 96 shopping), matching English and Japanese names.
 
-The two candidate homes both have problems:
+**Two questions only, and they are both small:**
 
-- `nav.js` has a **fixed five-entry tab bar** — Map · Plan · Shop · Prep · Log. A sixth tab changes
-  the whole bar's rhythm.
-- `strip.js` is a **single-slot ranked warning strip** above the tab bar, showing one thing at a
-  time (a reminder, an offline warning). A permanent search box would occupy the slot the warnings
-  need.
+1. **Where is search invoked from?** The two candidate homes both have a problem. `nav.js` has a
+   **fixed five-entry tab bar** — Map · Plan · Shop · Prep · Log — and a sixth changes the whole
+   bar's rhythm, which is why this belongs in the same round as the other three rather than after
+   them. `strip.js` is a **single-slot ranked warning strip** above the tab bar that shows one thing
+   at a time; a permanent search box would occupy the slot the warnings need.
+2. **What does a result row look like?** It must carry: record name, Japanese name where present,
+   `Day N · Stop name`, and which kind it is (place / must-see / buy). Retired records must be
+   visibly marked, so a searcher is not sent to a hotel the group is no longer staying at.
 
-**Please decide** where search is invoked from and what the result list looks like. A result row must
-show: record name, Japanese name if present, `Day N · Stop name`, and which kind it is (place /
-must-see / buy). Retired records must be visibly marked so a searcher is not sent to a hotel the
-group is no longer staying at.
+**What is NOT being asked, and should not be redesigned.** The behaviour after selection is already
+specified and settled: switch to the itinerary, navigate to that record's day, open its stop, scroll
+the matching row into view, flash-highlight it for ~2.4s, then clear the query and close the list.
+Likewise the mechanics: a two-character minimum, a 30-result cap, prefix matches ranked above
+substring, `Escape` clears, clicking outside closes without clearing, and an empty state that reads
+`Nothing matches "<query>".` rather than showing a blank panel.
+
+Please treat all of that as fixed. **Two artboards — an invocation and a result list — is a complete
+answer to this section.** It is scoped this tightly on purpose: the implementation behind it is the
+largest remaining piece of work in the project, and the design decision is worth having early
+precisely so it does not gate that work later.
+
+The one genuinely open sub-question, if you want it: the flash-highlight needs a treatment that
+survives `prefers-reduced-motion: reduce`, which the stylesheet already honours elsewhere. A
+non-animated equivalent is welcome.
 
 ---
 

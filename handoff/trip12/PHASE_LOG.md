@@ -708,3 +708,54 @@ separate from A9's Photo missions** — equipment is not the same list as assign
   errors that standard exists to prevent, and the byte-exact `anchorStop` strings.
 
 Both are drafts for the owner to review and send; neither has been sent.
+
+---
+
+## Nearby places get an Info tab (Option A), and the briefs are final
+
+### Option A, implemented
+
+Opening a nearby place used to show its name, `Food · ¥¥` and its full researched note — then an
+**empty Info panel** reading *"Nothing here yet. Pasting a map link fills in whatever OpenStreetMap
+has — hours…"*. On a record that is in fact fully researched, that reads as missing data.
+
+`Place.essentials` was simply never set. `projectPlaceEssentials()` now fills it from what each
+record already knows, in the same `[EssentialRow]` shape the stops use:
+
+| Row | From |
+|---|---|
+| Price | `priceTier` |
+| Time needed | `stayMinutes` |
+| Getting there | the `legs[]` chain, with the one-way total as the detail |
+| Best time | `timeWindow` — Daytime / After dark / Before dawn / Any hour |
+| Confidence | `confidence`, with `confidenceNote` as the detail |
+| Position | `coordPrecision`, with `coordFix` as the detail |
+| Source | `source` |
+
+**532 of 532 filled, 3,634 rows, mean 6.8 per place.** It invents nothing: no hours, no phone, no
+website, because those genuinely do not exist per place and claiming them would be worse than an
+empty panel. The 73% of notes that state opening hours in prose already render as the description.
+
+`Position` earns its row because two coordinates in this dataset were once marked `verified` and
+were wrong — one by 260 km, one by 2.4 km. Whether a pin was confirmed or inferred is worth saying.
+
+Verified in the app **on both builds**, since this is data-only and needs no redeploy: the empty
+message is gone, a nearby place shows seven rows, and a *stop* still shows its own eight starting
+with `Hours` rather than the projected set.
+
+### Search stays in the design round — the reasoning
+
+Checked against the code rather than estimated. **No scroll-into-view or flash-highlight machinery
+exists anywhere in `web/`**, so the expensive half of search is built from scratch; `go('dest', …)`
+already handles navigating *to* a record, and `app.css:1055` already has a
+`prefers-reduced-motion` block for the animation to live in.
+
+So the implementation is the largest remaining item — but the **design ask** is two artboards, and
+the post-selection behaviour was specified in §6.2 long ago and is not a design question. Section
+3.4 is therefore kept and explicitly bounded: invocation and result row only, with the settled
+mechanics listed as fixed.
+
+Keeping it costs one artboard set now. Dropping it would not shrink the implementation by a line —
+it would only guarantee a second design round whose latency gates the biggest remaining piece of
+work. The mounting decision also interacts with the other three asks: if search takes a sixth tab,
+the bar's rhythm changes under every screen, which is not a thing to discover after the fact.
