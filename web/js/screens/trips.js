@@ -58,6 +58,14 @@ let guess = null;
 let addFields = { name: '', place: '', start: '', days: '5' };
 /** The trip whose cover is being chosen, if any. */
 let covering = null;
+/**
+ * B10 · whether "Let it go" has been asked once.
+ *
+ * The removal card lists the shopping list, the packing list and the Log as
+ * still yours, so the control that deletes them names them first. Reset on
+ * every other way out of the card, so a half-asked question never survives.
+ */
+let letting = false;
 
 export default {
   id: 'trips',
@@ -156,8 +164,19 @@ export default {
     if (covering) return mountCover(root);
 
     delegate(root, '[data-act="keep-side"]', () => {
+      letting = false;
       store.keepMySide();
       store.refreshTrips();
+    });
+    // B10 · the other way out. Two taps, because the card directly above it
+    // has just listed three things as untouched.
+    delegate(root, '[data-act="let-go"]', () => { letting = true; store.touch(); });
+    delegate(root, '[data-act="let-cancel"]', () => { letting = false; store.touch(); });
+    delegate(root, '[data-act="let-final"]', async () => {
+      if (!letting) return;
+      letting = false;
+      await store.deleteTrip(state.tripID);
+      await store.refreshTrips();
     });
     delegate(root, '[data-act="install"]', () => { install.offer(); });
     delegate(root, '[data-act="install-no"]', () => { install.dismiss(); });
@@ -516,14 +535,40 @@ function removedCard() {
     <!-- Bug 4 · "Message <owner>" is gone. It copied a canned sentence to
          the clipboard and did nothing else — it could not reach the owner,
          because the app has no channel to them, so it offered a contact
-         action it cannot perform. One primary here, and it is the one that
-         does something. -->
+         action it cannot perform.
+
+         B10 · TWO WAYS OUT, AND BOTH OF THEM END THE NOTICE. That was the
+         actual bug: "it shows every time I re-enter the app even after I
+         pressed Keep my side" had a second half nobody had a control for —
+         there was no way to say "I have dealt with this" other than by
+         claiming the trip. Now there is, and the answer is written down
+         either way, so a relaunch cannot ask again. -->
     <div class="row g8 mb8">
       <button class="btn jade grow" data-act="keep-side">Keep my side as its own trip</button>
     </div>
+    ${letting ? html`
+      <!-- Named before the tap, not discovered after it. The card above has
+           just promised that the shopping list, the packing list and the Log
+           are untouched, so the control that removes them cannot be a single
+           ghost tap — it takes the app's own second-tap shape, the one the
+           swipe confirm and the empty-trip gate both use. -->
+      <div class="col g8 mb8">
+        <div class="f11 w700 lh145" style="color:var(--danger-fg)">
+          This removes ${state.trip?.name || 'the trip'} from this phone, and the shopping
+          list, the packing list and the Log listed above go with it. There is no undo.
+        </div>
+        <div class="row g8">
+          <button class="btn ghost grow" data-act="let-cancel">Keep it for now</button>
+          <button class="btn none" style="width:112px;background:var(--danger-bg);color:var(--danger-fg)"
+                  data-act="let-final">Let it go</button>
+        </div>
+      </div>` : html`
+      <div class="row g8 mb8">
+        <button class="btn ghost grow" data-act="let-go">Let it go</button>
+      </div>`}
     <div class="f11 soft lh145 mb18">
-      Keeping it makes a trip only you can see, with the dates, your lists and your Log.
-      The stops don’t come with it.
+      Keeping it makes a trip only you can see, with the dates, your lists and your Log —
+      the stops don’t come with it. Letting it go takes the whole card off this phone.
     </div>`;
 }
 
@@ -771,9 +816,13 @@ function addForm() {
            button lands on, which is the screen that actually asks for the
            itinerary — so the choice is offered at the moment there is
            something to decline, not one step early. -->
+      <!-- B1 · the hint names WHAT FOLLOWS rather than describing the
+           button that used to be here. Two sentences, because the second one
+           is the promise that makes moving the skip acceptable: the choice
+           is still offered, one screen later, where there is finally
+           something to decline. -->
       <div class="form-hint">
-        It goes straight to pasting the itinerary in, which is the fastest way from an empty
-        trip to a usable one. You can skip that there and add stops one at a time instead.
+        Next comes pasting the itinerary in. You can skip that there.
       </div>
     </div>`;
 }

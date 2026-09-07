@@ -426,6 +426,26 @@ await page.waitForTimeout(600);
   }));
   check('OD-6 · the first confirmation destroys nothing on its own',
     gated.stillThere > 0 && gated.finalUp, JSON.stringify(gated));
+  // B6 · the second gate is a TYPED WORD now, not a second button, because
+  // this is the one destructive action in the app with no undo. Clicking
+  // through it must fail, and this asserts that before doing it properly —
+  // the refusal is the safety property, so it is worth a check of its own
+  // rather than a step to be worked around.
+  await page.evaluate(() => document.querySelector('[data-act="clear-final"]')?.click());
+  await page.waitForTimeout(500);
+  const refused = await page.evaluate(() => ({
+    shopping: window.__store.state.shopping.length,
+    stillAsking: Boolean(document.querySelector('#empty-word')),
+  }));
+  check('B6 · a click through the typed gate destroys nothing',
+    refused.shopping > 0 && refused.stillAsking, JSON.stringify(refused));
+
+  await page.evaluate(() => {
+    const el = document.querySelector('#empty-word');
+    el.value = 'EMPTY';
+    el.dispatchEvent(new Event('input', { bubbles: true }));
+  });
+  await page.waitForTimeout(500);
   await page.evaluate(() => document.querySelector('[data-act="clear-final"]')?.click());
   await page.waitForTimeout(800);
   const after = await page.evaluate(() => ({

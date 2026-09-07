@@ -3188,7 +3188,20 @@ export function deleteSubRoute(id) {
   const route = subRouteByID(id);
   if (!route) return;
   if (state.loopID === id) state.loopID = null;
-  removeWithUndo('subRoutes', id, `${route.name} deleted`);
+  /*
+   * B5 · the undo line said "<name> deleted", which leaves the one question
+   * a traveller would actually have unanswered: did the PLACES go too? A
+   * sub route holds places by reference and deleting the route drops none of
+   * them, so the sentence has to say so — deleting a loop must not read as
+   * deleting the places in it.
+   *
+   * The day number is named for the same reason the empty-trip gate names
+   * the trip: the surprise this guards against is emptying the wrong one.
+   */
+  removeWithUndo(
+    'subRoutes', id,
+    `Gone from Day ${route.dayNumber}, and the places go back to just being saved`,
+  );
 }
 
 export function toggleSubRoutePlace(placeId, handle) {

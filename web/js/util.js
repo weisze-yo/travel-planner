@@ -52,6 +52,35 @@ export function delegate(root, selector, handler, event = 'click') {
   });
 }
 
+/**
+ * Enter and Space on anything wearing `role="button"`.
+ *
+ * A real `<button>` gets this from the platform. A div does not, and this app
+ * has several — a card that has to CONTAIN buttons cannot be one, so
+ * `.plan-card` and the sub-route card are both `role="button" tabindex="0"`.
+ * Without this they were focusable and announced as buttons and then did
+ * nothing when pressed, which is worse than not being focusable at all.
+ *
+ * Bound on the DOCUMENT, once, and deliberately not on the screen host:
+ * `nav.js` REPLACES that node on every paint, so a listener on it would
+ * survive exactly one render. Screens re-bind their click handlers for that
+ * reason; this is a property of the document instead.
+ *
+ * Space is prevented so the page does not scroll under the press; Enter is
+ * not, because nothing else claims it.
+ */
+export function bindRoleButtons() {
+  document.addEventListener('keydown', (e) => {
+    if (e.key !== 'Enter' && e.key !== ' ' && e.key !== 'Spacebar') return;
+    const hit = e.target.closest?.('[role="button"]');
+    if (!hit) return;
+    // A real control inside the card keeps its own keyboard behaviour.
+    if (e.target.closest('button, a, input, select, textarea') ) return;
+    if (e.key !== 'Enter') e.preventDefault();
+    hit.click();
+  });
+}
+
 /** "13:45" from minutes past midnight. */
 export function clock(minutes) {
   const m = ((Math.round(minutes) % 1440) + 1440) % 1440;

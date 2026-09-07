@@ -1479,6 +1479,10 @@ input[type="radio"], input[type="checkbox"] {
 
 /* A sub route's card, which is what the lane holds. */
 .plan-swipe { border-radius: 14px; background: var(--danger-bg); margin-bottom: 8px; }
+/* B5 · this was a <button>; it is a div wearing role="button" now, because
+   in edit mode it holds the rust ✕ and a button cannot nest inside one. It
+   therefore has to say `text-align: left` and `cursor: pointer` out loud —
+   both came free from the button element before. */
 .loop-lane {
   display: block;
   width: 100%;
@@ -1486,6 +1490,10 @@ input[type="radio"], input[type="checkbox"] {
   background: #FFFDF7;
   border: 1.5px dashed #E3CFA3;
   border-radius: 14px;
+  text-align: left;
+  cursor: pointer;
+  font: inherit;
+  color: inherit;
 }
 .loop-lane-name { font-size: 13.5px; font-weight: 700; color: var(--amber-fg); }
 .loop-lane-win {

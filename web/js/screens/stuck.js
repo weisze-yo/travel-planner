@@ -1,4 +1,8 @@
-// Changes on this phone — what is stuck, why, and the way out.
+// Waiting to reach the cloud — what is stuck, why, and the way out.
+//
+// B6 renamed it from "Changes on this phone", here as well as on the button
+// that reaches it: a screen whose title no longer matches its door is worse
+// than either name.
 //
 // Reached from the one strip that says so. The point of the screen is that
 // it does not reassure: it names the reason, lists what would actually be
@@ -38,7 +42,7 @@ export default {
           <div class="head-row center">
             <button class="iconbtn" data-act="back" aria-label="Back">${raw(icon.close)}</button>
             <div class="grow">
-              <div class="push-title">Changes on this phone</div>
+              <div class="push-title">Waiting to reach the cloud</div>
               <div class="push-sub">
                 ${sync.count} waiting${oldest ? ` · oldest ${when(oldest)}` : ''}
               </div>
@@ -85,7 +89,7 @@ export default {
               saves — the whole trip as it stands, which can be read back into the app later.
             </div>
             <div class="row g8 mt11">
-              <button class="btn ink grow" style="height:42px" data-act="save-copy">Save this trip as a file</button>
+              <button class="btn ink grow" style="height:42px" data-act="save-copy">Export the whole trip as a file</button>
               <button class="btn ghost none" style="width:96px;height:42px" data-act="share-copy">Share</button>
             </div>
             <div class="f11 soft lh145 mt9">

@@ -94,6 +94,43 @@ Both renderers DO get the split name, the ellipsis and the street — those are 
 everywhere. **§3.7 must carry the Edit chip onto the fuller screen's card**; it is written into
 that task so it cannot be lost.
 
+### 5 · "Let it go" asks once before it deletes
+
+B10 says "Let it go removes the card", and drawn as one ghost tap. The card **directly above that
+button** lists the shopping list, the packing list and the Log under the heading "Still yours,
+untouched". A single ghost tap that deletes all three, seconds after the app promised they were
+safe, is the kind of thing the rest of this product is careful never to do — and unlike everything
+else destructive here, a deleted trip has no undo (`deleteTrip` does not go through
+`removeWithUndo`).
+
+So it takes the app's own second-tap shape — the one the swipe confirm and the empty-trip gate both
+use — and the ask names the three things by name. Rust on tint, never a filled rust button, per B6's
+own rule. One extra tap; B10's requirement that **the notice ends either way** is met in full, which
+was the actual reported bug ("it shows every time I re-enter the app").
+
+### 6 · `join.js`'s "Ask <owner> for a new link" stays
+
+D3's wording is absolute — "nothing in the app composes a sentence on the traveller's behalf any
+more" — and B9 applies it to the share screen, which is what was reported.
+
+There is a **second** composed sentence, on the expired-link screen: "Could you send me a new link
+for <trip>?", copied to the clipboard. It is left alone. Design never drew that screen, it is not
+the reported feature, and deleting it would leave a screen whose whole subject is "your link no
+longer works" with no action at all. Flagged rather than swept up.
+
+### 7 · `role="button"` cards had no keyboard at all, and now do
+
+B5 needed the sub-route card to hold a button, which means it cannot BE a button — so it became
+`role="button" tabindex="0"`, matching `.plan-card` beside it.
+
+Auditing that first turned up something worse than the change: **there was no keydown handler
+anywhere in `web/js`.** `.plan-card` has been focusable and announced as a button and inert on
+Enter for as long as it has existed. Rather than widen that silently, `util.js` gained
+`bindRoleButtons()` — bound once on the document, because `nav.js` replaces the screen host on
+every paint — and `test/accessibility.mjs` gained five checks driven by real keypresses, including
+that a button INSIDE such a card does not also fire the card (Enter on the rust ✕ would otherwise
+delete the loop and open it).
+
 ## UNRESOLVED — needs the owner
 
 Nothing yet.

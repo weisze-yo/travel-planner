@@ -3,7 +3,7 @@
 // so handlers never go stale — which is why text fields commit on `change`
 // (fired as focus leaves) rather than on every keystroke.
 
-import { $, icon } from './util.js';
+import { $, icon, bindRoleButtons } from './util.js';
 import { state, subscribe, undoLast } from './store.js';
 
 const registry = new Map();
@@ -30,6 +30,10 @@ export function start({ hostSelector = '#screen', tabbarSelector = '#tabbar', in
   host = $(hostSelector);
   tabbar = $(tabbarSelector);
   undoSlot = $('#undo');
+
+  // Enter and Space on the cards that wear role="button". Once, on the
+  // document, because the screen host is replaced on every paint.
+  bindRoleButtons();
 
   // One undo line for the whole app, so a deletion on any screen can be
   // taken back from the same place.

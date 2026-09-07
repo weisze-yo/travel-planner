@@ -133,10 +133,19 @@ function pasteView() {
              screen that asks for the itinerary, so this is where declining
              it is a real choice; on the create card it was a second control
              doing Create's job one step early. Still ONE ghost and still the
-             same words, and it lands on the trip rather than going back. -->
-        <button class="btn ghost wide mt10" data-act="skip-paste">I'll do this later</button>
+             same words, and it lands on the trip rather than going back.
+
+             B1 · below a hairline now, under the primary path — the app's own
+             ordering for "the other way out" — and the sentence under it says
+             what skipping LEAVES YOU WITH and how to come back to this, which
+             is the half that was missing. It is the only place in this flow
+             where the word "later" appears, and it has to be honest about
+             what later means. -->
+        <div class="hairline"></div>
+        <button class="btn ghost wide" data-act="skip-paste">I'll do this later</button>
         <div class="f11 soft lh145 mt7" style="text-align:center">
-          The trip is already made. Add stops one at a time on the Plan instead.
+          The trip opens empty and you add stops one at a time. You can come back to this
+          from Trip settings.
         </div>
 
         <div class="hairline"></div>

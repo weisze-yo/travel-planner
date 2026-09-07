@@ -176,6 +176,13 @@ export default {
       moved = null;
       store.archivePlanItem(state.selectedDay, el.dataset.id);
     });
+    // B5 · the sub route's own ✕. `deleteSubRoute` already carries the
+    // 6-second undo; what it did not carry was a sentence saying the places
+    // survive, which is the thing a traveller would otherwise assume it took.
+    delegate(root, '[data-act="loop-remove"]', (el) => {
+      moved = null;
+      store.deleteSubRoute(el.dataset.id);
+    });
     delegate(root, '[data-act="restore"]', (el) => {
       moved = null;
       store.restorePlanItem(state.selectedDay, el.dataset.id);
@@ -530,10 +537,23 @@ function loopCard(loop, editing = false) {
         <div class="swipe-bin">
           <button class="bin" data-swipe-delete aria-label="Delete ${card.name}">${raw(icon.bin)}</button>
         </div>` : ''}
-      <button class="swipe-face loop-lane" data-open-loop="${card.id}" aria-label="${card.name}">
+      <!-- B5 · a div wearing role="button", not a <button>, because in edit
+           mode this card CONTAINS a button — the rust ✕ — and a button
+           cannot nest inside one. It is the same shape .plan-card next to
+           it already uses for the same reason, and Enter/Space now reach
+           both of them (util.js bindRoleButtons). -->
+      <div class="swipe-face loop-lane" data-open-loop="${card.id}"
+           role="button" tabindex="0" aria-label="${card.name}">
         <div class="row g8" style="align-items:baseline">
           <div class="grow loop-lane-name">${card.name}</div>
           <div class="loop-lane-win">${card.window}</div>
+          <!-- B5 · "Delete this sub route" came out of the loop editor
+               (bug 11) because the editor is a place you go to ARRANGE. Its
+               job lands here instead — same rust ✕, same position and same
+               6-second undo a stop already has. -->
+          ${editing ? html`
+            <button class="plan-remove" data-act="loop-remove" data-id="${card.id}"
+                    aria-label="Remove ${card.name} from this day">✕</button>` : ''}
         </div>
         <div class="plan-note">${card.line}</div>
         <div class="row g6 wrap mt8">
@@ -543,7 +563,7 @@ function loopCard(loop, editing = false) {
           ${Number(card.km) > 0 ? html`<span class="chip">${card.km} km walk</span>` : ''}
           ${card.notes ? html`<span class="chip">${card.notes} note${card.notes === 1 ? '' : 's'}</span>` : ''}
         </div>
-      </button>
+      </div>
     </div>`;
 }
 
