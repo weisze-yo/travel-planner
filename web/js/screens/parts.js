@@ -623,12 +623,14 @@ export function itemEditor(item, { symbol = '', error = '' } = {}) {
           </div>
         </div>
         <label class="f11 soft block">Bought at</label>
-        <select id="edit-place">
-          ${places.map((name) => html`
-            <option value="${esc(name)}"${name === item.placeLabel ? ' selected' : ''}>${name}</option>`)}
-          ${places.includes(item.placeLabel) ? '' : html`
-            <option value="${esc(item.placeLabel || '')}" selected>${item.placeLabel || 'Unplanned'}</option>`}
-        </select>
+        <label class="sel">
+          <select id="edit-place">
+            ${places.map((name) => html`
+              <option value="${esc(name)}"${name === item.placeLabel ? ' selected' : ''}>${name}</option>`)}
+            ${places.includes(item.placeLabel) ? '' : html`
+              <option value="${esc(item.placeLabel || '')}" selected>${item.placeLabel || 'Unplanned'}</option>`}
+          </select>
+        </label>
         <div class="form-actions">
           <button class="btn jade grow" data-act="item-save">Save</button>
           <button class="btn ghost" style="width:96px" data-act="item-cancel">Cancel</button>

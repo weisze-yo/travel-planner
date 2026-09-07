@@ -586,15 +586,19 @@ function laneForm(day, issues) {
             <div class="row g8">
               <label class="grow">
                 <div class="eyebrow">START AT</div>
-                <select id="lane-start" class="mt4" style="width:100%">
-                  ${inside.map((e) => html`<option value="${e.id}">${e.label}</option>`)}
-                </select>
+                <span class="sel mt4">
+                  <select id="lane-start">
+                    ${inside.map((e) => html`<option value="${e.id}">${e.label}</option>`)}
+                  </select>
+                </span>
               </label>
               <label class="grow">
                 <div class="eyebrow">END AT</div>
-                <select id="lane-end" class="mt4" style="width:100%">
-                  ${inside.map((e) => html`<option value="${e.id}">${e.label}</option>`)}
-                </select>
+                <span class="sel mt4">
+                  <select id="lane-end">
+                    ${inside.map((e) => html`<option value="${e.id}">${e.label}</option>`)}
+                  </select>
+                </span>
               </label>
             </div>
             <div class="f11 soft lh145">
@@ -692,10 +696,12 @@ function addForm() {
         <div class="f11 lh145" style="color:var(--danger-fg);margin-top:-4px">${addError}</div>` : ''}
 
       ${saved.length ? html`
-        <select id="add-place">
-          <option value="">…or pick somewhere you have saved</option>
-          ${saved.map((p) => html`<option value="${p.id}">${p.name}</option>`)}
-        </select>` : ''}
+        <label class="sel">
+          <select id="add-place">
+            <option value="">…or pick somewhere you have saved</option>
+            ${saved.map((p) => html`<option value="${p.id}">${p.name}</option>`)}
+          </select>
+        </label>` : ''}
 
       <div class="row g6 wrap">
         ${[['main', "The agent's route"], ['sub', 'My own plan']].map(([value, label]) => html`

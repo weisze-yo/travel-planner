@@ -146,11 +146,111 @@ input[type="radio"], input[type="checkbox"] {
   accent-color: var(--ink);
   flex: none;
 }
-select {
-  background-image: url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' width='10' height='6'%3E%3Cpath d='M1 1l4 4 4-4' stroke='%236B7A74' stroke-width='1.6' fill='none' stroke-linecap='round'/%3E%3C/svg%3E");
-  background-repeat: no-repeat;
-  background-position: right 11px center;
-  padding-right: 28px;
+/*
+ * §3.5 · THE SELECT, ELEVEN OF THEM, ON FIVE SCREENS.
+ *
+ * The reported bug was "the design of dropdown for Payment Method and
+ * Category are not nice", and the diagnosis is that there was only ONE
+ * recipe for two genuinely different jobs. A select in a form is a field
+ * you fill in; a select on a saved shopping row is a correction to a record
+ * you already have. They were the same 13px control, which is why the
+ * second one had to be crammed inside a 10.5px chip wrapper and came out
+ * bigger than the chip.
+ *
+ * So there are two recipes now, and only two — `.sel` for the eight in
+ * forms, `.sel-chip` for the two (soon four) inline. What went, in both:
+ *
+ *   the floating background-SVG chevron   → a real 30px / 22px element
+ *   `padding-right: 28px` on every select → clearance for that element
+ *   `.pay-chip` wrapped round a select    → the select IS the chip
+ *
+ * A background image cannot be positioned against a border, so the old
+ * chevron floated 11px in from the text edge and drifted whenever a value
+ * was long enough to reach it. A real element is flush to the field's right
+ * edge and cannot drift.
+ *
+ * The other half of the decision is weight: a chosen value sits at 650
+ * where every `input` in this app sits at 400. Weight, not just the chevron,
+ * is what separates a value you PICKED from text you TYPED — which matters
+ * on a small screen where the chevron is the first thing to be missed.
+ */
+.sel { position: relative; display: block; }
+.sel > select {
+  width: 100%;
+  font-weight: 650;
+  /* Clearance for the tab, which is a real 30px element plus its hairline. */
+  padding-right: 40px;
+}
+.sel::after {
+  content: '';
+  position: absolute;
+  /* Inset by the field's own 1px border so the tab sits INSIDE it. */
+  top: 1px; right: 1px; bottom: 1px;
+  width: 30px;
+  border-left: 1px solid var(--field-bd);
+  border-radius: 0 9px 9px 0;
+  background: var(--bone)
+    url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' width='10' height='6'%3E%3Cpath d='M1 1l4 4 4-4' stroke='%236B7A74' stroke-width='1.6' fill='none' stroke-linecap='round'/%3E%3C/svg%3E")
+    no-repeat center;
+  pointer-events: none;
+}
+/* One recipe, two states: the field already goes jade on focus, and the tab
+   follows it rather than staying grey against a jade border. */
+.sel:focus-within::after {
+  border-left-color: var(--jade-bd);
+  background-color: var(--jade-bg);
+}
+
+/*
+ * The inline recipe. 26px tall, r8, and the same "one step darker than my
+ * own ground" rule as the tab above — which is why the ground is a variable
+ * rather than a constant: on a white card the chip is #EFF1EE, and on a row
+ * that is ALREADY #EFF1EE it steps to #E4E8E4 so it does not vanish.
+ */
+.sel-chip {
+  --chip-bg: #EFF1EE;
+  position: relative;
+  display: inline-flex;
+  align-items: center;
+  height: 26px;
+  max-width: 100%;
+  border-radius: 8px;
+  background: var(--chip-bg);
+}
+.sel-chip.on-tint { --chip-bg: #E4E8E4; }
+.sel-chip > select {
+  border: 0;
+  border-radius: 8px;
+  background: none;
+  font-size: 11.5px;
+  font-weight: 700;
+  color: var(--charcoal);
+  max-width: 100%;
+  /*
+   * F2 · 26px SEEN, 44px FELT. Raising these chips to a 44px painted box
+   * would add ~18px to every shopping row and every nearby card — about
+   * 550px down a 31-row list. So the PAINTED box stays 26px and the
+   * TOUCHABLE box is 44px: 9px of transparent padding above and below,
+   * cancelled by a -9px margin so the chip's own height never moves.
+   *
+   * The rule for anything reusing this: EXPAND VERTICALLY ONLY. Neighbouring
+   * chips may overlap each other's touch boxes vertically — 6px of gap plus
+   * a 22px chevron column is enough horizontally — and that was the accepted
+   * cost of not growing every row.
+   */
+  height: 44px;
+  margin: -9px 0;
+  padding: 0 22px 0 9px;
+}
+.sel-chip > select:focus { outline: 2px solid var(--jade); outline-offset: -1px; }
+.sel-chip::after {
+  content: '';
+  position: absolute;
+  top: 0; right: 0; bottom: 0;
+  width: 22px;
+  background: url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' width='10' height='6'%3E%3Cpath d='M1 1l4 4 4-4' stroke='%236B7A74' stroke-width='1.6' fill='none' stroke-linecap='round'/%3E%3C/svg%3E")
+    no-repeat center;
+  pointer-events: none;
 }
 
 /* --------------------------------------------------------------- app frame */
@@ -911,9 +1011,39 @@ select {
  */
 .item-second { display: flex; flex-wrap: wrap; gap: 6px; align-items: center; margin-top: 8px; padding-left: 33px; padding-right: 2px; }
 .pay-chip { padding: 4px 9px; border-radius: 8px; background: #EFF1EE; font-size: 10.5px; font-weight: 700; color: var(--charcoal); white-space: nowrap; }
-.paid-wrap { flex: 1 0 100%; display: flex; align-items: center; gap: 6px; min-width: 0; }
-.paid-cap { font-size: 10.5px; font-weight: 800; color: var(--jade); white-space: nowrap; }
-.paid-input { flex: 1; min-width: 0; padding: 5px 8px; font-size: 12px; border-color: var(--jade-bd); background: #F7FBF9; }
+/*
+ * PAID · 38px and 15px, from Bug Findings B7 rather than §3.5's 26px.
+ *
+ * The two canvases disagree here and the disagreement is real, so it is
+ * recorded rather than papered over. §3.5 draws PAID at 26px/12px sharing
+ * ONE line with the two selects; B7 draws it at 38px/15px on a line of its
+ * OWN with the estimate beside it. The layout already shipped (bug 24) is
+ * B7's — PAID claims the full width, the selects sit above — so B7's sizing
+ * is the one that matches the layout, and §3.5's figure describes its own
+ * single-line variant.
+ *
+ * It is also the sizing that answers what was actually reported: "the box
+ * is too small... can't visualize how much has been entered at all". 26px
+ * and 12px is barely more than the 18px sliver being complained about.
+ * B7's reason is the right one — the money you are typing is the one thing
+ * on this screen worth 15px.
+ */
+.paid-wrap { flex: 1 0 100%; display: flex; align-items: center; gap: 8px; min-width: 0; }
+.paid-cap { font-size: 11px; font-weight: 800; color: var(--jade); white-space: nowrap; flex: none; }
+.paid-input {
+  flex: 1;
+  min-width: 0;
+  height: 38px;
+  padding: 0 11px;
+  font-size: 15px;
+  font-weight: 700;
+  font-variant-numeric: tabular-nums;
+  border: 1.5px solid var(--jade-bd);
+  border-radius: 10px;
+  background: #F7FBF9;
+}
+/* The guess, beside the real number — the reason for keeping estimates. */
+.paid-est { font-size: 11.5px; color: var(--soft); white-space: nowrap; flex: none; }
 .bought-line { font-size: 10.5px; color: var(--soft); font-weight: 650; margin-top: 6px; padding-left: 33px; }
 
 .footer-card {

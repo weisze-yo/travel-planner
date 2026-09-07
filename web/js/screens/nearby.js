@@ -271,9 +271,11 @@ function addForm() {
       <div class="form-title">Add a place</div>
       <input id="np-name" placeholder="Name, or paste a Google / Apple Maps link">
       <div class="row g8">
-        <select id="np-cat" class="grow">
-          ${Object.entries(CATEGORY_LABELS).map(([id, label]) => html`<option value="${id}">${label}</option>`)}
-        </select>
+        <label class="sel grow">
+          <select id="np-cat">
+            ${Object.entries(CATEGORY_LABELS).map(([id, label]) => html`<option value="${id}">${label}</option>`)}
+          </select>
+        </label>
         <input id="np-walk" placeholder="Walk min" style="width:104px" inputmode="numeric">
       </div>
       <div class="form-actions">

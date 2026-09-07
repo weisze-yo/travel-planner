@@ -196,17 +196,21 @@ export default {
                 <div class="row g8">
                   <label class="grow">
                     <span class="f11 soft">Start at</span>
-                    <select id="loop-start" style="width:100%">
-                      ${endpoints.map((e) => html`
-                        <option value="${e.id}"${e.id === (route.startPlaceID || route.anchorPlaceID) ? ' selected' : ''}>${e.label}</option>`)}
-                    </select>
+                    <span class="sel">
+                      <select id="loop-start">
+                        ${endpoints.map((e) => html`
+                          <option value="${e.id}"${e.id === (route.startPlaceID || route.anchorPlaceID) ? ' selected' : ''}>${e.label}</option>`)}
+                      </select>
+                    </span>
                   </label>
                   <label class="grow">
                     <span class="f11 soft">End at</span>
-                    <select id="loop-end" style="width:100%">
-                      ${endpoints.map((e) => html`
-                        <option value="${e.id}"${e.id === (route.endPlaceID || route.startPlaceID) ? ' selected' : ''}>${e.label}</option>`)}
-                    </select>
+                    <span class="sel">
+                      <select id="loop-end">
+                        ${endpoints.map((e) => html`
+                          <option value="${e.id}"${e.id === (route.endPlaceID || route.startPlaceID) ? ' selected' : ''}>${e.label}</option>`)}
+                      </select>
+                    </span>
                   </label>
                 </div>
                 <div class="row g8">
