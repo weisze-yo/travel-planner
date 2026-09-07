@@ -22,10 +22,23 @@ An existing app holds a fully researched 8-day trip. The numbers below are the *
 differ from the research bundle's own totals because of work done after the research was handed
 over — so both are stated, and you should not try to reconcile them:
 
+**The `places` collection holds 575 rows, and three different subsets of it get quoted for three
+different reasons.** All three numbers below appear elsewhere in this brief; this is the only place
+they are decomposed, so treat it as the key:
+
+```
+575  every row in `places`
+ ├─  43  STOP-PLACES  — one per plan row, created by the stop-is-a-place migration
+ └─ 532  everything that is not a stop  ← the number that means "nearby places"
+      ├─ 517  anchored to a stop via `anchorPlaceID`   ← the nameJp population
+      └─  15  anchored to a stop that was later superseded
+```
+
 | | Count | Composition |
 |---|--:|---|
 | Itinerary stops | **40** active | 30 researched content stops + **10 travel legs added post-handoff** (plus 3 archived superseded hotels, giving the 33 that carry a `stopSummary`) |
-| Places | **532** | 517 anchored to a stop + 15 whose anchor was a superseded stop |
+| Places, all rows | **575** | 43 stop-places + 532 nearby (see the key above) |
+| Places, nearby only | **532** | 517 anchored + 15 whose anchor was superseded |
 | Must-see shots | 60 | |
 | Shopping items | 96 | |
 | Stops with structured hours | 33 | |
@@ -119,9 +132,9 @@ validator cannot check them and a reviewer would not catch them either:
 
 - **`id`** — a **readable lowercase slug**, unique across the whole dataset, e.g.
   `airport-pen-kopitiam-01`. *This is a correction: an earlier draft said "12 lowercase hex". That
-  is the shape of the original seed ids and the content-hashed stop ids only — of the 575 places in
-  the app, 210 are 12-hex and **365 are readable slugs** like `tmisc-ishii-jimbocho`, which is what
-  every researcher has used since. Nothing validates the format either way, so the reason to use a
+  is the shape of the original seed ids and the content-hashed stop ids only — of the 575 rows in
+  `places` (see the key in "What this is"), 210 are 12-hex and **365 are readable slugs** like
+  `tmisc-ishii-jimbocho`, which is what every researcher has used since. Nothing validates the format either way, so the reason to use a
   slug is that it names itself in an error message.* The bundle will be supplied so you can check
   for collisions.
 - **`anchorStop`** — **byte-for-byte** one of the four stop names. This is the join key, it IS
@@ -153,8 +166,8 @@ validator cannot check them and a reviewer would not catch them either:
   loose box — that would have stopped catching the error it exists for. Each region keeps its own
   box instead: Penang `5.1–5.6 / 100.1–100.6`, Singapore `1.15–1.55 / 103.6–104.1`, Japan
   `30–46 / 128–146`. A Penang-anchored record carrying Japanese coordinates is still rejected, which
-  is the point: two coordinates in this bundle were once marked `verified` and were wrong, one by
-  260 km because an English homonym sent a geocoder to Hokkaido.
+  is the point — see rule 2 of "The sourcing standard" below for the two real errors this guard was
+  built after.
 - **`source`** — the URL the fact came from.
 
 **What `validate_research.py` actually enforces** (it exits non-zero on these, and only these):
@@ -212,6 +225,37 @@ box.
 
 `null` for a weekday means **closed that day**. An array may hold two spans for a lunch break.
 
+### `outfitByStop{}` — **deliberately not asked for. Do not emit any.**
+
+The bundle carries an `outfitByStop` block for each of its 33 content stops, keyed by exact stop
+name, holding two paragraphs:
+
+```json
+{ "Ginzan Onsen Street": {
+    "photo": "This is the frame the whole trip gets judged on, so dress for the backdrop, not the
+              weather. September Ginzan is deep green foliage, near-black weathered timber …",
+    "practical": "Hot and humid, 29C, and it is peak typhoon month — carry the thin rain shell
+              rather than an umbrella, because the street is 4-5 m wide and 35 umbrellas will not
+              pass each other …" } }
+```
+
+**The four airport stops get none, and that is the instruction, not an oversight.** The research
+session that reviewed this brief noticed the gap and was right to flag it — adding three stops with
+content while leaving `outfitByStop` at 33 does read as an omission if nobody says otherwise. So,
+saying it:
+
+- **`photo` has no subject at an airport.** Every existing block is about how clothing reads against
+  a specific *outdoor* backdrop — vermilion bridges, near-black pine, weathered timber. A terminal
+  interior has no backdrop worth dressing for, and writing one would mean inventing the one kind of
+  content this bundle has never contained.
+- **`practical` is already answered elsewhere, better.** What to wear on a travel day is a function
+  of the whole 20-hour door-to-door journey, not of Penang's departure hall — and the Day 1 and
+  Day 8 blocks already cover exactly that, cabin temperature included.
+
+So the coverage figure stays at **33 of 33 content stops**, and the travel legs are simply not that
+kind of stop. If you think a specific airport genuinely needs one, **say so in `notes-airports.md`
+and do not emit the block** — that is a decision for the owner, not a gap for you to fill.
+
 ### `subRoutes[]` — optional, and only where one is genuinely useful
 
 `id` · `anchorStop` · `title` · `note` · `startMinutes` · `deadlineMinutes` (minutes from midnight) ·
@@ -258,7 +302,9 @@ This is the part that matters most, and the reason the existing bundle is truste
 
    **`nameJp` at Penang and Changi: leave it empty unless a shopfront genuinely shows local-script
    signage that differs from its English name.** It currently sits at 100% across the 673 records
-   that have it — all 517 anchored places, all 60 must-see and all 96 shopping — but that is a
+   that carry it — the **517 anchored** places from the key in "What this is", plus all 60 must-see
+   and all 96 shopping. (The 43 stop-places and the 15 superseded-anchor places carry none, so this
+   is not 100% of `places`.) But that is a
    *consequence* of every record so far being in Japan, not a contract. The field's job is to hold
    **what is written on the door**, which is what makes a place findable when the English name on a
    list does not match the sign in front of you. At Penang and Changi the sign is usually already
@@ -286,6 +332,22 @@ It enforces the list under "What `validate_research.py` actually enforces" above
 else. It will not catch a wrong fact, a duplicate id, a missing `nameJp`, or a missing `source`.
 Only you can.
 
+> **Check you have the current validator before you start.** Two fixes were made to it on 7 Sep
+> 2026 for this work — the three missing airport `anchorStop` names, and the per-stop coordinate
+> boxes — and a copy taken before that will reject every Penang and Changi record you write, for
+> two reasons that look like your mistake and are not. Confirm with:
+>
+> ```sh
+> grep -c "def in_region" research/trip12/validate_research.py   # want 1
+> grep -c "Assembly · Penang" research/trip12/validate_research.py   # want 2
+> sha256sum research/trip12/validate_research.py
+> # 78b8b1d4b2df9d2f5c3334b51c9c8681c07fcaedcd69317a57ac6de57edfd358
+> ```
+>
+> Both landed in commit `8473c14` on branch `claude/inspiring-newton-uzu0mt`. Note that grepping
+> for `in_japan` still returns **one** hit — a comment recording what the guard used to be — so
+> that is not a reliable test; `in_region` is.
+
 ## Deliverables
 
 1. One JSON file per location: `airport-pen.json`, `airport-sin.json`, `airport-hnd.json`.
@@ -293,6 +355,8 @@ Only you can.
    could not verify, and **every correction you made to an assumption** — that file is how the
    existing bundle's errors got caught.
 3. A one-line statement per location of what you deliberately left out and why.
+4. **No `outfitByStop` blocks** — see that section for why. If you believe one is warranted, argue
+   for it in `notes-airports.md` rather than writing it.
 
 ## Exact `anchorStop` strings — byte-for-byte
 
@@ -303,7 +367,9 @@ Arrive Singapore Changi — connection to SQ142
 Haneda Airport — Terminal 3
 ```
 
-Note the two **different** Changi stops — outbound (55 min) and homebound (2h15). They are separate
-stops with separate constraints and must not be merged.
+Note the two **different** Changi stops — outbound (~2h10, and probably all within T2) and
+homebound (2h15). They are separate stops with separate constraints and must not be merged. *The
+outbound figure was wrong in an earlier draft of this brief and is corrected in "The constraints
+that shape what is useful" above; if you find "55 minutes" anywhere, that draft is stale.*
 
 `Narita Airport — Terminal 1 South Wing` is **already complete**. Do not emit records for it.
