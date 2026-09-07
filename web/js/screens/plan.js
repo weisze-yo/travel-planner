@@ -420,6 +420,10 @@ function when(iso) {
 
 /** What else hangs off this stop, worth seeing without opening it. */
 function stopChips(item) {
+  // ITEM 4 · ALL items, listed or not. This chip answers "what hangs off
+  // this stop", and something noted at a place still hangs off it — that is
+  // exactly what you want to know before you get there. Deliberately not
+  // `listedShopping()`.
   const shopping = state.shopping.filter((r) => r.placeID === item.placeID).length;
   const shots = store.shotsFor(item.placeID).length;
   const notes = store.notesForPlace(item.placeID, { name: item.name }).length;

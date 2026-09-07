@@ -28,6 +28,16 @@ export default {
   render() {
     const groups = store.shoppingGroups();
     const totals = store.spendTotals();
+    /*
+     * ITEM 4 · how many are saved at a place but not on the list.
+     *
+     * Without this the empty state reads "Nothing on the list yet — add
+     * anything you want to buy" while 96 researched items sit at their
+     * stops, which would look exactly like an import that silently failed.
+     * The count and the route to them is the difference between an empty
+     * list and a lost one.
+     */
+    const local = state.shopping.length - store.listedShopping().length;
     const symbol = state.trip?.currencySymbol || '';
 
     return html`
@@ -49,6 +59,10 @@ export default {
               <button class="cat${String(state.shopDay) === String(n) ? ' on' : ''}" data-day-filter="${n}">
                 Day ${n}
               </button>`)}
+            ${store.hasDaylessShopping() ? html`
+              <button class="cat${state.shopDay === 'none' ? ' on' : ''}" data-day-filter="none">
+                No day
+              </button>` : ''}
           </div>
           <div class="chiprow mt6">
             <button class="cat${state.shopPlace === 'all' ? ' on' : ''}" data-place-filter="all">Everywhere</button>
@@ -66,11 +80,16 @@ export default {
               <div class="empty-t1-mark-row"></div>
               <div class="empty-t1-title">Nothing on the list yet</div>
               <div class="empty-t1-body">
-                Add anything you want to buy, priced or not — the estimate is what your spend
-                gets measured against later.
+                ${local
+                  ? html`${local} thing${local === 1 ? '' : 's'} to buy ${local === 1 ? 'is' : 'are'}
+                         saved at the stops they belong to. Open a stop, look under
+                         <b>Shop</b>, and add the ones you actually want — or tick one bought and
+                         it lands here by itself.`
+                  : html`Add anything you want to buy, priced or not — the estimate is what your
+                         spend gets measured against later.`}
               </div>
               <div class="col g8 mt14" style="width:100%">
-                <button class="btn ink" data-act="add-toggle">+ Add</button>
+                <button class="btn ${local ? 'ghost' : 'ink'}" data-act="add-toggle">+ Add</button>
               </div>
             </div>`}
         </div>
@@ -157,11 +176,21 @@ export default {
     delegate(root, '[data-place-filter]', (el) => store.setShopFilter({ place: el.dataset.placeFilter }));
     delegate(root, '[data-act="report"]', () => go('spend'));
 
+    /*
+     * ITEM 4 · this swipe DEMOTES, it does not delete.
+     *
+     * It used to destroy the record, which is wrong now that a place's own
+     * Shop tab is where an item lives: swiping here would have thrown away
+     * something still findable there, and for the 96 imported items it would
+     * have been the only copy. So it takes the item off the list and leaves
+     * it where it was noted. The label and the undo text say so, because a
+     * swipe that reads as a delete and is not is worse than either.
+     */
     swipeToDelete(root, {
       rowSelector: '[data-shop-row]',
       name: (row) => row.dataset.shopName,
-      label: () => 'Off the list for good',
-      onDelete: (row) => store.deleteShoppingItem(row.dataset.shopRow),
+      label: () => 'Off your list — still saved at its place',
+      onDelete: (row) => store.unlistShoppingItem(row.dataset.shopRow),
     });
 
     // Commit on change, so a repaint cannot land mid-keystroke.

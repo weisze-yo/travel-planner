@@ -926,6 +926,23 @@ export function buildSnapshot(researchDir, guidePath) {
     }
   }
 
+  // ---- 9a2. ITEM 4: the researched items start LOCAL ---------------------
+  //
+  // Owner decision, 7 Sep 2026. All 96 researched shopping items are noted
+  // at a place rather than chosen by the traveller, so they begin local to
+  // the stop they belong to: the main Shop screen starts empty of them, and
+  // each arrives on the list only when it is ticked bought or added from its
+  // own place's Shop tab.
+  //
+  // Written EXPLICITLY as `onList: false` rather than left to a default. The
+  // app reads an absent flag as "on the list", which is what protects every
+  // record written before the flag existed — so the importer has to say what
+  // it means instead of relying on that.
+  for (const [, s2] of coll.shopping) {
+    s2.onList = false;
+    report.startedLocal = (report.startedLocal || 0) + 1;
+  }
+
   // ---- 9b. the prep lines, recategorised ---------------------------------
   //
   // Every line must match exactly one rule and every rule exactly one line —

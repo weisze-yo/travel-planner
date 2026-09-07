@@ -10,7 +10,7 @@ import { prepare } from '../photos.js';
 import {
   backHeader, mapsLinks, swipeToDelete, emptyShared,
   itemEditor, readItemEditor, shotEditor, readShotEditor, factsEditor, readFactsEditor,
-  readFactsLink,
+  readFactsLink, readFactsIdentity,
 } from './parts.js';
 
 const TABS = [
@@ -145,6 +145,21 @@ let sheet = null;
 let sheetError = '';
 /** The facts sheet is async once a map link is in it. P0-5 R1 and R8. */
 let sheetPending = false;
+/**
+ * Bug 13 · a picture chosen in the shot sheet but not yet saved.
+ *
+ * Picking a file used to call `store.addShot()` immediately, purely so the
+ * image had a record to attach to — so a spot appeared on the stop the
+ * instant a photo was chosen, and Cancel could not take it back. It was
+ * reported as exactly that: "a spot added to must-see after I uploaded an
+ * image although I have pressed Cancel."
+ *
+ * The thumbnail waits here instead. Nothing is written until Save, which is
+ * what Cancel has to mean. `null` is "no pending change"; a string is the
+ * new thumbnail; `''` is "the picture was removed" on an existing shot,
+ * which has to be distinguishable from "unchanged".
+ */
+let pendingPhoto = null;
 const repaint = () => store.selectDay(state.selectedDay);
 
 export default {
@@ -188,6 +203,7 @@ export default {
       tabSubject = it.anchorID;
       tab = 'info';
       openLines = new Set(['do']);
+      pendingPhoto = null;
     }
     // Walking from a stop's Must tab into one of its places must not leave
     // `tab` pointing at a panel this subject has no tab for.
@@ -309,15 +325,31 @@ export default {
       }
       sheetError = '';
       if (sheet.id) store.updateShoppingItem(sheet.id, patch);
-      else store.addShoppingItem({ ...patch, placeID: it?.placeID, placeLabel: patch.placeLabel || it?.name });
+      // ITEM 4 · added here, it stays here: local to this place until it is
+      // ticked bought or put on the list from this same tab.
+      else {
+        store.addShoppingItem({
+          ...patch, placeID: it?.placeID, placeLabel: patch.placeLabel || it?.name, local: true,
+        });
+      }
       sheet = null;
     });
 
-    delegate(root, '[data-edit-shot]', (el) => { sheet = { kind: 'shot', id: el.dataset.editShot }; sheetError = ''; repaint(); });
-    delegate(root, '[data-act="add-shot"]', () => { sheet = { kind: 'shot', id: null }; sheetError = ''; repaint(); });
-    delegate(root, '[data-act="shot-cancel"]', () => { sheet = null; sheetError = ''; repaint(); });
+    delegate(root, '[data-edit-shot]', (el) => {
+      sheet = { kind: 'shot', id: el.dataset.editShot }; sheetError = ''; pendingPhoto = null; repaint();
+    });
+    delegate(root, '[data-act="add-shot"]', () => {
+      sheet = { kind: 'shot', id: null }; sheetError = ''; pendingPhoto = null; repaint();
+    });
+    // Bug 13 · Cancel throws the pending picture away with the sheet, and
+    // nothing was ever written, so nothing has to be undone.
+    delegate(root, '[data-act="shot-cancel"]', () => {
+      sheet = null; sheetError = ''; pendingPhoto = null; repaint();
+    });
     delegate(root, '[data-act="shot-photo-clear"]', () => {
-      if (sheet?.id) store.updateShot(sheet.id, { imagePath: null });
+      // '' rather than null: on an existing shot this has to mean "remove
+      // the saved picture on Save", which is different from "unchanged".
+      pendingPhoto = '';
       repaint();
     });
     root.querySelector('#shot-photo')?.addEventListener('change', async (event) => {
@@ -326,12 +358,7 @@ export default {
       // The reference picture is a thumbnail on the phone, the same route a
       // Log photo takes when there is no Storage bucket to put it in.
       const { thumbnail } = await prepare(file);
-      if (!sheet.id) {
-        const made = store.addShot({ placeID: it?.placeID, ...readShotEditor(root), imagePath: thumbnail });
-        sheet = made ? { kind: 'shot', id: made.id } : sheet;
-      } else {
-        store.updateShot(sheet.id, { imagePath: thumbnail });
-      }
+      pendingPhoto = thumbnail;
       repaint();
     });
     delegate(root, '[data-act="shot-save"]', () => {
@@ -343,9 +370,13 @@ export default {
         return;
       }
       sheetError = '';
-      if (sheet.id) store.updateShot(sheet.id, patch);
-      else store.addShot({ placeID: it?.placeID, ...patch });
+      // Only send imagePath when a picture was actually chosen or removed,
+      // so saving an edit that did not touch the photo leaves it alone.
+      const photo = pendingPhoto === null ? {} : { imagePath: pendingPhoto || null };
+      if (sheet.id) store.updateShot(sheet.id, { ...patch, ...photo });
+      else store.addShot({ placeID: it?.placeID, ...patch, ...photo });
       sheet = null;
+      pendingPhoto = null;
     });
 
     delegate(root, '[data-act="edit-facts"]', () => {
@@ -362,10 +393,21 @@ export default {
       if (sheetPending) return;
       const rows = readFactsEditor(root);
       const link = readFactsLink(root);
+      const identity = readFactsIdentity(root);
       const was = store.place(it?.placeID)?.sourceLink || '';
+
+      // Bugs 7 and 8 · a place must keep a name, so an emptied field is a
+      // refusal in the field rather than a place with no label.
+      if (!identity.name) {
+        sheetError = 'It needs a name — anything you will recognise.';
+        repaint();
+        root.querySelector('#facts-name')?.focus();
+        return;
+      }
 
       // The typed rows are the user's own and are written first, so a link
       // that cannot be read never costs them the rest of the edit.
+      store.updatePlaceIdentity(it?.placeID, identity);
       store.updatePlaceFacts(it?.placeID, rows);
 
       if (link === was) { sheet = null; sheetError = ''; repaint(); return; }
@@ -391,12 +433,16 @@ export default {
       repaint();
     });
 
+    // ITEM 4 · this is the ONLY place a shopping item is really deleted, so
+    // it says so. The main list's swipe only takes an item off the list.
     swipeToDelete(root, {
       rowSelector: '[data-shop-row]',
       name: (el) => el.dataset.shopName,
-      label: () => 'Off the whole list, not just this stop',
+      label: () => 'Gone for good — this is the only copy',
       onDelete: (el) => store.deleteShoppingItem(el.dataset.shopRow),
     });
+    delegate(root, '[data-act="list-item"]', (el) => store.listShoppingItem(el.dataset.id));
+    delegate(root, '[data-act="unlist-item"]', (el) => store.unlistShoppingItem(el.dataset.id));
     swipeToDelete(root, {
       rowSelector: '[data-shot-row]',
       name: (el) => el.dataset.shotName,
@@ -593,6 +639,8 @@ function parentHandoff(it) {
   const parent = it.parent;
   if (!parent) return '';
   const shots = store.shotsFor(parent.placeID).length;
+  // ITEM 4 · ALL items, for the same reason as Plan's stop chip: this row
+  // says what is waiting at the parent stop, not what you have listed.
   const buys = state.shopping.filter((row) => row.placeID === parent.placeID).length;
   const lines = store.summaryLines(parent.item.id).length;
   if (!shots && !buys && !lines) return '';
@@ -685,6 +733,21 @@ function shopPanel(it, items) {
                   <div class="item-est-cap">${item.paidAmount != null ? 'paid' : 'est.'}</div>
                 </div>
               </div>
+              <!-- ITEM 4 · which of the two places this item is, and the one
+                   tap that moves it. A bought item is on the list by
+                   definition and has nothing to offer here. -->
+              ${item.bought ? '' : html`
+                <div class="row g8 center mt8" style="padding-left:33px">
+                  <div class="grow f11 w650"
+                       style="color:${store.isListed(item) ? 'var(--jade)' : 'var(--soft)'}">
+                    ${store.isListed(item) ? 'On your shopping list' : 'Noted here only'}
+                  </div>
+                  <button class="btn ghost sm none" style="width:104px"
+                          data-act="${store.isListed(item) ? 'unlist-item' : 'list-item'}"
+                          data-id="${item.id}">
+                    ${store.isListed(item) ? 'Take off list' : 'Add to list'}
+                  </button>
+                </div>`}
             </div>
           </div>`)}
       </div>
@@ -769,7 +832,7 @@ function sheetMarkup(it, shopHere, shots) {
   }
   if (sheet.kind === 'shot') {
     return shotEditor(sheet.id ? shots.find((sh) => sh.id === sheet.id) : null,
-      { placeName: it?.name, error: sheetError });
+      { placeName: it?.name, error: sheetError, image: pendingPhoto });
   }
   if (sheet.kind === 'facts') {
     return factsEditor(store.place(it?.placeID), { error: sheetError, pending: sheetPending });

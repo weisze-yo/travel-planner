@@ -155,13 +155,34 @@ await page.waitForTimeout(60);
 await touch('touchEnd', yesBox.x + yesBox.width / 2, yesBox.y + yesBox.height / 2);
 await page.waitForTimeout(600);
 
-const remaining = await page.evaluate(() => window.__store.state.shopping.length);
-check('the shopping row is actually gone', remaining === 9, String(remaining));
+/*
+ * RETARGETED · item 4, approved 7 Sep 2026. The main Shop list's swipe
+ * DEMOTES now, it does not delete: it takes the item off the list and leaves
+ * the record at the place it was noted, where a real delete lives. So the
+ * assertion is no longer "the row is gone from state" — that would now be a
+ * data-loss bug rather than the desired outcome. What must hold is that the
+ * row leaves the LIST, the record survives, and it comes back local.
+ */
+const after = await page.evaluate(() => {
+  const s = window.__store;
+  return {
+    total: s.state.shopping.length,
+    listed: s.listedShopping().length,
+    subject: s.state.shopping.find((i) => i.name === 'Item 10'),
+  };
+});
+check('the record survives the swipe — this is not a delete',
+  after.total === 10 && Boolean(after.subject), JSON.stringify({ total: after.total }));
+check('but it is off the list, and local again',
+  after.listed === 9 && after.subject.onList === false,
+  JSON.stringify({ listed: after.listed, onList: after.subject?.onList }));
 const undo = await page.evaluate(() => {
   const el = document.querySelector('#undo');
   return { hidden: el?.hasAttribute('hidden'), text: el?.textContent?.trim() || '' };
 });
-check('the undo bar appears and names what was deleted', undo.hidden === false && /item 10/i.test(undo.text), JSON.stringify(undo));
+check('the undo bar appears and names what came off the list',
+  undo.hidden === false && /item 10/i.test(undo.text) && /off your list/i.test(undo.text),
+  JSON.stringify(undo));
 check('window.confirm() was never used', dialogs.length === 0, JSON.stringify(dialogs));
 check('no page errors during the whole flow', pageErrors.length === 0, JSON.stringify(pageErrors));
 

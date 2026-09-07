@@ -661,8 +661,18 @@ export function readItemEditor(root) {
  * the same route a Log photo takes — because a shot you cannot picture is
  * just a sentence you will not read again.
  */
-export function shotEditor(shot, { placeName = 'this stop', error = '' } = {}) {
+/**
+ * `image` carries a picture chosen but not yet saved — bug 13.
+ *
+ * A new shot has no record to hang a thumbnail on, which is why the photo
+ * handler used to create one the moment a file was picked. It does not any
+ * more, so the chosen thumbnail lives in the screen's own state until Save
+ * and is passed in here. For an existing shot it stays whatever the record
+ * holds unless a new file has been picked over it.
+ */
+export function shotEditor(shot, { placeName = 'this stop', error = '', image = null } = {}) {
   const made = Boolean(shot?.id);
+  const picture = image ?? shot?.imagePath ?? null;
   return html`
     <div class="scrim" data-act="shot-cancel"></div>
     <div class="modal">
@@ -681,15 +691,15 @@ export function shotEditor(shot, { placeName = 'this stop', error = '' } = {}) {
         <input id="shot-tag" value="${esc(shot?.tag || 'YOURS')}" maxlength="12" placeholder="ICONIC">
         <div class="row g8 center">
           <label class="btn ghost sm grow" style="cursor:pointer">
-            ${shot?.imagePath ? 'Change the picture' : 'Add a reference picture'}
+            ${picture ? 'Change the picture' : 'Add a reference picture'}
             <input id="shot-photo" type="file" accept="image/*" hidden>
           </label>
-          ${shot?.imagePath ? html`
+          ${picture ? html`
             <button class="btn ghost sm none" style="width:82px" data-act="shot-photo-clear">Remove</button>` : ''}
         </div>
-        ${shot?.imagePath ? html`
+        ${picture ? html`
           <div class="photo-thumb mt8" style="width:100%;height:120px">
-            <img src="${shot.imagePath}" alt=""></div>` : ''}
+            <img src="${picture}" alt=""></div>` : ''}
         <div class="form-actions">
           <button class="btn jade grow" data-act="shot-save">${made ? 'Save' : 'Add it'}</button>
           <button class="btn ghost" style="width:96px" data-act="shot-cancel">Cancel</button>
@@ -717,6 +727,17 @@ export function readShotEditor(root) {
  * empty one is simply not kept, so the table never shows a label with
  * nothing under it.
  */
+/**
+ * Bugs 7 and 8 — the name and the note are editable here now.
+ *
+ * This sheet edited only `essentials` and the map link, so a place could
+ * never be renamed or described once created. That was worst for a place
+ * added FROM a map link: a Google `/place/` URL yields its own address as
+ * the label, so the list showed a whole postal address where a name should
+ * be, permanently, with nowhere to fix it.
+ *
+ * Category and price tier are deliberately still absent — a later round.
+ */
 export function factsEditor(place, { error = '', pending = false } = {}) {
   const held = new Map((place?.essentials || []).map((row) => [row.key, row]));
   const rows = store.PLACE_FACTS.map((fact) => ({ ...fact, ...held.get(fact.key) }));
@@ -732,6 +753,13 @@ export function factsEditor(place, { error = '', pending = false } = {}) {
     <div class="modal">
       <div class="form">
         <div class="form-title">What to remember about ${esc(place?.name || 'this place')}</div>
+
+        <label class="f11 soft block">Name</label>
+        <input id="facts-name" value="${esc(place?.name || '')}"
+               placeholder="What you would call it">
+        <label class="f11 soft block">What it is, in your words</label>
+        <textarea id="facts-note" rows="2"
+                  placeholder="Why it is worth the walk.">${esc(place?.note || '')}</textarea>
 
         <!-- The map-link field p1-absence-and-removal-design.md §4.2 names —
              "opens the facts editor at its map-link field". It is bound to
@@ -779,6 +807,21 @@ export function readFactsEditor(root) {
     value: input.value,
     detail: '',
   }));
+}
+
+/**
+ * The name and the note, read back on their own — bugs 7 and 8.
+ *
+ * They are properties of the place, not rows in its facts table, so they do
+ * not travel with `readFactsEditor`. An empty name is returned as null so
+ * the caller can refuse rather than silently blanking a place's only label.
+ */
+export function readFactsIdentity(root) {
+  const name = root.querySelector('#facts-name')?.value.trim() ?? '';
+  return {
+    name: name || null,
+    note: root.querySelector('#facts-note')?.value.trim() ?? '',
+  };
 }
 
 /** The map link, read back on its own — it is a property, not a fact row. */

@@ -662,7 +662,9 @@ export function runningCard(trip) {
   const window = next ? itemWindow(next) : null;
   const minutesAway = window?.start != null ? window.start - now : null;
 
-  const buying = state.shopping.filter((i) => !i.bought && itemDay(i) === n).length;
+  // ITEM 4 · "N to buy today" counts the LIST. Nothing local is on it yet,
+  // so a trip whose items are all still local correctly reads 0.
+  const buying = listedShopping().filter((i) => !i.bought && itemDay(i) === n).length;
   const spent = state.shopping
     .filter((i) => i.bought)
     .reduce((sum, i) => sum + (i.paidAmount ?? i.estimate ?? 0), 0);
@@ -693,7 +695,9 @@ export function tripReadiness(trip) {
   if (trip.id !== state.tripID) return null;
   const emptyDays = state.days.filter((d) => !activeItems(d).length).length;
   const packed = state.prep.filter((i) => i.packed).length;
-  const planned = state.shopping.reduce((sum, i) => sum + (i.estimate || 0), 0);
+  // ITEM 4 · listed only, for the same reason: this is what you have decided
+  // to buy, not everything you have noticed.
+  const planned = listedShopping().reduce((sum, i) => sum + (i.estimate || 0), 0);
   return {
     emptyDays,
     packed,
@@ -1842,22 +1846,79 @@ export function itemDay(item) {
   return hit ? Number(hit[1]) : null;
 }
 
+/**
+ * Which day of the trip a place belongs to — bug 22.
+ *
+ * A stop-place answers directly, from the plan row that visits it. A nearby
+ * place answers through the stop it hangs off, which is the only day it can
+ * sensibly be shopped on. Null when the place is on no day at all.
+ */
+export function dayForPlace(placeID) {
+  if (!placeID) return null;
+  for (const d of state.days) {
+    if ((d.items || []).some((i) => i.placeID === placeID)) return d.dayNumber;
+  }
+  return parentStopOf(placeID)?.dayNumber ?? null;
+}
+
+/*
+ * ITEM 4 · the two places a shopping item can be.
+ *
+ * A shopping item is either ON THE LIST — the main Shop screen, the thing
+ * you check at the till — or LOCAL to the place it was noted at, visible
+ * only inside that place's own Shop tab. `onList` is the flag, and the
+ * DIRECTION of its default is the whole safety property:
+ *
+ *   absent or true  -> on the list
+ *   false           -> local to its place
+ *
+ * It must never be derived from `placeID`. All 96 imported items carry one,
+ * because that is how the importer links them to their stop, so keying off
+ * it would hide the entire researched shopping list at once — and with
+ * `bought` false on all 96, nothing would come back. Reading an absent flag
+ * as "on the list" also means no migration is needed: every record written
+ * before this existed keeps the visibility it already had.
+ *
+ * Three actions move an item, and only three:
+ *   · TICKING it bought promotes local -> listed, one way, never back.
+ *   · The main list's swipe DEMOTES listed -> local. It is "take it off my
+ *     list", not a delete: the item stays where it was found.
+ *   · A real delete exists only inside the place's own Shop tab.
+ */
+export const isListed = (item) => item?.onList !== false;
+
+/** Everything on the main list, before the day and place pills are applied. */
+export const listedShopping = () => state.shopping.filter(isListed);
+
 export function shopDayOptions() {
   const days = new Set();
-  for (const item of state.shopping) {
+  for (const item of listedShopping()) {
     const n = itemDay(item);
     if (n) days.add(n);
   }
   return [...days].sort((a, b) => a - b);
 }
 
+/**
+ * Bug 22 · whether anything on the list has no day at all, which is what
+ * earns the "No day" pill. Without it an item added from the Shop screen
+ * with no place attached is unreachable the moment any day filter is on —
+ * the user adds something and it is simply gone.
+ */
+export function hasDaylessShopping() {
+  return listedShopping().some((item) => !itemDay(item));
+}
+
 export function shopPlaceOptions() {
-  return [...new Set(state.shopping.map((i) => i.placeLabel))];
+  return [...new Set(listedShopping().map((i) => i.placeLabel))];
 }
 
 export function filteredShopping() {
-  return state.shopping.filter((item) => {
+  return listedShopping().filter((item) => {
     if (state.shopPlace !== 'all' && item.placeLabel !== state.shopPlace) return false;
+    // Bug 22 · 'none' is its own filter, not a number, so a dayless item has
+    // a pill that reaches it.
+    if (state.shopDay === 'none') return !itemDay(item);
     if (state.shopDay !== 'all' && itemDay(item) !== Number(state.shopDay)) return false;
     return true;
   });
@@ -1969,7 +2030,16 @@ export function spendTotals({ all = false } = {}) {
   for (const p of seed.PAYMENTS) byPayment[p.id] = { count: 0, sum: 0 };
   for (const c of seed.SHOP_CATEGORIES) byCategory[c.id] = { count: 0, sum: 0 };
 
-  const source = all ? state.shopping : filteredShopping();
+  /*
+   * ITEM 4 · `all` bypasses the day and place PILLS, so the Spend report
+   * covers the whole trip whatever the Shop screen is filtered to. It does
+   * not bypass the list: a local item is not on your list and does not
+   * belong in your planned total. Before this, `all` read `state.shopping`
+   * raw, which would have had the report quoting the 96 local estimates
+   * while the Shop footer quoted none — two screens contradicting each
+   * other about one number, with nothing to tell the reader which was true.
+   */
+  const source = all ? listedShopping() : filteredShopping();
   for (const item of source) {
     planned += item.estimate || 0;
     if (!item.bought) continue;
@@ -3045,6 +3115,14 @@ export function toggleBought(id) {
   const item = state.shopping.find((i) => i.id === id);
   if (!item) return;
   item.bought = !item.bought;
+  /*
+   * ITEM 4 · buying it puts it on the list, and untick does NOT take it off
+   * again. Promotion is deliberately one-way: a demote here would make an
+   * item vanish from the list you are holding at the till the moment you
+   * corrected a mis-tap, which is the worst failure this feature can have.
+   * Taking something off the list is its own action, on the list itself.
+   */
+  if (item.bought) item.onList = true;
   // When and on which day, so the report can say "Aoi Camera Alley · 14:40"
   // and group the purchase under the day it actually happened on.
   if (item.bought) {
@@ -3134,12 +3212,52 @@ export function shoppingPlaceChoices() {
   return [...names].sort((a, b) => a.localeCompare(b));
 }
 
+/**
+ * ITEM 4 · take an item off the main list without destroying it.
+ *
+ * This is what the main Shop screen's swipe does now. The record stays
+ * exactly where it was found — inside its place's own Shop tab — so it is
+ * still there to re-add, and nothing researched is ever lost to a swipe on
+ * a screen that cannot show it again.
+ */
+export function unlistShoppingItem(id) {
+  const item = state.shopping.find((i) => i.id === id);
+  if (!item) return null;
+  const was = item.onList;
+  put('shopping', { ...item, onList: false });
+  // A swipe is only a safe gesture because it can be taken back. Demoting
+  // needs that as much as deleting did — more, since the row leaves the
+  // screen and the place it went to is two taps away.
+  rememberUndo(`${item.name} off your list`, () => {
+    const now = state.shopping.find((i) => i.id === id);
+    if (now) put('shopping', { ...now, onList: was === undefined ? true : was });
+  });
+  return item;
+}
+
+/** ITEM 4 · put a local item on the list, from the place it was noted at. */
+export function listShoppingItem(id) {
+  const item = state.shopping.find((i) => i.id === id);
+  if (!item) return null;
+  put('shopping', { ...item, onList: true });
+  return item;
+}
+
 export function deleteShoppingItem(id) {
   const item = state.shopping.find((i) => i.id === id);
   removeWithUndo('shopping', id, item ? `${item.name} deleted` : 'Item deleted');
 }
 
-export function addShoppingItem({ name, placeLabel, estimate, payment, category, placeID, quantity }) {
+/**
+ * ITEM 4 · `local: true` is passed ONLY by a place's own Shop tab.
+ *
+ * Everything else — the main Shop screen's Add, the importer, a trip file —
+ * omits it and lands on the list, which is why no migration is needed and
+ * why the 96 imported records keep the visibility they already had.
+ */
+export function addShoppingItem({
+  name, placeLabel, estimate, payment, category, placeID, quantity, local = false,
+}) {
   if (!name) return;
   const label = placeLabel || 'Unplanned · added on the trip';
   // Bind to the place when we can name one, so renaming it keeps the item.
@@ -3150,12 +3268,28 @@ export function addShoppingItem({ name, placeLabel, estimate, payment, category,
   const groupOrder = existing.length
     ? existing[0].groupOrder
     : Math.max(-1, ...state.shopping.map((i) => i.groupOrder)) + 1;
+  /*
+   * Bug 22 · `placeWhen` is where the day filter reads a day from, via
+   * `itemDay()`'s /Day (\d+)/ — and nothing user-created ever set it, so
+   * `shopDayOptions()` came back empty and the D1-D8 pills were structurally
+   * absent on any hand-built trip. It was reported as "the shopping list
+   * cannot filter by day now".
+   *
+   * An item added at a stop takes that stop's day, which is the only day it
+   * can sensibly be shopped on. An item added from the Shop screen with no
+   * place still gets none, and the "No day" pill is how those stay reachable
+   * rather than vanishing behind a filter.
+   */
+  const dayNumber = dayForPlace(bound);
+  const when = dayNumber
+    ? `Day ${dayNumber}${label && !/^Unplanned/.test(label) ? ` · ${label}` : ''}`
+    : (placeLabel ? '' : 'Added while travelling');
   put('shopping', {
     id: uid('item-'),
     name,
     detail: placeLabel ? '' : 'Added while travelling',
     placeLabel: label,
-    placeWhen: placeLabel ? '' : 'Added while travelling',
+    placeWhen: when,
     badge: 'none',
     placeID: bound,
     groupOrder,
@@ -3168,6 +3302,9 @@ export function addShoppingItem({ name, placeLabel, estimate, payment, category,
     bought: false,
     boughtOn: null,
     isUnplanned: !placeLabel,
+    // Only ever false here; absent means listed, so nothing already written
+    // has to be migrated.
+    ...(local ? { onList: false } : {}),
   });
 }
 
@@ -3232,6 +3369,33 @@ export const PLACE_FACTS = [
   { key: 'Getting in', hint: 'Tickets at the side office · ¥500' },
   { key: 'Worth knowing', hint: 'Cash only. Shoulders covered.' },
 ];
+
+/**
+ * The place's own name and note — bugs 7 and 8.
+ *
+ * Kept separate from `updatePlaceFacts` because these are the record's
+ * identity rather than rows in its table, and because renaming has a
+ * consequence the facts do not: shopping items bind to a place by `placeID`
+ * where they can, but the ones that only ever had a `placeLabel` are matched
+ * by NAME. Renaming without carrying those along would orphan them from the
+ * place they belong to, which is the same class of bug `unifyPlaces` exists
+ * to clean up. So the label moves with the name.
+ */
+export function updatePlaceIdentity(placeID, { name, note } = {}) {
+  const record = state.places.find((p) => p.id === placeID) || null;
+  if (!record) return null;
+  const next = String(name || '').trim() || record.name;
+  const was = record.name;
+  put('places', { ...record, name: next, note: String(note ?? record.note ?? '').trim() });
+  if (next !== was) {
+    for (const item of state.shopping) {
+      if (item.placeID === placeID || item.placeLabel === was) {
+        put('shopping', { ...item, placeLabel: next, placeID: item.placeID || placeID });
+      }
+    }
+  }
+  return next;
+}
 
 export function updatePlaceFacts(placeID, rows = []) {
   const record = state.places.find((p) => p.id === placeID) || null;
@@ -3439,11 +3603,22 @@ function dayLabels(startDate, dayNumber) {
 export function weatherStatus() {
   const trip = state.trip;
   const coverage = forecastCoverage(trip?.startDate, trip?.dayCount || 0);
+  // Bug 21 · a forecast now comes from each day's own first main stop, so it
+  // can be complete, partial, or missing days the provider would not answer
+  // for. Saying which is the difference between "here is your trip" and
+  // "here is most of it" — and the second one is the honest line when a day
+  // has no located stop to forecast from.
+  const rows = (trip?.weather || []).length;
+  const want = (trip?.dayCount || 0);
+  const short = rows && want && rows < want
+    ? ` · ${rows} of ${want} days — the rest have no located stop yet`
+    : '';
   if (coverage.covered) {
-    return { live: true, line: weatherSourceLine() };
+    return { live: true, line: weatherSourceLine() + short, partial: Boolean(short) };
   }
   return {
     live: false,
+    partial: Boolean(short),
     line: trip?.weatherUpdatedAt
       ? `Last forecast ${weatherSourceLine().replace('Forecast, updated ', '')} · ${coverage.reason}`
       : `No live forecast — ${coverage.reason}`,
@@ -3451,9 +3626,59 @@ export function weatherStatus() {
 }
 
 /**
+ * Where each day actually is — bug 21.
+ *
+ * The forecast used to come from ONE coordinate, `trip.latitude/longitude`,
+ * geocoded from the "City or area" field. That is wrong in two different
+ * ways. With the field unset, or set to a country, there is no usable centre
+ * and no forecast at all — which is how this was reported. And even with it
+ * set, one centre cannot describe this trip: its own centre is (37.5, 140)
+ * for "Tohoku and Kanto", while Day 3 is at Ginzan Onsen (38.57, 140.53) and
+ * Day 7 at Tokyo Tower (35.66, 139.75) — roughly 320 km apart, in different
+ * weather, one of them in the mountains.
+ *
+ * So a day's weather comes from the day's own first MAIN stop: the one the
+ * morning is spent at, skipping travel legs, which have coordinates but are
+ * airports and aeroplanes rather than anywhere you stand. A day with no
+ * located main stop falls back to the trip centre, and a trip with no centre
+ * either simply has no forecast, which `weatherStatus` already explains.
+ */
+export function dayCoords() {
+  const centre = state.trip?.latitude != null
+    ? { latitude: state.trip.latitude, longitude: state.trip.longitude }
+    : null;
+  return state.days.map((d) => {
+    for (const item of activeItems(d)) {
+      if (item.kind !== 'main' || item.travelLeg) continue;
+      if (item.latitude != null) {
+        return { dayNumber: d.dayNumber, latitude: item.latitude, longitude: item.longitude, at: item.name };
+      }
+      const pl = place(item.placeID);
+      if (pl?.latitude != null) {
+        return { dayNumber: d.dayNumber, latitude: pl.latitude, longitude: pl.longitude, at: pl.name };
+      }
+    }
+    return centre
+      ? { dayNumber: d.dayNumber, ...centre, at: state.trip.locationName || 'the trip centre' }
+      : { dayNumber: d.dayNumber, latitude: null, longitude: null, at: '' };
+  });
+}
+
+/**
  * Replaces the stored forecast with a real one when the trip is close enough
  * for a forecast to exist. Offline, or for a trip months away, the stored
  * figures stay and `weatherStatus` explains why.
+ *
+ * One request per DISTINCT day coordinate, and each one asks for the whole
+ * trip's date range so the row index still lines up with the day number the
+ * provider returns. Days that share a coordinate share a request, so a trip
+ * that stays in one city costs exactly one — the same as before.
+ *
+ * Open-Meteo does accept several coordinates in a single call, which would
+ * make this one request always. It is deliberately not used: the multi-
+ * location response is a different shape from the one `fetchForecast` parses
+ * today, and it could not be verified from the environment this was written
+ * in. A known-good parser called a few times beats a guessed one called once.
  */
 export async function refreshWeather({ force = false } = {}) {
   const trip = state.trip;
@@ -3463,19 +3688,50 @@ export async function refreshWeather({ force = false } = {}) {
   const age = trip.weatherUpdatedAt ? Date.now() - new Date(trip.weatherUpdatedAt).getTime() : Infinity;
   if (!force && age < 3 * 3600 * 1000) return false;
 
-  try {
-    const forecast = await fetchForecast({
-      latitude: trip.latitude,
-      longitude: trip.longitude,
-      startDate: trip.startDate,
-      dayCount: trip.dayCount,
-    });
-    if (!forecast.length) return false;
-    putTrip({ ...state.trip, weather: forecast, weatherUpdatedAt: new Date().toISOString() });
-    return true;
-  } catch {
-    return false;
+  // Group the days by the coordinate they will be forecast from, so days in
+  // the same place cost one request between them.
+  const groups = new Map();
+  for (const row of dayCoords()) {
+    if (row.latitude == null) continue;
+    const key = `${row.latitude.toFixed(3)},${row.longitude.toFixed(3)}`;
+    if (!groups.has(key)) groups.set(key, { latitude: row.latitude, longitude: row.longitude, days: [] });
+    groups.get(key).days.push(row.dayNumber);
   }
+  if (!groups.size) return false;
+
+  const byDay = new Map();
+  let failures = 0;
+  for (const group of groups.values()) {
+    try {
+      const rows = await fetchForecast({
+        latitude: group.latitude,
+        longitude: group.longitude,
+        startDate: trip.startDate,
+        dayCount: trip.dayCount,
+      });
+      // Each response covers the whole range, so take only the days this
+      // coordinate is actually responsible for.
+      for (const n of group.days) {
+        const hit = rows.find((r) => r.dayNumber === n);
+        if (hit) byDay.set(n, hit);
+      }
+    } catch {
+      // One area failing must not lose the areas that answered.
+      failures += 1;
+    }
+  }
+  if (!byDay.size) return false;
+
+  const forecast = [...byDay.values()].sort((a, b) => a.dayNumber - b.dayNumber);
+  putTrip({
+    ...state.trip,
+    weather: forecast,
+    weatherUpdatedAt: new Date().toISOString(),
+    // Recorded so `weatherStatus` can be honest about a partial answer
+    // rather than presenting six days of nine as the whole trip.
+    weatherPartial: failures > 0 || forecast.length < state.days.length ? true : null,
+  });
+  return true;
 }
 
 /** Pulls today's ECB rate for the trip's currency pair. */
@@ -4769,7 +5025,10 @@ export function keptAfterRemoval() {
     },
     {
       key: 'shopping',
-      line: `Your shopping list, all ${state.shopping.length} item${state.shopping.length === 1 ? '' : 's'} and what you bought`,
+      // ITEM 4 · "your shopping list" overstated it: most of these are ideas
+      // noted at a place and not yet on the list. The count is still every
+      // record, because every record is still yours and still kept.
+      line: `${state.shopping.length} shopping idea${state.shopping.length === 1 ? '' : 's'} collected for this trip, and what you bought`,
       count: state.shopping.length,
     },
     {
