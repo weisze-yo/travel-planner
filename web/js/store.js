@@ -1448,6 +1448,34 @@ export function dayIssueCount(n = state.selectedDay) {
  * for two hours *is* the free time — so a stop of 90 minutes or more opens
  * its lane at its own start rather than at its end.
  */
+/**
+ * B3 · which two stops a new one at `time` would land between.
+ *
+ * The Add-a-stop form used to ASK whether a stop was the agent's route or
+ * your own, with two radios. Nobody adding a stop is thinking "is this the
+ * agent's route or mine?" — they are thinking "12:30, the snow museum" — and
+ * the placement already answers it: added on Plan is the main route, added
+ * in Nearby is a sub route. So the question goes and the hint states the
+ * rule at the moment it applies, which needs the neighbours to name.
+ *
+ * Only TIMED stops count: an untimed one has no position in the order, so
+ * saying a new stop lands after it would be a guess.
+ */
+export function stopNeighbours(n = state.selectedDay, time = '') {
+  const at = parseClock(time);
+  const timed = activeItems(day(n))
+    .map((item) => ({ item, start: itemWindow(item).start }))
+    .filter((s) => s.start != null)
+    .sort((a, b) => a.start - b.start);
+
+  if (!timed.length) return { before: null, after: null, only: true };
+  if (at == null) return { before: null, after: null, only: false };
+
+  const before = [...timed].reverse().find((s) => s.start <= at) || null;
+  const after = timed.find((s) => s.start > at) || null;
+  return { before: before?.item.name || null, after: after?.item.name || null, only: false };
+}
+
 export function dayTimeline(n = state.selectedDay) {
   const stops = activeItems(day(n)).map((item) => ({ item, window: itemWindow(item) }));
   const loops = subRoutesFor(n);

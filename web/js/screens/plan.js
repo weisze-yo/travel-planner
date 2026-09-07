@@ -27,7 +27,7 @@ import { go } from '../nav.js';
 import { dayPills, weatherBanner, bindDragReorder, swipeToDelete, emptyShared, arrivalBanner } from './parts.js';
 
 let addOpen = false;
-let form = { name: '', start: '', end: '', kind: 'main' };
+let form = { name: '', start: '', end: '' };
 let notice = '';
 /**
  * Which control is doing async work — a key, never a free string (P0-5 R1).
@@ -260,7 +260,6 @@ export default {
           name: typed || '',
           start: root.querySelector('#add-start')?.value.trim() || '',
           end: root.querySelector('#add-end')?.value.trim() || '',
-          kind: root.querySelector('[name="add-kind"]:checked')?.value || 'main',
         };
         store.setEditingPlan(true);
         root.querySelector('#add-name')?.focus();
@@ -270,12 +269,15 @@ export default {
 
       const start = root.querySelector('#add-start')?.value.trim() || '09:00';
       const end = root.querySelector('#add-end')?.value.trim() || '';
-      const kind = root.querySelector('[name="add-kind"]:checked')?.value || 'main';
+      // B3 · derived from WHERE you added it, not asked. This form is on
+      // Plan, so it is the main route; Nearby's own form makes sub-route
+      // members. The paste importer is the third input and keeps its own.
+      const kind = 'main';
 
       // R8: the form STAYS UP until the work resolves. It used to close on
       // this line and leave `Adding…` at the top of the screen, above a form
       // that was no longer there.
-      form = { name: typed || '', start, end, kind };
+      form = { name: typed || '', start, end };
       pending = /^https?:/i.test(typed) ? 'link' : 'add';
       notice = '';
       store.setEditingPlan(true);
@@ -292,7 +294,7 @@ export default {
       // form up with what was typed still in it, so the retry is one tap.
       if (result.saved) {
         addOpen = false;
-        form = { name: '', start: '', end: '', kind: 'main' };
+        form = { name: '', start: '', end: '' };
       }
       store.setEditingPlan(true);
     });
@@ -364,9 +366,19 @@ function stopRow(row, { editing, number, last, issues }) {
             <div class="plan-name">${item.name}</div>
             ${item.note ? html`<div class="plan-note">${item.note}</div>` : ''}
           </div>
+          <!-- B3 · this badge said MAIN for every stop on the day,
+               whatever its kind. That was survivable while the Add-a-stop
+               form ASKED for provenance — the user had at least said it out
+               loud — but the form no longer asks, so this badge is now the
+               only place the answer appears on the Plan, and a jade MAIN on
+               a sub-route stop is a false statement about the plan rather
+               than a missing one. .badge.sub already exists and map.js
+               and nearby.js already use it; only this call site did not. -->
           ${editing
             ? html`<button class="plan-remove" data-act="remove" data-id="${item.id}" aria-label="Remove ${item.name}">✕</button>`
-            : html`<span class="badge main">MAIN${number ? ` ${number}` : ''}</span>`}
+            : (item.kind === 'sub'
+              ? html`<span class="badge sub">SUB</span>`
+              : html`<span class="badge main">MAIN${number ? ` ${number}` : ''}</span>`)}
         </div>
 
         ${issues.map((issue, at) => html`
@@ -703,15 +715,6 @@ function addForm() {
           </select>
         </label>` : ''}
 
-      <div class="row g6 wrap">
-        ${[['main', "The agent's route"], ['sub', 'My own plan']].map(([value, label]) => html`
-          <label class="pill small" style="background:#fff;border:1px solid var(--field)">
-            <input type="radio" name="add-kind" value="${value}"${value === form.kind ? ' checked' : ''}
-                   style="width:14px;height:14px;padding:0;margin:0;accent-color:#14201C">
-            ${label}
-          </label>`)}
-      </div>
-
       <div class="row g8">
         <label class="none">
           <span class="f11 soft">Starts</span>
@@ -721,19 +724,49 @@ function addForm() {
           <span class="f11 soft">Ends</span>
           <input id="add-end" placeholder="—" value="${form.end}" style="width:82px" inputmode="numeric">
         </label>
-        <button class="btn jade grow" style="align-self:flex-end" data-act="add-save"${
-          pending ? raw(' disabled aria-busy="true"') : ''}>${
-          pending === 'link' ? 'Reading that link…' : (pending === 'add' ? 'Adding…' : 'Add')}</button>
-        <button class="btn ghost none" data-act="add-cancel"
-                style="width:38px;align-self:flex-end${pending ? ';pointer-events:none' : ''}" aria-label="Cancel">✕</button>
       </div>
 
-      <div class="form-hint">
-        The same way you add a place anywhere else: type a name, paste a map link, or pick
-        something you saved earlier. A link brings the position with it, and opening hours
-        where OpenStreetMap has them. Leave the end blank for the last stop of a day.
+      <div class="form-hint">${landingLine()} Leave the end blank for the last stop of a day.</div>
+
+      <!-- B3 · the app's own pair, everywhere else in the app: a jade
+           primary that grows and a 96px ghost Cancel. The ✕ that used to sit
+           beside Add was 38px wide and the only one of its kind in the
+           product — Cancel is the word this app uses for that. -->
+      <div class="form-actions">
+        <button class="btn jade grow" data-act="add-save"${
+          pending ? raw(' disabled aria-busy="true"') : ''}>${
+          pending === 'link' ? 'Reading that link…' : (pending === 'add' ? 'Adding…' : 'Add')}</button>
+        <button class="btn ghost" style="width:96px${pending ? ';pointer-events:none' : ''}"
+                data-act="add-cancel">Cancel</button>
       </div>
     </div>`;
+}
+
+/**
+ * B3 · the sentence that replaced the question.
+ *
+ * The form asked "The agent's route / My own plan" as two radios, which is
+ * unanswerable: nobody adding a stop is thinking about provenance, and the
+ * radios did not render as checked anyway (bug 5). The rule the owner named
+ * takes over — added on Plan lands on the main route, added in Nearby lands
+ * on a sub route — and it is STATED at the moment it applies rather than
+ * asked. Five words carry it; the neighbours are there because "between
+ * these two" is the part that is not obvious.
+ *
+ * Provenance is still SHOWN everywhere it was: the jade MAIN badge, the
+ * amber SUB badge, the "Added by you" / "Added from a pasted itinerary"
+ * line. It is derived now instead of declared.
+ */
+function landingLine() {
+  const at = form.start || '09:00';
+  const { before, after, only } = store.stopNeighbours(state.selectedDay, at);
+  if (only) return 'Lands on the main route, as the day’s first stop.';
+  if (before && after) return `Lands on the main route, between ${before} and ${after}.`;
+  if (after) return `Lands on the main route, before ${after}.`;
+  if (before) return `Lands on the main route, after ${before}.`;
+  // Every stop on the day is untimed, so there is no order to land in and
+  // claiming one would be a guess.
+  return 'Lands on the main route.';
 }
 
 /**
