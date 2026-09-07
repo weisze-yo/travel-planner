@@ -1297,6 +1297,49 @@ export function openNowCount(places, n = state.selectedDay) {
 export const offHoursCount = (places) => (places || [])
   .filter((p) => OFF_HOURS[String(p?.timeWindow || '').toLowerCase()]).length;
 
+/*
+ * §3.3 · THE IMAGE SLOT, AND WHAT IT IS WHEN THERE IS NO IMAGE.
+ *
+ * Measured against the current snapshot: 52 image entries across 618 places
+ * and 65 must-see records, and of the 43 STOP-PLACES, exactly ZERO have one.
+ * The two halves of §3.3 are therefore very unequal in reach — the deletion
+ * half returns 228px on every stop in the trip, and the photo half currently
+ * renders for two nearby places.
+ *
+ * Both are built. Design's own note says the no-image half "can ship before
+ * a single photo arrives", and the photo half has to be correct now so that
+ * no future batch can arrive and quietly drop attribution.
+ */
+export const heroImage = (record, skip = null) => (record?.images || [])
+  .find((im) => im?.url && !(skip && skip.has(im.url))) || null;
+
+/**
+ * The credit bar's line. ONE format, and it is NOT conditional on the
+ * licence — so no version of this can ever ship that silently omits
+ * attribution when the data is sloppy.
+ *
+ *   CC0 / public domain    Public domain · Commons
+ *   CC BY                  Name · CC BY · Commons
+ *   CC BY-SA               Name · CC BY-SA · Commons
+ *
+ * Ordered CREDIT FIRST, because the line truncates at one line and what
+ * must survive the clip is the person's name; the licence string is
+ * repeated in full on the source page the bar links to.
+ *
+ * The licence is printed exactly as the record stores it. Design's format
+ * shows "CC BY-SA 4.0", and this data carries no version — so the version
+ * is not invented. Never abbreviated to "CC" either.
+ */
+export function imageCredit(image) {
+  const licence = String(image?.license || '').trim();
+  const credit = String(image?.credit || '').trim();
+  const publicDomain = /^(cc0|public domain|pd)\b/i.test(licence);
+  const parts = publicDomain
+    ? ['Public domain']
+    : [credit || 'Unknown author', licence || 'Licence not recorded'];
+  return [...parts, 'Commons'].join(' · ');
+}
+
 export const place = (id) => state.places.find((p) => p.id === id) || null;
 export const weather = (n = state.selectedDay) => (state.trip?.weather || []).find((w) => w.dayNumber === n) || null;
 

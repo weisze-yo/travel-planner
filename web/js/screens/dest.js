@@ -2,7 +2,7 @@
 // icon soup, both map handoffs above it, and doorways into the things that
 // hang off this stop: nearby, must-see, shopping, and the day's note.
 
-import { html, raw, icon, delegate, money } from '../util.js';
+import { html, raw, icon, delegate, money, esc } from '../util.js';
 import * as store from '../store.js';
 import { state } from '../store.js';
 import { go, back } from '../nav.js';
@@ -166,6 +166,15 @@ let pendingPhoto = null;
  * leaving the screen.
  */
 let nowOnly = false;
+/**
+ * §3.3 · urls whose image failed to load in this session.
+ *
+ * Per-session and in memory on purpose: a photo that failed because the
+ * traveller was underground should come back when they surface, and the next
+ * launch is the natural moment to try again. It is keyed by url rather than
+ * by record so one dead file does not blank a record's other images.
+ */
+const brokenShots = new Set();
 const repaint = () => store.selectDay(state.selectedDay);
 
 export default {
@@ -231,19 +240,62 @@ export default {
       log: notes.length,
     };
 
+    const shot = store.heroImage(store.place(it.placeID) || it, brokenShots);
+
     return html`
       <section class="screen">
         <div class="scroll">
-          <div class="hero placeholder-hatch">
-            <button class="hero-back" data-act="back" aria-label="Back">${raw(icon.back)}</button>
-            <span class="hero-tag">Photo placeholder</span>
-            <div class="hero-badges">
-              ${it.number ? html`<span class="hero-badge">MAIN ROUTE · STOP ${it.number}</span>` : ''}
-              ${it.window ? html`<span class="hero-badge light">${it.window}</span>` : ''}
+          <!--
+            §3.3 · NO PHOTO MEANS NO SLOT.
+
+            This was a 230px .hero.placeholder-hatch reading "Photo
+            placeholder" on every single record — 618 places, of which 616
+            have no image and 43 are stops, of which ZERO do. 228px of
+            hatched diagonal stripes, on every stop of the trip, promising a
+            picture that is not coming.
+
+            With an image it is a 200px photo plus a 28px solid ink credit
+            bar; without one there is no hero at all, and nothing is missing
+            because nothing was promised. The back button gets a real 52px
+            white bar instead of floating on a hatch, and the badges move
+            into the name block, which is the block that owns the subject.
+
+            .placeholder-hatch itself STAYS in the stylesheet:
+            .nearby-thumb and the must-see photo block still use it, and
+            there it is right — a 56px thumbnail is a slot in a row, not a
+            promise of a picture.
+          -->
+          ${shot ? html`
+            <div class="hero photo" data-hero>
+              <img class="hero-img" src="${esc(shot.url)}" alt="${esc(shot.caption || it.name)}"
+                   loading="lazy" decoding="async" data-hero-img>
+              <div class="hero-wash"></div>
+              <button class="hero-back" data-act="back" aria-label="Back">${raw(icon.back)}</button>
+              <div class="hero-badges">
+                ${it.number ? html`<span class="hero-badge">MAIN ROUTE · STOP ${it.number}</span>` : ''}
+                ${it.window ? html`<span class="hero-badge light">${it.window}</span>` : ''}
+              </div>
             </div>
-          </div>
+            <!-- The whole bar is the tap target, and the ↗ says so. White on
+                 --ink at 15.4:1 — never alpha over a photo whose brightness
+                 nobody can predict. Same height whatever the licence, so the
+                 layout does not jump between a CC0 record and a CC BY-SA
+                 one. -->
+            <a class="hero-credit" href="${esc(shot.sourcePage || shot.url)}"
+               target="_blank" rel="noopener" data-hero>
+              <span class="grow">${store.imageCredit(shot)}</span>
+              <span class="hero-credit-go" aria-hidden="true">↗</span>
+            </a>` : html`
+            <div class="dest-bar">
+              <button class="iconbtn" data-act="back" aria-label="Back">${raw(icon.back)}</button>
+            </div>`}
 
           <div class="dest-body">
+            ${shot ? '' : html`
+              <div class="row g6 wrap mb8">
+                ${it.number ? html`<span class="hero-badge">MAIN ROUTE · STOP ${it.number}</span>` : ''}
+                ${it.window ? html`<span class="hero-badge dark">${it.window}</span>` : ''}
+              </div>`}
             <div class="dest-name">${it.name}</div>
             ${it.subtitle ? html`<div class="dest-sub">${it.subtitle}</div>` : ''}
             ${it.summary ? html`<div class="dest-desc">${it.summary}</div>` : ''}
@@ -293,6 +345,28 @@ export default {
   mount(root, params) {
     const it = subject(params);
     delegate(root, '[data-act="back"]', () => back());
+    /*
+     * §3.3 · a photo that does not arrive must not leave a hole.
+     *
+     * These are Wikimedia URLs and this app is used on a phone in a country
+     * the traveller does not live in — no signal, a captive portal, a dead
+     * CDN, a file deleted from Commons.
+     *
+     * The first version of this REMOVED the hero and the credit bar from the
+     * DOM, which the live check caught doing something worse than the hole
+     * it fixed: the back button lives inside the hero when there is a photo,
+     * so removing it left a screen with no way off it. Recording the failed
+     * url and repainting means the render takes the no-photo branch
+     * properly — the 52px white bar, the badges in the name block — which is
+     * a complete design rather than a stripped one.
+     */
+    root.querySelector('[data-hero-img]')?.addEventListener('error', (event) => {
+      const url = event.target.getAttribute('src');
+      if (!url || brokenShots.has(url)) return;
+      brokenShots.add(url);
+      repaint();
+    }, { once: true });
+
     delegate(root, '[data-act="now-toggle"]', () => { nowOnly = !nowOnly; repaint(); });
     delegate(root, '[data-panel]', (el) => {
       tab = el.dataset.panel;

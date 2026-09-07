@@ -114,9 +114,35 @@ function run(label, pairs, { gate }) {
   return gate ? failures : 0;
 }
 
+/*
+ * F4 · GROUND-SCOPED PAIRS — and the rule for the next dark surface.
+ *
+ * A dark-ground ink is DEFINITIONALLY EXEMPT from a bar measured on white
+ * and --bone: it is designed to fail there. The owner's bar is 4.5:1 on
+ * white AND bone, so the honest thing is not to smuggle these into the
+ * general sweep, nor to leave them ungated — it is to gate them against the
+ * ground they actually appear on and say so by name.
+ *
+ * THE RULE, so the next dark surface inherits it instead of the argument:
+ *   a colour that only ever appears on one ground is gated on THAT ground,
+ *   in this list, with the ground named. It is never added to
+ *   NEW_THIS_SESSION, and never given a pass because "it's a dark card".
+ *
+ * The owner's answer to F4 was UNIFY rather than add a second exemption:
+ * `.archive-was` moved from #9FB2AA (4.03:1 — a real, shipped AA failure on
+ * a live screen) to #B6C7C0, so the app has exactly ONE secondary ink for
+ * dark grounds and it passes.
+ */
+const GROUND_SCOPED = [
+  ['archive-name on dark-card', '#E4EBE8', '#3D4C46', '.archive-name, 13.5px/650 — dark ground only'],
+  ['archive-was on dark-card', '#B6C7C0', '#3D4C46', '.archive-was, 11px — F4: was #9FB2AA at 4.03:1'],
+  ['white on ink (credit bar)', '#FFFFFF', '#14201C', '§3.3 .hero-credit — solid ink, never alpha over a photo'],
+];
+
 let gatedFailures = 0;
 gatedFailures += run('Pre-existing pairs (tracked, not gated — see header comment)', PRE_EXISTING, { gate: false });
 gatedFailures += run('New pairs this session (items 02/12/16) — gated', NEW_THIS_SESSION, { gate: true });
+gatedFailures += run('Ground-scoped pairs (F4) — gated on their OWN ground, exempt from the white/bone sweep', GROUND_SCOPED, { gate: true });
 
 console.log(gatedFailures
   ? `\nFAIL: ${gatedFailures} pair(s) introduced this session fall below WCAG AA.`

@@ -844,7 +844,25 @@ input[type="radio"], input[type="checkbox"] {
 .archive-card,
 .swipe-face.archive-card { margin-top: 8px; padding: 12px 13px; background: var(--dark-card); border-radius: 14px; }
 .archive-name { font-size: 13.5px; font-weight: 650; color: #E4EBE8; line-height: 1.25; }
-.archive-was { font-size: 11px; color: #9FB2AA; margin-top: 2px; }
+/*
+ * F4 · #B6C7C0, not #9FB2AA.
+ *
+ * Design flagged that the dark card cannot obey the both-grounds rule — a
+ * dark-ground ink is definitionally exempt from a 4.5:1 bar measured on
+ * white and --bone — and the owner's answer was UNIFY rather than add a
+ * second exemption.
+ *
+ * #9FB2AA measured 4.03:1 on --dark-card: a real, shipped AA failure on a
+ * live screen, sitting one line under a name that measures 7.48:1. #B6C7C0
+ * clears 5.14:1 on the same ground, so the app now has exactly ONE secondary
+ * ink for dark grounds and it passes — which also stops a third
+ * near-identical grey being invented the next time a dark surface appears.
+ *
+ * Both dark-ground pairs are gated in test/contrast.mjs as GROUND-SCOPED
+ * entries, exempt from the white/bone sweep by name, so the next dark
+ * surface inherits the rule instead of the argument.
+ */
+.archive-was { font-size: 11px; color: #B6C7C0; margin-top: 2px; }
 .archive-btn {
   flex: none;
   height: 28px;
@@ -864,14 +882,72 @@ input[type="radio"], input[type="checkbox"] {
 
 /* ------------------------------------------------------------- destination */
 
+/*
+ * §3.3 · the hero, when there IS a photo. 200 + 28 = 228px, within a pixel
+ * of the 230 the hatched placeholder used to take — so a record with an
+ * image costs exactly what every record used to cost, and the 616 without
+ * one get all of it back.
+ *
+ * The hatch stays a class of its own (`.placeholder-hatch`, further down)
+ * because `.nearby-thumb` and the must-see block still use it, and there it
+ * is right: a 56px thumbnail is a slot in a row, not a promise of a picture.
+ */
 .hero {
   position: relative;
-  height: 230px;
-  background: repeating-linear-gradient(135deg, #DDE1DD 0 10px, #D5DAD5 10px 20px);
+  height: 200px;
+  background: var(--bone);
   display: flex;
   align-items: flex-end;
   padding: 16px;
+  overflow: hidden;
 }
+.hero-img { position: absolute; inset: 0; width: 100%; height: 100%; object-fit: cover; }
+/* A bottom-up ink gradient, so the badges keep their contrast over a photo
+   whose brightness nobody can predict. */
+.hero-wash {
+  position: absolute; inset: 0;
+  background: linear-gradient(to top, rgba(20,32,28,.62) 0, rgba(20,32,28,.12) 46%, rgba(20,32,28,0) 74%);
+}
+.hero-badges { position: relative; }
+/*
+ * The credit bar. SOLID ink, never alpha over the photo: white on --ink is
+ * 15.4:1 and an alpha bar over an unpredictable image is not measurable at
+ * all. Always this height whatever the licence, so the layout does not jump
+ * between a CC0 record and a CC BY-SA one — and the bar is not conditional
+ * on the licence, so no future change can quietly drop attribution when the
+ * data is sloppy.
+ */
+.hero-credit {
+  display: flex;
+  align-items: center;
+  gap: 8px;
+  height: 28px;
+  padding: 0 14px;
+  background: var(--ink);
+  color: #fff;
+  font-size: 10.5px;
+  font-weight: 650;
+  text-decoration: none;
+}
+/* Credit first, so what a clip takes is the licence string — which the
+   source page repeats in full. The name is the part that must survive. */
+.hero-credit .grow { min-width: 0; white-space: nowrap; overflow: hidden; text-overflow: ellipsis; }
+.hero-credit-go { flex: none; font-size: 12px; opacity: .85; }
+/*
+ * And with NO photo: a real 52px white bar for the back button, instead of
+ * it floating on a hatch. The badges move into the name block below.
+ */
+.dest-bar {
+  height: 52px;
+  padding: 0 10px 0 8px;
+  display: flex;
+  align-items: center;
+  background: #fff;
+  border-bottom: 1px solid var(--line-3);
+}
+/* The window badge was `.light` — white on a photo. Over a white card it
+   needs a ground of its own. */
+.hero-badge.dark { background: var(--bone); color: var(--charcoal); }
 .hero-back { position: absolute; top: calc(12px + var(--safe-top)); left: 14px; width: 40px; height: 40px; border-radius: 13px; background: rgba(255,255,255,.9); display: flex; align-items: center; justify-content: center; }
 .hero-tag { position: absolute; top: calc(20px + var(--safe-top)); right: 14px; padding: 5px 9px; border-radius: 8px; background: rgba(20,32,28,.6); color: #fff; font-size: 10px; font-weight: 600; }
 .hero-badges { display: flex; gap: 6px; flex-wrap: wrap; }

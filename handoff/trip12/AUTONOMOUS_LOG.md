@@ -131,6 +131,32 @@ every paint — and `test/accessibility.mjs` gained five checks driven by real k
 that a button INSIDE such a card does not also fire the card (Enter on the rust ✕ would otherwise
 delete the loop and open it).
 
+### 8 · §3.3's photo half has nothing to render on a stop
+
+Reported already and worth repeating here as the finding it is: of the **43 stop-places, zero
+carry an image.** The 52 image entries are on 24 must-see records and 2 nearby places.
+
+§3.3's board A is a STOP with a photo. There is no such record and, as the data stands, there will
+not be one — `images_patch.json` is keyed by stop NAME, but stop-places are synthesised by the
+importer's `unifyPlaces()` and do not exist in the research JSON, so `--apply` attached each image
+to whatever record already shared that name.
+
+Both halves are built and both are gated. The deletion half is the whole win in practice (228px
+back on every one of 616 records) and Design said as much. The photo half is correct and tested,
+and it is what a future batch will land on — but on stops it currently shows nothing, so **the stop
+hero treatment §3.3 draws will not appear until the images are attached to stop-places.** That is
+an `images_patch.json` / `fetch_images.py` change, not an app one.
+
+### 9 · The licence version is not invented
+
+Design's credit format is `Name · CC BY-SA 4.0 · Commons`. The records store `CC BY-SA` with **no
+version** — 33 of them, plus 14 `CC BY`, 3 `CC0`, 2 `public domain`.
+
+`store.imageCredit()` prints the licence exactly as stored, so the bar reads `Name · CC BY-SA ·
+Commons`. Design's "never abbreviated to CC" is honoured; adding "4.0" would be asserting a fact
+about a licence nobody recorded. If the version matters for compliance it belongs in the data, and
+`fetch_images.py` is where it would be captured.
+
 ## UNRESOLVED — needs the owner
 
 ### U1 · `outfitByStop` — 33 researched records, ~1,400 characters each, never imported
