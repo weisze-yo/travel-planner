@@ -23,7 +23,18 @@ let pending = '';
 /** The add-a-place form's refusal, in its own field, in rust. */
 let addError = '';
 
-const CATS = ['all', 'food', 'cosme', 'cloth', 'shopping', 'sight', 'rest'];
+/*
+ * §3.7 · CATS was the ONE hardcoded copy of the category list in the app —
+ * every other label derives from `CATEGORY_LABELS` — and it silently lied
+ * the moment a value was added: `service` existed for a whole commit with no
+ * chip, and `all` had to be spliced in by hand.
+ *
+ * It derives now. The chip row itself survives on THIS screen, which spans
+ * a whole day and has the width for it; the Nearby TAB uses a select
+ * instead, because seven chips in a horizontal scroller above a list inside
+ * a tab inside a scrolling screen is four nested scroll surfaces.
+ */
+const CATS = ['all', ...Object.keys(CATEGORY_LABELS)];
 const SORTS = [
   { id: 'travelTime', label: 'Travel time' },
   { id: 'stayTime', label: 'Stay time' },
@@ -124,26 +135,20 @@ export default {
             <button class="btn-dashed" style="height:46px" data-act="add-open">+ Add a place</button>`}
         </div>
 
-        <div class="dock">
-          ${loops.length > 1 ? html`
-            <div class="dock-loops">
-              ${loops.map((other) => html`
-                <button class="dock-loop${other.id === loop?.id ? ' on' : ''}" data-loop="${other.id}">
-                  ${other.name} · ${store.clock(store.loopStart(other) ?? 0)}
-                </button>`)}
-            </div>` : ''}
-          <div class="row g10 center">
-            <div class="grow">
-              <div class="dock-h">
-                ${loop ? `${loop.name} · ${schedule.stops.length} STOP${schedule.stops.length === 1 ? '' : 'S'}` : 'NO FREE TIME SET ASIDE'}
-              </div>
-              <div class="dock-s">
-                ${loop ? store.subSummaryLine(loop) : 'Adding a place will set some aside on this day'}
-              </div>
-            </div>
-            <button class="dock-btn" data-act="arrange">${loop ? 'Arrange' : 'Start one'}</button>
-          </div>
-        </div>
+        <!--
+          §3.7 · THE FIXED BOTTOM DOCK IS GONE, from this screen and from the
+          Nearby tab.
+
+          It existed to name "the loop in hand" — the loop the round + / ✓
+          would drop a place into. A per-card select that NAMES its loop
+          makes the concept unnecessary, so the switcher's job does not move
+          anywhere, it disappears. The Arrange button's job went to the
+          Plan, per the owner's instruction, and Start one with it: a sub
+          route is created on the Plan, in the gap it belongs to.
+
+          Day 1's amber line is the signpost when a day has no free time set
+          aside at all.
+        -->
       </section>`;
   },
 
@@ -159,11 +164,17 @@ export default {
     delegate(root, '[data-cat]', (el) => store.setNearbyCategory(el.dataset.cat));
     delegate(root, '[data-act="sort-toggle"]', () => { sortOpen = !sortOpen; store.setNearbySort(state.nearbySort); });
     delegate(root, '[data-sort]', (el) => { sortOpen = false; store.setNearbySort(el.dataset.sort); });
-    delegate(root, '[data-act="arrange"]', () => go('sub', { ...params, loopID: store.activeLoop()?.id }));
-    delegate(root, '[data-loop]', (el) => store.selectLoop(el.dataset.loop));
-    // A place joins the loop in hand — which the dock names, so there is no
-    // guessing about where it went when the day holds more than one.
-    delegate(root, '[data-pick]', (el) => store.toggleSubRoutePlace(el.dataset.pick, store.activeLoop()));
+    // §3.7 · `arrange` and `data-loop` went with the dock. Arranging is the
+    // Plan's job now, and there is no "loop in hand" to switch between.
+    // §3.7 · F5 (b) · a SET, not a toggle, and the loop is named.
+    delegate(root, '[data-loop-for]', (el) => {
+      store.setSubRoutePlace(el.dataset.loopFor, el.value || null, Number(el.dataset.day));
+    }, 'change');
+    // B4 · the Edit chip goes to the place's own screen, where the facts
+    // sheet lives. This screen has no sheet of its own and §3.7 does not
+    // give it one — a second copy of that sheet is the kind of duplication
+    // this section exists to remove.
+    delegate(root, '[data-edit-place]', (el) => go('dest', { placeID: el.dataset.editPlace }));
     delegate(root, '[data-open-place]', (el) => go('dest', { placeID: el.dataset.openPlace }));
 
     delegate(root, '[data-act="add-open"]', () => { addOpen = true; addError = ''; notice = ''; rerender(); });
@@ -225,8 +236,18 @@ function rerender() {
 }
 
 function card(p) {
-  const picked = store.isInSubRoute(p.id, store.activeLoop());
-  const alsoIn = store.loopsHolding(p.id).filter((l) => l.id !== store.activeLoop()?.id);
+  /*
+   * §3.7 · F5 (b) · membership is SINGULAR, and the select is the truth.
+   *
+   * `alsoIn` — the list of "in ‹loop›" chips that let one place sit in
+   * several of a day's loops — is gone from both surfaces. A select cannot
+   * express membership in several loops at once, and with five loops on Day
+   * 7 that was not hypothetical. Choosing a second loop MOVES the place.
+   */
+  const dayNumber = store.dayForPlace(p.anchorPlaceID) ?? state.selectedDay;
+  const loops = store.subRoutesFor(dayNumber);
+  const mine = loops.find((l) => (l.placeIDs || []).includes(p.id)) || null;
+  const picked = Boolean(mine);
   const travel = (p.legs || []).reduce((sum, l) => sum + l.minutes, 0);
   return html`
     <div class="swipe-row mb8" data-place-row="${p.id}" data-place-name="${p.name}">
@@ -258,7 +279,21 @@ function card(p) {
             <span class="leg"><span style="font-size:11px">${MODE_ICONS[leg.mode]}</span>${MODE_LABELS[leg.mode]} ${leg.minutes}</span>`)}
           <span class="leg-total">${store.duration(travel)}</span>
           <span class="leg-stay">stay ~${store.duration(p.stayMinutes)}</span>
-          ${alsoIn.map((l) => html`<span class="leg-in">in ${l.name}</span>`)}
+          ${loops.length ? html`
+            <!-- §3.7 · the same select the Nearby tab carries, so a place
+                 assigned on one surface reads correctly on the other. -->
+            <span class="sel-chip${mine ? ' mine' : ''}">
+              <select data-loop-for="${p.id}" data-day="${dayNumber}"
+                      aria-label="Which sub route ${p.name} is in">
+                <option value=""${mine ? '' : ' selected'}>Saved only</option>
+                ${loops.map((l) => html`
+                  <option value="${l.id}"${l.id === mine?.id ? ' selected' : ''}>${l.name}</option>`)}
+              </select>
+            </span>` : ''}
+          <!-- B4 · the Edit chip, carried onto this surface now that §3.7 is
+               rebuilding the card anyway. -->
+          <button class="edit-chip" data-edit-place="${p.id}"
+                  aria-label="Correct ${p.name}">Edit</button>
           <!-- §3.1 · last in the chain here too. -->
           ${(() => {
             const tw = store.timeToken(p);
@@ -270,10 +305,6 @@ function card(p) {
           })()}
         </div>
       </div>
-        <button class="nearby-add${picked ? ' on' : ''}" data-pick="${p.id}"
-                aria-label="${picked
-                  ? `Take out of ${store.activeLoop()?.name || 'the loop'}`
-                  : `Add to ${store.activeLoop()?.name || 'a new stretch of free time'}`}">${picked ? '✓' : '+'}</button>
       </div>
     </div>`;
 }

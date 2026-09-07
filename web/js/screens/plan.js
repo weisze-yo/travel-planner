@@ -177,7 +177,7 @@ export default {
           which is the whole reason this is not a sheet.
         -->
         ${addOpen && editing ? html`
-          <div class="plan-front">${addForm()}</div>` : ''}
+          <div class="dock-form">${addForm()}</div>` : ''}
       </section>`;
   },
 
@@ -750,7 +750,15 @@ function mountLaneForm(root) {
       endPlaceID: root.querySelector('#lane-end')?.value || null,
     });
     laneSheet = null;
-    if (loop) go('nearby', { loopID: loop.id, anchorID: loop.startPlaceID });
+    // §3.7 · a new sub route lands on its anchor stop's Nearby TAB, not on
+    // the day-wide screen: picking the places for it is the tab's job now,
+    // and the tab lists every one of them rather than a capped sample.
+    if (loop) {
+      go('dest', {
+        placeID: loop.startPlaceID || store.loopAnchorPlaceID(loop),
+        panel: 'nearby',
+      });
+    }
   });
 }
 

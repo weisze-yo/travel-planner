@@ -260,17 +260,21 @@ export default {
   mount(root) {
     draggableSheet(root.querySelector('.sub-sheet'), { key: 'sub' });
     delegate(root, '[data-act="back"]', () => { editing = false; back(); });
-    // Bug 10 · passing the loop id alone left `nearby.js` to guess the
-    // anchor, which is what went wrong. The anchor is resolved here, from
-    // the one helper that understands both of a route's anchor fields.
+    /*
+     * §3.7 · this went to the day-wide screen and now goes to the STOP's own
+     * Nearby TAB, which is the managing surface: the per-stop list, the
+     * adding, the categorising, the deleting and the sub-route assignment
+     * all happen there, uncapped. The day-wide screen survives for the one
+     * job a tab cannot do — "Around day N", which has no anchor stop.
+     *
+     * Bug 10 · the anchor is still resolved HERE, from the one helper that
+     * understands both of a route's anchor fields. Passing the loop id
+     * alone and letting the destination guess is what went wrong before.
+     */
     delegate(root, '[data-act="nearby"]', () => {
       const loop = store.activeLoop();
       const anchorID = store.loopAnchorPlaceID(loop);
-      go('nearby', {
-        loopID: loop?.id,
-        anchorID,
-        anchorName: store.place(anchorID)?.name || loop?.anchorName || 'this stop',
-      });
+      go('dest', { placeID: anchorID, panel: 'nearby' });
     });
     delegate(root, '[data-loop]', (el) => { editing = false; store.selectLoop(el.dataset.loop); });
     delegate(root, '[data-act="toggle-edit"]', () => {

@@ -45,6 +45,11 @@ export const state = {
   prep: [],
   log: [],
   outfits: [],
+  /**
+   * §3.7 · what the singular-membership migration changed on this open, in
+   * one sentence, or '' when it changed nothing.
+   */
+  loopMergeNotice: '',
 
   // Screen-local UI that should survive navigation.
   selectedDay: 3,
@@ -324,6 +329,22 @@ export async function boot(tripID = readActiveTripID() || seed.TRIP_ID) {
   await unifyPlaces();
   unifyWindows();
   unifyLoops();
+  /*
+   * §3.7 · F5 (b) · after the windows are right, because the migration keeps
+   * the EARLIEST-DEPARTING loop and cannot know which that is until
+   * `unifyWindows` has given the loops their times.
+   *
+   * The result is a one-line notice, not a review screen: nobody asked for
+   * this change and putting a decision in front of them on launch would be
+   * the app making its own housekeeping their problem. It is idempotent, so
+   * the line appears once and never again.
+   */
+  const unmerged = unifyLoopMembership();
+  state.loopMergeNotice = unmerged.length
+    ? `${unmerged.length} place${unmerged.length === 1 ? '' : 's'} `
+      + `${unmerged.length === 1 ? 'was' : 'were'} in more than one sub route. `
+      + 'Each now sits in the one that leaves first.'
+    : '';
   await refreshTrips();
 
   state.selectedDay = pickSelectedDay(state.trip);
@@ -2055,6 +2076,13 @@ export function loopCard(handle) {
 }
 
 export const categoryLabel = (category) => seed.CATEGORY_LABELS[category] || category;
+/*
+ * §3.7 · re-exported so a screen can build a category select without also
+ * importing data.js. It is the ONE map every category label in the app comes
+ * from — the `CATS` chip array in nearby.js was the single hardcoded copy,
+ * and §3.7 retires it in favour of a select built from this.
+ */
+export const CATEGORY_LABELS = seed.CATEGORY_LABELS;
 
 /**
  * Every candidate hanging off one stop. Only that stop's places: showing the
@@ -3436,11 +3464,67 @@ export function deleteSubRoute(id) {
   );
 }
 
-export function toggleSubRoutePlace(placeId, handle) {
-  const route = resolveLoop(handle) || addSubRoute(state.selectedDay);
-  const ids = route.placeIDs || [];
-  route.placeIDs = ids.includes(placeId) ? ids.filter((i) => i !== placeId) : [...ids, placeId];
-  put('subRoutes', route);
+/*
+ * §3.7 · F5 (b) · MEMBERSHIP IS SINGULAR. One place, one sub route.
+ *
+ * This was `toggleSubRoutePlace(placeId, handle)` — a toggle against
+ * "whichever loop is in hand", which is the concept the dock existed to
+ * name. Both go. A per-card select names the loop, so there is nothing left
+ * for "in hand" to mean, and a select cannot express membership in several
+ * loops at once: with five loops on Day 7 that was not hypothetical.
+ *
+ * So this is a SET, not a toggle, and the loop is named rather than
+ * inferred. Choosing a second loop MOVES the place; choosing the empty
+ * option takes it out of every loop on the day and leaves it saved.
+ *
+ * The day is derived from the target route rather than from
+ * `state.selectedDay`, so assigning a place cannot depend on which day the
+ * screen happens to be showing.
+ */
+export function setSubRoutePlace(placeId, routeId, n = state.selectedDay) {
+  const target = routeId ? subRouteByID(routeId) : null;
+  const dayNumber = target?.dayNumber ?? n;
+  let moved = false;
+  for (const route of subRoutesFor(dayNumber)) {
+    const ids = route.placeIDs || [];
+    const has = ids.includes(placeId);
+    const wants = target && route.id === target.id;
+    if (has === Boolean(wants)) continue;
+    route.placeIDs = wants ? [...ids, placeId] : ids.filter((i) => i !== placeId);
+    put('subRoutes', route);
+    moved = true;
+  }
+  return moved;
+}
+
+/**
+ * §3.7 · the migration F5 (b) needs, run once per trip open.
+ *
+ * A place that is currently in more than one of a day's loops keeps THE
+ * EARLIEST-DEPARTING one and is dropped from the rest — the reading that
+ * preserves the plan a traveller actually walks first. It returns what it
+ * changed so the caller can say so once, in a line, rather than putting a
+ * review screen in front of someone who never asked for one.
+ *
+ * Idempotent, so running it on every open costs nothing after the first.
+ */
+export function unifyLoopMembership() {
+  const dropped = [];
+  const days = new Set(state.subRoutes.map((r) => r.dayNumber));
+  for (const n of days) {
+    const loops = [...subRoutesFor(n)].sort((a, b) => (loopStart(a) ?? 1e9) - (loopStart(b) ?? 1e9));
+    const claimed = new Set();
+    for (const route of loops) {
+      const ids = route.placeIDs || [];
+      const keep = ids.filter((id) => !claimed.has(id));
+      ids.forEach((id) => claimed.add(id));
+      if (keep.length === ids.length) continue;
+      dropped.push(...ids.filter((id) => !keep.includes(id)).map((id) => ({ id, from: route.name })));
+      route.placeIDs = keep;
+      put('subRoutes', route);
+    }
+  }
+  return dropped;
 }
 
 export function reorderSubRoute(movedId, beforeId, handle) {

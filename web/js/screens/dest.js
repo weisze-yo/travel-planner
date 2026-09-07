@@ -167,6 +167,24 @@ let pendingPhoto = null;
  */
 let nowOnly = false;
 /**
+ * §3.7 · which category the Nearby tab is filtered to, or 'all'.
+ *
+ * The tab's ONE control. Reset on leaving the panel for the same reason the
+ * Now filter is: a filter whose control is off screen is a list that lies.
+ */
+let cat = 'all';
+/**
+ * §3.7 · the Add-a-place form's own state, on the tab.
+ *
+ * `adding` is whether the form is open; `addError` is its refusal, in the
+ * field it is about; `addPending` is which kind of async work is in flight
+ * (P0-5 R1 — pending belongs to the control that started it, and R8 — the
+ * surface stays up until the work resolves).
+ */
+let adding = false;
+let addError = '';
+let addPending = '';
+/**
  * §3.3 · urls whose image failed to load in this session.
  *
  * Per-session and in memory on purpose: a photo that failed because the
@@ -216,9 +234,23 @@ export default {
     const tabs = tabsFor(it);
     if (it.anchorID !== tabSubject) {
       tabSubject = it.anchorID;
-      tab = 'info';
+      /*
+       * §3.7 · unless the caller asked for a panel by name.
+       *
+       * The Nearby TAB is the managing surface now, so the two places that
+       * used to send a traveller to the day-wide screen for a STOP's places
+       * — the loop editor's "+ Add places", and creating a sub route from a
+       * lane on the Plan — land here instead. They have to arrive on Nearby
+       * rather than on Info, or the tap that meant "show me the places"
+       * shows a facts table.
+       */
+      tab = tabs.some((entry) => entry.id === params.panel) ? params.panel : 'info';
       openLines = new Set(['do']);
       pendingPhoto = null;
+      nowOnly = false;
+      cat = 'all';
+      adding = false;
+      addError = '';
     }
     // Walking from a stop's Must tab into one of its places must not leave
     // `tab` pointing at a panel this subject has no tab for.
@@ -370,18 +402,72 @@ export default {
     delegate(root, '[data-act="now-toggle"]', () => { nowOnly = !nowOnly; repaint(); });
     delegate(root, '[data-panel]', (el) => {
       tab = el.dataset.panel;
-      // Leaving the panel drops the filter: it describes this list, and a
+      // Leaving the panel drops both filters: they describe this list, and a
       // filter you cannot see the control for is a list that lies.
       nowOnly = false;
+      cat = 'all';
+      adding = false;
+      addError = '';
       // Repaint through the store so the whole screen re-renders once.
       store.selectDay(state.selectedDay);
     });
 
     // Panels that lead somewhere still can.
-    delegate(root, '[data-act="arrange"]', () => go('sub', { loopID: store.activeLoop()?.id }));
-    delegate(root, '[data-act="all-nearby"]', () => go('nearby', {
-      anchorID: it?.anchorID, anchorName: it?.name, placeID: it?.placeID,
-    }));
+    /*
+     * §3.7 · both doorways are gone.
+     *
+     * `arrange` belonged to the fixed bottom dock, which existed to name
+     * "the loop in hand" — a concept a per-card select makes unnecessary.
+     * `all-nearby` was "Manage places for this stop", a doorway from a
+     * managing surface to a second copy of itself. Arranging goes to the
+     * Plan; everything else happens in the panel.
+     */
+    delegate(root, '[data-act="to-plan"]', () => go('plan'));
+    delegate(root, '[data-act="np-open"]', () => {
+      adding = true; addError = ''; addPending = ''; repaint();
+    });
+    delegate(root, '[data-act="np-cancel"]', () => {
+      if (addPending) return;
+      adding = false; addError = ''; repaint();
+    });
+    delegate(root, '[data-act="np-save"]', async (el) => {
+      if (addPending) return;
+      const typed = root.querySelector('#np-name')?.value.trim() || '';
+      // A refusal in the field it is about, in rust, with the button left
+      // live: this app does not pre-disable, it refuses out loud.
+      if (!typed) {
+        addError = 'A name, or a map link.';
+        repaint();
+        root.querySelector('#np-name')?.focus();
+        return;
+      }
+      addError = '';
+      addPending = /^https?:/i.test(typed) ? 'link' : 'add';
+      repaint();
+      const result = await store.capturePlace({
+        input: typed,
+        category: root.querySelector('#np-cat')?.value || 'food',
+        walkMinutes: Number(root.querySelector('#np-walk')?.value) || 5,
+        anchorPlaceID: el.dataset.anchor || it?.placeID || null,
+      });
+      addPending = '';
+      if (!result.saved) {
+        // R8 · the form stays up with what was typed still in it, so the
+        // retry is one tap rather than a re-type.
+        addError = result.reason;
+        repaint();
+        root.querySelector('#np-name')?.focus();
+        return;
+      }
+      adding = false;
+      repaint();
+    });
+    delegate(root, '[data-act="cat-pick"]', (el) => { cat = el.value; repaint(); }, 'change');
+    // §3.7 · F5 (b) · a SET, not a toggle. Choosing a second loop MOVES the
+    // place; choosing "Saved only" takes it out of every loop on the day.
+    delegate(root, '[data-loop-for]', (el) => {
+      store.setSubRoutePlace(el.dataset.loopFor, el.value || null, Number(el.dataset.day));
+    }, 'change');
     delegate(root, '[data-act="all-shop"]', () => go('shop'));
     delegate(root, '[data-line]', (el) => {
       const key = el.dataset.line;
@@ -548,6 +634,18 @@ export default {
     delegate(root, '[data-edit-note]', (el) => go('note', {
       noteID: el.dataset.editNote, dayNumber: Number(el.dataset.noteDay),
     }));
+    /*
+     * §3.7 · SWIPE-TO-DELETE STAYS on the tab. It is a gesture, not a
+     * control — it costs zero pixels — and a managing surface you cannot
+     * delete from is not one. It is also the only real delete for a place:
+     * the sub-route select only decides which loop it belongs to.
+     */
+    swipeToDelete(root, {
+      rowSelector: '[data-place-row]',
+      name: (el) => el.dataset.placeName,
+      label: () => 'Gone from this stop, and from any sub route it was in',
+      onDelete: (el) => store.deletePlace(el.dataset.placeRow),
+    });
     swipeToDelete(root, {
       rowSelector: '[data-pnote-row]',
       name: () => 'this note',
@@ -557,7 +655,7 @@ export default {
     delegate(root, '[data-act="tick-shot"]', (el) => store.toggleShot(el.dataset.id));
     delegate(root, '[data-act="tick-item"]', (el) => store.toggleBought(el.dataset.id));
     // Point: the "+" works from inside a stop too, not only on the Nearby screen.
-    delegate(root, '[data-pick]', (el) => store.toggleSubRoutePlace(el.dataset.pick, store.activeLoop()));
+
     delegate(root, '[data-open-place]', (el) => go('dest', { placeID: el.dataset.openPlace }));
   },
 };
@@ -607,8 +705,8 @@ function infoPanel(it) {
 }
 
 function nearbyPanel(it, places) {
-  const loop = store.activeLoop();
-  const schedule = store.loopSchedule(loop);
+  const dayNumber = store.dayForPlace(it.placeID) ?? state.selectedDay;
+  const loops = store.subRoutesFor(dayNumber);
   const shared = !places.length && store.isSharedEmptyKind('places');
   /*
    * §3.1 · the Now filter, and the count line above it.
@@ -620,70 +718,68 @@ function nearbyPanel(it, places) {
    * The counts come off the WHOLE list, never the filtered one, or the row
    * that says "6 hidden" would be counting rows it had already removed.
    */
-  const clockNow = store.openNowCount(places);
+  const clockNow = store.openNowCount(places, dayNumber);
   const offHours = store.offHoursCount(places);
-  const rows = nowOnly ? places.filter((p) => store.openAtClock(p, clockNow.at)) : places;
+  const byCat = cat === 'all' ? places : places.filter((p) => p.category === cat);
+  const rows = nowOnly ? byCat.filter((p) => store.openAtClock(p, clockNow.at, dayNumber)) : byCat;
+  // §3.7 · the categories PRESENT, not all seven: a filter offering an option
+  // that empties the list is a control that lies about what is here.
+  const cats = [...new Set(places.map((p) => p.category).filter(Boolean))]
+    .sort((a, b) => String(store.categoryLabel(a)).localeCompare(String(store.categoryLabel(b))));
+
   return html`
     ${places.length ? html`
+      <!--
+        §3.7 · ONE control row. The category select, and §3.1's Now beside it.
+        Sort is NOT here: within one stop everything is 2-15 minutes away and
+        the list is already distance-ordered, so category is the question
+        people actually ask. Sort stays on the day-wide screen, where travel
+        time means something again.
+
+        A select rather than a chip row, which was drawn and rejected: seven
+        30px chips in a horizontal scroller, above a list, inside a tab,
+        inside a scrolling screen is four nested scroll surfaces. One 26px
+        select is also §3.5's inline recipe earning its keep.
+      -->
       <div class="row g8 center mb10">
+        ${cats.length > 1 ? html`
+          <span class="sel-chip none">
+            <select data-act="cat-pick" aria-label="Show one category">
+              <option value="all"${cat === 'all' ? ' selected' : ''}>All ${places.length}</option>
+              ${cats.map((c) => html`
+                <option value="${c}"${c === cat ? ' selected' : ''}>${
+                  store.categoryLabel(c)} ${places.filter((p) => p.category === c).length}</option>`)}
+            </select>
+          </span>` : ''}
         <div class="grow f115 w700 muted">
           ${nowOnly
             ? `${clockNow.open} of ${clockNow.total} open at ${store.clock(clockNow.at)}`
-            : `${places.length} place${places.length === 1 ? '' : 's'}${
-              offHours ? ` · ${offHours} open only at dawn or night` : ''}`}
+            : (cat === 'all'
+              ? `${places.length} place${places.length === 1 ? '' : 's'}${
+                offHours ? ` · ${offHours} open only at dawn or night` : ''}`
+              : `${rows.length} of ${places.length}`)}
         </div>
         ${offHours ? html`
           <button class="tw-now${nowOnly ? ' on' : ''}" data-act="now-toggle"
                   aria-pressed="${nowOnly ? 'true' : 'false'}">Now</button>` : ''}
       </div>
+
+      ${loops.length ? '' : html`
+        <!-- §3.7 · a day with no sub routes gets NO select on its cards. A
+             dropdown whose only option is its own empty state is a dead
+             control that teaches the traveller the app is broken. One
+             .warn-class line instead, and it names the tap, as every
+             warning in this app does. -->
+        <div class="warn mb10">
+          <div class="warn-label">NO FREE TIME YET</div>
+          <div class="warn-fact">
+            No free time is set aside on Day ${dayNumber} yet. Set some with the pencil on the
+            Plan and these places can go into it.
+          </div>
+        </div>`}
+
       <div class="col g8">
-        ${rows.map((place) => {
-          const picked = store.isInSubRoute(place.id, store.activeLoop());
-          const travel = (place.legs || []).reduce((sum, leg) => sum + leg.minutes, 0);
-          return html`
-            <div class="nearby-card${picked ? ' picked' : ''}">
-              <button class="nearby-thumb" data-open-place="${place.id}" aria-label="Open ${place.name}"></button>
-              <div class="grow">
-                <div class="row g6" style="align-items:baseline">
-                  <button class="nearby-name" style="text-align:left" data-open-place="${place.id}">${place.name}</button>
-                  <span class="nearby-price">${place.priceTier}</span>
-                </div>
-                <!-- B4 · the second line carries the STREET when one is
-                     known: WHERE, rather than which postcode. It is only
-                     ever a street OpenStreetMap named, never the third
-                     comma-segment of a flat address string, which is
-                     exactly the guess that made the reported case wrong. -->
-                <div class="nearby-note">
-                  ${store.categoryLabel(place.category)}${
-                    place.street ? ` · ${place.street}` : ''} · ${store.duration(travel)} away
-                </div>
-                <div class="row g5 center wrap mt6">
-                  ${place.latitude ? '' : html`
-                    <!-- N-11 · the same chip the Plan row carries. -->
-                    <span class="chip amber">No position</span>`}
-                  <button class="edit-chip" data-edit-place="${place.id}"
-                          aria-label="Correct ${place.name}">Edit</button>
-                  <!-- §3.1 · LAST in the chain, always, so every token on a
-                       31-row list is found in one vertical scan down the
-                       right edge of the chip row. -->
-                  ${(() => {
-                    const tw = store.timeToken(place);
-                    if (!tw) return '';
-                    return html`
-                      <span class="tw${tw.plain ? ' plain' : ''}">
-                        ${tw.dot ? html`<span class="tw-dot ${tw.dot}" aria-hidden="true"></span>` : ''}${tw.label}
-                      </span>`;
-                  })()}
-                </div>
-              </div>
-              <button class="nearby-add${picked ? ' on' : ''}" data-pick="${place.id}"
-                      aria-label="${picked
-                        ? `Take ${place.name} out of ${loop?.name || 'the loop'}`
-                        : `Add ${place.name} to ${loop?.name || 'a new stretch of free time'}`}">
-                ${picked ? '✓' : '+'}
-              </button>
-            </div>`;
-        })}
+        ${rows.map((place) => nearbyCard(place, loops, dayNumber))}
       </div>
       ${nowOnly && clockNow.hidden ? html`
         <!-- §3.1 · the filter is a STATE of the list, never a destination, so
@@ -696,45 +792,157 @@ function nearbyPanel(it, places) {
           </div>
           <button class="tw-show" data-act="now-toggle">Show</button>
         </div>` : ''}
+      ${!rows.length && cat !== 'all' && !nowOnly ? html`
+        <div class="empty">Nothing saved here under ${store.categoryLabel(cat)}.</div>` : ''}
     ` : (shared
       ? emptyShared({ title: `Nothing saved around ${it.name} in the copy you were sent.` })
       : html`<div class="empty">Nothing saved around this stop yet.</div>`)}
 
-    ${shared ? '' : html`
-      <button class="btn-dashed mt10" data-act="all-nearby">
-        ${places.length ? 'Manage places for this stop' : '+ Add a place here'}
-      </button>`}
+    <!-- §3.7 · "Manage places for this stop" dies as a DOORWAY. Everything
+         it led to is here: the filter, the adding, the categorising, the
+         deleting and the sub-route assignment. The words are "+ Add a
+         place", and it opens the form in place. -->
+    ${shared ? '' : (adding ? '' : html`
+      <button class="btn-dashed mt10" data-act="np-open">+ Add a place</button>`)}
 
     ${it.kind === 'place' ? parentHandoff(it) : ''}
 
-    ${schedule.stops.length && it.kind !== 'place' ? html`
-      <div class="dock-note">
-        <button class="linkrow" data-act="arrange">
-          <div class="linkrow-mark">↩</div>
-          <div class="grow">
-            <div class="linkrow-t">${loop.name} · ${schedule.stops.length} stops</div>
-            <div class="linkrow-s">${store.subSummaryLine(loop)}</div>
-          </div>
-          ${raw(icon.chevron)}
-        </button>
+    ${adding ? addPlaceForm(it.placeID) : ''}
+
+    ${loops.length && it.kind !== 'place' ? html`
+      <!--
+        §3.7 · the day's sub routes as a READ-ONLY dark card at the foot.
+        Its only action is a way to the Plan, because the owner moved
+        arranging and timing there — a dark card with drag handles would
+        quietly move it back.
+      -->
+      <div class="loop-foot mt14">
+        <div class="row g8 center">
+          <div class="eyebrow grow loop-foot-eyebrow">FREE TIME ON DAY ${dayNumber}</div>
+          <div class="f11 w800 loop-foot-eyebrow">${loops.length} SUB ROUTE${
+            loops.length === 1 ? '' : 'S'}</div>
+        </div>
+        ${loops.map((l) => html`
+          <div class="loop-foot-row">
+            <div class="loop-foot-at">${store.clock(store.loopStart(l) ?? 0)}</div>
+            <div class="grow loop-foot-name">${l.name}</div>
+            <div class="loop-foot-n">${(l.placeIDs || []).length} place${
+              (l.placeIDs || []).length === 1 ? '' : 's'}</div>
+          </div>`)}
+        <div class="loop-foot-note">Arranging and timing them happens on the Plan.</div>
+        <button class="loop-foot-go" data-act="to-plan">Open Plan</button>
       </div>` : ''}`;
 }
 
 /**
- * The Must tab — the five researched lines, and the shots under `see`.
+ * §3.7 · Add a place, in the panel rather than through a doorway.
  *
- * Was "Must-see", holding only the shot records. The rename is not cosmetic:
- * four of the five things a traveller must settle at a stop are do, eat,
- * snack and buy, and the app already held a paragraph on each of them per
- * stop without rendering any of it. So the tab now holds the five lines, and
- * the 60 photo-shot records fold in under the one line they overlap.
- *
- * Collapsed by default, and `do` open, because five 480-character paragraphs
- * is a wall on a 375 px screen and the first question at a stop is always
- * what the hour is for. Each section carries its uppercase label AND its own
- * hue: colour is the third cue here, never the first, so a reader who cannot
- * separate the five loses nothing.
+ * The same dim-and-stick treatment §3.6 gave Add-a-stop, and for the same
+ * reason: the list behind this form is the thing you are adding TO, and how
+ * far the other places are is what tells you whether this one belongs. A
+ * scrim would hide exactly that.
  */
+function addPlaceForm(anchorPlaceID) {
+  return html`
+    <div class="dock-form">
+      <div class="form">
+        <div class="form-title">Add a place</div>
+        <input id="np-name" placeholder="Name, or paste a Google / Apple Maps link">
+        ${addError ? html`
+          <div class="f11 lh145" style="color:var(--danger-fg);margin-top:-4px">${addError}</div>` : ''}
+        <div class="row g8">
+          <label class="sel grow">
+            <select id="np-cat" aria-label="What kind of place">
+              ${Object.entries(store.CATEGORY_LABELS).map(([id, label]) => html`
+                <option value="${id}"${id === 'food' ? ' selected' : ''}>${label}</option>`)}
+            </select>
+          </label>
+          <label class="none">
+            <span class="f11 soft">Walk</span>
+            <input id="np-walk" placeholder="min" style="width:76px" inputmode="numeric">
+          </label>
+        </div>
+        <div class="form-actions">
+          <button class="btn jade grow" data-act="np-save" data-anchor="${anchorPlaceID || ''}"${
+            addPending ? raw(' disabled aria-busy="true"') : ''}>${
+            addPending === 'link' ? 'Reading that link…' : (addPending ? 'Looking it up…' : 'Add')}</button>
+          <button class="btn ghost" style="width:96px${
+            addPending ? ';pointer-events:none' : ''}" data-act="np-cancel">Cancel</button>
+        </div>
+        <div class="form-hint">
+          It is saved against this stop. A map link brings the position with it, and the
+          opening hours where OpenStreetMap has them.
+        </div>
+      </div>
+    </div>`;
+}
+
+/**
+ * §3.7 · one nearby card. The round + / ✓ is gone; a sub-route SELECT on the
+ * card's second chip line replaces it, and it says WHICH loop rather than
+ * only that there is one.
+ */
+function nearbyCard(place, loops, dayNumber) {
+  const mine = loops.find((l) => (l.placeIDs || []).includes(place.id)) || null;
+  const travel = (place.legs || []).reduce((sum, leg) => sum + leg.minutes, 0);
+  return html`
+    <div class="swipe-row" data-place-row="${place.id}" data-place-name="${esc(place.name)}">
+      <div class="swipe-bin">
+        <button class="bin" data-swipe-delete aria-label="Delete ${place.name}">${raw(icon.bin)}</button>
+      </div>
+      <div class="swipe-face nearby-card${mine ? ' picked' : ''}">
+        <button class="nearby-thumb" data-open-place="${place.id}" aria-label="Open ${place.name}"></button>
+        <div class="grow">
+          <div class="row g6" style="align-items:baseline">
+            <button class="nearby-name" style="text-align:left" data-open-place="${place.id}">${place.name}</button>
+            <span class="nearby-price">${place.priceTier}</span>
+          </div>
+          <!-- B4 · the second line carries the STREET when one is known:
+               WHERE, rather than which postcode. It is only ever a street
+               OpenStreetMap named, never the third comma-segment of a flat
+               address string, which is exactly the guess that made the
+               reported case wrong. -->
+          <div class="nearby-note">
+            ${store.categoryLabel(place.category)}${
+              place.street ? ` · ${place.street}` : ''} · ${store.duration(travel)} away
+          </div>
+          <div class="row g5 center wrap mt6">
+            ${loops.length ? html`
+              <!-- §3.7 · F5 (b) · membership is SINGULAR, so this is a
+                   select and not a set of ticks. "Saved only" is grey and is
+                   a real, common, correct answer — most saved places belong
+                   to no loop. A chosen loop is amber, which already means
+                   "a sub route, planned by you". -->
+              <span class="sel-chip${mine ? ' mine' : ''}">
+                <select data-loop-for="${place.id}" data-day="${dayNumber}"
+                        aria-label="Which sub route ${place.name} is in">
+                  <option value=""${mine ? '' : ' selected'}>Saved only</option>
+                  ${loops.map((l) => html`
+                    <option value="${l.id}"${l.id === mine?.id ? ' selected' : ''}>${l.name}</option>`)}
+                </select>
+              </span>` : ''}
+            ${place.latitude ? '' : html`
+              <!-- N-11 · the same chip the Plan row carries. -->
+              <span class="chip amber">No position</span>`}
+            <button class="edit-chip" data-edit-place="${place.id}"
+                    aria-label="Correct ${place.name}">Edit</button>
+            <!-- §3.1 · LAST in the chain, always, so every token on a 31-row
+                 list is found in one vertical scan down the right edge of
+                 the chip row. -->
+            ${(() => {
+              const tw = store.timeToken(place);
+              if (!tw) return '';
+              return html`
+                <span class="tw${tw.plain ? ' plain' : ''}">
+                  ${tw.dot ? html`<span class="tw-dot ${tw.dot}" aria-hidden="true"></span>` : ''}${tw.label}
+                </span>`;
+            })()}
+          </div>
+        </div>
+      </div>
+    </div>`;
+}
+
 function mustPanel(it, shots) {
   const lines = store.summaryLines(it.itemID);
   if (!lines.length && !shots.length) {

@@ -60,7 +60,10 @@ const PRE_EXISTING = [
   ['danger-fg on danger-bg', '#9B4B4B', '#F8E9E9', '.gone-s, .badge.rust, .stat.tight'],
   ['white on ink', '#FFFFFF', '#14201C', '.btn.ink, .warn-fix.first'],
   ['white on jade', '#FFFFFF', '#1F6F5C', '.btn.jade'],
-  ['white on amber (dock-btn)', '#FFFFFF', '#C87F0A', '.dock-btn — pre-existing, unrelated to this round'],
+  // §3.7 removed `.dock-btn` with the dock. The pair is kept in this list
+  // rather than deleted, because `--amber` as a BUTTON GROUND is a thing a
+  // future design could reach for again, and 3.23:1 is the reason not to.
+  ['white on amber (retired .dock-btn)', '#FFFFFF', '#C87F0A', 'the dock went in §3.7 — kept as the record of why white-on-amber fails'],
   ['ink on bone (ghost btn text)', '#14201C', '#F2F3F1', '.btn.ghost'],
   ['charcoal on field-grey (pay-chip)', '#3D4C46', '#EFF1EE', '.pay-chip, .leg'],
 ];
@@ -96,6 +99,11 @@ const NEW_THIS_SESSION = [
   ['offhours on chip #EFF1EE', '#6E3A8C', '#EFF1EE', '.tw, its real ground, 10.5px/800'],
   ['offhours on white', '#6E3A8C', '#FFFFFF', '.tw on a white card'],
   ['offhours on bone', '#6E3A8C', '#F2F3F1', '.tw where the panel shows through'],
+
+  // §3.7 · the sub-route select's chosen state reuses the amber pair the app
+  // already has for "a sub route, planned by you" — no new colour, but a new
+  // USE at 11.5px/700, so it is judged rather than assumed.
+  ['amber-fg on amber-bg (loop chip)', '#8A5A08', '#FBF1DE', '§3.7 .sel-chip.mine, 11.5px/700'],
 ];
 
 function run(label, pairs, { gate }) {
@@ -137,6 +145,8 @@ const GROUND_SCOPED = [
   ['archive-name on dark-card', '#E4EBE8', '#3D4C46', '.archive-name, 13.5px/650 — dark ground only'],
   ['archive-was on dark-card', '#B6C7C0', '#3D4C46', '.archive-was, 11px — F4: was #9FB2AA at 4.03:1'],
   ['white on ink (credit bar)', '#FFFFFF', '#14201C', '§3.3 .hero-credit — solid ink, never alpha over a photo'],
+  ['loop-foot name on dark-card', '#E4EBE8', '#3D4C46', '§3.7 .loop-foot-name / -at, 13px/650 — reuses F4’s pair'],
+  ['loop-foot secondary on dark-card', '#B6C7C0', '#3D4C46', '§3.7 .loop-foot-note / -n / eyebrow — F4’s single secondary ink'],
 ];
 
 let gatedFailures = 0;

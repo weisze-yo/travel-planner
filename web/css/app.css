@@ -1072,8 +1072,11 @@ input[type="radio"], input[type="checkbox"] {
 .leg { display: flex; align-items: center; gap: 4px; padding: 3px 7px; border-radius: 7px; background: #EFF1EE; font-size: 10.5px; font-weight: 700; color: var(--charcoal); white-space: nowrap; }
 .leg-total { padding: 3px 7px; border-radius: 7px; background: var(--ink); color: #fff; font-size: 10.5px; font-weight: 800; white-space: nowrap; }
 .leg-stay { padding: 3px 7px; border-radius: 7px; background: var(--amber-bg); color: var(--amber-fg); font-size: 10.5px; font-weight: 700; white-space: nowrap; }
-.nearby-add { width: 34px; height: 34px; flex: none; align-self: center; border-radius: 11px; background: var(--bone); color: var(--charcoal); display: flex; align-items: center; justify-content: center; font-size: 17px; }
-.nearby-add.on { background: var(--amber); color: #fff; }
+/* §3.7 · `.nearby-add` — the round + / ✓ — is gone. Its job was "put this
+   place in a loop", and a per-card sub-route select does that AND says
+   which. Removed rather than left unused, so a future card cannot bring
+   back a control whose whole meaning depended on a "loop in hand" that no
+   longer exists. */
 
 .sortbtn { flex: none; width: 32px; height: 32px; border-radius: 10px; background: #fff; display: flex; align-items: center; justify-content: center; }
 .sortbtn.on { background: var(--ink); }
@@ -1085,22 +1088,24 @@ input[type="radio"], input[type="checkbox"] {
 .sortopt-label { flex: 1; text-align: left; font-size: 13px; font-weight: 650; color: var(--muted); }
 .sortopt.on .sortopt-label { color: var(--ink); }
 
-.dock {
-  position: absolute;
-  left: 12px; right: 12px;
-  bottom: 12px;
-  z-index: 5;
-  padding: 13px 14px;
-  background: var(--ink);
-  border-radius: 18px;
-  box-shadow: 0 10px 28px rgba(20,32,28,.3);
-  display: flex;
-  align-items: center;
-  gap: 12px;
-}
-.dock-h { font-size: 10.5px; font-weight: 800; letter-spacing: .06em; color: #8FB3A6; }
-.dock-s { font-size: 13px; font-weight: 650; color: #fff; margin-top: 3px; line-height: 1.3; }
-.dock-btn { flex: none; height: 38px; padding: 0 14px; border-radius: 12px; background: var(--amber); color: #fff; font-size: 12.5px; font-weight: 700; display: flex; align-items: center; white-space: nowrap; }
+/*
+ * §3.7 · THE FIXED BOTTOM DOCK IS GONE, and `.dock`, `.dock-h`, `.dock-s`,
+ * `.dock-btn`, `.dock-loops` and `.dock-loop` with it.
+ *
+ * It existed to name "the loop in hand" — the loop the round + / ✓ would
+ * drop a place into. A select that names its own loop makes the concept
+ * unnecessary, so the switcher's job does not move anywhere: it disappears.
+ * `Arrange` went to the Plan by the owner's instruction, and `Start one`
+ * with it, because a sub route is created on the Plan in the gap it belongs
+ * to.
+ *
+ * `.dock-btn` also carried the app's one unfixable contrast failure — white
+ * on `--amber` at 3.23:1, tracked in test/contrast.mjs as pre-existing. It
+ * goes with the component.
+ *
+ * `.dock-note` is a different thing and survives, further down: it is the
+ * linkrow wrapper on the Destination Info tab.
+ */
 
 /* --------------------------------------------------------------- sub route */
 
@@ -1310,13 +1315,15 @@ input[type="radio"], input[type="checkbox"] {
  *   scrim           when the background is context you can ignore
  *   dim-and-stick   when the background IS the reference material
  *
- * Add-a-stop is the only case of the second kind today. A stop's time only
- * means something against the times around it, so a grey veil over the
- * itinerary would dim exactly the rows you are typing against — which is
- * why the reported "put it in a sheet" was rejected along with the
- * partial-height variant.
+ * Add-a-stop was the first case, and §3.7's Add-a-place is the second: on a
+ * stop's Nearby tab the list behind the form is the thing you are adding TO,
+ * and how far away the other places are is what tells you whether this one
+ * belongs. A stop's time only means something against the times around it,
+ * so a grey veil over the itinerary would dim exactly the rows you are
+ * typing against — which is why the reported "put it in a sheet" was
+ * rejected along with the partial-height variant.
  */
-.plan-front {
+.dock-form {
   position: absolute;
   left: 0; right: 0; bottom: 0;
   z-index: 6;
@@ -1327,7 +1334,7 @@ input[type="radio"], input[type="checkbox"] {
   max-height: 78%;
   overflow-y: auto;
 }
-.plan-front .form { border: 0; box-shadow: none; background: none; padding-left: 0; padding-right: 0; }
+.dock-form .form { border: 0; box-shadow: none; background: none; padding-left: 0; padding-right: 0; }
 /* The scroller keeps room for it, so nothing at the foot of the day becomes
    unreachable underneath the form. ~232px is what the form occupies, and
    the day showing three rows instead of six is the cost the decision
@@ -1349,6 +1356,67 @@ input[type="radio"], input[type="checkbox"] {
    reached from inside a screen — the state goes on `body` instead, and
    nav.js clears it on every paint. */
 body.front-form #tabbar { opacity: .4; pointer-events: none; }
+
+/*
+ * §3.7 · the day's sub routes as a READ-ONLY dark card at the foot of the
+ * Nearby tab. Its only action is a way to the Plan, because the owner moved
+ * arranging and timing there — a dark card with drag handles would quietly
+ * move it back.
+ *
+ * Dark-ground inks come from F4's single pair: #E4EBE8 for a name (7.48:1)
+ * and #B6C7C0 for anything secondary (5.14:1). Both are gated in
+ * test/contrast.mjs as ground-scoped entries, so this card inherits the
+ * rule rather than inventing a third grey.
+ */
+.loop-foot {
+  background: var(--dark-card);
+  border-radius: 16px;
+  padding: 12px 14px 14px;
+}
+.loop-foot-eyebrow { color: #B6C7C0; }
+.loop-foot-row {
+  display: flex;
+  align-items: baseline;
+  gap: 10px;
+  padding: 9px 0;
+  border-bottom: 1px solid rgba(255,255,255,.10);
+}
+.loop-foot-row:last-of-type { border-bottom: 0; }
+.loop-foot-at {
+  flex: none;
+  width: 42px;
+  font-size: 12px;
+  font-weight: 700;
+  font-variant-numeric: tabular-nums;
+  color: #E4EBE8;
+}
+.loop-foot-name { font-size: 13px; font-weight: 650; color: #E4EBE8; min-width: 0; }
+.loop-foot-n { flex: none; font-size: 11px; font-weight: 650; color: #B6C7C0; }
+.loop-foot-note { font-size: 11px; line-height: 1.45; color: #B6C7C0; margin-top: 9px; }
+.loop-foot-go {
+  margin-top: 10px;
+  min-height: 40px;
+  width: 100%;
+  border-radius: 12px;
+  background: rgba(255,255,255,.14);
+  color: #fff;
+  font-size: 12.5px;
+  font-weight: 700;
+}
+
+/*
+ * §3.7 · the sub-route select's two states.
+ *
+ * "Saved only" keeps §3.5's ordinary grey chip: it is a real, common,
+ * CORRECT answer — most saved places belong to no loop — not a placeholder
+ * and not a dash.
+ *
+ * A chosen loop is amber, which ALREADY means "a sub route, planned by
+ * you": the same token as `.badge.sub` and the dashed loop lines. Not a new
+ * meaning, and no new colour.
+ */
+.sel-chip.mine { --chip-bg: var(--amber-bg); }
+.sel-chip.mine > select { color: var(--amber-fg); }
 
 /* ---------------------------------------------------------------- must-see */
 

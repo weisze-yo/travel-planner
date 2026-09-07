@@ -86,7 +86,7 @@ const go = async (s, a) => {
     await page.waitForTimeout(400);
   }
   const closed = await page.evaluate(() => ({
-    front: Boolean(document.querySelector('.plan-front')),
+    front: Boolean(document.querySelector('.dock-form')),
     bodyClass: document.body.classList.contains('front-form'),
     tabOpacity: getComputedStyle(document.querySelector('#tabbar')).opacity,
     headOpacity: getComputedStyle(document.querySelector('.head')).opacity,
@@ -100,7 +100,7 @@ const go = async (s, a) => {
 
   await openForm();
   const open = await page.evaluate(() => {
-    const front = document.querySelector('.plan-front');
+    const front = document.querySelector('.dock-form');
     const scroll = document.querySelector('.scroll');
     const head = document.querySelector('.head');
     const tab = document.querySelector('#tabbar');
@@ -139,10 +139,10 @@ const go = async (s, a) => {
       // the scroller keeps room, so nothing is stranded under the form
       pad: getComputedStyle(scroll).paddingBottom,
       scrollable: scroll.scrollHeight > scroll.clientHeight,
-      head2: document.querySelector('.plan-front .form-title')?.textContent.trim(),
-      after: document.querySelector('.plan-front .form-title')?.nextElementSibling?.textContent.trim(),
-      hint: document.querySelector('.plan-front .form-hint')?.textContent.trim().replace(/\s+/g, ' '),
-      buttons: [...document.querySelectorAll('.plan-front button')].map((b) => b.textContent.trim()),
+      head2: document.querySelector('.dock-form .form-title')?.textContent.trim(),
+      after: document.querySelector('.dock-form .form-title')?.nextElementSibling?.textContent.trim(),
+      hint: document.querySelector('.dock-form .form-hint')?.textContent.trim().replace(/\s+/g, ' '),
+      buttons: [...document.querySelectorAll('.dock-form button')].map((b) => b.textContent.trim()),
     };
   });
   console.log('  open:', JSON.stringify(open));
@@ -190,7 +190,7 @@ const go = async (s, a) => {
     document.querySelector('.head').click();
     await new Promise((r) => setTimeout(r, 500));
     return {
-      front: Boolean(document.querySelector('.plan-front')),
+      front: Boolean(document.querySelector('.dock-form')),
       body: document.body.classList.contains('front-form'),
       tabOpacity: getComputedStyle(document.querySelector('#tabbar')).opacity,
     };
@@ -207,7 +207,7 @@ const go = async (s, a) => {
     const foot = document.querySelector('[data-act="add-open"]').closest('.chrome-quiet');
     foot.click();
     await new Promise((r) => setTimeout(r, 500));
-    return { front: Boolean(document.querySelector('.plan-front')) };
+    return { front: Boolean(document.querySelector('.dock-form')) };
   });
   check('§3.6 · a tap on the quiet footer controls cancels rather than re-opening',
         footTap.front === false, JSON.stringify(footTap));
