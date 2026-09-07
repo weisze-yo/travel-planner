@@ -1,10 +1,17 @@
-# Brief for Claude Design — Travel Planner, four presentation decisions
+# Brief for Claude Design — Travel Planner, seven decisions
 
-**Status: DRAFT for the owner to review before sending. Do not act on this yet.**
+**Status: FINAL, 7 Sep 2026.**
 
 You are designing inside an app that already exists and already has a voice. Nothing here is a
-greenfield screen. Four things need a visual decision; everything else in the app should look
-untouched afterwards.
+greenfield screen. Seven things need a decision; everything else in the app should look untouched
+afterwards.
+
+**They are not the same size, and §3 is ordered accordingly.** §3.1–§3.4 are presentation questions
+where the data is settled and only the treatment is open. §3.5–§3.7 are three more that came out of
+a round of manual testing on a real phone: one is a component the whole app shares, one is an
+interaction change, and the last is a screen restructure that is the largest thing in here. If you
+have to triage, **§3.7 is the one where a good answer changes the most**, and §3.5 the one that
+quietly touches the most screens.
 
 ---
 
@@ -71,7 +78,7 @@ rows in the Info tab) · `.pill` (the D1–D8 day selector) · `.warn` strip · 
 
 ---
 
-## 3. The four decisions
+## 3. The seven decisions
 
 ### 3.1 Morning / night / dawn hints on nearby places  — *the hardest one*
 
@@ -175,11 +182,161 @@ The one genuinely open sub-question, if you want it: the flash-highlight needs a
 survives `prefers-reduced-motion: reduce`, which the stylesheet already honours elsewhere. A
 non-animated equivalent is welcome.
 
+### 3.5 The select control, everywhere  — *smallest ask, widest reach*
+
+**Reported as:** *"the design of dropdown for Payment Method and Category are not nice."* True, and
+the problem is not those two dropdowns.
+
+**What is actually there.** `app.css` strips native form rendering globally:
+
+```css
+input, textarea, select { … -webkit-appearance: none; appearance: none; }
+```
+
+so every `<select>` in the app wears the text-field recipe — 1px `--field-bd`, 10px radius, 13px
+ink — plus one hand-drawn chevron as a background SVG, 11px from the right edge:
+
+```css
+select { background-image: url("…10x6 chevron, stroke #6B7A74…");
+         background-position: right 11px center; padding-right: 28px; }
+```
+
+That is the entire design of a select in this app, and there are **eleven of them across five
+screens**: `nearby.js` (a category), `parts.js` (a place), `plan.js` (a saved place, a lane start, a
+lane end), `shop.js` (payment, category, a place, a new category), `sub.js` (a loop start, a loop
+end).
+
+**Two distinct jobs, currently indistinguishable.** Some are ordinary form fields inside a
+`.form` card — full width, labelled, one per row. But the two the report names are **inline, inside
+a shopping row**, wrapped in `.pay-chip` (`padding: 4px 9px; border-radius: 8px; background:
+#EFF1EE; font-size: 10.5px`) and sitting in a wrapping flex row beside a PAID field. A 13px select
+inside a 10.5px chip is where the "not nice" comes from: the chip and the control it holds disagree
+about their own size.
+
+**Please decide:** the select's own treatment, and whether the inline case is the same component
+smaller or a genuinely different one. A "value + chevron" text button that opens something is a
+legitimate answer for the inline case; so is making the chip and the select agree. **Two artboards
+— a form select and an inline select in a shopping row — is a complete answer.**
+
+**Constraints.** It has to stay a real `<select>` (the native picker is the right control on a phone
+and is what a one-handed user in a hurry expects), so you are designing the closed state and the
+affordance, not the open list. It must not read as a text input the user should type into — that
+ambiguity is the current bug. And it appears on `--bone`, on white cards, and inside `#EFF1EE`
+chips, so the recipe has to survive all three grounds.
+
+### 3.6 The Add-a-stop form: inline, or over the plan
+
+**Reported as:** *"make this 'Add a stop' card in front, which disables other navigation behind it
+with a greyish transparent layer."*
+
+**What is there.** In Plan's edit mode the form is `.form` rendered **in the flow**, immediately
+below the itinerary and immediately above the two controls that opened it:
+
+```
+[ the day's stops … ]
+[ .form  "Add a stop"  ← appears here ]
+[ + Add a stop        ]   ← the button that opened it, still visible below
+[ Paste an itinerary  ]
+```
+
+So the button that spawned the form stays on screen underneath its own result, and on a 375px screen
+the form can push the day's stops out of view entirely while you fill it in.
+
+**The app already has the other pattern**, used by the three sheets on the Destination screen:
+`.scrim` (`inset: 0; background: rgba(20,32,28,.34); backdrop-filter: saturate(.55)`) plus `.modal`
+(bottom-anchored, `left/right: 12px; bottom: 12px; max-height: calc(100% - 40px)`, a 44px shadow).
+The scrim doubles as a cancel affordance and goes non-interactive while a lookup is in flight.
+
+**Please decide:** whether Add-a-stop becomes that, and if so what it costs. The honest tension is
+that this form is the one place in the app where **you want the itinerary visible while you type** —
+a stop's time only makes sense against the times around it — and a bottom sheet over a scrim hides
+exactly that. A partial-height sheet, a sheet that leaves the relevant rows showing, or a stronger
+in-flow treatment that simply owns its space better are all real answers. **Say which you rejected.**
+
+**Note:** the two duplicate controls in that stack have already been removed, and the empty-day
+state now points at the pencil rather than offering its own copies of these buttons. So you are
+deciding the form's own presentation, not untangling four buttons.
+
+### 3.7 The Nearby tab and the sub-route pick  — *the largest one*
+
+This is a restructure, and it comes from the owner's own reading of the flow rather than from a
+single bug. Read §3.7 fully before drawing.
+
+**Where a place lives today, and how you reach it.** Two screens are involved:
+
+1. **A stop's `Nearby` tab** (inside Destination). Lists the places saved around that stop as
+   `.nearby-card` rows — thumbnail, name, price tier, `category · N min away`, and a round `+`/`✓`
+   button that toggles the place into the day's sub route. Below the list sits one dashed button,
+   **"Manage places for this stop"**.
+2. That button pushes to the **Nearby screen** (`nearby.js`) — a fuller surface with a category
+   chip row, a sort menu, swipe-to-delete, an "+ Add a place" form, and a **fixed bottom dock**
+   carrying the sub-route switcher and an "Arrange" button.
+
+So adding a place takes two screens, and the second one duplicates the first one's list.
+
+**What the owner wants, as stated:**
+
+- **"Manage places for this stop" becomes "Add a place"** — and the Nearby tab should *already be*
+  the managing surface, so the button is not a doorway to a second copy of the same list.
+- **Sub-route management leaves the Nearby tab.** Arranging and switching sub routes should happen
+  from the **Plan** screen only. The Nearby tab is for places.
+- **The per-card `+`/`✓` becomes a sub-route dropdown.** Today the round button toggles the place
+  into whichever sub route the dock happens to name — which is why the dock exists, and why it has
+  to be there to disambiguate. Instead: a **dropdown listing the day's sub routes by name**, so
+  choosing one puts the place in it and leaving it empty means the place is simply saved. This
+  removes the need for the dock, and for "whichever loop is in hand".
+- **The sub-route card, when shown, goes dark** (`--dark-card #3D4C46`; there is precedent in
+  `.swipe-face.archive-card`) and sits where it currently sits after entering manage-places.
+- **A day can hold more than one sub route** — plural is the normal case, not an edge one, which is
+  exactly what the dropdown has to handle gracefully.
+
+**What this collides with, and you should decide rather than inherit.** Folding the Nearby screen's
+capabilities into a tab means finding room for a category filter, a sort control, swipe-to-delete,
+and an add form **inside a tab panel that is already inside a scrolling Destination screen with a
+hero, a name, two map buttons and a five-tab bar above it.** That is the real design problem here.
+Something has to give: the filter and sort may not both survive, the fuller screen may still deserve
+to exist for the day-wide "Around day N" case (which has no single anchor stop and groups by stop),
+or the tab may become a genuinely different, shorter thing.
+
+**What has already shipped, so you are drawing against a real screen, not a description.** As of
+7 Sep the Destination screen distinguishes a **stop** from a **place saved near one**:
+
+- A **stop** shows five tabs: `Info · Nearby · Must · Shop · Notes`.
+- A **nearby place** shows three: `Info · Nearby · Notes`. Must and Shop are hidden there, because
+  those records anchor to a stop and can never point at an individual place.
+- A nearby place also carries a context line under its name — *"Café · ¥¥ — 4 min from Ginzan Onsen
+  Street"* — and a `.linkrow` at the foot of its panels offering the parent stop's own records as a
+  count and a way back: *"At Ginzan Onsen Street · 5 lines on the stop · 4 must-see spots"*.
+
+**So the tab bar is not uniform, and your answer must hold for both shapes.** A place's Nearby tab
+lists what is near *that place*; a stop's lists what is near the stop. Both use the same cards.
+
+**Real numbers, measured on the live trip.** A stop's Nearby list runs to **31 rows** (Ginzan Onsen
+Street), 28 (Tsukiji), 27 (Tokyo Tower); 517 of the 532 places are anchored to a stop. And the sub
+routes are more plural than "more than one" suggests — **17 across the trip, and Day 7 alone has
+five**:
+
+| Day | 2 | 3 | 4 | 5 | 6 | 7 | 8 |
+|---|--:|--:|--:|--:|--:|--:|--:|
+| Sub routes | 1 | 2 | 2 | 3 | 2 | **5** | 2 |
+
+**So the dropdown has to hold five named options and stay legible on a row that is already two lines
+of text.** That is the constraint that decides this control, and it is why the round `+`/`✓` plus a
+dock was chosen in the first place. Day 1 has none at all, so the empty case is real too: design
+what the control is when the day has no sub routes yet — including whether it appears.
+
+**Please deliver, at 375px:** the Nearby tab as the managing surface (a stop's, with a real 30-row
+list — show the top of it and say what happens at row 31); the per-card sub-route dropdown in its
+closed state, both empty and with a sub route chosen; the dark sub-route card in place; and **one
+line on what you dropped from the current Nearby screen and why.** If you conclude the fuller screen
+must survive for the day-wide case, say so — that is a legitimate answer and the owner would rather
+hear it than receive a design that quietly loses a feature.
+
 ---
 
 ## 4. What to deliver
 
-Artboards at **375 px** (the design width; the app is phone-first). For each of the four:
+Artboards at **375 px** (the design width; the app is phone-first). For each of the seven:
 
 1. The proposed treatment, in context — inside a real screen, not floating on a blank artboard.
 2. **Every new colour as a hex value with its contrast ratio** against white and `--bone`, so it can
@@ -187,9 +344,23 @@ Artboards at **375 px** (the design width; the app is phone-first). For each of 
 3. The empty / absent / degraded state, wherever one exists.
 4. One line on what you decided *not* to do and why, where you rejected an obvious option.
 
+Two things that apply to §3.5–§3.7 in particular, because they change existing behaviour rather
+than adding to it:
+
+5. **Name what you are removing.** §3.6 and §3.7 both delete affordances that work today — an
+   in-flow form, a dock, a `+`/`✓` toggle. Say what goes and what replaces its job. A design that
+   silently loses a capability costs more to review than one that says "this feature dies, here is
+   why".
+6. **Say which of the seven you would ship first**, if they cannot all be built at once. You have
+   seen the whole set; the owner would value the ordering.
+
 ## 5. What NOT to do
 
-- Do not restyle screens outside these four decisions. The rest of the app is shipped and reviewed.
+- Do not restyle screens outside these seven decisions. The rest of the app is shipped and reviewed.
+- Do not replace the native `<select>` with a custom listbox (§3.5). The native picker is the right
+  control on a phone; you are designing its closed state.
+- Do not redesign the Destination tab bar itself (§3.7). Which tabs a stop and a place each show is
+  settled and shipped — the Nearby *panel* is what is open.
 - Do not introduce a component library, a second type scale, or a second palette.
 - Do not reuse `--jade`, `--amber` or `--danger` for a new meaning.
 - Do not rely on hue alone to carry meaning.
