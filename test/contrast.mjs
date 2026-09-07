@@ -86,6 +86,16 @@ const NEW_THIS_SESSION = [
   ['sum-buy on bone', '#1A7396', '#F2F3F1', '.must-buy .must-label over the panel ground'],
   ['sum-snack on white', '#B23F68', '#FFFFFF', '.must-snack .must-label, 10.5px/800'],
   ['sum-snack on bone', '#B23F68', '#F2F3F1', '.must-snack .must-label over the panel ground'],
+
+  // §3.1 · F3 · --offhours, the only new colour in the seven-decision set.
+  // Judged on THREE grounds, not two: the token's real ground is #EFF1EE,
+  // the chip fill, and that is the one the reader actually sees — the white
+  // card and --bone only show through where a row is on a bare panel. A
+  // token at 10.5px/800 is well under the large-text threshold, so 4.5:1
+  // applies to all three.
+  ['offhours on chip #EFF1EE', '#6E3A8C', '#EFF1EE', '.tw, its real ground, 10.5px/800'],
+  ['offhours on white', '#6E3A8C', '#FFFFFF', '.tw on a white card'],
+  ['offhours on bone', '#6E3A8C', '#F2F3F1', '.tw where the panel shows through'],
 ];
 
 function run(label, pairs, { gate }) {

@@ -80,6 +80,29 @@
   --sum-buy: #1A7396;
   --sum-snack: #B23F68;
 
+  /*
+   * §3.1 · F3 · DUSK VIOLET, the only new colour in the seven-decision set.
+   *
+   * Time of day is a meaning the palette had no hue for, and the three it
+   * owns are all taken: --jade is good/done/primary, --amber is needs
+   * attention, --danger-fg is destructive. A dawn or night place is none of
+   * those — nothing is wrong with it, it is simply shut at 09:35 — so amber
+   * was rejected outright: it would read as "something is wrong with this
+   * place".
+   *
+   * The first proposal was a desaturated navy at 219°, twelve degrees from
+   * --sum-do. The owner asked for something clearly different, so this sits
+   * at hue 278°, saturation 41% — 47° from --sum-do (231°) and in the widest
+   * gap the palette leaves, 258° to 308°. Its nearest neighbours are now
+   * --sum-see (20° away and much lighter) and --sum-eat (30°), and neither
+   * ever shares a panel with it: the --sum-* set lives on Must-tab section
+   * headers, this one on Nearby-tab row tokens.
+   *
+   * Measured for the gated set: 7.90:1 on white, 7.10:1 on --bone, 6.95:1 on
+   * #EFF1EE, which is its real chip ground. Gated in test/contrast.mjs.
+   */
+  --offhours: #6E3A8C;
+
   --tabbar-h: 78px;
   --safe-top: env(safe-area-inset-top, 0px);
   --safe-bottom: env(safe-area-inset-bottom, 0px);
@@ -1137,6 +1160,70 @@ input[type="radio"], input[type="checkbox"] {
   text-align: left;
   background: none;
 }
+
+/*
+ * §3.1 · the time-of-day token, last in a nearby row's leg chain.
+ *
+ * It sits INSIDE the existing meta line, in the `.leg` weight class, so it
+ * never adds a line to a row that is already two lines — and always last, so
+ * the eye finds every one of them in a single vertical scan down the right
+ * edge of the chip row.
+ *
+ * Three cues, not one: the uppercase LABEL, the DOT's shape (hollow for
+ * dawn, filled for night) and the hue. Greyscale loses nothing, which is the
+ * test a single-hue mark has to pass.
+ */
+.tw {
+  display: inline-flex;
+  align-items: center;
+  gap: 5px;
+  flex: none;
+  padding: 3px 7px;
+  border-radius: 7px;
+  background: #EFF1EE;
+  font-size: 10.5px;
+  font-weight: 800;
+  letter-spacing: .04em;
+  color: var(--offhours);
+}
+.tw-dot { width: 6px; height: 6px; border-radius: 50%; box-sizing: border-box; flex: none; }
+.tw-dot.filled { background: var(--offhours); }
+.tw-dot.hollow { border: 1.6px solid var(--offhours); }
+/* 24h is a BONUS, never a constraint, so it gets the ordinary meta grey and
+   no dot at all — the same box, one weight down. */
+.tw.plain { font-weight: 700; color: var(--muted); }
+
+/*
+ * The Now filter. A state of the list, never a destination — so it is a chip
+ * on the control row rather than a screen, and it says how many it hid.
+ */
+.tw-now {
+  min-height: 30px;
+  padding: 0 11px;
+  border-radius: 9px;
+  border: 1px solid var(--field-bd);
+  background: #fff;
+  font-size: 11.5px;
+  font-weight: 700;
+  color: var(--charcoal);
+  white-space: nowrap;
+  flex: none;
+}
+.tw-now.on { background: var(--ink); border-color: var(--ink); color: #fff; }
+/* What it hid, and the way back — one dashed row at the foot of the list. */
+.tw-hidden {
+  display: flex;
+  align-items: center;
+  gap: 8px;
+  margin-top: 10px;
+  padding: 10px 12px;
+  border: 1px dashed var(--field-bd);
+  border-radius: 12px;
+  font-size: 11.5px;
+  line-height: 1.4;
+  color: var(--muted);
+}
+.tw-show { flex: none; font-size: 11.5px; font-weight: 800; color: var(--jade); min-height: 44px; }
 
 /* ---------------------------------------------------------------- must-see */
 

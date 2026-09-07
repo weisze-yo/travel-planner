@@ -1182,6 +1182,121 @@ export async function attachPhoto(file, path, existing = []) {
 // ------------------------------------------------------------------- reading
 
 export const day = (n = state.selectedDay) => state.days.find((d) => d.dayNumber === n) || null;
+/*
+ * §3.1 · MORNING / NIGHT / DAWN ON A 31-ROW LIST.
+ *
+ * `timeWindow` has been a real field on every place since Trip 12 landed and
+ * nothing read it. Measured against the current snapshot (618 places, after
+ * the airport batch):
+ *
+ *   day     381    unmarked — the majority case, and the reason the list
+ *   (none)   58    gets QUIETER rather than louder
+ *   night    76    marked
+ *   dawn     29    marked
+ *   24h      74    a plain grey word, no hue
+ *
+ * Only `dawn` and `night` carry a coloured mark, because they are the only
+ * two states that can make a row irrelevant at 09:35. `24h` is never a
+ * reason to skip a row — it is a small bonus — so it gets no hue.
+ *
+ * THE OWNER'S OPEN QUESTION, ANSWERED FROM THE DATA. §3.1 shows `TILL 21:00`
+ * where a record has a real closing hour and `AFTER DARK` where it does not,
+ * and the ratio decides how the list reads. Counted twice, before and after
+ * the airport batch: ZERO of the 105 dawn/night records carry a structured
+ * hour, and none has an `Hours` essential containing a clock either. So
+ * every mark in Trip 12 reads AFTER DARK or BEFORE 08:00.
+ *
+ * The hour-bearing paths are still built, because a place someone adds by
+ * hand can gain one, and because a label that says a time is a fact where a
+ * label that says a state is a judgement — which is what keeps this token
+ * out of `--amber`'s territory.
+ */
+const OFF_HOURS = {
+  night: { key: 'night', label: 'AFTER DARK', dot: 'filled' },
+  dawn: { key: 'dawn', label: 'BEFORE 08:00', dot: 'hollow' },
+};
+
+/** Dawn is over at 08:00 — the hour §3.1's own degraded label names. */
+const DAWN_ENDS = 8 * 60;
+
+/**
+ * When it gets dark on a given day.
+ *
+ * Parsed out of the day's own `x.sun` prose, which carries "sunrise HH:MM,
+ * sunset HH:MM" on all eight days of this trip (17:46 to 17:58). Prose is a
+ * poor place to keep a time, but a real sunset for the day the traveller is
+ * standing in beats a constant, and the constant is still there when the
+ * parse finds nothing.
+ */
+function darkFrom(n = state.selectedDay) {
+  const sun = String(day(n)?.x?.sun || '');
+  const hit = /sunset\s+(\d{1,2}):(\d{2})/i.exec(sun);
+  if (hit) return Number(hit[1]) * 60 + Number(hit[2]);
+  return 18 * 60;
+}
+
+/**
+ * The row's time token, or null for the 439 rows that get nothing.
+ *
+ * An explicit `openAt` / `closeAt` on the record wins, because a real hour
+ * is a fact and the window is a category. Nothing in Trip 12 has one.
+ */
+export function timeToken(place) {
+  const w = String(place?.timeWindow || '').toLowerCase();
+  if (w === '24h') return { key: '24h', label: '24H', dot: null, plain: true };
+  const band = OFF_HOURS[w];
+  if (!band) return null;
+  const close = parseClock(place?.closeAt);
+  const open = parseClock(place?.openAt);
+  if (band.key === 'night' && close != null) {
+    return { ...band, label: `TILL ${clock(close)}` };
+  }
+  if (band.key === 'dawn' && open != null) {
+    return { ...band, label: `DAWN ${clock(open)}` };
+  }
+  return { ...band };
+}
+
+/** Whether a place is open at a given minute of a given day. */
+export function openAtClock(place, minutes, n = state.selectedDay) {
+  const w = String(place?.timeWindow || '').toLowerCase();
+  if (w === 'dawn') {
+    const open = parseClock(place?.openAt);
+    return minutes < (open != null ? open : DAWN_ENDS);
+  }
+  if (w === 'night') {
+    const close = parseClock(place?.closeAt);
+    const dark = darkFrom(n);
+    return close != null ? (minutes >= dark && minutes <= close) : minutes >= dark;
+  }
+  // day, 24h and no window at all are all open now as far as this list can
+  // honestly say. Claiming a `day` record shuts at some hour would be an
+  // invention: the field says which part of the day it belongs to, not when
+  // its door is locked.
+  return true;
+}
+
+/** The phone's own clock, in minutes past midnight. */
+export const nowMinutes = () => {
+  const d = new Date();
+  return d.getHours() * 60 + d.getMinutes();
+};
+
+/**
+ * How many of a list are open now, and how many the Now filter would hide.
+ * Counted on the whole list, never on the filtered one, or the line that
+ * says "6 hidden" would count the rows it had already removed.
+ */
+export function openNowCount(places, n = state.selectedDay) {
+  const at = nowMinutes();
+  const open = (places || []).filter((p) => openAtClock(p, at, n));
+  return { at, open: open.length, total: (places || []).length, hidden: (places || []).length - open.length };
+}
+
+/** How many of a list are marked dawn or night at all — for the count line. */
+export const offHoursCount = (places) => (places || [])
+  .filter((p) => OFF_HOURS[String(p?.timeWindow || '').toLowerCase()]).length;
+
 export const place = (id) => state.places.find((p) => p.id === id) || null;
 export const weather = (n = state.selectedDay) => (state.trip?.weather || []).find((w) => w.dayNumber === n) || null;
 

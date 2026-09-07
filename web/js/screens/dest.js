@@ -160,6 +160,12 @@ let sheetPending = false;
  * which has to be distinguishable from "unchanged".
  */
 let pendingPhoto = null;
+/**
+ * §3.1 · whether the Nearby tab's Now filter is engaged. Off on open, and it
+ * is a state of the list rather than a destination, so it does not survive
+ * leaving the screen.
+ */
+let nowOnly = false;
 const repaint = () => store.selectDay(state.selectedDay);
 
 export default {
@@ -287,8 +293,12 @@ export default {
   mount(root, params) {
     const it = subject(params);
     delegate(root, '[data-act="back"]', () => back());
+    delegate(root, '[data-act="now-toggle"]', () => { nowOnly = !nowOnly; repaint(); });
     delegate(root, '[data-panel]', (el) => {
       tab = el.dataset.panel;
+      // Leaving the panel drops the filter: it describes this list, and a
+      // filter you cannot see the control for is a list that lies.
+      nowOnly = false;
       // Repaint through the store so the whole screen re-renders once.
       store.selectDay(state.selectedDay);
     });
@@ -526,10 +536,34 @@ function nearbyPanel(it, places) {
   const loop = store.activeLoop();
   const schedule = store.loopSchedule(loop);
   const shared = !places.length && store.isSharedEmptyKind('places');
+  /*
+   * §3.1 · the Now filter, and the count line above it.
+   *
+   * DEFAULT OFF, deliberately. A filter that silently hid six of a
+   * traveller's own saved places on first open would be worse than the mark
+   * it replaces — you would not know they were gone.
+   *
+   * The counts come off the WHOLE list, never the filtered one, or the row
+   * that says "6 hidden" would be counting rows it had already removed.
+   */
+  const clockNow = store.openNowCount(places);
+  const offHours = store.offHoursCount(places);
+  const rows = nowOnly ? places.filter((p) => store.openAtClock(p, clockNow.at)) : places;
   return html`
     ${places.length ? html`
+      <div class="row g8 center mb10">
+        <div class="grow f115 w700 muted">
+          ${nowOnly
+            ? `${clockNow.open} of ${clockNow.total} open at ${store.clock(clockNow.at)}`
+            : `${places.length} place${places.length === 1 ? '' : 's'}${
+              offHours ? ` · ${offHours} open only at dawn or night` : ''}`}
+        </div>
+        ${offHours ? html`
+          <button class="tw-now${nowOnly ? ' on' : ''}" data-act="now-toggle"
+                  aria-pressed="${nowOnly ? 'true' : 'false'}">Now</button>` : ''}
+      </div>
       <div class="col g8">
-        ${places.map((place) => {
+        ${rows.map((place) => {
           const picked = store.isInSubRoute(place.id, store.activeLoop());
           const travel = (place.legs || []).reduce((sum, leg) => sum + leg.minutes, 0);
           return html`
@@ -555,6 +589,17 @@ function nearbyPanel(it, places) {
                     <span class="chip amber">No position</span>`}
                   <button class="edit-chip" data-edit-place="${place.id}"
                           aria-label="Correct ${place.name}">Edit</button>
+                  <!-- §3.1 · LAST in the chain, always, so every token on a
+                       31-row list is found in one vertical scan down the
+                       right edge of the chip row. -->
+                  ${(() => {
+                    const tw = store.timeToken(place);
+                    if (!tw) return '';
+                    return html`
+                      <span class="tw${tw.plain ? ' plain' : ''}">
+                        ${tw.dot ? html`<span class="tw-dot ${tw.dot}" aria-hidden="true"></span>` : ''}${tw.label}
+                      </span>`;
+                  })()}
                 </div>
               </div>
               <button class="nearby-add${picked ? ' on' : ''}" data-pick="${place.id}"
@@ -566,6 +611,17 @@ function nearbyPanel(it, places) {
             </div>`;
         })}
       </div>
+      ${nowOnly && clockNow.hidden ? html`
+        <!-- §3.1 · the filter is a STATE of the list, never a destination, so
+             it says what it hid and offers the way back in the same row. And
+             it says the reassuring half out loud: they have not gone. -->
+        <div class="tw-hidden">
+          <div class="grow">
+            ${clockNow.hidden} hidden — open at dawn or after dark.
+            They are still here tomorrow morning.
+          </div>
+          <button class="tw-show" data-act="now-toggle">Show</button>
+        </div>` : ''}
     ` : (shared
       ? emptyShared({ title: `Nothing saved around ${it.name} in the copy you were sent.` })
       : html`<div class="empty">Nothing saved around this stop yet.</div>`)}

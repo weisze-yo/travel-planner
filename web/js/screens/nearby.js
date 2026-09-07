@@ -259,6 +259,15 @@ function card(p) {
           <span class="leg-total">${store.duration(travel)}</span>
           <span class="leg-stay">stay ~${store.duration(p.stayMinutes)}</span>
           ${alsoIn.map((l) => html`<span class="leg-in">in ${l.name}</span>`)}
+          <!-- §3.1 · last in the chain here too. -->
+          ${(() => {
+            const tw = store.timeToken(p);
+            if (!tw) return '';
+            return html`
+              <span class="tw${tw.plain ? ' plain' : ''}">
+                ${tw.dot ? html`<span class="tw-dot ${tw.dot}" aria-hidden="true"></span>` : ''}${tw.label}
+              </span>`;
+          })()}
         </div>
       </div>
         <button class="nearby-add${picked ? ' on' : ''}" data-pick="${p.id}"
