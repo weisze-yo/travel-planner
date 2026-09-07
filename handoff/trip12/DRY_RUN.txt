@@ -1,0 +1,82 @@
+
+  DRY RUN — firebase-admin is not loaded and nothing can be written.
+  project travel-planner-3e0d3   uid w1kRlBbw6ChF3gaQXzDf5413EE03
+
+  what the merge produced
+  ------------------------------------------------------------------
+  collection        total   update   insert
+  days                8    8    0
+  places            618  167  451
+  subRoutes          20    0   20
+  shopping          104   49   55
+  mustSee            65   34   31
+  prep               85   85    0
+  outfits             8    8    0
+
+  searchable records (places + mustSee + shopping)   744
+  ids updated in place / inserted                    250 / 557
+  nameJp coverage                                    704 / 744
+  records flagged retired                            29
+
+  stops
+    active / retired / with data      40 / 3 / 43
+      of the active: researched / travel  30 / 10
+    day 7 active stops                5
+    with a 5-line summary             33 / 43
+    summary lines                     165
+    correctedFromSeed entries         196
+    with structured hours             35 / 43
+
+  stop id handling
+    RENAME   d93da2ed9772  Hotel Metropolitan Haneda
+                         -> Hotel Metropolitan Tokyo Haneda   (id kept, no migration)
+    REPLACE  day 2  retire 6c7eb3d0ad36 -> add a71e35e75317  Ooedo Onsen Monogatari Naruko Onsen Kounkaku
+    REPLACE  day 3  retire bb4932f4f5bd -> add 7d9bf6b4f593  Mercure Miyagi Zao Resort & Spa
+    REPLACE  day 4  retire 5f904002b01d -> add b0e04f3c52d4  Kinugawa Onsen Hana no Yado Matsuya
+    ADD      day 7  03776664f553  Ginza
+
+  travel legs added
+    day 1  07:00  2586d26e103f  Assembly · Penang International Airport
+    day 1  10:15  d31ed723bddf  SQ131 · Penang (PEN) → Singapore (SIN)
+    day 1  11:45  ee43254b2236  Arrive Singapore Changi — connection to SQ634
+    day 1  13:55  8671a3e66518  SQ634 · Singapore (SIN) → Tokyo Haneda (HND)
+    day 1  21:55  5de0de7562e1  Tour bus to Hotel Metropolitan Tokyo Haneda
+    day 8  06:30  3721b2590427  Depart International Resort Hotel Yurakujo for Narita
+    day 8  10:55  64fd3ebe9c3f  SQ637 · Tokyo Narita (NRT) → Singapore (SIN)
+    day 8  16:55  d029b4f0a71a  Arrive Singapore Changi — connection to SQ142
+    day 8  19:10  d1d9cb79d8d3  SQ142 · Singapore (SIN) → Penang (PEN)
+    day 8  20:35  d9c2768d5c97  Arrive Penang International (PEN)
+    TIME FIX  184f9cf0f25a  Narita Airport — Terminal 1 South Wing  (none) -> 07:20
+
+  duplicate venue pairs merged        20
+  coLocated pairs kept (both)         3
+  places whose anchorStop changed     3
+      6391d4b9279e  Naruko Onsen Shrine stairway  -> Ooedo Onsen Monogatari Naruko Onsen Kounkaku
+      c6843df359bd  Taki-no-Yu public bath  -> Ooedo Onsen Monogatari Naruko Onsen Kounkaku
+      06cb9e37e31a  Waseda Sajiki-yu public bath — CLOSED   -> Ooedo Onsen Monogatari Naruko Onsen Kounkaku
+  fields preserved by field-wise merge 1294
+  nearby places given an Info tab      575 (3935 rows)
+  shopping items starting OFF the list 104 (item 4)
+
+  stop coordinate fixes
+    21c5d54201ee  Shisui Premium Outlets
+      35.7222, 140.2696  ->  35.713812, 140.294023
+    184f9cf0f25a  Narita Airport — Terminal 1 South Wing
+      35.772, 140.3929  ->  35.7725, 140.3862
+
+  shopping categories backfilled to souvenir   54
+  cross-wired categories corrected             1
+      tnk-sh-bathkit  Towel and body soap for Taki-no-Yu  'shopping' -> 'other'
+  places with an invalid category              0
+
+  dangling anchorPlaceID              0
+  records the merge could not map     0
+
+  Firestore shape conversions   hours 35 · route coords 10
+  undefined fields pruned       83
+  nested arrays remaining       0
+
+  target tripId: (none given; a dry run needs no target)
+
+  Nothing was written.
+

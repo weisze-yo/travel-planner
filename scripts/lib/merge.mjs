@@ -963,7 +963,21 @@ export function buildSnapshot(researchDir, guidePath) {
   }
 
   // ---- 9. the two category enums, kept apart (§4.2c) ---------------------
-  const PLACE_CATEGORIES = new Set(['food', 'cosme', 'cloth', 'shopping', 'sight', 'rest']);
+  //
+  // `service` joined PlaceCategory on 7 Sep 2026 and this Set is the FOURTH
+  // place that had to learn it — after `data.js`'s CATEGORY_LABELS, the
+  // validator's own enum, and `nearby.js`'s CATS. The dry run is what caught
+  // it: all 14 reclassified records came back as "places with an invalid
+  // category", which would have shipped them as an unrecognised value that
+  // `categoryLabel` falls through to raw.
+  //
+  // Two of the four are now derived rather than listed (CATS reads
+  // CATEGORY_LABELS, and the app has one map). These two — here and in
+  // validate_research.py — are deliberately separate copies, because the
+  // importer must be able to reject a value the app happens to accept and
+  // the validator must run without the app at all. They are the price of
+  // that independence, and the dry run is what keeps them honest.
+  const PLACE_CATEGORIES = new Set(['food', 'cosme', 'cloth', 'shopping', 'sight', 'rest', 'service']);
   const SHOP_CATEGORIES = new Set(['food', 'clothing', 'souvenir', 'beauty', 'other']);
   for (const [id, p] of coll.places) {
     if (p.category !== undefined && !PLACE_CATEGORIES.has(p.category)) {
