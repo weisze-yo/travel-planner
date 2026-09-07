@@ -80,6 +80,29 @@
   --sum-buy: #1A7396;
   --sum-snack: #B23F68;
 
+  /*
+   * §3.1 · F3 · DUSK VIOLET, the only new colour in the seven-decision set.
+   *
+   * Time of day is a meaning the palette had no hue for, and the three it
+   * owns are all taken: --jade is good/done/primary, --amber is needs
+   * attention, --danger-fg is destructive. A dawn or night place is none of
+   * those — nothing is wrong with it, it is simply shut at 09:35 — so amber
+   * was rejected outright: it would read as "something is wrong with this
+   * place".
+   *
+   * The first proposal was a desaturated navy at 219°, twelve degrees from
+   * --sum-do. The owner asked for something clearly different, so this sits
+   * at hue 278°, saturation 41% — 47° from --sum-do (231°) and in the widest
+   * gap the palette leaves, 258° to 308°. Its nearest neighbours are now
+   * --sum-see (20° away and much lighter) and --sum-eat (30°), and neither
+   * ever shares a panel with it: the --sum-* set lives on Must-tab section
+   * headers, this one on Nearby-tab row tokens.
+   *
+   * Measured for the gated set: 7.90:1 on white, 7.10:1 on --bone, 6.95:1 on
+   * #EFF1EE, which is its real chip ground. Gated in test/contrast.mjs.
+   */
+  --offhours: #6E3A8C;
+
   --tabbar-h: 78px;
   --safe-top: env(safe-area-inset-top, 0px);
   --safe-bottom: env(safe-area-inset-bottom, 0px);
@@ -146,11 +169,111 @@ input[type="radio"], input[type="checkbox"] {
   accent-color: var(--ink);
   flex: none;
 }
-select {
-  background-image: url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' width='10' height='6'%3E%3Cpath d='M1 1l4 4 4-4' stroke='%236B7A74' stroke-width='1.6' fill='none' stroke-linecap='round'/%3E%3C/svg%3E");
-  background-repeat: no-repeat;
-  background-position: right 11px center;
-  padding-right: 28px;
+/*
+ * §3.5 · THE SELECT, ELEVEN OF THEM, ON FIVE SCREENS.
+ *
+ * The reported bug was "the design of dropdown for Payment Method and
+ * Category are not nice", and the diagnosis is that there was only ONE
+ * recipe for two genuinely different jobs. A select in a form is a field
+ * you fill in; a select on a saved shopping row is a correction to a record
+ * you already have. They were the same 13px control, which is why the
+ * second one had to be crammed inside a 10.5px chip wrapper and came out
+ * bigger than the chip.
+ *
+ * So there are two recipes now, and only two — `.sel` for the eight in
+ * forms, `.sel-chip` for the two (soon four) inline. What went, in both:
+ *
+ *   the floating background-SVG chevron   → a real 30px / 22px element
+ *   `padding-right: 28px` on every select → clearance for that element
+ *   `.pay-chip` wrapped round a select    → the select IS the chip
+ *
+ * A background image cannot be positioned against a border, so the old
+ * chevron floated 11px in from the text edge and drifted whenever a value
+ * was long enough to reach it. A real element is flush to the field's right
+ * edge and cannot drift.
+ *
+ * The other half of the decision is weight: a chosen value sits at 650
+ * where every `input` in this app sits at 400. Weight, not just the chevron,
+ * is what separates a value you PICKED from text you TYPED — which matters
+ * on a small screen where the chevron is the first thing to be missed.
+ */
+.sel { position: relative; display: block; }
+.sel > select {
+  width: 100%;
+  font-weight: 650;
+  /* Clearance for the tab, which is a real 30px element plus its hairline. */
+  padding-right: 40px;
+}
+.sel::after {
+  content: '';
+  position: absolute;
+  /* Inset by the field's own 1px border so the tab sits INSIDE it. */
+  top: 1px; right: 1px; bottom: 1px;
+  width: 30px;
+  border-left: 1px solid var(--field-bd);
+  border-radius: 0 9px 9px 0;
+  background: var(--bone)
+    url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' width='10' height='6'%3E%3Cpath d='M1 1l4 4 4-4' stroke='%236B7A74' stroke-width='1.6' fill='none' stroke-linecap='round'/%3E%3C/svg%3E")
+    no-repeat center;
+  pointer-events: none;
+}
+/* One recipe, two states: the field already goes jade on focus, and the tab
+   follows it rather than staying grey against a jade border. */
+.sel:focus-within::after {
+  border-left-color: var(--jade-bd);
+  background-color: var(--jade-bg);
+}
+
+/*
+ * The inline recipe. 26px tall, r8, and the same "one step darker than my
+ * own ground" rule as the tab above — which is why the ground is a variable
+ * rather than a constant: on a white card the chip is #EFF1EE, and on a row
+ * that is ALREADY #EFF1EE it steps to #E4E8E4 so it does not vanish.
+ */
+.sel-chip {
+  --chip-bg: #EFF1EE;
+  position: relative;
+  display: inline-flex;
+  align-items: center;
+  height: 26px;
+  max-width: 100%;
+  border-radius: 8px;
+  background: var(--chip-bg);
+}
+.sel-chip.on-tint { --chip-bg: #E4E8E4; }
+.sel-chip > select {
+  border: 0;
+  border-radius: 8px;
+  background: none;
+  font-size: 11.5px;
+  font-weight: 700;
+  color: var(--charcoal);
+  max-width: 100%;
+  /*
+   * F2 · 26px SEEN, 44px FELT. Raising these chips to a 44px painted box
+   * would add ~18px to every shopping row and every nearby card — about
+   * 550px down a 31-row list. So the PAINTED box stays 26px and the
+   * TOUCHABLE box is 44px: 9px of transparent padding above and below,
+   * cancelled by a -9px margin so the chip's own height never moves.
+   *
+   * The rule for anything reusing this: EXPAND VERTICALLY ONLY. Neighbouring
+   * chips may overlap each other's touch boxes vertically — 6px of gap plus
+   * a 22px chevron column is enough horizontally — and that was the accepted
+   * cost of not growing every row.
+   */
+  height: 44px;
+  margin: -9px 0;
+  padding: 0 22px 0 9px;
+}
+.sel-chip > select:focus { outline: 2px solid var(--jade); outline-offset: -1px; }
+.sel-chip::after {
+  content: '';
+  position: absolute;
+  top: 0; right: 0; bottom: 0;
+  width: 22px;
+  background: url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' width='10' height='6'%3E%3Cpath d='M1 1l4 4 4-4' stroke='%236B7A74' stroke-width='1.6' fill='none' stroke-linecap='round'/%3E%3C/svg%3E")
+    no-repeat center;
+  pointer-events: none;
 }
 
 /* --------------------------------------------------------------- app frame */
@@ -721,7 +844,25 @@ select {
 .archive-card,
 .swipe-face.archive-card { margin-top: 8px; padding: 12px 13px; background: var(--dark-card); border-radius: 14px; }
 .archive-name { font-size: 13.5px; font-weight: 650; color: #E4EBE8; line-height: 1.25; }
-.archive-was { font-size: 11px; color: #9FB2AA; margin-top: 2px; }
+/*
+ * F4 · #B6C7C0, not #9FB2AA.
+ *
+ * Design flagged that the dark card cannot obey the both-grounds rule — a
+ * dark-ground ink is definitionally exempt from a 4.5:1 bar measured on
+ * white and --bone — and the owner's answer was UNIFY rather than add a
+ * second exemption.
+ *
+ * #9FB2AA measured 4.03:1 on --dark-card: a real, shipped AA failure on a
+ * live screen, sitting one line under a name that measures 7.48:1. #B6C7C0
+ * clears 5.14:1 on the same ground, so the app now has exactly ONE secondary
+ * ink for dark grounds and it passes — which also stops a third
+ * near-identical grey being invented the next time a dark surface appears.
+ *
+ * Both dark-ground pairs are gated in test/contrast.mjs as GROUND-SCOPED
+ * entries, exempt from the white/bone sweep by name, so the next dark
+ * surface inherits the rule instead of the argument.
+ */
+.archive-was { font-size: 11px; color: #B6C7C0; margin-top: 2px; }
 .archive-btn {
   flex: none;
   height: 28px;
@@ -741,14 +882,72 @@ select {
 
 /* ------------------------------------------------------------- destination */
 
+/*
+ * §3.3 · the hero, when there IS a photo. 200 + 28 = 228px, within a pixel
+ * of the 230 the hatched placeholder used to take — so a record with an
+ * image costs exactly what every record used to cost, and the 616 without
+ * one get all of it back.
+ *
+ * The hatch stays a class of its own (`.placeholder-hatch`, further down)
+ * because `.nearby-thumb` and the must-see block still use it, and there it
+ * is right: a 56px thumbnail is a slot in a row, not a promise of a picture.
+ */
 .hero {
   position: relative;
-  height: 230px;
-  background: repeating-linear-gradient(135deg, #DDE1DD 0 10px, #D5DAD5 10px 20px);
+  height: 200px;
+  background: var(--bone);
   display: flex;
   align-items: flex-end;
   padding: 16px;
+  overflow: hidden;
 }
+.hero-img { position: absolute; inset: 0; width: 100%; height: 100%; object-fit: cover; }
+/* A bottom-up ink gradient, so the badges keep their contrast over a photo
+   whose brightness nobody can predict. */
+.hero-wash {
+  position: absolute; inset: 0;
+  background: linear-gradient(to top, rgba(20,32,28,.62) 0, rgba(20,32,28,.12) 46%, rgba(20,32,28,0) 74%);
+}
+.hero-badges { position: relative; }
+/*
+ * The credit bar. SOLID ink, never alpha over the photo: white on --ink is
+ * 15.4:1 and an alpha bar over an unpredictable image is not measurable at
+ * all. Always this height whatever the licence, so the layout does not jump
+ * between a CC0 record and a CC BY-SA one — and the bar is not conditional
+ * on the licence, so no future change can quietly drop attribution when the
+ * data is sloppy.
+ */
+.hero-credit {
+  display: flex;
+  align-items: center;
+  gap: 8px;
+  height: 28px;
+  padding: 0 14px;
+  background: var(--ink);
+  color: #fff;
+  font-size: 10.5px;
+  font-weight: 650;
+  text-decoration: none;
+}
+/* Credit first, so what a clip takes is the licence string — which the
+   source page repeats in full. The name is the part that must survive. */
+.hero-credit .grow { min-width: 0; white-space: nowrap; overflow: hidden; text-overflow: ellipsis; }
+.hero-credit-go { flex: none; font-size: 12px; opacity: .85; }
+/*
+ * And with NO photo: a real 52px white bar for the back button, instead of
+ * it floating on a hatch. The badges move into the name block below.
+ */
+.dest-bar {
+  height: 52px;
+  padding: 0 10px 0 8px;
+  display: flex;
+  align-items: center;
+  background: #fff;
+  border-bottom: 1px solid var(--line-3);
+}
+/* The window badge was `.light` — white on a photo. Over a white card it
+   needs a ground of its own. */
+.hero-badge.dark { background: var(--bone); color: var(--charcoal); }
 .hero-back { position: absolute; top: calc(12px + var(--safe-top)); left: 14px; width: 40px; height: 40px; border-radius: 13px; background: rgba(255,255,255,.9); display: flex; align-items: center; justify-content: center; }
 .hero-tag { position: absolute; top: calc(20px + var(--safe-top)); right: 14px; padding: 5px 9px; border-radius: 8px; background: rgba(20,32,28,.6); color: #fff; font-size: 10px; font-weight: 600; }
 .hero-badges { display: flex; gap: 6px; flex-wrap: wrap; }
@@ -817,14 +1016,67 @@ select {
 .nearby-card { display: flex; gap: 11px; padding: 11px; background: #fff; border-radius: 15px; border: 1px solid var(--line-2); }
 .nearby-card.picked { border-color: var(--amber-bd); }
 .nearby-thumb { width: 56px; height: 56px; flex: none; border-radius: 11px; background: repeating-linear-gradient(135deg, #E2E6E2 0 7px, #DADFDA 7px 14px); }
-.nearby-name { font-size: 14px; font-weight: 650; line-height: 1.2; flex: 1; min-width: 0; }
+/*
+ * B4 · ONE LINE, ELLIPSISED, NEVER WRAPPED.
+ *
+ * A pasted Google `/place/` link used to put its whole address in the name —
+ * 168 characters in a 14px column, five lines on one card, and the same
+ * string again in the Plan card, the sub-route summary, the dark dock and
+ * the Log. The name is split at its first comma now (store.js
+ * `resolvePlaceInput`), and this is the belt to that braces: a long name
+ * from any other source truncates instead of pushing the card open.
+ */
+.nearby-name {
+  font-size: 14px;
+  font-weight: 650;
+  line-height: 1.2;
+  flex: 1;
+  min-width: 0;
+  white-space: nowrap;
+  overflow: hidden;
+  text-overflow: ellipsis;
+}
+/*
+ * The Edit chip the report asked for twice ("user unable to edit the name",
+ * "cannot edit the info shown on the card"). Built on §3.5's inline chip
+ * geometry — 26px, r8, #EFF1EE — so it agrees with the sub-route select
+ * that lands beside it in §3.7, and carries F2's 26-seen/44-felt padding
+ * for the same reason the selects do.
+ */
+.edit-chip {
+  position: relative;
+  height: 26px;
+  padding: 0 10px;
+  border-radius: 8px;
+  background: #EFF1EE;
+  font-size: 11.5px;
+  font-weight: 700;
+  color: var(--charcoal);
+  white-space: nowrap;
+  flex: none;
+}
+/*
+ * F2 again, and it cannot be done the way `.sel-chip` does it. There the
+ * painted chip is the WRAPPER and the 44px box is the select inside it; a
+ * button is one box, so padding would grow the paint with the target. A
+ * pseudo-element is a box of its own that still targets its host, so the
+ * hit area reaches 44px while the chip stays painted at 26px.
+ */
+.edit-chip::before {
+  content: '';
+  position: absolute;
+  inset: -9px 0;
+}
 .nearby-price { font-size: 11px; color: var(--soft); font-weight: 700; flex: none; }
 .nearby-note { font-size: 11px; color: var(--muted); margin-top: 2px; }
 .leg { display: flex; align-items: center; gap: 4px; padding: 3px 7px; border-radius: 7px; background: #EFF1EE; font-size: 10.5px; font-weight: 700; color: var(--charcoal); white-space: nowrap; }
 .leg-total { padding: 3px 7px; border-radius: 7px; background: var(--ink); color: #fff; font-size: 10.5px; font-weight: 800; white-space: nowrap; }
 .leg-stay { padding: 3px 7px; border-radius: 7px; background: var(--amber-bg); color: var(--amber-fg); font-size: 10.5px; font-weight: 700; white-space: nowrap; }
-.nearby-add { width: 34px; height: 34px; flex: none; align-self: center; border-radius: 11px; background: var(--bone); color: var(--charcoal); display: flex; align-items: center; justify-content: center; font-size: 17px; }
-.nearby-add.on { background: var(--amber); color: #fff; }
+/* §3.7 · `.nearby-add` — the round + / ✓ — is gone. Its job was "put this
+   place in a loop", and a per-card sub-route select does that AND says
+   which. Removed rather than left unused, so a future card cannot bring
+   back a control whose whole meaning depended on a "loop in hand" that no
+   longer exists. */
 
 .sortbtn { flex: none; width: 32px; height: 32px; border-radius: 10px; background: #fff; display: flex; align-items: center; justify-content: center; }
 .sortbtn.on { background: var(--ink); }
@@ -836,22 +1088,24 @@ select {
 .sortopt-label { flex: 1; text-align: left; font-size: 13px; font-weight: 650; color: var(--muted); }
 .sortopt.on .sortopt-label { color: var(--ink); }
 
-.dock {
-  position: absolute;
-  left: 12px; right: 12px;
-  bottom: 12px;
-  z-index: 5;
-  padding: 13px 14px;
-  background: var(--ink);
-  border-radius: 18px;
-  box-shadow: 0 10px 28px rgba(20,32,28,.3);
-  display: flex;
-  align-items: center;
-  gap: 12px;
-}
-.dock-h { font-size: 10.5px; font-weight: 800; letter-spacing: .06em; color: #8FB3A6; }
-.dock-s { font-size: 13px; font-weight: 650; color: #fff; margin-top: 3px; line-height: 1.3; }
-.dock-btn { flex: none; height: 38px; padding: 0 14px; border-radius: 12px; background: var(--amber); color: #fff; font-size: 12.5px; font-weight: 700; display: flex; align-items: center; white-space: nowrap; }
+/*
+ * §3.7 · THE FIXED BOTTOM DOCK IS GONE, and `.dock`, `.dock-h`, `.dock-s`,
+ * `.dock-btn`, `.dock-loops` and `.dock-loop` with it.
+ *
+ * It existed to name "the loop in hand" — the loop the round + / ✓ would
+ * drop a place into. A select that names its own loop makes the concept
+ * unnecessary, so the switcher's job does not move anywhere: it disappears.
+ * `Arrange` went to the Plan by the owner's instruction, and `Start one`
+ * with it, because a sub route is created on the Plan in the gap it belongs
+ * to.
+ *
+ * `.dock-btn` also carried the app's one unfixable contrast failure — white
+ * on `--amber` at 3.23:1, tracked in test/contrast.mjs as pre-existing. It
+ * goes with the component.
+ *
+ * `.dock-note` is a different thing and survives, further down: it is the
+ * linkrow wrapper on the Destination Info tab.
+ */
 
 /* --------------------------------------------------------------- sub route */
 
@@ -911,9 +1165,39 @@ select {
  */
 .item-second { display: flex; flex-wrap: wrap; gap: 6px; align-items: center; margin-top: 8px; padding-left: 33px; padding-right: 2px; }
 .pay-chip { padding: 4px 9px; border-radius: 8px; background: #EFF1EE; font-size: 10.5px; font-weight: 700; color: var(--charcoal); white-space: nowrap; }
-.paid-wrap { flex: 1 0 100%; display: flex; align-items: center; gap: 6px; min-width: 0; }
-.paid-cap { font-size: 10.5px; font-weight: 800; color: var(--jade); white-space: nowrap; }
-.paid-input { flex: 1; min-width: 0; padding: 5px 8px; font-size: 12px; border-color: var(--jade-bd); background: #F7FBF9; }
+/*
+ * PAID · 38px and 15px, from Bug Findings B7 rather than §3.5's 26px.
+ *
+ * The two canvases disagree here and the disagreement is real, so it is
+ * recorded rather than papered over. §3.5 draws PAID at 26px/12px sharing
+ * ONE line with the two selects; B7 draws it at 38px/15px on a line of its
+ * OWN with the estimate beside it. The layout already shipped (bug 24) is
+ * B7's — PAID claims the full width, the selects sit above — so B7's sizing
+ * is the one that matches the layout, and §3.5's figure describes its own
+ * single-line variant.
+ *
+ * It is also the sizing that answers what was actually reported: "the box
+ * is too small... can't visualize how much has been entered at all". 26px
+ * and 12px is barely more than the 18px sliver being complained about.
+ * B7's reason is the right one — the money you are typing is the one thing
+ * on this screen worth 15px.
+ */
+.paid-wrap { flex: 1 0 100%; display: flex; align-items: center; gap: 8px; min-width: 0; }
+.paid-cap { font-size: 11px; font-weight: 800; color: var(--jade); white-space: nowrap; flex: none; }
+.paid-input {
+  flex: 1;
+  min-width: 0;
+  height: 38px;
+  padding: 0 11px;
+  font-size: 15px;
+  font-weight: 700;
+  font-variant-numeric: tabular-nums;
+  border: 1.5px solid var(--jade-bd);
+  border-radius: 10px;
+  background: #F7FBF9;
+}
+/* The guess, beside the real number — the reason for keeping estimates. */
+.paid-est { font-size: 11.5px; color: var(--soft); white-space: nowrap; flex: none; }
 .bought-line { font-size: 10.5px; color: var(--soft); font-weight: 650; margin-top: 6px; padding-left: 33px; }
 
 .footer-card {
@@ -930,6 +1214,209 @@ select {
 .spend-v { font-size: 20px; font-weight: 700; margin-top: 2px; font-variant-numeric: tabular-nums; }
 .spend-est { font-size: 11.5px; font-weight: 600; color: var(--muted); }
 .spend-rm { font-size: 14px; font-weight: 700; }
+
+/*
+ * §3.2 · the two researched paragraphs on Prep's WHAT TO WEAR card.
+ *
+ * 272-679 characters each, so the type is the app's own reading size for
+ * prose — the same 12.5px / 1.55 `.must-text` uses for `stopSummary`, which
+ * is the other place this product asks someone to read a paragraph on a
+ * phone. No new size, no new colour.
+ */
+.outfit-block { padding-top: 10px; }
+.outfit-block.first { padding-top: 0; }
+.outfit-prose { font-size: 12.5px; line-height: 1.55; color: var(--charcoal); }
+/*
+ * The ghost action the empty state and a written card both carry. A line,
+ * not a button: it is the third-ranked action on a card whose primary job is
+ * to be READ, and the app's own ordering puts "the other way" below the
+ * content in jade text rather than in a box.
+ */
+.btn-ghost-line {
+  min-height: 44px;
+  padding: 0;
+  font-size: 12px;
+  font-weight: 700;
+  color: var(--jade);
+  text-align: left;
+  background: none;
+}
+
+/*
+ * §3.1 · the time-of-day token, last in a nearby row's leg chain.
+ *
+ * It sits INSIDE the existing meta line, in the `.leg` weight class, so it
+ * never adds a line to a row that is already two lines — and always last, so
+ * the eye finds every one of them in a single vertical scan down the right
+ * edge of the chip row.
+ *
+ * Three cues, not one: the uppercase LABEL, the DOT's shape (hollow for
+ * dawn, filled for night) and the hue. Greyscale loses nothing, which is the
+ * test a single-hue mark has to pass.
+ */
+.tw {
+  display: inline-flex;
+  align-items: center;
+  gap: 5px;
+  flex: none;
+  padding: 3px 7px;
+  border-radius: 7px;
+  background: #EFF1EE;
+  font-size: 10.5px;
+  font-weight: 800;
+  letter-spacing: .04em;
+  color: var(--offhours);
+}
+.tw-dot { width: 6px; height: 6px; border-radius: 50%; box-sizing: border-box; flex: none; }
+.tw-dot.filled { background: var(--offhours); }
+.tw-dot.hollow { border: 1.6px solid var(--offhours); }
+/* 24h is a BONUS, never a constraint, so it gets the ordinary meta grey and
+   no dot at all — the same box, one weight down. */
+.tw.plain { font-weight: 700; color: var(--muted); }
+
+/*
+ * The Now filter. A state of the list, never a destination — so it is a chip
+ * on the control row rather than a screen, and it says how many it hid.
+ */
+.tw-now {
+  min-height: 30px;
+  padding: 0 11px;
+  border-radius: 9px;
+  border: 1px solid var(--field-bd);
+  background: #fff;
+  font-size: 11.5px;
+  font-weight: 700;
+  color: var(--charcoal);
+  white-space: nowrap;
+  flex: none;
+}
+.tw-now.on { background: var(--ink); border-color: var(--ink); color: #fff; }
+/* What it hid, and the way back — one dashed row at the foot of the list. */
+.tw-hidden {
+  display: flex;
+  align-items: center;
+  gap: 8px;
+  margin-top: 10px;
+  padding: 10px 12px;
+  border: 1px dashed var(--field-bd);
+  border-radius: 12px;
+  font-size: 11.5px;
+  line-height: 1.4;
+  color: var(--muted);
+}
+.tw-show { flex: none; font-size: 11.5px; font-weight: 800; color: var(--jade); min-height: 44px; }
+
+/*
+ * §3.6 · DIM AND STICK — the fourth "in front of things" treatment, and the
+ * only one this app has that is not a scrim.
+ *
+ * The rule, stated so it is a decision rather than a drift:
+ *
+ *   scrim           when the background is context you can ignore
+ *   dim-and-stick   when the background IS the reference material
+ *
+ * Add-a-stop was the first case, and §3.7's Add-a-place is the second: on a
+ * stop's Nearby tab the list behind the form is the thing you are adding TO,
+ * and how far away the other places are is what tells you whether this one
+ * belongs. A stop's time only means something against the times around it,
+ * so a grey veil over the itinerary would dim exactly the rows you are
+ * typing against — which is why the reported "put it in a sheet" was
+ * rejected along with the partial-height variant.
+ */
+.dock-form {
+  position: absolute;
+  left: 0; right: 0; bottom: 0;
+  z-index: 6;
+  padding: 0 16px 14px;
+  background: #fff;
+  border-top: 1.5px solid var(--ink);
+  box-shadow: 0 10px 28px rgba(20,32,28,.30);
+  max-height: 78%;
+  overflow-y: auto;
+}
+.dock-form .form { border: 0; box-shadow: none; background: none; padding-left: 0; padding-right: 0; }
+/* The scroller keeps room for it, so nothing at the foot of the day becomes
+   unreachable underneath the form. ~232px is what the form occupies, and
+   the day showing three rows instead of six is the cost the decision
+   accepts. */
+.scroll.with-front { padding-bottom: 260px !important; }
+/*
+ * Everything that is neither the itinerary nor the form: 40%, inert, and a
+ * tap CANCELS rather than doing nothing — the same thing a scrim does on
+ * the Destination sheets.
+ *
+ * This is the one place opacity below 1 is allowed to mean something, and
+ * B2's corollary says why: what is dimmed here is the CHROME around the
+ * content, never the content. The rows stay at full contrast, which is the
+ * entire point of the treatment.
+ */
+.chrome-quiet { opacity: .4; }
+.chrome-quiet > * { pointer-events: none; }
+/* The tab bar, which is a sibling of the screen host and so cannot be
+   reached from inside a screen — the state goes on `body` instead, and
+   nav.js clears it on every paint. */
+body.front-form #tabbar { opacity: .4; pointer-events: none; }
+
+/*
+ * §3.7 · the day's sub routes as a READ-ONLY dark card at the foot of the
+ * Nearby tab. Its only action is a way to the Plan, because the owner moved
+ * arranging and timing there — a dark card with drag handles would quietly
+ * move it back.
+ *
+ * Dark-ground inks come from F4's single pair: #E4EBE8 for a name (7.48:1)
+ * and #B6C7C0 for anything secondary (5.14:1). Both are gated in
+ * test/contrast.mjs as ground-scoped entries, so this card inherits the
+ * rule rather than inventing a third grey.
+ */
+.loop-foot {
+  background: var(--dark-card);
+  border-radius: 16px;
+  padding: 12px 14px 14px;
+}
+.loop-foot-eyebrow { color: #B6C7C0; }
+.loop-foot-row {
+  display: flex;
+  align-items: baseline;
+  gap: 10px;
+  padding: 9px 0;
+  border-bottom: 1px solid rgba(255,255,255,.10);
+}
+.loop-foot-row:last-of-type { border-bottom: 0; }
+.loop-foot-at {
+  flex: none;
+  width: 42px;
+  font-size: 12px;
+  font-weight: 700;
+  font-variant-numeric: tabular-nums;
+  color: #E4EBE8;
+}
+.loop-foot-name { font-size: 13px; font-weight: 650; color: #E4EBE8; min-width: 0; }
+.loop-foot-n { flex: none; font-size: 11px; font-weight: 650; color: #B6C7C0; }
+.loop-foot-note { font-size: 11px; line-height: 1.45; color: #B6C7C0; margin-top: 9px; }
+.loop-foot-go {
+  margin-top: 10px;
+  min-height: 40px;
+  width: 100%;
+  border-radius: 12px;
+  background: rgba(255,255,255,.14);
+  color: #fff;
+  font-size: 12.5px;
+  font-weight: 700;
+}
+
+/*
+ * §3.7 · the sub-route select's two states.
+ *
+ * "Saved only" keeps §3.5's ordinary grey chip: it is a real, common,
+ * CORRECT answer — most saved places belong to no loop — not a placeholder
+ * and not a dash.
+ *
+ * A chosen loop is amber, which ALREADY means "a sub route, planned by
+ * you": the same token as `.badge.sub` and the dashed loop lines. Not a new
+ * meaning, and no new colour.
+ */
+.sel-chip.mine { --chip-bg: var(--amber-bg); }
+.sel-chip.mine > select { color: var(--amber-fg); }
 
 /* ---------------------------------------------------------------- must-see */
 
@@ -955,16 +1442,9 @@ select {
 .shot-desc { font-size: 12.5px; line-height: 1.5; color: var(--charcoal); margin-top: 5px; }
 .shot-where { display: flex; align-items: center; gap: 7px; margin-top: 9px; font-size: 11.5px; font-weight: 650; color: var(--muted); }
 
-.outfit-ref {
-  width: 78px; height: 104px;
-  flex: none;
-  border-radius: 11px;
-  background: repeating-linear-gradient(135deg, #E2E6E2 0 7px, #DADFDA 7px 14px);
-  display: flex; align-items: flex-end; justify-content: center;
-  padding-bottom: 6px;
-  font-size: 9px; font-weight: 700; color: var(--muted);
-}
-.outfit-text { flex: 1; min-width: 0; font-size: 12.5px; line-height: 1.5; color: var(--charcoal); }
+/* §3.2 · `.outfit-ref` (the little "reference" tag) and `.outfit-text` were
+   the generic weather sentence's chrome. Both gone with it: the researched
+   paragraphs are the card's content, not a footnote beside a tag. */
 .mine-chip { display: flex; align-items: center; gap: 6px; padding: 5px 9px; border-radius: 9px; background: var(--jade-bg); color: var(--jade); font-size: 11.5px; font-weight: 700; white-space: nowrap; }
 .pick-chip { padding: 5px 9px; border-radius: 9px; background: var(--bone); color: var(--charcoal); font-size: 11.5px; font-weight: 650; white-space: nowrap; }
 .hairline { height: 1px; background: var(--line-2); margin: 14px 0; }
@@ -1299,6 +1779,10 @@ select {
 
 /* A sub route's card, which is what the lane holds. */
 .plan-swipe { border-radius: 14px; background: var(--danger-bg); margin-bottom: 8px; }
+/* B5 · this was a <button>; it is a div wearing role="button" now, because
+   in edit mode it holds the rust ✕ and a button cannot nest inside one. It
+   therefore has to say `text-align: left` and `cursor: pointer` out loud —
+   both came free from the button element before. */
 .loop-lane {
   display: block;
   width: 100%;
@@ -1306,6 +1790,10 @@ select {
   background: #FFFDF7;
   border: 1.5px dashed #E3CFA3;
   border-radius: 14px;
+  text-align: left;
+  cursor: pointer;
+  font: inherit;
+  color: inherit;
 }
 .loop-lane-name { font-size: 13.5px; font-weight: 700; color: var(--amber-fg); }
 .loop-lane-win {
@@ -1621,23 +2109,36 @@ input.guessed { border: 1.5px solid var(--amber); background: #FFFDF7; color: va
 
 .trip-plain { background: #fff; border-radius: 16px; padding: 13px 14px; display: block; width: 100%; }
 /*
- * Bug 3 · this was `opacity: .86`, and every swipeable row has a solid red
- * `.swipe-bin` delete track sitting permanently behind it. Fading the CARD
- * therefore faded the one thing hiding the dustbin, so a finished trip
- * showed its delete button without anyone having swiped. A finished trip
- * should read as quieter, not as translucent — so the retreat happens in the
- * text colour, over an opaque card.
+ * B2 · OPACITY BELOW 1 IS NEVER A STATE IN THIS APP.
+ *
+ * Bugs 3 and 20 were one defect twice: `opacity` was being used to mean two
+ * unrelated things — "finished" (.86) and "loading" (.45) — and every
+ * swipeable row has a solid red `.swipe-bin` delete track sitting behind it,
+ * so anything that faded a card faded the one thing hiding the dustbin. A
+ * delete button appeared without anyone having swiped.
+ *
+ * The first fix moved the fade from the card to its text, which stopped the
+ * bin showing but kept opacity carrying a meaning. This is the rule instead:
+ *
+ *   FINISHED is a quieter CARD — bone with a hairline, at full opacity.
+ *   LOADING is a LABEL — the .sync-ring plus the word Opening (trips.js).
+ *   INERT dims the CHROME around the thing, never the thing (§3.6).
+ *
+ * A finished trip is deliberately NOT greyed: it is the one you re-read
+ * afterwards for what you spent and what you wrote, so it should be quiet,
+ * not weak. That is why the two colour overrides that used to sit here are
+ * gone rather than softened.
+ *
+ * Everything in this product is read in bright sun, which is the reason the
+ * rule is absolute rather than a preference.
+ *
+ * Audited alongside this, and deliberately left: `.btn[disabled]`,
+ * `.strip-fine`, `.pill-wx` and `.dragging` — the first three are chrome or
+ * decorative alpha rather than state, and `.dragging` is the row under your
+ * own finger during a reorder, on `.plan-row`/`.loop-row`, neither of which
+ * has a delete track behind it.
  */
-.trip-plain.done { background: #FCFCFB; }
-/*
- * Bug 20 · the same rule as bug 3, for the same reason: a card that is being
- * opened must not go translucent, or the delete track behind it shows. The
- * contents retreat instead, and the card keeps its own opaque ground.
- */
-.card-busy > * { opacity: .45; }
-
-.trip-plain.done .trip-card-name { color: var(--charcoal); }
-.trip-plain.done .trip-card-meta { color: var(--soft); }
+.trip-plain.done { background: var(--bone); border: 1px solid var(--line); }
 .trip-mark-lg {
   width: 52px;
   height: 52px;
@@ -1765,8 +2266,17 @@ input.guessed { border: 1.5px solid var(--amber); background: #FFFDF7; color: va
 /* -------------------------------------------- swipe: the five positions */
 
 /* The red track fills behind the finger; the dustbin sits 20px in from the
-   row's right edge and stays there, so it never floats in a widening gap. */
+   row's right edge and stays there, so it never floats in a widening gap.
+
+   B2 · and it is NOT PAINTED AT ALL until the row is actually being dragged.
+   The track used to sit behind every swipeable row permanently, relying on
+   the face above it being opaque — which made "is this card opaque?" a
+   correctness question on four separate screens (the trips list, the
+   shopping list, the nearby list and the Log) and got it wrong twice.
+   Hiding the track instead removes the whole bug class at once: the bin is
+   revealed by the face MOVING, never by the face fading. */
 .swipe-bin {
+  visibility: hidden;
   position: absolute;
   inset: 0 0 0 auto;
   width: 88px;
@@ -1787,6 +2297,12 @@ input.guessed { border: 1.5px solid var(--amber); background: #FFFDF7; color: va
   opacity: 0;
   transition: opacity .12s ease;
 }
+/* dragging-open · mid-gesture.  open · latched at 88px.  confirming · the
+   face is hidden and the question has taken its place. Those are the only
+   three moments a delete track should exist. */
+.swipe-row.dragging-open .swipe-bin,
+.swipe-row.open .swipe-bin,
+.swipe-row.confirming .swipe-bin { visibility: visible; }
 /* The word only appears once the bin has room for it. */
 .swipe-row.latched .swipe-bin::after { opacity: 1; }
 .bin { width: 44px; height: 44px; border-radius: 12px; background: #9B4B4B; display: flex; align-items: center; justify-content: center; }
@@ -1927,6 +2443,12 @@ input.guessed { border: 1.5px solid var(--amber); background: #FFFDF7; color: va
 .sync-dot.red { background: #9B4B4B; }
 .sync-dot.grey { background: var(--faint); }
 .sync-ring {
+  /* A <span> is inline, and width/height do not apply to a non-replaced
+     inline box — so this used to be 10px only by luck, inside whichever
+     flex row happened to hold it. B2 builds the Opening label from it, so
+     it has to hold its own size wherever it is put. */
+  display: inline-block;
+  vertical-align: middle;
   width: 10px;
   height: 10px;
   border-radius: 50%;
@@ -2492,3 +3014,111 @@ a:focus-visible,
 
 .must-sec.open { box-shadow: 0 1px 2px rgba(20, 32, 28, .05); }
 .must-sec.open .must-head { padding-bottom: 6px; }
+
+/* ============================================================= §3.4 search
+   A magnifier in the header every screen already has, and a TOP-anchored
+   panel over the app's existing scrim.
+
+   Top, not bottom, which is where every other sheet in this app goes: the
+   keyboard owns the lower half of the screen the moment the field takes
+   focus, and the results have to be above it. Said out loud here so it does
+   not read as an inconsistency.
+   ========================================================================= */
+
+#search { position: absolute; inset: 0; z-index: 30; }
+#search[hidden] { display: none; }
+.search-panel {
+  position: absolute;
+  top: calc(10px + var(--safe-top));
+  left: 10px; right: 10px;
+  z-index: 21;
+  max-height: calc(100% - 24px - var(--safe-top));
+  display: flex;
+  flex-direction: column;
+  background: #fff;
+  border-radius: 18px;
+  border: 1.5px solid var(--ink);
+  box-shadow: 0 10px 28px rgba(20,32,28,.30);
+  overflow: hidden;
+}
+.search-bar {
+  display: flex;
+  align-items: center;
+  gap: 8px;
+  padding: 9px 10px 9px 12px;
+  border-bottom: 1px solid var(--line);
+}
+.search-mag { flex: none; display: flex; }
+.search-bar input {
+  flex: 1;
+  min-width: 0;
+  border: 0;
+  padding: 6px 0;
+  font-size: 15px;
+  background: none;
+}
+.search-x {
+  flex: none;
+  width: 26px; height: 26px;
+  border-radius: 9px;
+  background: var(--bone);
+  color: var(--muted);
+  font-size: 12px;
+  display: flex; align-items: center; justify-content: center;
+}
+.search-done { flex: none; min-height: 44px; padding: 0 4px; font-size: 13px; font-weight: 700; color: var(--jade); }
+/* The head counts in BOTH directions — how many matched, and out of how
+   many records — because a search that says "7" without saying "of 787" has
+   told you nothing about how much it looked at. */
+.search-head {
+  padding: 9px 14px;
+  font-size: 10.5px;
+  font-weight: 800;
+  letter-spacing: .05em;
+  color: var(--soft);
+  border-bottom: 1px solid var(--line-3);
+}
+.search-list { overflow-y: auto; }
+.search-row {
+  display: block;
+  width: 100%;
+  text-align: left;
+  padding: 11px 14px;
+  border-bottom: 1px solid var(--line-3);
+}
+/* Kind is an uppercase WORD, never a colour: three hues for three record
+   types would have been three gated tokens carrying what a word carries
+   free. */
+.search-kind { font-size: 9.5px; font-weight: 800; letter-spacing: .06em; color: var(--soft); }
+.search-price { font-size: 10.5px; font-weight: 700; color: var(--muted); }
+.search-name { font-size: 14px; font-weight: 650; line-height: 1.25; margin-top: 3px; }
+.search-jp { font-size: 11.5px; color: var(--muted); margin-top: 1px; }
+.search-ctx { font-size: 11px; color: var(--soft); margin-top: 3px; }
+/* Retired is marked THREE ways — the chip, the ink, and a context line that
+   says WHY rather than repeating the day. One of the three would be a
+   footnote; three is a fact. */
+.search-row.retired .search-name { color: var(--muted); }
+.search-empty { padding: 16px 14px 20px; font-size: 12.5px; line-height: 1.5; color: var(--muted); }
+
+/*
+ * THE FLASH. Default: the row's ground goes --jade-bg and fades to white
+ * over 2.4s.
+ */
+@keyframes search-flash {
+  from { background: var(--jade-bg); }
+  to { background: transparent; }
+}
+.flashed { animation: search-flash 2.4s ease-out forwards; }
+/*
+ * Reduced motion: NO fade. The row takes --jade-bg plus a 3px jade rule on
+ * its leading edge and simply STAYS marked until the next tap or scroll —
+ * which is arguably the better of the two. Outdoors in sun a 2.4s wash is
+ * easy to miss entirely, and a mark that waits for you cannot be.
+ */
+@media (prefers-reduced-motion: reduce) {
+  .flashed {
+    animation: none;
+    background: var(--jade-bg);
+    box-shadow: inset 3px 0 0 0 var(--jade);
+  }
+}

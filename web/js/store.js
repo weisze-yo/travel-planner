@@ -45,6 +45,11 @@ export const state = {
   prep: [],
   log: [],
   outfits: [],
+  /**
+   * §3.7 · what the singular-membership migration changed on this open, in
+   * one sentence, or '' when it changed nothing.
+   */
+  loopMergeNotice: '',
 
   // Screen-local UI that should survive navigation.
   selectedDay: 3,
@@ -88,6 +93,25 @@ export function subscribe(fn) {
 function notify() {
   for (const fn of listeners) fn();
 }
+
+/**
+ * Ask for a repaint, changing nothing.
+ *
+ * For a screen that has just changed its OWN state and wants it drawn. The
+ * alternative in use was `refreshTrips()`, which notifies too but also
+ * refetches the whole trip list on the way — a backend round trip nobody
+ * asked for, and one whose `catch` rewrites `state.trips` to `[state.trip]`
+ * if it fails. A screen saying "draw my pending state" should not be able
+ * to shorten the list it is drawing.
+ *
+ * It does NOT make the paint synchronous: `nav.js` coalesces store writes
+ * into one `requestAnimationFrame`, deliberately, so a state that resolves
+ * inside a single task never gets a one-frame flash. That is why B2's
+ * "Opening" label does not appear when a local trip opens instantly, and
+ * does appear when the open outlives a frame — a cloud trip, a cold cache,
+ * a slow phone. Correct in both cases; only the fast one is unobservable.
+ */
+export const touch = () => notify();
 
 // Whether a change has reached the cloud is state like any other, and the
 // screens that show it — the trip chip's dot, the strip above the tab bar —
@@ -305,6 +329,22 @@ export async function boot(tripID = readActiveTripID() || seed.TRIP_ID) {
   await unifyPlaces();
   unifyWindows();
   unifyLoops();
+  /*
+   * §3.7 · F5 (b) · after the windows are right, because the migration keeps
+   * the EARLIEST-DEPARTING loop and cannot know which that is until
+   * `unifyWindows` has given the loops their times.
+   *
+   * The result is a one-line notice, not a review screen: nobody asked for
+   * this change and putting a decision in front of them on launch would be
+   * the app making its own housekeeping their problem. It is idempotent, so
+   * the line appears once and never again.
+   */
+  const unmerged = unifyLoopMembership();
+  state.loopMergeNotice = unmerged.length
+    ? `${unmerged.length} place${unmerged.length === 1 ? '' : 's'} `
+      + `${unmerged.length === 1 ? 'was' : 'were'} in more than one sub route. `
+      + 'Each now sits in the one that leaves first.'
+    : '';
   await refreshTrips();
 
   state.selectedDay = pickSelectedDay(state.trip);
@@ -1163,24 +1203,294 @@ export async function attachPhoto(file, path, existing = []) {
 // ------------------------------------------------------------------- reading
 
 export const day = (n = state.selectedDay) => state.days.find((d) => d.dayNumber === n) || null;
+/*
+ * §3.1 · MORNING / NIGHT / DAWN ON A 31-ROW LIST.
+ *
+ * `timeWindow` has been a real field on every place since Trip 12 landed and
+ * nothing read it. Measured against the current snapshot (618 places, after
+ * the airport batch):
+ *
+ *   day     381    unmarked — the majority case, and the reason the list
+ *   (none)   58    gets QUIETER rather than louder
+ *   night    76    marked
+ *   dawn     29    marked
+ *   24h      74    a plain grey word, no hue
+ *
+ * Only `dawn` and `night` carry a coloured mark, because they are the only
+ * two states that can make a row irrelevant at 09:35. `24h` is never a
+ * reason to skip a row — it is a small bonus — so it gets no hue.
+ *
+ * THE OWNER'S OPEN QUESTION, ANSWERED FROM THE DATA. §3.1 shows `TILL 21:00`
+ * where a record has a real closing hour and `AFTER DARK` where it does not,
+ * and the ratio decides how the list reads. Counted twice, before and after
+ * the airport batch: ZERO of the 105 dawn/night records carry a structured
+ * hour, and none has an `Hours` essential containing a clock either. So
+ * every mark in Trip 12 reads AFTER DARK or BEFORE 08:00.
+ *
+ * The hour-bearing paths are still built, because a place someone adds by
+ * hand can gain one, and because a label that says a time is a fact where a
+ * label that says a state is a judgement — which is what keeps this token
+ * out of `--amber`'s territory.
+ */
+const OFF_HOURS = {
+  night: { key: 'night', label: 'AFTER DARK', dot: 'filled' },
+  dawn: { key: 'dawn', label: 'BEFORE 08:00', dot: 'hollow' },
+};
+
+/** Dawn is over at 08:00 — the hour §3.1's own degraded label names. */
+const DAWN_ENDS = 8 * 60;
+
+/**
+ * When it gets dark on a given day.
+ *
+ * Parsed out of the day's own `x.sun` prose, which carries "sunrise HH:MM,
+ * sunset HH:MM" on all eight days of this trip (17:46 to 17:58). Prose is a
+ * poor place to keep a time, but a real sunset for the day the traveller is
+ * standing in beats a constant, and the constant is still there when the
+ * parse finds nothing.
+ */
+function darkFrom(n = state.selectedDay) {
+  const sun = String(day(n)?.x?.sun || '');
+  const hit = /sunset\s+(\d{1,2}):(\d{2})/i.exec(sun);
+  if (hit) return Number(hit[1]) * 60 + Number(hit[2]);
+  return 18 * 60;
+}
+
+/**
+ * The row's time token, or null for the 439 rows that get nothing.
+ *
+ * An explicit `openAt` / `closeAt` on the record wins, because a real hour
+ * is a fact and the window is a category. Nothing in Trip 12 has one.
+ */
+export function timeToken(place) {
+  const w = String(place?.timeWindow || '').toLowerCase();
+  if (w === '24h') return { key: '24h', label: '24H', dot: null, plain: true };
+  const band = OFF_HOURS[w];
+  if (!band) return null;
+  const close = parseClock(place?.closeAt);
+  const open = parseClock(place?.openAt);
+  if (band.key === 'night' && close != null) {
+    return { ...band, label: `TILL ${clock(close)}` };
+  }
+  if (band.key === 'dawn' && open != null) {
+    return { ...band, label: `DAWN ${clock(open)}` };
+  }
+  return { ...band };
+}
+
+/** Whether a place is open at a given minute of a given day. */
+export function openAtClock(place, minutes, n = state.selectedDay) {
+  const w = String(place?.timeWindow || '').toLowerCase();
+  if (w === 'dawn') {
+    const open = parseClock(place?.openAt);
+    return minutes < (open != null ? open : DAWN_ENDS);
+  }
+  if (w === 'night') {
+    const close = parseClock(place?.closeAt);
+    const dark = darkFrom(n);
+    return close != null ? (minutes >= dark && minutes <= close) : minutes >= dark;
+  }
+  // day, 24h and no window at all are all open now as far as this list can
+  // honestly say. Claiming a `day` record shuts at some hour would be an
+  // invention: the field says which part of the day it belongs to, not when
+  // its door is locked.
+  return true;
+}
+
+/** The phone's own clock, in minutes past midnight. */
+export const nowMinutes = () => {
+  const d = new Date();
+  return d.getHours() * 60 + d.getMinutes();
+};
+
+/**
+ * How many of a list are open now, and how many the Now filter would hide.
+ * Counted on the whole list, never on the filtered one, or the line that
+ * says "6 hidden" would count the rows it had already removed.
+ */
+export function openNowCount(places, n = state.selectedDay) {
+  const at = nowMinutes();
+  const open = (places || []).filter((p) => openAtClock(p, at, n));
+  return { at, open: open.length, total: (places || []).length, hidden: (places || []).length - open.length };
+}
+
+/** How many of a list are marked dawn or night at all — for the count line. */
+export const offHoursCount = (places) => (places || [])
+  .filter((p) => OFF_HOURS[String(p?.timeWindow || '').toLowerCase()]).length;
+
+/*
+ * §3.3 · THE IMAGE SLOT, AND WHAT IT IS WHEN THERE IS NO IMAGE.
+ *
+ * Measured against the current snapshot: 52 image entries across 618 places
+ * and 65 must-see records, and of the 43 STOP-PLACES, exactly ZERO have one.
+ * The two halves of §3.3 are therefore very unequal in reach — the deletion
+ * half returns 228px on every stop in the trip, and the photo half currently
+ * renders for two nearby places.
+ *
+ * Both are built. Design's own note says the no-image half "can ship before
+ * a single photo arrives", and the photo half has to be correct now so that
+ * no future batch can arrive and quietly drop attribution.
+ */
+export const heroImage = (record, skip = null) => (record?.images || [])
+  .find((im) => im?.url && !(skip && skip.has(im.url))) || null;
+
+/**
+ * The credit bar's line. ONE format, and it is NOT conditional on the
+ * licence — so no version of this can ever ship that silently omits
+ * attribution when the data is sloppy.
+ *
+ *   CC0 / public domain    Public domain · Commons
+ *   CC BY                  Name · CC BY · Commons
+ *   CC BY-SA               Name · CC BY-SA · Commons
+ *
+ * Ordered CREDIT FIRST, because the line truncates at one line and what
+ * must survive the clip is the person's name; the licence string is
+ * repeated in full on the source page the bar links to.
+ *
+ * The licence is printed exactly as the record stores it. Design's format
+ * shows "CC BY-SA 4.0", and this data carries no version — so the version
+ * is not invented. Never abbreviated to "CC" either.
+ */
+export function imageCredit(image) {
+  const licence = String(image?.license || '').trim();
+  const credit = String(image?.credit || '').trim();
+  const publicDomain = /^(cc0|public domain|pd)\b/i.test(licence);
+  const parts = publicDomain
+    ? ['Public domain']
+    : [credit || 'Unknown author', licence || 'Licence not recorded'];
+  return [...parts, 'Commons'].join(' · ');
+}
+
+/*
+ * §3.4 · SEARCH, ACROSS THE THREE KINDS OF RECORD.
+ *
+ * NAMES ONLY — English or Japanese. Notes, summaries, prices and addresses
+ * are not searched, and the empty state says so, because a search that
+ * quietly matches a word buried in 480 characters of prose is a search
+ * whose results cannot be explained. This trip holds 787 named records:
+ * 618 places, 65 must-see spots and 104 shopping items.
+ *
+ * Two characters minimum. One character across 787 records is not a query,
+ * it is a keystroke, and answering it with 300 rows teaches the traveller
+ * to stop reading the list.
+ *
+ * PREFIX MATCHES FIRST, then anything containing the query — so typing
+ * "gin" puts "Ginzan Onsen Street" above "Nogawa, near Ginzan", which is
+ * the order a person means. Thirty shown at most.
+ */
+const SEARCH_MIN = 2;
+const SEARCH_CAP = 30;
+
+/** The searchable name pair, lower-cased once. */
+const searchNames = (r) => [r?.name, r?.nameJp, r?.title]
+  .filter(Boolean).map((v) => String(v).toLowerCase());
+
+/**
+ * Where a record sits, for the result's context line. Never the record's own
+ * note: the line answers "which of the four Ginzan things is this", and a
+ * note answers something else.
+ */
+function searchContext(record, kind) {
+  if (kind === 'place') {
+    if (record.retired) {
+      // §3.4 · a retired place says WHY rather than repeating the day, which
+      // the chip and the ink have already said twice.
+      return record.retiredReason || 'not on the trip any more';
+    }
+    const stopID = record.anchorPlaceID;
+    const n = stopID ? dayForPlace(stopID) : dayForPlace(record.id);
+    const stop = stopID ? place(stopID) : null;
+    return [n ? `Day ${n}` : null, stop?.name || record.anchorStop].filter(Boolean).join(' · ');
+  }
+  const stop = record.placeID ? place(record.placeID) : null;
+  const n = record.placeID ? dayForPlace(record.placeID) : null;
+  return [n ? `Day ${n}` : null, stop?.name || record.placeLabel || record.anchorStop]
+    .filter(Boolean).join(' · ');
+}
+
+/**
+ * A search across every named record on the trip.
+ *
+ * Returns `{ query, tooShort, total, shown, results }`. `tooShort` is a
+ * state of its own rather than "no results": a request that has not been
+ * made yet is not a result of zero, and the panel draws nothing for it.
+ */
+export function searchRecords(input) {
+  const query = String(input || '').trim().toLowerCase();
+  const total = state.places.length + state.mustSee.length + state.shopping.length;
+  if (query.length < SEARCH_MIN) {
+    return { query, tooShort: true, total, shown: 0, results: [] };
+  }
+
+  const hits = [];
+  const scan = (list, kind) => {
+    for (const record of list) {
+      const names = searchNames(record);
+      if (!names.some((n) => n.includes(query))) continue;
+      hits.push({
+        kind,
+        // PLACE / MUST-SEE / BUY as an uppercase WORD, never a colour: three
+        // hues for three record types would be three gated tokens carrying
+        // information a word carries free.
+        label: kind === 'place' ? 'PLACE' : (kind === 'mustSee' ? 'MUST-SEE' : 'BUY'),
+        id: record.id,
+        name: record.name || record.title || '',
+        nameJp: record.nameJp || '',
+        priceTier: kind === 'place' ? record.priceTier : '',
+        retired: Boolean(record.retired),
+        context: searchContext(record, kind),
+        // Where the row that holds this record lives, so the panel can send
+        // the traveller to it and mark it.
+        placeID: kind === 'place' ? (record.anchorPlaceID || record.id) : record.placeID,
+        rowKey: kind === 'place' ? 'place-row' : (kind === 'mustSee' ? 'shot-row' : 'shop-row'),
+        panel: kind === 'place' ? 'nearby' : (kind === 'mustSee' ? 'must' : 'shop'),
+        prefix: names.some((n) => n.startsWith(query)),
+      });
+    }
+  };
+  scan(state.places, 'place');
+  scan(state.mustSee, 'mustSee');
+  scan(state.shopping, 'shopping');
+
+  hits.sort((a, b) => {
+    if (a.prefix !== b.prefix) return a.prefix ? -1 : 1;
+    // A retired place is a real answer and is never hidden, but it sinks:
+    // nobody searching for a hotel wants the one that left the itinerary
+    // above the one they are sleeping in.
+    if (a.retired !== b.retired) return a.retired ? 1 : -1;
+    return a.name.localeCompare(b.name);
+  });
+
+  return {
+    query, tooShort: false, total,
+    shown: Math.min(hits.length, SEARCH_CAP),
+    matched: hits.length,
+    results: hits.slice(0, SEARCH_CAP),
+  };
+}
+
 export const place = (id) => state.places.find((p) => p.id === id) || null;
 export const weather = (n = state.selectedDay) => (state.trip?.weather || []).find((w) => w.dayNumber === n) || null;
 
-/** Temperature band → what to layer. Ordered warmest first. */
-const LAYER_BANDS = [
-  { min: 27, text: 'It will be warm — light, breathable layers are enough', chip: 'light layers' },
-  { min: 21, text: 'Warm enough for a light layer and not much else', chip: 'light layer' },
-  { min: 14, text: 'A mid-weight layer works — something you can shed if it warms up', chip: 'mid layer' },
-  { min: 7, text: 'Bring a warm layer, plus something to add over it', chip: 'warm layer' },
-  { min: -Infinity, text: "It will be properly cold — wear your warmest layer", chip: 'heavy layer' },
-];
-
-/** Rain chance → footwear and whether to carry cover. */
-const RAIN_BANDS = [
-  { min: 60, text: 'rain is likely, so pack closed, waterproof shoes and something to keep you dry', chip: 'rain gear' },
-  { min: 30, text: 'there is a decent chance of rain — shoes that can take a shower are a good idea', chip: 'maybe rain' },
-  { min: -Infinity, text: 'rain is unlikely, so any shoes will do', chip: 'dry likely' },
-];
+/*
+ * §3.2 · LAYER_BANDS and RAIN_BANDS lived here, and `outfitAdvice()` turned
+ * them into one sentence for Prep's WHAT TO WEAR card. All three are gone.
+ *
+ * They were a careful piece of work — two independent bands, honest about
+ * having no wind figure to use — and they were answering the wrong question.
+ * Every one of the eight outfit records already carried two RESEARCHED
+ * paragraphs, 272 to 679 characters each, about the day's actual backdrop
+ * and its actual walking, and nothing rendered either. A derived sentence
+ * that says "warm enough for a light layer" was standing in front of a
+ * paragraph that says which colours disappear into the pines.
+ *
+ * `store.outfitProse()` reads the real thing now. Design's own removal list
+ * names this: "the generic weather sentence in WHAT TO WEAR — replaced by
+ * the two real paragraphs, or by nothing."
+ *
+ * The forecast itself is untouched and still on the card, as the °C and the
+ * summary beside the title, which is what a forecast is good for.
+ */
 
 /**
  * What to wear, worked out from the day's own forecast instead of a fixed
@@ -1191,16 +1501,63 @@ const RAIN_BANDS = [
  * `net.js`'s `fetchForecast`), and inventing a figure would be exactly the
  * kind of false specificity this replaces.
  */
-export function outfitAdvice(n = state.selectedDay) {
-  const wx = weather(n);
-  if (!wx || wx.high == null) {
-    return { text: 'No forecast for this day yet — check back closer to the date.', chips: [] };
-  }
-  const layer = LAYER_BANDS.find((b) => wx.high >= b.min);
-  const rain = wx.rainChance == null ? null : RAIN_BANDS.find((b) => wx.rainChance >= b.min);
-  const text = rain ? `${layer.text}, and ${rain.text}.` : `${layer.text}.`;
-  return { text, chips: [layer.chip, rain?.chip].filter(Boolean) };
+/**
+ * §3.2 · THE TWO PARAGRAPHS THE APP HAS AND DOES NOT SHOW.
+ *
+ * Every one of the eight outfit records carries `x.suggestionPhoto` and
+ * `x.suggestionPractical` — 272 to 679 characters each, researched against
+ * the day's actual backdrop and its actual walking — and NOTHING rendered
+ * either. Prep's WHAT TO WEAR card showed a generic sentence derived from
+ * the forecast instead, and on a day with no forecast it showed "No
+ * forecast for this day yet", which is the emptiest possible answer on a
+ * card that had two paragraphs of real advice sitting behind it.
+ *
+ * Two blocks, in this order, because that is the order the question is
+ * asked in: what will I be standing in front of, and what will the day do
+ * to me.
+ *
+ * A missing block is ABSENT, never a label with nothing under it — the same
+ * rule `factsEditor` holds itself to.
+ */
+export const OUTFIT_BLOCKS = [
+  { key: 'suggestionPhoto', label: 'AGAINST THE BACKDROP',
+    hint: 'What the day looks like behind you, and which colours fight it' },
+  { key: 'suggestionPractical', label: 'HOW THE DAY WILL FEEL',
+    hint: 'Heat, rain, how far you walk and on what' },
+];
+
+/** The day's two paragraphs, absent ones dropped. */
+export function outfitProse(n = state.selectedDay) {
+  const x = outfitFor(n)?.x || {};
+  return OUTFIT_BLOCKS
+    .map((block) => ({ ...block, text: String(x[block.key] || '').trim() }))
+    .filter((block) => block.text);
 }
+
+/**
+ * F1 · the owner confirmed these records are writable.
+ *
+ * An emptied box means "do not keep this block", which is `factsEditor`'s
+ * rule and the reason the blocks are stored rather than merged: writing ''
+ * has to be distinguishable from not writing at all, or clearing a
+ * paragraph would be impossible.
+ *
+ * An edited paragraph is deliberately NOT marked as yours. This app marks
+ * provenance where it changes trust — jade MAIN against amber yours — and
+ * nobody needs telling who wrote their own clothing note. It would be the
+ * app's first provenance mark on prose.
+ */
+export function saveOutfitProse(n = state.selectedDay, blocks = {}) {
+  const record = outfitRecord(n);
+  const x = { ...(record.x || {}) };
+  for (const block of OUTFIT_BLOCKS) {
+    const text = String(blocks[block.key] ?? '').trim();
+    if (text) x[block.key] = text;
+    else delete x[block.key];
+  }
+  put('outfits', { ...record, x });
+}
+
 
 export function planItem(id) {
   for (const d of state.days) {
@@ -1429,6 +1786,57 @@ export function dayIssueCount(n = state.selectedDay) {
  * for two hours *is* the free time — so a stop of 90 minutes or more opens
  * its lane at its own start rather than at its end.
  */
+/**
+ * B3 · which two stops a new one at `time` would land between.
+ *
+ * The Add-a-stop form used to ASK whether a stop was the agent's route or
+ * your own, with two radios. Nobody adding a stop is thinking "is this the
+ * agent's route or mine?" — they are thinking "12:30, the snow museum" — and
+ * the placement already answers it: added on Plan is the main route, added
+ * in Nearby is a sub route. So the question goes and the hint states the
+ * rule at the moment it applies, which needs the neighbours to name.
+ *
+ * Only TIMED stops count: an untimed one has no position in the order, so
+ * saying a new stop lands after it would be a guess.
+ */
+/**
+ * §3.6 · the timed stop a new one at `time` lands behind, with its clock —
+ * for the form's own head ("after 11:20 Nogawa"). Shortened to the stop's
+ * first two words, because the head is one line and a name like
+ * "Matsushima Bay Cruise — Nioumaru course" would take all of it.
+ */
+export function stopBefore(n = state.selectedDay, time = '') {
+  const at = parseClock(time);
+  if (at == null) return null;
+  const timed = activeItems(day(n))
+    .map((item) => ({ item, start: itemWindow(item).start }))
+    .filter((s) => s.start != null && s.start <= at)
+    .sort((a, b) => b.start - a.start);
+  const hit = timed[0];
+  if (!hit) return null;
+  const words = String(hit.item.name || '').split(/\s+/);
+  return {
+    id: hit.item.id,
+    time: clock(hit.start),
+    name: words.length > 2 ? `${words.slice(0, 2).join(' ')}…` : words.join(' '),
+  };
+}
+
+export function stopNeighbours(n = state.selectedDay, time = '') {
+  const at = parseClock(time);
+  const timed = activeItems(day(n))
+    .map((item) => ({ item, start: itemWindow(item).start }))
+    .filter((s) => s.start != null)
+    .sort((a, b) => a.start - b.start);
+
+  if (!timed.length) return { before: null, after: null, only: true };
+  if (at == null) return { before: null, after: null, only: false };
+
+  const before = [...timed].reverse().find((s) => s.start <= at) || null;
+  const after = timed.find((s) => s.start > at) || null;
+  return { before: before?.item.name || null, after: after?.item.name || null, only: false };
+}
+
 export function dayTimeline(n = state.selectedDay) {
   const stops = activeItems(day(n)).map((item) => ({ item, window: itemWindow(item) }));
   const loops = subRoutesFor(n);
@@ -1776,6 +2184,13 @@ export function loopCard(handle) {
 }
 
 export const categoryLabel = (category) => seed.CATEGORY_LABELS[category] || category;
+/*
+ * §3.7 · re-exported so a screen can build a category select without also
+ * importing data.js. It is the ONE map every category label in the app comes
+ * from — the `CATS` chip array in nearby.js was the single hardcoded copy,
+ * and §3.7 retires it in favour of a select built from this.
+ */
+export const CATEGORY_LABELS = seed.CATEGORY_LABELS;
 
 /**
  * Every candidate hanging off one stop. Only that stop's places: showing the
@@ -2752,11 +3167,36 @@ export async function resolvePlaceInput(input) {
   }
 
   const fromLink = link?.kind === 'link' ? link : null;
-  const name = fromLink?.name || (fromLink ? 'Saved from a link' : text);
+  const label = fromLink?.name || (fromLink ? 'Saved from a link' : text);
+
+  /*
+   * B4 · A NAME IS WHAT YOU CALL IT. THE ADDRESS IS A ROW IN THE TABLE.
+   *
+   * A Google `/place/` URL yields its own address as the label, so pasting
+   * one put
+   *
+   *   "FamilyMart Caltex Raja Uda, Part of Lot 2219, Section, 1, Jalan Raja
+   *    Uda, Taman Tanjung Aman, 12300 Butterworth, Penang"
+   *
+   * — 168 characters — in the `name`. That is five lines in a 14px name
+   * column, and the same string then reappeared in the Plan card, the
+   * sub-route summary, the dark dock and the Log.
+   *
+   * The first comma-segment is the name; the whole string is the address,
+   * which the Info tab already has a row for. Splitting only when there IS
+   * a comma means "Tsukiji Outer Market" is untouched, and the two halves
+   * always come from the same string so the pair cannot disagree.
+   */
+  const comma = label.indexOf(',');
+  const split = fromLink && comma > 0
+    ? { name: label.slice(0, comma).trim(), address: label }
+    : null;
+  const name = split ? split.name : label;
 
   let latitude = fromLink?.latitude ?? null;
   let longitude = fromLink?.longitude ?? null;
   let essentials = [];
+  let street = null;
 
   if (online()) {
     try {
@@ -2769,16 +3209,28 @@ export async function resolvePlaceInput(input) {
           latitude = detail.latitude;
           longitude = detail.longitude;
         }
+        street = detail.street || null;
         essentials = [
           detail.openingHours && { key: 'Hours', value: detail.openingHours, detail: 'From OpenStreetMap' },
           detail.phone && { key: 'Phone', value: detail.phone, detail: '' },
           detail.website && { key: 'Website', value: detail.website, detail: '' },
-          detail.address && { key: 'Address', value: detail.address, detail: '' },
+          // The link's OWN string wins when the name was split out of it:
+          // the two halves have to keep coming from one string, or a place
+          // ends up named after the first segment of a different address.
+          (split?.address || detail.address) && {
+            key: 'Address', value: split?.address || detail.address, detail: '',
+          },
         ].filter(Boolean);
       }
     } catch {
       // Offline, or nothing known. It still saves.
     }
+  }
+
+  // A link that could not be looked up still keeps its own split, so the
+  // name is short whether or not OpenStreetMap answered.
+  if (split && !essentials.some((row) => row.key === 'Address')) {
+    essentials = [...essentials, { key: 'Address', value: split.address, detail: '' }];
   }
 
   return {
@@ -2787,6 +3239,7 @@ export async function resolvePlaceInput(input) {
     latitude,
     longitude,
     essentials,
+    street,
     fromLink: Boolean(fromLink),
     sourceLink: fromLink ? text : '',
   };
@@ -2838,6 +3291,7 @@ export async function setPlaceLink(placeID, link) {
     latitude: resolved.latitude ?? record.latitude,
     longitude: resolved.longitude ?? record.longitude,
     essentials: merged,
+    street: record.street || resolved.street || null,
     sourceLink: resolved.sourceLink || text,
   });
   return {
@@ -2862,6 +3316,9 @@ function savePlaceRecord(resolved, { category, walkMinutes, stayMinutes, anchorP
     latitude: resolved.latitude,
     longitude: resolved.longitude,
     essentials: resolved.essentials,
+    // B4 · the useful half of an address: WHERE, not which postcode. Only
+    // ever a street OpenStreetMap named; never derived from the flat string.
+    street: resolved.street || null,
     sourceLink: resolved.sourceLink,
     isStop: Boolean(isStop),
   };
@@ -3099,14 +3556,83 @@ export function deleteSubRoute(id) {
   const route = subRouteByID(id);
   if (!route) return;
   if (state.loopID === id) state.loopID = null;
-  removeWithUndo('subRoutes', id, `${route.name} deleted`);
+  /*
+   * B5 · the undo line said "<name> deleted", which leaves the one question
+   * a traveller would actually have unanswered: did the PLACES go too? A
+   * sub route holds places by reference and deleting the route drops none of
+   * them, so the sentence has to say so — deleting a loop must not read as
+   * deleting the places in it.
+   *
+   * The day number is named for the same reason the empty-trip gate names
+   * the trip: the surprise this guards against is emptying the wrong one.
+   */
+  removeWithUndo(
+    'subRoutes', id,
+    `Gone from Day ${route.dayNumber}, and the places go back to just being saved`,
+  );
 }
 
-export function toggleSubRoutePlace(placeId, handle) {
-  const route = resolveLoop(handle) || addSubRoute(state.selectedDay);
-  const ids = route.placeIDs || [];
-  route.placeIDs = ids.includes(placeId) ? ids.filter((i) => i !== placeId) : [...ids, placeId];
-  put('subRoutes', route);
+/*
+ * §3.7 · F5 (b) · MEMBERSHIP IS SINGULAR. One place, one sub route.
+ *
+ * This was `toggleSubRoutePlace(placeId, handle)` — a toggle against
+ * "whichever loop is in hand", which is the concept the dock existed to
+ * name. Both go. A per-card select names the loop, so there is nothing left
+ * for "in hand" to mean, and a select cannot express membership in several
+ * loops at once: with five loops on Day 7 that was not hypothetical.
+ *
+ * So this is a SET, not a toggle, and the loop is named rather than
+ * inferred. Choosing a second loop MOVES the place; choosing the empty
+ * option takes it out of every loop on the day and leaves it saved.
+ *
+ * The day is derived from the target route rather than from
+ * `state.selectedDay`, so assigning a place cannot depend on which day the
+ * screen happens to be showing.
+ */
+export function setSubRoutePlace(placeId, routeId, n = state.selectedDay) {
+  const target = routeId ? subRouteByID(routeId) : null;
+  const dayNumber = target?.dayNumber ?? n;
+  let moved = false;
+  for (const route of subRoutesFor(dayNumber)) {
+    const ids = route.placeIDs || [];
+    const has = ids.includes(placeId);
+    const wants = target && route.id === target.id;
+    if (has === Boolean(wants)) continue;
+    route.placeIDs = wants ? [...ids, placeId] : ids.filter((i) => i !== placeId);
+    put('subRoutes', route);
+    moved = true;
+  }
+  return moved;
+}
+
+/**
+ * §3.7 · the migration F5 (b) needs, run once per trip open.
+ *
+ * A place that is currently in more than one of a day's loops keeps THE
+ * EARLIEST-DEPARTING one and is dropped from the rest — the reading that
+ * preserves the plan a traveller actually walks first. It returns what it
+ * changed so the caller can say so once, in a line, rather than putting a
+ * review screen in front of someone who never asked for one.
+ *
+ * Idempotent, so running it on every open costs nothing after the first.
+ */
+export function unifyLoopMembership() {
+  const dropped = [];
+  const days = new Set(state.subRoutes.map((r) => r.dayNumber));
+  for (const n of days) {
+    const loops = [...subRoutesFor(n)].sort((a, b) => (loopStart(a) ?? 1e9) - (loopStart(b) ?? 1e9));
+    const claimed = new Set();
+    for (const route of loops) {
+      const ids = route.placeIDs || [];
+      const keep = ids.filter((id) => !claimed.has(id));
+      ids.forEach((id) => claimed.add(id));
+      if (keep.length === ids.length) continue;
+      dropped.push(...ids.filter((id) => !keep.includes(id)).map((id) => ({ id, from: route.name })));
+      route.placeIDs = keep;
+      put('subRoutes', route);
+    }
+  }
+  return dropped;
 }
 
 export function reorderSubRoute(movedId, beforeId, handle) {

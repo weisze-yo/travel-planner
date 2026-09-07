@@ -3,8 +3,9 @@
 // so handlers never go stale — which is why text fields commit on `change`
 // (fired as focus leaves) rather than on every keystroke.
 
-import { $, icon } from './util.js';
+import { $, icon, bindRoleButtons } from './util.js';
 import { state, subscribe, undoLast } from './store.js';
+import * as search from './search.js';
 
 const registry = new Map();
 let host = null;
@@ -30,6 +31,17 @@ export function start({ hostSelector = '#screen', tabbarSelector = '#tabbar', in
   host = $(hostSelector);
   tabbar = $(tabbarSelector);
   undoSlot = $('#undo');
+
+  // Enter and Space on the cards that wear role="button". Once, on the
+  // document, because the screen host is replaced on every paint.
+  bindRoleButtons();
+
+  // §3.4 · search, mounted once. Every screen's header contributes only the
+  // magnifier; the panel and its state belong to the app.
+  search.mount($('#search'));
+  host.parentElement?.addEventListener('click', (e) => {
+    if (e.target.closest('[data-act="search-open"]')) search.openPanel();
+  });
 
   // One undo line for the whole app, so a deletion on any screen can be
   // taken back from the same place.
@@ -87,6 +99,11 @@ function paint() {
   const screen = registry.get(current.id);
   if (!screen) return;
 
+  // §3.6 · the tab bar is a sibling of the screen host, so a screen cannot
+  // reach it. It is chrome, so the chrome owns the reset: cleared on every
+  // paint, and re-set by whichever screen still wants it in its own mount.
+  document.body.classList.remove('front-form');
+
   // Only a re-render of the same screen should keep its scroll position;
   // carrying it into a different screen leaves the new one part-scrolled.
   const scrollers = painted === current.id ? captureScroll() : [];
@@ -101,6 +118,10 @@ function paint() {
 
   screen.mount?.(host, current.params);
   restoreScroll(scrollers);
+  // §3.4 · the search flash is a property of the app, not of the screen that
+  // happens to be drawing, so it is re-applied here: the host node is
+  // replaced on every paint and a class added to a row goes with the old one.
+  search.restoreFlash();
   painted = current.id;
   // The invite and the sign-in are a web page an outsider opened, not the
   // app: they get no tab bar at all. Every other screen keeps it, including

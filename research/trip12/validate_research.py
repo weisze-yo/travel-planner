@@ -48,7 +48,8 @@ RETIRED = {
  "Ooedo Onsen Monogatari Premium Kinugawa Kanko Hotel": "replaced by Kinugawa Onsen Hana no Yado Matsuya",
 }
 STOPS    = ACTIVE | BACKUP | set(RETIRED)
-CATEGORY = {"food","cosme","cloth","shopping","sight","rest"}
+# `service` added 7 Sep 2026 — see CATEGORY_LABELS in web/js/data.js for why.
+CATEGORY = {"food","cosme","cloth","shopping","sight","rest","service"}
 MODE     = {"walk","train","bus"}
 WINDOW   = {"day","night","dawn","24h"}
 CONF     = {"high","medium","low"}

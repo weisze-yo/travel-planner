@@ -24,11 +24,16 @@ import { html, raw, esc, icon, delegate, parseClock, clock } from '../util.js';
 import * as store from '../store.js';
 import { state } from '../store.js';
 import { go } from '../nav.js';
-import { dayPills, weatherBanner, bindDragReorder, swipeToDelete, emptyShared, arrivalBanner } from './parts.js';
+import { dayPills, weatherBanner, bindDragReorder, swipeToDelete, emptyShared, arrivalBanner, searchButton } from './parts.js';
 
 let addOpen = false;
-let form = { name: '', start: '', end: '', kind: 'main' };
+let form = { name: '', start: '', end: '' };
 let notice = '';
+/**
+ * §3.6 · whether the docked form has already scrolled the day to its
+ * insertion point. One scroll per opening, never per repaint.
+ */
+let scrolledToPoint = false;
 /**
  * Which control is doing async work — a key, never a free string (P0-5 R1).
  * `notice` keeps the outcomes it already carries, including the "added
@@ -82,7 +87,8 @@ export default {
 
     return html`
       <section class="screen">
-        <div class="head">
+        <div class="head${addOpen && editing ? ' chrome-quiet' : ''}"${
+          addOpen && editing ? raw(' data-act="add-cancel"') : ''}>
           <div class="head-row">
             <div class="grow">
               <div class="screen-title">Day ${day?.dayNumber ?? ''}</div>
@@ -91,6 +97,8 @@ export default {
                 ${issues.size ? raw(`· <b class="look-at">${issues.size} thing${issues.size === 1 ? '' : 's'} to look at</b>`) : ''}
               </div>
             </div>
+            <!-- §3.4 · beside the pencil, in the slot this header keeps. -->
+            ${searchButton()}
             <button class="iconbtn filled" data-act="toggle-edit"
                     style="${editing ? 'background:var(--jade)' : ''}"
                     aria-label="${editing ? 'Finish editing' : 'Edit this day'}"
@@ -101,7 +109,19 @@ export default {
           <div class="chiprow mt10">${dayPills({ small: true })}</div>
         </div>
 
-        <div class="scroll" style="padding:14px 16px 24px">
+        <!--
+          §3.6 · the chrome goes quiet while the form is open. Not a scrim:
+          the itinerary behind the form is the reference material this form
+          is READ AGAINST, and a stop's time only means anything against the
+          times around it. So the rule this introduces, stated so it is a
+          decision rather than a drift:
+
+            scrim          when the background is context you can ignore
+            dim-and-stick  when the background IS the reference material
+
+          Add-a-stop is the only case of the second kind in the app today.
+        -->
+        <div class="scroll${addOpen && editing ? ' with-front' : ''}" style="padding:14px 16px 24px">
           <!-- Shown once on the first Plan paint after a join, dismissed by
                its own control, and it does not return. Above the weather,
                because it is about the trip itself rather than the day. -->
@@ -130,9 +150,16 @@ export default {
 
           ${editing ? html`
             ${notice ? html`<div class="amber-note f12 mt8">${notice}</div>` : ''}
-            ${addOpen ? addForm() : ''}
-            <button class="btn-dashed mt8" data-act="add-open">+ Add a stop</button>
-            <button class="btn ghost mt8" style="width:100%" data-act="paste">Paste an itinerary</button>
+            <!-- The two footer controls go quiet while the form is open: at
+                 40%, inert, and a tap on either CANCELS rather than doing
+                 nothing. The button that spawned the form is still visible
+                 300px down the scroller, and visibly out of play, which is
+                 the honest state. -->
+            <div class="${addOpen ? 'chrome-quiet' : ''}"${
+              addOpen ? raw(' data-act="add-cancel"') : ''}>
+              <button class="btn-dashed mt8" data-act="add-open">+ Add a stop</button>
+              <button class="btn ghost mt8" style="width:100%" data-act="paste">Paste an itinerary</button>
+            </div>
           ` : ''}
 
           <!-- The block also renders for a bare receipt: moving the last
@@ -140,10 +167,66 @@ export default {
                for that very move would go with it. -->
           ${archived.length || moved ? archive(archived, editing) : ''}
         </div>
+
+        <!--
+          §3.6 · the form, docked to the bottom of the Plan rather than
+          sitting in the document.
+
+          In flow it could push the day out of view or scroll away from
+          under a thumb, which is what was reported: not that the form was
+          ugly, but that it LOST ITS PLACE. Docked, the three stops nearest
+          the insertion point stay at full contrast and fully scrollable —
+          which is the whole reason this is not a sheet.
+        -->
+        ${addOpen && editing ? html`
+          <div class="dock-form">${addForm()}</div>` : ''}
       </section>`;
   },
 
   mount(root) {
+    /*
+     * §3.6 · the tab bar goes quiet too, and it is the one piece of chrome a
+     * screen cannot reach — it is a sibling of the screen host. So the state
+     * goes on `body`, and `nav.js` clears it on every paint, which means it
+     * cannot survive navigating away.
+     *
+     * DIVERGENCE, stated: a tap on the dimmed tab bar does NOTHING here,
+     * where §3.6 says a tap on any dimmed chrome cancels. The header and
+     * both footer controls do cancel. Reaching out of a screen module to
+     * hang a cancel on the app's own tab bar costs more than the difference
+     * is worth, and inert-and-visibly-out-of-play is still honest.
+     */
+    document.body.classList.toggle('front-form', Boolean(addOpen && state.editingPlan));
+
+    /*
+     * §3.6 · bring the insertion point into view when the form opens.
+     *
+     * The decision is that "the three stops NEAREST THE INSERTION POINT stay
+     * at full contrast and fully scrollable" — that is the whole reason this
+     * is not a sheet. Measured on the demo trip, exactly one whole row was
+     * left between the header and the form, because the top of the scroller
+     * is the weather banner and the edit hint rather than the day. Design's
+     * board is centred on the insertion point; it does not open at the top
+     * of the day and hope.
+     *
+     * Once, on the closed-to-open transition. `mount` runs on every paint,
+     * so scrolling unconditionally would fight the reader's own thumb the
+     * moment they scrolled away from it.
+     */
+    if (addOpen && state.editingPlan && !scrolledToPoint) {
+      scrolledToPoint = true;
+      const hit = store.stopBefore(state.selectedDay, form.start || '09:00');
+      const target = hit && root.querySelector(`[data-row-id="${hit.id}"]`);
+      const scroller = root.querySelector('.scroll');
+      if (target && scroller) {
+        // Its top just under the header, so it and the two rows after it are
+        // the three in play.
+        scroller.scrollTop += target.getBoundingClientRect().top
+          - scroller.getBoundingClientRect().top - 8;
+      }
+    }
+    if (!addOpen) scrolledToPoint = false;
+
     if (laneSheet) {
       mountLaneForm(root);
       return;
@@ -175,6 +258,13 @@ export default {
     delegate(root, '[data-act="remove"]', (el) => {
       moved = null;
       store.archivePlanItem(state.selectedDay, el.dataset.id);
+    });
+    // B5 · the sub route's own ✕. `deleteSubRoute` already carries the
+    // 6-second undo; what it did not carry was a sentence saying the places
+    // survive, which is the thing a traveller would otherwise assume it took.
+    delegate(root, '[data-act="loop-remove"]', (el) => {
+      moved = null;
+      store.deleteSubRoute(el.dataset.id);
     });
     delegate(root, '[data-act="restore"]', (el) => {
       moved = null;
@@ -260,7 +350,6 @@ export default {
           name: typed || '',
           start: root.querySelector('#add-start')?.value.trim() || '',
           end: root.querySelector('#add-end')?.value.trim() || '',
-          kind: root.querySelector('[name="add-kind"]:checked')?.value || 'main',
         };
         store.setEditingPlan(true);
         root.querySelector('#add-name')?.focus();
@@ -270,12 +359,15 @@ export default {
 
       const start = root.querySelector('#add-start')?.value.trim() || '09:00';
       const end = root.querySelector('#add-end')?.value.trim() || '';
-      const kind = root.querySelector('[name="add-kind"]:checked')?.value || 'main';
+      // B3 · derived from WHERE you added it, not asked. This form is on
+      // Plan, so it is the main route; Nearby's own form makes sub-route
+      // members. The paste importer is the third input and keeps its own.
+      const kind = 'main';
 
       // R8: the form STAYS UP until the work resolves. It used to close on
       // this line and leave `Adding…` at the top of the screen, above a form
       // that was no longer there.
-      form = { name: typed || '', start, end, kind };
+      form = { name: typed || '', start, end };
       pending = /^https?:/i.test(typed) ? 'link' : 'add';
       notice = '';
       store.setEditingPlan(true);
@@ -292,7 +384,7 @@ export default {
       // form up with what was typed still in it, so the retry is one tap.
       if (result.saved) {
         addOpen = false;
-        form = { name: '', start: '', end: '', kind: 'main' };
+        form = { name: '', start: '', end: '' };
       }
       store.setEditingPlan(true);
     });
@@ -364,9 +456,19 @@ function stopRow(row, { editing, number, last, issues }) {
             <div class="plan-name">${item.name}</div>
             ${item.note ? html`<div class="plan-note">${item.note}</div>` : ''}
           </div>
+          <!-- B3 · this badge said MAIN for every stop on the day,
+               whatever its kind. That was survivable while the Add-a-stop
+               form ASKED for provenance — the user had at least said it out
+               loud — but the form no longer asks, so this badge is now the
+               only place the answer appears on the Plan, and a jade MAIN on
+               a sub-route stop is a false statement about the plan rather
+               than a missing one. .badge.sub already exists and map.js
+               and nearby.js already use it; only this call site did not. -->
           ${editing
             ? html`<button class="plan-remove" data-act="remove" data-id="${item.id}" aria-label="Remove ${item.name}">✕</button>`
-            : html`<span class="badge main">MAIN${number ? ` ${number}` : ''}</span>`}
+            : (item.kind === 'sub'
+              ? html`<span class="badge sub">SUB</span>`
+              : html`<span class="badge main">MAIN${number ? ` ${number}` : ''}</span>`)}
         </div>
 
         ${issues.map((issue, at) => html`
@@ -518,10 +620,23 @@ function loopCard(loop, editing = false) {
         <div class="swipe-bin">
           <button class="bin" data-swipe-delete aria-label="Delete ${card.name}">${raw(icon.bin)}</button>
         </div>` : ''}
-      <button class="swipe-face loop-lane" data-open-loop="${card.id}" aria-label="${card.name}">
+      <!-- B5 · a div wearing role="button", not a <button>, because in edit
+           mode this card CONTAINS a button — the rust ✕ — and a button
+           cannot nest inside one. It is the same shape .plan-card next to
+           it already uses for the same reason, and Enter/Space now reach
+           both of them (util.js bindRoleButtons). -->
+      <div class="swipe-face loop-lane" data-open-loop="${card.id}"
+           role="button" tabindex="0" aria-label="${card.name}">
         <div class="row g8" style="align-items:baseline">
           <div class="grow loop-lane-name">${card.name}</div>
           <div class="loop-lane-win">${card.window}</div>
+          <!-- B5 · "Delete this sub route" came out of the loop editor
+               (bug 11) because the editor is a place you go to ARRANGE. Its
+               job lands here instead — same rust ✕, same position and same
+               6-second undo a stop already has. -->
+          ${editing ? html`
+            <button class="plan-remove" data-act="loop-remove" data-id="${card.id}"
+                    aria-label="Remove ${card.name} from this day">✕</button>` : ''}
         </div>
         <div class="plan-note">${card.line}</div>
         <div class="row g6 wrap mt8">
@@ -531,7 +646,7 @@ function loopCard(loop, editing = false) {
           ${Number(card.km) > 0 ? html`<span class="chip">${card.km} km walk</span>` : ''}
           ${card.notes ? html`<span class="chip">${card.notes} note${card.notes === 1 ? '' : 's'}</span>` : ''}
         </div>
-      </button>
+      </div>
     </div>`;
 }
 
@@ -586,15 +701,19 @@ function laneForm(day, issues) {
             <div class="row g8">
               <label class="grow">
                 <div class="eyebrow">START AT</div>
-                <select id="lane-start" class="mt4" style="width:100%">
-                  ${inside.map((e) => html`<option value="${e.id}">${e.label}</option>`)}
-                </select>
+                <span class="sel mt4">
+                  <select id="lane-start">
+                    ${inside.map((e) => html`<option value="${e.id}">${e.label}</option>`)}
+                  </select>
+                </span>
               </label>
               <label class="grow">
                 <div class="eyebrow">END AT</div>
-                <select id="lane-end" class="mt4" style="width:100%">
-                  ${inside.map((e) => html`<option value="${e.id}">${e.label}</option>`)}
-                </select>
+                <span class="sel mt4">
+                  <select id="lane-end">
+                    ${inside.map((e) => html`<option value="${e.id}">${e.label}</option>`)}
+                  </select>
+                </span>
               </label>
             </div>
             <div class="f11 soft lh145">
@@ -633,7 +752,15 @@ function mountLaneForm(root) {
       endPlaceID: root.querySelector('#lane-end')?.value || null,
     });
     laneSheet = null;
-    if (loop) go('nearby', { loopID: loop.id, anchorID: loop.startPlaceID });
+    // §3.7 · a new sub route lands on its anchor stop's Nearby TAB, not on
+    // the day-wide screen: picking the places for it is the tab's job now,
+    // and the tab lists every one of them rather than a capped sample.
+    if (loop) {
+      go('dest', {
+        placeID: loop.startPlaceID || store.loopAnchorPlaceID(loop),
+        panel: 'nearby',
+      });
+    }
   });
 }
 
@@ -684,27 +811,25 @@ function sharedEmptyDay(day) {
 function addForm() {
   const saved = store.allPlaces();
   return html`
-    <div class="form mt8">
+    <div class="form">
+      <!-- §3.6 · the head states WHERE the stop will land, which is the
+           question the surrounding times were being read to answer in the
+           first place. Derived from the typed time, so it follows the field
+           rather than describing whatever was true when the form opened. -->
       <div class="form-title">Add a stop</div>
+      ${afterLine() ? html`<div class="f11 soft" style="margin-top:-6px">${afterLine()}</div>` : ''}
 
       <input id="add-name" placeholder="Name, or paste a Google / Apple Maps link" value="${form.name}">
       ${addError ? html`
         <div class="f11 lh145" style="color:var(--danger-fg);margin-top:-4px">${addError}</div>` : ''}
 
       ${saved.length ? html`
-        <select id="add-place">
-          <option value="">…or pick somewhere you have saved</option>
-          ${saved.map((p) => html`<option value="${p.id}">${p.name}</option>`)}
-        </select>` : ''}
-
-      <div class="row g6 wrap">
-        ${[['main', "The agent's route"], ['sub', 'My own plan']].map(([value, label]) => html`
-          <label class="pill small" style="background:#fff;border:1px solid var(--field)">
-            <input type="radio" name="add-kind" value="${value}"${value === form.kind ? ' checked' : ''}
-                   style="width:14px;height:14px;padding:0;margin:0;accent-color:#14201C">
-            ${label}
-          </label>`)}
-      </div>
+        <label class="sel">
+          <select id="add-place">
+            <option value="">…or pick somewhere you have saved</option>
+            ${saved.map((p) => html`<option value="${p.id}">${p.name}</option>`)}
+          </select>
+        </label>` : ''}
 
       <div class="row g8">
         <label class="none">
@@ -712,22 +837,67 @@ function addForm() {
           <input id="add-start" placeholder="09:00" value="${form.start}" style="width:82px" inputmode="numeric">
         </label>
         <label class="none">
-          <span class="f11 soft">Ends</span>
-          <input id="add-end" placeholder="—" value="${form.end}" style="width:82px" inputmode="numeric">
+          <!-- §3.6 · "leave the end blank for the last stop of a day" used to
+               be a third sentence in the hint, which pushed a DOCKED form to
+               three lines of prose and cost the day a row. It is a fact about
+               this field, so it lives on this field. -->
+          <span class="f11 soft">Ends · optional</span>
+          <input id="add-end" placeholder="—" value="${form.end}" style="width:96px" inputmode="numeric">
         </label>
-        <button class="btn jade grow" style="align-self:flex-end" data-act="add-save"${
-          pending ? raw(' disabled aria-busy="true"') : ''}>${
-          pending === 'link' ? 'Reading that link…' : (pending === 'add' ? 'Adding…' : 'Add')}</button>
-        <button class="btn ghost none" data-act="add-cancel"
-                style="width:38px;align-self:flex-end${pending ? ';pointer-events:none' : ''}" aria-label="Cancel">✕</button>
       </div>
 
-      <div class="form-hint">
-        The same way you add a place anywhere else: type a name, paste a map link, or pick
-        something you saved earlier. A link brings the position with it, and opening hours
-        where OpenStreetMap has them. Leave the end blank for the last stop of a day.
+      <div class="form-hint">${landingLine()}</div>
+
+      <!-- B3 · the app's own pair, everywhere else in the app: a jade
+           primary that grows and a 96px ghost Cancel. The ✕ that used to sit
+           beside Add was 38px wide and the only one of its kind in the
+           product — Cancel is the word this app uses for that. -->
+      <div class="form-actions">
+        <button class="btn jade grow" data-act="add-save"${
+          pending ? raw(' disabled aria-busy="true"') : ''}>${
+          pending === 'link' ? 'Reading that link…' : (pending === 'add' ? 'Adding…' : 'Add')}</button>
+        <button class="btn ghost" style="width:96px${pending ? ';pointer-events:none' : ''}"
+                data-act="add-cancel">Cancel</button>
       </div>
     </div>`;
+}
+
+/**
+ * B3 · the sentence that replaced the question.
+ *
+ * The form asked "The agent's route / My own plan" as two radios, which is
+ * unanswerable: nobody adding a stop is thinking about provenance, and the
+ * radios did not render as checked anyway (bug 5). The rule the owner named
+ * takes over — added on Plan lands on the main route, added in Nearby lands
+ * on a sub route — and it is STATED at the moment it applies rather than
+ * asked. Five words carry it; the neighbours are there because "between
+ * these two" is the part that is not obvious.
+ *
+ * Provenance is still SHOWN everywhere it was: the jade MAIN badge, the
+ * amber SUB badge, the "Added by you" / "Added from a pasted itinerary"
+ * line. It is derived now instead of declared.
+ */
+function landingLine() {
+  const at = form.start || '09:00';
+  const { before, after, only } = store.stopNeighbours(state.selectedDay, at);
+  // §3.6 adds the second half: the reassurance that inserting a stop does
+  // not shuffle the times either side of it. B3's first half stays, because
+  // the placement rule is what replaced the two radios.
+  const held = ' The times either side stay where they are.';
+  if (only) return 'Lands on the main route, as the day’s first stop.';
+  if (before && after) return `Lands on the main route, between ${before} and ${after}.${held}`;
+  if (after) return `Lands on the main route, before ${after}.${held}`;
+  if (before) return `Lands on the main route, after ${before}.${held}`;
+  // Every stop on the day is untimed, so there is no order to land in and
+  // claiming one would be a guess.
+  return 'Lands on the main route.';
+}
+
+/** §3.6 · "after 11:20 Nogawa" — the stop this one lands behind. */
+function afterLine() {
+  const at = form.start || '09:00';
+  const hit = store.stopBefore(state.selectedDay, at);
+  return hit ? `after ${hit.time} ${hit.name}` : '';
 }
 
 /**

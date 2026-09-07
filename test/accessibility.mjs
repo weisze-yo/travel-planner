@@ -184,6 +184,75 @@ await page.evaluate(async () => {
     accName.length > 0, accName);
 }
 
+// ============================================ role="button" takes the keyboard
+//
+// This app has cards that are announced as buttons and cannot be one, because
+// they CONTAIN buttons — `.plan-card` has always been `role="button"
+// tabindex="0"`, and B5 made the amber sub-route card the same shape so it
+// could hold the rust ✕. Focusable and announced as a button and then inert
+// on Enter is worse than not being focusable at all, so `bindRoleButtons` in
+// util.js bridges Enter and Space on the document.
+//
+// Driven with a real keypress, and asserted on the OUTCOME (the card
+// navigated) rather than on a listener existing.
+{
+  await page.evaluate(() => window.__nav.go('plan'));
+  await page.waitForTimeout(400);
+  const found = await page.evaluate(() => {
+    const card = document.querySelector('[role="button"]');
+    if (!card) return null;
+    card.setAttribute('data-kbd-probe', '1');
+    card.focus();
+    return { tag: card.tagName, tab: card.getAttribute('tabindex'),
+             focused: document.activeElement === card, hash: location.hash };
+  });
+  check('a role="button" card exists and can take focus',
+    Boolean(found) && found.focused && found.tab === '0', JSON.stringify(found));
+  if (found) {
+    await page.keyboard.press('Enter');
+    await page.waitForTimeout(500);
+    const moved = await page.evaluate(() => location.hash);
+    check('and Enter activates it, the way a real button would',
+      moved !== found.hash, `${found.hash} → ${moved}`);
+
+    // Space must act AND not scroll the page underneath the press.
+    await page.evaluate(() => window.__nav.go('plan'));
+    await page.waitForTimeout(400);
+    const spaced = await page.evaluate(async () => {
+      const card = document.querySelector('[role="button"]');
+      card.focus();
+      const before = location.hash;
+      let defaultPrevented = false;
+      const spy = (e) => { if (e.key === ' ') defaultPrevented = e.defaultPrevented; };
+      document.addEventListener('keydown', spy);
+      card.dispatchEvent(new KeyboardEvent('keydown', { key: ' ', bubbles: true, cancelable: true }));
+      await new Promise((r) => setTimeout(r, 400));
+      document.removeEventListener('keydown', spy);
+      return { before, after: location.hash, defaultPrevented };
+    });
+    check('Space activates it too', spaced.after !== spaced.before, JSON.stringify(spaced));
+    check('and Space does not scroll the page under the press',
+      spaced.defaultPrevented === true, JSON.stringify(spaced));
+
+    // A real control inside the card keeps its own keyboard behaviour, or
+    // Enter on the rust ✕ would both delete AND open the card behind it.
+    const inner = await page.evaluate(async () => {
+      window.__nav.go('plan');
+      await new Promise((r) => setTimeout(r, 400));
+      document.querySelector('[data-act="toggle-edit"]')?.click();
+      await new Promise((r) => setTimeout(r, 450));
+      const btn = document.querySelector('[role="button"] button');
+      if (!btn) return { none: true };
+      const before = location.hash;
+      btn.dispatchEvent(new KeyboardEvent('keydown', { key: 'Enter', bubbles: true, cancelable: true }));
+      await new Promise((r) => setTimeout(r, 350));
+      return { before, after: location.hash };
+    });
+    check('a real button inside a role="button" card does not also fire the card',
+      inner.none || inner.after === inner.before, JSON.stringify(inner));
+  }
+}
+
 console.log('\n--- PASS (' + pass.length + ')  FAIL (' + fail.length + ') ---');
 for (const f of fail) console.log('  ✗ ' + f);
 console.log('page errors: ' + pageErrors.length + (pageErrors.length ? '\n  ' + pageErrors.join('\n  ') : ''));

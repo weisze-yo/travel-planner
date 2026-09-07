@@ -135,22 +135,28 @@ export default {
       repaint();
     });
 
+    // B9 · the system share sheet, carrying the LINK and nothing else. It
+    // used to carry a sentence this app wrote — "<name> is sharing a trip
+    // with you: <trip> — <url>" — and the fallback pasted that sentence to
+    // the clipboard. Both are gone: the platform writes the message, and the
+    // fallback is the same link the button beside this one copies, so a
+    // browser with no share sheet lands somewhere honest instead of on a
+    // toast about a message.
     delegate(root, '[data-act="send"]', async (el) => {
       const url = el.dataset.url;
-      const text = `${store.ownerName()} is sharing a trip with you: ${state.trip?.name || 'a trip'} — ${url}`;
       if (navigator.share) {
         try {
-          await navigator.share({ title: state.trip?.name || 'A trip', text, url });
+          await navigator.share({ title: state.trip?.name || 'A trip', url });
           return;
         } catch {
-          // Cancelled, or no share sheet. The copy below is the fallback.
+          // Cancelled, or refused. Fall through to the copy.
         }
       }
       try {
-        await navigator.clipboard.writeText(text);
-        notice = 'Message copied — paste it into the group chat.';
+        await navigator.clipboard.writeText(url);
+        notice = 'Link copied — this browser has no share sheet.';
       } catch {
-        notice = text;
+        notice = url;
       }
       repaint();
     });
@@ -406,9 +412,15 @@ function liveLink(link, live) {
         ${EXPIRIES.map((e) => html`
           <button class="pick-chip${link.expiry === e.id ? ' on' : ''}" data-expiry="${e.id}">${e.label}</button>`)}
       </div>
+      <!-- B9 · D3 · the app no longer composes a sentence on anyone's
+           behalf. "Copy the link" is the primary, and the second button is
+           the PHONE'S OWN share sheet — WhatsApp, mail, anything — which
+           writes the message better than we can. What went with the message:
+           "Copy the message", the sentence it generated, and the "Message
+           copied." toast that was caught sitting on the trips list. -->
       <div class="row g8 mt12">
-        <button class="btn jade grow" data-act="send" data-url="${esc(url)}">Send it</button>
-        <button class="btn ghost none" style="width:88px" data-act="copy" data-url="${esc(url)}">Copy</button>
+        <button class="btn jade grow" data-act="copy" data-url="${esc(url)}">Copy the link</button>
+        <button class="btn ghost none" style="width:88px" data-act="send" data-url="${esc(url)}">Share…</button>
       </div>
       <button class="btn ghost mt10" style="width:100%"
               data-act="${live ? 'link-off' : 'link-on'}">${live ? 'Turn the link off' : 'Turn the link back on'}</button>

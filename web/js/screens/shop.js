@@ -6,7 +6,7 @@
 import { html, raw, icon, delegate, money, boundedNumber } from '../util.js';
 import * as store from '../store.js';
 import { state } from '../store.js';
-import { checkbox, itemEditor, readItemEditor } from './parts.js';
+import { checkbox, itemEditor, readItemEditor, searchButton } from './parts.js';
 import { PAYMENTS, BADGES, SHOP_CATEGORIES } from '../data.js';
 import { swipeToDelete } from './parts.js';
 import { go } from '../nav.js';
@@ -48,6 +48,7 @@ export default {
               <div class="screen-title">Shopping list</div>
               <div class="screen-sub">${totals.total} items · ${groups.length} places</div>
             </div>
+            ${searchButton()}
             <button class="btn sm ink" data-act="add-toggle">${addOpen ? 'Close' : '+ Add'}</button>
           </div>
         </div>
@@ -233,30 +234,33 @@ function row(item, symbol) {
           </div>
           ${item.detail ? html`<div class="item-sub">${item.detail}</div>` : ''}
         </button>
-        <div class="right none">
-          <div class="item-est">${item.estimate ? money(item.estimate, symbol) : '—'}</div>
-          <div class="item-est-cap">est.</div>
-        </div>
+        ${item.bought ? '' : html`
+          <div class="right none">
+            <div class="item-est">${item.estimate ? money(item.estimate, symbol) : '—'}</div>
+            <div class="item-est-cap">est.</div>
+          </div>`}
       </div>
 
       <div class="item-second">
-        <label class="pay-chip">
+        <span class="sel-chip">
           <select data-pay-for="${item.id}" aria-label="Payment method for ${item.name}">
             ${PAYMENTS.map((p) => html`
               <option value="${p.id}"${p.id === item.payment ? ' selected' : ''}>${p.label}</option>`)}
           </select>
-        </label>
-        <label class="pay-chip">
+        </span>
+        <span class="sel-chip">
           <select data-cat-for="${item.id}" aria-label="Category for ${item.name}">
             ${SHOP_CATEGORIES.map((c) => html`
               <option value="${c.id}"${c.id === (item.category || 'other') ? ' selected' : ''}>${c.label}</option>`)}
           </select>
-        </label>
+        </span>
         ${item.bought ? html`
           <div class="paid-wrap">
             <span class="paid-cap">PAID</span>
             <input class="paid-input" data-paid-for="${item.id}" inputmode="decimal"
                    placeholder="What you paid" value="${item.paidAmount ?? ''}" aria-label="What you paid">
+            ${item.estimate ? html`
+              <span class="paid-est">est. ${money(item.estimate, symbol)}</span>` : ''}
           </div>` : ''}
       </div>
 
@@ -277,14 +281,18 @@ function addForm() {
     <div class="form mb14">
       <div class="form-title">Add an item</div>
       <input id="new-name" placeholder="What is it?">
-      <select id="new-place">
-        <option value="">Choose a place (main or sub route)</option>
-        ${store.placeOptions().map((label) => html`<option value="${label}">${label}</option>`)}
-      </select>
+      <label class="sel">
+        <select id="new-place">
+          <option value="">Choose a place (main or sub route)</option>
+          ${store.placeOptions().map((label) => html`<option value="${label}">${label}</option>`)}
+        </select>
+      </label>
       <input id="new-est" placeholder="Estimated price (optional)" inputmode="decimal">
-      <select id="new-cat">
-        ${SHOP_CATEGORIES.map((c) => html`<option value="${c.id}">${c.label}</option>`)}
-      </select>
+      <label class="sel">
+        <select id="new-cat">
+          ${SHOP_CATEGORIES.map((c) => html`<option value="${c.id}">${c.label}</option>`)}
+        </select>
+      </label>
       <div class="row g5 wrap">
         ${PAYMENTS.map((p, i) => html`
           <label class="pill small" style="background:#fff;border:1px solid var(--field)">

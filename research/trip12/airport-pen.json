@@ -1,0 +1,382 @@
+{
+ "batch": "airport-pen",
+ "places": [
+  {
+   "id": "airport-pen-checkin-l2",
+   "anchorStop": "Assembly · Penang International Airport",
+   "name": "International check-in, Level 2 (Clusters A/B/C, counters 1–61)",
+   "nameJp": "",
+   "category": "service",
+   "priceTier": "free",
+   "stayMinutes": 45,
+   "legs": [
+    {
+     "mode": "walk",
+     "minutes": 1
+    }
+   ],
+   "note": "THE timing correction. SQ publishes no PEN-specific row, so its default applies: counters OPEN 07:15 and CLOSE 09:35 for a 10:15 departure, and \"we will not accept baggage drop-off before check-in counters open\". The group assembles at 07:00 — 15 minutes before SQ will touch a bag. MAHB's guide says 2h/1h instead; SQ's own rule governs an SQ flight.",
+   "latitude": 5.295556,
+   "longitude": 100.272222,
+   "coordPrecision": "approximate",
+   "timeWindow": "dawn",
+   "confidence": "high",
+   "confidenceNote": "SQ's 3h/40min default and the no-early-baggage line are quoted from SQ's own page. The counter CLUSTER for SQ131 is not published by MAHB or SQ — MAHB's map names no airline anywhere.",
+   "source": "https://www.singaporeair.com/en_UK/sg/travel-info/check-in/airport-check-in/"
+  },
+  {
+   "id": "airport-pen-mcd-l2",
+   "anchorStop": "Assembly · Penang International Airport",
+   "name": "McDonald's, Level 2 departure (landside, unit L2LFB05C)",
+   "nameJp": "",
+   "category": "food",
+   "priceTier": "RM",
+   "stayMinutes": 30,
+   "legs": [
+    {
+     "mode": "walk",
+     "minutes": 1
+    }
+   ],
+   "note": "The most likely thing trading at 07:00 and the only PEN outlet with halal in writing — McDonald's Malaysia states it was the first quick-service chain JAKIM-certified in Malaysia, with downloadable certificates. Sits in the landside F&B cluster on the check-in level, beside Pinang Kopitiam, so 35 people can be fed in waves without changing floors.",
+   "latitude": 5.295556,
+   "longitude": 100.272222,
+   "coordPrecision": "approximate",
+   "timeWindow": "day",
+   "confidence": "medium",
+   "confidenceNote": "Location and landside status are from MAHB's own directory; halal is from McDonald's Malaysia's own page. HOURS ARE UNVERIFIED — MAHB publishes no hours for any PEN outlet and McDonald's Malaysia's store locator returns no PEN record. Whether it is open at 07:00 is unknown.",
+   "source": "https://www.mcdonalds.com.my/halal"
+  },
+  {
+   "id": "airport-pen-kopitiam-l2",
+   "anchorStop": "Assembly · Penang International Airport",
+   "name": "Pinang Kopitiam, Level 2 departure (landside, L2LFB05A/B)",
+   "nameJp": "",
+   "category": "food",
+   "priceTier": "RM",
+   "stayMinutes": 30,
+   "legs": [
+    {
+     "mode": "walk",
+     "minutes": 1
+    }
+   ],
+   "note": "Two units side by side — the largest landside seating block on the check-in level in MAHB's directory, and kopitiam-format outlets are the ones that traditionally do open early. Say the caveat out loud before anyone sits: a Malaysian kopitiam frequently serves pork and no halal certificate is published for this one. Check the counter, do not assume.",
+   "latitude": 5.295556,
+   "longitude": 100.272222,
+   "coordPrecision": "approximate",
+   "timeWindow": "day",
+   "confidence": "low",
+   "confidenceNote": "Location and two-unit footprint are from MAHB's directory. No corporate website exists for the brand; hours, prices and halal status are all unpublished.",
+   "source": "https://drmapssdev.blob.core.windows.net/corporate-website/2024-06/PenangIA-Airport-Guide-compressed.pdf"
+  },
+  {
+   "id": "airport-pen-lineclear-l1",
+   "anchorStop": "Assembly · Penang International Airport",
+   "name": "Nasi Kandar Line Clear, Level 1 arrival floor (landside, L1LFB03)",
+   "nameJp": "",
+   "category": "food",
+   "priceTier": "RM",
+   "stayMinutes": 35,
+   "legs": [
+    {
+     "mode": "walk",
+     "minutes": 3
+    }
+   ],
+   "note": "The highest-upside unknown at PEN. Nasi kandar is served from prepared trays, so 35 people move without a cook-to-order queue, and it is the Penang thing worth eating before leaving Penang. One level down from check-in by escalator. MAHB confirmed the outlet twice — its own Convergence article and its retail account's opening post — but published no hours for it.",
+   "latitude": 5.295556,
+   "longitude": 100.272222,
+   "coordPrecision": "approximate",
+   "timeWindow": "day",
+   "confidence": "low",
+   "confidenceNote": "Existence and Level 1 landside position are doubly operator-confirmed. Hours unpublished. Halal NOT verified: the format is Indian-Muslim and the George Town original is Muslim-run, but no JAKIM certificate or operator statement was found — check the certificate at the counter.",
+   "source": "https://drmapssdev.blob.core.windows.net/corporate-website/2024-06/PenangIA-Airport-Guide-compressed.pdf"
+  },
+  {
+   "id": "airport-pen-banheang-l2",
+   "anchorStop": "Assembly · Penang International Airport",
+   "name": "Ban Heang, Level 2 departure (landside, L2LFB10)",
+   "nameJp": "萬香饼家",
+   "category": "shopping",
+   "priceTier": "RM",
+   "stayMinutes": 20,
+   "legs": [
+    {
+     "mode": "walk",
+     "minutes": 1
+    }
+   ],
+   "note": "The ONLY landside gift retailer on the check-in level. Tambun tau sar pneah and heong pheah travel well and are the obvious Penang gift for Japanese hosts; freeze-dried durian and jackfruit and sakura-shrimp crisps are the other lines their own site indexes. There is a second Ban Heang airside at L2AR20 — miss this one and the next chance is after immigration.",
+   "latitude": 5.295556,
+   "longitude": 100.272222,
+   "coordPrecision": "approximate",
+   "timeWindow": "day",
+   "confidence": "low",
+   "confidenceNote": "Location and landside status from MAHB's directory; the Chinese shopfront name and the product lines from Ban Heang's own indexed page titles. Hours, all RM prices and halal status could not be verified — their site is fully JavaScript-rendered and returned no body content.",
+   "source": "https://www.banheang.com.my/"
+  },
+  {
+   "id": "airport-pen-atm-l2",
+   "anchorStop": "Assembly · Penang International Airport",
+   "name": "ATM row, Level 2 public concourse (Ambank, Bank Islam, CIMB, HSBC, Maybank)",
+   "nameJp": "",
+   "category": "service",
+   "priceTier": "free",
+   "stayMinutes": 5,
+   "legs": [
+    {
+     "mode": "walk",
+     "minutes": 1
+    }
+   ],
+   "note": "Five banks, all published by MAHB at \"Level 2, Public Concourse, Departure Floor\" — its own landside marker — so cash for the group is a non-issue on the check-in level. More landside ATMs on Level 1 (Al-Rajhi, Maybank + CDM, RHB). One trap: Bank Rakyat's Level 2 machine is listed WITHOUT that marker, at \"Domestic Departure Floor\", so treat it as airside domestic.",
+   "latitude": 5.295556,
+   "longitude": 100.272222,
+   "coordPrecision": "approximate",
+   "timeWindow": "day",
+   "confidence": "high",
+   "confidenceNote": "Positions and the Public Concourse marker are quoted from MAHB's own facilities list. ATM operating hours are not published anywhere; 24-hour operation is the norm but unconfirmed.",
+   "source": "https://drmapssdev.blob.core.windows.net/corporate-website/2024-06/PenangIA-Airport-Guide-compressed.pdf"
+  },
+  {
+   "id": "airport-pen-bagwrap-l2",
+   "anchorStop": "Assembly · Penang International Airport",
+   "name": "Baggage wrapping and oversize baggage counter, Level 2 public concourse",
+   "nameJp": "",
+   "category": "service",
+   "priceTier": "RM",
+   "stayMinutes": 15,
+   "legs": [
+    {
+     "mode": "walk",
+     "minutes": 1
+    }
+   ],
+   "note": "Both published as \"Level 2, Public Concourse, Departure Floor\" — landside, on the check-in level, exactly where 35 people with bags need them. Decide before 07:00 who actually wants wrapping: one machine against 35 bags is a real bottleneck, and it collides with a counter that only opens at 07:15 and closes at 09:35.",
+   "latitude": 5.295556,
+   "longitude": 100.272222,
+   "coordPrecision": "approximate",
+   "timeWindow": "day",
+   "confidence": "medium",
+   "confidenceNote": "Location and landside status from MAHB's guide. The concession operator is not named, and no operator publishes hours or a price for PEN — KLIA/klia2 wrap prices were deliberately not carried over, they are neither operator sources nor this airport.",
+   "source": "https://drmapssdev.blob.core.windows.net/corporate-website/2024-06/PenangIA-Airport-Guide-compressed.pdf"
+  },
+  {
+   "id": "airport-pen-telco-l1",
+   "anchorStop": "Assembly · Penang International Airport",
+   "name": "Telco counters, Level 1 arrival floor (Celcom, Digi, Maxis)",
+   "nameJp": "",
+   "category": "service",
+   "priceTier": "RM",
+   "stayMinutes": 15,
+   "legs": [
+    {
+     "mode": "walk",
+     "minutes": 3
+    }
+   ],
+   "note": "The only SIM counters a departing group can reach, one level down from check-in. State the trap: MAHB lists four more telcos (Digi, Maxis, Tunetalk, Umobile) in the \"Level 3 International Arrival Passenger Flow\" — the arrivals corridor, structurally unreachable on the way out. So four of PEN's seven telco counters are useless here.",
+   "latitude": 5.295556,
+   "longitude": 100.272222,
+   "coordPrecision": "approximate",
+   "timeWindow": "day",
+   "confidence": "medium",
+   "confidenceNote": "Both sets of positions are quoted from MAHB's facilities list. Hours unpublished — an arrivals-hall telco counter at 07:00 is a plausible closure, so verify before sending anyone down.",
+   "source": "https://drmapssdev.blob.core.windows.net/corporate-website/2024-06/PenangIA-Airport-Guide-compressed.pdf"
+  },
+  {
+   "id": "airport-pen-surau-unconfirmed",
+   "anchorStop": "Assembly · Penang International Airport",
+   "name": "Prayer rooms (surau) — NO landside one confirmed",
+   "nameJp": "",
+   "category": "rest",
+   "priceTier": "free",
+   "stayMinutes": 15,
+   "legs": [
+    {
+     "mode": "walk",
+     "minutes": 3
+    }
+   ],
+   "note": "Negative knowledge, and the group should hear it before Tuesday. MAHB publishes exactly three suraus: Level 2 International Departure, Level 2 Domestic Departure, Level 1 Arrival. Not one carries the \"Public Concourse\" marker MAHB applies to the landside ATMs on the same page, and no prayer symbol is drawn in the Level 2 landside concourse on its own map. Do not promise one.",
+   "latitude": 5.295556,
+   "longitude": 100.272222,
+   "coordPrecision": "approximate",
+   "timeWindow": "dawn",
+   "confidence": "low",
+   "confidenceNote": "It is certain MAHB publishes these three entries and that none is marked landside. That the two Level 2 rooms are therefore AIRSIDE is my inference from MAHB's own marker convention, not an operator statement. Subuh has passed before 07:00 on 8 Sep, so the need is low — but call +604 252 0252 and ask rather than assuming.",
+   "source": "https://drmapssdev.blob.core.windows.net/corporate-website/2024-06/PenangIA-Airport-Guide-compressed.pdf"
+  },
+  {
+   "id": "airport-pen-starbucks-airside",
+   "anchorStop": "Assembly · Penang International Airport",
+   "name": "Starbucks — AIRSIDE ONLY, not a landside meeting point",
+   "nameJp": "",
+   "category": "food",
+   "priceTier": "RM",
+   "stayMinutes": 15,
+   "legs": [
+    {
+     "mode": "walk",
+     "minutes": 5
+    }
+   ],
+   "note": "The single most likely planning error at PEN, so it is recorded as a place to stop it happening: there is NO landside Starbucks. MAHB puts the unit at L2AFB08 (airside) and Starbucks' own locator publishes two PEN stores and labels BOTH airside in its store URLs — international airside and domestic airside. \"Meet at Starbucks at 07:00\" names a spot past security.",
+   "latitude": 5.295556,
+   "longitude": 100.272222,
+   "coordPrecision": "approximate",
+   "timeWindow": "day",
+   "confidence": "high",
+   "confidenceNote": "Two independent operator sources agree it is airside-only. Reachable only after immigration, so from about 09:00 — the walk leg is the airside walk, not a landside one. Hours could not be obtained; Starbucks' store pages need JavaScript.",
+   "source": "https://www.starbucks.com/store-locator/store/1026407/"
+  }
+ ],
+ "mustSee": [
+  {
+   "id": "airport-pen-ms-assembly",
+   "anchorStop": "Assembly · Penang International Airport",
+   "title": "The 07:00 assembly line-up, Level 2 departure concourse",
+   "nameJp": "",
+   "tag": "DAY 1",
+   "summary": "The trip's first frame, and the only one before twenty hours of travel. It exists because of a scheduling gap rather than a view: SQ will not open counters or take a single bag until 07:15, so 07:00–07:15 is fifteen minutes of 35 people and luggage standing in a concourse with nothing to do. Shoot it then rather than losing it to the queue. There is no published photo feature anywhere at PEN — the hall itself is the set.",
+   "whereToFind": "Level 2, the landside public concourse, in front of the international check-in counters. Put the group's backs to the counter row so the lit counter fascia and the queue barriers read as an airport rather than a corridor, and stand yourself in the open concourse looking IN toward the counters — the concourse side has the depth, the counter side does not. Plain solid colours: 35 people in prints turn to noise at that distance. Do it at 07:00 sharp, before the 07:15 counter opening turns the frame into a baggage queue, and keep clear of the walkway lanes.",
+   "latitude": 5.295556,
+   "longitude": 100.272222,
+   "coordPrecision": "approximate",
+   "confidence": "medium",
+   "confidenceNote": "The 07:15 counter opening and the no-early-baggage rule are quoted from SQ's own page, and the Level 2 counter layout (Clusters A/B/C, counters 1–61) from MAHB's map. But MAHB names no airline on that map, so WHICH counter row SQ131 uses is not published — the standing position is the cluster area, not a numbered counter. No operator source describes concourse seating or where 35 people can stand without blocking a lane.",
+   "source": "https://www.singaporeair.com/en_UK/sg/travel-info/check-in/airport-check-in/"
+  }
+ ],
+ "shopping": [
+  {
+   "id": "airport-pen-shop-banheang",
+   "anchorStop": "Assembly · Penang International Airport",
+   "name": "Tambun tau sar pneah and heong pheah from Ban Heang",
+   "nameJp": "萬香饼家",
+   "placeLabel": "Ban Heang, Level 2 departure floor, unit L2LFB10 — LANDSIDE, before security, on the check-in level; a second branch is airside at L2AR20",
+   "estimate": null,
+   "note": "The one landside gift buy at PEN. Price in RM could NOT be verified from Ban Heang's own site — every product page is JavaScript-only — so budget rather than quote, and expect tins and boxed sets rather than singles. Buy the baked pneah and the freeze-dried fruit, not anything chilled: it has 20 hours of travel ahead. Halal is unverified — look for the JAKIM logo at the counter.",
+   "latitude": 5.295556,
+   "longitude": 100.272222,
+   "coordPrecision": "approximate",
+   "confidence": "low",
+   "confidenceNote": "Unit code, landside status and the product lines are operator- and brand-sourced; no price, no opening hour and no halal certificate could be verified. Coordinate is the aerodrome reference point from Malaysia's CAAM eAIP (WMKP AD 2.2, AIRAC 2025-06-12), not the terminal building and not this unit — MAHB publishes no coordinate for any in-terminal unit.",
+   "source": "https://www.banheang.com.my/"
+  },
+  {
+   "id": "airport-pen-shop-airside-lastchance",
+   "anchorStop": "Assembly · Penang International Airport",
+   "name": "The airside last chance after immigration",
+   "nameJp": "",
+   "placeLabel": "Level 2 airside retail, units L2AR15–L2AR47 including Ban Heang L2AR20 and the duty-free block — AFTER immigration, so roughly 09:00–10:00",
+   "estimate": null,
+   "note": "PEN's retail depth is overwhelmingly airside: one gift shop landside, a whole block of it past immigration. So anyone who misses Ban Heang on Level 2 landside is not stuck — they get a second run with roughly 40 minutes before boarding. No prices are published for any of it. The Level 1 Eraman shop (L1AR07) is the ARRIVALS duty-free and cannot be entered on the way out.",
+   "latitude": 5.295556,
+   "longitude": 100.272222,
+   "coordPrecision": "approximate",
+   "confidence": "medium",
+   "confidenceNote": "The airside/landside split of every unit is from MAHB's own directory codes. No hours and no RM price could be sourced for any airside outlet, and the 40-minute window is arithmetic off the 09:35 counter close and 10:15 departure, not a published figure.",
+   "source": "https://drmapssdev.blob.core.windows.net/corporate-website/2024-06/PenangIA-Airport-Guide-compressed.pdf"
+  }
+ ],
+ "essentials": {
+  "Assembly · Penang International Airport": {
+   "closedNote": "READ THIS FIRST: no operator publishes opening hours for ANY Penang airport outlet. MAHB's own PEN airport guide lists every shop and restaurant with unit codes and landside/airside designation and gives hours for NONE of them; its live shop-and-dine pages are JavaScript-only and return nothing. So nothing below is an \"open at 07:00\" promise. The only properly published opening time found anywhere at PEN is the Plaza Premium international lounge, 06:00–00:00, and that is airside near Gate A3. Two outlets in MAHB's 2024 directory look gone or useless: OldTown White Coffee (L2LFB01) is absent from OldTown's own current locator, which does list other airport branches; and Secret Recipe (L2LFB03) is absent from Secret Recipe's own Penang list, where all 19 Penang outlets open 10:00 or later — after the group has cleared airside. There is no left-luggage facility anywhere in MAHB's PEN guide, and no published photo spot, artwork or landmark inside or outside the terminal.",
+   "lastAdmission": "09:35 — Singapore Airlines' counter close, 40 minutes before the 10:15 departure. That is the day's real deadline. Counters OPEN 07:15, three hours before departure, and SQ states it will not accept baggage drop-off before then.",
+   "seasonFrom": null,
+   "seasonTo": null,
+   "groupRate": "Nothing to buy — there is no admission anywhere in the terminal. No group rate, group check-in desk or tour reception is published by MAHB or by SQ for PEN.",
+   "phone": "+604 252 0252",
+   "phoneNote": "PIA Operators, the only general number MAHB publishes; corroborated as +604-2520252 in CAAM's eAIP. Immigration +604 643 0352 / +604 643 2285. Three questions worth asking before Tuesday, because no published source answers them and each changes the plan: which counter cluster SQ131 uses on 8 Sep; which Level 2 landside outlets are open at 07:00 (and whether Line Clear on Level 1 is); and whether there is a surau in the Level 2 public concourse or only past immigration.",
+   "website": "https://airports.malaysiaairports.com.my/en/penang",
+   "tickets": "SQ131 PEN→SIN 10:15, Level 2 international check-in. Counters open 07:15 and close 09:35 (SQ's published default — PEN has no dedicated row in SQ's table). NOTE THE CONFLICT: MAHB's own guide states a generic 2 hours before / 1 hour before rule, which would read as 08:15/09:15. SQ's rule governs an SQ flight — plan off 07:15 and 09:35. MAHB publishes no airline-to-counter mapping: the Level 2 map shows counters 1–61 in Clusters A, B and C, split domestic and international, with no airline named anywhere.",
+   "transport": "Level 2 is the departure floor and the group's floor: check-in, F&B, retail, five landside ATMs, baggage wrapping, smoking lounges. Level 1 is the arrival floor and the overflow — four more landside F&B outlets, more ATMs, the reachable telco counters. Level 3 is International Departure and also carries an arrivals corridor with four telco counters a departing group cannot reach. A Mezzanine exists (Plaza Premium's own factsheet places its international lounge there, near Gate A3) which MAHB's own level list omits. Where security screening and international immigration actually sit is NOT cleanly published — Level 3 is consistent with the evidence but UNVERIFIED. Airport WiFi: connect to \"Airport WiFi\", then register at an information counter — which MAHB's guide never locates and does not mark on its Level 2 map.",
+   "confidence": "high",
+   "source": "https://drmapssdev.blob.core.windows.net/corporate-website/2024-06/PenangIA-Airport-Guide-compressed.pdf"
+  }
+ },
+ "subRoutes": [
+  {
+   "id": "airport-pen-sr-counter-window",
+   "anchorStop": "Assembly · Penang International Airport",
+   "title": "The 07:00–07:15 gap, then bags: sequencing an assembly that beats the counter",
+   "startMinutes": 420,
+   "deadlineMinutes": 575,
+   "placeIDs": [
+    "airport-pen-checkin-l2",
+    "airport-pen-atm-l2",
+    "airport-pen-bagwrap-l2",
+    "airport-pen-banheang-l2",
+    "airport-pen-mcd-l2"
+   ],
+   "steps": [
+    {
+     "placeID": "airport-pen-checkin-l2",
+     "name": "Assemble at the Level 2 counter cluster — and the group shot",
+     "atMinutes": 420,
+     "minutes": 15,
+     "walkMinutes": 0,
+     "note": "SQ opens at 07:15 and will not take a bag before it. Use the fifteen minutes for the line-up photo instead of a stationary queue."
+    },
+    {
+     "placeID": "airport-pen-bagwrap-l2",
+     "name": "Wrapping, for whoever decided in advance",
+     "atMinutes": 420,
+     "minutes": 15,
+     "walkMinutes": 1,
+     "note": "Runs in parallel with the photo, not after it. One machine against 35 bags is the bottleneck — send only the people who already said yes."
+    },
+    {
+     "placeID": "airport-pen-checkin-l2",
+     "name": "Check in and drop bags",
+     "atMinutes": 435,
+     "minutes": 60,
+     "walkMinutes": 0,
+     "note": "07:15 opening. Budget an hour for 35 passengers and one counter row; the hard close is 09:35, so this has margin even if it runs long."
+    },
+    {
+     "placeID": "airport-pen-atm-l2",
+     "name": "Cash, on the same level",
+     "atMinutes": 495,
+     "minutes": 10,
+     "walkMinutes": 1,
+     "note": "Five landside ATMs on Level 2. Do it hands-free after the bags have gone, not while holding them."
+    },
+    {
+     "placeID": "airport-pen-mcd-l2",
+     "name": "Breakfast — McDonald's, or Line Clear one level down",
+     "atMinutes": 505,
+     "minutes": 40,
+     "walkMinutes": 3,
+     "note": "Hours are unverified for every option, so keep it a peel-off rather than a group sitting. McDonald's is the only halal-in-writing choice on the level."
+    },
+    {
+     "placeID": "airport-pen-banheang-l2",
+     "name": "Ban Heang, the one landside gift shop",
+     "atMinutes": 550,
+     "minutes": 15,
+     "walkMinutes": 2,
+     "note": "Last landside retail before immigration. Anything missed reappears airside at L2AR20 with about 40 minutes to spare."
+    }
+   ],
+   "totalWalkMinutes": 7,
+   "note": "The whole point is that the day has exactly one hard time and it is not the flight: SQ's counter opens 07:15 and closes 09:35. Everything else is unverified, so this route sequences the things that are certain — the gap, the bags, the cash, the one gift shop — and treats food as a peel-off rather than a group booking. Deadline 09:35 at the counter, which leaves 40 minutes for immigration and the airside block before a 10:15 departure.",
+   "confidence": "medium",
+   "confidenceNote": "Every clock time here derives from SQ's own published 3-hour/40-minute rule and the 10:15 departure. NONE of the outlet hours is verified, because MAHB publishes none — so the food and shopping steps may find shutters. The internal walking minutes are paced off MAHB's floor layout, not measured.",
+   "source": "https://www.singaporeair.com/en_UK/sg/travel-info/check-in/airport-check-in/"
+  }
+ ],
+ "stopSummary": {
+  "Assembly · Penang International Airport": {
+   "do": "Assemble on Level 2 at 07:00 knowing SQ will not open counters or take a bag until 07:15 — that gap is the day's only free fifteen minutes, so spend it on the group photo. Then bags, then cash from the five landside ATMs on the same level. Hard close is 09:35, not 10:15. MAHB names no airline on its counter map, so confirm SQ131's cluster on +604 252 0252 rather than walking 35 people down a 61-counter hall.",
+   "eat": "Honest answer: nobody publishes hours, so nothing here is a promise. McDonald's on Level 2 (L2LFB05C) is the only halal-in-writing option and the most likely 07:00 opener. Pinang Kopitiam next door has the biggest landside seating block but no halal certificate — a Malaysian kopitiam often serves pork, so check before sitting. Nasi Kandar Line Clear one level down is the best group breakfast on paper: tray-served, fast for 35, and the Penang thing to eat before leaving Penang.",
+   "snack": "Buy on Level 2 landside or wait until airside — there is no middle option. Ban Heang (L2LFB10) is the only landside food retailer, and vending is not documented anywhere in MAHB's guide. No RM price could be verified for anything at this airport, so brief the group to budget rather than expect a figure. Whatever is bought here has 20h20m of travel ahead of it: sealed and baked, nothing chilled.",
+   "buy": "One shop, and knowing that is the whole tip: Ban Heang on Level 2 landside for Tambun tau sar pneah, heong pheah, freeze-dried durian and jackfruit — the obvious Penang gift for Japanese hosts. PEN's retail is otherwise almost entirely airside (L2AR15–L2AR47 plus a second Ban Heang at L2AR20), so a miss is recoverable with about 40 minutes after immigration. The Level 1 Eraman shop is arrivals duty-free and cannot be entered outbound.",
+   "see": "There is nothing to see, and that is the finding: no MAHB or Penang state tourism source publishes a single photo spot, installation or landmark at this airport. The frame is the Level 2 concourse in front of the counter row at 07:00 sharp, backs to the counters. Do not plan a rendezvous at Starbucks — both PEN stores are airside, per Starbucks' own locator, so it names a spot on the wrong side of security.",
+   "confidence": "medium",
+   "source": "https://drmapssdev.blob.core.windows.net/corporate-website/2024-06/PenangIA-Airport-Guide-compressed.pdf"
+  }
+ }
+}

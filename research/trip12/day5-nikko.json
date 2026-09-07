@@ -910,7 +910,23 @@
    "coordPrecision": "verified",
    "confidence": "high",
    "confidenceNote": null,
-   "source": "https://www.kegon.jp/"
+   "source": "https://www.kegon.jp/",
+   "images": [
+    {
+     "url": "https://thumb.wikimedia.org/wikipedia/commons/thumb/0/05/Kegon_falls-2006-03-21_2.jpg/1920px-Kegon_falls-2006-03-21_2.jpg?utm_source=commons.wikimedia.org&utm_campaign=imageinfo&utm_content=thumbnail",
+     "license": "CC BY-SA",
+     "sourcePage": "https://commons.wikimedia.org/wiki/File:Kegon_falls-2006-03-21_2.jpg",
+     "caption": "Kegon falls (ja:華厳滝), Nikko, Tochigi P.",
+     "credit": "Syohei Arai"
+    },
+    {
+     "url": "https://thumb.wikimedia.org/wikipedia/commons/thumb/1/14/Kegon_Falls_%E8%8F%AF%E5%8E%B3%E6%BB%9D.jpg/1920px-Kegon_Falls_%E8%8F%AF%E5%8E%B3%E6%BB%9D.jpg?utm_source=commons.wikimedia.org&utm_campaign=imageinfo&utm_content=thumbnail",
+     "license": "CC BY-SA",
+     "sourcePage": "https://commons.wikimedia.org/wiki/File:Kegon_Falls_%E8%8F%AF%E5%8E%B3%E6%BB%9D.jpg",
+     "caption": "A photo taken from a man-made observation platform below Kegon Falls.",
+     "credit": "Orbixx"
+    }
+   ]
   },
   {
    "id": "9b494268c541",
@@ -940,7 +956,23 @@
    "coordPrecision": "verified",
    "confidence": "high",
    "confidenceNote": null,
-   "source": "https://toshogu.jp/pages/25/"
+   "source": "https://toshogu.jp/pages/25/",
+   "images": [
+    {
+     "url": "https://thumb.wikimedia.org/wikipedia/commons/thumb/7/7a/Nikko%2C_Y%C5%8Dmeimon_Gate_of_T%C5%8Dsh%C5%8D-g%C5%AB_%28detail%29.JPG/1920px-Nikko%2C_Y%C5%8Dmeimon_Gate_of_T%C5%8Dsh%C5%8D-g%C5%AB_%28detail%29.JPG?utm_source=commons.wikimedia.org&utm_campaign=imageinfo&utm_content=thumbnail",
+     "license": "CC BY-SA",
+     "sourcePage": "https://commons.wikimedia.org/wiki/File:Nikko,_Y%C5%8Dmeimon_Gate_of_T%C5%8Dsh%C5%8D-g%C5%AB_(detail).JPG",
+     "caption": "Nikko, Yōmeimon Gate of Tōshō-gū (detail)",
+     "credit": "Cristian O. Arone"
+    },
+    {
+     "url": "https://thumb.wikimedia.org/wikipedia/commons/thumb/1/13/Y%C5%8Dmeimon_Gate_in_T%C5%8Dsh%C5%8D-g%C5%AB_Shrine_in_Nikk%C5%8D_by_Adolf_de_Meyer.jpg/1920px-Y%C5%8Dmeimon_Gate_in_T%C5%8Dsh%C5%8D-g%C5%AB_Shrine_in_Nikk%C5%8D_by_Adolf_de_Meyer.jpg?utm_source=commons.wikimedia.org&utm_campaign=imageinfo&utm_content=thumbnail",
+     "license": "CC0",
+     "sourcePage": "https://commons.wikimedia.org/wiki/File:Y%C5%8Dmeimon_Gate_in_T%C5%8Dsh%C5%8D-g%C5%AB_Shrine_in_Nikk%C5%8D_by_Adolf_de_Meyer.jpg",
+     "caption": "Yōmeimon Gate in Tōshō-gū Shrine in Nikkō by Adolf de Meyer, circa 1900-1910",
+     "credit": "Adolf de Meyer"
+    }
+   ]
   },
   {
    "id": "71b48304b33b",
@@ -984,7 +1016,23 @@
    "coordPrecision": "verified",
    "confidence": "high",
    "confidenceNote": null,
-   "source": "https://edowonderland.net/"
+   "source": "https://edowonderland.net/",
+   "images": [
+    {
+     "url": "https://upload.wikimedia.org/wikipedia/commons/6/6c/Samurais_wearing_Kamishimo.jpg?utm_source=commons.wikimedia.org&utm_campaign=imageinfo&utm_content=thumbnail_unscaled",
+     "license": "CC BY",
+     "sourcePage": "https://commons.wikimedia.org/wiki/File:Samurais_wearing_Kamishimo.jpg",
+     "caption": "4pm Farewell Ceremony at Edo Wonderland, Nikko. @Edo Wonderland [Nikko Edomura]",
+     "credit": "Winston Sumalia from Kasukabe City, Saitama Prefecture, Japan"
+    },
+    {
+     "url": "https://thumb.wikimedia.org/wikipedia/commons/thumb/a/a3/Nikko_Edo-Mura_2.jpg/1920px-Nikko_Edo-Mura_2.jpg?utm_source=commons.wikimedia.org&utm_campaign=imageinfo&utm_content=thumbnail",
+     "license": "CC BY-SA",
+     "sourcePage": "https://commons.wikimedia.org/wiki/File:Nikko_Edo-Mura_2.jpg",
+     "caption": "Oiran Show @ Nikko Edo-mura also call Edo Wonderland",
+     "credit": "Gene Jackson from Brooklyn, United States"
+    }
+   ]
   },
   {
    "id": "d5ms02oiran",
@@ -1015,7 +1063,23 @@
    "coordPrecision": "verified",
    "confidence": "high",
    "confidenceNote": null,
-   "source": "https://msearch.gsi.go.jp/address-search/AddressSearch?q=%E3%81%A4%E3%81%8F%E3%81%B0%E3%82%A8%E3%82%AD%E3%82%B9%E3%83%9D%E3%82%BB%E3%83%B3%E3%82%BF%E3%83%BC"
+   "source": "https://msearch.gsi.go.jp/address-search/AddressSearch?q=%E3%81%A4%E3%81%8F%E3%81%B0%E3%82%A8%E3%82%AD%E3%82%B9%E3%83%9D%E3%82%BB%E3%83%B3%E3%82%BF%E3%83%BC",
+   "images": [
+    {
+     "url": "https://upload.wikimedia.org/wikipedia/commons/b/b8/Tsukuba_Center.jpg?utm_source=commons.wikimedia.org&utm_campaign=imageinfo&utm_content=thumbnail_unscaled",
+     "license": "CC BY-SA",
+     "sourcePage": "https://commons.wikimedia.org/wiki/File:Tsukuba_Center.jpg",
+     "caption": "Tsukuba Center, Tsukuba.",
+     "credit": "Vivo~jawiki at Japanese Wikipedia"
+    },
+    {
+     "url": "https://upload.wikimedia.org/wikipedia/commons/d/d3/Kasamayaki_in_Tsukuba_Center.jpg?utm_source=commons.wikimedia.org&utm_campaign=imageinfo&utm_content=thumbnail_unscaled",
+     "license": "public domain",
+     "sourcePage": "https://commons.wikimedia.org/wiki/File:Kasamayaki_in_Tsukuba_Center.jpg",
+     "caption": "This is one scene of Kasamayaki market in Tsukuba, Ibaraki, Japan.",
+     "credit": "Miyuki Meinaka"
+    }
+   ]
   }
  ],
  "shopping": [

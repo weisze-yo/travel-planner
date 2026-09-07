@@ -11,7 +11,7 @@ import * as store from '../store.js';
 import { otherNames, nameList } from '../share.js';
 import { state } from '../store.js';
 import { go } from '../nav.js';
-import { swipeToDelete } from './parts.js';
+import { swipeToDelete, searchButton } from './parts.js';
 
 export default {
   id: 'log',
@@ -35,6 +35,7 @@ export default {
                 ${days.length} day${days.length === 1 ? '' : 's'}
               </div>
             </div>
+            ${searchButton()}
             <button class="btn sm ink" data-act="new">+ Note</button>
           </div>
         </div>
@@ -166,6 +167,7 @@ function emptyLog() {
             <div class="screen-title">Log</div>
             <div class="screen-sub">${state.trip?.name?.split(' · ')[0] || 'This trip'} · no notes yet</div>
           </div>
+          ${searchButton()}
           <button class="btn sm ink" data-act="new">+ Note</button>
         </div>
       </div>

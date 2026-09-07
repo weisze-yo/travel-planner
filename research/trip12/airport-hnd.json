@@ -1,0 +1,313 @@
+{
+ "batch": "airport-hnd",
+ "places": [
+  {
+   "id": "airport-hnd-exchange-2f",
+   "anchorStop": "Haneda Airport — Terminal 3",
+   "name": "Currency exchange, 2F arrival lobby — open 24 hours",
+   "nameJp": "外貨両替所（第3ターミナル 到着ロビー店）",
+   "category": "service",
+   "priceTier": "free",
+   "stayMinutes": 20,
+   "legs": [
+    {
+     "mode": "walk",
+     "minutes": 2
+    }
+   ],
+   "note": "The primary answer for 35 people landing with no yen, and it is on the floor they walk out onto. Haneda's own listing is 営業時間24時間, run by Japan Airport Terminal Co. itself; the 2F branch opened 25 Apr 2024. Its only nightly gap is 02:00-03:00 (the 3F counter closes 01:00-02:00), hours after this group is gone.",
+   "latitude": 35.5493,
+   "longitude": 139.7695,
+   "coordPrecision": "approximate",
+   "timeWindow": "24h",
+   "confidence": "high",
+   "confidenceNote": "The 24-hour opening, the operator and the 02:00-03:00 window are quoted from Haneda's own pages. Rates are not published, and nothing says whether one window can absorb a 35-person queue. Coordinate is Terminal 3's building point, consistent with the postal address 東京都大田区羽田空港2-6-5 shown on the operators' own pages. Haneda publishes no decimal coordinate for any in-terminal unit and none was invented; its 1F-5F floor guides are JavaScript-driven and returned no positions.",
+   "source": "https://tokyo-haneda.com/text/service/facilities/exchange.html"
+  },
+  {
+   "id": "airport-hnd-atms-2f",
+   "anchorStop": "Haneda Airport — Terminal 3",
+   "name": "ATMs on 2F arrivals — Japan Post Bank (24h) and Seven Bank",
+   "nameJp": "ゆうちょ銀行ATM／セブン銀行ATM",
+   "category": "service",
+   "priceTier": "free",
+   "stayMinutes": 10,
+   "legs": [
+    {
+     "mode": "walk",
+     "minutes": 2
+    }
+   ],
+   "note": "Both on the 2F arrival lobby, landside. Japan Post Bank is 24時間 except 00:00-07:00 on the third Monday — 8 Sep is a Tuesday, so irrelevant. Seven Bank's hours conflict between operators (Haneda and Keikyu say 5:00-24:00; Seven Bank's own page says 24時間営業) but every version is open at 22:30. Pocket Change is here too and is NOT a cash source — it converts foreign coins to e-money.",
+   "latitude": 35.5493,
+   "longitude": 139.7695,
+   "coordPrecision": "approximate",
+   "timeWindow": "24h",
+   "confidence": "medium",
+   "confidenceNote": "Hours are quoted from Haneda's own bank page and Seven Bank's own ATM locator. THE OPEN QUESTION IS NOT HOURS: no operator page for either machine states foreign-card acceptance. Both networks are the usual answer in Japan, but it is unverified for these specific units — which is the difference between 35 people drawing yen and 35 people queueing at one exchange window. Coordinate is Terminal 3's building point, consistent with the postal address 東京都大田区羽田空港2-6-5 shown on the operators' own pages. Haneda publishes no decimal coordinate for any in-terminal unit and none was invented; its 1F-5F floor guides are JavaScript-driven and returned no positions.",
+   "source": "https://tokyo-haneda.com/text/service/facilities/bank.html"
+  },
+  {
+   "id": "airport-hnd-baggage-2f",
+   "anchorStop": "Haneda Airport — Terminal 3",
+   "name": "Baggage deposit and coin lockers, 2F arrivals",
+   "nameJp": "手荷物一時預り所（到着ロビー）／コインロッカー",
+   "category": "service",
+   "priceTier": "¥",
+   "stayMinutes": 15,
+   "legs": [
+    {
+     "mode": "walk",
+     "minutes": 2
+    }
+   ],
+   "note": "A staffed 24-hour counter immediately RIGHT of the arrival exit — 国際線到着ロビー、到着出口を出て右側 — which beats lockers when bags are large and numerous. ¥800 under 120cm, ¥1,000 for 120-200cm, ¥2,000 for 200-300cm per 24h; tel 03-6428-0659. Lockers are ¥500/700/900 per 24h (3F south adds ¥2,000 extra-large), max 7 days.",
+   "latitude": 35.5493,
+   "longitude": 139.7695,
+   "coordPrecision": "approximate",
+   "timeWindow": "24h",
+   "confidence": "high",
+   "confidenceNote": "The 24-hour staffing, all prices and the position right of the arrival exit are from Haneda's own page and JAL ABC's own T3 page (which adds a 01:00-04:00 counter break). LOCKER HOURS ARE NOT PUBLISHED for T3 — nor are its payment methods, though T1/T2's are. Coordinate is Terminal 3's building point, consistent with the postal address 東京都大田区羽田空港2-6-5 shown on the operators' own pages. Haneda publishes no decimal coordinate for any in-terminal unit and none was invented; its 1F-5F floor guides are JavaScript-driven and returned no positions.",
+   "source": "https://tokyo-haneda.com/text/service/facilities/baggage_checkroom.html"
+  },
+  {
+   "id": "airport-hnd-prayer-3f",
+   "anchorStop": "Haneda Airport — Terminal 3",
+   "name": "Prayer rooms, 3F general area — the only landside ones at Haneda",
+   "nameJp": "祈祷室",
+   "category": "rest",
+   "priceTier": "free",
+   "stayMinutes": 20,
+   "legs": [
+    {
+     "mode": "walk",
+     "minutes": 4
+    }
+   ],
+   "note": "Two rooms on 3F in the 一般エリア, so LANDSIDE and reachable without re-clearing security — one floor up from the arrival exit. Haneda states 室内には礼拝前に身体を清めるための清浄施設: purification facilities for washing before worship. T1 has none at all and T2's pair are 出国後エリア (airside), so these two are the only landside prayer rooms anywhere at this airport.",
+   "latitude": 35.5493,
+   "longitude": 139.7695,
+   "coordPrecision": "approximate",
+   "timeWindow": "24h",
+   "confidence": "medium",
+   "confidenceNote": "The 3F position, the landside classification and the ablution facilities are quoted from Haneda's own Japanese and English pages. HOURS ARE NOT PUBLISHED for any Haneda prayer room; T3 is a 24-hour building so 22:30 access is likely but unconfirmed. Also unpublished: whether the rooms are gender-separated, their capacity, qibla marking, and where on 3F they sit. Two rooms will not hold 35 people — plan rotation. Coordinate is Terminal 3's building point, consistent with the postal address 東京都大田区羽田空港2-6-5 shown on the operators' own pages. Haneda publishes no decimal coordinate for any in-terminal unit and none was invented; its 1F-5F floor guides are JavaScript-driven and returned no positions.",
+   "source": "https://tokyo-haneda.com/text/service/facilities/prayer_room.html"
+  },
+  {
+   "id": "airport-hnd-matsukiyo-shut",
+   "anchorStop": "Haneda Airport — Terminal 3",
+   "name": "Matsumoto Kiyoshi, 3F — SHUTS 22:00, before the group clears customs",
+   "nameJp": "マツモトキヨシ 京急羽田空港第3ターミナル店",
+   "category": "cosme",
+   "priceTier": "¥",
+   "stayMinutes": 10,
+   "legs": [
+    {
+     "mode": "walk",
+     "minutes": 4
+    }
+   ],
+   "note": "The most likely 'we needed a chemist' failure of the night. Landside on 3F at the Keikyu station level, 08:00-22:00 daily — the group is still in the immigration hall. OTC only: its 調剤受付時間 is 「―」 all seven days. And all three drugstores in Haneda's own pharmacy directory are 出国後エリア — airside. Buy motion-sickness tablets in Singapore.",
+   "latitude": 35.5493,
+   "longitude": 139.7695,
+   "coordPrecision": "approximate",
+   "timeWindow": "night",
+   "confidence": "high",
+   "confidenceNote": "Hours and the empty dispensing column are from Matsumoto Kiyoshi's own store page, corroborated by Keikyu's T3 retail guide. The airside classification of the other three is from Haneda's own tenant pages. Coordinate is Terminal 3's building point, consistent with the postal address 東京都大田区羽田空港2-6-5 shown on the operators' own pages. Haneda publishes no decimal coordinate for any in-terminal unit and none was invented; its 1F-5F floor guides are JavaScript-driven and returned no positions.",
+   "source": "https://www.matsukiyococokara-online.com/map/?kid=50104419"
+  },
+  {
+   "id": "airport-hnd-wifi-and-simcounter",
+   "anchorStop": "Haneda Airport — Terminal 3",
+   "name": "HANEDA-FREE-WIFI, and the GLOBAL WiFi counter open to 23:45",
+   "nameJp": "グローバルWiFi",
+   "category": "service",
+   "priceTier": "free",
+   "stayMinutes": 10,
+   "legs": [
+    {
+     "mode": "walk",
+     "minutes": 2
+    }
+   ],
+   "note": "The wifi needs no registration and no password: select HANEDA-FREE-WIFI, open a browser, follow the prompts — so it works on a Malaysian SIM with no roaming, which is what 35 people messaging home at 22:15 actually need. Haneda warns 一部エリアでつながりにくい場所があります. The GLOBAL WiFi counter on 2F runs 6:30-23:45 (3F to 23:30) and is the only retail counter still trading at 23:00.",
+   "latitude": 35.5493,
+   "longitude": 139.7695,
+   "coordPrecision": "approximate",
+   "timeWindow": "night",
+   "confidence": "medium",
+   "confidenceNote": "The SSID and the no-registration process are quoted from Haneda's own wireless page. The counter hours come from Keikyu's T3 retail guide, not from Haneda's own directory, and no price is published. Coordinate is Terminal 3's building point, consistent with the postal address 東京都大田区羽田空港2-6-5 shown on the operators' own pages. Haneda publishes no decimal coordinate for any in-terminal unit and none was invented; its 1F-5F floor guides are JavaScript-driven and returned no positions.",
+   "source": "https://tokyo-haneda.com/text/service/facilities/wireless_lan.html"
+  },
+  {
+   "id": "airport-hnd-charter-coach-kerb",
+   "anchorStop": "Haneda Airport — Terminal 3",
+   "name": "Where a chartered coach actually loads — 1F, past the first bus stop",
+   "nameJp": "貸切バス乗り場",
+   "category": "service",
+   "priceTier": "free",
+   "stayMinutes": 15,
+   "legs": [
+    {
+     "mode": "walk",
+     "minutes": 6
+    }
+   ],
+   "note": "The night's biggest risk, and it is not on 2F. From the arrival exit follow signs for bus / parking / Airport Garden, go to the far end, then down to 1F by escalator (left) or lift (right); the group-bus kerb is just before the Airport Garden entrance — PAST the first bus stop, which does not serve hotel or group coaches. Scheduled buses use 1F Lane 3, stops 1-11; a charter does not.",
+   "latitude": 35.5493,
+   "longitude": 139.7695,
+   "coordPrecision": "approximate",
+   "timeWindow": "24h",
+   "confidence": "medium",
+   "confidenceNote": "The routing is corroborated by two operator sources (Haneda's own bus access page for the 2F access hall to 1F Lane 3, and Keikyu EX Inn's own T3 guide for the group-bus kerb by the Airport Garden entrance). NO NUMBERED STOP IS PUBLISHED FOR CHARTERED COACHES, and whether a private 35-seat charter uses that hotel-shuttle kerb or the pool-controlled 貸切バス乗り場 is unverified. Coordinate is Terminal 3's building point, consistent with the postal address 東京都大田区羽田空港2-6-5 shown on the operators' own pages. Haneda publishes no decimal coordinate for any in-terminal unit and none was invented; its 1F-5F floor guides are JavaScript-driven and returned no positions.",
+   "source": "https://www.tokyobus.or.jp/kashikiri/airport/"
+  },
+  {
+   "id": "airport-hnd-bus-pool-limits",
+   "anchorStop": "Haneda Airport — Terminal 3",
+   "name": "The chartered-bus pool rules that squeeze a 22:10-22:40 exit",
+   "nameJp": "国際線バスプール",
+   "category": "service",
+   "priceTier": "¥",
+   "stayMinutes": 5,
+   "legs": [
+    {
+     "mode": "walk",
+     "minutes": 6
+    }
+   ],
+   "note": "Give these numbers to the tour agent. A charter registers at the international bus pool, pays ¥2,000 and collects its documents; the pool holds 8 vehicles with a 1-hour cap and the boarding area a 30-MINUTE cap. No advance booking. So the coach cannot idle at the kerb from 21:55: the driver must time pool exit to the group's exit from customs, which for 35 people spreads over 22:10-22:40.",
+   "latitude": 35.5493,
+   "longitude": 139.7695,
+   "coordPrecision": "approximate",
+   "timeWindow": "24h",
+   "confidence": "medium",
+   "confidenceNote": "The ¥2,000 fee, the 8 pool spaces, the 1-hour and 30-minute limits and the no-advance-booking rule are published by the Tokyo Bus Association, which sets out the airport's own arrangement — an industry body rather than Haneda itself. The 22:10-22:40 customs spread is an estimate for a 35-person party, not a published figure. Coordinate is Terminal 3's building point, consistent with the postal address 東京都大田区羽田空港2-6-5 shown on the operators' own pages. Haneda publishes no decimal coordinate for any in-terminal unit and none was invented; its 1F-5F floor guides are JavaScript-driven and returned no positions.",
+   "source": "https://www.tokyobus.or.jp/kashikiri/airport/"
+  },
+  {
+   "id": "airport-hnd-no-2f-meeting-point",
+   "anchorStop": "Haneda Airport — Terminal 3",
+   "name": "There is NO published meeting point on 2F arrivals",
+   "nameJp": "待ち合わせ場所（第3ターミナル）",
+   "category": "service",
+   "priceTier": "free",
+   "stayMinutes": 5,
+   "legs": [
+    {
+     "mode": "walk",
+     "minutes": 1
+    }
+   ],
+   "note": "A real gap for 35 people. Haneda publishes exactly two T3 meeting points and BOTH are one floor up on 3F departures: 出発ロビー 時計塔 near H counter, and 時計塔 near C counter. Nothing is named or signed on the 2F arrivals floor, and no 団体 or ツアー reception area is published for T3 at all. So the regroup point has to be agreed on the coach in Singapore, not found on a sign at 22:15.",
+   "latitude": 35.5493,
+   "longitude": 139.7695,
+   "coordPrecision": "approximate",
+   "timeWindow": "24h",
+   "confidence": "high",
+   "confidenceNote": "The two 3F clock-tower points are quoted verbatim from Haneda's own meeting-place page, and the absence of any 2F or group entry was checked on that same page. Coordinate is Terminal 3's building point, consistent with the postal address 東京都大田区羽田空港2-6-5 shown on the operators' own pages. Haneda publishes no decimal coordinate for any in-terminal unit and none was invented; its 1F-5F floor guides are JavaScript-driven and returned no positions.",
+   "source": "https://tokyo-haneda.com/text/service/facilities/meeting_place.html"
+  },
+  {
+   "id": "airport-hnd-garden-walkway-unverified",
+   "anchorStop": "Haneda Airport — Terminal 3",
+   "name": "The T3 to Haneda Airport Garden link — hours UNVERIFIED",
+   "nameJp": "羽田エアポートガーデン連絡通路",
+   "category": "sight",
+   "priceTier": "free",
+   "stayMinutes": 10,
+   "legs": [
+    {
+     "mode": "walk",
+     "minutes": 8
+    }
+   ],
+   "note": "This decides whether the 24-hour onsen record is reachable at 23:00, and nobody publishes it. A signed route exists from 2F arrivals toward Airport Garden, reaching the entrance at 1F past the group-bus kerb. But no operator page gives the walkway's floor or hours, and Haneda's own inter-terminal page does not mention it. Sumitomo's own wording for the onsen is 早朝から深夜まで — notably NOT 24時間.",
+   "latitude": 35.5493,
+   "longitude": 139.7695,
+   "coordPrecision": "approximate",
+   "timeWindow": "night",
+   "confidence": "low",
+   "confidenceNote": "The signed route and the 1F entrance position are from Keikyu EX Inn's own T3 guide. The onsen operator's own domains (haneda-airport-garden.tokyo, hanedaonsen.jp, villa-fontaine.co.jp) were all unreachable from this session after retries, so the walkway's opening hours could not be established from any source. Treat the existing onsen record's reachability at 23:00 as an open question, not a fact. Coordinate is Terminal 3's building point, consistent with the postal address 東京都大田区羽田空港2-6-5 shown on the operators' own pages. Haneda publishes no decimal coordinate for any in-terminal unit and none was invented; its 1F-5F floor guides are JavaScript-driven and returned no positions.",
+   "source": "https://www.sumitomo-rd.co.jp/uploads/20221208_release_haneda-airportgarden_grand-opening.pdf"
+  },
+  {
+   "id": "airport-hnd-smoking-landside",
+   "anchorStop": "Haneda Airport — Terminal 3",
+   "name": "Landside smoking rooms, 13 of them across 1F-5F",
+   "nameJp": "喫煙スペース（一般エリア）",
+   "category": "rest",
+   "priceTier": "free",
+   "stayMinutes": 10,
+   "legs": [
+    {
+     "mode": "walk",
+     "minutes": 2
+    }
+   ],
+   "note": "Practical for a 35-person Malaysian group at 22:30, and nobody has to go anywhere odd for it: Haneda publishes 6 in the 1F 一般エリア, 2 on 2F, 2 on 3F, 2 on 4F and 1 on 5F — 13 landside in all. The two on 2F are on the arrivals floor itself and the six on 1F are on the route down to the bus kerb, so they fall on the path the group is already walking.",
+   "latitude": 35.5493,
+   "longitude": 139.7695,
+   "coordPrecision": "approximate",
+   "timeWindow": "24h",
+   "confidence": "medium",
+   "confidenceNote": "The counts by floor and the 一般エリア (landside) classification are from Haneda's own smoking page. HOURS ARE NOT PUBLISHED for any of them, and neither is their exact position within a floor. Counts do change — a 2024 notice covered a renewal of the airside departure-gate rooms. Coordinate is Terminal 3's building point, consistent with the postal address 東京都大田区羽田空港2-6-5 shown on the operators' own pages. Haneda publishes no decimal coordinate for any in-terminal unit and none was invented; its 1F-5F floor guides are JavaScript-driven and returned no positions.",
+   "source": "https://tokyo-haneda.com/text/service/facilities/smoking_place.html"
+  },
+  {
+   "id": "airport-hnd-last-trains",
+   "anchorStop": "Haneda Airport — Terminal 3",
+   "name": "Last trains out of T3 — the fallback if someone misses the coach",
+   "nameJp": "羽田空港第3ターミナル駅（東京モノレール／京急）",
+   "category": "service",
+   "priceTier": "¥",
+   "stayMinutes": 5,
+   "legs": [
+    {
+     "mode": "walk",
+     "minutes": 4
+    }
+   ],
+   "note": "Slack rather than a plan, and it is real. Weekday monorail: 23:06, 23:19, 23:23, 23:34 and 23:49 toward Hamamatsucho, with a 00:10 last departure; Keikyu runs 23:09, 23:19, 23:28, 23:37, 23:45, 23:51 then 00:01, 00:08, 00:13 toward Kamata and Shinagawa. So a straggler has roughly an hour after the group leaves. The free inter-terminal shuttle runs 8-minute headways 20:00-24:00 and past 01:00.",
+   "latitude": 35.5493,
+   "longitude": 139.7695,
+   "coordPrecision": "approximate",
+   "timeWindow": "night",
+   "confidence": "medium",
+   "confidenceNote": "All times are from the operators' own current timetables (Tokyo Monorail's March 2025 weekday up-line PDF and Keikyu's own timetable system). CAVEAT: the monorail PDF carries a 「*：昭和島行」 footnote — some late trains terminate at Showajima, not Hamamatsucho — and which of the final departures are asterisked could not be resolved, so treat 23:49 as the last dependable one. Keikyu's late-train termini are likewise not carried in the extraction. Coordinate is Terminal 3's building point, consistent with the postal address 東京都大田区羽田空港2-6-5 shown on the operators' own pages. Haneda publishes no decimal coordinate for any in-terminal unit and none was invented; its 1F-5F floor guides are JavaScript-driven and returned no positions.",
+   "source": "https://www.tokyo-monorail.co.jp/news/pdf/timetable2025/weekdays_up.pdf"
+  }
+ ],
+ "mustSee": [
+  {
+   "id": "airport-hnd-ms-deck-night",
+   "anchorStop": "Haneda Airport — Terminal 3",
+   "title": "The 5F rooftop observation deck at 22:30 — the only one open",
+   "nameJp": "第3ターミナル 屋上展望デッキ",
+   "tag": "DAY 1",
+   "summary": "Free, landside, and open 開場時間24時間 — the only observation deck at Haneda that is open when this group lands, because T1's and T2's both shut at 22:00 and T2's indoor FLIGHT DECK TOKYO closes at 23:00. A 24-hour deck in a 24-hour terminal is the one genuinely nocturnal sight at this airport, and it is on the same 5F floor the group's Edo Koji record already sends them to. Expect it dim, breezy and lit mainly by apron floodlights.",
+   "whereToFind": "5F, landside. From the 2F arrival exit take the lifts or escalators up to 5F — the Edo Koji street IS the corridor you walk to reach the deck, so the two frames are one continuous walk, not two stops. Go out onto the roof and walk to the END OF THE DECK FURTHEST FROM THE DOORS you came through, so the apron floodlights are not in your immediate foreground, and shoot from the rail out over the T3 international apron and its gates. CALL 03-5757-8111 BEFORE YOU CLIMB — Haneda's own deck page gives that number and warns 天候や保安上の理由により閉鎖する場合がございます, so with 35 people one phone call saves a wasted lift ride. Assume handheld: no tripod, drone or photography rule is published either way.",
+   "latitude": 35.5493,
+   "longitude": 139.7695,
+   "coordPrecision": "approximate",
+   "confidence": "medium",
+   "confidenceNote": "The 24-hour opening, the 5F access, the weather-and-security closure warning and the information number are all quoted from Haneda's own deck page and FAQ, and the T1/T2 22:00 closures from the same page. NOT VERIFIED, and deliberately left out of the text above: which compass direction the deck faces, which runway is in view, whether Tokyo Skytree is visible at all, whether the deck is lit at night, and whether it closes for wind specifically. Skytree bears about 012 degrees true at 18.3 km from T3 by calculation from published coordinates — a derived bearing, not an operator statement, and no page confirms the sightline is open. Coordinate is Terminal 3's building point, consistent with the postal address 東京都大田区羽田空港2-6-5 shown on the operators' own pages. Haneda publishes no decimal coordinate for any in-terminal unit and none was invented; its 1F-5F floor guides are JavaScript-driven and returned no positions.",
+   "source": "https://tokyo-haneda.com/text/service/facilities/observation_deck.html"
+  },
+  {
+   "id": "airport-hnd-ms-edokoji-shuttered",
+   "anchorStop": "Haneda Airport — Terminal 3",
+   "title": "Edo Koji shuttered at 22:30 — the street with nobody in it",
+   "nameJp": "江戸小路",
+   "tag": "DAY 1",
+   "summary": "The angle the existing facility record leaves on the table: at 22:30 the restaurants are down but the street itself is still public, so the lantern-lit timber shopfronts read as a film set with no diners, no queues and nobody in frame — which is impossible at any other hour of the day. The shutters are the subject, not the limitation. Free, landside, and on the way back down from the deck.",
+   "whereToFind": "Enter at the 4F end of the street and walk it up toward 5F. Shoot DOWN THE LENGTH of the street, camera low and centred between the timber frontages, so the wooden lattice shopfronts and the hanging lanterns converge on the vanishing point — the nihonbashi-style bridge and the two-storey mock-Edo facades only read as a street from a low centred position along the axis; from standing height at the side it reads as a mall. Do the 5F deck first and take this on the way back, because the deck is the half that can be closed by weather.",
+   "latitude": 35.5493,
+   "longitude": 139.7695,
+   "coordPrecision": "approximate",
+   "confidence": "low",
+   "confidenceNote": "The facility facts — 4F-5F, restaurants closing about 22:00, the street public at any hour — are already in this bundle's own Edo Koji place record. WHAT IS NOT VERIFIED IS THE LIGHTING: no operator page states whether Edo Koji's lanterns and street lighting stay lit after the tenants close or drop to night levels, and Haneda's 4F and 5F floor-guide pages render no content to a fetcher, so the street's exact position on the floor could not be sourced either. If the lanterns go dark this record collapses to a dim corridor — worth asking on the same 03-5757-8111 call as the deck. Coordinate is Terminal 3's building point, consistent with the postal address 東京都大田区羽田空港2-6-5 shown on the operators' own pages. Haneda publishes no decimal coordinate for any in-terminal unit and none was invented; its 1F-5F floor guides are JavaScript-driven and returned no positions.",
+   "source": "https://tokyo-haneda.com/text/service/facilities/observation_deck.html"
+  }
+ ]
+}

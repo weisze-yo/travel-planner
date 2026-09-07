@@ -52,6 +52,35 @@ export function delegate(root, selector, handler, event = 'click') {
   });
 }
 
+/**
+ * Enter and Space on anything wearing `role="button"`.
+ *
+ * A real `<button>` gets this from the platform. A div does not, and this app
+ * has several — a card that has to CONTAIN buttons cannot be one, so
+ * `.plan-card` and the sub-route card are both `role="button" tabindex="0"`.
+ * Without this they were focusable and announced as buttons and then did
+ * nothing when pressed, which is worse than not being focusable at all.
+ *
+ * Bound on the DOCUMENT, once, and deliberately not on the screen host:
+ * `nav.js` REPLACES that node on every paint, so a listener on it would
+ * survive exactly one render. Screens re-bind their click handlers for that
+ * reason; this is a property of the document instead.
+ *
+ * Space is prevented so the page does not scroll under the press; Enter is
+ * not, because nothing else claims it.
+ */
+export function bindRoleButtons() {
+  document.addEventListener('keydown', (e) => {
+    if (e.key !== 'Enter' && e.key !== ' ' && e.key !== 'Spacebar') return;
+    const hit = e.target.closest?.('[role="button"]');
+    if (!hit) return;
+    // A real control inside the card keeps its own keyboard behaviour.
+    if (e.target.closest('button, a, input, select, textarea') ) return;
+    if (e.key !== 'Enter') e.preventDefault();
+    hit.click();
+  });
+}
+
 /** "13:45" from minutes past midnight. */
 export function clock(minutes) {
   const m = ((Math.round(minutes) % 1440) + 1440) % 1440;
@@ -159,6 +188,10 @@ export const icon = {
   pencil: (color = '#fff', size = 19) => `<svg width="${size}" height="${size}" viewBox="0 0 14 14"><path d="M9.5 1.5l3 3L5 12H2v-3z" fill="none" stroke="${color}" stroke-width="1.5" stroke-linejoin="round"/></svg>`,
   grip: '<svg width="16" height="12" viewBox="0 0 16 12"><g stroke="#98A5A0" stroke-width="2" stroke-linecap="round"><path d="M2 2h12M2 6h12M2 10h12"/></g></svg>',
   tick: (color = '#fff', w = 11) => `<svg width="${w}" height="${w * 0.82}" viewBox="0 0 11 9"><path d="M1 4.5L4 7.5 10 1" stroke="${color}" stroke-width="2" fill="none" stroke-linecap="round" stroke-linejoin="round"/></svg>`,
+  // §3.4 · a ring and a handle at 45°, which is the only shape a magnifier
+  // reads as at 15px. Colour is a parameter so the same glyph serves a
+  // header button and the panel's own field.
+  search: (color = '#3D4C46', size = 15) => `<svg width="${size}" height="${size}" viewBox="0 0 15 15" fill="none"><circle cx="6.4" cy="6.4" r="4.4" stroke="${color}" stroke-width="1.7"/><path d="M9.8 9.8L13 13" stroke="${color}" stroke-width="1.7" stroke-linecap="round"/></svg>`,
   sort: (color = '#3D4C46') => `<svg width="15" height="15" viewBox="0 0 15 15"><g stroke="${color}" stroke-width="1.8" stroke-linecap="round"><path d="M2 4h11M2 7.5h7M2 11h4"/></g></svg>`,
   // A toothed ring, not a circle with rays — the rays version reads as a sun.
   gear: '<svg width="18" height="18" viewBox="0 0 18 18" fill="none"><path d="M7.6 1.9h2.8l.35 1.8a5.6 5.6 0 0 1 1.36.79l1.74-.6 1.4 2.42-1.39 1.2a5.6 5.6 0 0 1 0 1.58l1.39 1.2-1.4 2.42-1.74-.6a5.6 5.6 0 0 1-1.36.79l-.35 1.8H7.6l-.35-1.8a5.6 5.6 0 0 1-1.36-.79l-1.74.6-1.4-2.42 1.39-1.2a5.6 5.6 0 0 1 0-1.58l-1.39-1.2 1.4-2.42 1.74.6a5.6 5.6 0 0 1 1.36-.79z" stroke="#14201C" stroke-width="1.4" stroke-linejoin="round"/><circle cx="9" cy="9" r="2.4" stroke="#14201C" stroke-width="1.4"/></svg>',

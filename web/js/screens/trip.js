@@ -3,7 +3,7 @@
 // app ships with a demo trip you need a way to clear. The designed version of
 // this — a trips list and importing an agent itinerary — is still to come.
 
-import { html, raw, icon, delegate } from '../util.js';
+import { html, raw, icon, delegate, esc } from '../util.js';
 import * as store from '../store.js';
 import { state } from '../store.js';
 import { back, go } from '../nav.js';
@@ -23,6 +23,16 @@ let pending = '';
  * Log, and none of that is in any snapshot.
  */
 let confirming = 0;
+/**
+ * B6 · what has been typed into the second gate.
+ *
+ * The gate is a WORD, not a second button: everything else destructive in
+ * this app has a 6-second undo and this one cannot, because the records are
+ * gone. It lives here rather than being read off the DOM at click time so a
+ * repaint cannot silently re-enable the button, and it is cleared whenever
+ * the gate opens or closes so a typed word never outlives its question.
+ */
+let emptyWord = '';
 
 export default {
   id: 'trip',
@@ -158,9 +168,16 @@ export default {
                 Map kept on this phone${store.mapAreas().length ? ` · ${store.mapAreas().length}` : ''}
               </button>
             </div>
+            <!-- B6 · renamed from "Changes on this phone". It is a QUEUE
+                 with a count, not a file — and the count is what tells it
+                 apart at a glance from the export two cards down. "Save" and
+                 "Changes" could be mistaken for each other; "Export" and
+                 "Waiting to reach the cloud" cannot. -->
             <div class="row g8 mt8">
               <button class="btn ghost grow" data-act="stuck">
-                Changes on this phone${store.syncState().count ? ` · ${store.syncState().count} waiting` : ''}
+                Waiting to reach the cloud${
+                  store.syncState().count ? ` · ${store.syncState().count} change${
+                    store.syncState().count === 1 ? '' : 's'}` : ''}
               </button>
             </div>
           </div>
@@ -172,7 +189,7 @@ export default {
               message and confirm the stops it reads — nothing lands until you do.
             </div>
             <button class="btn ghost wide mt10" data-act="paste">Paste an itinerary…</button>
-            <button class="btn ghost wide mt8" data-act="export">Save this trip as a file…</button>
+            <button class="btn ghost wide mt8" data-act="export">Export the whole trip as a file…</button>
             <div class="f11 soft lh145 mt7">
               One JSON file holding the whole trip — every stop and where it is, the sub
               routes, the places, the must-see spots, your lists and your Log. Open it back
@@ -231,25 +248,41 @@ export default {
                 </div>
               </div>
             ` : (confirming === 2 ? html`
-              <!-- Bug 19 · the second gate.
-                   Two identical confirmations in the same place are one
-                   confirmation to a thumb, so this one is deliberately not
-                   the same shape as the first: the destructive control moves
-                   to the RIGHT and Cancel takes the primary position on the
-                   left, which a double-tap cannot sail through. It also names
-                   the trip, because the surprise this guards against is
-                   emptying the wrong one. -->
+              <!-- B6 · THE SECOND TAP, TYPED RATHER THAN TAPPED TWICE.
+                   Everything else destructive in this app has a 6-second
+                   undo. This one cannot: the records are gone. A confirm you
+                   can tap twice by reflex is not a second thought — five
+                   characters is, and it takes about four seconds.
+                   Bug 19's first answer was a differently-shaped pair of
+                   buttons, which is better than two identical ones and still
+                   a thumb away from destruction.
+                   The primary stays rust-on-tint, never a filled rust button
+                   — the palette reserves the filled one for the swipe
+                   confirm — and it is INERT until the word matches. -->
               <div class="col g8 mt12">
                 <div class="f125 w800" style="color:var(--danger-fg)">
-                  Last check: empty ${state.trip?.name || 'this trip'}?
+                  Empty ${state.trip?.name || 'this trip'}?
                 </div>
                 <div class="f11 lh145" style="color:var(--danger-fg)">
-                  Saving the trip as a file first is the only way to get any of it back.
+                  This removes ${counts.stops} stop${counts.stops === 1 ? '' : 's'},
+                  ${counts.places} place${counts.places === 1 ? '' : 's'},
+                  ${counts.shopping} shopping item${counts.shopping === 1 ? '' : 's'} and
+                  ${counts.notes} note${counts.notes === 1 ? '' : 's'} from this phone${
+                    state.trip?.sharedFrom ? '' : ' and from everyone you share it with'}.
+                  The dates, the currency and the map centre stay.
                 </div>
+                <div class="f11 w700 lh145" style="color:var(--danger-fg)">
+                  There is no undo for this one. Export the trip first if you might want it back.
+                </div>
+                <label class="f11 soft block" for="empty-word">TYPE EMPTY TO CONFIRM</label>
+                <input id="empty-word" value="${esc(emptyWord)}" placeholder="EMPTY"
+                       autocapitalize="characters" autocomplete="off" spellcheck="false"
+                       aria-label="Type EMPTY to confirm">
                 <div class="row g8">
-                  <button class="btn ghost grow" data-act="clear-cancel">Keep the trip</button>
-                  <button class="btn none" style="width:112px;background:#9B4B4B;color:#fff"
-                          data-act="clear-final">Empty it</button>
+                  <button class="btn grow" style="background:var(--danger-bg);color:var(--danger-fg)"
+                          data-act="clear-final"${
+                    emptyWord.trim().toUpperCase() === 'EMPTY' ? '' : raw(' disabled')}>Empty it</button>
+                  <button class="btn ghost none" style="width:96px" data-act="clear-cancel">Cancel</button>
                 </div>
               </div>
             ` : html`
@@ -351,12 +384,25 @@ export default {
 
     // Bug 19 · `confirming` is a stage now: 0 off, 1 the named warning,
     // 2 the last check. Only stage 2's own control empties anything.
-    delegate(root, '[data-act="clear"]', () => { confirming = 1; nudge(); });
-    delegate(root, '[data-act="clear-cancel"]', () => { confirming = 0; nudge(); });
-    delegate(root, '[data-act="clear-confirm"]', () => { confirming = 2; nudge(); });
+    delegate(root, '[data-act="clear"]', () => { confirming = 1; emptyWord = ''; nudge(); });
+    delegate(root, '[data-act="clear-cancel"]', () => { confirming = 0; emptyWord = ''; nudge(); });
+    delegate(root, '[data-act="clear-confirm"]', () => { confirming = 2; emptyWord = ''; nudge(); });
+    // Commit on input, not on change: the button has to come alive as the
+    // fifth character lands, not when the field is left.
+    root.querySelector('#empty-word')?.addEventListener('input', (event) => {
+      emptyWord = event.target.value;
+      nudge();
+      const el = root.querySelector('#empty-word');
+      if (el) { el.focus(); el.setSelectionRange(el.value.length, el.value.length); }
+    });
     delegate(root, '[data-act="clear-final"]', () => {
+      // Belt to the disabled attribute's braces. A repaint, a stale node or
+      // a synthetic click must not be able to empty a trip on a word that
+      // does not match.
+      if (emptyWord.trim().toUpperCase() !== 'EMPTY') return;
       store.clearTripContent();
       confirming = 0;
+      emptyWord = '';
       notice = 'The trip is empty. Add your first stop from Plan → Edit.';
       nudge();
     });

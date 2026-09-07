@@ -60,7 +60,10 @@ const PRE_EXISTING = [
   ['danger-fg on danger-bg', '#9B4B4B', '#F8E9E9', '.gone-s, .badge.rust, .stat.tight'],
   ['white on ink', '#FFFFFF', '#14201C', '.btn.ink, .warn-fix.first'],
   ['white on jade', '#FFFFFF', '#1F6F5C', '.btn.jade'],
-  ['white on amber (dock-btn)', '#FFFFFF', '#C87F0A', '.dock-btn — pre-existing, unrelated to this round'],
+  // §3.7 removed `.dock-btn` with the dock. The pair is kept in this list
+  // rather than deleted, because `--amber` as a BUTTON GROUND is a thing a
+  // future design could reach for again, and 3.23:1 is the reason not to.
+  ['white on amber (retired .dock-btn)', '#FFFFFF', '#C87F0A', 'the dock went in §3.7 — kept as the record of why white-on-amber fails'],
   ['ink on bone (ghost btn text)', '#14201C', '#F2F3F1', '.btn.ghost'],
   ['charcoal on field-grey (pay-chip)', '#3D4C46', '#EFF1EE', '.pay-chip, .leg'],
 ];
@@ -86,6 +89,21 @@ const NEW_THIS_SESSION = [
   ['sum-buy on bone', '#1A7396', '#F2F3F1', '.must-buy .must-label over the panel ground'],
   ['sum-snack on white', '#B23F68', '#FFFFFF', '.must-snack .must-label, 10.5px/800'],
   ['sum-snack on bone', '#B23F68', '#F2F3F1', '.must-snack .must-label over the panel ground'],
+
+  // §3.1 · F3 · --offhours, the only new colour in the seven-decision set.
+  // Judged on THREE grounds, not two: the token's real ground is #EFF1EE,
+  // the chip fill, and that is the one the reader actually sees — the white
+  // card and --bone only show through where a row is on a bare panel. A
+  // token at 10.5px/800 is well under the large-text threshold, so 4.5:1
+  // applies to all three.
+  ['offhours on chip #EFF1EE', '#6E3A8C', '#EFF1EE', '.tw, its real ground, 10.5px/800'],
+  ['offhours on white', '#6E3A8C', '#FFFFFF', '.tw on a white card'],
+  ['offhours on bone', '#6E3A8C', '#F2F3F1', '.tw where the panel shows through'],
+
+  // §3.7 · the sub-route select's chosen state reuses the amber pair the app
+  // already has for "a sub route, planned by you" — no new colour, but a new
+  // USE at 11.5px/700, so it is judged rather than assumed.
+  ['amber-fg on amber-bg (loop chip)', '#8A5A08', '#FBF1DE', '§3.7 .sel-chip.mine, 11.5px/700'],
 ];
 
 function run(label, pairs, { gate }) {
@@ -104,9 +122,37 @@ function run(label, pairs, { gate }) {
   return gate ? failures : 0;
 }
 
+/*
+ * F4 · GROUND-SCOPED PAIRS — and the rule for the next dark surface.
+ *
+ * A dark-ground ink is DEFINITIONALLY EXEMPT from a bar measured on white
+ * and --bone: it is designed to fail there. The owner's bar is 4.5:1 on
+ * white AND bone, so the honest thing is not to smuggle these into the
+ * general sweep, nor to leave them ungated — it is to gate them against the
+ * ground they actually appear on and say so by name.
+ *
+ * THE RULE, so the next dark surface inherits it instead of the argument:
+ *   a colour that only ever appears on one ground is gated on THAT ground,
+ *   in this list, with the ground named. It is never added to
+ *   NEW_THIS_SESSION, and never given a pass because "it's a dark card".
+ *
+ * The owner's answer to F4 was UNIFY rather than add a second exemption:
+ * `.archive-was` moved from #9FB2AA (4.03:1 — a real, shipped AA failure on
+ * a live screen) to #B6C7C0, so the app has exactly ONE secondary ink for
+ * dark grounds and it passes.
+ */
+const GROUND_SCOPED = [
+  ['archive-name on dark-card', '#E4EBE8', '#3D4C46', '.archive-name, 13.5px/650 — dark ground only'],
+  ['archive-was on dark-card', '#B6C7C0', '#3D4C46', '.archive-was, 11px — F4: was #9FB2AA at 4.03:1'],
+  ['white on ink (credit bar)', '#FFFFFF', '#14201C', '§3.3 .hero-credit — solid ink, never alpha over a photo'],
+  ['loop-foot name on dark-card', '#E4EBE8', '#3D4C46', '§3.7 .loop-foot-name / -at, 13px/650 — reuses F4’s pair'],
+  ['loop-foot secondary on dark-card', '#B6C7C0', '#3D4C46', '§3.7 .loop-foot-note / -n / eyebrow — F4’s single secondary ink'],
+];
+
 let gatedFailures = 0;
 gatedFailures += run('Pre-existing pairs (tracked, not gated — see header comment)', PRE_EXISTING, { gate: false });
 gatedFailures += run('New pairs this session (items 02/12/16) — gated', NEW_THIS_SESSION, { gate: true });
+gatedFailures += run('Ground-scoped pairs (F4) — gated on their OWN ground, exempt from the white/bone sweep', GROUND_SCOPED, { gate: true });
 
 console.log(gatedFailures
   ? `\nFAIL: ${gatedFailures} pair(s) introduced this session fall below WCAG AA.`

@@ -188,8 +188,9 @@ export const MUST_SEE = [
   { id: 'm4', placeID: 'nishi', title: 'South standing bars', tag: 'NIGHT', summary: 'Lights come on after 17:00 — steam, crowd and signage all in one frame.', whereToFind: 'South exit', imagePath: null, captured: false, order: 3, latitude: 35.6795, longitude: 139.7008 },
 ];
 
-// What to wear is generated from each day's real forecast now — see
-// `outfitAdvice()` in store.js — not a fixed sentence about this market.
+// What to wear comes from the day's own researched paragraphs now — see
+// `outfitProse()` in store.js. These are only the quick-add chips for the
+// packing half of the card, which is the traveller's own record.
 export const OUTFIT_PICKS = ['Rust coat', 'Cream knit', 'Flat shoes', 'Shawl'];
 
 /**
@@ -256,6 +257,25 @@ export const CATEGORY_LABELS = {
   shopping: 'Shopping',
   sight: 'Sights',
   rest: 'Rest',
+  /*
+   * Added 7 Sep 2026, for the airport batch.
+   *
+   * An ATM, a currency-exchange window, a coach kerb, a check-in counter, a
+   * meeting point, free wifi, a re-screening warning: roughly a third of what
+   * is genuinely useful at an airport is neither a sight nor a rest. The
+   * bundle's own precedent was to file them as `sight` — `day1-haneda` has
+   * the Electronic Customs Declaration gates that way — which made the Nearby
+   * category filter lie: someone filtering for Sights got a customs gate.
+   *
+   * Everything that reads this map derives from it (`PLACE_CATEGORY_IDS`, the
+   * add-a-place dropdown) or compares strings (`categoryLabel`, the Nearby
+   * filter), so nothing assumed exactly six. The one hardcoded list is `CATS`
+   * in `nearby.js`, and its seventh chip is deliberately NOT added here: the
+   * chip row is what Design's §3.7 restructures, so it lands with that work,
+   * against the artboards. Until then these records show correctly and are
+   * included by the "All" chip; they simply have no chip of their own.
+   */
+  service: 'Service',
 };
 
 export const MODE_ICONS = { walk: '🚶', train: '🚆', bus: '🚌' };

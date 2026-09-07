@@ -8,6 +8,28 @@ production write, and step 9 is the real trip.**
 
 ---
 
+## What this re-import carries, if you have imported before
+
+Seven things have changed in the data since the last write. None of them touches a field a
+traveller has edited — the merge is field-wise, and the dry run reports **1294 fields preserved**
+by it — but you should know what you are landing.
+
+| | what lands | why it is safe |
+|---|---|---|
+| **the airport batch** | +59 records across Penang, Changi and Haneda: 43 places, 5 must-see, 8 shopping, 3 sub-routes | it emits no `essentials`, `stopSummary` or `outfitByStop` for Haneda, the one stop it overlaps, so there is nothing of Haneda's for it to overwrite. Verified by building the snapshot with and without it |
+| **the `service` category** | 14 records move from `sight` to `service` — 4 at Penang, 1 at Changi, 8 at Haneda, 1 in the Day 1 batch | a category is a label, not a relationship; nothing anchors to it. The 17 coach-park records filed as `rest` are deliberately NOT touched — a separate, later pass |
+| **item 4 · `onList: false`** | all 104 shopping items start OFF the main list, local to the place they were noted at | ticking one bought promotes it, one way. The direction of the default is the safety property: absent or true means listed, so no record written before the flag existed changes visibility |
+| **the prep recategorisation** | 85 prep lines land in the seven approved columns | update-only, no inserts |
+| **the Info-tab projection** | 575 nearby places gain 3935 `essentials` rows | additive; a place that had none had an empty tab |
+| **the `steps[]` normalisation** | one canonical shape, applied at import | idempotent — running it twice produces the same bytes |
+| **two text corrections** | Day 1's 07:00 note now carries SQ's 07:15 opening and 09:35 hard close; the Haneda onsen record carries the walkway-hours caveat | prose only |
+
+**Not carried, and deliberately:** `outfitByStop` — 33 per-stop clothing records, ~1,400 characters
+each, which nothing imports. `handoff/trip12/AUTONOMOUS_LOG.md` U1 explains why that is a design
+question rather than an importer bug, and no importer change was made for it.
+
+---
+
 ## What you need before you start
 
 | | |
@@ -92,17 +114,19 @@ No key is needed and none should be passed.
 **Check these numbers before going on.** If any differ, stop and report them:
 
 ```
-places            575  167  408        (532 research + 43 stop places)
-subRoutes          17    0   17
-shopping           96   49   47
-mustSee            60   34   26
+collection        total   update   insert
 days                8    8    0
+places            618  167  451
+subRoutes          20    0   20
+shopping          104   49   55
+mustSee            65   34   31
 prep               85   85    0
+outfits             8    8    0
 
-searchable records                     688
-ids updated in place / inserted        250 / 498
-nameJp coverage                        688 / 688
-records flagged retired                29
+searchable records (places + mustSee + shopping)   744
+ids updated in place / inserted                    250 / 557
+nameJp coverage                                    704 / 744
+records flagged retired                            29
 
 stops  active / retired / with data    40 / 3 / 43
   of the active: researched / travel    30 / 10
@@ -110,17 +134,41 @@ stops  active / retired / with data    40 / 3 / 43
        with a 5-line summary           33 / 43
        summary lines                   165
        correctedFromSeed entries       196
-       with structured hours           33 / 43
+       with structured hours           35 / 43
 
 travel legs added                      10   (5 on day 1, 5 on day 8)
 TIME FIX  Narita T1 South Wing         (none) -> 07:20
 
 duplicate venue pairs merged           20
 coLocated pairs kept (both)            3
+places whose anchorStop changed        3
+fields preserved by field-wise merge   1294
+nearby places given an Info tab        575 (3935 rows)
+shopping items starting OFF the list   104   (item 4)
+shopping categories backfilled         54
+cross-wired categories corrected       1
+places with an invalid category        0
 dangling anchorPlaceID                 0
 records the merge could not map        0
 nested arrays remaining                0
 ```
+
+### What changed since the numbers above were first written
+
+These are LARGER than the figures from the first import round, and every
+increase is accounted for. If a number differs from this table, stop.
+
+| line | was | now | why |
+|---|---|---|---|
+| places | 575 | 618 | the airport batch — 59 records, 16 of them merged into existing venues |
+| subRoutes | 17 | 20 | three airport sub-routes, one per airport |
+| shopping | 96 | 104 | eight airport buys |
+| mustSee | 60 | 65 | five airport photo spots |
+| outfits | *absent* | 8 | not a new record — §3.2 made the existing eight visible, so the report counts them now |
+| searchable | 688 | 744 | the sum of the three above |
+| nameJp | 688/688 | 704/744 | the 40 without one are the Penang and Singapore records. They have no Japanese name, and inventing one would be a fabrication |
+| structured hours | 33/43 | 35/43 | the two airport stops that publish theirs |
+| invalid category | *not reported* | 0 | `service` is a PlaceCategory now; the dry run is what caught the importer not knowing it |
 
 ## Step 4 — back up production (read-only)
 
@@ -162,15 +210,24 @@ account.
 
 *(Step numbering kept aligned with the sequence you asked for; the local dry run is step 3.)*
 
-## Step 6b — DEPLOY THE WEB APP (new, and it matters)
+## Step 6b — DEPLOY THE WEB APP
 
-**Two fixes live in `web/`, and `web/` has never been deployed.** `deploy-web.yml` runs only on a
-push to `main`, and this branch is not merged — so the app at travel-planner-3e0d3.web.app is still
-running the pre-work build. No amount of hard-refreshing reaches code that was never uploaded.
+**Most of the work now lives in `web/`.** `deploy-web.yml` runs on a push to `main`, so whatever is
+on `main` is what the app at travel-planner-3e0d3.web.app is running. No amount of hard-refreshing
+reaches code that was never uploaded.
 
-Without this step the Zuiganji sub-route still renders at the bottom of Day 2, and "Fetch today's
-rate" still logs `Returned response is null`. Everything else in the trip is data and lands without
-it.
+Without this step, none of the following is on the phone — all of it is code, not data, and none of
+it arrives with the import:
+
+- the seven Design sections: the select recipe, the outfit prose on Prep, the dawn/night marks and
+  the `Now` filter, the image slot, the Add-a-stop dock, the Nearby restructure, and search
+- the ten Bug Findings items on top of Bucket A's twenty
+- **the `service` category's label.** Without the deploy, the 14 reclassified records land in
+  Firestore with a category the running app does not recognise, and `categoryLabel` falls through
+  to printing the raw string `service` on their cards. It is cosmetic and it is avoidable: deploy
+  before you import, or in the same sitting.
+
+Everything else in the trip is data and lands without it.
 
 Either merge the branch to `main` and let the Action run, or deploy straight from the branch:
 
@@ -256,6 +313,30 @@ so anything that does not match is worth stopping for:
 - [ ] **Prep** shows all seven groups, including *Day bag* and *Leave behind*.
 - [ ] **Trip settings** shows the currency rate at **33.7** with the fetch button.
 - [ ] Browser console is clean.
+
+**And the airport batch, which is new since the first round:**
+
+- [ ] Open **Assembly · Penang International Airport** (Day 1, 07:00). Its note now names all three
+      times: assemble 07:00, SQ opens check-in **07:15**, hard close **09:35**. Nearby should hold
+      the four Penang service records — check-in counters, the ATM row, baggage wrapping, the telco
+      counters — and each should read **Service** on its card, not "Sights" and not a raw `service`.
+- [ ] Open **Haneda Airport — Terminal 3** (Day 1, 21:55). Its five Must lines and its Info rows
+      must be **exactly as they were** — the airport batch deliberately emits none of those for
+      Haneda, and this is the one stop where an overwrite would have been possible.
+- [ ] Find **Izumi Tenku no Yu** in Haneda's Nearby. Its note now carries the CAVEAT: the walkway
+      hours are unpublished, and the operator's own wording is 早朝から深夜まで, not 24時間.
+- [ ] **Shop** opens saying nothing is on the list, and names the count — 104 items are waiting at
+      their places, which is item 4 working, not an import that failed.
+
+**And the app work, which needs step 6b rather than the import:**
+
+- [ ] Every screen header has a **magnifier**. Tap it, type `銀山`, and a result should take you to
+      the row and mark it.
+- [ ] **Prep** shows two paragraphs of clothing advice per day, not "No forecast for this day yet".
+- [ ] A stop's **Nearby tab** has a category select, a per-card sub-route dropdown, `+ Add a place`,
+      and a dark card at the foot listing the day's free time. No round `+`, no bottom dock.
+- [ ] A stop with no photo opens on **its own name**, with a white back bar — no hatched
+      "Photo placeholder".
 
 Try the removal round-trip once yourself, since it is the mechanism you will actually use on Day 7:
 tap the pencil to edit, tap **✕** on Ginza, leave edit mode. It should drop into *REMOVED FROM THIS

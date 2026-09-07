@@ -623,12 +623,14 @@ export function itemEditor(item, { symbol = '', error = '' } = {}) {
           </div>
         </div>
         <label class="f11 soft block">Bought at</label>
-        <select id="edit-place">
-          ${places.map((name) => html`
-            <option value="${esc(name)}"${name === item.placeLabel ? ' selected' : ''}>${name}</option>`)}
-          ${places.includes(item.placeLabel) ? '' : html`
-            <option value="${esc(item.placeLabel || '')}" selected>${item.placeLabel || 'Unplanned'}</option>`}
-        </select>
+        <label class="sel">
+          <select id="edit-place">
+            ${places.map((name) => html`
+              <option value="${esc(name)}"${name === item.placeLabel ? ' selected' : ''}>${name}</option>`)}
+            ${places.includes(item.placeLabel) ? '' : html`
+              <option value="${esc(item.placeLabel || '')}" selected>${item.placeLabel || 'Unplanned'}</option>`}
+          </select>
+        </label>
         <div class="form-actions">
           <button class="btn jade grow" data-act="item-save">Save</button>
           <button class="btn ghost" style="width:96px" data-act="item-cancel">Cancel</button>
@@ -738,6 +740,22 @@ export function readShotEditor(root) {
  *
  * Category and price tier are deliberately still absent — a later round.
  */
+/**
+ * §3.4 · the magnifier, in the icon slot every screen header already keeps.
+ *
+ * One slot, five screens, no new chrome. Plan keeps its pencil, Map its
+ * gear, Nearby its sort — this sits beside them rather than replacing
+ * anything, and the tab bar is untouched. Search is invoked in bursts, not
+ * dwelt in, which is why it is a button and not a sixth tab.
+ *
+ * The handler is bound ONCE, on the app frame, by nav.js: the panel's state
+ * belongs to the app rather than to whichever screen happened to open it.
+ */
+export const searchButton = () => html`
+  <button class="iconbtn" data-act="search-open" aria-label="Search this trip">
+    ${raw(icon.search('#14201C', 15))}
+  </button>`;
+
 export function factsEditor(place, { error = '', pending = false } = {}) {
   const held = new Map((place?.essentials || []).map((row) => [row.key, row]));
   const rows = store.PLACE_FACTS.map((fact) => ({ ...fact, ...held.get(fact.key) }));

@@ -39,12 +39,12 @@
         }
       ],
       "timeWindow": "24h",
-      "note": "24-hour real onsen inside Haneda Airport Garden, T3-直結 on the 2F walkway. ¥4,800 adult (towels and robe included), ¥2,000 child 4-elementary, plus a ¥4,000 surcharge for 02:00-05:00 (so ¥8,800). Men's Ginyoku-no-Yu looks at the south ends of Runways A and D; women's Fujimi-no-Yu looks over the Tamagawa. Not doable in the 21:55-22:30 transfer — this is for anyone who breaks off from the coach.",
+      "note": "24-hour real onsen inside Haneda Airport Garden, T3-直結 on the 2F walkway. ¥4,800 adult (towels and robe included), ¥2,000 child 4-elementary, plus a ¥4,000 surcharge for 02:00-05:00 (so ¥8,800). Men's Ginyoku-no-Yu looks at the south ends of Runways A and D; women's Fujimi-no-Yu looks over the Tamagawa. Not doable in the 21:55-22:30 transfer — this is for anyone who breaks off from the coach. CAVEAT, added 7 Sep 2026: treat \"24-hour\" as unconfirmed. See airport-hnd-garden-walkway-unverified \u2014 the T3 walkway to Airport Garden publishes no hours anywhere, so reachability at 23:00 is an open question, and Sumitomo's own wording for the bath is 早朝から深夜まで (early morning to late night), notably NOT 24時間. The 02:00-05:00 surcharge above is the only published hint that it runs overnight.",
       "latitude": 35.543854,
       "longitude": 139.764679,
       "coordPrecision": "verified",
-      "confidence": "high",
-      "confidenceNote": null,
+      "confidence": "medium",
+      "confidenceNote": "The bath, the prices and the two views come from a 2022 trade report and are solid. What is NOT established is the two things a person standing in T3 at 23:00 actually needs: that the bath is open, and that the walkway to it is. No operator source for either could be reached — see airport-hnd-garden-walkway-unverified — and the operator's own phrasing 早朝から深夜まで contradicts the 24-hour claim. Confidence dropped from high to medium on 7 Sep 2026 for that reason alone, not because of anything about the bath itself.",
       "source": "https://www.traicy.com/posts/20221029252095/"
     },
     {
