@@ -332,10 +332,16 @@ It enforces the list under "What `validate_research.py` actually enforces" above
 else. It will not catch a wrong fact, a duplicate id, a missing `nameJp`, or a missing `source`.
 Only you can.
 
-> **Check you have the current validator before you start.** Two fixes were made to it on 7 Sep
-> 2026 for this work — the three missing airport `anchorStop` names, and the per-stop coordinate
-> boxes — and a copy taken before that will reject every Penang and Changi record you write, for
-> two reasons that look like your mistake and are not. Confirm with:
+> **Get the bundle from branch `claude/inspiring-newton-uzu0mt`.** `research/trip12/` does **not**
+> exist on `main`, and the `trip12-implementation-handoff.tar.gz` handoff tarball predates the
+> validator fixes below — so a tarball or a `main` checkout will fail the self-check in this block.
+> That failure is the check doing its job, but for the wrong reason: nothing is wrong with your
+> work, you simply have an old validator. Clone or pull the branch and re-run.
+>
+> **Then check you have the current validator before you start.** Two fixes were made to it on
+> 7 Sep 2026 for this work — the three missing airport `anchorStop` names, and the per-stop
+> coordinate boxes — and a copy taken before that will reject every Penang and Changi record you
+> write, for two reasons that look like your mistake and are not. Confirm with:
 >
 > ```sh
 > grep -c "def in_region" research/trip12/validate_research.py   # want 1
@@ -368,8 +374,13 @@ Haneda Airport — Terminal 3
 ```
 
 Note the two **different** Changi stops — outbound (~2h10, and probably all within T2) and
-homebound (2h15). They are separate stops with separate constraints and must not be merged. *The
-outbound figure was wrong in an earlier draft of this brief and is corrected in "The constraints
-that shape what is useful" above; if you find "55 minutes" anywhere, that draft is stale.*
+homebound (2h15). They are separate stops with separate constraints and must not be merged.
+
+*On the "55 minutes" figure:* it was wrong in an **earlier draft of this brief** and is corrected in
+"The constraints that shape what is useful" above. **The app itself was never wrong about this** —
+its Day 1 rows store 11:45 and 13:55 and it renders the gap as `2h 10m`, which agrees with this
+brief. So if you meet "55 minutes" it is a stale copy of *this document*, not a discrepancy with the
+app, and there is nothing to reconcile. One thing not to mistake for it: the app does print `2h 55m`
+on **Day 7**, for the Tsukiji Outer Market → Ginza gap. That label is correct and unrelated.
 
 `Narita Airport — Terminal 1 South Wing` is **already complete**. Do not emit records for it.
