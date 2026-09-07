@@ -30,6 +30,11 @@ let addOpen = false;
 let form = { name: '', start: '', end: '' };
 let notice = '';
 /**
+ * §3.6 · whether the docked form has already scrolled the day to its
+ * insertion point. One scroll per opening, never per repaint.
+ */
+let scrolledToPoint = false;
+/**
  * Which control is doing async work — a key, never a free string (P0-5 R1).
  * `notice` keeps the outcomes it already carries, including the "added
  * without a location" caveat, which is a real outcome and stays (R4).
@@ -82,7 +87,8 @@ export default {
 
     return html`
       <section class="screen">
-        <div class="head">
+        <div class="head${addOpen && editing ? ' chrome-quiet' : ''}"${
+          addOpen && editing ? raw(' data-act="add-cancel"') : ''}>
           <div class="head-row">
             <div class="grow">
               <div class="screen-title">Day ${day?.dayNumber ?? ''}</div>
@@ -101,7 +107,19 @@ export default {
           <div class="chiprow mt10">${dayPills({ small: true })}</div>
         </div>
 
-        <div class="scroll" style="padding:14px 16px 24px">
+        <!--
+          §3.6 · the chrome goes quiet while the form is open. Not a scrim:
+          the itinerary behind the form is the reference material this form
+          is READ AGAINST, and a stop's time only means anything against the
+          times around it. So the rule this introduces, stated so it is a
+          decision rather than a drift:
+
+            scrim          when the background is context you can ignore
+            dim-and-stick  when the background IS the reference material
+
+          Add-a-stop is the only case of the second kind in the app today.
+        -->
+        <div class="scroll${addOpen && editing ? ' with-front' : ''}" style="padding:14px 16px 24px">
           <!-- Shown once on the first Plan paint after a join, dismissed by
                its own control, and it does not return. Above the weather,
                because it is about the trip itself rather than the day. -->
@@ -130,9 +148,16 @@ export default {
 
           ${editing ? html`
             ${notice ? html`<div class="amber-note f12 mt8">${notice}</div>` : ''}
-            ${addOpen ? addForm() : ''}
-            <button class="btn-dashed mt8" data-act="add-open">+ Add a stop</button>
-            <button class="btn ghost mt8" style="width:100%" data-act="paste">Paste an itinerary</button>
+            <!-- The two footer controls go quiet while the form is open: at
+                 40%, inert, and a tap on either CANCELS rather than doing
+                 nothing. The button that spawned the form is still visible
+                 300px down the scroller, and visibly out of play, which is
+                 the honest state. -->
+            <div class="${addOpen ? 'chrome-quiet' : ''}"${
+              addOpen ? raw(' data-act="add-cancel"') : ''}>
+              <button class="btn-dashed mt8" data-act="add-open">+ Add a stop</button>
+              <button class="btn ghost mt8" style="width:100%" data-act="paste">Paste an itinerary</button>
+            </div>
           ` : ''}
 
           <!-- The block also renders for a bare receipt: moving the last
@@ -140,10 +165,66 @@ export default {
                for that very move would go with it. -->
           ${archived.length || moved ? archive(archived, editing) : ''}
         </div>
+
+        <!--
+          §3.6 · the form, docked to the bottom of the Plan rather than
+          sitting in the document.
+
+          In flow it could push the day out of view or scroll away from
+          under a thumb, which is what was reported: not that the form was
+          ugly, but that it LOST ITS PLACE. Docked, the three stops nearest
+          the insertion point stay at full contrast and fully scrollable —
+          which is the whole reason this is not a sheet.
+        -->
+        ${addOpen && editing ? html`
+          <div class="plan-front">${addForm()}</div>` : ''}
       </section>`;
   },
 
   mount(root) {
+    /*
+     * §3.6 · the tab bar goes quiet too, and it is the one piece of chrome a
+     * screen cannot reach — it is a sibling of the screen host. So the state
+     * goes on `body`, and `nav.js` clears it on every paint, which means it
+     * cannot survive navigating away.
+     *
+     * DIVERGENCE, stated: a tap on the dimmed tab bar does NOTHING here,
+     * where §3.6 says a tap on any dimmed chrome cancels. The header and
+     * both footer controls do cancel. Reaching out of a screen module to
+     * hang a cancel on the app's own tab bar costs more than the difference
+     * is worth, and inert-and-visibly-out-of-play is still honest.
+     */
+    document.body.classList.toggle('front-form', Boolean(addOpen && state.editingPlan));
+
+    /*
+     * §3.6 · bring the insertion point into view when the form opens.
+     *
+     * The decision is that "the three stops NEAREST THE INSERTION POINT stay
+     * at full contrast and fully scrollable" — that is the whole reason this
+     * is not a sheet. Measured on the demo trip, exactly one whole row was
+     * left between the header and the form, because the top of the scroller
+     * is the weather banner and the edit hint rather than the day. Design's
+     * board is centred on the insertion point; it does not open at the top
+     * of the day and hope.
+     *
+     * Once, on the closed-to-open transition. `mount` runs on every paint,
+     * so scrolling unconditionally would fight the reader's own thumb the
+     * moment they scrolled away from it.
+     */
+    if (addOpen && state.editingPlan && !scrolledToPoint) {
+      scrolledToPoint = true;
+      const hit = store.stopBefore(state.selectedDay, form.start || '09:00');
+      const target = hit && root.querySelector(`[data-row-id="${hit.id}"]`);
+      const scroller = root.querySelector('.scroll');
+      if (target && scroller) {
+        // Its top just under the header, so it and the two rows after it are
+        // the three in play.
+        scroller.scrollTop += target.getBoundingClientRect().top
+          - scroller.getBoundingClientRect().top - 8;
+      }
+    }
+    if (!addOpen) scrolledToPoint = false;
+
     if (laneSheet) {
       mountLaneForm(root);
       return;
@@ -720,8 +801,13 @@ function sharedEmptyDay(day) {
 function addForm() {
   const saved = store.allPlaces();
   return html`
-    <div class="form mt8">
+    <div class="form">
+      <!-- §3.6 · the head states WHERE the stop will land, which is the
+           question the surrounding times were being read to answer in the
+           first place. Derived from the typed time, so it follows the field
+           rather than describing whatever was true when the form opened. -->
       <div class="form-title">Add a stop</div>
+      ${afterLine() ? html`<div class="f11 soft" style="margin-top:-6px">${afterLine()}</div>` : ''}
 
       <input id="add-name" placeholder="Name, or paste a Google / Apple Maps link" value="${form.name}">
       ${addError ? html`
@@ -741,12 +827,16 @@ function addForm() {
           <input id="add-start" placeholder="09:00" value="${form.start}" style="width:82px" inputmode="numeric">
         </label>
         <label class="none">
-          <span class="f11 soft">Ends</span>
-          <input id="add-end" placeholder="—" value="${form.end}" style="width:82px" inputmode="numeric">
+          <!-- §3.6 · "leave the end blank for the last stop of a day" used to
+               be a third sentence in the hint, which pushed a DOCKED form to
+               three lines of prose and cost the day a row. It is a fact about
+               this field, so it lives on this field. -->
+          <span class="f11 soft">Ends · optional</span>
+          <input id="add-end" placeholder="—" value="${form.end}" style="width:96px" inputmode="numeric">
         </label>
       </div>
 
-      <div class="form-hint">${landingLine()} Leave the end blank for the last stop of a day.</div>
+      <div class="form-hint">${landingLine()}</div>
 
       <!-- B3 · the app's own pair, everywhere else in the app: a jade
            primary that grows and a 96px ghost Cancel. The ✕ that used to sit
@@ -780,13 +870,24 @@ function addForm() {
 function landingLine() {
   const at = form.start || '09:00';
   const { before, after, only } = store.stopNeighbours(state.selectedDay, at);
+  // §3.6 adds the second half: the reassurance that inserting a stop does
+  // not shuffle the times either side of it. B3's first half stays, because
+  // the placement rule is what replaced the two radios.
+  const held = ' The times either side stay where they are.';
   if (only) return 'Lands on the main route, as the day’s first stop.';
-  if (before && after) return `Lands on the main route, between ${before} and ${after}.`;
-  if (after) return `Lands on the main route, before ${after}.`;
-  if (before) return `Lands on the main route, after ${before}.`;
+  if (before && after) return `Lands on the main route, between ${before} and ${after}.${held}`;
+  if (after) return `Lands on the main route, before ${after}.${held}`;
+  if (before) return `Lands on the main route, after ${before}.${held}`;
   // Every stop on the day is untimed, so there is no order to land in and
   // claiming one would be a guess.
   return 'Lands on the main route.';
+}
+
+/** §3.6 · "after 11:20 Nogawa" — the stop this one lands behind. */
+function afterLine() {
+  const at = form.start || '09:00';
+  const hit = store.stopBefore(state.selectedDay, at);
+  return hit ? `after ${hit.time} ${hit.name}` : '';
 }
 
 /**

@@ -1670,6 +1670,29 @@ export function dayIssueCount(n = state.selectedDay) {
  * Only TIMED stops count: an untimed one has no position in the order, so
  * saying a new stop lands after it would be a guess.
  */
+/**
+ * §3.6 · the timed stop a new one at `time` lands behind, with its clock —
+ * for the form's own head ("after 11:20 Nogawa"). Shortened to the stop's
+ * first two words, because the head is one line and a name like
+ * "Matsushima Bay Cruise — Nioumaru course" would take all of it.
+ */
+export function stopBefore(n = state.selectedDay, time = '') {
+  const at = parseClock(time);
+  if (at == null) return null;
+  const timed = activeItems(day(n))
+    .map((item) => ({ item, start: itemWindow(item).start }))
+    .filter((s) => s.start != null && s.start <= at)
+    .sort((a, b) => b.start - a.start);
+  const hit = timed[0];
+  if (!hit) return null;
+  const words = String(hit.item.name || '').split(/\s+/);
+  return {
+    id: hit.item.id,
+    time: clock(hit.start),
+    name: words.length > 2 ? `${words.slice(0, 2).join(' ')}…` : words.join(' '),
+  };
+}
+
 export function stopNeighbours(n = state.selectedDay, time = '') {
   const at = parseClock(time);
   const timed = activeItems(day(n))

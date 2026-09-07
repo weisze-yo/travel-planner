@@ -1301,6 +1301,55 @@ input[type="radio"], input[type="checkbox"] {
 }
 .tw-show { flex: none; font-size: 11.5px; font-weight: 800; color: var(--jade); min-height: 44px; }
 
+/*
+ * §3.6 · DIM AND STICK — the fourth "in front of things" treatment, and the
+ * only one this app has that is not a scrim.
+ *
+ * The rule, stated so it is a decision rather than a drift:
+ *
+ *   scrim           when the background is context you can ignore
+ *   dim-and-stick   when the background IS the reference material
+ *
+ * Add-a-stop is the only case of the second kind today. A stop's time only
+ * means something against the times around it, so a grey veil over the
+ * itinerary would dim exactly the rows you are typing against — which is
+ * why the reported "put it in a sheet" was rejected along with the
+ * partial-height variant.
+ */
+.plan-front {
+  position: absolute;
+  left: 0; right: 0; bottom: 0;
+  z-index: 6;
+  padding: 0 16px 14px;
+  background: #fff;
+  border-top: 1.5px solid var(--ink);
+  box-shadow: 0 10px 28px rgba(20,32,28,.30);
+  max-height: 78%;
+  overflow-y: auto;
+}
+.plan-front .form { border: 0; box-shadow: none; background: none; padding-left: 0; padding-right: 0; }
+/* The scroller keeps room for it, so nothing at the foot of the day becomes
+   unreachable underneath the form. ~232px is what the form occupies, and
+   the day showing three rows instead of six is the cost the decision
+   accepts. */
+.scroll.with-front { padding-bottom: 260px !important; }
+/*
+ * Everything that is neither the itinerary nor the form: 40%, inert, and a
+ * tap CANCELS rather than doing nothing — the same thing a scrim does on
+ * the Destination sheets.
+ *
+ * This is the one place opacity below 1 is allowed to mean something, and
+ * B2's corollary says why: what is dimmed here is the CHROME around the
+ * content, never the content. The rows stay at full contrast, which is the
+ * entire point of the treatment.
+ */
+.chrome-quiet { opacity: .4; }
+.chrome-quiet > * { pointer-events: none; }
+/* The tab bar, which is a sibling of the screen host and so cannot be
+   reached from inside a screen — the state goes on `body` instead, and
+   nav.js clears it on every paint. */
+body.front-form #tabbar { opacity: .4; pointer-events: none; }
+
 /* ---------------------------------------------------------------- must-see */
 
 .shot-img {

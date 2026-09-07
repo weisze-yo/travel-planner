@@ -72,6 +72,12 @@ const go = async (s, a) => {
       agentText: /agent.s route|My own plan/i.test(form.textContent),
       fields: [...form.querySelectorAll('input, select')].map((e) => e.id || e.type),
       hint: form.querySelector('.form-hint')?.textContent.trim().replace(/\s+/g, ' '),
+      // §3.6 moved "leave the end blank" out of the hint and onto the field
+      // it is about, because a third sentence of prose in a DOCKED form cost
+      // the day a row. The fact has to still be stated — this reads the
+      // whole form, so it passes wherever the fact lives.
+      endOptional: /Ends\s*·\s*optional|Leave the end blank/i
+        .test(form.textContent.replace(/\s+/g, ' ')),
       btns,
       cross: btns.some((b) => b.text === '✕' || b.text === '✕'),
     };
@@ -87,8 +93,8 @@ const go = async (s, a) => {
         /^Lands on the main route/.test(f.hint || ''), f.hint);
   check('B3 · and names the neighbours it lands between',
         /between .+ and .+\.|before .+\.|after .+\.|first stop/.test(f.hint || ''), f.hint);
-  check('B3 · it still says what an empty end means',
-        /Leave the end blank/.test(f.hint || ''), f.hint);
+  check('B3 · it still says what an empty end means, wherever that is said',
+        f.endOptional === true, f.hint);
   check('B3 · the 38px ✕ is gone', f.cross === false, JSON.stringify(f.btns));
   const cancel = f.btns.find((b) => b.text === 'Cancel');
   check('B3 · replaced by the app’s standard 96px ghost Cancel',

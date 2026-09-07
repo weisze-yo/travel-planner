@@ -91,6 +91,11 @@ function paint() {
   const screen = registry.get(current.id);
   if (!screen) return;
 
+  // §3.6 · the tab bar is a sibling of the screen host, so a screen cannot
+  // reach it. It is chrome, so the chrome owns the reset: cleared on every
+  // paint, and re-set by whichever screen still wants it in its own mount.
+  document.body.classList.remove('front-form');
+
   // Only a re-render of the same screen should keep its scroll position;
   // carrying it into a different screen leaves the new one part-scrolled.
   const scrollers = painted === current.id ? captureScroll() : [];

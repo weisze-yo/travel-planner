@@ -157,6 +157,55 @@ Commons`. Design's "never abbreviated to CC" is honoured; adding "4.0" would be 
 about a licence nobody recorded. If the version matters for compliance it belongs in the data, and
 `fetch_images.py` is where it would be captured.
 
+### 10 · The Add-a-stop hint carries facts from both canvases, and one moved to its field
+
+Three sentences wanted that hint slot:
+
+- B3: `Lands on the main route, between X and Y.` — the placement rule that replaced the radios
+- §3.6: `The times either side stay where they are.` — the reassurance about inserting
+- B3: `Leave the end blank for the last stop of a day.`
+
+All three at once made the hint **three lines of prose inside a docked form**, which measured 309px
+and left the day exactly one whole row. So the third moved to the field it is about: the Ends label
+reads `Ends · optional`. The fact is still stated, at the moment it applies, and the form came down
+to 293px.
+
+`test/provenance-derived.mjs` was retargeted to check the fact EXISTS anywhere in the form rather
+than that it is in the hint — the assertion is about the fact surviving, not its address.
+
+### 11 · A tap on the dimmed tab bar does nothing, where §3.6 says it should cancel
+
+§3.6: "everything that is not the itinerary or the form goes to 40% and stops taking taps... A tap
+on any of them cancels."
+
+The header and both footer controls do cancel. The **tab bar does not** — it is dimmed and inert,
+so a tap there does nothing.
+
+The tab bar is a **sibling of the screen host** in `index.html`, outside anything a screen module
+can render into. Making it cancel means either injecting an app-level element or wiring a custom
+event from nav.js back into whichever screen has a form open, and that is more machinery than the
+difference is worth. Inert-and-visibly-out-of-play is honest; it just is not also a cancel target.
+
+The dim itself is handled properly: the state is a `body` class and **nav.js clears it on every
+paint**, so it cannot survive navigating away. That is gated — a leak would show up as a
+permanently grey tab bar and would otherwise be found by a user, not a test.
+
+### 12 · Opening the form scrolls the day to the insertion point
+
+Not in §3.6, and required by it. The section's premise is that "the three stops NEAREST THE
+INSERTION POINT stay at full contrast and fully scrollable" — that is the whole reason it is not a
+sheet.
+
+Measured on the demo trip, opening the form left **one** whole row visible, because the top of the
+Plan scroller is the weather banner and the edit hint, not the day. Design's artboard is centred on
+the insertion point; it does not open at the top of the day and hope.
+
+So opening the form scrolls the stop it lands after to just under the header — **once per opening**,
+tracked by a flag, because `mount` runs on every paint and scrolling unconditionally would fight
+the reader's own thumb. Three whole rows now sit between the header and the form, and that row
+count is the assertion rather than §3.6's 232px figure, which was measured on Trip 12's Day 4 whose
+rows are shorter than the demo's.
+
 ## UNRESOLVED — needs the owner
 
 ### U1 · `outfitByStop` — 33 researched records, ~1,400 characters each, never imported
