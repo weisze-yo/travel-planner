@@ -242,7 +242,17 @@ export default {
     delegate(root, '[data-open-trip]', async (el) => {
       if (pending) return;
       pending = `open:${el.dataset.openTrip}`;
-      store.refreshTrips();
+      // `touch()`, not `refreshTrips()`: the list has not changed, only
+      // which card is opening, so there is nothing to refetch — and
+      // `refreshTrips`'s own catch branch can shorten `state.trips` to a
+      // single entry, which is not a thing "one card is opening" should be
+      // able to do to the list it is drawing.
+      //
+      // Either way the Opening label only reaches the screen if the open
+      // outlives one animation frame (nav.js coalesces on rAF, on purpose).
+      // A local trip opens inside one task and shows nothing, which is the
+      // right outcome — a one-frame flash is worse than no label.
+      store.touch();
       await store.switchTrip(el.dataset.openTrip);
       pending = '';
       go('map');
@@ -401,13 +411,25 @@ function cardBusy(opening, id) {
 }
 
 /**
- * Bug 20 · the busy state used to be `opacity:.45` on the whole card, and
- * every swipeable row has a solid red `.swipe-bin` delete track sitting
- * permanently behind it — so opening a trip made its dustbin show through.
- * It is a class now, and `.card-busy` in app.css retreats the card's
- * CONTENTS over a card that stays opaque.
+ * B2 · the card being opened carries NO fade at all now, not even on its
+ * contents.
+ *
+ * Bug 20 was `opacity:.45` on the whole card, which showed the delete track
+ * behind it; the first fix moved the fade to the contents, which stopped
+ * that but kept opacity meaning "loading". Opacity is not a state in this
+ * app, so loading is a LABEL instead — the .sync-ring and the word Opening
+ * in the card's foot. The card stays exactly as legible as it was, and the
+ * bin cannot appear because the row is not being dragged.
+ *
+ * `cardBusy` still stops taps: the opened card is answering, its siblings
+ * are inert. That is `pointer-events` alone — no fade, so the screen does
+ * not grey out around the one card that matters.
  */
-const busyClass = (opening, id) => (opening === id ? ' card-busy' : '');
+const openingLabel = () => html`
+  <div class="row g7 grow" style="align-items:center">
+    <span class="sync-ring" aria-hidden="true"></span>
+    <span class="f115 w650 muted">Opening</span>
+  </div>`;
 
 /** The running trip gets the width of a cover and the next thing on the day. */
 function runningCard(trip, opening = '') {
@@ -419,7 +441,7 @@ function runningCard(trip, opening = '') {
   return html`
     <div class="swipe-row mt8" data-trip-row="${trip.id}" data-trip-name="${trip.name}">
       <div class="swipe-bin"><button class="bin" data-swipe-delete aria-label="Delete trip">${raw(icon.bin)}</button></div>
-      <div class="swipe-face trip-running${busyClass(opening, trip.id)}"${cardBusy(opening, trip.id)}>
+      <div class="swipe-face trip-running"${cardBusy(opening, trip.id)}>
         <div class="trip-cover" style="${coverStyle(trip)}">
           <button class="trip-cover-hit" data-open-trip="${trip.id}" aria-label="Open ${trip.name}"></button>
           <div class="trip-cover-wash"></div>
@@ -448,8 +470,7 @@ function runningCard(trip, opening = '') {
           </button>` : ''}
 
         <button class="trip-foot" data-open-trip="${trip.id}">
-          ${mine ? html`
-            <div class="grow"><span class="chip amber none">Opening…</span></div>` : html`
+          ${mine ? openingLabel() : html`
             <div class="grow f115 w650 muted">
               ${card
                 ? (symbol
@@ -517,8 +538,8 @@ function plainCard(trip, kind, opening = '') {
   return html`
     <div class="swipe-row mt8" data-trip-row="${trip.id}" data-trip-name="${trip.name}">
       <div class="swipe-bin"><button class="bin" data-swipe-delete aria-label="Delete trip">${raw(icon.bin)}</button></div>
-      <div class="swipe-face trip-plain${kind === 'finished' ? ' done' : ''}${
-        busyClass(opening, trip.id)}"${cardBusy(opening, trip.id)}>
+      <div class="swipe-face trip-plain${kind === 'finished' ? ' done' : ''}"${
+        cardBusy(opening, trip.id)}>
         <div class="row g12" style="align-items:flex-start">
           <button class="trip-mark-lg" data-cover="${trip.id}"
                   aria-label="Choose a cover for ${trip.name}"
@@ -541,8 +562,7 @@ function plainCard(trip, kind, opening = '') {
                            data-open-trip="${trip.id}">Open ›</button>`}
         </div>
 
-        ${mine ? html`
-          <div class="row g6 wrap mt11"><span class="chip amber none">Opening…</span></div>` : ''}
+        ${mine ? html`<div class="row mt11">${openingLabel()}</div>` : ''}
 
         ${!mine && ready ? html`
           <div class="row g6 wrap mt11">

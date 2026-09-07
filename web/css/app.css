@@ -1751,23 +1751,36 @@ input.guessed { border: 1.5px solid var(--amber); background: #FFFDF7; color: va
 
 .trip-plain { background: #fff; border-radius: 16px; padding: 13px 14px; display: block; width: 100%; }
 /*
- * Bug 3 · this was `opacity: .86`, and every swipeable row has a solid red
- * `.swipe-bin` delete track sitting permanently behind it. Fading the CARD
- * therefore faded the one thing hiding the dustbin, so a finished trip
- * showed its delete button without anyone having swiped. A finished trip
- * should read as quieter, not as translucent — so the retreat happens in the
- * text colour, over an opaque card.
+ * B2 · OPACITY BELOW 1 IS NEVER A STATE IN THIS APP.
+ *
+ * Bugs 3 and 20 were one defect twice: `opacity` was being used to mean two
+ * unrelated things — "finished" (.86) and "loading" (.45) — and every
+ * swipeable row has a solid red `.swipe-bin` delete track sitting behind it,
+ * so anything that faded a card faded the one thing hiding the dustbin. A
+ * delete button appeared without anyone having swiped.
+ *
+ * The first fix moved the fade from the card to its text, which stopped the
+ * bin showing but kept opacity carrying a meaning. This is the rule instead:
+ *
+ *   FINISHED is a quieter CARD — bone with a hairline, at full opacity.
+ *   LOADING is a LABEL — the .sync-ring plus the word Opening (trips.js).
+ *   INERT dims the CHROME around the thing, never the thing (§3.6).
+ *
+ * A finished trip is deliberately NOT greyed: it is the one you re-read
+ * afterwards for what you spent and what you wrote, so it should be quiet,
+ * not weak. That is why the two colour overrides that used to sit here are
+ * gone rather than softened.
+ *
+ * Everything in this product is read in bright sun, which is the reason the
+ * rule is absolute rather than a preference.
+ *
+ * Audited alongside this, and deliberately left: `.btn[disabled]`,
+ * `.strip-fine`, `.pill-wx` and `.dragging` — the first three are chrome or
+ * decorative alpha rather than state, and `.dragging` is the row under your
+ * own finger during a reorder, on `.plan-row`/`.loop-row`, neither of which
+ * has a delete track behind it.
  */
-.trip-plain.done { background: #FCFCFB; }
-/*
- * Bug 20 · the same rule as bug 3, for the same reason: a card that is being
- * opened must not go translucent, or the delete track behind it shows. The
- * contents retreat instead, and the card keeps its own opaque ground.
- */
-.card-busy > * { opacity: .45; }
-
-.trip-plain.done .trip-card-name { color: var(--charcoal); }
-.trip-plain.done .trip-card-meta { color: var(--soft); }
+.trip-plain.done { background: var(--bone); border: 1px solid var(--line); }
 .trip-mark-lg {
   width: 52px;
   height: 52px;
@@ -1895,8 +1908,17 @@ input.guessed { border: 1.5px solid var(--amber); background: #FFFDF7; color: va
 /* -------------------------------------------- swipe: the five positions */
 
 /* The red track fills behind the finger; the dustbin sits 20px in from the
-   row's right edge and stays there, so it never floats in a widening gap. */
+   row's right edge and stays there, so it never floats in a widening gap.
+
+   B2 · and it is NOT PAINTED AT ALL until the row is actually being dragged.
+   The track used to sit behind every swipeable row permanently, relying on
+   the face above it being opaque — which made "is this card opaque?" a
+   correctness question on four separate screens (the trips list, the
+   shopping list, the nearby list and the Log) and got it wrong twice.
+   Hiding the track instead removes the whole bug class at once: the bin is
+   revealed by the face MOVING, never by the face fading. */
 .swipe-bin {
+  visibility: hidden;
   position: absolute;
   inset: 0 0 0 auto;
   width: 88px;
@@ -1917,6 +1939,12 @@ input.guessed { border: 1.5px solid var(--amber); background: #FFFDF7; color: va
   opacity: 0;
   transition: opacity .12s ease;
 }
+/* dragging-open · mid-gesture.  open · latched at 88px.  confirming · the
+   face is hidden and the question has taken its place. Those are the only
+   three moments a delete track should exist. */
+.swipe-row.dragging-open .swipe-bin,
+.swipe-row.open .swipe-bin,
+.swipe-row.confirming .swipe-bin { visibility: visible; }
 /* The word only appears once the bin has room for it. */
 .swipe-row.latched .swipe-bin::after { opacity: 1; }
 .bin { width: 44px; height: 44px; border-radius: 12px; background: #9B4B4B; display: flex; align-items: center; justify-content: center; }
@@ -2057,6 +2085,12 @@ input.guessed { border: 1.5px solid var(--amber); background: #FFFDF7; color: va
 .sync-dot.red { background: #9B4B4B; }
 .sync-dot.grey { background: var(--faint); }
 .sync-ring {
+  /* A <span> is inline, and width/height do not apply to a non-replaced
+     inline box — so this used to be 10px only by luck, inside whichever
+     flex row happened to hold it. B2 builds the Opening label from it, so
+     it has to hold its own size wherever it is put. */
+  display: inline-block;
+  vertical-align: middle;
   width: 10px;
   height: 10px;
   border-radius: 50%;

@@ -89,6 +89,25 @@ function notify() {
   for (const fn of listeners) fn();
 }
 
+/**
+ * Ask for a repaint, changing nothing.
+ *
+ * For a screen that has just changed its OWN state and wants it drawn. The
+ * alternative in use was `refreshTrips()`, which notifies too but also
+ * refetches the whole trip list on the way — a backend round trip nobody
+ * asked for, and one whose `catch` rewrites `state.trips` to `[state.trip]`
+ * if it fails. A screen saying "draw my pending state" should not be able
+ * to shorten the list it is drawing.
+ *
+ * It does NOT make the paint synchronous: `nav.js` coalesces store writes
+ * into one `requestAnimationFrame`, deliberately, so a state that resolves
+ * inside a single task never gets a one-frame flash. That is why B2's
+ * "Opening" label does not appear when a local trip opens instantly, and
+ * does appear when the open outlives a frame — a cloud trip, a cold cache,
+ * a slow phone. Correct in both cases; only the fast one is unobservable.
+ */
+export const touch = () => notify();
+
 // Whether a change has reached the cloud is state like any other, and the
 // screens that show it — the trip chip's dot, the strip above the tab bar —
 // have no other way to hear that it moved.
