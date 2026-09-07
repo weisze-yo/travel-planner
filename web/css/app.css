@@ -63,6 +63,23 @@
 
   --dark-card: #3D4C46;
 
+  /*
+   * The five Must-line hues. `--jade` (good / done / primary), `--amber`
+   * (needs attention) and `--danger-fg` (destructive) all carry existing
+   * meanings and none of Do / Eat / Snack / Buy / See means any of those, so
+   * all five are new, placed in the cool arc the palette leaves empty.
+   *
+   * Every one clears AA 4.5:1 on white AND on --bone, and the set keeps a
+   * luminance ramp (11.5:1 down to 4.8:1) so the five stay distinguishable
+   * in greyscale. Each section renders its uppercase label as well, so hue
+   * is the third cue and never the only one. Gated in test/contrast.mjs.
+   */
+  --sum-do: #26327A;
+  --sum-eat: #7C2F72;
+  --sum-see: #6A4FA8;
+  --sum-buy: #1A7396;
+  --sum-snack: #B23F68;
+
   --tabbar-h: 78px;
   --safe-top: env(safe-area-inset-top, 0px);
   --safe-bottom: env(safe-area-inset-bottom, 0px);
@@ -101,6 +118,34 @@ input, textarea, select {
   appearance: none;
 }
 input:focus, textarea:focus, select:focus { border-color: var(--jade); }
+
+/*
+ * Bugs 5 and 25 were one defect, here.
+ *
+ * The blanket `appearance: none` above is right for text fields and selects
+ * — it is what lets the file carry its own field shape — but it also stripped
+ * the native rendering off every RADIO and CHECKBOX in the app. What was
+ * left was a 14px box wearing the text-field border, with `accent-color`
+ * inert because there is no longer a native control to accent. So checked
+ * and unchecked looked identical, on the Add-a-stop route choice and on the
+ * payment method in Add-an-item alike: the click registered and the value
+ * was stored, and the user had no way to see it. Reported twice, as two
+ * separate "cannot select" bugs.
+ *
+ * Handing these two types their native appearance back is the whole fix. The
+ * field border and padding have to go with it, or the box keeps the text
+ * input's 9px padding and renders at twice its stated size.
+ */
+input[type="radio"], input[type="checkbox"] {
+  -webkit-appearance: auto;
+  appearance: auto;
+  border: 0;
+  border-radius: 0;
+  padding: 0;
+  background: none;
+  accent-color: var(--ink);
+  flex: none;
+}
 select {
   background-image: url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' width='10' height='6'%3E%3Cpath d='M1 1l4 4 4-4' stroke='%236B7A74' stroke-width='1.6' fill='none' stroke-linecap='round'/%3E%3C/svg%3E");
   background-repeat: no-repeat;
@@ -478,14 +523,25 @@ select {
 }
 .map-top > * { pointer-events: auto; }
 
+/*
+ * Bug 28 · the height was a fixed 44px and `.trip-meta` was unconstrained,
+ * so a SHARED trip — whose subtitle gains a "from <owner> ·" prefix, e.g.
+ * "from weisze.ai · Day 3 of 5 · Sep 10" — wrapped to two lines and pushed
+ * the second one straight out through the bottom of the card. Reported as
+ * "the word on title of shared trip is out of box".
+ *
+ * Two changes, and each alone would have been a half fix: the box can grow
+ * if the text genuinely needs two lines, and the subtitle now truncates the
+ * way the title above it always has, so normally it does not.
+ */
 .trip-chip {
   flex: 1;
   min-width: 0;
-  height: 44px;
+  min-height: 44px;
   display: flex;
   align-items: center;
   gap: 9px;
-  padding: 0 12px;
+  padding: 5px 12px;
   background: #fff;
   border-radius: 14px;
   box-shadow: 0 2px 10px rgba(20,32,28,.12);
@@ -501,7 +557,14 @@ select {
   display: flex; align-items: center; justify-content: center;
 }
 .trip-name { font-size: 13px; font-weight: 600; line-height: 1.15; white-space: nowrap; overflow: hidden; text-overflow: ellipsis; }
-.trip-meta { font-size: 11px; color: var(--muted); line-height: 1.3; }
+.trip-meta {
+  font-size: 11px;
+  color: var(--muted);
+  line-height: 1.3;
+  white-space: nowrap;
+  overflow: hidden;
+  text-overflow: ellipsis;
+}
 
 .legend {
   align-self: flex-end;
@@ -809,7 +872,15 @@ select {
 
 .loop-row { display: flex; gap: 10px; align-items: center; padding: 10px 0; border-top: 1px solid var(--line-2); }
 .loop-n { width: 26px; height: 26px; flex: none; border-radius: 50%; background: var(--amber); color: #fff; font-size: 12px; font-weight: 800; display: flex; align-items: center; justify-content: center; }
-.loop-n.back { background: var(--ink); margin-left: 22px; }
+/*
+ * Bug 9 · the `margin-left: 22px` here indented the "Back to ..." row past
+ * every other row in the sub route. It was standing in for edit mode's grip
+ * column, but the row's markup ALREADY renders a 22px spacer when editing —
+ * exactly as the "Leave from" row does — so outside edit mode this was a
+ * stray 22px and inside it the indent was applied twice. The spacer in the
+ * markup is the one that knows when it is needed.
+ */
+.loop-n.back { background: var(--ink); }
 .loop-name { font-size: 13.5px; font-weight: 650; }
 .loop-meta { font-size: 11px; color: var(--muted); margin-top: 1px; }
 .loop-time { font-size: 12px; font-weight: 700; font-variant-numeric: tabular-nums; flex: none; }
@@ -829,9 +900,18 @@ select {
 .item-sub { font-size: 11px; color: var(--soft); margin-top: 2px; }
 .item-est { font-size: 12px; font-weight: 700; font-variant-numeric: tabular-nums; color: var(--soft); }
 .item-est-cap { font-size: 9.5px; color: var(--faint); margin-top: 1px; }
-.item-second { display: flex; gap: 6px; align-items: center; margin-top: 8px; padding-left: 33px; }
+/*
+ * Bug 24 · this was one non-wrapping flex row holding both `.pay-chip`
+ * selects (which never shrink) and the PAID field. At 375px, minus the 33px
+ * indent that lines the row up under the item name, the two selects took
+ * the whole width and left the input a two-millimetre sliver against the
+ * card's right edge — you could type into it and never see what you typed.
+ * The row wraps now, and PAID claims a line of its own, so the field is
+ * always as wide as the card.
+ */
+.item-second { display: flex; flex-wrap: wrap; gap: 6px; align-items: center; margin-top: 8px; padding-left: 33px; padding-right: 2px; }
 .pay-chip { padding: 4px 9px; border-radius: 8px; background: #EFF1EE; font-size: 10.5px; font-weight: 700; color: var(--charcoal); white-space: nowrap; }
-.paid-wrap { flex: 1; display: flex; align-items: center; gap: 6px; min-width: 0; }
+.paid-wrap { flex: 1 0 100%; display: flex; align-items: center; gap: 6px; min-width: 0; }
 .paid-cap { font-size: 10.5px; font-weight: 800; color: var(--jade); white-space: nowrap; }
 .paid-input { flex: 1; min-width: 0; padding: 5px 8px; font-size: 12px; border-color: var(--jade-bd); background: #F7FBF9; }
 .bought-line { font-size: 10.5px; color: var(--soft); font-weight: 650; margin-top: 6px; padding-left: 33px; }
@@ -1540,7 +1620,24 @@ input.guessed { border: 1.5px solid var(--amber); background: #FFFDF7; color: va
 .trip-foot { display: flex; align-items: center; gap: 8px; width: 100%; padding: 11px 14px; }
 
 .trip-plain { background: #fff; border-radius: 16px; padding: 13px 14px; display: block; width: 100%; }
-.trip-plain.done { opacity: .86; }
+/*
+ * Bug 3 · this was `opacity: .86`, and every swipeable row has a solid red
+ * `.swipe-bin` delete track sitting permanently behind it. Fading the CARD
+ * therefore faded the one thing hiding the dustbin, so a finished trip
+ * showed its delete button without anyone having swiped. A finished trip
+ * should read as quieter, not as translucent — so the retreat happens in the
+ * text colour, over an opaque card.
+ */
+.trip-plain.done { background: #FCFCFB; }
+/*
+ * Bug 20 · the same rule as bug 3, for the same reason: a card that is being
+ * opened must not go translucent, or the delete track behind it shows. The
+ * contents retreat instead, and the card keeps its own opaque ground.
+ */
+.card-busy > * { opacity: .45; }
+
+.trip-plain.done .trip-card-name { color: var(--charcoal); }
+.trip-plain.done .trip-card-meta { color: var(--soft); }
 .trip-mark-lg {
   width: 52px;
   height: 52px;
@@ -2315,3 +2412,83 @@ a:focus-visible,
 .sides { flex-wrap: wrap; }
 .side.stacked { flex-basis: 100%; }
 .review-group { margin-top: 14px; }
+
+/* ======================================================== the Must tab ===
+   Five collapsible sections carrying the researched stopSummary lines, and
+   the must-see shot cards under `see`.
+
+   Each section is a header that is safe to tap with a thumb (44px) and a
+   body that is a paragraph, not a control. Closed, the header shows a
+   single-line peek of its own text, so five closed sections still say what
+   they are about rather than reading as five identical bars.
+
+   The hue lives on the label and on a 3px left edge — never as a fill
+   behind body text, which is where five hues would start fighting the
+   content. Colour is the third cue after the uppercase label and the
+   position in the fixed order.
+   ========================================================================= */
+
+.must-sec {
+  background: #fff;
+  border-radius: 14px;
+  border-left: 3px solid var(--line);
+  overflow: hidden;
+}
+.must-head {
+  width: 100%;
+  min-height: 44px;
+  padding: 11px 13px;
+  display: flex;
+  align-items: center;
+  gap: 8px;
+  text-align: left;
+  background: none;
+}
+.must-label {
+  flex: none;
+  font-size: 10.5px;
+  font-weight: 800;
+  letter-spacing: .05em;
+  color: var(--muted);
+}
+/* The one-line peek: it must never wrap, or a closed section grows to two
+   rows and the list stops scanning as a list. */
+.must-peek {
+  min-width: 0;
+  font-size: 12px;
+  color: var(--soft);
+  white-space: nowrap;
+  overflow: hidden;
+  text-overflow: ellipsis;
+}
+.must-caret {
+  flex: none;
+  width: 20px;
+  text-align: center;
+  font-size: 15px;
+  font-weight: 700;
+  color: var(--faint);
+}
+.must-body { padding: 0 13px 13px; }
+.must-text {
+  font-size: 12.5px;
+  line-height: 1.55;
+  color: var(--charcoal);
+}
+
+/* Open, the label takes its hue and the left edge follows it, so the reader
+   can see which of the five they are inside without re-reading the label. */
+.must-do    { border-left-color: var(--sum-do); }
+.must-eat   { border-left-color: var(--sum-eat); }
+.must-snack { border-left-color: var(--sum-snack); }
+.must-buy   { border-left-color: var(--sum-buy); }
+.must-see   { border-left-color: var(--sum-see); }
+
+.must-do    .must-label { color: var(--sum-do); }
+.must-eat   .must-label { color: var(--sum-eat); }
+.must-snack .must-label { color: var(--sum-snack); }
+.must-buy   .must-label { color: var(--sum-buy); }
+.must-see   .must-label { color: var(--sum-see); }
+
+.must-sec.open { box-shadow: 0 1px 2px rgba(20, 32, 28, .05); }
+.must-sec.open .must-head { padding-bottom: 6px; }

@@ -8,7 +8,7 @@
 // The app cannot invent one, so the fallback is a plain tinted field with the
 // trip's mark — never a stock photo of somewhere you have not been.
 
-import { html, raw, icon, delegate, money } from '../util.js';
+import { html, raw, icon, delegate, money, esc } from '../util.js';
 import * as store from '../store.js';
 import { state } from '../store.js';
 import { go } from '../nav.js';
@@ -40,6 +40,22 @@ let nameError = '';
  * disclosure, never a gate: Create is enabled in every one of the six.
  */
 let guess = null;
+/**
+ * Bug 1 · what has been typed into the New trip form.
+ *
+ * The city field's `change` fires the currency lookup, and the lookup calls
+ * `store.refreshTrips()` to put its answer on screen — which re-renders the
+ * whole screen, and with it the form. The inputs were written with a
+ * `placeholder` and no `value`, so every repaint handed the user back an
+ * empty form and threw away the name and the city they had just typed. The
+ * bug was reported as "it clears the name and city after processing the
+ * price unit", which is exactly what the lookup's own repaint did.
+ *
+ * So the form's state lives here across a repaint, the same way `plan.js`
+ * already keeps its Add-a-stop fields. `readAddForm` captures before any
+ * repaint; `addForm` renders it back.
+ */
+let addFields = { name: '', place: '', start: '', days: '5' };
 /** The trip whose cover is being chosen, if any. */
 let covering = null;
 
@@ -143,17 +159,6 @@ export default {
       store.keepMySide();
       store.refreshTrips();
     });
-    delegate(root, '[data-act="message-owner"]', async (el) => {
-      const text = `About ${el.dataset.trip || 'the trip'} — could we talk about it?`;
-      try {
-        await navigator.clipboard.writeText(text);
-        busy = 'Message copied.';
-      } catch {
-        busy = text;
-      }
-      store.refreshTrips();
-    });
-
     delegate(root, '[data-act="install"]', () => { install.offer(); });
     delegate(root, '[data-act="install-no"]', () => { install.dismiss(); });
 
@@ -173,16 +178,20 @@ export default {
     });
 
     delegate(root, '[data-act="add-toggle"]', () => {
-      addOpen = !addOpen; nameError = ''; guess = null; store.refreshTrips();
+      addOpen = !addOpen; nameError = ''; guess = null;
+      addFields = { name: '', place: '', start: '', days: '5' };
+      store.refreshTrips();
     });
     delegate(root, '[data-act="add-cancel"]', () => {
       if (pending) return;
-      addOpen = false; nameError = ''; guess = null; store.refreshTrips();
+      addOpen = false; nameError = ''; guess = null;
+      addFields = { name: '', place: '', start: '', days: '5' };
+      store.refreshTrips();
     });
 
     delegate(root, '[data-act="add-save"]', async () => {
       if (pending) return;
-      const name = root.querySelector('#new-trip-name')?.value.trim();
+      const name = readAddForm(root).name;
       // A form that can refuse says so in the field, in rust — it does not
       // pre-disable its primary and it does not return in silence (rule 3).
       if (!name) {
@@ -201,21 +210,13 @@ export default {
       await makeTrip(root, name, 'paste');
     });
 
-    // OD-9. The same create, landing on the trip instead of on Paste.
-    delegate(root, '[data-act="add-save-later"]', async () => {
-      if (pending) return;
-      const name = root.querySelector('#new-trip-name')?.value.trim();
-      if (!name) {
-        nameError = 'A name for the trip — anything you will recognise.';
-        store.refreshTrips();
-        root.querySelector('#new-trip-name')?.focus();
-        return;
-      }
-      nameError = '';
-      pending = 'create';
-      store.refreshTrips();
-      await makeTrip(root, name, 'map');
-    });
+    // Bug 2 · `add-save-later` is gone with its button. OD-9 put an "I'll do
+    // this later" ghost on this modal that created the trip and landed on it,
+    // skipping Paste entirely; PR-2 fixed that landing. The approved change on
+    // 7 Sep 2026 supersedes both: Create always lands on Paste, and the skip
+    // lives THERE, on the screen that actually asks for the itinerary. The end
+    // state is the same trip on the same screen, one step later and with the
+    // choice offered where there is something to decline.
 
     // The lookup is fired by the city field's `change` — the app's universal
     // commit event — not by Create, so the answer is on screen BEFORE the
@@ -223,6 +224,9 @@ export default {
     // gates Create: every one of the six states leaves the button enabled.
     root.querySelector('#new-trip-place')?.addEventListener('change', async (event) => {
       const city = event.target.value.trim();
+      // Capture FIRST: everything below repaints, and the repaint is what
+      // used to empty the form.
+      readAddForm(root);
       if (!city) { guess = null; store.refreshTrips(); return; }
       guess = { state: 'looking', city };
       store.refreshTrips();
@@ -314,11 +318,14 @@ function accountRow() {
  * a screen nobody is ever sent to, so a wrong city was silent.
  */
 async function makeTrip(root, name, land) {
-  const place = root.querySelector('#new-trip-place')?.value.trim();
+  // From the captured fields, not the DOM: `pending = 'create'` repaints the
+  // form before this runs, so the nodes read here would be the fresh ones.
+  const fields = addFields;
+  const place = fields.place;
   await store.createTrip({
     name,
-    startDate: root.querySelector('#new-trip-start')?.value || null,
-    dayCount: root.querySelector('#new-trip-days')?.value,
+    startDate: fields.start || null,
+    dayCount: fields.days,
     locationName: place,
   });
   const raced = place && !state.trip?.currencyCode && guess?.state !== 'notfound'
@@ -330,8 +337,27 @@ async function makeTrip(root, name, land) {
   addOpen = false;
   guess = null;
   nameError = '';
+  addFields = { name: '', place: '', start: '', days: '5' };
   if (raced) store.noteArrival(raced);
   go(land);
+}
+
+/**
+ * Bug 1 · reads the New trip form into `addFields` and hands it back.
+ *
+ * Called before anything that repaints while the form is up, which is the
+ * whole of the fix: the fields are uncontrolled `<input>`s, so the only copy
+ * of what the user typed is in the DOM until this runs.
+ */
+function readAddForm(root) {
+  const read = (id, fallback) => (root.querySelector(id)?.value ?? fallback);
+  addFields = {
+    name: read('#new-trip-name', addFields.name).trim(),
+    place: read('#new-trip-place', addFields.place).trim(),
+    start: read('#new-trip-start', addFields.start),
+    days: read('#new-trip-days', addFields.days),
+  };
+  return addFields;
 }
 
 /**
@@ -370,9 +396,18 @@ function installLine() {
 function cardBusy(opening, id) {
   if (!opening) return '';
   return opening === id
-    ? raw(' style="opacity:.45;pointer-events:none" aria-busy="true"')
+    ? raw(' aria-busy="true" style="pointer-events:none"')
     : raw(' style="pointer-events:none"');
 }
+
+/**
+ * Bug 20 · the busy state used to be `opacity:.45` on the whole card, and
+ * every swipeable row has a solid red `.swipe-bin` delete track sitting
+ * permanently behind it — so opening a trip made its dustbin show through.
+ * It is a class now, and `.card-busy` in app.css retreats the card's
+ * CONTENTS over a card that stays opaque.
+ */
+const busyClass = (opening, id) => (opening === id ? ' card-busy' : '');
 
 /** The running trip gets the width of a cover and the next thing on the day. */
 function runningCard(trip, opening = '') {
@@ -384,7 +419,7 @@ function runningCard(trip, opening = '') {
   return html`
     <div class="swipe-row mt8" data-trip-row="${trip.id}" data-trip-name="${trip.name}">
       <div class="swipe-bin"><button class="bin" data-swipe-delete aria-label="Delete trip">${raw(icon.bin)}</button></div>
-      <div class="swipe-face trip-running"${cardBusy(opening, trip.id)}>
+      <div class="swipe-face trip-running${busyClass(opening, trip.id)}"${cardBusy(opening, trip.id)}>
         <div class="trip-cover" style="${coverStyle(trip)}">
           <button class="trip-cover-hit" data-open-trip="${trip.id}" aria-label="Open ${trip.name}"></button>
           <div class="trip-cover-wash"></div>
@@ -457,11 +492,13 @@ function removedCard() {
         </div>`)}
     </div>
 
+    <!-- Bug 4 · "Message <owner>" is gone. It copied a canned sentence to
+         the clipboard and did nothing else — it could not reach the owner,
+         because the app has no channel to them, so it offered a contact
+         action it cannot perform. One primary here, and it is the one that
+         does something. -->
     <div class="row g8 mb8">
       <button class="btn jade grow" data-act="keep-side">Keep my side as its own trip</button>
-      <button class="btn ghost none" style="max-width:150px;overflow:hidden;text-overflow:ellipsis;padding:0 12px"
-              data-act="message-owner"
-              data-trip="${state.trip?.name || ''}">Message ${String(gone.by).split(' ')[0]}</button>
     </div>
     <div class="f11 soft lh145 mb18">
       Keeping it makes a trip only you can see, with the dates, your lists and your Log.
@@ -480,7 +517,8 @@ function plainCard(trip, kind, opening = '') {
   return html`
     <div class="swipe-row mt8" data-trip-row="${trip.id}" data-trip-name="${trip.name}">
       <div class="swipe-bin"><button class="bin" data-swipe-delete aria-label="Delete trip">${raw(icon.bin)}</button></div>
-      <div class="swipe-face trip-plain${kind === 'finished' ? ' done' : ''}"${cardBusy(opening, trip.id)}>
+      <div class="swipe-face trip-plain${kind === 'finished' ? ' done' : ''}${
+        busyClass(opening, trip.id)}"${cardBusy(opening, trip.id)}>
         <div class="row g12" style="align-items:flex-start">
           <button class="trip-mark-lg" data-cover="${trip.id}"
                   aria-label="Choose a cover for ${trip.name}"
@@ -677,10 +715,10 @@ function addForm() {
   return html`
     <div class="form">
       <div class="form-title">New trip</div>
-      <input id="new-trip-name" placeholder="Where are you going?">
+      <input id="new-trip-name" placeholder="Where are you going?" value="${esc(addFields.name)}">
       ${nameError ? html`
         <div class="f11 lh145" style="color:var(--danger-fg);margin-top:-4px">${nameError}</div>` : ''}
-      <input id="new-trip-place" placeholder="City or area (centres the map)">
+      <input id="new-trip-place" placeholder="City or area (centres the map)" value="${esc(addFields.place)}">
       <!-- The derived line, in the slot the form hint already occupies: it is
            derived from the field above and changes when that field changes,
            so it is that field's own consequence. No new field, no new
@@ -693,8 +731,9 @@ function addForm() {
         line.tone === 'amber' ? ';color:var(--amber-fg)'
           : (line.tone === 'rust' ? ';color:var(--danger-fg)' : ';color:var(--soft)')}">${line.text}</div>
       <div class="row g8">
-        <input id="new-trip-start" type="date" class="grow">
-        <input id="new-trip-days" type="number" value="5" min="1" max="60" style="width:88px" aria-label="Days">
+        <input id="new-trip-start" type="date" class="grow" value="${esc(addFields.start)}">
+        <input id="new-trip-days" type="number" value="${esc(addFields.days)}" min="1" max="60"
+               style="width:88px" aria-label="Days">
       </div>
       <div class="form-actions">
         <button class="btn jade grow" data-act="add-save"${
@@ -706,16 +745,15 @@ function addForm() {
         <button class="btn ghost" style="width:96px${
           pending === 'create' ? ';pointer-events:none' : ''}" data-act="add-cancel">Cancel</button>
       </div>
-      <!-- OD-9, answered "add the choice" on 5 Sep 2026 (review §13.1).
-           ONE ghost, this exact label, landing on the trip just created per
-           PR-2. Paste is still the default path and Create is still the
-           primary; this is the way out that used to be the back gesture
-           alone. -->
-      <button class="btn ghost" style="width:100%" data-act="add-save-later"${
-        pending === 'create' ? raw(' disabled') : ''}>I'll do this later</button>
+      <!-- Bug 2 · "I'll do this later" used to sit HERE, on the create card,
+           where it was a second way to do the same thing as Create and had
+           to be read against it. It now lives on the Paste screen this
+           button lands on, which is the screen that actually asks for the
+           itinerary — so the choice is offered at the moment there is
+           something to decline, not one step early. -->
       <div class="form-hint">
         It goes straight to pasting the itinerary in, which is the fastest way from an empty
-        trip to a usable one. You can skip that and add stops one at a time instead.
+        trip to a usable one. You can skip that there and add stops one at a time instead.
       </div>
     </div>`;
 }

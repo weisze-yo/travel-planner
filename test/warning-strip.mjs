@@ -180,9 +180,18 @@ for (const [script, name] of Object.entries(NAMES)) {
   check('.warn-name has no font-family override — it inherits the body stack', fonts.nameInherits === true, JSON.stringify(fonts));
 }
 
-// The other robustness fix: a fixed-width "Message X" button with a long
-// CJK owner name used to overflow (nowrap + hard 104px width). Reproduce the
-// removed-from-trip screen with a long name and measure it.
+// RETARGETED · bug 4, approved 7 Sep 2026.
+//
+// This block used to measure a fixed-width "Message X" button that overflowed
+// on a long CJK owner name. That button is GONE: it copied a canned sentence
+// to the clipboard and could not reach the owner, because the app has no
+// channel to them, so it offered a contact action it cannot perform.
+//
+// The underlying concern it was written for is still live, so the check
+// follows the concern rather than the deleted control: a long CJK owner name
+// must not break the removed-from-trip screen's layout. Everything that
+// interpolates that name is measured, and the button's absence is asserted so
+// this cannot regress by quietly coming back.
 {
   await page.evaluate((name) => {
     const s = window.__store.state;
@@ -191,23 +200,28 @@ for (const [script, name] of Object.entries(NAMES)) {
     window.__nav.go('trips');
   }, '藤原美咲子と申します');
   await page.waitForTimeout(250);
-  const btn = await page.evaluate(() => {
-    const el = document.querySelector('[data-act="message-owner"]');
-    if (!el) return null;
-    const rect = el.getBoundingClientRect();
-    const row = el.closest('.row')?.getBoundingClientRect();
+  const gone = await page.evaluate(() => {
+    const scroll = document.querySelector('.scroll') || document.body;
+    const limit = scroll.getBoundingClientRect().right;
+    const names = ['.gone-card', '.gone-t', '.gone-s', '[data-act="keep-side"]'];
+    const rows = names.map((sel) => {
+      const el = document.querySelector(sel);
+      if (!el) return { sel, missing: true };
+      const r = el.getBoundingClientRect();
+      return { sel, over: Math.round(r.right - limit), wide: el.scrollWidth > el.clientWidth + 1 };
+    });
     return {
-      textOverflow: getComputedStyle(el).textOverflow,
-      overflow: getComputedStyle(el).overflow,
-      fitsInRow: row ? rect.right <= row.right + 1 : null,
-      scrollWidth: el.scrollWidth,
-      clientWidth: el.clientWidth,
+      rows,
+      messageButtonGone: !document.querySelector('[data-act="message-owner"]'),
+      nameShown: (document.querySelector('.gone-s')?.textContent || '').includes('藤原美咲子と申します'),
     };
   });
-  check('the "Message X" button (long CJK name) never overflows its row',
-    btn && btn.fitsInRow, JSON.stringify(btn));
-  check('it bounds overflow with ellipsis rather than a hard clip mid-character',
-    btn?.textOverflow === 'ellipsis' && btn?.overflow === 'hidden', JSON.stringify(btn));
+  check('the removed-from-trip screen still interpolates the long CJK name',
+    gone.nameShown, JSON.stringify(gone.rows));
+  check('nothing on it overflows the scroll area horizontally',
+    gone.rows.every((r) => r.missing || (r.over <= 1 && !r.wide)), JSON.stringify(gone.rows));
+  check('the "Message <owner>" button is gone — it could not reach anyone',
+    gone.messageButtonGone, JSON.stringify(gone));
 }
 
 console.log('\n--- PASS (' + pass.length + ')  FAIL (' + fail.length + ') ---');

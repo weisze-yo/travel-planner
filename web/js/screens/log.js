@@ -61,12 +61,7 @@ export default {
     delegate(root, '[data-open-note]', (el) => {
       go('note', { noteID: el.dataset.openNote, dayNumber: Number(el.dataset.noteDay) });
     });
-    delegate(root, '[data-add-to-day]', (el) => go('note', { dayNumber: Number(el.dataset.addToDay) }));
-    delegate(root, '[data-add-at]', (el) => go('note', {
-      dayNumber: Number(el.dataset.noteDay),
-      placeID: el.dataset.addAt || null,
-      placeName: el.dataset.placeName || '',
-    }));
+
   },
 };
 
@@ -86,6 +81,18 @@ function privacyLine() {
     </div>`;
 }
 
+/**
+ * Bugs 26 and 27 — the two ways this screen used to start a note by accident.
+ *
+ * The place row carried `data-add-at`, so tapping a place's NAME opened the
+ * new-note screen with that place pre-selected. A heading that silently
+ * starts a new record is a trap: the row looks like a label for the notes
+ * under it, and it is one. Two "+ Note" buttons also sat on the day cards,
+ * which together made four ways to start a note on one screen.
+ *
+ * There is one now — the add control in the header — and an existing note is
+ * still opened by tapping the note itself.
+ */
 function dayCard(entry) {
   return html`
     <div class="day-card mb12">
@@ -94,13 +101,13 @@ function dayCard(entry) {
           <div class="log-day">${entry.dayLabel}${entry.dateLabel ? ` · ${entry.dateLabel}` : ''}</div>
           <div class="log-meta${entry.live ? ' live' : ''}">${entry.meta}</div>
         </div>
-        <button class="btn sm ghost" data-add-to-day="${entry.dayNumber}">+ Note</button>
+
       </div>
 
+      <!-- Bugs 26 and 27: the place row is a heading, not a doorway.
+           See the comment above this function. -->
       ${entry.groups.map((group) => html`
-        <div class="note-head${group.tone === 'sub' ? ' sub' : ''}${group.key === '__day' ? ' loose' : ''}"
-             data-add-at="${group.key === '__day' ? '' : group.key}"
-             data-note-day="${entry.dayNumber}" data-place-name="${group.name}">
+        <div class="note-head${group.tone === 'sub' ? ' sub' : ''}${group.key === '__day' ? ' loose' : ''}">
           <div class="note-head-time">${group.time}</div>
           <div class="grow note-head-name">${group.name}</div>
           ${group.badge ? html`<span class="badge ${group.tone === 'sub' ? 'sub' : 'main'}">${group.badge}</span>` : ''}
@@ -179,7 +186,7 @@ function emptyLog() {
                     ${d.live ? 'in progress · ' : ''}${d.stops} stop${d.stops === 1 ? '' : 's'} · nothing written
                   </div>
                 </div>
-                <button class="btn ${d.live ? 'ink' : 'ghost'} sm" data-add-to-day="${d.dayNumber}">+ Note</button>
+
               </div>`)}
           </div>
           ${remaining > 0 ? html`

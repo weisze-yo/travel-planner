@@ -7,6 +7,7 @@ import { html, raw, icon, delegate } from '../util.js';
 import * as store from '../store.js';
 import { state } from '../store.js';
 import { back, go } from '../nav.js';
+import { saveTripFile } from './parts.js';
 
 let notice = '';
 /**
@@ -15,7 +16,13 @@ let notice = '';
  * the forecast status, the export receipt.
  */
 let pending = '';
-let confirming = false;
+/**
+ * Bug 19 · which stage of the empty-this-trip confirmation is showing:
+ * 0 off, 1 the warning that names what goes, 2 the last check. Two gates,
+ * because the action destroys the shopping list, the packing list and the
+ * Log, and none of that is in any snapshot.
+ */
+let confirming = 0;
 
 export default {
   id: 'trip',
@@ -82,8 +89,10 @@ export default {
             <div class="col g10 mt10">
               <div class="row g8">
                 ${field('cur-symbol', 'Symbol', trip.currencySymbol)}
-                ${field('cur-code', 'Spending in', trip.currencyCode || '', '', 'text', 'JPY')}
-                ${field('home-code', 'Your currency', trip.homeCurrencyCode || '', '', 'text', 'MYR')}
+                ${field('cur-code', 'Spending in', trip.currencyCode || '',
+                  trip.currencyCode ? '' : 'not set', 'text', 'e.g. JPY', trip.currencyCode ? false : 'warn')}
+                ${field('home-code', 'Your currency', trip.homeCurrencyCode || '',
+                  trip.homeCurrencyCode ? '' : 'not set', 'text', 'e.g. MYR', trip.homeCurrencyCode ? false : 'warn')}
               </div>
               <!-- §6.1: where the money came from. A symbol alone is
                    ambiguous — $ is USD, ARS and MXN; ¥ is JPY and CNY — so
@@ -112,8 +121,11 @@ export default {
                   pending === 'rate' ? 'Fetching the rate…' : html`Fetch today's rate`}</button>
               </div>
               <div class="f11 soft lh145">
-                Rates come from the European Central Bank's daily publication — free, and it
-                needs no account. Offline, the rate you last saved is used.
+                ${trip.currencyCode && trip.homeCurrencyCode
+                  ? html`Rates come from the European Central Bank's daily publication — free, and it
+                         needs no account. Offline, the rate you last saved is used.`
+                  : html`A rate needs both codes above — what you are spending, and what you think
+                         in. Fill the missing one and the fetch has something to convert between.`}
               </div>
             </div>
           </div>
@@ -199,7 +211,7 @@ export default {
                 This is ${state.trip.sharedFrom.from || 'their'}'s copy. Emptying it does not leave the
                 trip — the next update they send will offer everything back.
               </div>` : ''}
-            ${confirming ? html`
+            ${confirming === 1 ? html`
               <div class="col g8 mt12">
                 <!-- OD-6 answered YES on 5 Sep 2026: this control may delete
                      the private kinds, and the confirm names them, because
@@ -218,28 +230,46 @@ export default {
                   <button class="btn ghost none" style="width:96px" data-act="clear-cancel">Cancel</button>
                 </div>
               </div>
+            ` : (confirming === 2 ? html`
+              <!-- Bug 19 · the second gate.
+                   Two identical confirmations in the same place are one
+                   confirmation to a thumb, so this one is deliberately not
+                   the same shape as the first: the destructive control moves
+                   to the RIGHT and Cancel takes the primary position on the
+                   left, which a double-tap cannot sail through. It also names
+                   the trip, because the surprise this guards against is
+                   emptying the wrong one. -->
+              <div class="col g8 mt12">
+                <div class="f125 w800" style="color:var(--danger-fg)">
+                  Last check: empty ${state.trip?.name || 'this trip'}?
+                </div>
+                <div class="f11 lh145" style="color:var(--danger-fg)">
+                  Saving the trip as a file first is the only way to get any of it back.
+                </div>
+                <div class="row g8">
+                  <button class="btn ghost grow" data-act="clear-cancel">Keep the trip</button>
+                  <button class="btn none" style="width:112px;background:#9B4B4B;color:#fff"
+                          data-act="clear-final">Empty it</button>
+                </div>
+              </div>
             ` : html`
-              <button class="btn ghost wide mt12" data-act="clear">Empty this trip…</button>
-            `}
+              <!-- Bug 19 · was a neutral ghost. It is the one control on this
+                   screen that destroys content, so it wears the destructive
+                   colour the palette already reserves for exactly that. -->
+              <button class="btn wide mt12" style="background:var(--danger-bg);color:var(--danger-fg)"
+                      data-act="clear">Empty this trip…</button>
+            `)}
           </div>
         </div>
       </section>`;
   },
 
   mount(root) {
-    delegate(root, '[data-act="back"]', () => { notice = ''; pending = ''; confirming = false; back(); });
+    delegate(root, '[data-act="back"]', () => { notice = ''; pending = ''; confirming = 0; back(); });
     delegate(root, '[data-act="paste"]', () => go('paste'));
     delegate(root, '[data-act="share"]', () => go('share'));
     delegate(root, '[data-act="export"]', () => {
-      const name = String(state.trip?.name || 'trip').toLowerCase()
-        .replace(/[^a-z0-9]+/g, '-').replace(/^-|-$/g, '') || 'trip';
-      const blob = new Blob([store.tripSnapshot()], { type: 'application/json' });
-      const url = URL.createObjectURL(blob);
-      const link = document.createElement('a');
-      link.href = url;
-      link.download = `${name}-${store.stamp().replace(/\s+/g, '')}.json`;
-      link.click();
-      setTimeout(() => URL.revokeObjectURL(url), 4000);
+      saveTripFile();
       notice = 'Saved. Open it again from Paste an itinerary → Choose a trip file.';
       nudge();
     });
@@ -319,12 +349,16 @@ export default {
       nudge();
     });
 
-    delegate(root, '[data-act="clear"]', () => { confirming = true; nudge(); });
-    delegate(root, '[data-act="clear-cancel"]', () => { confirming = false; nudge(); });
-    delegate(root, '[data-act="clear-confirm"]', () => {
+    // Bug 19 · `confirming` is a stage now: 0 off, 1 the named warning,
+    // 2 the last check. Only stage 2's own control empties anything.
+    delegate(root, '[data-act="clear"]', () => { confirming = 1; nudge(); });
+    delegate(root, '[data-act="clear-cancel"]', () => { confirming = 0; nudge(); });
+    delegate(root, '[data-act="clear-confirm"]', () => { confirming = 2; nudge(); });
+    delegate(root, '[data-act="clear-final"]', () => {
       store.clearTripContent();
-      confirming = false;
+      confirming = 0;
       notice = 'The trip is empty. Add your first stop from Plan → Edit.';
+      nudge();
     });
   },
 };
@@ -334,15 +368,29 @@ function nudge() {
 }
 
 /**
- * `warn` takes three values, not two: false (the standing soft hint), true
- * (rust — something the user asked for did not happen), and 'jade' (settled —
- * it happened, and this is what it did). p0-2-currency-design.md §6.2 needs
- * the third for the city field the moment a re-geocode adopts a currency.
+ * Bug 17 — why "Fetch today's rate" looked broken and was not.
+ *
+ * `fetchRate` returns null unless BOTH currency codes are set, and the amber
+ * strip said so correctly. What misled was the field: its placeholder was a
+ * bare `MYR`, and in a three-letter uppercase slot a placeholder is
+ * indistinguishable from a set value — so an empty field looked filled and a
+ * correct refusal looked like a failure. The placeholders can no longer be
+ * read as values, and an unset code now says so under the field it is about
+ * rather than only in a strip at the top of the screen.
+ *
+ * `warn` takes four values: false (the standing soft hint), 'warn' (amber —
+ * needs attention, not an error), true (rust — something the user asked for
+ * did not happen) and 'jade' (settled — it happened, and this is what it
+ * did). p0-2-currency-design.md §6.2 needs the last for the city field the
+ * moment a re-geocode adopts a currency.
  */
 function field(id, label, value, hint = '', type = 'text', placeholder = '', warn = false) {
   const tone = warn === 'jade'
     ? ';color:var(--jade)'
-    : (warn ? ';color:var(--danger-fg)' : '');
+    // Bug 17 · an unset field is not an error, so it takes amber's "needs
+    // attention" rather than rust's "something went wrong".
+    : (warn === 'warn' ? ';color:var(--amber-fg)'
+      : (warn ? ';color:var(--danger-fg)' : ''));
   // M-12 · three of these sit in one `.row.g8` at 390px, where `YOUR
   // CURRENCY` is just too wide and wraps to two lines — which pushed its own
   // input 19px below the other two (measured y = 507 · 507 · 526) and made

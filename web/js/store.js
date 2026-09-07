@@ -1206,6 +1206,60 @@ export function planItem(id) {
   return null;
 }
 
+/**
+ * The stop a nearby place hangs off, resolved to the plan row that visits it.
+ *
+ * A place records its parent as `anchorPlaceID` — the STOP-PLACE's id, since
+ * the stop-is-a-place migration made a stop one of these. The plan row that
+ * visits it is the row whose `placeID` matches. Both hops are needed to name
+ * the stop and its day, which is what a place page has to say about itself:
+ * a nearby place is otherwise a name with no context, and its Must and Shop
+ * records do not exist because those belong to the stop, not to it.
+ *
+ * Returns null for a stop-place itself (nothing anchors it), and for a place
+ * whose anchor has since been removed from the plan.
+ */
+/**
+ * Is this place one the itinerary VISITS — a stop — rather than a place saved
+ * near one?
+ *
+ * The distinction decides which tabs a Destination screen can fill, and it
+ * cannot be read off the record's own shape: after the stop-is-a-place
+ * migration a stop and a nearby place are both rows in `places`, and both are
+ * reachable by `go('dest', { placeID })`. What separates them is whether a
+ * plan row visits this place, and that is also exactly what decides whether
+ * mustSee and shopping records can point at it — they carry the STOP's place
+ * id, never a nearby place's.
+ *
+ * Asking `kind === 'place'` instead was wrong: a stop opened by its place id
+ * rather than its plan-item id is still a stop, and hiding its Must and Shop
+ * tabs hid records that genuinely belong to it.
+ */
+export function isStopPlace(placeID) {
+  if (!placeID) return false;
+  return state.days.some((d) => (d.items || []).some((i) => i.placeID === placeID));
+}
+
+export function parentStopOf(placeID) {
+  const p = place(placeID);
+  if (!p?.anchorPlaceID || p.anchorPlaceID === placeID) return null;
+  for (const d of state.days) {
+    const hit = (d.items || []).find((i) => i.placeID === p.anchorPlaceID);
+    if (hit) {
+      return {
+        item: hit,
+        dayNumber: d.dayNumber,
+        placeID: p.anchorPlaceID,
+        name: hit.name,
+        // One way, from the place's own leg chain — the same number the
+        // Nearby card shows, so the two never disagree.
+        minutes: (p.legs || []).reduce((sum, l) => sum + (l.minutes || 0), 0),
+      };
+    }
+  }
+  return null;
+}
+
 export const activeItems = (d) => (d?.items || []).filter((i) => !i.archived);
 export const archivedItems = (d) => (d?.items || []).filter((i) => i.archived);
 
@@ -1498,6 +1552,27 @@ function resolveLoop(handle) {
 }
 
 export const subRoute = (n = state.selectedDay) => activeLoop(n);
+
+/**
+ * The PLACE a sub route hangs off — bug 10.
+ *
+ * A route records its anchor twice: `anchorPlaceID` (a place) and
+ * `anchorPlanItemID` (the plan row that visits it), and which of the two is
+ * populated depends on how the route was made. `nearby.js` fell back to the
+ * plan-item id and handed it to `nearbyPlaces()`, which matches on
+ * `anchorPlaceID` — a place id — so it never matched and "Around" came up
+ * empty even for a stop with a full list. Meanwhile `plan.js` passed a real
+ * place id, so the two callers of the same screen disagreed.
+ *
+ * One resolver, and both hops in it, so neither caller has to know which
+ * field its route happens to carry.
+ */
+export function loopAnchorPlaceID(handle) {
+  const route = resolveLoop(handle);
+  if (!route) return null;
+  if (route.anchorPlaceID) return route.anchorPlaceID;
+  return planItem(route.anchorPlanItemID)?.item?.placeID || null;
+}
 
 /**
  * Walks the loop: each leg adds travel time, each stop adds its stay, and the
@@ -1967,6 +2042,41 @@ export function prepProgress() {
 }
 
 /** Shots belong to one itinerary row, matched the way places are. */
+/**
+ * The five `stopSummary` lines a stop carries, as rows ready to render.
+ *
+ * `stopSummary` has been written by the importer and declared in `data.js`
+ * since Trip 12 landed, and NOTHING read it: 33 stops x 5 lines of researched
+ * prose — roughly 480 characters each, priced and time-bounded — sat in
+ * Firestore with no screen able to reach them. This is that reader.
+ *
+ * The order is the order a traveller needs it in on the pavement: what the
+ * hour is for, then food, then the twenty-minute version of food, then what
+ * to carry home, then what to look at. `see` comes last because it is the
+ * one line that has company — the must-see shot records cover the same
+ * ground, and they render under it.
+ *
+ * A line is never blank and never "N/A" in the research: where there is
+ * nothing, the line says so in a sentence. So an absent key means a stop
+ * with no summary at all (a travel leg), not a stop with nothing to say.
+ */
+export const SUMMARY_LINES = [
+  { key: 'do', label: 'DO' },
+  { key: 'eat', label: 'EAT' },
+  { key: 'snack', label: 'SNACK' },
+  { key: 'buy', label: 'BUY' },
+  { key: 'see', label: 'SEE' },
+];
+
+export function summaryLines(itemID) {
+  if (!itemID) return [];
+  const block = planItem(itemID)?.item?.stopSummary;
+  if (!block) return [];
+  return SUMMARY_LINES
+    .map((line) => ({ ...line, text: String(block[line.key] || '').trim() }))
+    .filter((line) => line.text);
+}
+
 export function shotsFor(anchorID) {
   if (!anchorID) return [];
   return state.mustSee
@@ -4681,6 +4791,32 @@ export function keepMySide() {
     link: null,
     share: null,
     removed: null,
+    /*
+     * Bug 29 · this one line is why the banner used to come back on every
+     * launch.
+     *
+     * `removed: null` above dismisses the notice, but `noticeRemoval()` is
+     * what SET it, and its three guards are: this is a joined copy
+     * (`sharedFrom`), it has not already been noticed (`removed`), and this
+     * phone was once listed in the envelope (`listedInShare`). Clearing only
+     * the middle guard re-opened the gate — the next envelope read found a
+     * joined copy, no `removed`, and this phone still absent from `joiners`,
+     * so it announced the removal again, and again after that. Reported as
+     * "it shows every time I re-enter the app even after I pressed Keep my
+     * side".
+     *
+     * `listedInShare` is the right guard to close, and the only one.
+     * `sharedFrom` is deliberately NOT cleared (M-13): it drives the
+     * empty-state tiers, so a kept copy whose places never arrived still
+     * explains itself as "in the copy you were sent" rather than falling
+     * back to a tier that reads as if the user had emptied it themselves.
+     * `listedInShare` records a fact about the envelope — this phone was
+     * once in its joiners map — and after keeping your own side that fact
+     * has been acted on. Nothing sets it back to true, because the branch
+     * that does requires finding yourself in `joiners`, which is exactly
+     * what a removal means you will not.
+     */
+    listedInShare: false,
     declined: [],
     // M-13: the base and the receipt go with the connection. A former shared
     // copy must not keep a starting point for a trip it is no longer

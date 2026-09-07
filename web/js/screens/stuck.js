@@ -10,6 +10,7 @@ import { html, raw, icon, delegate, money } from '../util.js';
 import * as store from '../store.js';
 import { state } from '../store.js';
 import { back } from '../nav.js';
+import { saveTripFile, tripFileName } from './parts.js';
 
 let notice = '';
 /**
@@ -80,11 +81,11 @@ export default {
           <div class="card pad mt12">
             <div class="eyebrow">IF THE CLOUD CANNOT TAKE THEM NOW</div>
             <div class="f125 lh15 mt6" style="color:var(--charcoal)">
-              Put a copy somewhere that is not this phone. The file holds the whole trip as it
-              stands, and can be read back into the app later.
+              Put a copy somewhere that is not this phone. This is the same file Trip settings
+              saves — the whole trip as it stands, which can be read back into the app later.
             </div>
             <div class="row g8 mt11">
-              <button class="btn ink grow" style="height:42px" data-act="save-copy">Save a copy</button>
+              <button class="btn ink grow" style="height:42px" data-act="save-copy">Save this trip as a file</button>
               <button class="btn ghost none" style="width:96px;height:42px" data-act="share-copy">Share</button>
             </div>
             <div class="f11 soft lh145 mt9">
@@ -141,7 +142,7 @@ export default {
     });
 
     delegate(root, '[data-act="save-copy"]', () => {
-      download(`${slug(state.trip?.name)}-${stamp()}.json`);
+      saveTripFile();
       savedCopyAt = new Date().toISOString();
       notice = 'Saved. Keep it somewhere that is not this phone.';
       repaint();
@@ -149,13 +150,13 @@ export default {
 
     delegate(root, '[data-act="share-copy"]', async () => {
       const text = store.tripSnapshot();
-      const file = new File([text], `${slug(state.trip?.name)}.json`, { type: 'application/json' });
+      const file = new File([text], tripFileName(), { type: 'application/json' });
       try {
         if (navigator.canShare?.({ files: [file] })) {
           await navigator.share({ files: [file], title: state.trip?.name || 'Trip' });
           savedCopyAt = new Date().toISOString();
         } else {
-          download(`${slug(state.trip?.name)}-${stamp()}.json`);
+          saveTripFile();
           savedCopyAt = new Date().toISOString();
           notice = 'This browser cannot share a file, so it was saved instead.';
         }
@@ -175,19 +176,6 @@ export default {
     });
   },
 };
-
-function download(name) {
-  const blob = new Blob([store.tripSnapshot()], { type: 'application/json' });
-  const url = URL.createObjectURL(blob);
-  const a = document.createElement('a');
-  a.href = url;
-  a.download = name;
-  a.click();
-  setTimeout(() => URL.revokeObjectURL(url), 4000);
-}
-
-const slug = (name) => String(name || 'trip').toLowerCase().replace(/[^a-z0-9]+/g, '-').replace(/^-|-$/g, '');
-const stamp = () => new Date().toISOString().slice(0, 10);
 
 function when(iso) {
   const d = new Date(iso);

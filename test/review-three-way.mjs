@@ -411,7 +411,22 @@ await page.waitForTimeout(600);
     /Emptying it does not leave the trip — the next update they send will offer everything back\./.test(confirm.joined || ''),
     confirm.joined);
 
+  // RETARGETED · bug 19, approved 7 Sep 2026. Emptying a trip is two gates
+  // now, not one: `clear-confirm` advances to the last check and only
+  // `clear-final` destroys anything. The second gate is deliberately not the
+  // same shape as the first — Cancel takes the primary position and the
+  // destructive control moves right — so a double-tap cannot sail through
+  // both. This action deletes the shopping list, the packing list and the
+  // Log, none of which is in any snapshot, which is why it earns two.
   await page.evaluate(() => document.querySelector('[data-act="clear-confirm"]')?.click());
+  await page.waitForTimeout(400);
+  const gated = await page.evaluate(() => ({
+    stillThere: window.__store.state.shopping.length,
+    finalUp: Boolean(document.querySelector('[data-act="clear-final"]')),
+  }));
+  check('OD-6 · the first confirmation destroys nothing on its own',
+    gated.stillThere > 0 && gated.finalUp, JSON.stringify(gated));
+  await page.evaluate(() => document.querySelector('[data-act="clear-final"]')?.click());
   await page.waitForTimeout(800);
   const after = await page.evaluate(() => ({
     base: window.__store.state.trip.reviewedSnapshot,

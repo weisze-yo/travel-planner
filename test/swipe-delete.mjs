@@ -24,6 +24,19 @@
 //   - the revealed bin, tapped with a real touch, asks in the row
 //   - "Delete" really deletes and starts the undo bar
 //   - no window.confirm() ever appears
+//
+// RETARGETED · bug 11, approved 7 Sep 2026. The subject used to be the sub
+// route's own "Delete this sub route" row, chosen because it sits below
+// several fields in edit mode and so needs a scroll first — the very
+// condition that produced the direction-lock bug. That row is gone: it read
+// as a button and was not one (tapping it did nothing at all, which is how it
+// was reported), and a sub route is deleted from the Plan's edit mode where
+// the row is visible in the itinerary it belongs to.
+//
+// The regression this file guards lives in the SHARED `swipeToDelete` helper,
+// not in that one row, so the gesture is now driven against a shopping row
+// far enough down the Shop list to need the same scroll-then-swipe. The four
+// behaviours checked are unchanged.
 import pw from '/opt/node22/lib/node_modules/playwright/index.js';
 const { chromium, devices } = pw;
 
@@ -55,22 +68,25 @@ await page.evaluate(async () => {
   await window.__store.captureStop(1, { input: 'Hallgrimskirkja, Reykjavik', time: '10:00', endTime: '11:00', kind: 'main' });
 });
 await page.waitForTimeout(1200);
-const loop = await page.evaluate(() => {
-  const l = window.__store.addSubRoute(1, { name: 'Old town loop' });
-  return l ? { id: l.id, name: l.name } : null;
+
+// Ten rows, so the one under test is well below the fold and has to be
+// scrolled to — the condition the direction lock got wrong.
+const subject = await page.evaluate(() => {
+  for (let i = 1; i <= 10; i += 1) {
+    window.__store.addShoppingItem({ name: `Item ${i}`, placeLabel: 'Kolaportid flea market' });
+  }
+  return window.__store.state.shopping.at(-1)?.name || '';
 });
-check('a sub route exists to delete', Boolean(loop?.id), JSON.stringify(loop));
+check('a shopping row exists to delete', subject === 'Item 10', subject);
 
-await page.evaluate((loopID) => window.__nav.go('sub', { loopID }), loop.id);
-await page.waitForTimeout(500);
-await page.click('[data-act="toggle-edit"]');
-await page.waitForTimeout(400);
+await page.evaluate(() => window.__nav.go('shop'));
+await page.waitForTimeout(700);
 
-const row = page.locator('[data-loop-row]');
+const row = page.locator('[data-shop-row]').last();
 await row.scrollIntoViewIfNeeded();
 await page.waitForTimeout(300);
 const box = await row.boundingBox();
-check('the delete row is reachable in edit mode', Boolean(box));
+check('the row under test is reachable only after scrolling', Boolean(box));
 
 const cdp = await ctx.newCDPSession(page);
 async function touch(type, x, y) {
@@ -88,7 +104,8 @@ async function touch(type, x, y) {
   }
   await touch('touchEnd', x + 2, startY - 130);
   await page.waitForTimeout(400);
-  const state = await page.evaluate(() => document.querySelector('[data-loop-row]')?.className || '');
+  const state = await page.evaluate(() => document.querySelector('[data-shop-row]:last-of-type')?.className
+    || [...document.querySelectorAll('[data-shop-row]')].at(-1)?.className || '');
   check('a clearly vertical drag scrolls rather than opening the row', !state.includes('open'), state);
   // Settle back to the row before the next gesture.
   await row.scrollIntoViewIfNeeded();
@@ -114,7 +131,7 @@ async function touch(type, x, y) {
   await page.waitForTimeout(400);
 
   const opened = await page.evaluate(() => {
-    const r = document.querySelector('[data-loop-row]');
+    const r = [...document.querySelectorAll('[data-shop-row]')].at(-1);
     return { classes: r?.className || '', transform: r?.querySelector('.swipe-face')?.style.transform || '' };
   });
   check('a realistic finger swipe (early vertical drift, then horizontal) opens the row',
@@ -122,12 +139,13 @@ async function touch(type, x, y) {
 }
 
 // --- 3. The revealed bin, tapped with a real touch, asks in the row ---
-const binBox = await page.locator('[data-swipe-delete]').boundingBox();
+const binBox = await page.locator('[data-shop-row] [data-swipe-delete]').last().boundingBox();
 await touch('touchStart', binBox.x + binBox.width / 2, binBox.y + binBox.height / 2);
 await page.waitForTimeout(60);
 await touch('touchEnd', binBox.x + binBox.width / 2, binBox.y + binBox.height / 2);
 await page.waitForTimeout(400);
-const asking = await page.evaluate(() => Boolean(document.querySelector('[data-loop-row] .swipe-ask')));
+const asking = await page.evaluate(() => Boolean(
+  [...document.querySelectorAll('[data-shop-row]')].some((r) => r.querySelector('.swipe-ask'))));
 check('tapping the revealed bin asks in the row (no native dialog)', asking && dialogs.length === 0, JSON.stringify(dialogs));
 
 // --- 4. "Delete" really deletes, and the undo bar appears ---
@@ -137,13 +155,13 @@ await page.waitForTimeout(60);
 await touch('touchEnd', yesBox.x + yesBox.width / 2, yesBox.y + yesBox.height / 2);
 await page.waitForTimeout(600);
 
-const remaining = await page.evaluate(() => window.__store.subRoutesFor(1).length);
-check('the sub route is actually gone', remaining === 0, String(remaining));
+const remaining = await page.evaluate(() => window.__store.state.shopping.length);
+check('the shopping row is actually gone', remaining === 9, String(remaining));
 const undo = await page.evaluate(() => {
   const el = document.querySelector('#undo');
   return { hidden: el?.hasAttribute('hidden'), text: el?.textContent?.trim() || '' };
 });
-check('the undo bar appears and names what was deleted', undo.hidden === false && /old town loop/i.test(undo.text), JSON.stringify(undo));
+check('the undo bar appears and names what was deleted', undo.hidden === false && /item 10/i.test(undo.text), JSON.stringify(undo));
 check('window.confirm() was never used', dialogs.length === 0, JSON.stringify(dialogs));
 check('no page errors during the whole flow', pageErrors.length === 0, JSON.stringify(pageErrors));
 

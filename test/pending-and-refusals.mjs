@@ -173,10 +173,16 @@ const rust = 'rgb(155, 75, 75)';
 
 // ================================= M-7 · the must-see editor refuses
 {
+  // RETARGETED · item 2, approved 7 Sep 2026. This took `places[0]`, which
+  // may be a place saved NEAR a stop rather than a stop itself — and a nearby
+  // place no longer shows a Must tab, because mustSee records carry the
+  // STOP's place id and so can never point at it. The editor under test is
+  // the stop's, so the subject has to be a stop.
   const found = await page.evaluate(() => {
-    const p = window.__store.state.places?.[0];
+    const p = window.__store.state.places?.find((pl) => window.__store.isStopPlace(pl.id));
     return p ? { placeID: p.id } : null;
   });
+  check('M-7: a stop exists to open the shot editor on', Boolean(found), JSON.stringify(found));
   if (found) {
     await go('dest', { placeID: found.placeID });
     const ok = await page.evaluate(() => {

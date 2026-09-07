@@ -455,9 +455,16 @@ function laneRow(lane, { editing, last }) {
     return store.isSharedEmptyKind('subRoutes') ? sharedLaneRow(lane, last) : '';
   }
 
+  // Bug 14 — in edit mode a stop row opens with a `.handle-grip` and a lane
+  // row did not, so every lane sat 26px plus one gap to the LEFT of the stops
+  // it lives between, the dashed "+ Sub route here" and its spine included. A
+  // lane cannot be dragged, so this column is a spacer rather than a grip,
+  // and it exists only when the grips do.
   return html`
     <div class="plan-row">
-      <div class="plan-gutter">
+      ${editing ? html`<div class="handle-grip" aria-hidden="true"></div>` : ''}
+
+      <div class="plan-gutter${editing ? ' editing' : ''}">
         ${lane.loops.length ? '' : html`
           <div class="lane-span">${store.duration(lane.to - lane.from).toUpperCase()}</div>`}
       </div>
@@ -639,13 +646,19 @@ function emptyDay() {
         themselves. Start with the hotel as the first and last stop — a sub route needs
         somewhere to leave from and come back to.
       </div>
-      <div class="col g8 mt14" style="width:100%">
-        <button class="btn ink" data-act="add-open">+ Add the first stop</button>
-        <button class="btn ghost" data-act="paste">Paste an itinerary</button>
-      </div>
-      <div class="f11 soft lh145 mt12" style="max-width:280px">
-        Paste a map link and the stop arrives with its position, and its hours where
-        OpenStreetMap has them.${wx ? ` Forecast: ${wx.icon} ${wx.high} °C.` : ''}
+      <!-- Bug 16 · this used to carry "+ Add the first stop" and "Paste an
+           itinerary", and pressing the first put the screen into edit mode —
+           which renders "+ Add a stop" and its own "Paste an itinerary"
+           below. So an empty day ended up with four controls, three labels
+           and two actions, and the pair that had just been pressed stayed on
+           screen underneath its own result. The empty state now SAYS where
+           the controls are and stops competing with them. -->
+      <div class="warn mt14" style="width:100%">
+        <div class="warn-label">NOTHING HERE YET</div>
+        <div class="warn-fact">
+          Tap the pencil at the top of the screen to add a stop, or to paste the itinerary
+          in.${wx ? ` Forecast: ${wx.icon} ${wx.high} °C.` : ''}
+        </div>
       </div>
       <div class="lane-stub mt6"></div>
     </div>`;

@@ -278,51 +278,78 @@ const until = async (fn, ms = 5000) => {
   await page.evaluate(() => { Object.defineProperty(navigator, 'onLine', { value: true, configurable: true }); });
 }
 
-// ============================== OD-9 · the ghost, in its approved shape
+// ====== RETARGETED · bug 2, approved 7 Sep 2026 — the skip moved to Paste
+//
+// OD-9 put an "I'll do this later" ghost on THIS modal, which created the
+// trip and landed straight on it, skipping Paste; PR-2 then fixed that
+// landing. The approved change supersedes both: the create card carries no
+// second way to create, Create always lands on Paste, and the skip lives on
+// Paste — the screen that actually asks for the itinerary, and so the only
+// screen where declining it is a real choice.
+//
+// The three things OD-9 was protecting are still protected, just in their new
+// home: exactly one ghost, its verbatim label, and a trip that really gets
+// made and really is the one left open.
 {
-  const shape = await page.evaluate(() => {
+  const modalShape = await page.evaluate(() => {
     const modal = document.querySelector('.modal');
-    const ghost = modal?.querySelector('[data-act="add-save-later"]');
-    const create = modal?.querySelector('[data-act="add-save"]');
-    const buttons = [...(modal?.querySelectorAll('button') || [])].map((b) => b.textContent.trim());
-    return ghost ? {
-      label: ghost.textContent.trim(),
-      classes: ghost.className,
-      buttons,
-      createLabel: create?.textContent.trim(),
-      createClasses: create?.className,
-      belowCreate: ghost.getBoundingClientRect().top > create.getBoundingClientRect().top,
-    } : null;
+    return {
+      later: Boolean(modal?.querySelector('[data-act="add-save-later"]')),
+      buttons: [...(modal?.querySelectorAll('button') || [])].map((b) => b.textContent.trim()),
+      createLabel: modal?.querySelector('[data-act="add-save"]')?.textContent.trim(),
+      createClasses: modal?.querySelector('[data-act="add-save"]')?.className,
+    };
   });
-  check('OD-9 · exactly one ghost exists on the modal', !!shape);
-  check('OD-9 · its label is the approved phrase, verbatim', shape?.label === "I'll do this later", shape?.label);
-  check('OD-9 · it is a ghost, not a second primary', /btn ghost/.test(shape?.classes || ''), shape?.classes);
-  check('OD-9 · Create is still the jade primary and still says Create',
-    /jade/.test(shape?.createClasses || '') && shape?.createLabel === 'Create', `${shape?.createLabel} ${shape?.createClasses}`);
-  check('OD-9 · it is BELOW Create, so Paste stays the default path', shape?.belowCreate);
-  check('OD-9 · no third button was invented', (shape?.buttons || []).length === 3,
-    (shape?.buttons || []).join(' | '));
+  check('the create card no longer offers a second way to create',
+    modalShape.later === false, JSON.stringify(modalShape.buttons));
+  check('Create is still the jade primary and still says Create',
+    /jade/.test(modalShape.createClasses || '') && modalShape.createLabel === 'Create',
+    `${modalShape.createLabel} ${modalShape.createClasses}`);
+  check('the card is down to its two controls', modalShape.buttons.length === 2,
+    modalShape.buttons.join(' | '));
 
-  // And it lands on the trip just created (PR-2), not on Paste.
+  // Create it, and confirm it lands on Paste with the skip waiting there.
   const before = await page.evaluate(() => window.__store.state.trips.length);
   geoAnswer = null;
   await page.evaluate(() => {
     document.querySelector('#new-trip-name').value = '大阪 · 冬';
     document.querySelector('#new-trip-place').value = '';
   });
-  await page.evaluate(() => document.querySelector('[data-act="add-save-later"]').click());
+  await page.evaluate(() => document.querySelector('[data-act="add-save"]').click());
   await page.waitForTimeout(2500);
-  const after = await page.evaluate(() => ({
-    trips: window.__store.state.trips.length,
+  const landed = await page.evaluate(() => {
+    const skip = document.querySelector('[data-act="skip-paste"]');
+    const read = document.querySelector('[data-act="read"]');
+    return {
+      trips: window.__store.state.trips.length,
+      name: window.__store.state.trip?.name,
+      onPaste: Boolean(document.querySelector('#paste-text')),
+      modalUp: Boolean(document.querySelector('.modal')),
+      skipLabel: skip?.textContent.trim() || null,
+      skipClasses: skip?.className || '',
+      belowRead: skip && read ? skip.getBoundingClientRect().top > read.getBoundingClientRect().top : null,
+    };
+  });
+  check('the trip really is created', landed.trips === before + 1, `${before} -> ${landed.trips}`);
+  check('and it is the trip now open', landed.name === '大阪 · 冬', landed.name);
+  check('Create lands on Paste — the itinerary is still asked for first', landed.onPaste === true);
+  check('the modal is gone once it resolves', landed.modalUp === false);
+  check('the skip is on Paste now, with its label verbatim',
+    landed.skipLabel === "I'll do this later", landed.skipLabel);
+  check('it is a ghost there, not a second primary',
+    /btn ghost/.test(landed.skipClasses), landed.skipClasses);
+  check('and it sits BELOW "Read it", so pasting stays the default path',
+    landed.belowRead === true, String(landed.belowRead));
+
+  // The skip lands on the trip, which is what OD-9's ghost was for.
+  await page.evaluate(() => document.querySelector('[data-act="skip-paste"]').click());
+  await page.waitForTimeout(1200);
+  const afterSkip = await page.evaluate(() => ({
+    onPaste: Boolean(document.querySelector('#paste-text')),
     name: window.__store.state.trip?.name,
-    screen: location.hash || document.querySelector('.screen-title, .push-title, .tabbar')?.textContent?.trim() || '',
-    onPaste: !!document.querySelector('#paste-text'),
-    modalUp: !!document.querySelector('.modal'),
   }));
-  check('OD-9 · the trip really is created', after.trips === before + 1, `${before} -> ${after.trips}`);
-  check('OD-9 · and it is the trip now open', after.name === '大阪 · 冬', after.name);
-  check('OD-9 · it lands on the trip just created, NOT on Paste (PR-2)', after.onPaste === false, `onPaste=${after.onPaste}`);
-  check('OD-9 · the modal is gone once it resolves', after.modalUp === false);
+  check('skipping lands on the trip just created, not back on Paste',
+    afterSkip.onPaste === false && afterSkip.name === '大阪 · 冬', JSON.stringify(afterSkip));
 }
 
 // ===================== Create still lands on Paste — the default is unchanged

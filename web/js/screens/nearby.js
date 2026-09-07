@@ -38,7 +38,10 @@ export default {
     // covers that stop.
     const dayScope = Boolean(params.dayScope);
     const anchorName = params.anchorName || store.subRoute()?.anchorName || 'this stop';
-    const anchorID = params.anchorID || store.subRoute()?.anchorPlanItemID || null;
+    // Bug 10 · was `store.subRoute()?.anchorPlanItemID` — a PLAN ROW id
+    // handed to a lookup that matches place ids, so the fallback path never
+    // found anything. `loopAnchorPlaceID` resolves either shape.
+    const anchorID = params.anchorID || store.loopAnchorPlaceID() || null;
     const groups = dayScope ? store.placesByStopForDay() : [];
     const places = dayScope ? [] : store.nearbyPlaces(anchorID);
     const anchorShared = !places.length && state.nearbyCategory === 'all' && store.isSharedEmptyKind('places');

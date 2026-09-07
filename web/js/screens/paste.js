@@ -129,6 +129,16 @@ function pasteView() {
           Nothing is added to the trip yet. You confirm every row first.
         </div>
 
+        <!-- Bug 2 · the skip, moved here from the New trip card. This is the
+             screen that asks for the itinerary, so this is where declining
+             it is a real choice; on the create card it was a second control
+             doing Create's job one step early. Still ONE ghost and still the
+             same words, and it lands on the trip rather than going back. -->
+        <button class="btn ghost wide mt10" data-act="skip-paste">I'll do this later</button>
+        <div class="f11 soft lh145 mt7" style="text-align:center">
+          The trip is already made. Add stops one at a time on the Plan instead.
+        </div>
+
         <div class="hairline"></div>
 
         <div class="card pad">
@@ -211,6 +221,7 @@ function mountPaste(root) {
   delegate(root, '[data-act="clear"]', () => { text = ''; busy = ''; repaint(); });
   delegate(root, '[data-act="reuse"]', () => { text = state.trip?.importedText || ''; busy = ''; repaint(); });
 
+  delegate(root, '[data-act="skip-paste"]', () => go('map'));
   delegate(root, '[data-act="read"]', () => {
     if (box) text = box.value;
     if (!text.trim()) {

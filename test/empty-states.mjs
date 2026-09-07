@@ -124,9 +124,21 @@ await page.waitForTimeout(300);
     laneStub: Boolean(document.querySelector('.lane-stub')),
     ink: document.querySelector('.btn.ink')?.dataset.act,
     shared: Boolean(document.querySelector('.empty-shared')),
+    warn: (document.querySelector('.warn-fact')?.textContent || '').trim(),
+    pasteBtn: Boolean(document.querySelector('.scroll [data-act="paste"]')),
   }));
-  check('an ordinary empty day (not shared) resolves to tier 1 — dashed silhouette + one ink action',
-    t1.laneStub && t1.ink === 'add-open' && !t1.shared, JSON.stringify(t1));
+  // RETARGETED · bug 16, approved 7 Sep 2026. The empty day used to carry an
+  // ink "+ Add the first stop" and a ghost "Paste an itinerary", and pressing
+  // the first put the screen into edit mode — which renders its OWN "+ Add a
+  // stop" and "Paste an itinerary" underneath. Four controls, three labels,
+  // two actions, with the pair just pressed still on screen below its result.
+  // The empty state now points at the pencil instead of competing with it, so
+  // tier 1 here is the silhouette plus a named way in, not an action of its
+  // own. The dashed silhouette is unchanged and still checked.
+  check('an ordinary empty day (not shared) keeps the dashed silhouette',
+    t1.laneStub && !t1.shared, JSON.stringify(t1));
+  check('and it names the way in rather than duplicating edit mode\'s controls',
+    !t1.ink && !t1.pasteBtn && /pencil/i.test(t1.warn), JSON.stringify(t1));
 }
 
 // ===================================================== 1F — Plan, tier 3 (shared)
@@ -276,7 +288,14 @@ await page.waitForTimeout(150);
   });
   check('tier 2: no colour, the existing .empty sentence', empty.hasEmptySentence, JSON.stringify(empty));
   check('the days-so-far scaffold shows exactly "today" many rows (currentDay 3)', empty.rowCount === 3, JSON.stringify(empty));
-  check('ink only on today\'s own row', JSON.stringify(empty.inkOnRow) === JSON.stringify([false, false, true]), JSON.stringify(empty.inkOnRow));
+  // RETARGETED · bug 27, approved 7 Sep 2026. The per-day "+ Note" buttons
+  // are gone from the Log: with the header's own add control and the place
+  // rows that used to start a note on tap, this screen offered four ways to
+  // begin one. There is one now, so there is no per-row ink to place.
+  check('no per-row action on the days-so-far scaffold',
+    empty.inkOnRow.every((v) => v === undefined || v === false || v === null),
+    JSON.stringify(empty.inkOnRow));
+  check('the one add control lives in the header', Boolean(await page.$('[data-act="new"]')));
   check('closes with the remaining days named, verbatim to the artboard',
     /days 4 to 6 have not happened yet/i.test(empty.remaining), empty.remaining);
 }
@@ -309,10 +328,13 @@ await page.waitForTimeout(150);
   check('names the place', /quiet pier/i.test(infoT3.title), infoT3.title);
 
   await page.evaluate(() => window.__nav.go('dest', { itemID: window.__itemID })); // reload panel state, land on info again
-  await page.click('[data-panel="mustsee"]');
+  // RETARGETED · item 3, approved 7 Sep 2026. The tab is `must` now, not
+  // `mustsee`: it holds the five researched stopSummary lines as well as the
+  // shot records, so its tier-3 empty is reached only when BOTH are absent.
+  await page.click('[data-panel="must"]');
   await page.waitForTimeout(200);
   const shotsT3 = await page.evaluate(() => Boolean(document.querySelector('.empty-shared')));
-  check('Must-see tab, joined + empty ("mustSee" is a SHARED_KIND) → tier 3', shotsT3);
+  check('Must tab, joined + empty ("mustSee" is a SHARED_KIND) → tier 3', shotsT3);
 
   await page.click('[data-panel="shop"]');
   await page.waitForTimeout(200);

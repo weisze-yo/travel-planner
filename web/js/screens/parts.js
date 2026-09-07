@@ -906,3 +906,36 @@ export function mountSignIn(root, { onDone = () => {} } = {}) {
     }
   });
 }
+
+/**
+ * The trip file, saved to the phone. One implementation, because there is
+ * only one export.
+ *
+ * Trip settings and the stuck-changes screen both offered a download, and
+ * both built it themselves from `store.tripSnapshot()` — so the two produced
+ * byte-identical files that differed only in their `savedAt` stamp, under two
+ * different labels and two different filename conventions. That reads as two
+ * exports and is one, which is exactly the confusion a user reported after
+ * diffing the pair.
+ *
+ * The two CALLERS stay: settings is where you go to keep a copy, and the
+ * stuck screen is where you are told to put one somewhere that is not this
+ * phone. What is consolidated is the action — one name, one payload, one
+ * filename — so the same file arriving twice is recognisably the same file.
+ */
+export function tripFileName() {
+  const name = String(state.trip?.name || 'trip').toLowerCase()
+    .replace(/[^a-z0-9]+/g, '-').replace(/^-|-$/g, '') || 'trip';
+  return `${name}-${new Date().toISOString().slice(0, 10)}.json`;
+}
+
+export function saveTripFile() {
+  const blob = new Blob([store.tripSnapshot()], { type: 'application/json' });
+  const url = URL.createObjectURL(blob);
+  const link = document.createElement('a');
+  link.href = url;
+  link.download = tripFileName();
+  link.click();
+  setTimeout(() => URL.revokeObjectURL(url), 4000);
+  return link.download;
+}

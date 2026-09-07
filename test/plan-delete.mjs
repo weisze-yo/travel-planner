@@ -50,15 +50,31 @@ const cdp = await ctx.newCDPSession(page);
 async function touch(type, x, y) {
   await cdp.send('Input.dispatchTouchEvent', { type, touchPoints: type === 'touchEnd' ? [] : [{ x, y, id: 1 }] });
 }
+/**
+ * Swipes a row open to its LATCH, deliberately short of DECISIVE.
+ *
+ * The distance is derived from the row, not hard-coded. `swipeToDelete` has
+ * two outcomes: past 88px the row latches open and reveals the bin, and past
+ * `DECISIVE` — 0.6 of the ROW's own width — it skips the bin entirely and
+ * asks in the row. A fixed 140px used to sit between the two only because of
+ * how wide a loop card happened to be; when bug 14's alignment fix made the
+ * card 39px narrower, 0.6 of it fell below 140 and the same drag started
+ * landing on the other branch, so the test stopped exercising the bin it
+ * meant to tap. Deriving the distance keeps this measuring the latch whatever
+ * the row's width is.
+ */
 async function swipeOpen(locator) {
   await locator.scrollIntoViewIfNeeded();
   await page.waitForTimeout(200);
   const box = await locator.boundingBox();
+  const LATCH = 88;
+  const dx = Math.min(LATCH + 20, Math.round(box.width * 0.6) - 10);
+  if (dx <= LATCH) throw new Error(`row too narrow to latch without being decisive: ${box.width}px`);
   const startX = box.x + box.width - 20;
   const y = box.y + box.height / 2;
   await touch('touchStart', startX, y);
-  for (let i = 1; i <= 10; i++) { await touch('touchMove', startX - (140 * i) / 10, y); await page.waitForTimeout(20); }
-  await touch('touchEnd', startX - 140, y);
+  for (let i = 1; i <= 10; i++) { await touch('touchMove', startX - (dx * i) / 10, y); await page.waitForTimeout(20); }
+  await touch('touchEnd', startX - dx, y);
   await page.waitForTimeout(300);
 }
 async function tap(locator) {

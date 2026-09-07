@@ -71,6 +71,21 @@ const NEW_THIS_SESSION = [
   ['who-mark.sm jade on white', '#1F6F5C', '#FFFFFF', '.who-mark.sm glyph on its own white fill'],
   ['btn.amber amber-fg on FFFDF7', '#8A5A08', '#FFFDF7', '.btn.amber, .lane-add.shared, 13px/700'],
   ['warn-name ink on amber-bg', '#14201C', '#FBF1DE', '.warn-name, 13px/700'],
+
+  // The five Must-line hues, judged on BOTH grounds they appear on: the
+  // white section card, and --bone where the panel shows through. A section
+  // label is 10.5px/800, well under WCAG's large-text threshold, so the
+  // strict 4.5:1 bar applies to all ten pairs.
+  ['sum-do on white', '#26327A', '#FFFFFF', '.must-do .must-label, 10.5px/800'],
+  ['sum-do on bone', '#26327A', '#F2F3F1', '.must-do .must-label over the panel ground'],
+  ['sum-eat on white', '#7C2F72', '#FFFFFF', '.must-eat .must-label, 10.5px/800'],
+  ['sum-eat on bone', '#7C2F72', '#F2F3F1', '.must-eat .must-label over the panel ground'],
+  ['sum-see on white', '#6A4FA8', '#FFFFFF', '.must-see .must-label, 10.5px/800'],
+  ['sum-see on bone', '#6A4FA8', '#F2F3F1', '.must-see .must-label over the panel ground'],
+  ['sum-buy on white', '#1A7396', '#FFFFFF', '.must-buy .must-label, 10.5px/800'],
+  ['sum-buy on bone', '#1A7396', '#F2F3F1', '.must-buy .must-label over the panel ground'],
+  ['sum-snack on white', '#B23F68', '#FFFFFF', '.must-snack .must-label, 10.5px/800'],
+  ['sum-snack on bone', '#B23F68', '#F2F3F1', '.must-snack .must-label over the panel ground'],
 ];
 
 function run(label, pairs, { gate }) {

@@ -16,15 +16,41 @@ import {
 const TABS = [
   { id: 'info', label: 'Info' },
   { id: 'nearby', label: 'Nearby' },
-  { id: 'mustsee', label: 'Must-see' },
+  { id: 'must', label: 'Must' },
   { id: 'shop', label: 'Shop' },
   { id: 'log', label: 'Notes' },
 ];
+
+/**
+ * Which tabs this subject can actually fill.
+ *
+ * Must and Shop records are anchored to a STOP, never to an individual
+ * place: every mustSee and shopping record carries the stop's `placeID`, and
+ * the five-line `stopSummary` is a field on the plan row. So on a nearby
+ * place both tabs are not empty-for-now, they are empty by construction —
+ * 532 screens each with two tabs that can never fill. A tab bar that says so
+ * is the honest version, and the `linkrow` at the foot of the place's panels
+ * is where the stop's own records are offered instead.
+ *
+ * The test is `isStopPlace`, not `kind === 'place'`. A stop reached by its
+ * PLACE id — which is how the shop and must-see records themselves link, and
+ * how `go('dest', { placeID })` arrives — resolves to a 'place' subject and is
+ * still a stop; trimming its tabs would hide records that do point at it.
+ */
+const tabsFor = (it) => (store.isStopPlace(it.placeID)
+  ? TABS
+  : TABS.filter((t) => t.id === 'info' || t.id === 'nearby' || t.id === 'log'));
 
 /** Which panel is showing. Point 7: the tabs stay on this screen. */
 let tab = 'info';
 /** The stop/place `tab` belongs to, so a genuinely different subject resets it. */
 let tabSubject = null;
+/**
+ * Which Must sections are expanded. `do` starts open because the first
+ * question at a stop is what the hour is for; the rest are a tap away, so
+ * five paragraphs never arrive as a wall.
+ */
+let openLines = new Set(['do']);
 
 /** Resolves whichever handle the caller had: a plan row, or a nearby place. */
 export function subject(params = {}) {
@@ -34,8 +60,12 @@ export function subject(params = {}) {
       return {
         kind: 'item',
         id: hit.item.id,
+        // The Must tab reads the five-line summary off the plan row, so the
+        // row's own id has to survive the resolve.
+        itemID: hit.item.id,
         name: hit.item.name,
         subtitle: hit.item.subtitle,
+        parent: null,
         summary: hit.item.summary || hit.item.note,
         window: store.itemWindow(hit.item).label,
         // The place owns these; a row only ever holds them before the
@@ -47,18 +77,44 @@ export function subject(params = {}) {
         // A stop is a visit to a place, so everything hangs off the place.
         anchorID: hit.item.placeID,
         number: store.mainStopNumbers(store.day(hit.dayNumber))[hit.item.id],
-        coord: hit.item.latitude ? { lat: hit.item.latitude, lng: hit.item.longitude } : null,
+        /*
+         * Bug 6 · this read `hit.item.latitude` alone, and pasting a map
+         * link writes the position to the PLACE (`setPlaceLink` -> `put
+         * ('places', ...)`), never back onto the plan row. So the NO
+         * POSITION strip and its "Paste a map link" button survived the
+         * paste that was supposed to answer them, on the one screen that
+         * offers the fix. The row's own coordinate still wins when it has
+         * one — it is the stop's, and a stop may sit somewhere other than
+         * the place it visits — with the place as the fallback.
+         */
+        coord: hit.item.latitude
+          ? { lat: hit.item.latitude, lng: hit.item.longitude }
+          : (store.place(hit.item.placeID)?.latitude
+            ? {
+              lat: store.place(hit.item.placeID).latitude,
+              lng: store.place(hit.item.placeID).longitude,
+            }
+            : null),
       };
     }
   }
   if (params.placeID) {
     const p = store.place(params.placeID);
     if (p) {
+      // A place is otherwise a name with no context. The stop it hangs off
+      // is the answer to "why is this in my app", so it goes in the subtitle
+      // the screen already renders, with the walk from the place's own legs.
+      const parent = store.parentStopOf(p.id);
+      const kindLine = `${store.categoryLabel(p.category)} · ${p.priceTier}`;
       return {
         kind: 'place',
         id: p.id,
+        itemID: null,
         name: p.name,
-        subtitle: `${store.categoryLabel(p.category)} · ${p.priceTier}`,
+        subtitle: parent
+          ? `${kindLine} — ${parent.minutes ? `${store.duration(parent.minutes)} from ` : 'part of '}${parent.name}`
+          : kindLine,
+        parent,
         summary: p.note,
         window: '',
         essentials: p.essentials || [],
@@ -127,10 +183,15 @@ export default {
 
     // A different stop/place is a different subject: land back on Info
     // rather than carrying over whichever tab the last one was left on.
+    const tabs = tabsFor(it);
     if (it.anchorID !== tabSubject) {
       tabSubject = it.anchorID;
       tab = 'info';
+      openLines = new Set(['do']);
     }
+    // Walking from a stop's Must tab into one of its places must not leave
+    // `tab` pointing at a panel this subject has no tab for.
+    if (!tabs.some((entry) => entry.id === tab)) tab = 'info';
 
     // Everything on this screen is scoped to this one stop.
     const shopHere = state.shopping.filter((row) => (
@@ -143,7 +204,7 @@ export default {
     const counts = {
       info: 0,
       nearby: places.length,
-      mustsee: shots.length,
+      must: shots.length + store.summaryLines(it.itemID).length,
       shop: shopHere.length,
       log: notes.length,
     };
@@ -190,7 +251,7 @@ export default {
               </div>`}
 
             <div class="dest-tabs">
-              ${TABS.map((entry) => html`
+              ${tabs.map((entry) => html`
                 <button class="dest-tab${entry.id === tab ? ' on' : ''}" data-panel="${entry.id}">
                   ${entry.label}${counts[entry.id] ? html` <span class="tab-count">${counts[entry.id]}</span>` : ''}
                 </button>
@@ -222,6 +283,13 @@ export default {
       anchorID: it?.anchorID, anchorName: it?.name, placeID: it?.placeID,
     }));
     delegate(root, '[data-act="all-shop"]', () => go('shop'));
+    delegate(root, '[data-line]', (el) => {
+      const key = el.dataset.line;
+      if (openLines.has(key)) openLines.delete(key);
+      else openLines.add(key);
+      repaint();
+    });
+    delegate(root, '[data-open-parent]', (el) => go('dest', { itemID: el.dataset.openParent }));
     delegate(root, '[data-act="gone-plan"]', () => go('plan'));
     delegate(root, '[data-act="gone-back"]', () => back());
 
@@ -359,7 +427,7 @@ export default {
 
 function panel(which, it, { shopHere, shots, places, notes }) {
   if (which === 'nearby') return nearbyPanel(it, places);
-  if (which === 'mustsee') return shotsPanel(it, shots);
+  if (which === 'must') return mustPanel(it, shots);
   if (which === 'shop') return shopPanel(it, shopHere);
   if (which === 'log') return logPanel(it, notes);
   return infoPanel(it);
@@ -381,7 +449,8 @@ function infoPanel(it) {
           phone, website — and the rest is yours to type.
         </div>
         <button class="btn-dashed mt12" data-act="edit-facts">Write what to remember</button>
-      </div>`;
+      </div>
+      ${parentHandoff(it)}`;
   }
   return html`
     <div class="card-list">
@@ -394,7 +463,8 @@ function infoPanel(it) {
           </div>
         </div>`)}
     </div>
-    <button class="btn ghost wide mt10" data-act="edit-facts">Correct or add to this</button>`;
+    <button class="btn ghost wide mt10" data-act="edit-facts">Correct or add to this</button>
+    ${parentHandoff(it)}`;
 }
 
 function nearbyPanel(it, places) {
@@ -441,7 +511,9 @@ function nearbyPanel(it, places) {
         ${places.length ? 'Manage places for this stop' : '+ Add a place here'}
       </button>`}
 
-    ${schedule.stops.length ? html`
+    ${it.kind === 'place' ? parentHandoff(it) : ''}
+
+    ${schedule.stops.length && it.kind !== 'place' ? html`
       <div class="dock-note">
         <button class="linkrow" data-act="arrange">
           <div class="linkrow-mark">↩</div>
@@ -455,16 +527,103 @@ function nearbyPanel(it, places) {
 }
 
 /**
+ * The Must tab — the five researched lines, and the shots under `see`.
+ *
+ * Was "Must-see", holding only the shot records. The rename is not cosmetic:
+ * four of the five things a traveller must settle at a stop are do, eat,
+ * snack and buy, and the app already held a paragraph on each of them per
+ * stop without rendering any of it. So the tab now holds the five lines, and
+ * the 60 photo-shot records fold in under the one line they overlap.
+ *
+ * Collapsed by default, and `do` open, because five 480-character paragraphs
+ * is a wall on a 375 px screen and the first question at a stop is always
+ * what the hour is for. Each section carries its uppercase label AND its own
+ * hue: colour is the third cue here, never the first, so a reader who cannot
+ * separate the five loses nothing.
+ */
+function mustPanel(it, shots) {
+  const lines = store.summaryLines(it.itemID);
+  if (!lines.length && !shots.length) {
+    if (store.isSharedEmptyKind('mustSee')) {
+      return emptyShared({
+        title: `Nothing noted for ${it.name} in the copy you were sent.`,
+      });
+    }
+    return html`
+      <div class="empty">Nothing noted for this stop yet.</div>
+      <button class="btn-dashed mt12" data-act="add-shot">+ A shot worth getting here</button>`;
+  }
+
+  return html`
+    <div class="col g8">
+      ${lines.map((line) => {
+        const open = openLines.has(line.key);
+        const withShots = line.key === 'see' && shots.length;
+        return html`
+          <div class="must-sec must-${line.key}${open ? ' open' : ''}">
+            <button class="must-head" data-line="${line.key}"
+                    aria-expanded="${open ? 'true' : 'false'}">
+              <span class="must-label">${line.label}</span>
+              <span class="must-peek grow">${open ? '' : line.text}</span>
+              ${withShots ? html`<span class="chip">${shots.length}</span>` : ''}
+              <span class="must-caret">${open ? '\u2212' : '+'}</span>
+            </button>
+            ${open ? html`
+              <div class="must-body">
+                <div class="must-text">${line.text}</div>
+                ${withShots ? shotCards(shots) : ''}
+              </div>` : ''}
+          </div>`;
+      })}
+      ${lines.some((l) => l.key === 'see') ? '' : shotCards(shots)}
+    </div>
+    <button class="btn-dashed mt12" data-act="add-shot">+ A shot worth getting here</button>`;
+}
+
+/**
+ * The stop's own Must and Shop records, offered from a place that sits under
+ * it — as a count and a way back, never as borrowed rows.
+ *
+ * Rendering the stop's items inside a place's frame would assert they are AT
+ * that place, which is the one thing the data does not say and the class of
+ * error the sourcing standard exists to prevent. A named destination with a
+ * number is the whole of what can be claimed truthfully.
+ */
+function parentHandoff(it) {
+  const parent = it.parent;
+  if (!parent) return '';
+  const shots = store.shotsFor(parent.placeID).length;
+  const buys = state.shopping.filter((row) => row.placeID === parent.placeID).length;
+  const lines = store.summaryLines(parent.item.id).length;
+  if (!shots && !buys && !lines) return '';
+  const bits = [
+    lines ? `${lines} line${lines === 1 ? '' : 's'} on the stop` : '',
+    shots ? `${shots} must-see spot${shots === 1 ? '' : 's'}` : '',
+    buys ? `${buys} thing${buys === 1 ? '' : 's'} to buy` : '',
+  ].filter(Boolean);
+  return html`
+    <div class="dock-note">
+      <button class="linkrow" data-open-parent="${parent.item.id}">
+        <div class="linkrow-mark">\u21B0</div>
+        <div class="grow">
+          <div class="linkrow-t">At ${parent.name}</div>
+          <div class="linkrow-s">${bits.join(' \u00B7 ')}</div>
+        </div>
+        ${raw(icon.chevron)}
+      </button>
+    </div>`;
+}
+
+/**
  * The full card, here, rather than a summary and a screen behind it. A
  * must-see spot is mostly a picture and a sentence about where to stand —
  * summarising that to one line and hiding the rest behind a button removed
  * the only part of it you actually use while standing there.
  */
-function shotsPanel(it, shots) {
-  const shared = !shots.length && store.isSharedEmptyKind('mustSee');
+function shotCards(shots) {
+  if (!shots.length) return '';
   return html`
-    ${shots.length ? html`
-      <div class="col g12">
+      <div class="col g12 mt10">
         ${shots.map((shot) => html`
           <div class="swipe-row" data-shot-row="${shot.id}" data-shot-name="${shot.title}">
             <div class="swipe-bin">
@@ -492,12 +651,7 @@ function shotsPanel(it, shots) {
               </div>
             </div>
           </div>`)}
-      </div>
-    ` : (shared
-      ? emptyShared({ title: `No must-see spots noted for ${it.name} in the copy you were sent.` })
-      : html`<div class="empty">No must-see spots noted for this stop yet.</div>`)}
-
-    ${shared ? '' : html`<button class="btn-dashed mt12" data-act="add-shot">+ A shot worth getting here</button>`}`;
+      </div>`;
 }
 
 function shopPanel(it, items) {
