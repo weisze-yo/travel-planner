@@ -181,7 +181,10 @@ export default {
         return;
       }
       addError = '';
-      const anchorID = params.anchorID || store.subRoute()?.anchorPlanItemID || null;
+      // Bug 10, second instance · same fault as the read path above, in the
+      // handler that WRITES the anchor. A plan-row id stored as a place's
+      // `anchorPlaceID` makes the new place unfindable the moment it saves.
+      const anchorID = params.anchorID || store.loopAnchorPlaceID() || null;
 
       // R8: the form stays up until the work resolves — it used to close
       // here, leaving the pending line above a form that had gone.

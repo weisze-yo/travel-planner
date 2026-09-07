@@ -3007,7 +3007,20 @@ export async function addNearbyPlace({ name, category, walkMinutes, stayMinutes,
   const label = String(name || '').trim();
   if (!label) return { saved: false };
 
-  const anchor = anchorPlaceID || subRoute()?.anchorPlanItemID || null;
+  /*
+   * Bug 10, second instance — the WRITE path, found on 7 Sep by verifying
+   * the fix rather than trusting it.
+   *
+   * The read path was corrected earlier: `nearby.js` was handing a PLAN ROW
+   * id to a lookup that matches place ids. This line had the same fault and
+   * is worse, because it does not merely fail to find a place — it STORES
+   * the wrong kind of id in `anchorPlaceID`. A place added that way is
+   * anchored to nothing `nearbyPlaces()` can match, so it saves and then
+   * cannot be seen: added, and gone.
+   *
+   * `loopAnchorPlaceID` resolves whichever anchor field the route carries.
+   */
+  const anchor = anchorPlaceID || loopAnchorPlaceID() || null;
   const record = {
     id: uid('place-'),
     anchorPlaceID: anchor,
