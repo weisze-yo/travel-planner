@@ -1,0 +1,879 @@
+{
+ "batch": "airport-sin",
+ "places": [
+  {
+   "id": "airport-sin-out-dreamscape",
+   "anchorStop": "Arrive Singapore Changi — connection to SQ634",
+   "name": "Dreamscape, T2 Transit Level 2",
+   "nameJp": "",
+   "category": "sight",
+   "priceTier": "free",
+   "stayMinutes": 20,
+   "legs": [
+    {
+     "mode": "walk",
+     "minutes": 6
+    }
+   ],
+   "note": "Open 24 hours, free, and the best group frame in T2 — 20,000 plants across 100+ species, glass floor panels over a fish pond, and a digital sky driven by live weather. The operationally useful part: the light-and-sound show runs at 15-MINUTE INTERVALS, so 35 people catch a full cycle inside a 20-minute stop. Same level as the airside Skytrain platform.",
+   "latitude": 1.359211,
+   "longitude": 103.989325,
+   "coordPrecision": "approximate",
+   "timeWindow": "24h",
+   "confidence": "high",
+   "source": "https://www.changiairport.com/en/experience/attractions-directory/dreamscape.html"
+  },
+  {
+   "id": "airport-sin-out-sunflower",
+   "anchorStop": "Arrive Singapore Changi — connection to SQ634",
+   "name": "Sunflower Garden, T2 Transit Level 3",
+   "nameJp": "",
+   "category": "sight",
+   "priceTier": "free",
+   "stayMinutes": 20,
+   "legs": [
+    {
+     "mode": "walk",
+     "minutes": 8
+    }
+   ],
+   "note": "Open 24 hours, free, outdoors, on the roof — and because it is open-air it has no seat count, which makes it the one place 35 people can all stand at once. Runway views. Note that one of T2's five transit smoking areas is here, which cuts both ways for a group. One level up from Dreamscape and the Skytrain; the T2 prayer room is on this same Level 3.",
+   "latitude": 1.359211,
+   "longitude": 103.989325,
+   "coordPrecision": "approximate",
+   "timeWindow": "24h",
+   "confidence": "high",
+   "source": "https://www.changiairport.com/en/experience/attractions-directory/sunflower-garden.html"
+  },
+  {
+   "id": "airport-sin-out-gourmetgarden",
+   "anchorStop": "Arrive Singapore Changi — connection to SQ634",
+   "name": "Gourmet Garden, T2 Transit Level 2",
+   "nameJp": "",
+   "category": "food",
+   "priceTier": "S$$",
+   "stayMinutes": 45,
+   "legs": [
+    {
+     "mode": "walk",
+     "minutes": 6
+    }
+   ],
+   "note": "The single best answer to \"one hour, 35 people, T2\": a multi-stall cluster the group splits across and re-forms at tables, with floor-to-ceiling windows where Changi's own factsheet says you can \"spot as many as 16 different tailfins\". Stalls named by the operator: The Satay Club, Buk Chang Dong Soon Tofu, Chef Wei HK Cheong Fun, Ippodo Express.",
+   "latitude": 1.359211,
+   "longitude": 103.989325,
+   "coordPrecision": "approximate",
+   "timeWindow": "24h",
+   "confidence": "medium",
+   "confidenceNote": "Location and the stall list are from Changi Airport Group's own newsroom factsheet and its Changi Pay outlet list. Its attraction page 404s, so PER-STALL HOURS AND PRICES ARE UNPUBLISHED. No halal certification is published for The Satay Club or any stall here — do not represent it as halal, and note it serves alcohol.",
+   "source": "https://www.changiairport.com/content/dam/changiairport/sg/corporate/evergreen/media-hub/newsroom/2023/refreshed-changi-airport-terminal-2-fully-reopens/attachments/10%20things%20to%20do%20at%20the%20refreshed%20Terminal%202.pdf"
+  },
+  {
+   "id": "airport-sin-out-encik-tan",
+   "anchorStop": "Arrive Singapore Changi — connection to SQ634",
+   "name": "Encik Tan, airside food atrium (T2/T1/T3 Transit Level 2)",
+   "nameJp": "",
+   "category": "food",
+   "priceTier": "S$$",
+   "stayMinutes": 40,
+   "legs": [
+    {
+     "mode": "walk",
+     "minutes": 7
+    }
+   ],
+   "note": "The halal answer, in writing: its operator Fei Siong describes it as \"a Halal-certified mini food atrium\" of local Chinese hawker dishes — Hainanese curry rice, fishball noodles, wanton mee, claypot rice. Multi-stall counter service is exactly the shape that absorbs 35 people inside an hour with no booking. Brand lists T1 #03-47/48 and T3 Central both 24 hours.",
+   "latitude": 1.359211,
+   "longitude": 103.989325,
+   "coordPrecision": "approximate",
+   "timeWindow": "24h",
+   "confidence": "medium",
+   "confidenceNote": "Halal certification is brand-published. CONFLICT: Changi's own Changi Pay list places an Encik Tan at T2 Level 2 Transit, but the brand's own outlet list shows only T1 and T3 — treat T1/T3 as brand-confirmed and T2 as operator-listed but unconfirmed. No menu prices are published on either page.",
+   "source": "https://www.feisionggroup.com.sg/brand/encik-tan/"
+  },
+  {
+   "id": "airport-sin-out-oldchangkee",
+   "anchorStop": "Arrive Singapore Changi — connection to SQ634",
+   "name": "Old Chang Kee, T2 Transit Level 2 #02-K7",
+   "nameJp": "",
+   "category": "food",
+   "priceTier": "S$",
+   "stayMinutes": 12,
+   "legs": [
+    {
+     "mode": "walk",
+     "minutes": 6
+    }
+   ],
+   "note": "The 12-minute option: grab-and-go curry puffs, 35 people served with something in hand and no table needed. The brand frames itself as \"Singapore's Best Halal Curry Puffs\" and shows a halal logo on its own site. Also airside at T3 #02-K2. Do NOT send anyone to the T3 #B2-51 outlet — that one is landside.",
+   "latitude": 1.359211,
+   "longitude": 103.989325,
+   "coordPrecision": "approximate",
+   "timeWindow": "24h",
+   "confidence": "medium",
+   "confidenceNote": "Outlet positions are from the brand's own list and the halal claim from its own page, but the CERTIFYING BODY is not stated there, so the certification itself is unverified. No prices are published on the brand site.",
+   "source": "https://www.oldchangkee.com/outlets.htm"
+  },
+  {
+   "id": "airport-sin-out-prayer-t2",
+   "anchorStop": "Arrive Singapore Changi — connection to SQ634",
+   "name": "Muslim prayer room, T2 Transit Level 3 (opposite Lift Lobby 21)",
+   "nameJp": "",
+   "category": "rest",
+   "priceTier": "free",
+   "stayMinutes": 20,
+   "legs": [
+    {
+     "mode": "walk",
+     "minutes": 8
+    }
+   ],
+   "note": "Open 24 hours, free, airside, and Changi states every prayer room has \"ablution facilities\" and \"directional signage indicating the Qibla\". Same Level 3 as Sunflower Garden and Fit&Fun, so it folds into one trip upstairs. The airside equivalents are T1 Transit L3 West beside the Cactus Garden and T3 Transit L2 South by the baby-care room.",
+   "latitude": 1.359211,
+   "longitude": 103.989325,
+   "coordPrecision": "approximate",
+   "timeWindow": "24h",
+   "confidence": "high",
+   "confidenceNote": "Positions, 24-hour opening, ablution and qibla signage are all quoted from Changi's own page. CAPACITY IS NOT PUBLISHED — 35 people will not fit at once, so plan rotation.",
+   "source": "https://www.changiairport.com/en/at-changi/facilities-and-services-directory/prayer-rooms-at-changi-airport-tranquil-spaces-for-reflection.html"
+  },
+  {
+   "id": "airport-sin-out-snooze",
+   "anchorStop": "Arrive Singapore Changi — connection to SQ634",
+   "name": "Free snooze lounges, T2 Transit Level 2 (three of them)",
+   "nameJp": "",
+   "category": "rest",
+   "priceTier": "free",
+   "stayMinutes": 40,
+   "legs": [
+    {
+     "mode": "walk",
+     "minutes": 5
+    }
+   ],
+   "note": "Free, 24 hours, and there are THREE in T2 alone — Sanctuary opposite E5, Oasis opposite E11, Pavilion opposite F33 — which is the useful fact: a 35-person group spreads across them instead of fighting for one. The gate references also tell you they sit at the piers where SQ boards, so nobody is far from the gate. T3 has two on L2, T1 one on L3.",
+   "latitude": 1.359211,
+   "longitude": 103.989325,
+   "coordPrecision": "approximate",
+   "timeWindow": "24h",
+   "confidence": "high",
+   "confidenceNote": "Names, gate-opposite positions, 24-hour opening and free use are quoted from Changi's own page. Seat counts are not published.",
+   "source": "https://www.changiairport.com/en/at-changi/facilities-and-services-directory/free-snooze-lounges-changi-airport-rest-areas.html"
+  },
+  {
+   "id": "airport-sin-out-fitfun",
+   "anchorStop": "Arrive Singapore Changi — connection to SQ634",
+   "name": "Fit&Fun Zone, T2 Transit Level 3",
+   "nameJp": "",
+   "category": "sight",
+   "priceTier": "free",
+   "stayMinutes": 20,
+   "legs": [
+    {
+     "mode": "walk",
+     "minutes": 8
+    }
+   ],
+   "note": "Free, 24 hours, and the one airside thing 35 colleagues can be collectively silly at: five zones of pendulum chairs, boxing Spar Pods, trampolines (Beat Bouncers) and a rope maze. Same level as Sunflower Garden and the prayer room, so the whole Level 3 trip is one climb.",
+   "latitude": 1.359211,
+   "longitude": 103.989325,
+   "coordPrecision": "approximate",
+   "timeWindow": "24h",
+   "confidence": "high",
+   "source": "https://www.changiairport.com/en/experience/attractions-directory/fit-and-fun-zone.html"
+  },
+  {
+   "id": "airport-sin-out-butterfly-t3",
+   "anchorStop": "Arrive Singapore Changi — connection to SQ634",
+   "name": "Butterfly Garden, T3 Transit Levels 2 and 3",
+   "nameJp": "",
+   "category": "sight",
+   "priceTier": "free",
+   "stayMinutes": 30,
+   "legs": [
+    {
+     "mode": "train",
+     "minutes": 5
+    },
+    {
+     "mode": "walk",
+     "minutes": 8
+    }
+   ],
+   "note": "The only reason to cross terminals — nothing in T2 matches it. Free, open 24 hours, the world's first airport butterfly garden, 1,000+ tropical butterflies, and it spans TWO levels so 35 people do not jam one room. Reachable airside from T2 by the complimentary Skytrain. Crystal Garden (12 glass spheres, 1,735 Bohemian components) sits on the path from the T3 platform.",
+   "latitude": 1.359211,
+   "longitude": 103.989325,
+   "coordPrecision": "approximate",
+   "timeWindow": "24h",
+   "confidence": "medium",
+   "confidenceNote": "The Skytrain leg is NOT an operator figure: Changi publishes the service (complimentary, both public and transit areas, 05:00-02:00) but no journey time and no frequency, on any page. 5+8 minutes is an estimate for platform-to-platform plus the walk each end. SQ's own transit wayfinding PDF is image-only and could not be read. SQ's own rule puts Japan and Southeast Asia DEPARTURES at Terminal 2, so SQ634 and SQ142 are T2 — but SQ also states the ARRIVAL terminal is assigned about two hours before landing and may be T1, T2 or T3. If they arrive at T3 this is free; from T2 on a 2h10 connection the round trip is the one call the published record cannot size.",
+   "source": "https://www.changiairport.com/en/experience/attractions-directory/butterfly-garden.html"
+  },
+  {
+   "id": "airport-sin-out-jewel-unreachable",
+   "anchorStop": "Arrive Singapore Changi — connection to SQ634",
+   "name": "Jewel, the Rain Vortex and Canopy Park — UNREACHABLE",
+   "nameJp": "",
+   "category": "sight",
+   "priceTier": "free",
+   "stayMinutes": 1,
+   "legs": [
+    {
+     "mode": "walk",
+     "minutes": 15
+    }
+   ],
+   "note": "Recorded as a place so nobody plans it. Changi's own words: \"If you are transiting through Changi Airport, you will need to clear arrival immigration to enter Singapore and visit Jewel.\" Jewel sits in the PUBLIC area between T2 and T3. So the Rain Vortex, Shiseido Forest Valley, Canopy Park, YOTELAIR and Changi Lounge are all out — on 2h10, with agent-held tickets, twice.",
+   "latitude": 1.359211,
+   "longitude": 103.989325,
+   "coordPrecision": "approximate",
+   "timeWindow": "24h",
+   "confidence": "high",
+   "confidenceNote": "Quoted from Changi's own transfer page. Changi's Free Singapore Tour page adds that you may \"only enter and exit Singapore once during your layover\", and that tour itself needs a 5.5-hour minimum layover, so it is ineligible in both windows.",
+   "source": "https://www.changiairport.com/en/at-changi/transport-and-directions/transferring-between-terminals-jewel.html"
+  },
+  {
+   "id": "airport-sin-out-shower-warning",
+   "anchorStop": "Arrive Singapore Changi — connection to SQ634",
+   "name": "Showers: S$20 airside at Ambassador, NOT the S$5 one (that is landside)",
+   "nameJp": "",
+   "category": "rest",
+   "priceTier": "S$$",
+   "stayMinutes": 30,
+   "legs": [
+    {
+     "mode": "walk",
+     "minutes": 8
+    }
+   ],
+   "note": "Correction to a common belief. The cheap Changi shower is Hub & Spoke, T2 PUBLIC Level 1, 07:00-22:00, S$5.00 per entry — landside, unreachable in transit. Airside the cheapest is the Ambassador Transit Lounge shower at S$20 per person including basic toiletries, T2 Transit L3, 24 hours. Lounge entry itself starts at S$55 for 3 hours, which does not fit a 2h10 layover.",
+   "latitude": 1.359211,
+   "longitude": 103.989325,
+   "coordPrecision": "approximate",
+   "timeWindow": "24h",
+   "confidence": "high",
+   "confidenceNote": "All prices and hours are quoted from Changi's own facility pages. Note that the T2 and T3 Ambassador operators change on 3 Nov 2026 and 1 Oct 2026, so these prices expire for later trips.",
+   "source": "https://www.changiairport.com/en/at-changi/facilities-and-services-directory/ambassador-transit-lounge.html"
+  },
+  {
+   "id": "airport-sin-home-prayer-t2",
+   "anchorStop": "Arrive Singapore Changi — connection to SQ142",
+   "name": "Muslim prayer room, T2 Transit Level 3 (opposite Lift Lobby 21)",
+   "nameJp": "",
+   "category": "rest",
+   "priceTier": "free",
+   "stayMinutes": 25,
+   "legs": [
+    {
+     "mode": "walk",
+     "minutes": 8
+    }
+   ],
+   "note": "The homebound window straddles Maghrib in Singapore, which makes this the first thing to brief rather than an amenity. Open 24 hours, free, airside; Changi states ablution facilities and qibla signage in every room. T2 Level 3, opposite Lift Lobby 21 — the same level as Sunflower Garden. Airside equivalents: T1 L3 West by the Cactus Garden, T3 L2 South by the baby-care room.",
+   "latitude": 1.359211,
+   "longitude": 103.989325,
+   "coordPrecision": "approximate",
+   "timeWindow": "24h",
+   "confidence": "high",
+   "confidenceNote": "Positions, opening, ablution and qibla signage are quoted from Changi's own page. Capacity is NOT published, so 35 people means rotation. Maghrib timing is not from an operator source — confirm the actual minute locally.",
+   "source": "https://www.changiairport.com/en/at-changi/facilities-and-services-directory/prayer-rooms-at-changi-airport-tranquil-spaces-for-reflection.html"
+  },
+  {
+   "id": "airport-sin-home-irvins",
+   "anchorStop": "Arrive Singapore Changi — connection to SQ142",
+   "name": "IRVINS Salted Egg, T2 Transit Level 2 #02-209",
+   "nameJp": "",
+   "category": "shopping",
+   "priceTier": "S$",
+   "stayMinutes": 15,
+   "legs": [
+    {
+     "mode": "walk",
+     "minutes": 6
+    }
+   ],
+   "note": "The best buy of the whole trip and the right one to make HOMEBOUND: halal-certified in writing per product, sealed, shelf-stable, and it goes straight home instead of riding a coach through Tohoku. Daily 6am-1am, so open through this window. Also airside at T3 #02-K11 and #02-K9 and T1 #02-K07, which means it survives an arrival at any of the three plausible terminals.",
+   "latitude": 1.359211,
+   "longitude": 103.989325,
+   "coordPrecision": "approximate",
+   "timeWindow": "24h",
+   "confidence": "high",
+   "confidenceNote": "Outlet positions, the 6am-1am hours, the halal marking and every price are from IRVINS' own shop pages.",
+   "source": "https://eatirvins.sg/pages/find-irvins-near-you"
+  },
+  {
+   "id": "airport-sin-home-bengawan",
+   "anchorStop": "Arrive Singapore Changi — connection to SQ142",
+   "name": "Bengawan Solo, T2 Transit Level 2 #02-159",
+   "nameJp": "",
+   "category": "shopping",
+   "priceTier": "S$$",
+   "stayMinutes": 15,
+   "legs": [
+    {
+     "mode": "walk",
+     "minutes": 6
+    }
+   ],
+   "note": "Kueh lapis and pineapple tarts — a homebound-only buy, because these are fresh bakery items and seven days on a coach was never the plan. Open 06:00-01:00 daily. CRITICAL: the T3 outlet is \"Departure Check-In Hall #02-85\" — LANDSIDE — so if they land at T3 this is not buyable there; T2 or T1 (#02-15, 06:00-00:00) only.",
+   "latitude": 1.359211,
+   "longitude": 103.989325,
+   "coordPrecision": "approximate",
+   "timeWindow": "24h",
+   "confidence": "medium",
+   "confidenceNote": "Positions and hours are from the brand's own store list, and Changi's own Changi Pay list agrees that T3's outlet is Public and T2's is Level 2 Transit. No prices are published on the brand site.",
+   "source": "https://bengawansolo.sg/stores/"
+  },
+  {
+   "id": "airport-sin-home-oldsengchoong",
+   "anchorStop": "Arrive Singapore Changi — connection to SQ142",
+   "name": "Old Seng Choong, T2 Transit Level 2 #02-175/176",
+   "nameJp": "",
+   "category": "shopping",
+   "priceTier": "S$$",
+   "stayMinutes": 12,
+   "legs": [
+    {
+     "mode": "walk",
+     "minutes": 6
+    }
+   ],
+   "note": "The better tinned Singapore gift — biscuits and cookies rather than fresh kueh, so it survives the flight and the shelf. Daily 6am-1am. Changi's own newsroom names it among T2's transit retail. Also airside at T1 #02-K12 (6am-12am).",
+   "latitude": 1.359211,
+   "longitude": 103.989325,
+   "coordPrecision": "approximate",
+   "timeWindow": "24h",
+   "confidence": "high",
+   "confidenceNote": "Positions and hours from the brand's own locations page, corroborated as transit retail by Changi's newsroom factsheet. Prices are not published.",
+   "source": "https://www.oldsengchoong.com/pages/locations"
+  },
+  {
+   "id": "airport-sin-home-twg",
+   "anchorStop": "Arrive Singapore Changi — connection to SQ142",
+   "name": "TWG Tea, T2 Transit Level 2 #02-216",
+   "nameJp": "",
+   "category": "shopping",
+   "priceTier": "S$$",
+   "stayMinutes": 12,
+   "legs": [
+    {
+     "mode": "walk",
+     "minutes": 6
+    }
+   ],
+   "note": "Tins: light, sealed, unbreakable, and the one Singapore gift that is genuinely fine to carry anywhere. T2 hours are the brand's own \"Monday - Sunday 6:00am - 1:00am\"; the T3 airside store (#02-26) is open 24 hours, and there are T1 and T4 transit stores too — though T4 is not reachable airside at all.",
+   "latitude": 1.359211,
+   "longitude": 103.989325,
+   "coordPrecision": "approximate",
+   "timeWindow": "24h",
+   "confidence": "high",
+   "confidenceNote": "Positions and hours are quoted from TWG's own location pages. Prices are not published there.",
+   "source": "https://twgtea.com/en/locations/singapore/twg-tea-at-changi-t2"
+  },
+  {
+   "id": "airport-sin-home-encik-tan",
+   "anchorStop": "Arrive Singapore Changi — connection to SQ142",
+   "name": "Encik Tan, airside food atrium (dinner sitting)",
+   "nameJp": "",
+   "category": "food",
+   "priceTier": "S$$",
+   "stayMinutes": 45,
+   "legs": [
+    {
+     "mode": "walk",
+     "minutes": 7
+    }
+   ],
+   "note": "Dinner, and the halal one: Fei Siong's own description is \"a Halal-certified mini food atrium\" of local hawker dishes. Counter service across several stalls is what makes 35 people workable inside 75 minutes with no booking, and 17:15-18:30 is a real dinner hour rather than a snack. The brand lists T1 #03-47/48 and T3 Central as 24 hours.",
+   "latitude": 1.359211,
+   "longitude": 103.989325,
+   "coordPrecision": "approximate",
+   "timeWindow": "24h",
+   "confidence": "medium",
+   "confidenceNote": "Halal certification is brand-published. Changi's Changi Pay list places an outlet at T2 Level 2 Transit while the brand's own list shows only T1 and T3 — T2 is operator-listed but not brand-confirmed. No prices published.",
+   "source": "https://www.enciktan.com.sg/"
+  },
+  {
+   "id": "airport-sin-home-sunflower",
+   "anchorStop": "Arrive Singapore Changi — connection to SQ142",
+   "name": "Sunflower Garden, T2 Transit Level 3",
+   "nameJp": "",
+   "category": "sight",
+   "priceTier": "free",
+   "stayMinutes": 25,
+   "legs": [
+    {
+     "mode": "walk",
+     "minutes": 8
+    }
+   ],
+   "note": "Free, 24 hours, open-air on the roof — and at 17:15-18:30 in September this is the one place at Changi where the group gets last light and runway movements instead of a departure hall. No seat count because it is outdoors, so all 35 fit. A transit smoking area is here. Same level as the prayer room, so pair them.",
+   "latitude": 1.359211,
+   "longitude": 103.989325,
+   "coordPrecision": "approximate",
+   "timeWindow": "day",
+   "confidence": "high",
+   "confidenceNote": "Opening and position are quoted from Changi's own attraction page. Sunset timing is not from an operator source.",
+   "source": "https://www.changiairport.com/en/experience/attractions-directory/sunflower-garden.html"
+  },
+  {
+   "id": "airport-sin-home-movietheatre",
+   "anchorStop": "Arrive Singapore Changi — connection to SQ142",
+   "name": "Free Movie Theatre, T3 Transit Level 3",
+   "nameJp": "",
+   "category": "rest",
+   "priceTier": "free",
+   "stayMinutes": 40,
+   "legs": [
+    {
+     "mode": "train",
+     "minutes": 5
+    },
+    {
+     "mode": "walk",
+     "minutes": 8
+    }
+   ],
+   "note": "Free, open 24 hours, about 50 plush seats, beside the T3 Ambassador Transit Hotel — so a 35-person group very nearly fills it, which is either ideal or a problem depending on who got there first. There is no booking. Both trip dates are Tuesdays, so the published Thursday 11:00-16:00 maintenance closure does not bite. Only worth crossing for if they land at T3.",
+   "latitude": 1.359211,
+   "longitude": 103.989325,
+   "coordPrecision": "approximate",
+   "timeWindow": "24h",
+   "confidence": "medium",
+   "confidenceNote": "The Skytrain leg is NOT an operator figure: Changi publishes the service (complimentary, both public and transit areas, 05:00-02:00) but no journey time and no frequency, on any page. 5+8 minutes is an estimate for platform-to-platform plus the walk each end. SQ's own transit wayfinding PDF is image-only and could not be read. Seat availability for 35 cannot be verified or reserved — Changi publishes no booking or group arrangement for it.",
+   "source": "https://www.changiairport.com/en/at-changi/facilities-and-services-directory/movie-theatres.html"
+  },
+  {
+   "id": "airport-sin-home-snooze",
+   "anchorStop": "Arrive Singapore Changi — connection to SQ142",
+   "name": "Free snooze lounges, T2 Transit Level 2 (three of them)",
+   "nameJp": "",
+   "category": "rest",
+   "priceTier": "free",
+   "stayMinutes": 45,
+   "legs": [
+    {
+     "mode": "walk",
+     "minutes": 5
+    }
+   ],
+   "note": "After eight days and before a 1h25 flight home, this is what the window is actually for. Free, 24 hours, three separate T2 lounges — Sanctuary opposite E5, Oasis opposite E11, Pavilion opposite F33 — so the group spreads out rather than queues. They sit at the piers where SQ boards, which matters when boarding is called.",
+   "latitude": 1.359211,
+   "longitude": 103.989325,
+   "coordPrecision": "approximate",
+   "timeWindow": "24h",
+   "confidence": "high",
+   "confidenceNote": "Names, positions, opening and free use are quoted from Changi's own page. Seat counts are not published.",
+   "source": "https://www.changiairport.com/en/at-changi/facilities-and-services-directory/free-snooze-lounges-changi-airport-rest-areas.html"
+  },
+  {
+   "id": "airport-sin-home-gate-rescreen",
+   "anchorStop": "Arrive Singapore Changi — connection to SQ142",
+   "name": "The gate holdroom re-screening — plan liquids around it",
+   "nameJp": "",
+   "category": "sight",
+   "priceTier": "free",
+   "stayMinutes": 20,
+   "legs": [
+    {
+     "mode": "walk",
+     "minutes": 6
+    }
+   ],
+   "note": "Structural, and it catches people: Changi screens at the GATE HOLDROOM, not once at a central checkpoint. Its own transit guide has connecting passengers \"undergo security screening before heading to the boarding gate\". So anything liquid bought airside — a kaya jar, a drink — gets re-screened at the gate, and 35 people need to be back early enough to clear one gate queue.",
+   "latitude": 1.359211,
+   "longitude": 103.989325,
+   "coordPrecision": "approximate",
+   "timeWindow": "24h",
+   "confidence": "high",
+   "confidenceNote": "The at-gate screening is quoted from Changi's own transit guide. How long a gate queue takes for 35 people is not published anywhere, and whether SQ142 boards from a contact gate or a bussed remote stand is not published either.",
+   "source": "https://www.changiairport.com/en/fly/transit-guide.html"
+  }
+ ],
+ "mustSee": [
+  {
+   "id": "airport-sin-out-ms-dreamscape",
+   "anchorStop": "Arrive Singapore Changi — connection to SQ634",
+   "title": "The Dreamscape light-and-sound cycle, T2 Transit Level 2",
+   "nameJp": "",
+   "tag": "DAY 1",
+   "summary": "The only group frame available inside a 2h10 airside connection that is not a departure hall. 20,000 plants over 100+ species, glass floor panels above a fish pond, and a digital sky running off live weather — and an immersive light-and-sound show on a 15-minute cycle, which is what makes it shootable to a schedule rather than to luck. Free, open 24 hours, and on the same Level 2 as the airside Skytrain, so no climb.",
+   "whereToFind": "T2 Departure Transit Hall, Level 2 — from the arrival gate follow signs for the Skytrain to T1 and T3; Dreamscape is on that level, near the Calm Room and opposite Transfer F. Stand the group on the GLASS FLOOR PANELS with the planted wall behind them and shoot from the open side of the atrium looking back, so the digital sky fills the top of the frame instead of a ceiling. Wait for the show to start rather than shooting between cycles — one lands every 15 minutes, so the longest anyone waits is a quarter of an hour. Do it BEFORE eating: the food is on the same level and the light show is the thing with a clock.",
+   "latitude": 1.359211,
+   "longitude": 103.989325,
+   "coordPrecision": "approximate",
+   "confidence": "medium",
+   "confidenceNote": "The plant count, the glass panels, the live-weather sky, the 15-minute show interval, the 24-hour opening and the position opposite Transfer F are all quoted from Changi's own pages. What is NOT verified: that the group arrives in T2 at all — SQ states the arrival terminal is assigned about two hours before landing and may be T1, T2 or T3. If they land at T3, shoot the Butterfly Garden instead. Coordinate is Changi's aerodrome reference point (the control tower) from CAAS's eAIP — the only coordinate any official source publishes. Changi publishes none for terminals, gardens, gates or units, and none was invented.",
+   "source": "https://www.changiairport.com/en/experience/attractions-directory/dreamscape.html"
+  },
+  {
+   "id": "airport-sin-home-ms-sunflower",
+   "anchorStop": "Arrive Singapore Changi — connection to SQ142",
+   "title": "Last light from the Sunflower Garden roof, T2 Transit Level 3",
+   "nameJp": "",
+   "tag": "DAY 8",
+   "summary": "The trip's closing frame, and the only outdoor one available in transit: an open-air rooftop deck over the runways, free, open 24 hours, with no seat count — so all 35 fit at the rail at once, which is true of almost nothing else airside at Changi. Landing 16:55 and leaving 19:10 puts the group here in the late-afternoon light rather than under terminal fluorescents.",
+   "whereToFind": "T2 Departure Transit Hall, Level 3 — up one level from the Skytrain and the Dreamscape floor; the deck is at the SOUTH end, and one of T2's transit smoking areas is on it, so stand upwind of that. Put the group along the RAIL with the apron and runway behind them, and shoot from inside the deck looking out, so the aircraft are over their shoulders rather than behind your own head. Pair it with the prayer room, which is on this same Level 3 opposite Lift Lobby 21 — one climb serves both, and the homebound window straddles Maghrib.",
+   "latitude": 1.359211,
+   "longitude": 103.989325,
+   "coordPrecision": "approximate",
+   "confidence": "medium",
+   "confidenceNote": "The 24-hour opening, the Level 3 South position, the free entry and the smoking area on the deck are quoted from Changi's own pages. NOT verified: which compass direction the deck faces, what is visible from it, or the actual sunset minute on 15 Sep — none is published by the operator. The arrival terminal is not fixed either: SQ assigns it about two hours before landing and it may be T1, T2 or T3. Coordinate is Changi's aerodrome reference point (the control tower) from CAAS's eAIP — the only coordinate any official source publishes. Changi publishes none for terminals, gardens, gates or units, and none was invented.",
+   "source": "https://www.changiairport.com/en/experience/attractions-directory/sunflower-garden.html"
+  }
+ ],
+ "shopping": [
+  {
+   "id": "airport-sin-out-shop-irvins-defer",
+   "anchorStop": "Arrive Singapore Changi — connection to SQ634",
+   "name": "IRVINS salted egg snacks — buy these HOMEBOUND, not now",
+   "nameJp": "",
+   "placeLabel": "IRVINS, T2 Transit Level 2 #02-209 — AIRSIDE, daily 6am-1am; also T3 #02-K11/#02-K9 and T1 #02-K07",
+   "estimate": null,
+   "note": "The deliberate non-purchase. IRVINS is halal-certified per product, sealed and shelf-stable, and the same shop is airside in every plausible terminal on the way home — so buying on 8 Sep means carrying it through eight days of coach and onsen hotels for no reason. Published prices: fish skin 95g S$9.50 / 210g S$19.00, salmon skin 95g S$10.50, seaweed cracker 50g S$6.00.",
+   "latitude": 1.359211,
+   "longitude": 103.989325,
+   "coordPrecision": "approximate",
+   "confidence": "high",
+   "confidenceNote": "Every price, the halal marking and the 6am-1am hours are from IRVINS' own shop pages. Prices are in SGD; estimate is null because the app renders estimate with the trip's yen symbol and would silently show S$9.50 as ¥9. Coordinate is Changi's aerodrome reference point (the control tower) from CAAS's eAIP — the only coordinate any official source publishes. Changi publishes none for terminals, gardens, gates or units, and none was invented.",
+   "source": "https://eatirvins.sg/pages/find-irvins-near-you"
+  },
+  {
+   "id": "airport-sin-out-shop-nothing-perishable",
+   "anchorStop": "Arrive Singapore Changi — connection to SQ634",
+   "name": "What NOT to buy outbound: kueh, bak kwa and anything chilled",
+   "nameJp": "",
+   "placeLabel": "Bengawan Solo T2 Transit L2 #02-159 (06:00-01:00) and Bee Cheng Hiang / Fragrance Bak Kwa, T1/T2/T3 Level 2 Transit — all reachable, all the wrong call today",
+   "estimate": null,
+   "note": "Negative knowledge, stated once so it does not have to be relearned: kueh lapis and pineapple tarts are fresh bakery and will not survive seven days in a coach through Tohoku in September. Bak kwa is worse — pork, so wrong for this group, and a meat product facing Japanese import restrictions at Haneda tonight. Both belong to the 15 Sep window, or nowhere.",
+   "latitude": 1.359211,
+   "longitude": 103.989325,
+   "coordPrecision": "approximate",
+   "confidence": "high",
+   "confidenceNote": "Outlet positions and hours are from the brands' own store lists and Changi's Changi Pay outlet list. That Japan restricts meat imports is general customs practice rather than a page quoted here; the practical instruction stands either way. Coordinate is Changi's aerodrome reference point (the control tower) from CAAS's eAIP — the only coordinate any official source publishes. Changi publishes none for terminals, gardens, gates or units, and none was invented.",
+   "source": "https://bengawansolo.sg/stores/"
+  },
+  {
+   "id": "airport-sin-home-shop-irvins",
+   "anchorStop": "Arrive Singapore Changi — connection to SQ142",
+   "name": "IRVINS salted egg fish skin and potato chips",
+   "nameJp": "",
+   "placeLabel": "IRVINS, T2 Transit Level 2 #02-209 — AIRSIDE, daily 6am-1am; also airside T3 #02-K11/#02-K9 and T1 #02-K07",
+   "estimate": null,
+   "note": "The trip's best-value buy and the reason to keep cash in SGD. Halal-certified in writing on each product, sealed, and it goes straight home. Brand's own prices: fish skin 95g S$9.50 / 210g S$19.00; salmon skin 95g S$10.50 / 210g S$21.00; potato chips 95g S$9.50; tomato fish skin 80g S$8.00; seaweed cracker 50g S$6.00; Classic Mix S$10.90; Singapore box S$20.90.",
+   "latitude": 1.359211,
+   "longitude": 103.989325,
+   "coordPrecision": "approximate",
+   "confidence": "high",
+   "confidenceNote": "All prices, hours and the halal marking are from IRVINS' own pages. estimate is null because the app renders it with the trip's yen symbol and would display an SGD figure as yen and sum it into a yen total. Coordinate is Changi's aerodrome reference point (the control tower) from CAAS's eAIP — the only coordinate any official source publishes. Changi publishes none for terminals, gardens, gates or units, and none was invented.",
+   "source": "https://eatirvins.sg/pages/find-irvins-near-you"
+  },
+  {
+   "id": "airport-sin-home-shop-bengawan",
+   "anchorStop": "Arrive Singapore Changi — connection to SQ142",
+   "name": "Kueh lapis and pineapple tarts from Bengawan Solo",
+   "nameJp": "",
+   "placeLabel": "Bengawan Solo, T2 Transit Level 2 #02-159 — AIRSIDE, 06:00-01:00 daily; T1 #02-15 06:00-00:00. The T3 outlet (#02-85, Departure Check-In Hall) is LANDSIDE and unreachable",
+   "estimate": null,
+   "note": "Now is the moment for these: fresh bakery, two hours from home instead of eight days from it. No prices are published on the brand's own site, so this is a budget line rather than a quote. If the group lands at T3 there is no airside Bengawan Solo there — it is a Skytrain ride to T2 or T1, and Changi publishes no journey time for that.",
+   "latitude": 1.359211,
+   "longitude": 103.989325,
+   "coordPrecision": "approximate",
+   "confidence": "medium",
+   "confidenceNote": "Positions and hours are the brand's own, and Changi's Changi Pay list independently files the T3 outlet as Public and the T2 one as Level 2 Transit. No SGD price could be sourced. Coordinate is Changi's aerodrome reference point (the control tower) from CAAS's eAIP — the only coordinate any official source publishes. Changi publishes none for terminals, gardens, gates or units, and none was invented.",
+   "source": "https://bengawansolo.sg/stores/"
+  },
+  {
+   "id": "airport-sin-home-shop-tinned",
+   "anchorStop": "Arrive Singapore Changi — connection to SQ142",
+   "name": "Tinned gifts that survive the flight: Old Seng Choong and TWG",
+   "nameJp": "",
+   "placeLabel": "Old Seng Choong T2 Transit L2 #02-175/176 (daily 6am-1am) and TWG Tea T2 Transit L2 #02-216 (6:00am-1:00am; T3 #02-26 is 24 hours) — both AIRSIDE",
+   "estimate": null,
+   "note": "For anyone who wants a gift that does not need eating this week: biscuit tins and tea tins, light, sealed and unbreakable. Neither brand publishes prices on its own site, so budget rather than quote. Also airside in T1, so an arrival at any of the three terminals still works — but not T4, which has no airside connection to T1-T3 at all.",
+   "latitude": 1.359211,
+   "longitude": 103.989325,
+   "coordPrecision": "approximate",
+   "confidence": "medium",
+   "confidenceNote": "Positions and hours are from each brand's own locations page; Changi's newsroom factsheet corroborates Old Seng Choong as T2 transit retail. No SGD prices published. Coordinate is Changi's aerodrome reference point (the control tower) from CAAS's eAIP — the only coordinate any official source publishes. Changi publishes none for terminals, gardens, gates or units, and none was invented.",
+   "source": "https://www.oldsengchoong.com/pages/locations"
+  },
+  {
+   "id": "airport-sin-home-shop-kaya-unverified",
+   "anchorStop": "Arrive Singapore Changi — connection to SQ142",
+   "name": "Kaya in a jar — wanted, and NOT verifiable airside",
+   "nameJp": "",
+   "placeLabel": "Ya Kun is listed by Changi at T2 Level 2 Transit as F&B; no operator page confirms airside JAR retail or a price",
+   "estimate": null,
+   "note": "Honest gap rather than a guess. Ya Kun kaya is the classic Singapore jar to take home and Changi does place Ya Kun airside in T2 — but as a cafe, and no operator or brand page confirms it sells retail jars there or at what price. Two cautions if it is found: a jar over 100 ml is a problem at the gate holdroom re-screen, and no chilli-crab snack could be traced to any airside outlet.",
+   "latitude": 1.359211,
+   "longitude": 103.989325,
+   "coordPrecision": "approximate",
+   "confidence": "low",
+   "confidenceNote": "The T2 Level 2 Transit listing for Ya Kun is from Changi's own Changi Pay outlet list. Airside jar retail, price and pack size are ALL UNVERIFIED, and the chilli-crab snack has no operator source naming an outlet — do not promise either to the group. Coordinate is Changi's aerodrome reference point (the control tower) from CAAS's eAIP — the only coordinate any official source publishes. Changi publishes none for terminals, gardens, gates or units, and none was invented.",
+   "source": "https://www.changiairport.com/en/help/changi-app/changi-pay/outlets.html"
+  }
+ ],
+ "essentials": {
+  "Arrive Singapore Changi — connection to SQ634": {
+   "hours": {
+    "mon": [
+     [
+      "05:00",
+      "23:59"
+     ]
+    ],
+    "tue": [
+     [
+      "05:00",
+      "23:59"
+     ]
+    ],
+    "wed": [
+     [
+      "05:00",
+      "23:59"
+     ]
+    ],
+    "thu": [
+     [
+      "05:00",
+      "23:59"
+     ]
+    ],
+    "fri": [
+     [
+      "05:00",
+      "23:59"
+     ]
+    ],
+    "sat": [
+     [
+      "05:00",
+      "23:59"
+     ]
+    ],
+    "sun": [
+     [
+      "05:00",
+      "23:59"
+     ]
+    ]
+   },
+   "closedNote": "Almost every airside item at Changi is open 24 hours, so HOURS ARE NOT THE BINDING CONSTRAINT — terminal and airside-versus-landside are. Open through the 12:05-13:20 window and verified from Changi's own pages: Dreamscape, Enchanted Garden, Sunflower Garden, Fit&Fun Zone, Calm Room, the T1/T2/T3 prayer rooms, all six free snooze lounges, every transit smoking area, T3 Butterfly Garden, T3 Crystal Garden, T3 Movie Theatre, T1 Cactus/Discovery/Water Lily gardens, airside baggage storage and the Ambassador transit lounges and hotels. The hours block above is the Skytrain's 05:00-02:00 window expressed per day, since that is the only published time that actually gates movement. LANDSIDE TRAPS, all confirmed from Changi's own attraction pages, which tag each item Public or Transit. UNREACHABLE in transit: Jewel entirely (Rain Vortex, Shiseido Forest Valley, Canopy Park, YOTELAIR, Changi Lounge) — \"you will need to clear arrival immigration\"; The Wonderfall (T2 Public L2, easily confused with Dreamscape, which IS airside); Flap Pix (T2 Public L3); Kinetic Rain (T1 Public L2); Arrival Garden (T1 Public); ST3PS free-movie space (T3 basement, Public); and the S$5 Hub & Spoke showers (T2 Public L1). ALL FOUR VIEWING MALLS ARE PUBLIC, and T2's is additionally \"temporary closed from 19 June to 30 September 2026\" — inside both trip dates — so airside plane-spotting is Gourmet Garden's windows (\"16 different tailfins\") or the Sunflower Garden deck, not a viewing mall. The Free Singapore Tour needs a layover of \"at least 5.5 hours\" and is ineligible in both windows, though its booths are useful airside landmarks: T2 L2 near Gate F50 and T3 L2 near Gates A1-A8, both 08:00-19:00. Swee Choon, Curry Times, PappaRich, Peach Garden, Paradise Dynasty and Ya Kun Family Cafe (T3) are all Public-only despite appearing in a 2023 factsheet's transit list. There is no admission charge for any transit area. One structural caveat on F&B: Changi's dining directory and its per-outlet pages are JavaScript-driven and return no hours or prices, so NO airside restaurant's opening hours and NO food price could be sourced. What is solid is outlet name plus terminal plus level plus transit-or-public, from Changi's own Changi Pay outlet list. Halal is verified in writing for only three: Encik Tan (\"Halal-certified mini food atrium\", per its operator Fei Siong), IRVINS (marked per product) and Old Chang Kee (brand-published claim, certifying body not stated). Everything else — The Satay Club, Ya Kun, Wee Nam Kee, The Hainan Story, every Straits Food Street stall — is UNVERIFIED, and MUIS's own certification directory was unreachable. Do not tell 35 people something is halal on the strength of a category.",
+   "lastAdmission": "Boarding for SQ634 at 13:55 — and because Changi screens at the gate holdroom rather than centrally, the real handover is the gate queue, not a checkpoint. Working back from 13:55 for 35 people, be walking to the gate by about 13:20.",
+   "seasonFrom": null,
+   "seasonTo": null,
+   "groupRate": "Nothing to buy: every garden, the free Movie Theatre, all six snooze lounges, the prayer rooms, WiFi and charging are free, and no transit area charges admission. No group rate, group booking or capacity figure is published for ANY of them — not the gardens, not the ~50-seat Movie Theatre, not the prayer rooms. Paid options do not fit 2h10 anyway: Ambassador Transit Lounge is S$55 for a 3-hour minimum block (S$1,925 for 35), and its S$20 shower is the only piece that fits.",
+   "phone": "+65 6595 6868",
+   "phoneNote": "Changi's own line: \"To speak to our Changi Experience Ambassador, please contact +65 6595 6868\", corroborated in CAAS's eAIP as the aerodrome number. Airside baggage storage direct: T1 +65 6214 0318, T2 +65 6513 3671, T3 +65 6214 0672. Ambassador Transit Lounge T2 +65 6241 0978, T3 +65 6507 9798.",
+   "website": "https://www.changiairport.com",
+   "tickets": "TERMINALS. SQ's own page: \"Singapore Airlines customers flying to South East Asian destinations ... Japan (with the exception of SQ12) and South Korea should check in at Terminal 2\" — so SQ634 and SQ142 depart T2 on the operator's own rule, which upgrades the flight-tracker guess. But the same page says \"An arrival terminal will be assigned approximately two hours before the flight lands. Singapore Airlines flights may arrive at Terminal 1, 2 or 3.\" So the ARRIVAL terminal is genuinely unknown until the day, and every record here is written to survive that. SQ's minimum connecting time at Changi is not published on any SQ page reachable here. SCREENING IS AT THE GATE HOLDROOM, not a central checkpoint — Changi's transit guide has connecting passengers undergo \"security screening before heading to the boarding gate\" — so anything liquid bought airside is re-screened, and 35 people need to be at the gate early enough to clear one queue.",
+   "transport": "AIRSIDE MOVEMENT, verified: Changi's own words are \"Terminals 1, 2 and 3 are connected by a complimentary Skytrain service in both the public and transit areas\", with T1-T3 also linked by \"inter-terminal travellators located throughout the Departure Transit areas\", operating \"5:00AM - 2:00AM\". So a transit passenger moves freely between T1, T2 and T3 without clearing immigration, and the hours cover both windows with hours to spare. Every airside Skytrain platform is on LEVEL 2, which is also T2's Dreamscape, Enchanted Garden, Gourmet Garden, Calm Room and all three snooze lounges — Sunflower Garden, Fit&Fun and the prayer room are the Level 3 exceptions. TERMINAL 4 IS OUT: Changi states it \"is not connected to T1-T3 by Skytrain or walkable routes in the transit area\", so Petalclouds and the T4 Immersive Wall are unreachable even though they are airside. NOT PUBLISHED ANYWHERE: the Skytrain journey time in minutes, its frequency, and any gate-to-gate walking time — checked on the transfer page, the maps, the terminal guides, the transit guide and the FAQ. Do not put a Skytrain minute-count in the app attributed to Changi.",
+   "confidence": "high",
+   "source": "https://www.changiairport.com/en/at-changi/transport-and-directions/transferring-between-terminals-jewel.html"
+  },
+  "Arrive Singapore Changi — connection to SQ142": {
+   "hours": {
+    "mon": [
+     [
+      "05:00",
+      "23:59"
+     ]
+    ],
+    "tue": [
+     [
+      "05:00",
+      "23:59"
+     ]
+    ],
+    "wed": [
+     [
+      "05:00",
+      "23:59"
+     ]
+    ],
+    "thu": [
+     [
+      "05:00",
+      "23:59"
+     ]
+    ],
+    "fri": [
+     [
+      "05:00",
+      "23:59"
+     ]
+    ],
+    "sat": [
+     [
+      "05:00",
+      "23:59"
+     ]
+    ],
+    "sun": [
+     [
+      "05:00",
+      "23:59"
+     ]
+    ]
+   },
+   "closedNote": "Same picture as the outbound stop and it holds for 17:15-18:30 too: the airside gardens, prayer rooms, snooze lounges, Movie Theatre and smoking areas are all 24-hour, and the retail that matters homebound is open late — IRVINS 6am-1am, TWG 6am-1am (T3 24h), Bengawan Solo 06:00-01:00, Old Seng Choong 6am-1am. The one closure to know is that Be Relax Spa in T3 runs 08:00-23:00 per Changi while Be Relax's own page says 6am-1am — either way it is open in this window. LANDSIDE TRAPS, all confirmed from Changi's own attraction pages, which tag each item Public or Transit. UNREACHABLE in transit: Jewel entirely (Rain Vortex, Shiseido Forest Valley, Canopy Park, YOTELAIR, Changi Lounge) — \"you will need to clear arrival immigration\"; The Wonderfall (T2 Public L2, easily confused with Dreamscape, which IS airside); Flap Pix (T2 Public L3); Kinetic Rain (T1 Public L2); Arrival Garden (T1 Public); ST3PS free-movie space (T3 basement, Public); and the S$5 Hub & Spoke showers (T2 Public L1). ALL FOUR VIEWING MALLS ARE PUBLIC, and T2's is additionally \"temporary closed from 19 June to 30 September 2026\" — inside both trip dates — so airside plane-spotting is Gourmet Garden's windows (\"16 different tailfins\") or the Sunflower Garden deck, not a viewing mall. The Free Singapore Tour needs a layover of \"at least 5.5 hours\" and is ineligible in both windows, though its booths are useful airside landmarks: T2 L2 near Gate F50 and T3 L2 near Gates A1-A8, both 08:00-19:00. Swee Choon, Curry Times, PappaRich, Peach Garden, Paradise Dynasty and Ya Kun Family Cafe (T3) are all Public-only despite appearing in a 2023 factsheet's transit list. There is no admission charge for any transit area. One structural caveat on F&B: Changi's dining directory and its per-outlet pages are JavaScript-driven and return no hours or prices, so NO airside restaurant's opening hours and NO food price could be sourced. What is solid is outlet name plus terminal plus level plus transit-or-public, from Changi's own Changi Pay outlet list. Halal is verified in writing for only three: Encik Tan (\"Halal-certified mini food atrium\", per its operator Fei Siong), IRVINS (marked per product) and Old Chang Kee (brand-published claim, certifying body not stated). Everything else — The Satay Club, Ya Kun, Wee Nam Kee, The Hainan Story, every Straits Food Street stall — is UNVERIFIED, and MUIS's own certification directory was unreachable. Do not tell 35 people something is halal on the strength of a category.",
+   "lastAdmission": "Boarding for SQ142 at 19:10, with gate-holdroom screening rather than a central checkpoint — so be walking to the gate by about 18:30. Note the T2 Free Singapore Tour booth shuts at 19:00, which is the only airside landmark here that stops being staffed inside this window.",
+   "seasonFrom": null,
+   "seasonTo": null,
+   "groupRate": "Nothing to buy, same as outbound — every garden, lounge, prayer room and the Movie Theatre are free and no capacity or group booking is published for any of them. The one thing worth knowing homebound: airside baggage storage is 24 hours in T1/T2/T3 at S$6 for loose items, S$11 under 10 kg, S$16 over 10 kg and S$19 extra-large, per 24 hours, GST included — the fallback if anyone ends up hand-carrying something awkward bought in Japan.",
+   "phone": "+65 6595 6868",
+   "phoneNote": "Changi Experience Ambassador, per Changi's own contact page and corroborated in CAAS's eAIP. Airside baggage storage: T1 +65 6214 0318, T2 +65 6513 3671, T3 +65 6214 0672.",
+   "website": "https://www.changiairport.com",
+   "tickets": "TERMINALS. SQ's own page: \"Singapore Airlines customers flying to South East Asian destinations ... Japan (with the exception of SQ12) and South Korea should check in at Terminal 2\" — so SQ634 and SQ142 depart T2 on the operator's own rule, which upgrades the flight-tracker guess. But the same page says \"An arrival terminal will be assigned approximately two hours before the flight lands. Singapore Airlines flights may arrive at Terminal 1, 2 or 3.\" So the ARRIVAL terminal is genuinely unknown until the day, and every record here is written to survive that. SQ's minimum connecting time at Changi is not published on any SQ page reachable here. SCREENING IS AT THE GATE HOLDROOM, not a central checkpoint — Changi's transit guide has connecting passengers undergo \"security screening before heading to the boarding gate\" — so anything liquid bought airside is re-screened, and 35 people need to be at the gate early enough to clear one queue.",
+   "transport": "AIRSIDE MOVEMENT, verified: Changi's own words are \"Terminals 1, 2 and 3 are connected by a complimentary Skytrain service in both the public and transit areas\", with T1-T3 also linked by \"inter-terminal travellators located throughout the Departure Transit areas\", operating \"5:00AM - 2:00AM\". So a transit passenger moves freely between T1, T2 and T3 without clearing immigration, and the hours cover both windows with hours to spare. Every airside Skytrain platform is on LEVEL 2, which is also T2's Dreamscape, Enchanted Garden, Gourmet Garden, Calm Room and all three snooze lounges — Sunflower Garden, Fit&Fun and the prayer room are the Level 3 exceptions. TERMINAL 4 IS OUT: Changi states it \"is not connected to T1-T3 by Skytrain or walkable routes in the transit area\", so Petalclouds and the T4 Immersive Wall are unreachable even though they are airside. NOT PUBLISHED ANYWHERE: the Skytrain journey time in minutes, its frequency, and any gate-to-gate walking time — checked on the transfer page, the maps, the terminal guides, the transit guide and the FAQ. Do not put a Skytrain minute-count in the app attributed to Changi.",
+   "confidence": "high",
+   "source": "https://www.changiairport.com/en/at-changi/transport-and-directions/transferring-between-terminals-jewel.html"
+  }
+ },
+ "subRoutes": [
+  {
+   "id": "airport-sin-out-sr-t2",
+   "anchorStop": "Arrive Singapore Changi — connection to SQ634",
+   "title": "Two levels, seventy-five minutes: the T2 airside loop",
+   "startMinutes": 725,
+   "deadlineMinutes": 800,
+   "placeIDs": [
+    "airport-sin-out-dreamscape",
+    "airport-sin-out-gourmetgarden",
+    "airport-sin-out-sunflower",
+    "airport-sin-out-prayer-t2",
+    "airport-sin-out-snooze"
+   ],
+   "steps": [
+    {
+     "placeID": "airport-sin-out-dreamscape",
+     "name": "Dreamscape, Level 2 — catch one show cycle",
+     "atMinutes": 725,
+     "minutes": 20,
+     "walkMinutes": 6,
+     "note": "First because it is the only thing with a clock: the light-and-sound cycle runs every 15 minutes, so arriving early costs nothing and arriving late costs the frame."
+    },
+    {
+     "placeID": "airport-sin-out-gourmetgarden",
+     "name": "Gourmet Garden, same level — eat",
+     "atMinutes": 745,
+     "minutes": 30,
+     "walkMinutes": 3,
+     "note": "Multi-stall, so 35 people split across counters and re-form at tables. Encik Tan is the halal-in-writing alternative if anyone needs certainty rather than a category."
+    },
+    {
+     "placeID": "airport-sin-out-prayer-t2",
+     "name": "Up to Level 3 — prayer room, opposite Lift Lobby 21",
+     "atMinutes": 778,
+     "minutes": 15,
+     "walkMinutes": 5,
+     "note": "One climb serves the rest of this route. Ablution facilities and qibla signage are published; capacity is not, so rotate."
+    },
+    {
+     "placeID": "airport-sin-out-sunflower",
+     "name": "Sunflower Garden, same Level 3 — outdoors",
+     "atMinutes": 785,
+     "minutes": 12,
+     "walkMinutes": 2,
+     "note": "Runs alongside the prayer rotation rather than after it: whoever is waiting goes out on the roof deck. No seat count, so all 35 fit."
+    },
+    {
+     "placeID": "airport-sin-out-snooze",
+     "name": "Down to the pier and the gate",
+     "atMinutes": 797,
+     "minutes": 3,
+     "walkMinutes": 5,
+     "note": "The snooze lounges sit opposite E5, E11 and F33 — i.e. at the boarding piers — so heading for them is the same direction as heading for the gate."
+    }
+   ],
+   "totalWalkMinutes": 21,
+   "note": "Deliberately confined to T2 and to two levels, because that is what the published record can actually support: Changi gives no Skytrain journey time, so a T2-to-T3 Butterfly Garden round trip cannot be sized on a 2h10 connection. Level 2 has Dreamscape, the food and the snooze lounges; Level 3 has the prayer room and the roof. Deadline 13:20 walking to the gate, because Changi screens at the holdroom and 35 people are one queue. If the flight lands at T3 instead, drop this and use Butterfly Garden and the free Movie Theatre, both airside there.",
+   "confidence": "medium",
+   "confidenceNote": "Every position, opening hour and free-entry claim is from Changi's own pages. The internal walking minutes are estimates paced off Changi's own sensory maps, NOT operator figures — Changi publishes no walking times. The whole route assumes a T2 arrival, which SQ explicitly does not guarantee until about two hours before landing.",
+   "source": "https://www.changiairport.com/en/at-changi/transport-and-directions/transferring-between-terminals-jewel.html"
+  },
+  {
+   "id": "airport-sin-home-sr-t2",
+   "anchorStop": "Arrive Singapore Changi — connection to SQ142",
+   "title": "Maghrib, dinner, and the last things worth buying",
+   "startMinutes": 1035,
+   "deadlineMinutes": 1110,
+   "placeIDs": [
+    "airport-sin-home-prayer-t2",
+    "airport-sin-home-encik-tan",
+    "airport-sin-home-irvins",
+    "airport-sin-home-sunflower",
+    "airport-sin-home-snooze"
+   ],
+   "steps": [
+    {
+     "placeID": "airport-sin-home-prayer-t2",
+     "name": "Level 3 prayer room first — the window straddles Maghrib",
+     "atMinutes": 1035,
+     "minutes": 20,
+     "walkMinutes": 8,
+     "note": "First, not last: this is the one thing in the window with an external clock, and the room's capacity is unpublished so 35 people means rotation."
+    },
+    {
+     "placeID": "airport-sin-home-sunflower",
+     "name": "Sunflower Garden, same level — last light",
+     "atMinutes": 1035,
+     "minutes": 20,
+     "walkMinutes": 1,
+     "note": "Runs alongside the prayer rotation. Outdoors, no seat count, and the closing group frame of the trip. Stand upwind of the smoking area on the deck."
+    },
+    {
+     "placeID": "airport-sin-home-encik-tan",
+     "name": "Down to Level 2 — dinner",
+     "atMinutes": 1058,
+     "minutes": 35,
+     "walkMinutes": 6,
+     "note": "17:40 is a real dinner hour. Encik Tan is the halal-certified atrium; Gourmet Garden is the T2 alternative but publishes no halal status for any stall."
+    },
+    {
+     "placeID": "airport-sin-home-irvins",
+     "name": "IRVINS and the tinned gifts, same level",
+     "atMinutes": 1094,
+     "minutes": 12,
+     "walkMinutes": 3,
+     "note": "Buy now, not on the way out — this is the whole reason the outbound record says defer. Old Seng Choong and TWG are on the same level if anyone wants tins."
+    },
+    {
+     "placeID": "airport-sin-home-snooze",
+     "name": "To the pier for SQ142",
+     "atMinutes": 1106,
+     "minutes": 4,
+     "walkMinutes": 4,
+     "note": "Gate-holdroom screening means liquids bought in the last twenty minutes get re-screened — so buy sealed and dry, or buy earlier."
+    }
+   ],
+   "totalWalkMinutes": 22,
+   "note": "Ordered by what has a clock rather than by what is nearest: Maghrib first, dinner second, shopping last, because the shopping is the only part that can be cut. Confined to T2 Levels 2 and 3 for the same reason as the outbound route — Changi publishes no Skytrain journey time, so a cross-terminal leg cannot be planned for 35 people on 2h15. Deadline 18:30 walking to the gate. If they land at T3, the airside Bengawan Solo does NOT exist there; IRVINS and TWG do.",
+   "confidence": "medium",
+   "confidenceNote": "Positions, hours and prices are operator- or brand-published. Walking minutes are estimates off Changi's own maps, not operator figures. Maghrib's actual minute on 15 Sep is not from an operator source and should be confirmed locally. Arrival terminal is not fixed until about two hours before landing.",
+   "source": "https://www.changiairport.com/en/at-changi/facilities-and-services-directory/prayer-rooms-at-changi-airport-tranquil-spaces-for-reflection.html"
+  }
+ ],
+ "stopSummary": {
+  "Arrive Singapore Changi — connection to SQ634": {
+   "do": "Stay in whichever terminal you land in — SQ fixes the DEPARTURE at T2 but says the arrival terminal is assigned about two hours before landing and may be T1, T2 or T3. In T2 everything is on two levels: Dreamscape (Level 2, light-and-sound show every 15 minutes) and Sunflower Garden, Fit&Fun Zone and the prayer room (all Level 3). In T3, Butterfly Garden and the free ~50-seat Movie Theatre beat anything in T2. Jewel is NOT an option: Changi requires clearing immigration to enter it.",
+   "eat": "Gourmet Garden, T2 Transit Level 2 — a multi-stall cluster with floor-to-ceiling windows onto \"16 different tailfins\", which is the right shape for 35 people with an hour and no booking. Encik Tan is the halal one in writing: its operator calls it \"a Halal-certified mini food atrium\". Old Chang Kee at #02-K7 is the 12-minute grab-and-go. Nobody publishes hours or prices for any airside outlet at Changi, so treat all of it as likely-open rather than promised.",
+   "snack": "Old Chang Kee curry puffs airside at T2 #02-K7 and T3 #02-K2 — halal per the brand, hot, and eaten standing up, which is the actual question here. Skip the T3 #B2-51 outlet; that one is landside. Water dispensers exist \"around the transit and public areas\" per Changi's FAQ but no location is published, and free #WiFi@Changi needs no registration, no payment and no personal details.",
+   "buy": "Buy nothing today, on purpose. IRVINS, TWG, Old Seng Choong and Bengawan Solo are all airside again on 15 Sep in the same terminals — so anything bought now rides eight days of coach and onsen hotels for nothing. Kueh lapis and pineapple tarts are fresh bakery and will not survive it; bak kwa is pork and a meat product facing Japanese import rules tonight. The outbound answer is: note the shops, walk past them.",
+   "see": "Dreamscape on T2 Level 2 is the frame — 20,000 plants, glass floor panels over a fish pond, a digital sky on live weather, and a show every 15 minutes so it can be shot to a schedule. Sunflower Garden one level up is the open-air alternative with no seat count, so all 35 fit. What you cannot see: every one of Changi's four viewing malls is landside, and T2's is closed 19 June-30 September 2026 anyway. Plane-spotting is Gourmet Garden's windows or the roof deck.",
+   "confidence": "high",
+   "source": "https://www.changiairport.com/en/at-changi/transport-and-directions/transferring-between-terminals-jewel.html"
+  },
+  "Arrive Singapore Changi — connection to SQ142": {
+   "do": "Order the window by what has a clock: 17:15-18:30 straddles Maghrib, so the T2 Level 3 prayer room opposite Lift Lobby 21 comes first — 24 hours, free, with ablution facilities and qibla signage published, though capacity is not, so rotate. Sunflower Garden is on the same level for whoever is waiting. Then dinner, then shopping, because shopping is the only part that can be cut. Be walking to the gate by 18:30: Changi screens at the holdroom, and 35 people are one queue.",
+   "eat": "A real dinner hour, so use it: Encik Tan is the halal-certified airside atrium and the multi-stall format moves 35 people without a booking. Gourmet Garden in T2 is the alternative but publishes no halal status for any stall and serves alcohol. No airside outlet at Changi publishes hours or prices — verified as a structural gap, not an oversight — so nothing here is a reservation.",
+   "snack": "Old Chang Kee airside at T2 #02-K7 for something hot in hand before a 1h25 flight, and IRVINS packs double as the snack and the gift. One caution that catches people: anything liquid bought airside gets re-screened at the GATE holdroom, so a kaya jar over 100 ml bought at 18:45 becomes a problem at 19:00. Buy sealed and dry late; buy liquids early or not at all.",
+   "buy": "THIS is the window. IRVINS, halal-marked per product and priced on its own site — fish skin 95g S$9.50 / 210g S$19.00, salmon skin 95g S$10.50, seaweed cracker 50g S$6.00, Singapore-themed box S$20.90 — airside in T1, T2 and T3, so it survives any arrival terminal. Bengawan Solo kueh lapis now that it is two hours from home, but ONLY from T2 #02-159 or T1: the T3 outlet is landside. Old Seng Choong biscuit tins and TWG tea tins for gifts that keep.",
+   "see": "The trip's closing frame is the Sunflower Garden roof deck on T2 Level 3 — free, 24 hours, outdoors, no seat count, so all 35 stand at the rail together in late-afternoon light instead of under terminal fluorescents. Stand upwind of the smoking area up there. If they land at T3 instead, the Butterfly Garden spans two levels and is the better shot; Changi publishes no Skytrain journey time, so do not plan a crossing for it.",
+   "confidence": "high",
+   "source": "https://www.changiairport.com/en/at-changi/transport-and-directions/transferring-between-terminals-jewel.html"
+  }
+ }
+}

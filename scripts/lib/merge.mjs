@@ -201,12 +201,56 @@ export function durationMinutes(label) {
 }
 
 /** Every batch, in the one order that is not optional: top-ups last (§4.1). */
+/**
+ * Files that are read by a path OTHER than the batch merge, so their absence
+ * from the batch order is correct rather than a mistake: the app seed, the
+ * two `stopSummary` files, and the duplicate manifest.
+ */
+const NON_BATCH = new Set(['trip12_app_seed.json', 'seed_duplicates.json']);
+const NON_BATCH_RE = /^summaries-/;
+
+/**
+ * The batch order, and it is an ALLOWLIST — which is how a whole research
+ * batch went missing without a word.
+ *
+ * `airport-*.json` arrived on 7 Sep 2026 with 59 records and matched none of
+ * the patterns here, so `buildSnapshot` read 17 of the 20 batch files and
+ * produced a snapshot identical to the one before the batch existed: same
+ * 575 places, same 60 must-see, same 96 shopping. No error, no warning,
+ * nothing in the report. The files were in the directory and simply were not
+ * looked at.
+ *
+ * So `airport-` is in the order now, LAST, because the merge is
+ * last-write-wins and a batch written against the current bundle should win
+ * a conflict with an older one. That is safe here specifically because the
+ * airport batch emits no `essentials`, `stopSummary` or `outfitByStop` for
+ * Haneda — the one stop it overlaps — so there is nothing of Haneda's for it
+ * to overwrite. A future batch that DOES emit those for an existing stop
+ * would clobber them, and that is what last-write-wins means.
+ *
+ * `unconsumedBatches` exists so this cannot happen quietly a second time.
+ */
 export function batchOrder(dir) {
   const all = readdirSync(dir).filter((f) => f.endsWith('.json'));
   const pick = (re) => all.filter((f) => re.test(f)).sort();
   return [
     ...pick(/^day\d/), 'new-hotels.json', ...pick(/^expand-/), ...pick(/^topup-/),
+    ...pick(/^airport-/),
   ].filter((f) => all.includes(f));
+}
+
+/**
+ * Any `.json` in the research directory that neither the batch order nor a
+ * known non-batch reader will touch. A file here is almost certainly a batch
+ * whose name nobody taught the importer about, and the honest thing is to
+ * say so loudly rather than build a snapshot that silently omits it.
+ */
+export function unconsumedBatches(dir) {
+  const consumed = new Set(batchOrder(dir));
+  return readdirSync(dir)
+    .filter((f) => f.endsWith('.json'))
+    .filter((f) => !consumed.has(f) && !NON_BATCH.has(f) && !NON_BATCH_RE.test(f))
+    .sort();
 }
 
 const read = (dir, f) => JSON.parse(readFileSync(join(dir, f), 'utf8'));
@@ -924,6 +968,76 @@ export function buildSnapshot(researchDir, guidePath) {
       s.category = 'other';
       report.categoryProblems.push({ collection: 'shopping', id, name: s.name, value: was, fix: 'other', crossWired: true });
     }
+  }
+
+  // ---- 9a1. ONE canonical shape for subRoutes[].steps --------------------
+  //
+  // The bundle grew two incompatible step shapes and nobody noticed, because
+  // NOTHING in web/js reads `steps[]` — the app draws a sub route from
+  // `placeIDs`. So the inconsistency was invisible and free to spread:
+  //
+  //   9 routes  { placeID, label, arrive, stayMinutes, walkMinutesToNext }
+  //   7 routes  { placeID, name, atMinutes, minutes, walkMinutes, note }
+  //   1 route   BOTH — a field-wise merge fused the two when a later batch
+  //             re-emitted a route the seed had already written in shape A
+  //   3 routes  no steps at all
+  //
+  // That hybrid is the argument for fixing it now rather than later: the
+  // merge cannot tell the shapes apart, so every re-emission risks another.
+  //
+  // Canonical is the SECOND shape, for three reasons rather than taste.
+  // BRIEF_COWORK_AIRPORT_RESEARCH.md documents it as the contract, so all new
+  // research already emits it. `atMinutes` is minutes-from-midnight, which is
+  // what the rest of the model speaks (`startMinutes`, `deadlineMinutes`,
+  // `loopDeadline`) where `arrive` is a display string. And it carries `note`,
+  // which shape A has no field for — so A -> B loses nothing and B -> A would
+  // lose the prose.
+  //
+  // Normalising here rather than rewriting the JSON keeps it idempotent: a
+  // future batch in either shape lands correctly without anyone remembering.
+  const clockToMinutes = (v) => {
+    const hit = /^(\d{1,2}):(\d{2})$/.exec(String(v || '').trim());
+    return hit ? Number(hit[1]) * 60 + Number(hit[2]) : null;
+  };
+  for (const [, r] of coll.subRoutes) {
+    if (!Array.isArray(r.steps) || !r.steps.length) continue;
+    let touched = false;
+    r.steps = r.steps.map((raw) => {
+      const step = { ...raw };
+      // `label` is shape A's name. Where a merge left both, `name` wins and
+      // the stale `label` goes, which is what produced the hybrid.
+      if (step.label != null) {
+        if (!step.name) step.name = step.label;
+        delete step.label;
+        touched = true;
+      }
+      if (step.arrive != null) {
+        const at = clockToMinutes(step.arrive);
+        if (step.atMinutes == null && at != null) step.atMinutes = at;
+        delete step.arrive;
+        touched = true;
+      }
+      if (step.stayMinutes != null) {
+        if (step.minutes == null) step.minutes = step.stayMinutes;
+        delete step.stayMinutes;
+        touched = true;
+      }
+      if (step.walkMinutesToNext != null) {
+        if (step.walkMinutes == null) step.walkMinutes = step.walkMinutesToNext;
+        delete step.walkMinutesToNext;
+        touched = true;
+      }
+      if (step.note == null) step.note = '';
+      return {
+        placeID: step.placeID ?? null,
+        name: step.name ?? '',
+        atMinutes: step.atMinutes ?? null,
+        minutes: step.minutes ?? null,
+        walkMinutes: step.walkMinutes ?? null,
+        note: step.note,
+      };
+    });
+    if (touched) report.stepsNormalised = (report.stepsNormalised || 0) + 1;
   }
 
   // ---- 9a2. ITEM 4: the researched items start LOCAL ---------------------
