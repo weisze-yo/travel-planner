@@ -28,14 +28,27 @@ const HERE = dirname(fileURLToPath(import.meta.url));
 const RESEARCH = join(HERE, '..', 'research', 'trip12');
 const GUIDE = join(HERE, '..', 'handoff', 'trip12', 'TRIP_IMPLEMENTATION_GUIDE.md');
 
+/**
+ * A flag is boolean when nothing follows it that could be its value — either it
+ * is last on the line, or the next token is another `--flag`.
+ *
+ * This used to be a hardcoded list of three boolean names, and `allow-real-trip`
+ * was not on it. So the one flag standing between a typo and the real trip was
+ * parsed as a value-taking option, swallowed the token after it, and at the end
+ * of a command line swallowed `undefined` — leaving the key absent and the gate
+ * permanently shut. The gate was unopenable, and the message said nothing about
+ * why. Deriving it from the shape of the line means a flag added later cannot
+ * repeat that.
+ */
 function parseArgs(argv) {
   const out = { _: [] };
   for (let i = 0; i < argv.length; i += 1) {
     const a = argv[i];
     if (!a.startsWith('--')) { out._.push(a); continue; }
     const key = a.slice(2);
-    if (['dry-run', 'emulator', 'yes'].includes(key)) out[key] = true;
-    else out[key] = argv[++i];
+    const next = argv[i + 1];
+    if (next === undefined || next.startsWith('--')) out[key] = true;
+    else { out[key] = next; i += 1; }
   }
   return out;
 }

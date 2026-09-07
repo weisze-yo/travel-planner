@@ -5,7 +5,7 @@
 import { html, raw, icon, delegate } from '../util.js';
 import * as store from '../store.js';
 import { state } from '../store.js';
-import { checkbox, swipeToDelete } from './parts.js';
+import { checkbox, swipeToDelete, dayPills } from './parts.js';
 import { OUTFIT_PICKS } from '../data.js';
 import { PACKED_LOCATIONS } from '../data.js';
 
@@ -34,6 +34,8 @@ export default {
         </div>
 
         <div class="scroll" style="padding:12px 16px 24px">
+          <div class="row g6 wrap mb12">${dayPills({ small: true })}</div>
+
           ${outfitCard()}
 
           ${groups.map((group) => html`
@@ -90,6 +92,7 @@ export default {
   },
 
   mount(root) {
+    delegate(root, '[data-day]', (el) => store.selectDay(Number(el.dataset.day)));
     delegate(root, '[data-act="outfit-remove"]', (el) => store.removeOutfitPiece(el.dataset.piece));
     delegate(root, '[data-act="outfit-pick"]', (el) => store.addOutfitPiece(el.dataset.piece));
     delegate(root, '[data-act="outfit-add"]', () => {
@@ -146,6 +149,11 @@ function nudge() {
  * are actually bringing is your own record and is kept separate from it,
  * because the app guessing and you deciding are not the same list.
  */
+// The outfit advice was always per-day — outfitAdvice() and outfitFor() both
+// read state.selectedDay — but this screen offered no way to change the day,
+// so it only ever showed whichever one the Plan screen had been left on. The
+// pills above the card are the same component the Plan screen uses, so the two
+// stay in step rather than each keeping their own idea of "today".
 function outfitCard() {
   const wx = store.weather();
   const advice = store.outfitAdvice();
