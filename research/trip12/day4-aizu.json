@@ -753,7 +753,23 @@
    "coordPrecision": "verified",
    "confidence": "high",
    "confidenceNote": null,
-   "source": "https://www.tsurugajo.com/tsurugajo/tensyukaku/"
+   "source": "https://www.tsurugajo.com/tsurugajo/tensyukaku/",
+   "images": [
+    {
+     "url": "https://thumb.wikimedia.org/wikipedia/commons/thumb/9/92/%E9%B6%B4%E3%83%B6%E5%9F%8E_-_panoramio_%281%29.jpg/1920px-%E9%B6%B4%E3%83%B6%E5%9F%8E_-_panoramio_%281%29.jpg?utm_source=commons.wikimedia.org&utm_campaign=imageinfo&utm_content=thumbnail",
+     "license": "CC BY",
+     "sourcePage": "https://commons.wikimedia.org/wiki/File:%E9%B6%B4%E3%83%B6%E5%9F%8E_-_panoramio_(1).jpg",
+     "caption": "鶴ヶ城",
+     "credit": "hundumari"
+    },
+    {
+     "url": "https://thumb.wikimedia.org/wikipedia/commons/thumb/e/ee/%E9%B6%B4%E3%83%B6%E5%9F%8E_-_panoramio_%283%29.jpg/1920px-%E9%B6%B4%E3%83%B6%E5%9F%8E_-_panoramio_%283%29.jpg?utm_source=commons.wikimedia.org&utm_campaign=imageinfo&utm_content=thumbnail",
+     "license": "CC BY",
+     "sourcePage": "https://commons.wikimedia.org/wiki/File:%E9%B6%B4%E3%83%B6%E5%9F%8E_-_panoramio_(3).jpg",
+     "caption": "鶴ヶ城",
+     "credit": "hundumari"
+    }
+   ]
   },
   {
    "id": "d4msrainfall",
@@ -813,7 +829,23 @@
    "coordPrecision": "verified",
    "confidence": "high",
    "confidenceNote": null,
-   "source": "https://ouchi-juku.com/"
+   "source": "https://ouchi-juku.com/",
+   "images": [
+    {
+     "url": "https://thumb.wikimedia.org/wikipedia/commons/thumb/8/8d/%E5%A4%A7%E5%86%85%E5%AE%BF_-_panoramio_%2812%29.jpg/1920px-%E5%A4%A7%E5%86%85%E5%AE%BF_-_panoramio_%2812%29.jpg?utm_source=commons.wikimedia.org&utm_campaign=imageinfo&utm_content=thumbnail",
+     "license": "CC BY",
+     "sourcePage": "https://commons.wikimedia.org/wiki/File:%E5%A4%A7%E5%86%85%E5%AE%BF_-_panoramio_(12).jpg",
+     "caption": "大内宿",
+     "credit": "くろふね"
+    },
+    {
+     "url": "https://upload.wikimedia.org/wikipedia/commons/4/4b/%E5%A4%A7%E5%86%85%E5%AE%BF%E5%AE%B6%E5%B1%8B20220917-P1003583.jpg?utm_source=commons.wikimedia.org&utm_campaign=imageinfo&utm_content=thumbnail_unscaled",
+     "license": "CC BY",
+     "sourcePage": "https://commons.wikimedia.org/wiki/File:%E5%A4%A7%E5%86%85%E5%AE%BF%E5%AE%B6%E5%B1%8B20220917-P1003583.jpg",
+     "caption": "大内宿家屋",
+     "credit": "くろふね"
+    }
+   ]
   },
   {
    "id": "55fb00cd1fd1",
@@ -828,7 +860,23 @@
    "coordPrecision": "verified",
    "confidence": "high",
    "confidenceNote": null,
-   "source": "https://urabandai-vc.jp/trekking/1goshiki/"
+   "source": "https://urabandai-vc.jp/trekking/1goshiki/",
+   "images": [
+    {
+     "url": "https://thumb.wikimedia.org/wikipedia/commons/thumb/b/bf/Goshikinuma-azuma_0810.JPG/1920px-Goshikinuma-azuma_0810.JPG?utm_source=commons.wikimedia.org&utm_campaign=imageinfo&utm_content=thumbnail",
+     "license": "CC BY-SA",
+     "sourcePage": "https://commons.wikimedia.org/wiki/File:Goshikinuma-azuma_0810.JPG",
+     "caption": "Goshikinuma on Mt. Issaikyō in Fukushima, Fukushima",
+     "credit": "Qwert1234"
+    },
+    {
+     "url": "https://thumb.wikimedia.org/wikipedia/commons/thumb/c/c6/Fukushima%2C_mount_Issaikyouzan_2008_2.JPG/1920px-Fukushima%2C_mount_Issaikyouzan_2008_2.JPG?utm_source=commons.wikimedia.org&utm_campaign=imageinfo&utm_content=thumbnail",
+     "license": "CC BY-SA",
+     "sourcePage": "https://commons.wikimedia.org/wiki/File:Fukushima,_mount_Issaikyouzan_2008_2.JPG",
+     "caption": "Japan: mount Issaikyō (Fukushima prefecture).",
+     "credit": "Qwert1234 at Japanese Wikipedia"
+    }
+   ]
   },
   {
    "id": "c07f12a723dc",
@@ -846,7 +894,23 @@
    "source": "https://www.yukoyuko.net/6561",
    "retired": true,
    "retiredReason": "Superseded on the 4 Sep 2026 app screenshots. Night 4 is now a different property.",
-   "retiredReplacedBy": "Kinugawa Onsen Hana no Yado Matsuya"
+   "retiredReplacedBy": "Kinugawa Onsen Hana no Yado Matsuya",
+   "images": [
+    {
+     "url": "https://thumb.wikimedia.org/wikipedia/commons/thumb/6/62/Kinugawa_Onsen_01.jpg/1920px-Kinugawa_Onsen_01.jpg?utm_source=commons.wikimedia.org&utm_campaign=imageinfo&utm_content=thumbnail",
+     "license": "CC BY-SA",
+     "sourcePage": "https://commons.wikimedia.org/wiki/File:Kinugawa_Onsen_01.jpg",
+     "caption": "Kinugawa Onsen.",
+     "credit": "Gene Jackson from Brooklyn, United States"
+    },
+    {
+     "url": "https://thumb.wikimedia.org/wikipedia/commons/thumb/5/5c/Kinugawa_Onsen_03.JPG/1920px-Kinugawa_Onsen_03.JPG?utm_source=commons.wikimedia.org&utm_campaign=imageinfo&utm_content=thumbnail",
+     "license": "CC BY-SA",
+     "sourcePage": "https://commons.wikimedia.org/wiki/File:Kinugawa_Onsen_03.JPG",
+     "caption": "鬼怒川温泉、鬼怒川ふれあい橋より上流方",
+     "credit": "掬茶"
+    }
+   ]
   },
   {
    "id": "e28effa84c93",

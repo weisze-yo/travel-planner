@@ -486,7 +486,23 @@
    "source": "https://yosikawaya.com/onsen/",
    "retired": true,
    "retiredReason": "Superseded on the 4 Sep 2026 app screenshots. Night 3 moved PREFECTURE — from Iizaka Onsen, Fukushima to Zao, Miyagi — and the coach transfer after Zao Fox Village dropped from ~1h 5m/~45 km to ~30 min/~18 km, with check-in pulled from 17:45 to 17:15.",
-   "retiredReplacedBy": "Mercure Miyagi Zao Resort & Spa"
+   "retiredReplacedBy": "Mercure Miyagi Zao Resort & Spa",
+   "images": [
+    {
+     "url": "https://thumb.wikimedia.org/wikipedia/commons/thumb/7/7e/Totsuna-bridge%2CIizaka-spa%2CFukusima-city%2CJapan.JPG/1920px-Totsuna-bridge%2CIizaka-spa%2CFukusima-city%2CJapan.JPG?utm_source=commons.wikimedia.org&utm_campaign=imageinfo&utm_content=thumbnail",
+     "license": "CC BY-SA",
+     "sourcePage": "https://commons.wikimedia.org/wiki/File:Totsuna-bridge,Iizaka-spa,Fukusima-city,Japan.JPG",
+     "caption": "Totsuna-bridge,Iizaka-spa,Fukusima-city,Japan",
+     "credit": "Katorisi"
+    },
+    {
+     "url": "https://thumb.wikimedia.org/wikipedia/commons/thumb/1/1b/%E9%A3%AF%E5%9D%82%E6%B8%A9%E6%B3%89%E9%A7%85_-_panoramio.jpg/1920px-%E9%A3%AF%E5%9D%82%E6%B8%A9%E6%B3%89%E9%A7%85_-_panoramio.jpg?utm_source=commons.wikimedia.org&utm_campaign=imageinfo&utm_content=thumbnail",
+     "license": "CC BY-SA",
+     "sourcePage": "https://commons.wikimedia.org/wiki/File:%E9%A3%AF%E5%9D%82%E6%B8%A9%E6%B3%89%E9%A7%85_-_panoramio.jpg",
+     "caption": "飯坂温泉駅",
+     "credit": "クハ４１９－５"
+    }
+   ]
   },
   {
    "id": "95f9f32d67eb",
@@ -711,7 +727,23 @@
    "coordPrecision": "verified",
    "confidence": "high",
    "confidenceNote": null,
-   "source": "https://www.ginzanonsen.jp/ginzan/walk.html"
+   "source": "https://www.ginzanonsen.jp/ginzan/walk.html",
+   "images": [
+    {
+     "url": "https://upload.wikimedia.org/wikipedia/commons/f/fd/%E9%8A%80%E5%B1%B1%E6%B8%A9%E6%B3%89_-_panoramio.jpg?utm_source=commons.wikimedia.org&utm_campaign=imageinfo&utm_content=thumbnail_unscaled",
+     "license": "CC BY-SA",
+     "sourcePage": "https://commons.wikimedia.org/wiki/File:%E9%8A%80%E5%B1%B1%E6%B8%A9%E6%B3%89_-_panoramio.jpg",
+     "caption": "​銀山温泉",
+     "credit": "ohkubo"
+    },
+    {
+     "url": "https://upload.wikimedia.org/wikipedia/commons/a/a0/%E9%8A%80%E5%B1%B1%E6%B8%A9%E6%B3%89_-_panoramio_-_ohkubo.jpg?utm_source=commons.wikimedia.org&utm_campaign=imageinfo&utm_content=thumbnail_unscaled",
+     "license": "CC BY-SA",
+     "sourcePage": "https://commons.wikimedia.org/wiki/File:%E9%8A%80%E5%B1%B1%E6%B8%A9%E6%B3%89_-_panoramio_-_ohkubo.jpg",
+     "caption": "銀山温泉",
+     "credit": "ohkubo"
+    }
+   ]
   },
   {
    "id": "600e8bb20bfb",
@@ -756,7 +788,23 @@
    "coordPrecision": "verified",
    "confidence": "high",
    "confidenceNote": null,
-   "source": "https://discoversendai.travel/places/zao-fox-village/"
+   "source": "https://discoversendai.travel/places/zao-fox-village/",
+   "images": [
+    {
+     "url": "https://thumb.wikimedia.org/wikipedia/commons/thumb/8/84/Kitsune_mura_H26Dec13.JPG/1920px-Kitsune_mura_H26Dec13.JPG?utm_source=commons.wikimedia.org&utm_campaign=imageinfo&utm_content=thumbnail",
+     "license": "CC BY-SA",
+     "sourcePage": "https://commons.wikimedia.org/wiki/File:Kitsune_mura_H26Dec13.JPG",
+     "caption": "蔵王キツネ村入口、平成26年12月13日撮影",
+     "credit": "Piccolist"
+    },
+    {
+     "url": "https://thumb.wikimedia.org/wikipedia/commons/thumb/d/db/Zao_Fox_Village%2C_Shiroishi-shi%2C_Japan_%28Unsplash%29.jpg/1920px-Zao_Fox_Village%2C_Shiroishi-shi%2C_Japan_%28Unsplash%29.jpg?utm_source=commons.wikimedia.org&utm_campaign=imageinfo&utm_content=thumbnail",
+     "license": "CC0",
+     "sourcePage": "https://commons.wikimedia.org/wiki/File:Zao_Fox_Village,_Shiroishi-shi,_Japan_(Unsplash).jpg",
+     "caption": "Zao Fox Village, Shiroishi-shi, Japan",
+     "credit": "CloudVisual cloudvisual"
+    }
+   ]
   },
   {
    "id": "d3mustsee01",

@@ -22,7 +22,23 @@
    "timeWindow": "24h",
    "confidence": "medium",
    "confidenceNote": "TIAT's official Edo Koji page confirms the location and character but publishes no hours; the individual shops closing around 22:00 is from tenant listings, not the operator's own page.",
-   "source": "https://www.tiat.co.jp/terminal/edo_koji.html"
+   "source": "https://www.tiat.co.jp/terminal/edo_koji.html",
+   "images": [
+    {
+     "url": "https://thumb.wikimedia.org/wikipedia/commons/thumb/6/6a/%E4%BC%8A%E6%9D%B1%E5%B1%8B_%28%E7%BE%BD%E7%94%B0%E7%A9%BA%E6%B8%AF%E7%AC%AC3%E3%82%BF%E3%83%BC%E3%83%9F%E3%83%8A%E3%83%AB%29.jpg/1920px-%E4%BC%8A%E6%9D%B1%E5%B1%8B_%28%E7%BE%BD%E7%94%B0%E7%A9%BA%E6%B8%AF%E7%AC%AC3%E3%82%BF%E3%83%BC%E3%83%9F%E3%83%8A%E3%83%AB%29.jpg?utm_source=commons.wikimedia.org&utm_campaign=imageinfo&utm_content=thumbnail",
+     "license": "CC BY-SA",
+     "sourcePage": "https://commons.wikimedia.org/wiki/File:%E4%BC%8A%E6%9D%B1%E5%B1%8B_(%E7%BE%BD%E7%94%B0%E7%A9%BA%E6%B8%AF%E7%AC%AC3%E3%82%BF%E3%83%BC%E3%83%9F%E3%83%8A%E3%83%AB).jpg",
+     "caption": "伊東屋",
+     "credit": "contri from Yonezawa-Shi, Yamagata, Japan"
+    },
+    {
+     "url": "https://thumb.wikimedia.org/wikipedia/commons/thumb/1/1c/Haneda_Airport_%E7%BE%BD%E7%94%B0%E7%A9%BA%E6%B8%AF%E7%AC%AC%EF%BC%91%E3%82%BF%E3%83%BC%E3%83%9F%E3%83%8A%E3%83%AB_-_panoramio.jpg/1920px-Haneda_Airport_%E7%BE%BD%E7%94%B0%E7%A9%BA%E6%B8%AF%E7%AC%AC%EF%BC%91%E3%82%BF%E3%83%BC%E3%83%9F%E3%83%8A%E3%83%AB_-_panoramio.jpg?utm_source=commons.wikimedia.org&utm_campaign=imageinfo&utm_content=thumbnail",
+     "license": "CC BY",
+     "sourcePage": "https://commons.wikimedia.org/wiki/File:Haneda_Airport_%E7%BE%BD%E7%94%B0%E7%A9%BA%E6%B8%AF%E7%AC%AC%EF%BC%91%E3%82%BF%E3%83%BC%E3%83%9F%E3%83%8A%E3%83%AB_-_panoramio.jpg",
+     "caption": "Haneda Airport 羽田空港第１ターミナル",
+     "credit": "AMANO Jun-ichi"
+    }
+   ]
   },
   {
    "id": "55e8d4c12bc0",

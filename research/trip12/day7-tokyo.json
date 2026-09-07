@@ -1311,7 +1311,23 @@
    "coordPrecision": "verified",
    "confidence": "high",
    "confidenceNote": null,
-   "source": "https://www.zojoji.or.jp/"
+   "source": "https://www.zojoji.or.jp/",
+   "images": [
+    {
+     "url": "https://upload.wikimedia.org/wikipedia/commons/9/9a/20110405-TokyoTower-Sakura01.jpg?utm_source=commons.wikimedia.org&utm_campaign=imageinfo&utm_content=thumbnail_unscaled",
+     "license": "CC BY-SA",
+     "sourcePage": "https://commons.wikimedia.org/wiki/File:20110405-TokyoTower-Sakura01.jpg",
+     "caption": "春の増上寺と東京タワー",
+     "credit": "東京太郎"
+    },
+    {
+     "url": "https://upload.wikimedia.org/wikipedia/commons/0/04/20110405-TokyoTower-Sakura02.jpg?utm_source=commons.wikimedia.org&utm_campaign=imageinfo&utm_content=thumbnail_unscaled",
+     "license": "CC BY-SA",
+     "sourcePage": "https://commons.wikimedia.org/wiki/File:20110405-TokyoTower-Sakura02.jpg",
+     "caption": "春の東京タワー。増上寺にて。",
+     "credit": "東京太郎"
+    }
+   ]
   },
   {
    "id": "e322db9a7d1d",
@@ -1356,7 +1372,23 @@
    "coordPrecision": "verified",
    "confidence": "medium",
    "confidenceNote": "Address, phone and the 09:00–17:00 office hours are from the shrine's own page, but the specific identity and colour of each lion head is carried from the inventory — the shrine's own site does not describe them.",
-   "source": "https://www.namiyoke.or.jp/koutsuannai.php"
+   "source": "https://www.namiyoke.or.jp/koutsuannai.php",
+   "images": [
+    {
+     "url": "https://thumb.wikimedia.org/wikipedia/commons/thumb/6/6e/Oweston_sting_fish_for_sale_at_Tsukiji_Fishmarket%2C_Tokyo-30.jpg/1920px-Oweston_sting_fish_for_sale_at_Tsukiji_Fishmarket%2C_Tokyo-30.jpg?utm_source=commons.wikimedia.org&utm_campaign=imageinfo&utm_content=thumbnail",
+     "license": "CC BY-SA",
+     "sourcePage": "https://commons.wikimedia.org/wiki/File:Oweston_sting_fish_for_sale_at_Tsukiji_Fishmarket,_Tokyo-30.jpg",
+     "caption": "Fish for sale at Tsukiji fish market, Tokyo",
+     "credit": "MichaelMaggs"
+    },
+    {
+     "url": "https://thumb.wikimedia.org/wikipedia/commons/thumb/6/66/August_2007_Tsukiji_fish_market_2.jpg/1920px-August_2007_Tsukiji_fish_market_2.jpg?utm_source=commons.wikimedia.org&utm_campaign=imageinfo&utm_content=thumbnail",
+     "license": "CC0",
+     "sourcePage": "https://commons.wikimedia.org/wiki/File:August_2007_Tsukiji_fish_market_2.jpg",
+     "caption": "August 2007 Tsukiji fish market",
+     "credit": "Syced"
+    }
+   ]
   },
   {
    "id": "83284e0294a8",
@@ -1416,7 +1448,23 @@
    "coordPrecision": "approximate",
    "confidence": "medium",
    "confidenceNote": "The single-level open-air layout, the 421,000 m² site area and the plaza-in-front-of-the-food-court position are from the operator's own facility sheet and service page, but Shisui publishes no coordinate and the GSI geocoder resolves 飯積2-4-1 only to a block centroid 1.8 km away.",
-   "source": "https://mes.premiumoutlets.co.jp/_assets/pdf/page/pressroom/photo/shisui.pdf"
+   "source": "https://mes.premiumoutlets.co.jp/_assets/pdf/page/pressroom/photo/shisui.pdf",
+   "images": [
+    {
+     "url": "https://thumb.wikimedia.org/wikipedia/commons/thumb/8/88/Chiba_Kotsu_92-21_Shisui_Premium_Outlet_Shuttle.jpg/1920px-Chiba_Kotsu_92-21_Shisui_Premium_Outlet_Shuttle.jpg?utm_source=commons.wikimedia.org&utm_campaign=imageinfo&utm_content=thumbnail",
+     "license": "CC BY-SA",
+     "sourcePage": "https://commons.wikimedia.org/wiki/File:Chiba_Kotsu_92-21_Shisui_Premium_Outlet_Shuttle.jpg",
+     "caption": "千葉交通が運行する酒々井プレミアムアウトレット - 成田空港線。VISAカードのラッピング装飾を施された車両が専用車として就役する。 型式：三菱ふそうエアロバス KL-MS86MP 登録番号：千葉200か・798",
+     "credit": "Comyu"
+    },
+    {
+     "url": "https://upload.wikimedia.org/wikipedia/commons/5/53/Shisui_Premium_Outlets_01.JPG?utm_source=commons.wikimedia.org&utm_campaign=imageinfo&utm_content=thumbnail_unscaled",
+     "license": "public domain",
+     "sourcePage": "https://commons.wikimedia.org/wiki/File:Shisui_Premium_Outlets_01.JPG",
+     "caption": "Shisui Premium Outlets",
+     "credit": "Abasaa"
+    }
+   ]
   },
   {
    "id": "d7ms04",
@@ -1446,7 +1494,23 @@
    "coordPrecision": "verified",
    "confidence": "medium",
    "confidenceNote": "The coordinate is GSI-verified from the address and the sunrise figure is from the trip's own validated solar set, but the 06:00–23:00 park hours, the three coach bays and the 09:00 Sky Shop opening are carried from the inventory rather than re-read at the operator's page, and the runway-approach direction is inferred from the park being at Runway A's northern threshold.",
-   "source": "https://msearch.gsi.go.jp/address-search/AddressSearch?q=千葉県成田市駒井野1338-1"
+   "source": "https://msearch.gsi.go.jp/address-search/AddressSearch?q=千葉県成田市駒井野1338-1",
+   "images": [
+    {
+     "url": "https://upload.wikimedia.org/wikipedia/commons/2/25/Tomisato_city_hall.JPG?utm_source=commons.wikimedia.org&utm_campaign=imageinfo&utm_content=thumbnail_unscaled",
+     "license": "CC BY-SA",
+     "sourcePage": "https://commons.wikimedia.org/wiki/File:Tomisato_city_hall.JPG",
+     "caption": "Tomisato city hall, Chiba prefecture,Japan",
+     "credit": "アラツク"
+    },
+    {
+     "url": "https://thumb.wikimedia.org/wikipedia/commons/thumb/7/7f/Japan_National_Route_296_in_Nanae%2CTomisato_city%2CChiba.JPG/1920px-Japan_National_Route_296_in_Nanae%2CTomisato_city%2CChiba.JPG?utm_source=commons.wikimedia.org&utm_campaign=imageinfo&utm_content=thumbnail",
+     "license": "CC BY-SA",
+     "sourcePage": "https://commons.wikimedia.org/wiki/File:Japan_National_Route_296_in_Nanae,Tomisato_city,Chiba.JPG",
+     "caption": "国道296号（千葉県富里市七栄）",
+     "credit": "小石川人晃"
+    }
+   ]
   }
  ],
  "shopping": [

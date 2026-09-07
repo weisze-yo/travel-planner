@@ -1035,7 +1035,23 @@
    "coordPrecision": "verified",
    "confidence": "high",
    "confidenceNote": null,
-   "source": "https://www.gransta.jp/mall/gransta_tokyo/"
+   "source": "https://www.gransta.jp/mall/gransta_tokyo/",
+   "images": [
+    {
+     "url": "https://thumb.wikimedia.org/wikipedia/commons/thumb/c/c2/%E6%9D%B1%E4%BA%AC%E9%A7%85%E2%86%92%E4%B8%B8%E3%81%AE%E5%86%85%E3%82%AA%E3%82%A2%E3%82%BE%E3%81%B8.jpg/1920px-%E6%9D%B1%E4%BA%AC%E9%A7%85%E2%86%92%E4%B8%B8%E3%81%AE%E5%86%85%E3%82%AA%E3%82%A2%E3%82%BE%E3%81%B8.jpg?utm_source=commons.wikimedia.org&utm_campaign=imageinfo&utm_content=thumbnail",
+     "license": "CC BY-SA",
+     "sourcePage": "https://commons.wikimedia.org/wiki/File:%E6%9D%B1%E4%BA%AC%E9%A7%85%E2%86%92%E4%B8%B8%E3%81%AE%E5%86%85%E3%82%AA%E3%82%A2%E3%82%BE%E3%81%B8.jpg",
+     "caption": "ラッシュ時（ちょっとすぎてるけど）",
+     "credit": "駅案内人"
+    },
+    {
+     "url": "https://thumb.wikimedia.org/wikipedia/commons/thumb/b/b0/%E6%9D%B1%E4%BA%AC%E9%A7%85%E4%B8%B8%E3%81%AE%E5%86%85%E5%8F%A3_-_panoramio.jpg/1920px-%E6%9D%B1%E4%BA%AC%E9%A7%85%E4%B8%B8%E3%81%AE%E5%86%85%E5%8F%A3_-_panoramio.jpg?utm_source=commons.wikimedia.org&utm_campaign=imageinfo&utm_content=thumbnail",
+     "license": "CC BY-SA",
+     "sourcePage": "https://commons.wikimedia.org/wiki/File:%E6%9D%B1%E4%BA%AC%E9%A7%85%E4%B8%B8%E3%81%AE%E5%86%85%E5%8F%A3_-_panoramio.jpg",
+     "caption": "東京駅丸の内口",
+     "credit": "Toshihiro Matsui"
+    }
+   ]
   },
   {
    "id": "d2ms001aobadori",
@@ -1050,7 +1066,23 @@
    "coordPrecision": "verified",
    "confidence": "medium",
    "confidenceNote": "The coordinate is the government gazetteer's Aoba-dori point, but whether the deck's sightline is clear of redevelopment hoardings in September 2026 is unverified.",
-   "source": "https://msearch.gsi.go.jp/address-search/AddressSearch?q=青葉通"
+   "source": "https://msearch.gsi.go.jp/address-search/AddressSearch?q=青葉通",
+   "images": [
+    {
+     "url": "https://upload.wikimedia.org/wikipedia/commons/5/55/%E4%BB%99%E5%8F%B0%E9%A7%85%2C_Sendai_station_-_panoramio.jpg?utm_source=commons.wikimedia.org&utm_campaign=imageinfo&utm_content=thumbnail_unscaled",
+     "license": "CC BY-SA",
+     "sourcePage": "https://commons.wikimedia.org/wiki/File:%E4%BB%99%E5%8F%B0%E9%A7%85,_Sendai_station_-_panoramio.jpg",
+     "caption": "仙台駅, Sendai station",
+     "credit": "xezna"
+    },
+    {
+     "url": "https://thumb.wikimedia.org/wikipedia/commons/thumb/a/ae/SENDAI_Station_2017_%2836424837974%29.jpg/1920px-SENDAI_Station_2017_%2836424837974%29.jpg?utm_source=commons.wikimedia.org&utm_campaign=imageinfo&utm_content=thumbnail",
+     "license": "CC BY",
+     "sourcePage": "https://commons.wikimedia.org/wiki/File:SENDAI_Station_2017_(36424837974).jpg",
+     "caption": "仙台駅のJR線中央口改札付近",
+     "credit": "MIKI Yoshihito"
+    }
+   ]
   },
   {
    "id": "d2ms002tunacounter",
@@ -1080,7 +1112,23 @@
    "coordPrecision": "verified",
    "confidence": "medium",
    "confidenceNote": "Whether the cave group lies before or after the ticket gate is not stated on any Zuiganji page reachable from here, so the free-access assumption is unverified.",
-   "source": "https://www.miyagi-kankou.or.jp/theme/detail.php?id=17591"
+   "source": "https://www.miyagi-kankou.or.jp/theme/detail.php?id=17591",
+   "images": [
+    {
+     "url": "https://thumb.wikimedia.org/wikipedia/commons/thumb/1/15/Zuiganji_Hondo.JPG/1920px-Zuiganji_Hondo.JPG?utm_source=commons.wikimedia.org&utm_campaign=imageinfo&utm_content=thumbnail",
+     "license": "CC BY-SA",
+     "sourcePage": "https://commons.wikimedia.org/wiki/File:Zuiganji_Hondo.JPG",
+     "caption": "Zuiganji Mahavira hall,Mie prefecture,Japan",
+     "credit": "アラツク"
+    },
+    {
+     "url": "https://thumb.wikimedia.org/wikipedia/commons/thumb/a/a9/Pink_and_white_ume_in_Zuigan-ji_%282455310939%29.jpg/1920px-Pink_and_white_ume_in_Zuigan-ji_%282455310939%29.jpg?utm_source=commons.wikimedia.org&utm_campaign=imageinfo&utm_content=thumbnail",
+     "license": "CC BY-SA",
+     "sourcePage": "https://commons.wikimedia.org/wiki/File:Pink_and_white_ume_in_Zuigan-ji_(2455310939).jpg",
+     "caption": "Pink and white ume in Zuigan-ji",
+     "credit": "KimonBerlin"
+    }
+   ]
   },
   {
    "id": "5f2f092136f7",
@@ -1095,7 +1143,23 @@
    "coordPrecision": "verified",
    "confidence": "high",
    "confidenceNote": null,
-   "source": "https://www.town.miyagi-matsushima.lg.jp/page/1199.html"
+   "source": "https://www.town.miyagi-matsushima.lg.jp/page/1199.html",
+   "images": [
+    {
+     "url": "https://thumb.wikimedia.org/wikipedia/commons/thumb/9/96/Daikaku-ji_Buddhist_Temple_-_Entrance_for_Godai-d%C3%B4.jpg/1920px-Daikaku-ji_Buddhist_Temple_-_Entrance_for_Godai-d%C3%B4.jpg?utm_source=commons.wikimedia.org&utm_campaign=imageinfo&utm_content=thumbnail",
+     "license": "CC BY-SA",
+     "sourcePage": "https://commons.wikimedia.org/wiki/File:Daikaku-ji_Buddhist_Temple_-_Entrance_for_Godai-d%C3%B4.jpg",
+     "caption": "大覚寺 五大堂入口",
+     "credit": "Yanajin33"
+    },
+    {
+     "url": "https://thumb.wikimedia.org/wikipedia/commons/thumb/b/bb/Matsushima_Godaido_4.jpg/1920px-Matsushima_Godaido_4.jpg?utm_source=commons.wikimedia.org&utm_campaign=imageinfo&utm_content=thumbnail",
+     "license": "CC BY-SA",
+     "sourcePage": "https://commons.wikimedia.org/wiki/File:Matsushima_Godaido_4.jpg",
+     "caption": "Godaidō hall in Matsushima, Miyagi",
+     "credit": "Tak1701d"
+    }
+   ]
   },
   {
    "id": "d2ms003sukashibashi",
@@ -1125,7 +1189,23 @@
    "coordPrecision": "verified",
    "confidence": "medium",
    "confidenceNote": "The sailing time, fare and deck are the operator's own, but which side of the boat faces the islands on the outbound leg is inferred from the loop's geometry, not from a published course diagram.",
-   "source": "https://www.matsushima.or.jp/timesheet/index.html"
+   "source": "https://www.matsushima.or.jp/timesheet/index.html",
+   "images": [
+    {
+     "url": "https://thumb.wikimedia.org/wikipedia/commons/thumb/4/43/Flag_of_Japan%2C_sightseeing_boat_on_Matsushima_Bay_-_Oct_25%2C_2022_%281%29.jpg/1920px-Flag_of_Japan%2C_sightseeing_boat_on_Matsushima_Bay_-_Oct_25%2C_2022_%281%29.jpg?utm_source=commons.wikimedia.org&utm_campaign=imageinfo&utm_content=thumbnail",
+     "license": "CC BY",
+     "sourcePage": "https://commons.wikimedia.org/wiki/File:Flag_of_Japan,_sightseeing_boat_on_Matsushima_Bay_-_Oct_25,_2022_(1).jpg",
+     "caption": "Sightseeing boat from Matsushima to Shiogama.",
+     "credit": "John Seb Barber"
+    },
+    {
+     "url": "https://thumb.wikimedia.org/wikipedia/commons/thumb/9/9f/Flag_of_Japan%2C_sightseeing_boat_on_Matsushima_Bay_-_Oct_25%2C_2022_%282%29.jpg/1920px-Flag_of_Japan%2C_sightseeing_boat_on_Matsushima_Bay_-_Oct_25%2C_2022_%282%29.jpg?utm_source=commons.wikimedia.org&utm_campaign=imageinfo&utm_content=thumbnail",
+     "license": "CC BY",
+     "sourcePage": "https://commons.wikimedia.org/wiki/File:Flag_of_Japan,_sightseeing_boat_on_Matsushima_Bay_-_Oct_25,_2022_(2).jpg",
+     "caption": "Sightseeing boat from Matsushima to Shiogama.",
+     "credit": "John Seb Barber"
+    }
+   ]
   },
   {
    "id": "d2ms004narukosteam",
@@ -1143,7 +1223,23 @@
    "source": "https://onsen.nifty.com/naruko-onsen/onsen008070/",
    "retired": true,
    "retiredReason": "Superseded on the 4 Sep 2026 app screenshots. Night 2 is now a different property.",
-   "retiredReplacedBy": "Ooedo Onsen Monogatari Naruko Onsen Kounkaku"
+   "retiredReplacedBy": "Ooedo Onsen Monogatari Naruko Onsen Kounkaku",
+   "images": [
+    {
+     "url": "https://thumb.wikimedia.org/wikipedia/commons/thumb/b/b6/%E9%B3%B4%E5%AD%90%E6%B8%A9%E6%B3%89%E4%BB%98%E8%BF%91%E3%81%AE%E9%A2%A8%E6%99%AF_-_panoramio.jpg/1920px-%E9%B3%B4%E5%AD%90%E6%B8%A9%E6%B3%89%E4%BB%98%E8%BF%91%E3%81%AE%E9%A2%A8%E6%99%AF_-_panoramio.jpg?utm_source=commons.wikimedia.org&utm_campaign=imageinfo&utm_content=thumbnail",
+     "license": "CC BY",
+     "sourcePage": "https://commons.wikimedia.org/wiki/File:%E9%B3%B4%E5%AD%90%E6%B8%A9%E6%B3%89%E4%BB%98%E8%BF%91%E3%81%AE%E9%A2%A8%E6%99%AF_-_panoramio.jpg",
+     "caption": "鳴子温泉付近の風景",
+     "credit": "くろふね"
+    },
+    {
+     "url": "https://thumb.wikimedia.org/wikipedia/commons/thumb/a/a5/%E9%B3%B4%E5%AD%90%E6%B8%A9%E6%B3%89%E9%A7%85_-_panoramio.jpg/1920px-%E9%B3%B4%E5%AD%90%E6%B8%A9%E6%B3%89%E9%A7%85_-_panoramio.jpg?utm_source=commons.wikimedia.org&utm_campaign=imageinfo&utm_content=thumbnail",
+     "license": "CC BY",
+     "sourcePage": "https://commons.wikimedia.org/wiki/File:%E9%B3%B4%E5%AD%90%E6%B8%A9%E6%B3%89%E9%A7%85_-_panoramio.jpg",
+     "caption": "鳴子温泉駅",
+     "credit": "くろふね"
+    }
+   ]
   }
  ],
  "shopping": [
