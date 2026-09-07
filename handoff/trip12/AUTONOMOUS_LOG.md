@@ -206,6 +206,20 @@ the reader's own thumb. Three whole rows now sit between the header and the form
 count is the assertion rather than §3.6's 232px figure, which was measured on Trip 12's Day 4 whose
 rows are shorter than the demo's.
 
+### 13 · The `service` category needed a fourth list, and the dry run found it
+
+`merge.mjs` keeps its own `PLACE_CATEGORIES` Set, and it did not know about `service` — so the dry
+run reported **"places with an invalid category: 14"**, which is every record the earlier commit
+reclassified. They would have imported anyway, as a value the app does not recognise and
+`categoryLabel` falls through to printing raw.
+
+That Set was the **fourth** place that had to learn the new value: `data.js`'s `CATEGORY_LABELS`,
+`validate_research.py`'s enum, `nearby.js`'s `CATS`, and this. Two of the four are derived now —
+§3.7 made `CATS` read `CATEGORY_LABELS`. The remaining two are deliberately separate copies,
+because the importer must be able to reject a value the app happens to accept and the validator
+must run with no app at all. **The dry run is what keeps them honest**, which is exactly what it
+just did.
+
 ## UNRESOLVED — needs the owner
 
 ### U1 · `outfitByStop` — 33 researched records, ~1,400 characters each, never imported
