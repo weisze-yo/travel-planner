@@ -665,3 +665,46 @@ with `placeID` already set, so `unifyPlaces()` has nothing to do.
 | Duplicate stop name | ✅ works | ✅ |
 | **Zuiganji loop under its own stop** | ❌ still wrong | ✅ |
 | **Service worker: `Returned response is null`** | ❌ still logs | ✅ |
+
+---
+
+## Post-import: the prep recategorisation, and two briefs
+
+The real trip is imported and confirmed — 850 documents to `vitrox-trip12-tohoku`, counts matching.
+
+### Prep categories — approved and committed
+
+`handoff/trip12/PREP_CATEGORIES_PROPOSAL.md` is the human record; `scripts/lib/prep-categories.mjs`
+is the machine one. Both were written from the same table, and `buildSnapshot` now asserts that every
+one of the 85 lines matches **exactly one** rule and that **no rule goes unused** — so a fragment that
+stops matching because the prose was edited fails loudly instead of quietly dropping a line into a
+category nobody chose.
+
+Ten categories, in this order, verified rendering in the app:
+
+| bring | | avoid | |
+|---|--:|---|--:|
+| Documents | 5 | Don't wear | 19 |
+| Money | 10 | Don't do | 12 |
+| Outfits | 11 | Don't expect | 5 |
+| Electronics | 1 | | |
+| Photo kit | 5 | | |
+| Health & comfort | 10 | | |
+| Day bag | 7 | | |
+
+Both structure calls confirmed by the owner: **Money stays its own category**, and **Photo kit stays
+separate from A9's Photo missions** — equipment is not the same list as assignments.
+
+### Two briefs drafted, not sent
+
+- `handoff/trip12/BRIEF_CLAUDE_DESIGN.md` — four presentation decisions: the morning/night hint on a
+  31-row Nearby list, **the per-day outfit prose that exists in the data and is rendered nowhere**,
+  an image slot whose absent state is permanent rather than a loading state, and where search mounts
+  given the tab bar holds five and the strip holds one. Carries the token table, the meanings already
+  attached to `--jade` / `--amber` / `--danger`, and the WCAG-AA bar that `test/contrast.mjs` gates.
+- `handoff/trip12/BRIEF_COWORK_AIRPORT_RESEARCH.md` — Penang, both Changi connections and the gaps at
+  Haneda T3. Narita T1 is already complete and is explicitly excluded. Carries the field-by-field
+  batch schema, the two-`category`-enum trap, the sourcing standard including the two coordinate
+  errors that standard exists to prevent, and the byte-exact `anchorStop` strings.
+
+Both are drafts for the owner to review and send; neither has been sent.

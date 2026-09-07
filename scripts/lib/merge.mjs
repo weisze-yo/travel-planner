@@ -14,6 +14,7 @@
 import { readFileSync, readdirSync } from 'node:fs';
 import { join } from 'node:path';
 import { createHash } from 'node:crypto';
+import { PREP_CATEGORY_ORDER, PREP_ASSIGNMENTS } from './prep-categories.mjs';
 
 export const TRIP_ID = 'vitrox-trip12-tohoku';
 
@@ -853,6 +854,29 @@ export function buildSnapshot(researchDir, guidePath) {
     }
   }
 
+  // ---- 9b. the prep lines, recategorised ---------------------------------
+  //
+  // Every line must match exactly one rule and every rule exactly one line —
+  // a fragment that stops matching because the prose was edited would
+  // otherwise leave that line silently in a category nobody chose.
+  const prep = (seed.prep || []).map((r) => ({ ...r }));
+  report.prep = { assigned: 0, unmatched: [], unusedRules: [], ambiguous: [] };
+  const ruleUse = new Map(PREP_ASSIGNMENTS.map(([frag]) => [frag, 0]));
+  for (const item of prep) {
+    const hits = PREP_ASSIGNMENTS.filter(([frag]) => item.name.includes(frag));
+    if (hits.length === 0) { report.prep.unmatched.push(item.name); continue; }
+    if (hits.length > 1) report.prep.ambiguous.push({ name: item.name, rules: hits.map((h) => h[0]) });
+    const [frag, category] = hits[0];
+    ruleUse.set(frag, ruleUse.get(frag) + 1);
+    item.category = category;
+    item.categoryOrder = PREP_CATEGORY_ORDER.indexOf(category);
+    report.prep.assigned += 1;
+  }
+  for (const [frag, n] of ruleUse) if (n === 0) report.prep.unusedRules.push(frag);
+  for (const w of report.prep.unmatched) report.warnings.push(`prep line matched no category rule: ${w}`);
+  for (const w of report.prep.unusedRules) report.warnings.push(`prep category rule matched nothing: ${w}`);
+  for (const a of report.prep.ambiguous) report.warnings.push(`prep line matched ${a.rules.length} rules: ${a.name}`);
+
   // ---- 10. the trip document ---------------------------------------------
   const trip = {
     ...seed.trip,
@@ -882,7 +906,9 @@ export function buildSnapshot(researchDir, guidePath) {
     latitude: 37.5,
     longitude: 140.0,
     // Decision B1: A9's six, plus the seventh the 85 prep lines actually use.
-    prepCategories: ['Documents', 'Outfits', 'Carry-on', 'Electronics', 'Photo missions', 'Day bag', 'Leave behind'],
+    // Approved from PREP_CATEGORIES_PROPOSAL.md — seven "bring" columns and
+    // three "avoid" ones, because the 85 lines are two different kinds of thing.
+    prepCategories: [...PREP_CATEGORY_ORDER],
   };
   delete trip.departsInDays; // display-only, never stored (A1)
 
@@ -893,7 +919,7 @@ export function buildSnapshot(researchDir, guidePath) {
     subRoutes: [...coll.subRoutes.values()],
     shopping: [...coll.shopping.values()],
     mustSee: [...coll.mustSee.values()],
-    prep: (seed.prep || []).map((r) => ({ ...r })),
+    prep,
     log: [],
     outfits: (seed.outfits || []).map((r) => ({ ...r })),
   };
