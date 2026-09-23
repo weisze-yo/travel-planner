@@ -29,3 +29,6 @@ firebase-adminsdk-*.json
 # refuses to write inside the repo, and this catches it if that is ever forced.
 *trip-backup*.json
 *trip12-backup*.json
+
+# test/run.sh logs
+test/.runs/
