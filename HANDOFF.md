@@ -109,9 +109,21 @@ round nine it is **committed rather than living in a scratchpad**:
   round nine. It is also the proof the rules say what their comments claim:
   one account cannot read another's trip, checked by Google's own engine
   rather than a re-implementation.
-- **`test/refused-rules.mjs`** — swap in a deny-all ruleset and check the app
-  says so in words that name the fix instead of blaming the network. It
-  restores `firebase/firestore.rules` byte-identical when it is done.
+- **`test/refused-rules.mjs`** — swaps in a deny-all ruleset and checks the app
+  says so in words that name the fix instead of blaming the network. **It owns
+  the swap itself** — do not edit `firebase/firestore.rules` by hand for it. It
+  writes the deny-all ruleset, restores the original in a `finally` (so a crash
+  or a Ctrl-C still restores), verifies the restore byte-for-byte, and refuses
+  to start at all if that file already has uncommitted changes.
+
+  > **This was not always true, and the gap was dangerous.** Until 23 Sep 2026
+  > the swap was a manual step and the script restored *nothing*, while this
+  > file and `docs/design/transition-audit.md` §10.2 both claimed it did. Since
+  > `.github/workflows/deploy-web.yml` deploys `firebase/firestore.rules` to
+  > production on every push to `main`, "run it, forget to restore, commit,
+  > push" would have locked every user out of their own data. If you ever find
+  > that file holding a deny-all ruleset, a run crashed before the fix landed —
+  > `git checkout firebase/firestore.rules`, and do not deploy.
 - **`test/setup.sh`** vendors the pinned SDK into `web/vendor/firebase-local/`
   (gitignored) and installs `firebase-tools` under `test/`; **`test/serve.mjs`**
   serves `web/` on :8123 with Hosting's rewrite, so `/j/CODE` returns

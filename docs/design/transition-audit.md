@@ -227,6 +227,9 @@ backend-gated 25 · role-and-identity 40 · install-line 22 · map-link 27
                                             ── 485 checks, 0 failures
 two-phones (real Auth + Firestore emulators, this repo's rules)  65/65
 refused-rules  correct behaviour; repo rules restored byte-identical
+               ^ WRONG WHEN WRITTEN — the script restored nothing at all until
+                 23 Sep 2026. It does now, and it also refuses to run against a
+                 dirty rules file. See HANDOFF.md.
 guard.mjs  37 modules parse · 0 backticks in HTML comments
 ```
 

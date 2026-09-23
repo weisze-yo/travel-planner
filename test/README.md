@@ -48,9 +48,24 @@ node test/two-phones.mjs
 ## The other one
 
 `test/refused-rules.mjs` reproduces the failure that looks like "sharing is
-completely broken": rules that refuse everything. Swap
-`firebase/firestore.rules` for a deny-all ruleset, run it, and the app should
-say so in words that name the fix rather than blaming the network.
+completely broken": rules that refuse everything. The app should say so in
+words that name the fix rather than blaming the network.
+
+**Do not swap `firebase/firestore.rules` by hand — the script does it.** With
+the emulators and `serve.mjs` already running, just:
+
+```sh
+node test/refused-rules.mjs
+```
+
+It writes the deny-all ruleset, restores the original in a `finally` (a crash
+or a Ctrl-C still restores), checks the restore byte-for-byte, and refuses to
+start if that file has uncommitted changes. That refusal is also how a
+previously crashed run makes itself visible: `git checkout
+firebase/firestore.rules` and try again.
+
+It asserts and sets an exit code, so it can gate a build. It used to do
+neither — it printed six lines for a human and always exited 0.
 
 ## What no emulator can tell you
 
