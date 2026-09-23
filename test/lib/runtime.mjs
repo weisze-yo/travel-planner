@@ -77,6 +77,23 @@ export function launch(options = {}) {
   return chromium.launch(executablePath ? { executablePath, ...options } : options);
 }
 
+/**
+ * The three outside services the app talks to, plus map tiles and fonts.
+ *
+ * Refuse them explicitly in any harness whose result depends on them being
+ * unavailable. The development container cannot reach the internet from
+ * Chromium, so tests written in it can silently come to depend on a broken
+ * network and then fail on a laptop or a CI runner. `name-vs-address.mjs` did
+ * exactly that: it asserted a place gains no Address row, which held only
+ * while the reverse-geocode failed, and the first CI run returned the real
+ * Japanese address for Tsukiji instead.
+ *
+ *   await blockOutside(page);   // before the first goto
+ */
+export const OUTSIDE = /tile\.openstreetmap\.org|nominatim|open-meteo|frankfurter|gstatic/;
+
+export const blockOutside = (pageOrContext) => pageOrContext.route(OUTSIDE, (r) => r.abort());
+
 /** The plain static server — `cd web && http-server -p 8099 -c-1 .` */
 export const APP = process.env.TP_APP || 'http://127.0.0.1:8099';
 

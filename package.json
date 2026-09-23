@@ -9,6 +9,9 @@
     "postinstall": "node -e \"console.log('\\n  Browsers are not downloaded by default. If Playwright cannot find Chromium,\\n  run:  npx playwright install --with-deps chromium\\n')\""
   },
   "devDependencies": {
-    "playwright": "^1.47.0"
+    "playwright": "1.56.1"
+  },
+  "comments": {
+    "playwright": "PINNED EXACTLY, not a caret range. The point of the pin is that a local run predicts CI: with '^1.47.0' the runner installed a 1.6x, where page.accessibility has been removed upstream, and test/accessibility.mjs crashed on CI while passing locally against the container's 1.56.1. Upgrading is a deliberate task, not something a fresh npm install does to you — and it needs test/accessibility.mjs rewritten off the removed API first."
   }
 }

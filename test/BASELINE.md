@@ -102,6 +102,20 @@ Measured honestly, so the gaps are not mistaken for coverage:
   `web/css/app.css`, so the stylesheet can drift away from the test silently.
 - Synchronisation is by fixed `waitForTimeout` sleeps, which is flaky by
   construction on a loaded machine.
+- **Eighteen harnesses do not stub the network**, and the development container
+  cannot reach the internet from Chromium — so a test written here can come to
+  depend on a broken network without anyone noticing. `name-vs-address.mjs` did
+  exactly that: "a link whose name has no comma gains no Address row" held only
+  while the reverse-geocode failed, and the first CI run on a networked runner
+  returned the live Japanese address for Tsukiji instead. It is fixed and now
+  refuses the hosts explicitly via `blockOutside(page)` from
+  `test/lib/runtime.mjs`. The other seventeen pass on a networked runner today,
+  but none of them says whether that is by design. Adding `blockOutside` where
+  the result should not depend on connectivity is worth a pass of its own.
+- **`test/accessibility.mjs` uses `page.accessibility.snapshot()`, which
+  Playwright has removed.** It works only on the pinned 1.56.1, which is why
+  `package.json` pins an exact version rather than a range. Rewrite it off that
+  API before raising the pin.
 - Playwright and Chromium are resolved by absolute container paths, and
   `test/serve.mjs` hardcodes its root, so **none of this runs in CI as written**.
 
