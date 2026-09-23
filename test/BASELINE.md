@@ -64,17 +64,24 @@ the harness actually printed. Several drifted upward as checks were added
 without the counts being revised — `accessibility` 9 → 14, `empty-states` 35 →
 37, `warning-strip` 34 → 35, `currency` 55 → 56, `pending-and-refusals` 56 → 57.
 
-## How this was run
-
-Two servers, because the suite is currently split across both and nothing in the
-repo starts the first one:
+## How to re-run it
 
 ```sh
-cd web && http-server -p 8099 -c-1 .     # 24 harnesses expect this
-node test/serve.mjs                       # :8123, SPA rewrite — 4 harnesses expect this
+npm run test:guard   # always first
+npm test             # starts both servers, runs all 28, prints the total
 ```
 
-Then every harness except `serve.mjs`, `guard.mjs` and the two emulator ones.
+`test/run.mjs` starts the servers itself and reuses one already on the port.
+Useful flags: `--jobs 4` (faster, less stable — the harnesses synchronise with
+fixed sleeps), `--only <substring>`, `--junit out.xml`.
+
+When this baseline was first measured that command did not exist: it meant
+starting `http-server` on 8099 from `web/` in one terminal, `test/serve.mjs` on
+8123 in another, running twenty-eight scripts by hand and adding up the PASS
+lines yourself. That is the practical reason the count was allowed to drift.
+
+The two emulator harnesses are not part of `npm test` — they need `test/setup.sh`
+and a running Firebase emulator pair, and they are their own CI job.
 
 ## What this baseline does not cover
 

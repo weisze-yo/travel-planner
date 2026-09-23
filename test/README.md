@@ -1,4 +1,23 @@
-# The two-phone test, run by machine
+# The tests
+
+**Most of the time you want one command:**
+
+```sh
+npm run test:guard   # always first — the backtick trap parses clean and breaks at runtime
+npm test             # 28 browser harnesses, 914 checks, starts its own servers
+```
+
+`test/BASELINE.md` holds the measured per-harness counts and is the only count
+to trust. `test/run.mjs` takes `--jobs N`, `--only <substring>` and
+`--junit <path>`. Both run in CI on every push — see
+`.github/workflows/tests.yml`.
+
+The rest of this file is about the two harnesses that need real Firebase
+emulators and so are not part of `npm test`.
+
+---
+
+## The two-phone test, run by machine
 
 Sharing is the one feature that cannot be checked on one device, and checking
 it by hand means two phones, two accounts and a wait for an email. This runs
