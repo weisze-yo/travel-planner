@@ -29,3 +29,7 @@ firebase-adminsdk-*.json
 # refuses to write inside the repo, and this catches it if that is ever forced.
 *trip-backup*.json
 *trip12-backup*.json
+
+# The test suite's own dependencies and reports.
+/node_modules/
+junit-*.xml

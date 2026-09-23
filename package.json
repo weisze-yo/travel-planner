@@ -1,0 +1,14 @@
+{
+  "name": "travel-planner",
+  "private": true,
+  "description": "Offline-first trip planner. The app in web/ ships as untranspiled ES modules with no build step; this manifest exists for the test suite and the tooling around it.",
+  "scripts": {
+    "test": "node test/run.mjs",
+    "test:guard": "node --experimental-vm-modules test/guard.mjs",
+    "serve": "node test/serve.mjs",
+    "postinstall": "node -e \"console.log('\\n  Browsers are not downloaded by default. If Playwright cannot find Chromium,\\n  run:  npx playwright install --with-deps chromium\\n')\""
+  },
+  "devDependencies": {
+    "playwright": "^1.47.0"
+  }
+}

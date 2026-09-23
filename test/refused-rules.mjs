@@ -36,13 +36,12 @@
 // reload does not happen the deny never takes effect — so the run asserts the
 // refusal reached the app rather than assuming it did, and fails loudly
 // instead of passing quietly.
+import { launch } from './lib/runtime.mjs';
 import { readFileSync, writeFileSync, existsSync } from 'node:fs';
 import { execFileSync } from 'node:child_process';
 import { fileURLToPath } from 'node:url';
 import { dirname, join } from 'node:path';
-import pw from '/opt/node22/lib/node_modules/playwright/index.js';
 
-const { chromium } = pw;
 const APP = 'http://127.0.0.1:8123', AUTH = 'http://127.0.0.1:9099', PROJECT = 'travel-planner-3e0d3';
 
 const REPO = dirname(dirname(fileURLToPath(import.meta.url)));
@@ -105,7 +104,7 @@ try {
   // Give the emulator's rules watcher time to pick the change up.
   await new Promise((r) => setTimeout(r, 2500));
 
-  browser = await chromium.launch({ executablePath: '/opt/pw-browsers/chromium-1194/chrome-linux/chrome' });
+  browser = await launch();
   const ctx = await browser.newContext({ viewport: { width: 390, height: 844 }, serviceWorkers: 'block' });
   await ctx.addInitScript(() => localStorage.setItem('travel-planner:emulators', JSON.stringify({ auth: 9099, firestore: 8080 })));
   const page = await ctx.newPage();

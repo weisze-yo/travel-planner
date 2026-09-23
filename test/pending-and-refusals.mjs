@@ -11,8 +11,7 @@
 //   M-6  plan.js add-a-stop        p1-plan-editing-design.md §7.3
 //   M-7  the item/shot editors     p1-destination-tabs-design.md §6
 //   M-14 the sign-in notice slot   p1-account-and-sign-in-design.md §3 G-2/G-4
-import pw from '/opt/node22/lib/node_modules/playwright/index.js';
-const { chromium } = pw;
+import { launch } from './lib/runtime.mjs';
 
 const APP = 'http://127.0.0.1:8099';
 const pass = [], fail = [];
@@ -21,7 +20,7 @@ const check = (n, ok, extra = '') => {
   console.log((ok ? '  ok  ' : '  FAIL ') + n + (extra ? ` — ${String(extra).slice(0, 220)}` : ''));
 };
 
-const browser = await chromium.launch({ executablePath: '/opt/pw-browsers/chromium-1194/chrome-linux/chrome' });
+const browser = await launch();
 const ctx = await browser.newContext({
   viewport: { width: 390, height: 844 }, deviceScaleFactor: 2, serviceWorkers: 'block',
 });

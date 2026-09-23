@@ -10,8 +10,7 @@
 // tiles get routed rather than fetched for real). The fixture below is a
 // real, once-verified Nominatim response for Reykjavik, so what is being
 // tested is createTrip()'s own country → currency plumbing, not the network.
-import pw from '/opt/node22/lib/node_modules/playwright/index.js';
-const { chromium } = pw;
+import { launch } from './lib/runtime.mjs';
 
 const APP = 'http://127.0.0.1:8123';
 const AUTH = 'http://127.0.0.1:9099';
@@ -22,7 +21,7 @@ const check = (n, ok, extra = '') => {
   console.log((ok ? '  ok  ' : '  FAIL ') + n + (extra && !ok ? ` — ${String(extra).slice(0, 200)}` : ''));
 };
 
-const browser = await chromium.launch({ executablePath: '/opt/pw-browsers/chromium-1194/chrome-linux/chrome' });
+const browser = await launch();
 const errors = [];
 
 /** One phone: its own storage, its own account, pointed at the emulators. */

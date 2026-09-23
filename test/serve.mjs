@@ -3,9 +3,13 @@
 // the one screen a stranger ever sees cannot be tested at all.
 import { createServer } from 'node:http';
 import { readFile, stat } from 'node:fs/promises';
-import { join, extname, normalize } from 'node:path';
+import { join, extname, normalize, dirname } from 'node:path';
+import { fileURLToPath } from 'node:url';
 
-const ROOT = '/home/user/travel-planner/web';
+// Resolved from this file rather than hardcoded, so the suite runs on a
+// laptop and on a CI runner as well as in the development container.
+const ROOT = join(dirname(dirname(fileURLToPath(import.meta.url))), 'web');
+const PORT = Number(process.env.TP_SPA_PORT || 8123);
 const TYPES = { '.html': 'text/html', '.js': 'text/javascript', '.css': 'text/css',
   '.json': 'application/json', '.png': 'image/png', '.svg': 'image/svg+xml',
   '.woff2': 'font/woff2', '.webmanifest': 'application/manifest+json' };
@@ -29,4 +33,4 @@ createServer(async (req, res) => {
   } catch (e) {
     res.writeHead(404); res.end('not found');
   }
-}).listen(8123, '127.0.0.1', () => console.log('serving web/ on 8123 with SPA fallback'));
+}).listen(PORT, '127.0.0.1', () => console.log(`serving ${ROOT} on ${PORT} with SPA fallback`));

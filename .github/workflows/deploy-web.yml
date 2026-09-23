@@ -19,10 +19,40 @@ on:
   workflow_dispatch:
 
 jobs:
-  deploy:
+  # The deploy publishes web/ AND firebase/firestore.rules to the live project,
+  # so nothing reaches production without the suite passing first. Before
+  # 23 Sep 2026 this workflow ran no test of any kind.
+  gate:
+    name: Tests must pass first
     runs-on: ubuntu-latest
     steps:
       - uses: actions/checkout@v4
+      - uses: actions/setup-node@v4
+        with:
+          node-version: 22
+      - run: npm run test:guard
+      - run: npm install --no-audit --no-fund
+      - run: npx playwright install --with-deps chromium
+      - run: npm test
+
+  deploy:
+    runs-on: ubuntu-latest
+    needs: gate
+    steps:
+      - uses: actions/checkout@v4
+
+      # The rules file is deployed below. `test/refused-rules.mjs` temporarily
+      # replaces it with a deny-all ruleset and restores it afterwards; if a run
+      # ever crashed before the restore and the result was committed, this
+      # catches it before it locks every user out of their own data.
+      - name: Refuse to deploy a deny-all ruleset
+        run: |
+          if grep -qE 'allow read, *write: *if false' firebase/firestore.rules \
+             && ! grep -q 'published' firebase/firestore.rules; then
+            echo "firebase/firestore.rules looks like the deny-all test ruleset."
+            echo "Restore it with: git checkout firebase/firestore.rules"
+            exit 1
+          fi
 
       # Import the module rather than grepping it, so single quotes, double
       # quotes and trailing commas all read the same.
