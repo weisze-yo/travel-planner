@@ -75,6 +75,11 @@ jobs:
       - run: npx playwright install --with-deps chromium
       - name: Vendor the pinned Firebase SDK and install firebase-tools
         run: test/setup.sh
+      # This job runs the harnesses directly rather than through `npm test`, so
+      # it does not get the `pretest` build — and web/js/ is generated and not
+      # in git. Without this the server has an app with no JavaScript in it and
+      # every harness times out waiting for a boot that cannot happen.
+      - run: npm run build
       - name: Start the emulators and the server
         run: |
           test/node_modules/.bin/firebase emulators:start \

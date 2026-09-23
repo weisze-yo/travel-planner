@@ -21,6 +21,21 @@ createServer(async (req, res) => {
     const info = await stat(path);
     if (info.isDirectory()) path = join(path, 'index.html');
   } catch {
+    // Hosting's rewrite is for ROUTES — /j/CODE must serve the app. It is not
+    // for missing assets, and treating them the same is actively misleading:
+    // before this, a missing `js/app.js` returned index.html with a 200, so the
+    // browser was handed HTML where it expected a module and the only symptom
+    // was a boot that never finished. That is exactly how a forgotten
+    // `npm run build` presented itself in CI — as a 30-second timeout with no
+    // hint of a cause. Anything with a file extension now 404s and says why.
+    if (extname(path)) {
+      res.writeHead(404, { 'Content-Type': 'text/plain', 'Cache-Control': 'no-store' });
+      res.end(`not found: ${url.pathname}\n\n`
+        + (url.pathname.startsWith('/js/')
+          ? 'web/js/ is build output and is not in git. Run: npm run build\n'
+          : ''));
+      return;
+    }
     path = join(ROOT, 'index.html');
   }
   try {
