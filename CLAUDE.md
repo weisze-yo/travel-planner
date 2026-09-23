@@ -143,3 +143,21 @@ The current programme is a phased rebuild: foundations and a full design pass
 before new features, TypeScript for the app and tooling, Python retained only
 for the research/data pipeline, and everything built so an App Store listing
 stays possible. See the market review at `docs/market-review-2026.html` for why.
+
+## Multi-agent workflow
+
+`/orchestrate <task>` runs one change through the pipeline in `.claude/`:
+
+| Role | Where | Owns | Cannot |
+| --- | --- | --- | --- |
+| Orchestrator | main session (`/orchestrate`, or `claude --agent orchestrator`) | brief, delegation, git, human gates | edit code |
+| `engineer` | `.claude/agents/engineer.md` | `src/`, the hand-written files under `web/`, `firebase/`, `scripts/`, `build.mjs` | edit `test/` or `web/js/`, commit |
+| `tester` | `.claude/agents/tester.md` | `test/`, running the suite, `test/BASELINE.md` | edit outside `test/` |
+| `reviewer` | `.claude/agents/reviewer.md` | verdict on the diff | edit anything |
+
+Four hooks hold the rules even for an agent that never read this file:
+`protect-paths.mjs` denies `TravelPlanner.swiftpm/`, `web/js/`, `web/vendor/`,
+service-account keys and trip backups; `guard-after-edit.mjs` runs the backtick
+guard after every `src/` edit; `guard-bash.mjs` asks before a push to `main`, a
+force push, a manual `firebase deploy` or a live Trip 12 import; `role-scope.mjs`
+keeps the Engineer and the Tester out of each other's files.
