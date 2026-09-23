@@ -53,7 +53,7 @@ parked native implementation — **do not touch it.**
 
 ```sh
 npm run test:guard     # always first — see the trap below
-npm test               # 29 harnesses, 920 checks, builds and starts its own servers
+npm test               # 30 harnesses, 931 checks, builds and starts its own servers
 npm run typecheck      # a ratchet: fails if the type-error count goes UP
 ```
 
@@ -92,7 +92,14 @@ update BASELINE.md when you change it.
 7. **Never poll store state with `page.waitForFunction`.** It runs in
    Playwright's isolated world, where `import('/js/store.js')` boots a *second*
    copy of the store. Poll with `page.evaluate` in a loop.
-8. **`test/refused-rules.mjs` swaps `firebase/firestore.rules` for a deny-all
+8. **`context.setOffline()` does not stop a service worker fetching.** An
+   "offline" test built on it is unsound — measured: the shell cache grew from
+   35 to 38 modules *during* an offline load, because the service worker
+   reached the network for real. `test/offline-cold-boot.mjs` runs its own
+   server and closes it instead. Also: `web/sw.js` carries a hand-written
+   precache list, and `npm run build` now fails if it does not match what is
+   emitted — three modules had already slipped out of it.
+9. **`test/refused-rules.mjs` swaps `firebase/firestore.rules` for a deny-all
    ruleset.** It restores it in a `finally` and refuses to run against a dirty
    file — but if you ever find that file holding deny-all rules, a run crashed:
    `git checkout firebase/firestore.rules`, and **do not deploy**. The deploy

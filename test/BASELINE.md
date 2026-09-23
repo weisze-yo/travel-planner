@@ -17,12 +17,12 @@ suite and update this file.**
 
 | | |
 |---|---|
-| Browser harnesses | **29** |
-| Checks | **920** |
+| Browser harnesses | **30** |
+| Checks | **931** |
 | Failures | **0** |
 | Wall time, run serially | **~4 minutes** |
-| Plus `contrast.mjs` | 24 gated colour pairs (19 + 5), its own format, not in the 920 |
-| Plus `guard.mjs` | 37 modules parse · 0 backticks in HTML comments (it walks `src/` now) |
+| Plus `contrast.mjs` | 24 gated colour pairs (19 + 5), its own format, not in the 931 |
+| Plus `guard.mjs` | 38 modules · 0 backticks in HTML comments (it walks `src/`, .js and .ts) |
 | Plus the emulator pair | `two-phones.mjs` (65) and `refused-rules.mjs` (9) — not run here; they need the Firebase emulators |
 
 ## Per harness
@@ -43,6 +43,7 @@ suite and update this file.**
 | `map-link` | 27 |
 | `name-vs-address` | 21 |
 | `nearby-managing` | 70 |
+| `offline-cold-boot` | 11 |
 | `opacity-never-state` | 33 |
 | `outfit-prose` | 30 |
 | `pending-and-refusals` | 57 |
@@ -58,7 +59,7 @@ suite and update this file.**
 | `swipe-delete` | 10 |
 | `time-windows` | 29 |
 | `warning-strip` | 35 |
-| **Total** | **920** |
+| **Total** | **931** |
 
 Where a number differs from the old documented one, the number here is the one
 the harness actually printed. Several drifted upward as checks were added
@@ -69,7 +70,7 @@ without the counts being revised — `accessibility` 9 → 14, `empty-states` 35
 
 ```sh
 npm run test:guard   # always first
-npm test             # builds, starts both servers, runs all 29, prints the total
+npm test             # builds, starts both servers, runs all 30, prints the total
 ```
 
 `test/run.mjs` starts the servers itself and reuses one already on the port.
@@ -101,8 +102,13 @@ Measured honestly, so the gaps are not mistaken for coverage:
 - **Two screens have none** — `note.js` and `area.js`.
 - **The four boot migrations** (`unifyNotes` → `unifyPlaces` → `unifyWindows` →
   `unifyLoops`) are asserted nowhere, and neither is their idempotency.
-- **"Every screen works offline"** — the app's founding promise — is not tested.
-  Harnesses abort a fixed list of hosts during boot, which is not the same thing.
+- `offline-cold-boot` was added 23 Sep 2026 and closes the largest gap here:
+  **"every screen works offline"**, the founding promise, had never been tested
+  by anything, because every other harness sets `serviceWorkers: 'block'`. It
+  found three modules missing from `web/sw.js`'s precache — all on the boot
+  path — so a phone that installed the app and had not reopened it online did
+  not boot at all with no signal, silently. `build.mjs` now fails on any
+  mismatch between what it emits and what sw.js lists.
 - **There is no unit test and no unit-test runner.** Every check above drives a
   real browser.
 - `contrast.mjs` transcribes its colour values as constants rather than reading
@@ -119,10 +125,19 @@ Measured honestly, so the gaps are not mistaken for coverage:
   `test/lib/runtime.mjs`. The other seventeen pass on a networked runner today,
   but none of them says whether that is by design. Adding `blockOutside` where
   the result should not depend on connectivity is worth a pass of its own.
+- **`context.setOffline()` does not stop a service worker reaching the
+  network.** Measured while writing `offline-cold-boot`: with entries removed
+  from the precache and the context offline, the shell cache still grew from 35
+  modules to 38 during the "offline" load — the service worker had fetched them
+  for real, and the harness passed and failed on the same defect depending on
+  timing. Any offline test must remove the network rather than emulate it;
+  `offline-cold-boot` runs its own server on an ephemeral port and closes it.
+
 - **`test/accessibility.mjs` uses `page.accessibility.snapshot()`, which
   Playwright has removed.** It works only on the pinned 1.56.1, which is why
   `package.json` pins an exact version rather than a range. Rewrite it off that
   API before raising the pin.
+
 Two entries that used to be here are now closed: the suite ran nowhere but the
 development container (Playwright, Chromium and the server root were all
 hardcoded), and nothing ran in CI at all. Both were fixed on 23 Sep 2026 —

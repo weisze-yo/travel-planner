@@ -18,7 +18,7 @@
 // hashed filenames would break the offline shell silently, which is the one
 // failure nobody notices in a browser tab.
 import { execFileSync } from 'node:child_process';
-import { readdirSync, mkdirSync, copyFileSync, rmSync, existsSync, statSync } from 'node:fs';
+import { readdirSync, mkdirSync, copyFileSync, rmSync, existsSync, statSync, readFileSync } from 'node:fs';
 import { dirname, join, relative } from 'node:path';
 import { fileURLToPath } from 'node:url';
 
@@ -76,6 +76,49 @@ if (missing) {
   process.exit(1);
 }
 
+// ---------------------------------------------------------- the offline shell
+//
+// `web/sw.js` precaches a hand-written list of every file, and that list is the
+// whole of the app's offline promise. Nothing checked it, and three modules had
+// already slipped out: currency.js, install.js and search.js were added in
+// later rounds and never listed, all three on the boot path. A phone that
+// installed the app and had not yet opened it a second time online did not boot
+// at all with no signal — and the window reopens on every deploy, because the
+// cache is named after sw.js's VERSION and `activate` deletes the rest.
+//
+// It was invisible from every direction: no error is thrown, the boot cover
+// simply never clears; a second online load repairs it, because the service
+// worker is controlling by then and caches what it fetches; and no harness
+// could have seen it, since all of them set `serviceWorkers: 'block'`.
+//
+// Both directions are checked. A file listed but not emitted is just as bad and
+// just as silent: `install` calls `cache.add(url).catch(() => {})`, so a 404
+// there is swallowed and the shell is quietly short by one.
+const sw = readFileSync(join(REPO, 'web/sw.js'), 'utf8');
+const assets = [...sw.matchAll(/'\.\/(js\/[^']+)'/g)].map((m) => m[1]);
+const emitted = walk(OUT).map((f) => `js/${relative(OUT, f).split('\\').join('/')}`).filter((f) => f.endsWith('.js'));
+
+const unlisted = emitted.filter((f) => !assets.includes(f)).sort();
+const phantom = assets.filter((f) => !emitted.includes(f)).sort();
+
+if (unlisted.length || phantom.length) {
+  console.error('\n  BUILD FAILED: web/sw.js does not match what the build emits.\n');
+  if (unlisted.length) {
+    console.error('  Missing from the ASSETS list — these would not be cached, so the app');
+    console.error('  would fail to boot with no signal until it is next opened online:');
+    for (const f of unlisted) console.error(`      './${f}',`);
+  }
+  if (phantom.length) {
+    console.error('\n  Listed but not emitted — `install` swallows the 404 and the shell is');
+    console.error('  quietly short by one. Remove these from ASSETS:');
+    for (const f of phantom) console.error(`      './${f}'`);
+  }
+  console.error('\n  Edit the ASSETS array in web/sw.js, and bump VERSION so phones that');
+  console.error('  already installed the old shell pick the new one up.\n');
+  process.exit(1);
+}
+
 const bytes = walk(OUT).reduce((n, f) => n + statSync(f).size, 0);
 console.log(`\n  built  ${ts.length} compiled · ${js.length + other.length} copied · `
-  + `${(bytes / 1024).toFixed(0)} kB into ${relative(REPO, OUT)}/\n`);
+  + `${(bytes / 1024).toFixed(0)} kB into ${relative(REPO, OUT)}/`);
+console.log(`  offline shell: ${assets.length} modules listed in sw.js, all present\n`);
