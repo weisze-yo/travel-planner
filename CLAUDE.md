@@ -7,10 +7,25 @@ re-deriving all three and occasionally re-litigating settled design decisions.
 
 ## What this is
 
-An offline-first trip planner. `web/` is the production app: vanilla JS, ES
-modules, no build step, installed to an iPhone home screen from Safari and
-served by Firebase Hosting. `js/store.js` is the single source of truth;
-`js/screens/*.js` render and call mutations.
+An offline-first trip planner, installed to an iPhone home screen from Safari
+and served by Firebase Hosting. `store.js` is the single source of truth;
+`screens/*.js` render and call mutations.
+
+**`src/` is the source. `web/js/` is generated and is not in git.**
+
+```sh
+npm run build          # src/ -> web/js/, one file to one file
+```
+
+`.ts` goes through `tsc`; `.js` is copied byte for byte (routing unconverted
+JavaScript through tsc reformats thousands of unchanged lines). There is no
+bundler and there must not be one while `web/sw.js` carries a hand-written list
+of every JS file — hashed filenames would break the offline shell silently.
+`npm test` and `npm run serve` build first. Everything else under `web/` — the
+CSS, icons, `index.html`, `sw.js`, `vendor/` — is hand-written and tracked.
+
+The conversion to TypeScript is file by file, smallest and most depended-upon
+first. Converted so far: `util.ts`.
 
 Live at <https://travel-planner-3e0d3.web.app>. `TravelPlanner.swiftpm/` is a
 parked native implementation — **do not touch it.**
@@ -20,7 +35,7 @@ parked native implementation — **do not touch it.**
 - **No paid APIs.** Weather is Open-Meteo, geocoding and places are
   OpenStreetMap, rates are the ECB. All free, all keyless.
 - **It must work offline.** Every screen reads from the phone. Map tiles are the
-  only thing needing the network, which is what `js/tiles.js` and "keep an area"
+  only thing needing the network, which is what `src/tiles.js` and "keep an area"
   exist for.
 - **Every stop is a place.** A stop is a *visit to* a place, never a second kind
   of record. Three bugs have come from something keeping its own copy of what a
@@ -38,7 +53,8 @@ parked native implementation — **do not touch it.**
 
 ```sh
 npm run test:guard     # always first — see the trap below
-npm test               # 28 harnesses, 914 checks, starts its own servers
+npm test               # 29 harnesses, 920 checks, builds and starts its own servers
+npm run typecheck      # a ratchet: fails if the type-error count goes UP
 ```
 
 `npm test` is the whole browser suite in one command. It reuses a server already
@@ -84,11 +100,11 @@ update BASELINE.md when you change it.
 
 ## The data model, and what it costs to change
 
-There is **no schema and no validation anywhere** — `web/js/data.js:330-338`
+There is **no schema and no validation anywhere** — `src/data.js:330-338`
 states that as a deliberate contract. Records are whatever was written, so new
 *fields* are additive and free. New *kinds* are not.
 
-`KINDS` lives at `web/js/persist.js:23`, and is **hand-copied into more than ten
+`KINDS` lives at `src/persist.js:23`, and is **hand-copied into more than ten
 other places**: `store.js` (`openNothing`, `closeTrip`, `exportTrip`,
 `importTrip`, `clearTripContent`, the snapshot builders), `sync.js` `KIND_NAMES`,
 `share.js` `SHARED_KINDS`/`PRIVATE_KINDS`, `scripts/backup-trip.mjs`,

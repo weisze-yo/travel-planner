@@ -7,8 +7,8 @@
 set -e
 here=$(cd "$(dirname "$0")" && pwd)
 root=$(dirname "$here")
-version=$(sed -n "s/.*FIREBASE_SDK = '\([^']*\)'.*/\1/p" "$root/web/js/config.js")
-: "${version:?could not read FIREBASE_SDK from web/js/config.js}"
+version=$(sed -n "s/.*FIREBASE_SDK = '\([^']*\)'.*/\1/p" "$root/src/config.js")
+: "${version:?could not read FIREBASE_SDK from src/config.js}"
 
 echo "Firebase SDK $version → web/vendor/firebase-local/ (gitignored)"
 mkdir -p "$root/web/vendor/firebase-local"
@@ -23,6 +23,6 @@ echo "firebase-tools → test/node_modules/"
 cd "$here" && npm install --no-fund --no-audit --silent firebase-tools@13
 echo
 echo "Now, in three terminals from the repo root:"
-echo "  1. test/node_modules/.bin/firebase emulators:start --config firebase.emulators.json --project \$(sed -n 's/.*projectId: \"\([^\"]*\)\".*/\1/p' web/js/config.js) --only auth,firestore"
+echo "  1. test/node_modules/.bin/firebase emulators:start --config firebase.emulators.json --project \$(sed -n 's/.*projectId: \"\([^\"]*\)\".*/\1/p' src/config.js) --only auth,firestore"
 echo "  2. node test/serve.mjs"
 echo "  3. node test/two-phones.mjs"

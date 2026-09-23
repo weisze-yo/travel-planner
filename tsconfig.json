@@ -48,7 +48,7 @@
     "isolatedModules": true,
     "verbatimModuleSyntax": true
   },
-  "include": ["web/js/**/*.js", "web/js/**/*.ts", "types/**/*.d.ts"],
+  "include": ["src/**/*.js", "src/**/*.ts", "types/**/*.d.ts"],
   "exclude": [
     "node_modules",
     "web/vendor",

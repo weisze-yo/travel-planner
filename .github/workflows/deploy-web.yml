@@ -3,7 +3,7 @@
 # Setup is one GitHub secret (see WEB_APP_GUIDE.md step 6A):
 #   secret FIREBASE_SERVICE_ACCOUNT — the service-account JSON, pasted whole
 #
-# The project id is read out of web/js/config.js, so there is nothing else to
+# The project id is read out of src/config.js, so there is nothing else to
 # configure. Set the optional variable FIREBASE_PROJECT_ID only if you want to
 # deploy somewhere other than the project the app talks to.
 name: Deploy web app
@@ -12,7 +12,13 @@ on:
   push:
     branches: [main]
     paths:
+      # `src/**` matters as much as `web/**` now: web/js/ is generated from it
+      # and is not in git, so a source-only change would otherwise never deploy.
+      - 'src/**'
       - 'web/**'
+      - 'build.mjs'
+      - 'tsconfig*.json'
+      - 'package.json'
       - 'firebase.json'
       - 'firebase/firestore.rules'
       - '.github/workflows/deploy-web.yml'
@@ -60,10 +66,10 @@ jobs:
         id: config
         run: |
           node --input-type=module -e "
-            const { firebaseConfig: c } = await import('./web/js/config.js');
+            const { firebaseConfig: c } = await import('./src/config.js');
             const missing = ['apiKey', 'projectId'].filter((k) => !c[k]);
             if (missing.length) {
-              console.error('web/js/config.js is missing: ' + missing.join(', '));
+              console.error('src/config.js is missing: ' + missing.join(', '));
               console.error('Paste your Firebase web config into it — WEB_APP_GUIDE.md step 2.');
               process.exit(1);
             }
@@ -80,6 +86,18 @@ jobs:
             echo "See WEB_APP_GUIDE.md step 6A."
             exit 1
           fi
+
+      # web/js/ is build output and is not committed, so Hosting would publish
+      # an app with no JavaScript at all without this.
+      - uses: actions/setup-node@v4
+        with:
+          node-version: 22
+      - run: npm install --no-audit --no-fund
+      - run: npm run build
+      - name: The build must have produced the app
+        run: |
+          test -f web/js/app.js || { echo "web/js/app.js missing after build"; exit 1; }
+          echo "web/js holds $(find web/js -name '*.js' | wc -l) modules"
 
       - name: Deploy to Firebase Hosting
         uses: FirebaseExtended/action-hosting-deploy@v0

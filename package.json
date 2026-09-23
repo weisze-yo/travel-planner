@@ -8,7 +8,10 @@
     "serve": "node test/serve.mjs",
     "postinstall": "node -e \"console.log('\\n  Browsers are not downloaded by default. If Playwright cannot find Chromium,\\n  run:  npx playwright install --with-deps chromium\\n')\"",
     "typecheck": "node test/typecheck.mjs",
-    "typecheck:list": "node test/typecheck.mjs --list"
+    "typecheck:list": "node test/typecheck.mjs --list",
+    "build": "node build.mjs",
+    "pretest": "node build.mjs",
+    "preserve": "node build.mjs"
   },
   "devDependencies": {
     "@types/leaflet": "^1.9.12",

@@ -429,6 +429,21 @@ function nudge() {
  * did not happen) and 'jade' (settled — it happened, and this is what it
  * did). p0-2-currency-design.md §6.2 needs the last for the city field the
  * moment a re-geocode adopts a currency.
+ *
+ * That four-value contract is stated here and was nowhere in the code: the
+ * `= false` default makes the inferred type `boolean`, so `warn === 'jade'`
+ * and `warn === 'warn'` are both comparisons that can never be true as far as
+ * a type-checker is concerned, and three call sites were passing a string into
+ * a parameter typed as a boolean. The behaviour was right and the contract was
+ * undocumented; the annotation below is that contract, written down.
+ *
+ * @param {string} id
+ * @param {string} label
+ * @param {string|number} value
+ * @param {string} [hint]
+ * @param {string} [type]
+ * @param {string} [placeholder]
+ * @param {boolean|'warn'|'jade'} [warn]
  */
 function field(id, label, value, hint = '', type = 'text', placeholder = '', warn = false) {
   const tone = warn === 'jade'

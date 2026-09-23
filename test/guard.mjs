@@ -18,7 +18,7 @@ import vm from 'node:vm';
 const walk = (d) => readdirSync(d, { withFileTypes: true })
   .flatMap((e) => (e.isDirectory() ? walk(join(d, e.name)) : (e.name.endsWith('.js') ? [join(d, e.name)] : [])));
 
-const files = walk('web/js');
+const files = walk('src');
 let bad = 0;
 
 for (const f of files) {

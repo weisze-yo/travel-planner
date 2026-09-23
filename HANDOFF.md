@@ -25,7 +25,7 @@ Standing rules that have held for six rounds and still hold:
 - **No paid APIs.** Weather is Open-Meteo, geocoding and place details are
   OpenStreetMap, rates are the European Central Bank. All free, all keyless.
 - **It must work offline.** Every screen reads from the phone. Map tiles are
-  the only thing that needs the network, which is what `web/js/tiles.js` and
+  the only thing that needs the network, which is what `src/tiles.js` and
   the "keep an area" flow exist for.
 - **Delete is always swipe-left to a red dustbin with a confirmation.**
 - **Every stop is a place.** A stop is a *visit to* a place, not a different
@@ -37,27 +37,27 @@ Standing rules that have held for six rounds and still hold:
 ## How to work on it
 
 ```sh
-cd web && npx http-server -p 8099 -c-1 .
+npm run build     # src/ -> web/js/ — REQUIRED, web/js is generated and not in git
+npm run serve     # builds, then serves web/ on :8123 with the SPA rewrite
 ```
 
-Chromium is at `/opt/pw-browsers/chromium-1194/chrome-linux/chrome` and
-Playwright is at `/opt/node22/lib/node_modules/playwright/index.js`
-(CommonJS — `import pw from '…'; const { chromium } = pw;`).
+`src/` is the source of the app; `web/js/` is build output. See `CLAUDE.md`.
+
+Playwright and Chromium are resolved by `test/lib/runtime.mjs`, which prefers a
+real dependency and falls back to the container's global install. Harnesses no
+longer name either path — that is what stopped them running anywhere but here.
 
 **Check that every module still parses before running anything.** `node
 --check` treats these as CommonJS and will not catch a broken template
 literal; this will:
 
 ```sh
-node --experimental-vm-modules -e "
-const fs=require('fs'), vm=require('vm'), path=require('path');
-const walk=(d)=>fs.readdirSync(d,{withFileTypes:true}).flatMap(e=>e.isDirectory()?walk(path.join(d,e.name)):(e.name.endsWith('.js')?[path.join(d,e.name)]:[]));
-for(const f of walk('js')){ try{ new vm.SourceTextModule(fs.readFileSync(f,'utf8'),{identifier:f}); }catch(e){ console.log(f+': '+e.message); } }"
+npm run test:guard
 ```
 
 ### The browser harnesses
 
-There are **twenty-eight** as of 23 Sep 2026 (**914 checks**), each a standalone script that
+There are **twenty-nine** as of 23 Sep 2026 (**920 checks**), each a standalone script that
 prints a PASS/FAIL list. They are the regression suite; run them all after any
 change that touches shared code.
 
@@ -71,9 +71,8 @@ breakdowns in the round-nine section below and in
 notes. The pattern they all follow is:
 
 ```js
-import pw from '/opt/node22/lib/node_modules/playwright/index.js';
-const { chromium } = pw;
-const browser = await chromium.launch({ executablePath: '/opt/pw-browsers/chromium-1194/chrome-linux/chrome' });
+import { launch, blockOutside, APP } from './lib/runtime.mjs';
+const browser = await launch();
 const ctx = await browser.newContext({
   viewport: { width: 390, height: 844 }, deviceScaleFactor: 2,
   serviceWorkers: 'block',   // or page routes will not intercept tile fetches

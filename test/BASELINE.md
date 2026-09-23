@@ -17,12 +17,12 @@ suite and update this file.**
 
 | | |
 |---|---|
-| Browser harnesses | **28** |
-| Checks | **914** |
+| Browser harnesses | **29** |
+| Checks | **920** |
 | Failures | **0** |
 | Wall time, run serially | **~4 minutes** |
-| Plus `contrast.mjs` | 24 gated colour pairs (19 + 5), its own format, not in the 914 |
-| Plus `guard.mjs` | 38 modules parse · 0 backticks in HTML comments |
+| Plus `contrast.mjs` | 24 gated colour pairs (19 + 5), its own format, not in the 920 |
+| Plus `guard.mjs` | 37 modules parse · 0 backticks in HTML comments (it walks `src/` now) |
 | Plus the emulator pair | `two-phones.mjs` (65) and `refused-rules.mjs` (9) — not run here; they need the Firebase emulators |
 
 ## Per harness
@@ -54,10 +54,11 @@ suite and update this file.**
 | `search` | 55 |
 | `select-recipe` | 56 |
 | `settings-and-share` | 25 |
+| `sub-route-remove` | 6 |
 | `swipe-delete` | 10 |
 | `time-windows` | 29 |
 | `warning-strip` | 35 |
-| **Total** | **914** |
+| **Total** | **920** |
 
 Where a number differs from the old documented one, the number here is the one
 the harness actually printed. Several drifted upward as checks were added
@@ -68,7 +69,7 @@ without the counts being revised — `accessibility` 9 → 14, `empty-states` 35
 
 ```sh
 npm run test:guard   # always first
-npm test             # starts both servers, runs all 28, prints the total
+npm test             # builds, starts both servers, runs all 29, prints the total
 ```
 
 `test/run.mjs` starts the servers itself and reuses one already on the port.
@@ -87,10 +88,16 @@ and a running Firebase emulator pair, and they are their own CI job.
 
 Measured honestly, so the gaps are not mistaken for coverage:
 
-- **Four modules have no test of any kind** — `js/tiles.js` (slippy-map maths
-  and the whole offline-map feature), `js/remind.js` (the leave-now rules,
+- `sub-route-remove` was added 23 Sep 2026 after the TypeScript pass found that
+  `screens/sub.js` still called `store.toggleSubRoutePlace`, renamed weeks
+  earlier to `setSubRoutePlace` — so the ✕ that takes a place out of a sub route
+  threw and did nothing. No harness had ever clicked it. A dead handler is
+  invisible to every other kind of check: the markup renders and the module
+  parses.
+- **Four modules have no test of any kind** — `src/tiles.js` (slippy-map maths
+  and the whole offline-map feature), `src/remind.js` (the leave-now rules,
   documented as pure and the most unit-testable file in the repo),
-  `js/itinerary.js` (the 348-line parser), `js/currency.js`.
+  `src/itinerary.js` (the 348-line parser), `src/currency.js`.
 - **Two screens have none** — `note.js` and `area.js`.
 - **The four boot migrations** (`unifyNotes` → `unifyPlaces` → `unifyWindows` →
   `unifyLoops`) are asserted nowhere, and neither is their idempotency.
@@ -116,7 +123,11 @@ Measured honestly, so the gaps are not mistaken for coverage:
   Playwright has removed.** It works only on the pinned 1.56.1, which is why
   `package.json` pins an exact version rather than a range. Rewrite it off that
   API before raising the pin.
-- Playwright and Chromium are resolved by absolute container paths, and
-  `test/serve.mjs` hardcodes its root, so **none of this runs in CI as written**.
+Two entries that used to be here are now closed: the suite ran nowhere but the
+development container (Playwright, Chromium and the server root were all
+hardcoded), and nothing ran in CI at all. Both were fixed on 23 Sep 2026 —
+`test/lib/runtime.mjs` resolves the runtime, and `.github/workflows/tests.yml`
+runs the guard, the typecheck ratchet, the browser suite and the emulator pair
+on every push.
 
-Each of these is a numbered item in the testing plan for the next build.
+Each remaining item is a numbered item in the testing plan for the next build.

@@ -33,3 +33,8 @@ firebase-adminsdk-*.json
 # The test suite's own dependencies and reports.
 /node_modules/
 junit-*.xml
+
+# Build output. `src/` is the source; `npm run build` regenerates this.
+# Everything else under web/ — css, icons, index.html, sw.js, vendor — is
+# hand-written and tracked.
+/web/js/
