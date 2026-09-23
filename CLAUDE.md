@@ -1,0 +1,129 @@
+# CLAUDE.md — working on Travel Planner
+
+Read this before touching anything. It carries the rules that have held across
+nine rounds, the traps that have each cost real debugging time, and the list of
+decisions that are closed. The repo has a documented history of sessions
+re-deriving all three and occasionally re-litigating settled design decisions.
+
+## What this is
+
+An offline-first trip planner. `web/` is the production app: vanilla JS, ES
+modules, no build step, installed to an iPhone home screen from Safari and
+served by Firebase Hosting. `js/store.js` is the single source of truth;
+`js/screens/*.js` render and call mutations.
+
+Live at <https://travel-planner-3e0d3.web.app>. `TravelPlanner.swiftpm/` is a
+parked native implementation — **do not touch it.**
+
+## Standing rules — these have never moved
+
+- **No paid APIs.** Weather is Open-Meteo, geocoding and places are
+  OpenStreetMap, rates are the ECB. All free, all keyless.
+- **It must work offline.** Every screen reads from the phone. Map tiles are the
+  only thing needing the network, which is what `js/tiles.js` and "keep an area"
+  exist for.
+- **Every stop is a place.** A stop is a *visit to* a place, never a second kind
+  of record. Three bugs have come from something keeping its own copy of what a
+  place owns. If you find a fourth, the place wins.
+- **A stop holds two clock times**, not a start plus a duration. The length is
+  derived grey text.
+- **Free time is a lane between stops**, not a row on the itinerary.
+- **Delete is swipe-left → in-row confirm → 6s undo.** Exactly two confirm-button
+  exceptions: `Empty this trip` and `discardPending`.
+- **Sharing is snapshot-and-review, not live sync.** A link hands over a copy;
+  the recipient forks it and reviews later updates one change at a time.
+- **Verify in a browser before saying it is done.**
+
+## Before you say anything is done
+
+```sh
+npm run test:guard     # always first — see the trap below
+npm test               # 28 harnesses, 914 checks, starts its own servers
+```
+
+`npm test` is the whole browser suite in one command. It reuses a server already
+on 8099/8123 if you have one. Useful flags: `--jobs 4` (faster, less stable),
+`--only <substring>`, `--junit out.xml`.
+
+The two emulator harnesses are separate — they need `test/setup.sh` and a
+running Firebase emulator pair. See `test/README.md`.
+
+**`test/BASELINE.md` is the only check count to trust.** It is measured by
+running the suite. Every other document in the repo quoted 485 checks for weeks
+after the real number had reached 914. Do not quote a count from memory, and
+update BASELINE.md when you change it.
+
+## Traps that have each cost an hour or more
+
+1. **A backtick inside an HTML comment inside an `html` template literal ends
+   the template.** With an even number in one file the module still *parses* —
+   `node --check` and `vm.SourceTextModule` both say it is fine — and the screen
+   renders wrong or throws `html(...).x is not a function` at runtime, a long
+   way from the cause. It has bitten four times. `test/guard.mjs` catches it;
+   run it first, every time.
+2. **`delegate(root, selector, handler)` calls `handler(element, event)` —
+   element first.** Screens re-render wholesale, so handlers are delegated.
+3. **`serviceWorkers: 'block'`** in a harness context, or the service worker
+   mediates fetches and `ctx.route` never fires.
+4. **Route tiles with a RegExp, not a glob.** The host is
+   `a.tile.openstreetmap.org`, so `'**/tile.openstreetmap.org/**'` misses. Use
+   `/tile\.openstreetmap\.org/`.
+5. **Set the active trip with `addInitScript`.** `app.js` calls `closeTrip()`
+   when no trip is remembered, which clears the key, so setting it after `goto`
+   is undone.
+6. **Navigate with `nav.go(id)`**, not by setting `location.hash` — there is no
+   hashchange listener.
+7. **Never poll store state with `page.waitForFunction`.** It runs in
+   Playwright's isolated world, where `import('/js/store.js')` boots a *second*
+   copy of the store. Poll with `page.evaluate` in a loop.
+8. **`test/refused-rules.mjs` swaps `firebase/firestore.rules` for a deny-all
+   ruleset.** It restores it in a `finally` and refuses to run against a dirty
+   file — but if you ever find that file holding deny-all rules, a run crashed:
+   `git checkout firebase/firestore.rules`, and **do not deploy**. The deploy
+   publishes that file to production.
+
+## The data model, and what it costs to change
+
+There is **no schema and no validation anywhere** — `web/js/data.js:330-338`
+states that as a deliberate contract. Records are whatever was written, so new
+*fields* are additive and free. New *kinds* are not.
+
+`KINDS` lives at `web/js/persist.js:23`, and is **hand-copied into more than ten
+other places**: `store.js` (`openNothing`, `closeTrip`, `exportTrip`,
+`importTrip`, `clearTripContent`, the snapshot builders), `sync.js` `KIND_NAMES`,
+`share.js` `SHARED_KINDS`/`PRIVATE_KINDS`, `scripts/backup-trip.mjs`,
+`scripts/import-trip12.mjs`. Miss one and data is silently dropped from export,
+from "empty this trip", or from a share. The Firestore rules need no change —
+`users/{userId}/{document=**}` already covers any new collection.
+
+Boot runs four idempotent migrations in order, inline, with no version number:
+`unifyNotes()` → `unifyPlaces()` → `unifyWindows()` → `unifyLoops()`.
+
+## Design decisions that are closed
+
+`docs/design/implementation-readiness-map.md` §5 is the permanent rejection
+list. **If something there looks wrong, it is a question for the product owner,
+not a fix.** Among them: no confirm on the Plan's ✕ (it archives; the archive is
+the confirm), no spinner/overlay/skeleton anywhere, no fifth sync colour, no
+stacked undo bar, no stock photos or invented positions, no pre-disabled primary
+on a form that can refuse.
+
+`docs/design/p0-3-system-sign-off.md` wins wherever design documents disagree.
+Artboards in `project/*.dc.html` are illustrative and settle nothing.
+
+New UI/UX findings go to `docs/design/post-implementation-qa.md`, under its rule:
+**a screenshot is evidence of what the app does, not authorisation to change
+what it should do.**
+
+## Git
+
+Work on the branch you were given; never push to a different one without
+permission. Pushes to `main` deploy, and deploys are now gated on the suite.
+Commit in the user's name.
+
+## Where the plan lives
+
+The current programme is a phased rebuild: foundations and a full design pass
+before new features, TypeScript for the app and tooling, Python retained only
+for the research/data pipeline, and everything built so an App Store listing
+stays possible. See the market review at `docs/market-review-2026.html` for why.
