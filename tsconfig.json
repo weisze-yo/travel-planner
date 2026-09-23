@@ -1,0 +1,59 @@
+{
+  // Type-checking for an app that ships untranspiled ES modules.
+  //
+  // WHY THERE IS NO BUNDLER HERE, AND WHY THERE MUST NOT BE ONE YET.
+  //
+  // `web/sw.js` carries a hand-written list of every JS file, and that list is
+  // what makes the app work with no signal — the founding promise of the whole
+  // product. A bundler that emits hashed filenames breaks it silently: the app
+  // keeps working online and stops working offline, which is the one failure
+  // nobody would catch in a browser tab. `tsc` compiles one file to one file
+  // with the same name and the same module graph, so the service worker's list
+  // keeps meaning what it says.
+  //
+  // WHAT THIS DOES TODAY: nothing to the output. `noEmit` is on and `checkJs`
+  // makes TypeScript read the existing JavaScript and report what it can infer
+  // — types from JSDoc, obvious mistakes, dead branches. Nothing is compiled
+  // and nothing is shipped, so this cannot break the app.
+  //
+  // THE PATH FROM HERE: get this to zero errors, then rename files to .ts one
+  // at a time, smallest and most depended-upon first (util → data → persist →
+  // share → store), turning `strict` on per-file as each lands. The app stays
+  // shippable at every commit, which is the entire reason for doing it this way
+  // rather than in one sweep.
+  "compilerOptions": {
+    "target": "ES2022",
+    "module": "ESNext",
+    "moduleResolution": "Bundler",
+    "lib": ["ES2022", "DOM", "DOM.Iterable"],
+
+    "allowJs": true,
+    "checkJs": true,
+    "noEmit": true,
+
+    // Deliberately NOT strict yet. Turning everything on against 22,000 lines
+    // of untyped JavaScript produces thousands of errors, which is the same as
+    // producing none: nobody reads them. These are the checks that find real
+    // bugs in this codebase's own idiom, and the rest arrive file by file as
+    // each module is converted.
+    "strict": false,
+    "noImplicitAny": false,
+    "strictNullChecks": false,
+    "alwaysStrict": true,
+    "noFallthroughCasesInSwitch": true,
+    "forceConsistentCasingInFileNames": true,
+
+    "skipLibCheck": true,
+    "resolveJsonModule": true,
+    "isolatedModules": true,
+    "verbatimModuleSyntax": true
+  },
+  "include": ["web/js/**/*.js", "web/js/**/*.ts", "types/**/*.d.ts"],
+  "exclude": [
+    "node_modules",
+    "web/vendor",
+    "scripts",
+    "test",
+    "TravelPlanner.swiftpm"
+  ]
+}

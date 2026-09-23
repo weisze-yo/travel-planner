@@ -28,7 +28,7 @@ const TEST_DIR = dirname(fileURLToPath(import.meta.url));
 const REPO = dirname(TEST_DIR);
 
 /** Not harnesses: infrastructure, the static guard, and the emulator pair. */
-const NOT_A_HARNESS = new Set(['serve.mjs', 'run.mjs', 'guard.mjs', 'two-phones.mjs', 'refused-rules.mjs']);
+const NOT_A_HARNESS = new Set(['serve.mjs', 'run.mjs', 'guard.mjs', 'typecheck.mjs', 'two-phones.mjs', 'refused-rules.mjs']);
 
 const args = process.argv.slice(2);
 const flag = (name, fallback = null) => {

@@ -31,6 +31,10 @@ jobs:
         with:
           node-version: 22
       - run: npm run test:guard
+      - run: npm install --no-audit --no-fund
+      # A ratchet, not a cliff: fails if the type-error count goes UP, or on any
+      # syntax error. See test/typecheck.mjs for why it is not a plain gate yet.
+      - run: npm run typecheck
 
   # The 28 browser harnesses. `test/run.mjs` starts both servers itself.
   browser:
