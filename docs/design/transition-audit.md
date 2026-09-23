@@ -225,6 +225,11 @@ accessibility 9 · contrast 5/5 · css-additions 25 · pending-and-refusals 56
 currency 55 · review-three-way 69 · plan-editing 31 · absence-and-status 37
 backend-gated 25 · role-and-identity 40 · install-line 22 · map-link 27
                                             ── 485 checks, 0 failures
+     ^ this was the round-nine snapshot and it stopped being true almost
+       immediately: fourteen more harnesses landed in the later rounds and
+       were never counted. Measured 23 Sep 2026: 28 harnesses, 914 checks,
+       0 failures. `test/BASELINE.md` is the live number — quote it from a
+       run, never from this file.
 two-phones (real Auth + Firestore emulators, this repo's rules)  65/65
 refused-rules  correct behaviour; repo rules restored byte-identical
                ^ WRONG WHEN WRITTEN — the script restored nothing at all until

@@ -13,9 +13,9 @@ empty-state markup, work around it, not through it: keep it, don't redesign
 it, don't remove it to make your diff simpler.
 
 Every session: pull `main` first, read `test/REPORT.md` and `test/COVERAGE.md`
-for context, and finish by running `test/two-phones.mjs` (36 checks) and
+for context, and finish by running `test/two-phones.mjs` (65 checks) and
 `test/refused-rules.mjs` before calling it done — sharing changes especially
-must not drop below 36/36. Commit and push per the repo's own rules in
+must not drop below 65/65. Commit and push per the repo's own rules in
 `HANDOFF.md`; verify in a real browser before saying it's done.
 
 ---

@@ -78,5 +78,7 @@ them, then move on:
 ## What the machine can already do for you
 
 `test/README.md`. The two-phone test drives two browser contexts against
-real Auth and Firestore emulators running this repo's rules — 36 checks.
+real Auth and Firestore emulators running this repo's rules — 65 checks.
+(This said 36 for weeks. See `test/BASELINE.md`: quote counts from a run, not
+from memory.)
 Extend it rather than starting again.

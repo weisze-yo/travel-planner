@@ -57,15 +57,18 @@ for(const f of walk('js')){ try{ new vm.SourceTextModule(fs.readFileSync(f,'utf8
 
 ### The browser harnesses
 
-There are sixteen as of round nine (485 checks), each a standalone script that
+There are **twenty-eight** as of 23 Sep 2026 (**914 checks**), each a standalone script that
 prints a PASS/FAIL list. They are the regression suite; run them all after any
 change that touches shared code.
 
 **They are committed — they live in `test/`.** Do not write new ones before
-looking there. The per-harness breakdown is in the round-nine section below and
-in `docs/design/transition-audit.md` §10.2, and `test/README.md`,
-`test/COVERAGE.md` and `test/REPORT.md` carry the running notes. The pattern
-they all follow is:
+looking there. **`test/BASELINE.md` is the per-harness breakdown and the only
+count to trust** — it is measured by running the suite, and it records that
+every other number in this repo was wrong by roughly half for weeks. The
+breakdowns in the round-nine section below and in
+`docs/design/transition-audit.md` §10.2 are historical snapshots, not current.
+`test/README.md`, `test/COVERAGE.md` and `test/REPORT.md` carry the running
+notes. The pattern they all follow is:
 
 ```js
 import pw from '/opt/node22/lib/node_modules/playwright/index.js';
@@ -342,7 +345,7 @@ pretending to be priced in yen.**
 
 ## The test suite is the regression suite, and it is committed
 
-Sixteen browser harnesses in `test/`, 485 checks, plus `two-phones.mjs` at
+Twenty-eight browser harnesses in `test/`, 914 checks, plus `two-phones.mjs` at
 65/65 against real Auth and Firestore emulators. Run them all after any change
 to shared code. Counts and the per-harness breakdown are in the audit's §10.2.
 

@@ -12,7 +12,7 @@ packing, offline map areas, and snapshot-based trip sharing.
 | Deployed from | `main` — every push that touches `web/`, `firebase.json` or the rules deploys via `.github/workflows/deploy-web.yml` |
 | Milestone | Round nine, the design-implementation milestone, **CLOSED 6 Sep 2026** (production commit `4f20bbe`, last app-code commit `5e2c8a4`) |
 | Current phase | Post-implementation QA — intake and triage of discrepancies found by using the live app; nothing in that backlog is implemented yet |
-| Regression suite | 16 committed browser harnesses in `test/` — 485 checks, plus `two-phones.mjs` at 65/65 against the real Auth and Firestore emulators |
+| Regression suite | 28 committed browser harnesses in `test/` — **914 checks**, measured 23 Sep 2026 (`test/BASELINE.md`), plus `two-phones.mjs` at 65/65 against the real Auth and Firestore emulators |
 
 ## Start here
 
