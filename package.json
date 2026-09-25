@@ -1,0 +1,24 @@
+{
+  "name": "travel-planner",
+  "private": true,
+  "description": "Offline-first trip planner. The app in web/ ships as untranspiled ES modules with no build step; this manifest exists for the test suite and the tooling around it.",
+  "scripts": {
+    "test": "node test/run.mjs",
+    "test:guard": "node --experimental-vm-modules test/guard.mjs",
+    "serve": "node test/serve.mjs",
+    "postinstall": "node -e \"console.log('\\n  Browsers are not downloaded by default. If Playwright cannot find Chromium,\\n  run:  npx playwright install --with-deps chromium\\n')\"",
+    "typecheck": "node test/typecheck.mjs",
+    "typecheck:list": "node test/typecheck.mjs --list",
+    "build": "node build.mjs",
+    "pretest": "node build.mjs",
+    "preserve": "node build.mjs"
+  },
+  "devDependencies": {
+    "@types/leaflet": "^1.9.12",
+    "playwright": "1.56.1",
+    "typescript": "^5.6.3"
+  },
+  "comments": {
+    "playwright": "PINNED EXACTLY, not a caret range. The point of the pin is that a local run predicts CI: with '^1.47.0' the runner installed a 1.6x, where page.accessibility has been removed upstream, and test/accessibility.mjs crashed on CI while passing locally against the container's 1.56.1. Upgrading is a deliberate task, not something a fresh npm install does to you \u2014 and it needs test/accessibility.mjs rewritten off the removed API first."
+  }
+}

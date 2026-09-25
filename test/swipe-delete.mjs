@@ -37,8 +37,7 @@
 // not in that one row, so the gesture is now driven against a shopping row
 // far enough down the Shop list to need the same scroll-then-swipe. The four
 // behaviours checked are unchanged.
-import pw from '/opt/node22/lib/node_modules/playwright/index.js';
-const { chromium, devices } = pw;
+import { launch, devices } from './lib/runtime.mjs';
 
 const APP = 'http://127.0.0.1:8123';
 const pass = [], fail = [];
@@ -47,7 +46,7 @@ const check = (n, ok, extra = '') => {
   console.log((ok ? '  ok  ' : '  FAIL ') + n + (extra && !ok ? ` — ${String(extra).slice(0, 200)}` : ''));
 };
 
-const browser = await chromium.launch({ executablePath: '/opt/pw-browsers/chromium-1194/chrome-linux/chrome' });
+const browser = await launch();
 const ctx = await browser.newContext({ ...devices['iPhone 13'], serviceWorkers: 'block' });
 const page = await ctx.newPage();
 const dialogs = [];

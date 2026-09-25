@@ -1,4 +1,23 @@
-# The two-phone test, run by machine
+# The tests
+
+**Most of the time you want one command:**
+
+```sh
+npm run test:guard   # always first — the backtick trap parses clean and breaks at runtime
+npm test             # 28 browser harnesses, 914 checks, starts its own servers
+```
+
+`test/BASELINE.md` holds the measured per-harness counts and is the only count
+to trust. `test/run.mjs` takes `--jobs N`, `--only <substring>` and
+`--junit <path>`. Both run in CI on every push — see
+`.github/workflows/tests.yml`.
+
+The rest of this file is about the two harnesses that need real Firebase
+emulators and so are not part of `npm test`.
+
+---
+
+## The two-phone test, run by machine
 
 Sharing is the one feature that cannot be checked on one device, and checking
 it by hand means two phones, two accounts and a wait for an email. This runs
@@ -48,9 +67,24 @@ node test/two-phones.mjs
 ## The other one
 
 `test/refused-rules.mjs` reproduces the failure that looks like "sharing is
-completely broken": rules that refuse everything. Swap
-`firebase/firestore.rules` for a deny-all ruleset, run it, and the app should
-say so in words that name the fix rather than blaming the network.
+completely broken": rules that refuse everything. The app should say so in
+words that name the fix rather than blaming the network.
+
+**Do not swap `firebase/firestore.rules` by hand — the script does it.** With
+the emulators and `serve.mjs` already running, just:
+
+```sh
+node test/refused-rules.mjs
+```
+
+It writes the deny-all ruleset, restores the original in a `finally` (a crash
+or a Ctrl-C still restores), checks the restore byte-for-byte, and refuses to
+start if that file has uncommitted changes. That refusal is also how a
+previously crashed run makes itself visible: `git checkout
+firebase/firestore.rules` and try again.
+
+It asserts and sets an exit code, so it can gate a build. It used to do
+neither — it printed six lines for a human and always exited 0.
 
 ## What no emulator can tell you
 

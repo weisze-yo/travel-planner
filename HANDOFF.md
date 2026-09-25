@@ -25,7 +25,7 @@ Standing rules that have held for six rounds and still hold:
 - **No paid APIs.** Weather is Open-Meteo, geocoding and place details are
   OpenStreetMap, rates are the European Central Bank. All free, all keyless.
 - **It must work offline.** Every screen reads from the phone. Map tiles are
-  the only thing that needs the network, which is what `web/js/tiles.js` and
+  the only thing that needs the network, which is what `src/tiles.js` and
   the "keep an area" flow exist for.
 - **Delete is always swipe-left to a red dustbin with a confirmation.**
 - **Every stop is a place.** A stop is a *visit to* a place, not a different
@@ -37,40 +37,42 @@ Standing rules that have held for six rounds and still hold:
 ## How to work on it
 
 ```sh
-cd web && npx http-server -p 8099 -c-1 .
+npm run build     # src/ -> web/js/ — REQUIRED, web/js is generated and not in git
+npm run serve     # builds, then serves web/ on :8123 with the SPA rewrite
 ```
 
-Chromium is at `/opt/pw-browsers/chromium-1194/chrome-linux/chrome` and
-Playwright is at `/opt/node22/lib/node_modules/playwright/index.js`
-(CommonJS — `import pw from '…'; const { chromium } = pw;`).
+`src/` is the source of the app; `web/js/` is build output. See `CLAUDE.md`.
+
+Playwright and Chromium are resolved by `test/lib/runtime.mjs`, which prefers a
+real dependency and falls back to the container's global install. Harnesses no
+longer name either path — that is what stopped them running anywhere but here.
 
 **Check that every module still parses before running anything.** `node
 --check` treats these as CommonJS and will not catch a broken template
 literal; this will:
 
 ```sh
-node --experimental-vm-modules -e "
-const fs=require('fs'), vm=require('vm'), path=require('path');
-const walk=(d)=>fs.readdirSync(d,{withFileTypes:true}).flatMap(e=>e.isDirectory()?walk(path.join(d,e.name)):(e.name.endsWith('.js')?[path.join(d,e.name)]:[]));
-for(const f of walk('js')){ try{ new vm.SourceTextModule(fs.readFileSync(f,'utf8'),{identifier:f}); }catch(e){ console.log(f+': '+e.message); } }"
+npm run test:guard
 ```
 
 ### The browser harnesses
 
-There are sixteen as of round nine (485 checks), each a standalone script that
+There are **twenty-nine** as of 23 Sep 2026 (**920 checks**), each a standalone script that
 prints a PASS/FAIL list. They are the regression suite; run them all after any
 change that touches shared code.
 
 **They are committed — they live in `test/`.** Do not write new ones before
-looking there. The per-harness breakdown is in the round-nine section below and
-in `docs/design/transition-audit.md` §10.2, and `test/README.md`,
-`test/COVERAGE.md` and `test/REPORT.md` carry the running notes. The pattern
-they all follow is:
+looking there. **`test/BASELINE.md` is the per-harness breakdown and the only
+count to trust** — it is measured by running the suite, and it records that
+every other number in this repo was wrong by roughly half for weeks. The
+breakdowns in the round-nine section below and in
+`docs/design/transition-audit.md` §10.2 are historical snapshots, not current.
+`test/README.md`, `test/COVERAGE.md` and `test/REPORT.md` carry the running
+notes. The pattern they all follow is:
 
 ```js
-import pw from '/opt/node22/lib/node_modules/playwright/index.js';
-const { chromium } = pw;
-const browser = await chromium.launch({ executablePath: '/opt/pw-browsers/chromium-1194/chrome-linux/chrome' });
+import { launch, blockOutside, APP } from './lib/runtime.mjs';
+const browser = await launch();
 const ctx = await browser.newContext({
   viewport: { width: 390, height: 844 }, deviceScaleFactor: 2,
   serviceWorkers: 'block',   // or page routes will not intercept tile fetches
@@ -109,9 +111,21 @@ round nine it is **committed rather than living in a scratchpad**:
   round nine. It is also the proof the rules say what their comments claim:
   one account cannot read another's trip, checked by Google's own engine
   rather than a re-implementation.
-- **`test/refused-rules.mjs`** — swap in a deny-all ruleset and check the app
-  says so in words that name the fix instead of blaming the network. It
-  restores `firebase/firestore.rules` byte-identical when it is done.
+- **`test/refused-rules.mjs`** — swaps in a deny-all ruleset and checks the app
+  says so in words that name the fix instead of blaming the network. **It owns
+  the swap itself** — do not edit `firebase/firestore.rules` by hand for it. It
+  writes the deny-all ruleset, restores the original in a `finally` (so a crash
+  or a Ctrl-C still restores), verifies the restore byte-for-byte, and refuses
+  to start at all if that file already has uncommitted changes.
+
+  > **This was not always true, and the gap was dangerous.** Until 23 Sep 2026
+  > the swap was a manual step and the script restored *nothing*, while this
+  > file and `docs/design/transition-audit.md` §10.2 both claimed it did. Since
+  > `.github/workflows/deploy-web.yml` deploys `firebase/firestore.rules` to
+  > production on every push to `main`, "run it, forget to restore, commit,
+  > push" would have locked every user out of their own data. If you ever find
+  > that file holding a deny-all ruleset, a run crashed before the fix landed —
+  > `git checkout firebase/firestore.rules`, and do not deploy.
 - **`test/setup.sh`** vendors the pinned SDK into `web/vendor/firebase-local/`
   (gitignored) and installs `firebase-tools` under `test/`; **`test/serve.mjs`**
   serves `web/` on :8123 with Hosting's rewrite, so `/j/CODE` returns
@@ -330,7 +344,7 @@ pretending to be priced in yen.**
 
 ## The test suite is the regression suite, and it is committed
 
-Sixteen browser harnesses in `test/`, 485 checks, plus `two-phones.mjs` at
+Twenty-eight browser harnesses in `test/`, 914 checks, plus `two-phones.mjs` at
 65/65 against real Auth and Firestore emulators. Run them all after any change
 to shared code. Counts and the per-harness breakdown are in the audit's §10.2.
 

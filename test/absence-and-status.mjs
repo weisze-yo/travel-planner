@@ -4,8 +4,7 @@
 // `store.sharedEmptyContext()` rather than markup, and the blank-map card
 // rendering with NO cause sentence (OD-7 answered no). Plus M-9, N-11, N-12,
 // M-12 and M-16, each measured in a real render at 390x844.
-import pw from '/opt/node22/lib/node_modules/playwright/index.js';
-const { chromium } = pw;
+import { launch } from './lib/runtime.mjs';
 
 const APP = 'http://127.0.0.1:8099';
 const pass = [], fail = [];
@@ -15,7 +14,7 @@ const check = (n, ok, extra = '') => {
 };
 const flat = (t) => String(t || '').replace(/\s+/g, ' ').trim();
 
-const browser = await chromium.launch({ executablePath: '/opt/pw-browsers/chromium-1194/chrome-linux/chrome' });
+const browser = await launch();
 const ctx = await browser.newContext({
   viewport: { width: 390, height: 844 }, deviceScaleFactor: 2, serviceWorkers: 'block',
 });

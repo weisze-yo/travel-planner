@@ -285,7 +285,14 @@ export default {
       const loop = store.addSubRoute(state.selectedDay);
       if (loop) store.selectLoop(loop.id);
     });
-    delegate(root, '[data-drop]', (el) => store.toggleSubRoutePlace(el.dataset.drop, store.activeLoop()));
+    // §3.7 · F5 (b) · `toggleSubRoutePlace(placeId, handle)` became
+    // `setSubRoutePlace(placeId, routeId)` when membership went singular, and
+    // this call site was not updated with it — so the ✕ that takes a place out
+    // of the sub route has been throwing `store.toggleSubRoutePlace is not a
+    // function` ever since. Both the name and the second argument changed: it
+    // takes a route ID, and `null` means "out of every loop on the day", which
+    // is exactly what this button asks for.
+    delegate(root, '[data-drop]', (el) => store.setSubRoutePlace(el.dataset.drop, null));
     delegate(root, '[data-open-place]', (el) => go('dest', { placeID: el.dataset.openPlace }));
 
     delegate(root, '[data-act="loop-save"]', () => {

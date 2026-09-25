@@ -1,0 +1,97 @@
+# Every push and every pull request runs the tests. `main` additionally deploys,
+# and only if they passed.
+#
+# Until 23 Sep 2026 there was no CI except the deploy, and the deploy ran no
+# test at all: a push that failed all 914 checks went straight to production.
+# The suite could not have been wired up before now anyway — it hardcoded paths
+# that exist only in the development container.
+name: Tests
+
+on:
+  push:
+    branches: ['**']
+  pull_request:
+  workflow_dispatch:
+
+concurrency:
+  group: tests-${{ github.ref }}
+  cancel-in-progress: true
+
+jobs:
+  # Seconds, and it catches the trap that has bitten four times: a backtick
+  # inside an HTML comment inside an `html` template literal ends the template.
+  # The module still PARSES, so `node --check` reports it fine and the screen
+  # breaks at runtime a long way from the cause.
+  static:
+    name: Parse and guard
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/checkout@v4
+      - uses: actions/setup-node@v4
+        with:
+          node-version: 22
+      - run: npm run test:guard
+      - run: npm install --no-audit --no-fund
+      # A ratchet, not a cliff: fails if the type-error count goes UP, or on any
+      # syntax error. See test/typecheck.mjs for why it is not a plain gate yet.
+      - run: npm run typecheck
+
+  # The 28 browser harnesses. `test/run.mjs` starts both servers itself.
+  browser:
+    name: Browser suite
+    runs-on: ubuntu-latest
+    needs: static
+    steps:
+      - uses: actions/checkout@v4
+      - uses: actions/setup-node@v4
+        with:
+          node-version: 22
+      - run: npm install --no-audit --no-fund
+      - run: npx playwright install --with-deps chromium
+      - run: npm test -- --junit junit-browser.xml
+      - uses: actions/upload-artifact@v4
+        if: always()
+        with:
+          name: junit-browser
+          path: junit-browser.xml
+          if-no-files-found: ignore
+
+  # The real Auth and Firestore emulators, running this repo's own rules.
+  # This is the only proof the rules say what their comments claim.
+  emulator:
+    name: Firebase emulators
+    runs-on: ubuntu-latest
+    needs: static
+    steps:
+      - uses: actions/checkout@v4
+      - uses: actions/setup-node@v4
+        with:
+          node-version: 22
+      - uses: actions/setup-java@v4
+        with:
+          distribution: temurin
+          java-version: 17
+      - run: npm install --no-audit --no-fund
+      - run: npx playwright install --with-deps chromium
+      - name: Vendor the pinned Firebase SDK and install firebase-tools
+        run: test/setup.sh
+      # This job runs the harnesses directly rather than through `npm test`, so
+      # it does not get the `pretest` build — and web/js/ is generated and not
+      # in git. Without this the server has an app with no JavaScript in it and
+      # every harness times out waiting for a boot that cannot happen.
+      - run: npm run build
+      - name: Start the emulators and the server
+        run: |
+          test/node_modules/.bin/firebase emulators:start \
+            --config firebase.emulators.json --project travel-planner-3e0d3 \
+            --only auth,firestore &
+          node test/serve.mjs &
+          npx --yes wait-on -t 90000 tcp:127.0.0.1:9099 tcp:127.0.0.1:8080 http://127.0.0.1:8123/index.html
+      - run: node test/two-phones.mjs
+      - name: Rules that refuse everything
+        run: node test/refused-rules.mjs
+      - name: The rules file must come back byte-identical
+        # refused-rules swaps firebase/firestore.rules for a deny-all ruleset and
+        # restores it in a `finally`. Deploy publishes that file to production, so
+        # this is the backstop: if the tree is dirty here, something did not restore.
+        run: git diff --exit-code -- firebase/firestore.rules

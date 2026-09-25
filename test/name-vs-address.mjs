@@ -29,12 +29,12 @@
 // two paths every stop and every nearby place really go through — so no
 // assertion here can pass against a helper nothing calls.
 //
-// `street` comes back null in this environment because OpenStreetMap is
-// unreachable from it. That is the DESIGNED fallback, not a gap: a place
-// with no named street shows no street, and the test asserts the field
+// `street` comes back null here because this test REFUSES OpenStreetMap at
+// the network layer (see the `page.route` below) rather than because the
+// machine happens to be offline. That is the DESIGNED fallback, not a gap: a
+// place with no named street shows no street, and the test asserts the field
 // exists and the note reads correctly without it.
-import pw from '/opt/node22/lib/node_modules/playwright/index.js';
-const { chromium } = pw;
+import { launch, blockOutside } from './lib/runtime.mjs';
 
 const APP = 'http://127.0.0.1:8099';
 const pass = [], fail = [];
@@ -43,7 +43,7 @@ const check = (n, ok, extra = '') => {
   console.log((ok ? '  ok  ' : '  FAIL ') + n + (extra ? ` — ${String(extra).slice(0, 300)}` : ''));
 };
 
-const browser = await chromium.launch({ executablePath: '/opt/pw-browsers/chromium-1194/chrome-linux/chrome' });
+const browser = await launch();
 const ctx = await browser.newContext({
   viewport: { width: 375, height: 812 }, deviceScaleFactor: 2, serviceWorkers: 'block',
 });
@@ -55,6 +55,19 @@ await ctx.addInitScript(() => {
 const page = await ctx.newPage();
 const pageErrors = [];
 page.on('pageerror', (e) => pageErrors.push(String(e)));
+// The outside world is refused, deliberately and explicitly.
+//
+// This test used to depend on the network being broken. The development
+// container cannot reach the internet from Chromium, so `resolvePlaceInput`
+// never got a reverse-geocode back and "a link whose name has no comma gains
+// no Address row" held by accident. On a machine WITH a network — a laptop, or
+// a CI runner — Nominatim answers, the short Google link picks up a real
+// address, and the check fails. It did exactly that the first time this suite
+// ran on GitHub, returning the live Japanese address for Tsukiji.
+//
+// Aborting the hosts makes the assertion mean what its name says: the split
+// between a name and an address is tested, not the machine's connectivity.
+await blockOutside(page);
 await page.goto(APP + '/index.html', { waitUntil: 'domcontentloaded' });
 await page.waitForFunction(() => document.querySelector('#boot')?.classList.contains('gone') ?? true, { timeout: 40000 });
 await page.waitForTimeout(700);

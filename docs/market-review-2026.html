@@ -1,0 +1,486 @@
+<meta charset="utf-8">
+<title>Our Planner Against the Market</title>
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=Public+Sans:ital,wght@0,400;0,600;0,700;0,800;1,400&family=IBM+Plex+Mono:wght@400;600&display=swap">
+<style>
+  :root{
+    --jade:#1F6F5C; --jade-deep:#14503F; --jade-bg:#E6EFEB; --jade-bd:#CFE0D9;
+    --amber:#8A5A08; --amber-line:#C87F0A; --amber-bg:#FBF1DE; --amber-bd:#EBD9B4;
+    --danger:#9B4B4B; --danger-bg:#F8E9E9;
+    --ink:#14201C; --charcoal:#3D4C46; --muted:#56655F; --soft:#8B968F;
+    --bone:#F2F3F1; --card:#FFFFFF; --line:#E3E8E4; --line-soft:#EDF0ED;
+    --shadow:0 1px 2px rgba(20,32,28,.05), 0 8px 24px rgba(20,32,28,.05);
+  }
+  @media (prefers-color-scheme: dark){
+    :root:not([data-theme="light"]){
+      --jade:#6FBFA2; --jade-deep:#8FD3B9; --jade-bg:#16302A; --jade-bd:#24463D;
+      --amber:#E0A64A; --amber-line:#D9A04A; --amber-bg:#2E2517; --amber-bd:#463A22;
+      --danger:#DE9797; --danger-bg:#32201F;
+      --ink:#E7EEEA; --charcoal:#C3CFC9; --muted:#9BAAA3; --soft:#7A8781;
+      --bone:#101815; --card:#18231F; --line:#27342F; --line-soft:#1F2B27;
+      --shadow:0 1px 2px rgba(0,0,0,.4), 0 10px 28px rgba(0,0,0,.3);
+    }
+  }
+  :root[data-theme="dark"]{
+    --jade:#6FBFA2; --jade-deep:#8FD3B9; --jade-bg:#16302A; --jade-bd:#24463D;
+    --amber:#E0A64A; --amber-line:#D9A04A; --amber-bg:#2E2517; --amber-bd:#463A22;
+    --danger:#DE9797; --danger-bg:#32201F;
+    --ink:#E7EEEA; --charcoal:#C3CFC9; --muted:#9BAAA3; --soft:#7A8781;
+    --bone:#101815; --card:#18231F; --line:#27342F; --line-soft:#1F2B27;
+    --shadow:0 1px 2px rgba(0,0,0,.4), 0 10px 28px rgba(0,0,0,.3);
+  }
+
+  body{
+    background:var(--bone); color:var(--ink);
+    font-family:'Public Sans', -apple-system, BlinkMacSystemFont, 'Segoe UI', sans-serif;
+    font-size:16px; line-height:1.6; -webkit-font-smoothing:antialiased;
+  }
+  .wrap{ max-width:820px; margin:0 auto; padding-inline:20px; padding-block:40px 72px; }
+  p{ margin:0 0 1em; max-width:68ch; }
+  h1,h2,h3{ text-wrap:balance; margin:0; }
+  a{ color:var(--jade); text-underline-offset:3px; }
+  a:focus-visible, summary:focus-visible{ outline:2px solid var(--amber-line); outline-offset:3px; border-radius:3px; }
+  hr{ border:0; border-top:1px solid var(--line); margin:44px 0; }
+
+  .eyebrow{
+    font-family:'IBM Plex Mono', ui-monospace, monospace; font-size:11px; font-weight:600;
+    letter-spacing:.14em; text-transform:uppercase; color:var(--soft); margin:0 0 10px;
+  }
+  h1{ font-size:clamp(30px,6vw,46px); font-weight:800; line-height:1.08; letter-spacing:-.02em; }
+  .standfirst{ font-size:clamp(17px,2.4vw,19px); color:var(--muted); margin-top:16px; max-width:60ch; }
+  .byline{
+    font-family:'IBM Plex Mono', ui-monospace, monospace; font-size:12px; color:var(--soft);
+    margin-top:22px; padding-top:16px; border-top:1px solid var(--line);
+  }
+
+  section{ margin-top:52px; }
+  h2{ font-size:clamp(22px,3.4vw,27px); font-weight:800; letter-spacing:-.015em; margin-bottom:6px; }
+  h2 .num{
+    font-family:'IBM Plex Mono', ui-monospace, monospace; font-size:13px; font-weight:600;
+    color:var(--jade); margin-right:10px; vertical-align:3px;
+  }
+  .lede{ color:var(--muted); margin-bottom:24px; }
+  h3{ font-size:17px; font-weight:700; margin:28px 0 8px; }
+
+  /* verdict */
+  .verdict{
+    background:var(--card); border:1px solid var(--line); border-left:4px solid var(--jade);
+    border-radius:4px; padding:22px 24px; box-shadow:var(--shadow); margin-top:36px;
+  }
+  .verdict h2{ font-size:19px; margin-bottom:12px; }
+  .verdict ul{ margin:0; padding-left:20px; display:flex; flex-direction:column; gap:10px; }
+  .verdict li{ max-width:64ch; }
+  .verdict strong{ color:var(--ink); }
+
+  /* fact strip */
+  .facts{ display:grid; grid-template-columns:repeat(auto-fit,minmax(150px,1fr)); gap:1px; background:var(--line); border:1px solid var(--line); border-radius:4px; overflow:hidden; margin:24px 0; }
+  .fact{ background:var(--card); padding:16px 18px; }
+  .fact .k{ font-family:'IBM Plex Mono', ui-monospace, monospace; font-size:10.5px; letter-spacing:.12em; text-transform:uppercase; color:var(--soft); }
+  .fact .v{ font-size:15px; font-weight:700; margin-top:5px; font-variant-numeric:tabular-nums; }
+
+  /* two lanes: jade = what works, amber = what does not */
+  .lanes{ display:grid; grid-template-columns:1fr 1fr; gap:20px; margin-top:20px; }
+  @media (max-width:640px){ .lanes{ grid-template-columns:1fr; } }
+  .lane{ background:var(--card); border:1px solid var(--line); border-radius:4px; padding:20px; box-shadow:var(--shadow); }
+  .lane.good{ border-top:3px solid var(--jade); }
+  .lane.bad{ border-top:3px solid var(--amber-line); }
+  .lane h3{ margin:0 0 14px; font-family:'IBM Plex Mono', ui-monospace, monospace;
+    font-size:11px; font-weight:600; letter-spacing:.14em; text-transform:uppercase; }
+  .lane.good h3{ color:var(--jade); }
+  .lane.bad h3{ color:var(--amber); }
+  .lane ul{ margin:0; padding:0; list-style:none; display:flex; flex-direction:column; gap:14px; }
+  .lane li{ padding-left:18px; position:relative; font-size:15px; }
+  .lane li::before{ content:""; position:absolute; left:0; top:9px; width:7px; height:7px; border-radius:50%; }
+  .lane.good li::before{ background:var(--jade); }
+  .lane.bad li::before{ background:var(--amber-line); }
+  .lane li b{ display:block; font-weight:700; }
+  .lane li span{ color:var(--muted); }
+
+  /* competitor entries */
+  .rival{ border-top:1px solid var(--line); padding-top:22px; margin-top:26px; }
+  .rival-head{ display:flex; flex-wrap:wrap; align-items:baseline; gap:10px 14px; margin-bottom:4px; }
+  .rival-head h3{ margin:0; font-size:20px; font-weight:800; letter-spacing:-.01em; }
+  .price{
+    font-family:'IBM Plex Mono', ui-monospace, monospace; font-size:11px; font-weight:600;
+    color:var(--charcoal); background:var(--line-soft); border:1px solid var(--line);
+    padding:2px 8px; border-radius:100px; white-space:nowrap;
+  }
+  .who{ color:var(--muted); font-size:15px; margin:4px 0 14px; }
+  .pc{ display:grid; grid-template-columns:1fr 1fr; gap:6px 26px; }
+  @media (max-width:640px){ .pc{ grid-template-columns:1fr; gap:14px; } }
+  .pc div{ font-size:14.5px; }
+  .pc .h{
+    font-family:'IBM Plex Mono', ui-monospace, monospace; font-size:10.5px; font-weight:600;
+    letter-spacing:.12em; text-transform:uppercase; margin-bottom:5px;
+  }
+  .pc .plus .h{ color:var(--jade); }
+  .pc .minus .h{ color:var(--amber); }
+  .pc ul{ margin:0; padding-left:17px; display:flex; flex-direction:column; gap:6px; color:var(--charcoal); }
+  .lesson{
+    margin-top:14px; font-size:14.5px; color:var(--ink);
+    background:var(--jade-bg); border:1px solid var(--jade-bd); border-radius:4px; padding:10px 14px;
+  }
+  .lesson b{ font-family:'IBM Plex Mono', ui-monospace, monospace; font-size:10.5px; letter-spacing:.12em;
+    text-transform:uppercase; color:var(--jade); display:block; margin-bottom:3px; }
+
+  /* table */
+  .scroller{ overflow-x:auto; border:1px solid var(--line); border-radius:4px; background:var(--card); margin-top:20px; }
+  table{ border-collapse:collapse; width:100%; min-width:720px; font-size:14px; }
+  th,td{ text-align:left; padding:11px 14px; border-bottom:1px solid var(--line-soft); vertical-align:top; }
+  thead th{
+    font-family:'IBM Plex Mono', ui-monospace, monospace; font-size:10.5px; font-weight:600;
+    letter-spacing:.1em; text-transform:uppercase; color:var(--soft);
+    background:var(--line-soft); border-bottom:1px solid var(--line); white-space:nowrap;
+  }
+  tbody th{ font-weight:700; white-space:nowrap; }
+  tr.ours td, tr.ours th{ background:var(--jade-bg); }
+  tr:last-child td, tr:last-child th{ border-bottom:0; }
+  .y{ color:var(--jade); font-weight:700; }
+  .n{ color:var(--danger); font-weight:700; }
+  .p{ color:var(--amber); font-weight:700; }
+  .caption{ font-size:13px; color:var(--soft); margin-top:10px; }
+
+  /* the roadmap spine — the app's own Plan screen */
+  .spine{ list-style:none; margin:20px 0 0; padding:0 0 0 30px; border-left:2px solid var(--jade); display:flex; flex-direction:column; gap:26px; }
+  .spine.later{ border-left-style:dashed; border-left-color:var(--amber-line); }
+  .stop{ position:relative; background:var(--card); border:1px solid var(--line); border-radius:4px; padding:18px 20px; box-shadow:var(--shadow); }
+  .stop::before{
+    content:attr(data-n); position:absolute; left:-41px; top:18px; width:22px; height:22px; border-radius:50%;
+    background:var(--jade); color:#fff; font-family:'IBM Plex Mono', ui-monospace, monospace;
+    font-size:11px; font-weight:600; display:grid; place-items:center;
+  }
+  .later .stop::before{ background:var(--amber-line); }
+  .stop h3{ margin:0 0 7px; font-size:17px; }
+  .stop p{ margin:0; font-size:14.5px; color:var(--charcoal); max-width:62ch; }
+  .chips{ display:flex; flex-wrap:wrap; gap:7px; margin-top:12px; }
+  .chip{
+    font-family:'IBM Plex Mono', ui-monospace, monospace; font-size:10.5px; font-weight:600;
+    letter-spacing:.08em; text-transform:uppercase; padding:3px 9px; border-radius:100px; border:1px solid;
+  }
+  .chip.effort{ color:var(--muted); border-color:var(--line); background:var(--line-soft); }
+  .chip.win{ color:var(--jade); border-color:var(--jade-bd); background:var(--jade-bg); }
+  .phase{ font-family:'IBM Plex Mono', ui-monospace, monospace; font-size:11px; font-weight:600;
+    letter-spacing:.14em; text-transform:uppercase; color:var(--jade); margin:36px 0 0; }
+  .phase.amberp{ color:var(--amber); }
+
+  .warn{ background:var(--amber-bg); border:1px solid var(--amber-bd); border-radius:4px; padding:18px 20px; margin-top:20px; }
+  .warn h3{ margin:0 0 8px; font-size:15px; color:var(--amber); }
+  .warn ul{ margin:0; padding-left:18px; display:flex; flex-direction:column; gap:9px; font-size:14.5px; color:var(--charcoal); }
+  .warn li b{ color:var(--ink); }
+
+  .sources{ font-size:13.5px; color:var(--muted); }
+  .sources ul{ padding-left:18px; display:flex; flex-direction:column; gap:7px; }
+  @media (prefers-reduced-motion:reduce){ *{ animation:none !important; transition:none !important; } }
+</style>
+
+<div class="wrap">
+
+  <header>
+    <p class="eyebrow">Product review &middot; September 2026</p>
+    <h1>Our Planner Against the Market</h1>
+    <p class="standfirst">What our travel planner does better than the apps people can download today, where it plainly loses, and the twelve things worth doing next &mdash; written for someone who has never read a line of its code.</p>
+    <p class="byline">Reviewed against the live app at travel-planner-3e0d3.web.app and against eleven competing products &middot; no figures in this report are estimates of our own usage, because the app has none yet</p>
+  </header>
+
+  <div class="verdict">
+    <h2>If you read nothing else</h2>
+    <ul>
+      <li><strong>We have built a very good travel <em>companion</em> and almost no travel <em>salesman</em>.</strong> Once a trip is in the app, nothing on the market handles the actual days better &mdash; two clock times per stop, free-time lanes, sub-routes that recompute when you drag them, spending, packing and a diary that all work with the phone in aeroplane mode. Every rival here needs a signal for something.</li>
+      <li><strong>Our weakest moment is the first five minutes.</strong> Competitors fill a trip for you &mdash; from your inbox, from a chat prompt, from a database of places with photos and ratings. We hand a new person a fictional demo city and a paste box. That is the single biggest reason someone would try us and leave.</li>
+      <li><strong>Nobody can copy our promise, and we barely make it.</strong> Free forever, no subscription, no account required, works with no signal, and it never changes your plan behind your back. Wanderlog charges £/$40 a year for offline access and dark mode; the AI planners quietly invent opening hours. We should be saying this out loud on a first screen, and we say it nowhere.</li>
+    </ul>
+  </div>
+
+  <hr>
+
+  <section>
+    <h2><span class="num">01</span>What we actually built</h2>
+    <p class="lede">In plain words, for anyone joining the conversation now.</p>
+    <p>It is a trip app you add to your phone's home screen straight from the browser &mdash; there is no App Store, no download, no sign-up wall. Open it and you get five tabs for one trip: a <strong>Map</strong> of the day, a <strong>Plan</strong> that lists the day hour by hour, a <strong>Shop</strong> list that turns into a spending report, a <strong>Prep</strong> list for packing, and a <strong>Log</strong> for notes and photos as the trip happens.</p>
+    <p>The part that makes it different from a notes app is the middle of the day. A stop has a start time <em>and</em> an end time, so the gaps between the tour's stops are real, visible lanes of free time. Inside a gap you can build your own little side trip &mdash; three shops and back to the coach by 15:45 &mdash; and the app does the arithmetic: leave at this time, you have this much slack, here is the walk. It also nags you once, quietly, when it is time to leave.</p>
+    <p>Everything is stored on the phone first, so every screen works underground, on a plane or in a mountain village. Before you go you can draw a box on the map and keep that patch of map on the phone too. Sharing a trip hands somebody a <em>copy</em>, not a live document: what they change stays theirs until one of you presses <em>Send an update</em>, and then the other side approves the changes one at a time. Nothing rewrites your day while you are asleep.</p>
+
+    <div class="facts">
+      <div class="fact"><div class="k">Price to run</div><div class="v">$0</div></div>
+      <div class="fact"><div class="k">Price to use</div><div class="v">$0</div></div>
+      <div class="fact"><div class="k">Works offline</div><div class="v">Every screen</div></div>
+      <div class="fact"><div class="k">Account needed</div><div class="v">No</div></div>
+      <div class="fact"><div class="k">Automated checks</div><div class="v">485</div></div>
+      <div class="fact"><div class="k">Languages</div><div class="v">English only</div></div>
+    </div>
+    <p class="caption">It costs nothing to run because it deliberately uses only free, keyless services: weather from Open-Meteo, places and map data from OpenStreetMap, exchange rates from the European Central Bank. That decision is the reason there is no subscription to charge, and also the reason some features below are hard.</p>
+  </section>
+
+  <section>
+    <h2><span class="num">02</span>Our app, honestly</h2>
+    <p class="lede">Green is what genuinely works. Amber is what a new user would hit.</p>
+    <div class="lanes">
+      <div class="lane good">
+        <h3>What we do better than anyone</h3>
+        <ul>
+          <li><b>It works with no signal &mdash; all of it</b><span>Not "cached recently". The whole app reads from the phone, and map tiles are the one thing you fetch in advance, on purpose, over an area you draw.</span></li>
+          <li><b>The day is modelled properly</b><span>Two clock times per stop, free time as its own lane, side trips with a real deadline and live arithmetic. No competitor treats the gaps in a guided tour as first-class.</span></li>
+          <li><b>Money that matches reality</b><span>You list what you want to buy, tick it when you do, type what you really paid, and get spend by day, by payment method, and how wrong your estimates were.</span></li>
+          <li><b>Sharing that cannot surprise you</b><span>A shared trip is a copy. Updates arrive as a list of proposals you accept one by one, and your own edits are never offered back to you as someone else's deletions.</span></li>
+          <li><b>It tells the truth when it fails</b><span>Unsent changes get a plain screen naming what is stuck, why, and what would be lost &mdash; instead of a spinner and a lie about being safe.</span></li>
+          <li><b>Nothing is monetising you</b><span>No adverts, no booking commissions steering results, no subscription, no data sold. What is on the screen is what you put there.</span></li>
+        </ul>
+      </div>
+      <div class="lane bad">
+        <h3>Where it falls down</h3>
+        <ul>
+          <li><b>Getting your trip in is work</b><span>You paste text and correct rows. Rivals read your email inbox, or build a week from one sentence. Our first screen is a fictional demo city, which reads as "not for my trip".</span></li>
+          <li><b>It cannot suggest anywhere</b><span>There is no database of places with photos, ratings and opening hours. If you do not already know where you are going, the app cannot help you decide.</span></li>
+          <li><b>Reminders only work while it is open</b><span>The "leave now" nudge lives inside the app. Close it and the phone stays silent &mdash; which is exactly when you needed telling.</span></li>
+          <li><b>No live planning with other people</b><span>The snapshot model is safer, but two friends editing a trip on the sofa together is a normal thing to want, and we make them take turns.</span></li>
+          <li><b>English, light mode, one screen size</b><span>Anything typed in Chinese, Japanese or Korean is untested against the layout. There is no dark mode at all &mdash; a nightly annoyance and a feature rivals charge for.</span></li>
+          <li><b>Nobody can find it</b><span>No App Store listing, no website, no reviews to read, no support address. For most travellers, an app that is not in a store does not exist.</span></li>
+          <li><b>One person's project</b><span>No privacy policy or terms on the site, no support channel, and if the one Firebase account lapses the links stop working. A group tour will not trust that with eight days of plans.</span></li>
+        </ul>
+      </div>
+    </div>
+  </section>
+
+  <section>
+    <h2><span class="num">03</span>What people actually use today</h2>
+    <p class="lede">The market splits into five families. Almost nobody uses one app.</p>
+    <p>Travellers take about <strong>71 days</strong> from first idea to booking &mdash; roughly a month being inspired and five weeks researching &mdash; and most of them end up juggling <strong>two or three apps</strong> rather than settling on one. Google Maps, with over two billion monthly users, is the real incumbent: its saved Lists are how an enormous number of people "plan" a trip, and its multi-stop planner handles a large share of long-distance route queries. Any new planner is competing with a folder of Google Maps pins and a spreadsheet, not only with other planners.</p>
+    <p>The five families are: <strong>organisers</strong> that tidy bookings you already made (TripIt); <strong>planners</strong> that combine a map, an itinerary and collaboration (Wanderlog, Lambus, Tripsy); <strong>AI chat planners</strong> that generate a trip from a prompt and want to sell you the booking (Mindtrip, Layla); <strong>journals</strong> that record where you went (Polarsteps); and <strong>specialists</strong> that do one job well (PackPoint for packing, TravelSpend for money, Sygic for offline maps). We sit between the planners and the journals, and we are the only one that treats the middle of a guided day as the problem.</p>
+  </section>
+
+  <section>
+    <h2><span class="num">04</span>The competition, app by app</h2>
+    <p class="lede">Prices and behaviour as reported in 2026 reviews; each entry ends with the one thing worth taking from it.</p>
+
+    <div class="rival">
+      <div class="rival-head"><h3>Wanderlog</h3><span class="price">Free &middot; Pro $39.99/yr</span></div>
+      <p class="who">The closest thing to a direct rival, and the app most people mean by "trip planner".</p>
+      <div class="pc">
+        <div class="plus"><div class="h">Strong</div><ul><li>Clean, well-liked interface; itinerary, map, budget and reservations in one place</li><li>Real-time collaboration &mdash; several people editing one trip, which is why groups pick it</li><li>A big places database with photos and recommendations, so a blank trip fills fast</li><li>Generous free tier; the paid tier adds route optimisation and Google Maps export</li></ul></div>
+        <div class="minus"><div class="h">Weak</div><ul><li><b>Offline access is behind the $39.99 subscription</b> &mdash; and so is dark mode</li><li>Still a lot of manual typing; the free AI help is capped at a handful of messages per trip</li><li>No real-time flight alerts for frequent flyers</li><li>Reviewers call the full feature set overwhelming for a simple trip</li></ul></div>
+      </div>
+      <p class="lesson"><b>Take from it</b>Offline is our free, permanent feature and their paid one. That is a headline, and we have never printed it.</p>
+    </div>
+
+    <div class="rival">
+      <div class="rival-head"><h3>TripIt</h3><span class="price">Free &middot; Pro $49/yr</span></div>
+      <p class="who">The veteran organiser: forward a confirmation email, get an itinerary.</p>
+      <div class="pc">
+        <div class="plus"><div class="h">Strong</div><ul><li>Unbeatable at the one job &mdash; reads booking emails and builds the schedule with no typing</li><li>Pro adds live flight delay, gate and cancellation alerts and fare tracking</li><li>Works on phone, tablet and desktop, and syncs into your calendar</li></ul></div>
+        <div class="minus"><div class="h">Weak</div><ul><li>It only starts <em>after</em> you have booked &mdash; useless for deciding what to do on Tuesday</li><li>Interface widely described as dated; one review calls it "enterprise software trapped in 2012"</li><li>No real collaboration, no in-app booking, and document uploads are capped (3 free, 25 on Pro)</li></ul></div>
+      </div>
+      <p class="lesson"><b>Take from it</b>Zero-typing import is the feature people pay for. We cannot read email, but a calendar-invite (.ics) import would cover flights and hotels for free.</p>
+    </div>
+
+    <div class="rival">
+      <div class="rival-head"><h3>Mindtrip &amp; Layla &mdash; the AI planners</h3><span class="price">Free, paid by bookings</span></div>
+      <p class="who">Describe your trip in a sentence, get a full week back in seconds.</p>
+      <div class="pc">
+        <div class="plus"><div class="h">Strong</div><ul><li>The blank page problem simply disappears &mdash; a draft week in under a minute</li><li>Mindtrip can complete a real flight booking inside the chat, and is good at group and family context</li><li>Layla adds proactive warnings for family travel; both feel effortless to start</li></ul></div>
+        <div class="minus"><div class="h">Weak</div><ul><li><b>They invent things.</b> Reviewers report attractions that no longer exist and time arithmetic that does not add up &mdash; one tested planner silently assumed the wrong travel year for pricing</li><li>Free to you because a booking commission is the business model, so suggestions are not neutral</li><li>Everything runs in the cloud: no signal, no plan</li></ul></div>
+      </div>
+      <p class="lesson"><b>Take from it</b>Their speed is real and their honesty is not. Our paste importer already grades every row and lands nothing until you confirm &mdash; that is the right shape for any AI we ever add.</p>
+    </div>
+
+    <div class="rival">
+      <div class="rival-head"><h3>Polarsteps</h3><span class="price">Free &middot; paid photo books</span></div>
+      <p class="who">A travel diary that draws itself from your phone's location.</p>
+      <div class="pc">
+        <div class="plus"><div class="h">Strong</div><ul><li>Records the journey automatically and beautifully; family follow along on a live map</li><li>Tracks offline and syncs later &mdash; the one rival that shares our offline instinct</li><li>Added a free AI trip planner in 2025 that learns from your own past trips</li></ul></div>
+        <div class="minus"><div class="h">Weak</div><ul><li>Barely plans: no prices, no route optimisation, little day-by-day structure</li><li>Users report persistent bugs and missing basics such as merging trips</li><li>Background GPS tracking is a real privacy and battery cost</li></ul></div>
+      </div>
+      <p class="lesson"><b>Take from it</b>Our Log is a better diary than people realise, and we never show it off. A shareable trip recap is the cheapest delight in this report.</p>
+    </div>
+
+    <div class="rival">
+      <div class="rival-head"><h3>Google Maps Lists</h3><span class="price">Free</span></div>
+      <p class="who">Not a planner, and the thing most people use instead of one.</p>
+      <div class="pc">
+        <div class="plus"><div class="h">Strong</div><ul><li>Already installed, already trusted, two billion users a month</li><li>Every place on earth with hours, photos, reviews and live directions</li><li>Offline map areas are built in and free</li></ul></div>
+        <div class="minus"><div class="h">Weak</div><ul><li>A list of pins is not a day: no times, no gaps, no packing, no spending, no notes</li><li>Sharing a list gives no structure and no way to agree on changes</li><li>Falls apart the moment a trip has eight days and three people</li></ul></div>
+      </div>
+      <p class="lesson"><b>Take from it</b>We should import and export to it rather than fight it. "Open in Google Maps" already exists on our stops; a list import would remove an hour of typing.</p>
+    </div>
+
+    <div class="rival">
+      <div class="rival-head"><h3>Tripsy, Lambus, Sygic Travel &amp; the specialists</h3><span class="price">$3&ndash;$5 one-off, or free</span></div>
+      <p class="who">Smaller, sharper tools that each own one corner.</p>
+      <div class="pc">
+        <div class="plus"><div class="h">Strong</div><ul><li><b>Tripsy</b>: a clean one-off purchase, no subscription &mdash; proof people will pay once for a calm app</li><li><b>Lambus</b>: collaborative planning as the whole point, popular with groups</li><li><b>Sygic Travel</b>: offline city maps and walking tours, the most travel-proof when data dies</li><li><b>PackPoint</b> (packing, from your weather and activities) and <b>TravelSpend</b> (currencies, budgets, exports) each do one of our tabs better than our tab does</li></ul></div>
+        <div class="minus"><div class="h">Weak</div><ul><li>Tripsy is Apple-only, so half the world cannot use it</li><li>Sygic's planning is described as clunky next to the polished apps</li><li>The specialists do not talk to each other: your packing list lives in one app and your trip in another</li></ul></div>
+      </div>
+      <p class="lesson"><b>Take from it</b>Our advantage over the specialists is that packing, spending and the plan are the <em>same</em> trip. That is worth saying plainly, because it is invisible from a screenshot.</p>
+    </div>
+  </section>
+
+  <section>
+    <h2><span class="num">05</span>Side by side</h2>
+    <p class="lede">The seven things a traveller actually asks. Scroll the table sideways on a phone.</p>
+    <div class="scroller">
+      <table>
+        <thead>
+          <tr>
+            <th scope="col">App</th><th scope="col">Cost</th><th scope="col">Works with no signal</th>
+            <th scope="col">Fills the trip for you</th><th scope="col">Hour-by-hour day</th>
+            <th scope="col">Money &amp; packing</th><th scope="col">Plan together</th><th scope="col">Free of ads &amp; commission</th>
+          </tr>
+        </thead>
+        <tbody>
+          <tr class="ours">
+            <th scope="row">Ours</th><td class="y">Free</td><td class="y">Yes, everything</td><td class="n">No &mdash; paste only</td>
+            <td class="y">Yes, best in class</td><td class="y">Both, built in</td><td class="p">Copy &amp; approve</td><td class="y">Yes</td>
+          </tr>
+          <tr>
+            <th scope="row">Wanderlog</th><td class="p">Free / $39.99 yr</td><td class="p">Paid tier only</td><td class="p">Partly, AI capped</td>
+            <td class="y">Yes</td><td class="p">Budget only</td><td class="y">Live</td><td class="n">Booking links</td>
+          </tr>
+          <tr>
+            <th scope="row">TripIt</th><td class="p">Free / $49 yr</td><td class="p">Itinerary only</td><td class="y">Yes, from email</td>
+            <td class="n">Bookings, not days</td><td class="n">No</td><td class="n">No</td><td class="n">Fare offers</td>
+          </tr>
+          <tr>
+            <th scope="row">Mindtrip</th><td class="y">Free</td><td class="n">No</td><td class="y">Yes, in seconds</td>
+            <td class="p">Yes, sometimes wrong</td><td class="n">No</td><td class="y">Yes</td><td class="n">Commission</td>
+          </tr>
+          <tr>
+            <th scope="row">Layla</th><td class="p">Free / paid unlock</td><td class="n">No</td><td class="y">Yes, in seconds</td>
+            <td class="p">Yes, sometimes wrong</td><td class="n">No</td><td class="p">Limited</td><td class="n">Commission</td>
+          </tr>
+          <tr>
+            <th scope="row">Polarsteps</th><td class="y">Free</td><td class="y">Tracks offline</td><td class="p">New AI planner</td>
+            <td class="n">No</td><td class="n">No</td><td class="n">Followers only</td><td class="p">Sells books</td>
+          </tr>
+          <tr>
+            <th scope="row">Google Maps</th><td class="y">Free</td><td class="p">Downloaded areas</td><td class="n">No</td>
+            <td class="n">No</td><td class="n">No</td><td class="p">Shared lists</td><td class="n">Ads</td>
+          </tr>
+          <tr>
+            <th scope="row">Tripsy</th><td class="p">~$5 once</td><td class="y">Yes</td><td class="p">Some email import</td>
+            <td class="y">Yes</td><td class="p">Some</td><td class="y">Yes</td><td class="y">Yes</td>
+          </tr>
+          <tr>
+            <th scope="row">Sygic Travel</th><td class="p">Free / paid maps</td><td class="y">Yes, its whole point</td><td class="p">Guided tours</td>
+            <td class="p">Basic</td><td class="n">No</td><td class="n">No</td><td class="p">Sells maps</td>
+          </tr>
+          <tr>
+            <th scope="row">PackPoint / TravelSpend</th><td class="y">Free / ~$3</td><td class="y">Yes</td><td class="n">n/a</td>
+            <td class="n">n/a</td><td class="y">One each, done well</td><td class="n">No</td><td class="y">Yes</td>
+          </tr>
+        </tbody>
+      </table>
+    </div>
+    <p class="caption">Green means a clear yes, amber a qualified one, red a no. Prices are the 2026 list prices quoted in the reviews linked at the foot of this page.</p>
+  </section>
+
+  <section>
+    <h2><span class="num">06</span>So where do we stand</h2>
+    <p><strong>We win outright on three things.</strong> Nothing else runs a whole trip with no signal for free. Nothing else models a guided day &mdash; fixed stops with your own free time between them &mdash; at all, and that is the exact shape of a package tour, which is a very large slice of travel in Asia. And nothing else refuses to change your plan without asking; every collaborative rival will happily let someone else's edit land on your Tuesday.</p>
+    <p><strong>We lose outright on two.</strong> The first five minutes, where rivals fill a trip from an inbox or a sentence and we show a demo of a city that does not exist. And discovery &mdash; both senses: the app cannot suggest a restaurant, and nobody can find the app. Those two are what would keep our user count at one.</p>
+    <p>The good news is that neither of the losses requires abandoning anything we decided. Everything below is additive, and none of it costs a subscription to run.</p>
+  </section>
+
+  <section>
+    <h2><span class="num">07</span>Twelve things to do next</h2>
+    <p class="lede">Ordered as a route, not a wish list. The first four are the ones that change whether a stranger keeps the app.</p>
+
+    <p class="phase">Now &mdash; the first five minutes</p>
+    <ol class="spine">
+      <li class="stop" data-n="1">
+        <h3>Replace the demo city with "what is your trip?"</h3>
+        <p>A new person currently lands in a fictional place called Meridian City. Make the first screen ask for a name, a date and where you are going &mdash; then offer the demo as a clearly-labelled "have a look around first". The trip that belongs to them should exist within thirty seconds.</p>
+        <div class="chips"><span class="chip effort">Small</span><span class="chip win">Fixes the biggest drop-off</span></div>
+      </li>
+      <li class="stop" data-n="2">
+        <h3>Make importing a real itinerary feel like magic, not homework</h3>
+        <p>The paste box works and grades every line honestly &mdash; keep that. What is missing is the way in: accept a shared file or a screenshot's text from the phone's share sheet, read calendar invites (.ics) from airlines and hotels so flights need no typing at all, and import a Google Maps saved list of pins. Three free inputs that between them cover how people already hold a trip.</p>
+        <div class="chips"><span class="chip effort">Medium</span><span class="chip win">Closes the gap to TripIt</span></div>
+      </li>
+      <li class="stop" data-n="3">
+        <h3>Say the promise on the way in</h3>
+        <p>One honest line before the first screen: works with no signal, no account, no subscription, never changes your plan behind your back. Wanderlog charges forty dollars a year for the first of those. Right now a visitor has no way to know we give it away.</p>
+        <div class="chips"><span class="chip effort">Tiny</span><span class="chip win">Positioning</span></div>
+      </li>
+      <li class="stop" data-n="4">
+        <h3>Let the "leave now" reminder reach a locked phone</h3>
+        <p>The nudge is the most useful thing the app knows and it only fires while the app is open. Web push notifications now work on an installed iPhone home-screen app, so this is reachable; if it proves unreliable, exporting the day to the phone's own calendar gets most of the value for almost no work.</p>
+        <div class="chips"><span class="chip effort">Medium</span><span class="chip win">The feature people would tell friends about</span></div>
+      </li>
+    </ol>
+
+    <p class="phase">Next &mdash; the trip itself</p>
+    <ol class="spine" start="5">
+      <li class="stop" data-n="5">
+        <h3>Dark mode</h3>
+        <p>Closed once as "light only, for now". Worth reopening: half of trip planning happens in bed and half of trip <em>using</em> happens on a night coach. Wanderlog sells it. The palette is already defined in one place, so this is a contained job rather than a redesign.</p>
+        <div class="chips"><span class="chip effort">Medium</span><span class="chip win">Daily comfort</span></div>
+      </li>
+      <li class="stop" data-n="6">
+        <h3>Survive Chinese, Japanese and Korean text</h3>
+        <p>Not a translation project &mdash; a robustness pass. People will paste Japanese itineraries into an app whose warnings are built English sentences and whose rows assume Latin widths. For a Malaysian traveller in Japan this is not a nicety.</p>
+        <div class="chips"><span class="chip effort">Medium</span><span class="chip win">Whole markets</span></div>
+      </li>
+      <li class="stop" data-n="7">
+        <h3>Real travel times instead of stored guesses</h3>
+        <p>Nearby places show fixed figures written when the data was made. Free, keyless routing services can return an honest walking or transit time per leg, with the stored figure kept as the offline fallback. The sub-route arithmetic is only as trustworthy as its inputs.</p>
+        <div class="chips"><span class="chip effort">Medium</span><span class="chip win">Trust in the maths</span></div>
+      </li>
+      <li class="stop" data-n="8">
+        <h3>Money for groups: who paid, and who owes whom</h3>
+        <p>The spending report is already better than most rivals', but a package tour splits taxis and dinners. Recording who paid and settling up at the end would remove the second app people run alongside a planner, and it fits the data we already keep.</p>
+        <div class="chips"><span class="chip effort">Medium</span><span class="chip win">Removes a rival app</span></div>
+      </li>
+      <li class="stop" data-n="9">
+        <h3>Make the shared trip check for updates by itself</h3>
+        <p>Keep the model &mdash; a copy, approved one change at a time, is our best idea. Just stop making people remember: check quietly, and show a badge saying "three changes waiting". That is most of what live collaboration feels like, with none of the risk.</p>
+        <div class="chips"><span class="chip effort">Small</span><span class="chip win">Closes the group gap</span></div>
+      </li>
+      <li class="stop" data-n="10">
+        <h3>Offline maps that cover a whole city</h3>
+        <p>Today an area is capped at fifteen hundred map tiles, because it would be wrong to bulk-download a charity's servers. A modern single-file offline map format would let one download cover a region, legitimately and still for free &mdash; turning our best feature from "a patch around your hotel" into "Japan is on your phone".</p>
+        <div class="chips"><span class="chip effort">Large</span><span class="chip win">Widens our strongest lead</span></div>
+      </li>
+    </ol>
+
+    <p class="phase amberp">Later &mdash; bets worth considering, not decided</p>
+    <ol class="spine later" start="11">
+      <li class="stop" data-n="11">
+        <h3>An assistant that proposes and never writes</h3>
+        <p>If AI ever enters this app, it should arrive through the paste screen's door: every suggestion graded, nothing landing until a human ticks it, and a visible mark on anything a machine wrote. That is the opposite of the tools that quietly send people to closed restaurants, and it would be a genuine market position rather than a catch-up feature.</p>
+        <div class="chips"><span class="chip effort">Large</span><span class="chip win">Differentiation, if done honestly</span></div>
+      </li>
+      <li class="stop" data-n="12">
+        <h3>Be findable, and be trustworthy about it</h3>
+        <p>A one-page site that explains the app, a support address, a plain-language privacy note, and a finished screen-reader pass. None of it is glamorous; all of it is what a stranger checks before putting eight days of plans into an app made by someone they have never met.</p>
+        <div class="chips"><span class="chip effort">Small</span><span class="chip win">Makes everything else reachable</span></div>
+      </li>
+    </ol>
+  </section>
+
+  <section>
+    <h2><span class="num">08</span>Three things not to do</h2>
+    <div class="warn">
+      <h3>Every one of these would trade our advantage for parity</h3>
+      <ul>
+        <li><b>Do not switch to live shared editing.</b> It is the one thing everyone else has and the one thing our users are protected from. Make the copy-and-approve model faster instead &mdash; item 9 above.</li>
+        <li><b>Do not take booking commissions.</b> The moment a suggestion earns money, every suggestion is suspect, which is precisely the charge reviewers level at the AI planners.</li>
+        <li><b>Do not add a paid API to solve a hard problem.</b> The no-paid-services rule is why the app can be free forever and why it has no server to fail. Every improvement above was chosen because a free route exists.</li>
+      </ul>
+    </div>
+  </section>
+
+  <hr>
+
+  <section class="sources">
+    <h2><span class="num">09</span>Where the market figures come from</h2>
+    <p>Our app was reviewed directly from its own code, design record and test suite. Everything said about other products comes from 2026 reviews and comparisons, not from our own testing of them:</p>
+    <ul>
+      <li><a href="https://monkeyeatingmango.com/blog/wanderlog-pricing-2026/">Wanderlog Pro pricing 2026</a> and <a href="https://wandrly.app/reviews/wanderlog/">Wanderlog features, pros and cons</a></li>
+      <li><a href="https://www.tripit.com/web/pro/pricing">TripIt Pro pricing</a>, <a href="https://www.going.com/guides/tripit-review">TripIt review 2026</a> and <a href="https://www.pilotplans.com/blog/review-of-tripit">a critical look at TripIt</a></li>
+      <li><a href="https://aitravel.tools/best-ai-trip-planner/">Ten AI trip planners tested</a> and <a href="https://www.travelanywhere.blog/blog/best-agentic-ai-travel-apps-2026-mindtrip-layla-stippl-stardrift-wanderlog-tested">MindTrip vs Layla vs Wanderlog, tested</a></li>
+      <li><a href="https://www.wandrly.app/reviews/polarsteps">Polarsteps review</a> and <a href="https://tripstone.app/blog/polarsteps-alternatives">Polarsteps alternatives</a></li>
+      <li><a href="https://tripprof.com/en/blog/best-trip-planning-apps-2026/">Twenty trip-planning apps ranked by feature</a> and <a href="https://travelhighlights.io/travel-apps/best-travel-apps/">best travel apps for planning, budgeting and tracking</a></li>
+      <li><a href="https://www.packpnt.com/">PackPoint</a>, and <a href="https://yopki.com/guides/travel-statistics-2026/">75+ travel planning statistics for 2026</a> for the 71-day planning window and app-stacking behaviour</li>
+    </ul>
+  </section>
+
+</div>

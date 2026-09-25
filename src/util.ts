@@ -2,7 +2,7 @@
 // string and then bind their own handlers.
 
 /** Escapes text for safe interpolation into markup. */
-export function esc(value) {
+export function esc(value: unknown): string {
   return String(value ?? '').replace(/[&<>"']/g, (c) => (
     { '&': '&amp;', '<': '&lt;', '>': '&gt;', '"': '&quot;', "'": '&#39;' }[c]
   ));
@@ -13,7 +13,7 @@ export function esc(value) {
  * an angle bracket can never break the markup. Wrap trusted markup in `raw()`
  * to opt out; arrays are joined.
  */
-export function html(strings, ...values) {
+export function html(strings: TemplateStringsArray, ...values: unknown[]): Raw {
   let out = strings[0];
   for (let i = 0; i < values.length; i++) {
     out += render(values[i]) + strings[i + 1];
@@ -21,7 +21,7 @@ export function html(strings, ...values) {
   return raw(out);
 }
 
-function render(value) {
+function render(value: unknown): string {
   if (value == null || value === false) return '';
   if (Array.isArray(value)) return value.map(render).join('');
   if (value instanceof Raw) return value.value;
@@ -29,25 +29,42 @@ function render(value) {
 }
 
 class Raw {
-  constructor(value) { this.value = String(value ?? ''); }
-  toString() { return this.value; }
+  value: string;
+
+  constructor(value: unknown) { this.value = String(value ?? ''); }
+
+  toString(): string { return this.value; }
 }
 
 /** Marks a string as already-safe markup. */
-export function raw(value) {
+export function raw(value: unknown): Raw {
   return value instanceof Raw ? value : new Raw(value);
 }
 
-export const $ = (sel, root = document) => root.querySelector(sel);
-export const $$ = (sel, root = document) => Array.from(root.querySelectorAll(sel));
+// The default is `any`, deliberately, and it is a migration affordance rather
+// than laziness.
+//
+// Typed as `HTMLElement`, every existing caller that reads `.value` off an
+// input becomes an error — and those callers are still .js files, which cannot
+// pass a type argument to say what they meant. The choice is between `any` here
+// and a wave of errors nobody can fix without converting forty more files
+// first. So: `any` until a caller is converted, and a real element type the
+// moment it can ask for one — `$<HTMLInputElement>('#price')`.
+export const $ = <T extends Element = any>(sel: string, root: ParentNode = document): T | null => root.querySelector<T>(sel);
+export const $$ = <T extends Element = any>(sel: string, root: ParentNode = document): T[] => Array.from(root.querySelectorAll<T>(sel));
 
 /**
  * Click delegation. `root.on('[data-act="x"]', fn)` fires with the matched
  * element, so re-rendering never leaves stale listeners behind.
  */
-export function delegate(root, selector, handler, event = 'click') {
+export function delegate(
+  root: Element | Document,
+  selector: string,
+  handler: (element: HTMLElement, event: Event) => void,
+  event = 'click',
+): void {
   root.addEventListener(event, (e) => {
-    const hit = e.target.closest(selector);
+    const hit = (e.target as Element | null)?.closest<HTMLElement>(selector);
     if (hit && root.contains(hit)) handler(hit, e);
   });
 }
@@ -69,26 +86,27 @@ export function delegate(root, selector, handler, event = 'click') {
  * Space is prevented so the page does not scroll under the press; Enter is
  * not, because nothing else claims it.
  */
-export function bindRoleButtons() {
+export function bindRoleButtons(): void {
   document.addEventListener('keydown', (e) => {
     if (e.key !== 'Enter' && e.key !== ' ' && e.key !== 'Spacebar') return;
-    const hit = e.target.closest?.('[role="button"]');
+    const target = e.target as Element | null;
+    const hit = target?.closest?.<HTMLElement>('[role="button"]');
     if (!hit) return;
     // A real control inside the card keeps its own keyboard behaviour.
-    if (e.target.closest('button, a, input, select, textarea') ) return;
+    if (target?.closest('button, a, input, select, textarea')) return;
     if (e.key !== 'Enter') e.preventDefault();
     hit.click();
   });
 }
 
 /** "13:45" from minutes past midnight. */
-export function clock(minutes) {
+export function clock(minutes: number): string {
   const m = ((Math.round(minutes) % 1440) + 1440) % 1440;
   return String(Math.floor(m / 60)).padStart(2, '0') + ':' + String(m % 60).padStart(2, '0');
 }
 
 /** Minutes past midnight from "13:45". Returns null when unparseable. */
-export function parseClock(text) {
+export function parseClock(text: unknown): number | null {
   const hit = /^\s*(\d{1,2})\s*[:.]?\s*(\d{2})\s*$/.exec(String(text ?? ''));
   if (!hit) return null;
   const h = Number(hit[1]);
@@ -98,7 +116,7 @@ export function parseClock(text) {
 }
 
 /** "1h 20m" / "45 min", matching the prototype's phrasing. */
-export function duration(minutes) {
+export function duration(minutes: number): string {
   const m = Math.max(0, Math.round(minutes));
   if (m < 60) return `${m} min`;
   const h = Math.floor(m / 60);
@@ -111,7 +129,7 @@ export function duration(minutes) {
  * "2h15", "2h 15m", "1.5h", "90 min", "1 小时". Returns null when there is
  * nothing to read, so "no duration set" stays different from "zero minutes".
  */
-export function parseDuration(text) {
+export function parseDuration(text: unknown): number | null {
   const input = String(text ?? '').trim().toLowerCase();
   if (!input) return null;
 
@@ -127,7 +145,7 @@ export function parseDuration(text) {
 }
 
 /** Keeps a typed number inside a range that formatting can handle. */
-export function boundedNumber(value, max = 1e9) {
+export function boundedNumber(value: unknown, max = 1e9): number {
   const n = Number(value);
   if (!Number.isFinite(n)) return 0;
   return Math.min(Math.max(n, 0), max);
@@ -145,19 +163,19 @@ export function boundedNumber(value, max = 1e9) {
  * done it quietly. No currency, no symbol — the bare number, tabular
  * (p0-2-currency-design.md §7.1).
  */
-export function money(amount, symbol = '') {
+export function money(amount: unknown, symbol = ''): string {
   return symbol + Math.round(boundedNumber(amount, 1e12)).toLocaleString('en-US');
 }
 
 /** Strips everything but digits and a decimal point out of typed input. */
-export function numeric(text) {
+export function numeric(text: unknown): number | null {
   const cleaned = String(text ?? '').replace(/[^0-9.]/g, '');
   if (!cleaned) return null;
   const n = Number(cleaned);
   return Number.isFinite(n) ? boundedNumber(n) : null;
 }
 
-export function dateStamp(date = new Date()) {
+export function dateStamp(date: Date | string | number = new Date()): string {
   // Most of what the app stores is an ISO string, so take either rather than
   // making every caller remember which.
   const at = date instanceof Date ? date : new Date(date);
@@ -165,10 +183,10 @@ export function dateStamp(date = new Date()) {
   return at.toLocaleDateString('en-GB', { day: 'numeric', month: 'short' });
 }
 
-export const uid = (prefix = 'x') => `${prefix}${Date.now().toString(36)}${Math.random().toString(36).slice(2, 6)}`;
+export const uid = (prefix = 'x'): string => `${prefix}${Date.now().toString(36)}${Math.random().toString(36).slice(2, 6)}`;
 
 /** Moves an item within an array by id, dropping it in front of `beforeId`. */
-export function reorder(list, movedId, beforeId) {
+export function reorder(list: string[], movedId: string, beforeId: string): string[] {
   const from = list.indexOf(movedId);
   const to = list.indexOf(beforeId);
   if (from < 0 || to < 0 || from === to) return list.slice();
@@ -185,21 +203,21 @@ export const icon = {
   close: '<svg width="16" height="16" viewBox="0 0 16 16"><path d="M2 2l12 12M14 2L2 14" stroke="#14201C" stroke-width="2" stroke-linecap="round"/></svg>',
   chevron: '<svg width="7" height="12" viewBox="0 0 7 12"><path d="M1 1l5 5-5 5" stroke="#98A5A0" stroke-width="1.8" fill="none" stroke-linecap="round"/></svg>',
   caret: '<svg width="10" height="6" viewBox="0 0 10 6"><path d="M1 1l4 4 4-4" stroke="#6B7A74" stroke-width="1.6" fill="none" stroke-linecap="round"/></svg>',
-  pencil: (color = '#fff', size = 19) => `<svg width="${size}" height="${size}" viewBox="0 0 14 14"><path d="M9.5 1.5l3 3L5 12H2v-3z" fill="none" stroke="${color}" stroke-width="1.5" stroke-linejoin="round"/></svg>`,
+  pencil: (color = '#fff', size = 19): string => `<svg width="${size}" height="${size}" viewBox="0 0 14 14"><path d="M9.5 1.5l3 3L5 12H2v-3z" fill="none" stroke="${color}" stroke-width="1.5" stroke-linejoin="round"/></svg>`,
   grip: '<svg width="16" height="12" viewBox="0 0 16 12"><g stroke="#98A5A0" stroke-width="2" stroke-linecap="round"><path d="M2 2h12M2 6h12M2 10h12"/></g></svg>',
-  tick: (color = '#fff', w = 11) => `<svg width="${w}" height="${w * 0.82}" viewBox="0 0 11 9"><path d="M1 4.5L4 7.5 10 1" stroke="${color}" stroke-width="2" fill="none" stroke-linecap="round" stroke-linejoin="round"/></svg>`,
+  tick: (color = '#fff', w = 11): string => `<svg width="${w}" height="${w * 0.82}" viewBox="0 0 11 9"><path d="M1 4.5L4 7.5 10 1" stroke="${color}" stroke-width="2" fill="none" stroke-linecap="round" stroke-linejoin="round"/></svg>`,
   // §3.4 · a ring and a handle at 45°, which is the only shape a magnifier
   // reads as at 15px. Colour is a parameter so the same glyph serves a
   // header button and the panel's own field.
-  search: (color = '#3D4C46', size = 15) => `<svg width="${size}" height="${size}" viewBox="0 0 15 15" fill="none"><circle cx="6.4" cy="6.4" r="4.4" stroke="${color}" stroke-width="1.7"/><path d="M9.8 9.8L13 13" stroke="${color}" stroke-width="1.7" stroke-linecap="round"/></svg>`,
-  sort: (color = '#3D4C46') => `<svg width="15" height="15" viewBox="0 0 15 15"><g stroke="${color}" stroke-width="1.8" stroke-linecap="round"><path d="M2 4h11M2 7.5h7M2 11h4"/></g></svg>`,
+  search: (color = '#3D4C46', size = 15): string => `<svg width="${size}" height="${size}" viewBox="0 0 15 15" fill="none"><circle cx="6.4" cy="6.4" r="4.4" stroke="${color}" stroke-width="1.7"/><path d="M9.8 9.8L13 13" stroke="${color}" stroke-width="1.7" stroke-linecap="round"/></svg>`,
+  sort: (color = '#3D4C46'): string => `<svg width="15" height="15" viewBox="0 0 15 15"><g stroke="${color}" stroke-width="1.8" stroke-linecap="round"><path d="M2 4h11M2 7.5h7M2 11h4"/></g></svg>`,
   // A toothed ring, not a circle with rays — the rays version reads as a sun.
   gear: '<svg width="18" height="18" viewBox="0 0 18 18" fill="none"><path d="M7.6 1.9h2.8l.35 1.8a5.6 5.6 0 0 1 1.36.79l1.74-.6 1.4 2.42-1.39 1.2a5.6 5.6 0 0 1 0 1.58l1.39 1.2-1.4 2.42-1.74-.6a5.6 5.6 0 0 1-1.36.79l-.35 1.8H7.6l-.35-1.8a5.6 5.6 0 0 1-1.36-.79l-1.74.6-1.4-2.42 1.39-1.2a5.6 5.6 0 0 1 0-1.58l-1.39-1.2 1.4-2.42 1.74.6a5.6 5.6 0 0 1 1.36-.79z" stroke="#14201C" stroke-width="1.4" stroke-linejoin="round"/><circle cx="9" cy="9" r="2.4" stroke="#14201C" stroke-width="1.4"/></svg>',
   bin: '<svg width="15" height="16" viewBox="0 0 15 16" fill="none"><path d="M2 4h11M6 2h3M5.5 4v9M9.5 4v9M3 4l.7 10h7.6L12 4" stroke="#fff" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round"/></svg>',
   pin: '<svg width="11" height="13" viewBox="0 0 11 13"><path d="M5.5 1C3 1 1 3 1 5.5C1 9 5.5 12 5.5 12S10 9 10 5.5C10 3 8 1 5.5 1z" fill="none" stroke="#98A5A0" stroke-width="1.4"/></svg>',
-  tabMap: (c) => `<svg width="20" height="20" viewBox="0 0 20 20" fill="none"><path d="M10 18s6-5.2 6-10A6 6 0 0 0 4 8c0 4.8 6 10 6 10z" stroke="${c}" stroke-width="1.7" stroke-linejoin="round"/><circle cx="10" cy="8" r="2.2" stroke="${c}" stroke-width="1.7"/></svg>`,
-  tabPlan: (c) => `<svg width="20" height="20" viewBox="0 0 20 20" fill="none"><g stroke="${c}" stroke-width="1.7" stroke-linecap="round"><path d="M3 5.5h14M3 10h14M3 14.5h9"/></g></svg>`,
-  tabShop: (c) => `<svg width="20" height="20" viewBox="0 0 20 20" fill="none"><path d="M4.5 6.5h11l-1 10h-9l-1-10z" stroke="${c}" stroke-width="1.7" stroke-linejoin="round"/><path d="M7.5 6.5V5a2.5 2.5 0 0 1 5 0v1.5" stroke="${c}" stroke-width="1.7" stroke-linecap="round"/></svg>`,
-  tabPrep: (c) => `<svg width="20" height="20" viewBox="0 0 20 20" fill="none"><rect x="3.5" y="6" width="13" height="10.5" rx="2" stroke="${c}" stroke-width="1.7"/><path d="M7.5 6V4.5a1.5 1.5 0 0 1 1.5-1.5h2a1.5 1.5 0 0 1 1.5 1.5V6" stroke="${c}" stroke-width="1.7" stroke-linecap="round"/></svg>`,
-  tabLog: (c) => `<svg width="20" height="20" viewBox="0 0 20 20" fill="none"><path d="M13 3.5l3.5 3.5L7 16.5H3.5V13z" stroke="${c}" stroke-width="1.7" stroke-linejoin="round"/></svg>`,
+  tabMap: (c: string): string => `<svg width="20" height="20" viewBox="0 0 20 20" fill="none"><path d="M10 18s6-5.2 6-10A6 6 0 0 0 4 8c0 4.8 6 10 6 10z" stroke="${c}" stroke-width="1.7" stroke-linejoin="round"/><circle cx="10" cy="8" r="2.2" stroke="${c}" stroke-width="1.7"/></svg>`,
+  tabPlan: (c: string): string => `<svg width="20" height="20" viewBox="0 0 20 20" fill="none"><g stroke="${c}" stroke-width="1.7" stroke-linecap="round"><path d="M3 5.5h14M3 10h14M3 14.5h9"/></g></svg>`,
+  tabShop: (c: string): string => `<svg width="20" height="20" viewBox="0 0 20 20" fill="none"><path d="M4.5 6.5h11l-1 10h-9l-1-10z" stroke="${c}" stroke-width="1.7" stroke-linejoin="round"/><path d="M7.5 6.5V5a2.5 2.5 0 0 1 5 0v1.5" stroke="${c}" stroke-width="1.7" stroke-linecap="round"/></svg>`,
+  tabPrep: (c: string): string => `<svg width="20" height="20" viewBox="0 0 20 20" fill="none"><rect x="3.5" y="6" width="13" height="10.5" rx="2" stroke="${c}" stroke-width="1.7"/><path d="M7.5 6V4.5a1.5 1.5 0 0 1 1.5-1.5h2a1.5 1.5 0 0 1 1.5 1.5V6" stroke="${c}" stroke-width="1.7" stroke-linecap="round"/></svg>`,
+  tabLog: (c: string): string => `<svg width="20" height="20" viewBox="0 0 20 20" fill="none"><path d="M13 3.5l3.5 3.5L7 16.5H3.5V13z" stroke="${c}" stroke-width="1.7" stroke-linejoin="round"/></svg>`,
 };

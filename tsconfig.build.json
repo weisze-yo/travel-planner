@@ -1,0 +1,29 @@
+{
+  // The build: src/ -> web/js/, one file to one file.
+  //
+  // `tsc` is the whole build. There is no bundler and there must not be one
+  // while web/sw.js carries a hand-written list of every JS file — hashed
+  // filenames would break the offline shell silently. One .ts in, one .js out,
+  // same name, same module graph, same import specifiers, comments preserved.
+  //
+  // web/js/ is therefore GENERATED and is not in git. Everything else under
+  // web/ — the CSS, the icons, index.html, sw.js, the vendored libraries — is
+  // still hand-written and still tracked.
+  //
+  // `allowJs` is OFF: build.mjs copies the unconverted .js verbatim instead of
+  // routing it through tsc, which would reformat thousands of lines that have
+  // not changed. Only what has actually been converted looks different.
+  "extends": "./tsconfig.json",
+  "compilerOptions": {
+    "noEmit": false,
+    "checkJs": false,
+    "allowJs": false,
+    "outDir": "web/js",
+    "rootDir": "src",
+    "removeComments": false,
+    "sourceMap": false,
+    "declaration": false
+  },
+  "include": ["src/**/*.ts", "types/**/*.d.ts"],
+  "exclude": ["node_modules"]
+}

@@ -2,12 +2,31 @@
 // is cached and served cache-first; map tiles and Firebase always go to the
 // network, and Firestore keeps its own offline copy of your data.
 
-const VERSION = 'v5';
+// Bumped to v6 for the three modules missing from ASSETS below. The cache is
+// named after this, and `activate` deletes every cache that is not the current
+// one — so without a bump a phone already carrying v5 would keep its old,
+// incomplete precache and stay broken offline.
+const VERSION = 'v6';
 const SHELL = `travel-planner-shell-${VERSION}`;
 // Map areas the traveller chose to keep. Deliberately not versioned: a
 // deploy must never throw away a download they waited on hotel wifi for.
 const TILES = 'travel-planner-tiles';
 
+// EVERY module must be here, and `npm run build` now fails if one is missing.
+//
+// It was not enforced before, and three had already slipped: currency.js,
+// install.js and search.js were added in later rounds and never listed. All
+// three are on the boot path — store.js, app.js and nav.js import them — so a
+// phone that installed the app and had not yet opened it a second time online
+// did not boot at all with no signal. Measured, not assumed: with the cache
+// wiped back to what `install` precaches, an offline cold launch rendered no
+// tab bar and no screen.
+//
+// A second online load hid it, because the service worker is controlling by
+// then and its network-first handler caches whatever it fetches. That is why
+// it survived: the window is install-until-next-online-load, and it reopens on
+// every deploy, since `activate` deletes every cache whose name is not the
+// current SHELL.
 const ASSETS = [
   './',
   './index.html',
@@ -48,6 +67,9 @@ const ASSETS = [
   './js/screens/review.js',
   './js/share.js',
   './js/net.js',
+  './js/currency.js',
+  './js/install.js',
+  './js/search.js',
   './icons/icon.svg',
   './icons/icon-180.png',
   './vendor/leaflet/leaflet.js',

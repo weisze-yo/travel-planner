@@ -12,7 +12,7 @@ packing, offline map areas, and snapshot-based trip sharing.
 | Deployed from | `main` — every push that touches `web/`, `firebase.json` or the rules deploys via `.github/workflows/deploy-web.yml` |
 | Milestone | Round nine, the design-implementation milestone, **CLOSED 6 Sep 2026** (production commit `4f20bbe`, last app-code commit `5e2c8a4`) |
 | Current phase | Post-implementation QA — intake and triage of discrepancies found by using the live app; nothing in that backlog is implemented yet |
-| Regression suite | 16 committed browser harnesses in `test/` — 485 checks, plus `two-phones.mjs` at 65/65 against the real Auth and Firestore emulators |
+| Regression suite | 29 committed browser harnesses in `test/` — **920 checks**, measured 23 Sep 2026 (`test/BASELINE.md`), plus `two-phones.mjs` at 65/65 against the real Auth and Firestore emulators |
 
 ## Start here
 
@@ -41,9 +41,12 @@ traps that cost real debugging time.
 
 ## Repo structure
 
-- `web/` — the production web app: vanilla JS, ES modules, no build step.
-  `js/store.js` is the single source of truth; `js/screens/*.js` render and call
-  mutations. This is what Firebase Hosting serves.
+- `src/` — the app's source: ES modules, converting to TypeScript file by file.
+  `store.js` is the single source of truth; `screens/*.js` render and call
+  mutations.
+- `web/` — what Firebase Hosting serves. `web/js/` is **generated** from `src/`
+  by `npm run build` and is not in git; the CSS, icons, `index.html` and `sw.js`
+  beside it are hand-written.
 - `test/` — the committed regression suite (Playwright-driven harnesses that
   print PASS/FAIL lists) plus its own README, coverage and report notes.
 - `firebase/` — Firestore and Storage security rules. `firebase.json` wires

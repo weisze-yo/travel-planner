@@ -25,8 +25,7 @@
 //
 // The prose is staged onto the demo trip at real lengths rather than being
 // read out of Trip 12, so the test does not depend on which trip is loaded.
-import pw from '/opt/node22/lib/node_modules/playwright/index.js';
-const { chromium } = pw;
+import { launch } from './lib/runtime.mjs';
 
 const APP = 'http://127.0.0.1:8099';
 const pass = [], fail = [];
@@ -35,7 +34,7 @@ const check = (n, ok, extra = '') => {
   console.log((ok ? '  ok  ' : '  FAIL ') + n + (extra ? ` — ${String(extra).slice(0, 300)}` : ''));
 };
 
-const browser = await chromium.launch({ executablePath: '/opt/pw-browsers/chromium-1194/chrome-linux/chrome' });
+const browser = await launch();
 const ctx = await browser.newContext({
   viewport: { width: 375, height: 812 }, deviceScaleFactor: 2, serviceWorkers: 'block',
 });

@@ -7,8 +7,7 @@
 // worker. `beforeinstallprompt` is dispatched here as a real event, because
 // that is the signal the app keys off — no user-agent sniffing, which is what
 // makes "Android only" true without ever naming Android.
-import pw from '/opt/node22/lib/node_modules/playwright/index.js';
-const { chromium } = pw;
+import { launch } from './lib/runtime.mjs';
 
 const APP = 'http://127.0.0.1:8099';
 const pass = [], fail = [];
@@ -17,7 +16,7 @@ const check = (n, ok, extra = '') => {
   console.log((ok ? '  ok  ' : '  FAIL ') + n + (extra ? ` — ${String(extra).slice(0, 200)}` : ''));
 };
 
-const browser = await chromium.launch({ executablePath: '/opt/pw-browsers/chromium-1194/chrome-linux/chrome' });
+const browser = await launch();
 
 /** A fresh phone, or one that has been opened before. */
 const openPhone = async (launches = 0) => {

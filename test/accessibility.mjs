@@ -1,5 +1,16 @@
 // Item 16 — the accessibility pass.
 //
+// DEPENDS ON A REMOVED API. `page.accessibility.snapshot()` (line ~117) was
+// deprecated and has since been removed from Playwright. It exists in the
+// pinned 1.56.1 and not in 1.6x, which is why package.json pins an exact
+// version rather than a caret range: with `^1.47.0` the CI runner installed a
+// newer Playwright and this file crashed with "Cannot read properties of
+// undefined (reading 'snapshot')" while passing locally.
+//
+// Rewrite this off that API before the pin is raised. The replacement is
+// `expect(locator).toMatchAriaSnapshot()`, or reading the computed role and
+// accessible name per element — both of which outlive the deprecation.
+//
 // The headline bug this fixes: existing-ui-audit.md §193 / §12.10 — "no
 // visible focus ring on any button anywhere in the app." A keyboard or
 // switch-control user tabbing through the Plan, Trips home, or a warning
@@ -16,8 +27,7 @@
 // Real contrast-ratio computation lives in a separate, non-browser script
 // (scratchpad/contrast.mjs) since it needs no DOM — the numbers are in the
 // commit's report, not re-derived here.
-import pw from '/opt/node22/lib/node_modules/playwright/index.js';
-const { chromium } = pw;
+import { launch } from './lib/runtime.mjs';
 
 const APP = 'http://127.0.0.1:8099';
 const pass = [], fail = [];
@@ -26,7 +36,7 @@ const check = (n, ok, extra = '') => {
   console.log((ok ? '  ok  ' : '  FAIL ') + n + (extra && !ok ? ` — ${String(extra).slice(0, 300)}` : ''));
 };
 
-const browser = await chromium.launch({ executablePath: '/opt/pw-browsers/chromium-1194/chrome-linux/chrome' });
+const browser = await launch();
 const ctx = await browser.newContext({
   viewport: { width: 390, height: 844 }, deviceScaleFactor: 2,
   serviceWorkers: 'block',

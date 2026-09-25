@@ -15,10 +15,18 @@ import { readFileSync, readdirSync } from 'node:fs';
 import { join } from 'node:path';
 import vm from 'node:vm';
 
+// `.ts` as well as `.js`, and the omission was live for exactly one commit:
+// when util.js became util.ts it dropped straight out of this sweep, and the
+// only symptom was the module count falling from 38 to 37 — which looked like
+// the src/ move rather than lost coverage. Left alone, the guard would have
+// protected less and less as the conversion went on, and nothing at all once
+// it finished.
 const walk = (d) => readdirSync(d, { withFileTypes: true })
-  .flatMap((e) => (e.isDirectory() ? walk(join(d, e.name)) : (e.name.endsWith('.js') ? [join(d, e.name)] : [])));
+  .flatMap((e) => (e.isDirectory()
+    ? walk(join(d, e.name))
+    : (/\.(js|ts)$/.test(e.name) && !e.name.endsWith('.d.ts') ? [join(d, e.name)] : [])));
 
-const files = walk('web/js');
+const files = walk('src');
 let bad = 0;
 
 for (const f of files) {
@@ -31,6 +39,11 @@ for (const f of files) {
       bad += 1;
     }
   }
+  // The parse sweep is JavaScript only — `vm.SourceTextModule` is a JS parser
+  // and would reject a type annotation as a syntax error. TypeScript files get
+  // the backtick check above and their parse check from `tsc` instead, which
+  // `npm run typecheck` fails on any TS1xxx syntax error regardless of count.
+  if (f.endsWith('.ts')) continue;
   try {
     new vm.SourceTextModule(src, { identifier: f });
   } catch (e) {
