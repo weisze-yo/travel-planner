@@ -138,6 +138,17 @@ New UI/UX findings go to `docs/design/post-implementation-qa.md`, under its rule
 **a screenshot is evidence of what the app does, not authorisation to change
 what it should do.**
 
+## How the owner wants to be talked to
+
+Standing instruction, given 28 and 29 Sep 2026:
+
+- **Short and simple, but detailed** — explain it the way you would to a
+  bright 15-year-old. Plain words, no jargon left undefined.
+- **Always end by stating clearly what to do next**, and whether anything is
+  needed from him. He should never have to ask "so what now?"
+- He is not a developer. When a choice is technical, give the recommendation
+  first and the reasoning second, and say what it costs in plain terms.
+
 ## Git
 
 Work on the branch you were given; never push to a different one without
